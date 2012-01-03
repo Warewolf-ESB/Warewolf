@@ -1,0 +1,173 @@
+﻿<Activity mc:Ignorable="sad" x:Class="TfsBuild.Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:this="clr-namespace:TfsBuild;" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common" xmlns:mtbc="clr-namespace:Microsoft.TeamFoundation.Build.Client;assembly=Microsoft.TeamFoundation.Build.Client" xmlns:mtbco="clr-namespace:Microsoft.TeamFoundation.Build.Common;assembly=Microsoft.TeamFoundation.Build.Common" xmlns:mtbp="clr-namespace:Microsoft.TeamFoundation.Build.ProcessComponents;assembly=Microsoft.TeamFoundation.Build.ProcessComponents" xmlns:mtbw="clr-namespace:Microsoft.TeamFoundation.Build.Workflow;assembly=Microsoft.TeamFoundation.Build.Workflow" xmlns:mtbwa="clr-namespace:Microsoft.TeamFoundation.Build.Workflow.Activities;assembly=Microsoft.TeamFoundation.Build.Workflow" xmlns:mtbws="clr-namespace:Microsoft.TeamFoundation.Build.Workflow.Services;assembly=Microsoft.TeamFoundation.Build.Workflow" xmlns:mtlc="clr-namespace:Microsoft.TeamFoundation.Lab.Client;assembly=Microsoft.TeamFoundation.Lab.Client" xmlns:mtlwa="clr-namespace:Microsoft.TeamFoundation.Lab.Workflow.Activities;assembly=Microsoft.TeamFoundation.Lab.Workflow.Activities" xmlns:mtlwc="clr-namespace:Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client;assembly=Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client" xmlns:mtltc="clr-namespace:Microsoft.TeamFoundation.Lab.TestIntegration.Client;assembly=Microsoft.TeamFoundation.Lab.TestIntegration.Client" xmlns:mttbb="clr-namespace:Microsoft.TeamFoundation.TestImpact.BuildIntegration.BuildActivities;assembly=Microsoft.TeamFoundation.TestImpact.BuildIntegration" xmlns:mtvc="clr-namespace:Microsoft.TeamFoundation.VersionControl.Client;assembly=Microsoft.TeamFoundation.VersionControl.Client" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities" xmlns:sad="http://schemas.microsoft.com/netfx/2009/xaml/activities/design" xmlns:sad1="clr-namespace:System.Activities.Debugger;assembly=System.Activities" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sl="clr-namespace:System.Linq;assembly=System.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Metadata" Type="mtbw:ProcessParameterMetadataCollection" />
+    <x:Property Name="LabWorkflowParameters" Type="InArgument(mtlwa:LabWorkflowDetails)" />
+    <x:Property Name="Verbosity" Type="InArgument(mtbw:BuildVerbosity)" />
+    <x:Property Name="BuildNumberFormat" Type="InArgument(x:String)" />
+    <x:Property Name="SupportedReasons" Type="mtbc:BuildReason" />
+  </x:Members>
+  <this:Process.Metadata>
+    <mtbw:ProcessParameterMetadataCollection />
+  </this:Process.Metadata>
+  <this:Process.LabWorkflowParameters>
+    [New Microsoft.TeamFoundation.Lab.Workflow.Activities.LabWorkflowDetails()]
+  </this:Process.LabWorkflowParameters>
+  <this:Process.Verbosity>[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]</this:Process.Verbosity>
+  <this:Process.BuildNumberFormat>["$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)"]</this:Process.BuildNumberFormat>
+  <this:Process.SupportedReasons>Manual, BatchedCI, Schedule, ScheduleForced</this:Process.SupportedReasons>
+  <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
+  <Sequence DisplayName="Application Deployment Workflow" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="mtbc:IBuildDetail" Name="BuildDetail" />
+      <Variable x:TypeArguments="x:String" Name="LabEnvironmentUri" />
+      <Variable x:TypeArguments="x:String" Name="BuildLocation" />
+      <Variable x:TypeArguments="x:Int64" Name="SnapshotId" />
+      <Variable x:TypeArguments="x:Int32" Name="QueueBuildId" />
+      <Variable x:TypeArguments="mtbc:BuildStatus" Default="[Microsoft.TeamFoundation.Build.Client.BuildStatus.Succeeded]" Name="BuildStatus" />
+      <Variable x:TypeArguments="mtbc:IBuildDetail" Name="ChildBuildDetail" />
+      <Variable x:TypeArguments="mtbc:IBuildDetail" Name="SelectedBuildDetail" />
+      <Variable x:TypeArguments="x:String" Name="BuildNumber" />
+    </Sequence.Variables>
+    <mtbwa:UpdateBuildNumber BuildNumberFormat="[BuildNumberFormat]" DisplayName="Update Build Number" />
+    <mtbwa:GetBuildDetail DisplayName="Get Build Details" Result="[BuildDetail]" />
+    <If Condition="[LabWorkflowParameters.BuildDetails.IsTeamSystemBuild = True AndAlso LabWorkflowParameters.BuildDetails.QueueNewBuild = True]" DisplayName="If Build is needed">
+      <If.Then>
+        <Sequence DisplayName="Do Build">
+          <mtlwa:RunWorkflow BuildDefinition="[LabWorkflowParameters.BuildDetails.BuildDefinitionName]" DisplayName="Start Build Workflow" ProjectName="[BuildDetail.TeamProject]" Result="[QueueBuildId]" />
+          <mtlwa:WaitForWorkflow AllowPartiallySucceededBuild="True" BuildDetails="[ChildBuildDetail]" DisplayName="Wait For Build To Complete" MaxWaitTime="[TimeSpan.Zero]" QueueBuildId="[QueueBuildId]" Result="[BuildStatus]" ThrowOnError="True" LabWorkflowType="[Microsoft.TeamFoundation.Lab.Workflow.Activities.WorkflowType.Build]" />
+          <Assign DisplayName="Set Build Location">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Uri">[LabWorkflowParameters.BuildDetails.BuildUri]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Uri">[ChildBuildDetail.Uri]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </If.Then>
+    </If>
+    <mtlwa:WriteDeploymentInformation DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" Url="{x:Null}" DisplayName="Update Deployment Summary" Message="[String.Format(&quot;Lab environment: {0}&quot;, LabWorkflowParameters.EnvironmentDetails.LabEnvironmentName)]" />
+    <mtlwa:GetBuildLocationAndBuildNumber BuildDetails="[LabWorkflowParameters.BuildDetails]" BuildNumber="[BuildNumber]" DisplayName="Get Build Location And Build Number" Result="[BuildLocation]" SelectedBuild="[SelectedBuildDetail]" />
+    <If Condition="[LabWorkflowParameters.BuildDetails.IsTeamSystemBuild = True]" DisplayName="Compute build location needed">
+      <If.Then>
+        <Assign DisplayName="Compute build path">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[BuildLocation]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[If(LabWorkflowParameters.BuildDetails.Configuration Is Nothing, BuildLocation, If(LabWorkflowParameters.BuildDetails.Configuration.IsEmpty Or (SelectedBuildDetail.Information.GetNodesByType(Microsoft.TeamFoundation.Build.Common.InformationTypes.ConfigurationSummary, True)).Count = 1, BuildLocation, If(LabWorkflowParameters.BuildDetails.Configuration.IsPlatformEmptyOrAnyCpu, BuildLocation + "\" + LabWorkflowParameters.BuildDetails.Configuration.Configuration, BuildLocation + "\" + LabWorkflowParameters.BuildDetails.Configuration.Platform + "\" + LabWorkflowParameters.BuildDetails.Configuration.Configuration)))]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+    </If>
+    <If Condition="[LabWorkflowParameters.EnvironmentDetails.Disposition = Microsoft.TeamFoundation.Lab.Client.LabEnvironmentDisposition.Stored]" DisplayName="If user selected stored environment" >
+      <If.Then>
+        <Throw DisplayName="Indicate error" Exception="[New System.Exception(&quot;You have selected an environment that is stored in the library. Select an environment that is deployed on a team project host group.&quot;)]"  />
+      </If.Then>
+    </If>
+    <mtlwa:GetLabEnvironmentUri TfsServerUrl="{x:Null}" DisplayName="Get Lab Environment" LabEnvironmentName="[LabWorkflowParameters.EnvironmentDetails.LabEnvironmentName]" ProjectName="[BuildDetail.TeamProject]" Result="[LabEnvironmentUri]" TeamProjectLabLocationName="[LabWorkflowParameters.EnvironmentDetails.HostGroupName]" />
+    <If Condition="[LabWorkflowParameters.EnvironmentDetails.RevertToSnapshot = True]" DisplayName=" If Restore Snapshot">
+      <If.Then>
+        <Sequence DisplayName="Restore Snapshot">
+          <mtlwa:GetLabEnvironmentSnapshotId DisplayName="Get Snapshot Details" LabEnvironmentUri="[LabEnvironmentUri]" Result="[SnapshotId]" SnapshotName="[LabWorkflowParameters.EnvironmentDetails.SnapshotName]" />
+          <mtlwa:RestoreLabEnvironment DisplayName="Restore Lab Environment to Snapshot" LabEnvironmentUri="[LabEnvironmentUri]" SnapshotId="[SnapshotId]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <mtlwa:WriteDeploymentInformation Url="{x:Null}" DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Clean snapshot not specified " sad:VirtualizedContainerService.HintSize="208,209.6" Message="Build definition did not specify a clean snapshot. It is a best practice to use clean snapshot when running the lab workflow." />
+      </If.Else>
+    </If>
+    <If Condition="[LabWorkflowParameters.DeploymentDetails.DeploymentNeeded = True]" DisplayName="If deployment needed">
+      <If.Then>
+        <Sequence DisplayName="Do deployment">
+          <mtlwa:WaitForWorkflowCapabilityServices DisplayName="Wait For Workflow Capability To be Ready" LabEnvironmentUri="[LabEnvironmentUri]" MaxWaitTime="[System.TimeSpan.FromMinutes(20)]" RepairCapabilityBeforeWaitBegins="[LabWorkflowParameters.EnvironmentDetails.RevertToSnapshot = False]" />
+          <ForEach x:TypeArguments="x:String" DisplayName="Run Deployment scripts" Values="[LabWorkflowParameters.DeploymentDetails.Scripts]">
+            <ActivityAction x:TypeArguments="x:String">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="x:String" Name="deploymentConfigurationPair" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Run Script On Lab System">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="mtlwa:ScriptDetails" Name="scriptDetails" />
+                </Sequence.Variables>
+                <mtlwa:InitializeAgentSpecAndEnvironmentVariables BuildLocation="[BuildLocation]" DeploymentScriptDetails="[deploymentConfigurationPair]" DisplayName="Initialize Agent Tags and deployment script" LabEnvironmentUri="[LabEnvironmentUri]" Result="[scriptDetails]" />
+                <mtbwa:AgentScope DisplayName="Lab Agent Scope" MaxExecutionTime="[New TimeSpan(0,0,0)]" MaxWaitTime="[New TimeSpan(0, 5, 0)]" ReservationSpec="[scriptDetails.AgentSpec]">
+                  <mtlwa:RunDeploymentScript DisplayName="Running Deployment Script" ScriptDetails="[scriptDetails]" ThrowOnError="True" SharedLocationForNetUse="[BuildLocation]" />
+                </mtbwa:AgentScope>
+              </Sequence>
+            </ActivityAction>
+          </ForEach>
+          <mtlwa:WriteDeploymentInformation DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Application Deployment Succeeded" Message="[String.Format(&quot;The application was deployed successfully from the following build location:&quot;)]" Url="[BuildLocation]" />
+          <If Condition="[LabWorkflowParameters.DeploymentDetails.TakePostDeploymentSnapshot = True]" DisplayName="Post Deployment Snapshot">
+            <If.Then>
+              <Sequence DisplayName="Take Post deployment Snapshot ">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:Int64" Name="PostDeploymentSnapshotChainId" />
+                  <Variable x:TypeArguments="x:String" Default="[String.Format(&quot;{0}_{1}&quot;, BuildDetail.BuildDefinition.Name, BuildDetail.BuildNumber)]" Name="PostDeploymentSnapshotName" />
+                </Sequence.Variables>
+                <If Condition="[String.IsNullOrEmpty(LabWorkflowParameters.DeploymentDetails.PostDeploymentSnapshotName) = False]" DisplayName="Check snapshot name">
+                  <If.Then>
+                    <Assign>
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[PostDeploymentSnapshotName]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[If(LabWorkflowParameters.BuildDetails.IsTeamSystemBuild = True,String.Format("{0}_{1}_{2}", LabWorkflowParameters.DeploymentDetails.PostDeploymentSnapshotName, BuildNumber,BuildDetail.BuildNumber),String.Format("{0}_{1}", LabWorkflowParameters.DeploymentDetails.PostDeploymentSnapshotName, BuildDetail.BuildNumber))]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </If.Then>
+                </If>
+                <mtlwa:SnapshotLabEnvironment DisplayName="Taking Post Deployment snapshot" LabEnvironmentUri="[LabEnvironmentUri]" SnapshotChainId="[PostDeploymentSnapshotChainId]" SnapshotName="[PostDeploymentSnapshotName]" />
+                <mtlwa:WriteDeploymentInformation Url="{x:Null}" DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Taking Snapshot succeeded" sad:VirtualizedContainerService.HintSize="464,22.4" Message="[String.Format(&quot;The following snapshot was taken after the deployment was finished: {0}&quot;, PostDeploymentSnapshotName)]" />
+                <mtlwa:WriteDeploymentInformation Url="[PostDeploymentSnapshotChainId.ToString()]" DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.ConnectToSnapshot]" DisplayName="Added connection link to the Snapshot" Message="[PostDeploymentSnapshotName]" />
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <mtlwa:WriteDeploymentInformation Url="{x:Null}" DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Post deployment snapshot not specified" sad:VirtualizedContainerService.HintSize="200,708.8" Message="Build definition did not specify a post deployment snapshot. It is a best practice to take post deployment snapshot when running the lab workflow." />
+            </If.Else>
+          </If>
+        </Sequence>
+      </If.Then>
+    </If>
+    <If Condition="[LabWorkflowParameters.TestParameters.RunTest = True]" DisplayName="Run Tests on Environment">
+      <If.Then>
+        <Sequence DisplayName="Run Tests">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="mtltc:TestingCapabilityInformation" Name="TestCapabilityInfo" />
+            <Variable x:TypeArguments="x:String" Name="variable1" />
+            <Variable x:TypeArguments="mtlwa:TestRunStatistics" Default="[New Microsoft.TeamFoundation.Lab.Workflow.Activities.TestRunStatistics()]" Name="TestResults" />
+          </Sequence.Variables>
+          <mtlwa:WaitForTestCapabilityServices DisplayName="Wait For Test Capabilities to be ready" LabEnvironmentUri="[LabEnvironmentUri]" MaxWaitTime="[System.TimeSpan.FromMinutes(20)]" RepairCapabilityBeforeWaitBegins="False" />
+          <mtlwa:ExecuteRemoteTestRun MaxWaitTime="{x:Null}" BuildNumber="[BuildNumber]" DisplayName="Running Tests" Result="[TestResults]" TestDirectory="[BuildLocation]" LabEnvironmentUri="[LabEnvironmentUri]" TestParameters="[LabWorkflowParameters.TestParameters]" Title="[String.Format(&quot;{0}&quot;, BuildDetail.BuildNumber)]" />
+          <If Condition="[TestResults.PassedTests &lt;&gt; TestResults.TotalTests]" DisplayName="If all tests have not passed">
+            <If.Then>
+              <If Condition="[(LabWorkflowParameters.BuildDetails.IsTeamSystemBuild = True AndAlso LabWorkflowParameters.BuildDetails.QueueNewBuild = True) Or (LabWorkflowParameters.DeploymentDetails.DeploymentNeeded = True)]" DisplayName="Set build status">
+                <If.Then>
+                  <Assign DisplayName="Partailly succeded">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="mtbc:BuildStatus">[BuildStatus]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="mtbc:BuildStatus">[Microsoft.TeamFoundation.Build.Client.BuildStatus.PartiallySucceeded]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </If.Then>
+                <If.Else>
+                  <Assign DisplayName="Failed">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="mtbc:BuildStatus">[BuildStatus]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="mtbc:BuildStatus">[Microsoft.TeamFoundation.Build.Client.BuildStatus.Failed]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </If.Else>
+              </If>
+            </If.Then>
+          </If>
+        </Sequence>
+      </If.Then>
+    </If>
+    <mtbwa:SetBuildProperties DisplayName="Set build status" PropertiesToSet="Status" Status="[BuildStatus]" />
+  </Sequence>
+</Activity>
