@@ -1,0 +1,201 @@
+﻿<form id="saveForm" title="Save Server">
+	<div id="saveFormError" class="error" style="display: none; text-align: left; margin-top: 1em; margin-left: 1em; float: left; ">
+		<img src="images/error.png" alt="Error!" width="24" height="24" class="icon" />
+		<span>You missed some fields. These have been highlighted above.</span>
+	</div>
+    <div id="dialog-save" title="Save Server">        
+        <div class="field ui-helper-clearfix">
+            <span style="float: left; margin-top:0.75em" data-bind="html: resourceDescription"></span>
+            <span style="float: right">
+                <button tabindex="1" type="button" name="newFolderButton" id="newFolderButton" data-bind="click: newFolder">New Folder</button>
+                <img src="images/search.png" alt="Search" width="16" height="16" class="icon" />
+                <input tabindex="2"  type="text" name="searchFolderTerm" id="searchFolderTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: searchFolderTerm, valueUpdate: 'afterkeydown'" />
+            </span>
+        </div>
+        <div class="field">
+            <div id="resourceFoldersScrollBox" class="scrollable" style="height: 275px;">
+                <ol class="selectable" id="resourceFolders" data-bind="foreach: searchFolderResults">
+                    <li class="selectable"><img src="images/folder-open.png" alt="Folder" width="16" height="16" class="icon" /><span style="margin-left: 0.5em" data-bind="html: $data"></span></li>
+                </ol>              
+            </div>
+        </div>
+        <div class="field">
+            <label  style="width: auto;" for="resourceName">Name:</label>
+            <input tabindex="3" style="width: 560px; float: right" class="required" type="text" name="resourceName" id="resourceName" placeholder="" autocomplete="off" data-bind="value: data.resourceName, enable: !isEditing" />
+        </div>
+    </div>
+	<div id="newFolderDialog" title="Please enter a folder name">
+	  <input tabindex="1"  type="text" name="newFolderName" id="newFolderName" placeholder="" autocomplete="off" style="width: 255px" />
+	</div>
+</form>
+<script type="text/javascript">
+    function SaveViewModel(viewModel) {
+        var self = this;
+        var $saveForm = $("#saveForm");
+           
+        var $errDiv = $("#saveFormError");
+        var $errDivSpan = $("#saveFormError span");
+        var $resourceFoldersScrollBox = $("#resourceFoldersScrollBox");
+        var $resourceName = $("#resourceName");
+     	var $newFolderDialog = $("#newFolderDialog");	
+		var $newFolderName = $("#newFolderName");
+		
+		self.data = viewModel.data;	
+		self.isEditing = viewModel.isEditing;
+		
+        self.resourceDescription = ko.computed(function () {
+            return self.data ? "<b>Server:</b> " + self.data.address() : "";
+        });        
+        self.resourceFolders = ko.observableArray();
+        self.searchFolderTerm = ko.observable("");
+        self.searchFolderResults = ko.computed(function () {
+            var term = self.searchFolderTerm().toLowerCase();
+            if (term == "") {
+                return self.resourceFolders();
+            }
+            return ko.utils.arrayFilter(self.resourceFolders(), function (folder) {
+                return folder.toLowerCase().indexOf(term) !== -1;
+            });
+        });
+		self.caseInsensitiveSort = function(left, right) { return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1) };
+		
+        $.post("Service/Resources/Paths" + window.location.search, null, function (result) {
+            self.resourceFolders(result);
+			self.resourceFolders.sort(self.caseInsensitiveSort);
+        });		
+				
+		$newFolderName.keydown(function (e) {
+			// ENTER key pressed
+			if (e.keyCode == 13) {
+				$newFolderDialog.dialog("close");
+				self.addFolder($newFolderName.val());
+			}
+		});
+			
+        self.newFolder = function () {
+			$newFolderName.val("");
+			$newFolderDialog.dialog("open");
+        };
+
+		self.addFolder = function (folderName) {
+            if (folderName !== "") {
+                self.resourceFolders.push(folderName);
+				self.resourceFolders.sort(self.caseInsensitiveSort);
+                self.data.resourcePath(folderName);				
+				self.selectFolder(folderName);
+            }
+        };
+		
+		self.selectResourcePathElement = function($li) {
+			$li.addClass("ui-selected").siblings().removeClass("ui-selected");
+		};
+        					
+		self.selectFolder = function(folderName) {
+			// Find the element and select it.
+			var $span =  $("li.selectable span:contains('" + folderName + "')");
+			var $li = $span.parent();
+			self.selectResourcePathElement($li);
+			$resourceFoldersScrollBox.scrollTo($li, 275);
+		};
+
+        $("li.selectable").live("click", function () {
+			self.selectResourcePathElement($(this));
+            var path = ko.dataFor(this);
+            self.data.resourcePath(path);
+            self.validate();
+        });
+					        
+        self.toggleValidationError = function ($elem, isValid) {
+            if (isValid) {
+                $elem.removeClass("error");
+                $elem.addClass("valid");
+            } else {
+                $elem.removeClass("valid");
+                $elem.addClass("error");
+            }
+        };
+        
+        self.validate = function () {
+            var isValidPath = self.data.resourcePath() !== "";
+            var isValidName = self.data.resourceName() !== "";
+            
+            self.toggleValidationError($resourceFoldersScrollBox, isValidPath);
+            self.toggleValidationError($resourceName, isValidName);
+            $errDiv.hide();
+            if (!(isValidPath && isValidName)) {
+                var message = (isValidPath || isValidName)
+                       ? 'You missed 1 field. It has been highlighted above.'
+                       : 'You missed 2 fields. They have been highlighted above.';
+
+                $errDivSpan.html(message);
+                $errDiv.show();
+                return false;
+            }            
+            
+            return true;
+        };        
+		
+		$resourceName.blur(function() {
+			self.validate();
+		});
+		
+        $saveForm.validate({
+           
+            onkeyup: false
+        });		
+
+        $saveForm.dialog({
+            resizable: false,
+            autoOpen: false,
+            height: 500,
+            width: 700,
+            modal: true,
+			open: function( event, ui ) {
+				self.selectFolder(self.data.resourcePath());
+			},
+            buttons: {
+                "Save": function () {
+                    if (!self.validate()) {
+                        return;
+                    }
+
+                    //var data = $.extend(self.data, viewModel.data);					
+                    var jsonData = ko.toJSON(self.data);
+                    var dlg = $(this);
+                    $.post(viewModel.saveUri + window.location.search, jsonData, function (result) {
+						if (!result.IsValid) {
+							Dev2Awesomium.Dev2SetValue(JSON.stringify(result));
+						}
+						// TODO: ShowError
+                    });
+
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        
+        $("#saveFormError").prependTo("div.ui-dialog-buttonpane");
+		
+		$newFolderDialog.dialog({
+			resizable: false,
+            autoOpen: false,
+            modal: true,
+            buttons: {
+                "Ok": function () {	
+                    self.addFolder($newFolderName.val());
+                    $(this).dialog("close");				
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+		});
+		
+    };
+    
+    ko.applyBindings(new SaveViewModel(viewModel), document.getElementById("saveForm"));
+
+</script>
+

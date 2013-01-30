@@ -1,0 +1,15 @@
+﻿using System;
+
+namespace Dev2.Studio.Core.AppResources.Attributes
+{
+    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+    public sealed class IconLocation : Attribute
+    {
+        public IconLocation(string value)
+        {
+            Value = value;
+        }
+
+        public string Value { get; private set; }
+    }
+}

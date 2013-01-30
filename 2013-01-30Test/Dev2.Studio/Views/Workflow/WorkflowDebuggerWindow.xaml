@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="Dev2.Studio.Views.Workflow.WorkflowDebuggerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+        >
+    <Grid Name="DebugWorkflowView">
+        
+    </Grid>
+</UserControl>

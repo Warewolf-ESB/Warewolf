@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls">
+   <ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary Source="/Dev2.Studio;component/Custom Dev2 Controls/Intellisense/Themes/Generic.xaml" />
+   </ResourceDictionary.MergedDictionaries>
+    
+    <Style TargetType="customDev2Controls:SimpleGridSplitter">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Height" Value="7"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Thumb x:Name="Thumb"
+                           Height="{TemplateBinding Height}"
+                           Width="{TemplateBinding Width}"
+                           Background="{TemplateBinding Background}"
+                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

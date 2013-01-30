@@ -1,0 +1,172 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.DataList;
+using Dev2.Studio.Core.Factories;
+
+namespace Dev2.Core.Tests.DataList
+{
+    /// <summary>
+    /// Summary description for UnitTest1
+    /// </summary>
+    [TestClass]
+    public class DataListValidationTests
+    {
+
+        IDataListValidator Validator = new DataListValidator();
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        //public void MyTestInitialize() 
+        //{                     
+        //}
+        
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+        #endregion
+
+        #region RecordSet Tests
+        [TestMethod]
+        public void RecordSet_With_No_Items_HasError_True()
+        {
+            var child = DataListItemModelFactory.CreateDataListModel("");
+            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+            parent.Children.Add(child);
+            Validator.Add(parent);
+            Assert.IsTrue(parent.HasError);
+        }
+
+        [TestMethod]
+        public void RecordSet_With_Items_HasError_False()
+        {
+            var child = DataListItemModelFactory.CreateDataListModel("Child");
+            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+            parent.Children.Add(child);
+            Validator.Add(parent);
+            Assert.IsFalse(parent.HasError);
+        }
+        #endregion
+
+        #region Add Tests
+
+        [TestMethod]
+        public void AddTest_With_Duplicate_Name_Expected_Item_HasError_True()
+        {
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar1"));            
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            Validator.Add(newItem);
+
+            Assert.IsTrue(newItem.HasError);
+        }
+
+        [TestMethod]
+        public void AddTest_With_Unique_Name_Expected_Item_HasError_False()
+        {
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar1"));
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestScalar2");
+            Validator.Add(newItem);
+
+            Assert.IsFalse(newItem.HasError);
+        }
+
+        #endregion Add Tests
+
+        #region Remove Tests
+
+        [TestMethod]
+        public void RemoveTest_Remove_Duplicate_Item_Expected_Item_HasError_False()
+        {
+            IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar2");
+            IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar2");
+            Validator.Add(newItem1);
+            Validator.Add(newItem2);
+            Validator.Remove(newItem2);
+
+            Assert.IsFalse(newItem1.HasError);
+        }
+
+        [TestMethod]
+        public void RemoveTest_Remove_Duplicate_Item_With_Invalid_Chars_Expected_Item_HasError_True()
+        {
+            IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar@");
+            IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar@");
+            Validator.Add(newItem1);
+            Validator.Add(newItem2);
+            Validator.Remove(newItem2);
+            Validator.Remove(newItem1);
+
+            Assert.IsTrue(newItem1.HasError);
+        }
+
+        #endregion Remove Tests
+
+        #region Move Tests
+
+        [TestMethod]
+        public void MoveTest_Move_Duplicate_Item_Expected_Items_HasError_False()
+        {
+            IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            Validator.Add(newItem1);
+            Validator.Add(newItem2);
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar2"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar3"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar4"));
+            newItem1.DisplayName = "TestScalar5";
+            Validator.Move(newItem1);
+
+            Assert.IsFalse(newItem1.HasError && newItem2.HasError);
+        }
+
+        [TestMethod]
+        public void MoveTest_Move_Item_That_Isnt_In_List_Expected_Item_HasError_False()
+        {
+            IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar5");
+            IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");            
+            Validator.Add(newItem2);
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar2"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar3"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar4"));         
+            Validator.Move(newItem1);
+
+            Assert.IsFalse(newItem1.HasError && newItem2.HasError);
+        }
+
+        #endregion Move Tests
+    }
+}
