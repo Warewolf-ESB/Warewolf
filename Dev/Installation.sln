@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Dev2.Installation.Studio", "Dev2.Installation.Studio\Dev2.Installation.Studio.isproj", "{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}"
+EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Dev2.Installation.Server", "Dev2.Installation.Server\Dev2.Installation.Server.isproj", "{9C645FD1-C255-482A-A9A3-42CF2AF499BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Default = CD_ROM|Default
+		DVD-5|Default = DVD-5|Default
+		SingleImage|Default = SingleImage|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}.CD_ROM|Default.ActiveCfg = CD_ROM
+		{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}.CD_ROM|Default.Build.0 = CD_ROM
+		{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}.DVD-5|Default.ActiveCfg = DVD-5
+		{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}.DVD-5|Default.Build.0 = DVD-5
+		{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}.SingleImage|Default.ActiveCfg = SingleImage
+		{0DEC4CB2-CE34-41B6-B55C-EDD6ED02BDCB}.SingleImage|Default.Build.0 = SingleImage
+		{9C645FD1-C255-482A-A9A3-42CF2AF499BE}.CD_ROM|Default.ActiveCfg = CD_ROM
+		{9C645FD1-C255-482A-A9A3-42CF2AF499BE}.CD_ROM|Default.Build.0 = CD_ROM
+		{9C645FD1-C255-482A-A9A3-42CF2AF499BE}.DVD-5|Default.ActiveCfg = DVD-5
+		{9C645FD1-C255-482A-A9A3-42CF2AF499BE}.DVD-5|Default.Build.0 = DVD-5
+		{9C645FD1-C255-482A-A9A3-42CF2AF499BE}.SingleImage|Default.ActiveCfg = SingleImage
+		{9C645FD1-C255-482A-A9A3-42CF2AF499BE}.SingleImage|Default.Build.0 = SingleImage
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

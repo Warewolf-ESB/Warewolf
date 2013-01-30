@@ -1,0 +1,27 @@
+﻿<sap:ActivityDesigner x:Class="Unlimited.Applications.BusinessDesignStudio.Activities.DsfCommentActivityDesigner"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+    xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    <sap:ActivityDesigner.Icon>
+        <DrawingBrush>
+            <DrawingBrush.Drawing>
+                <ImageDrawing>
+                    <ImageDrawing.Rect>
+                        <Rect Location="0,0" Size="16,16" ></Rect>
+                    </ImageDrawing.Rect>
+                    <ImageDrawing.ImageSource>
+                        <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/comment_add.png" ></BitmapImage>
+                    </ImageDrawing.ImageSource>
+                </ImageDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </sap:ActivityDesigner.Icon>
+    <Border BorderBrush="#FF000000" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4">
+        <StackPanel Name="grid1" Margin="3" Width="auto" Orientation="Horizontal">
+            <TextBox Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="500px" MaxWidth="500px" MinHeight="30px" MinWidth="180px" TextWrapping="Wrap" AcceptsReturn="True" 
+                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+        </StackPanel>
+    </Border>
+</sap:ActivityDesigner>

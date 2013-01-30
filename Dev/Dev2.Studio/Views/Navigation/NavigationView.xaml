@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="Dev2.Studio.Views.Navigation.NavigationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:bds="clr-namespace:Unlimited.Applications.BusinessDesignStudio" 
+             xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+             xmlns:ViewModels="clr-namespace:Dev2.Studio.Core.ViewModels;assembly=Dev2.Studio.Core"
+             Name="NavigationViewUserControl"
+             ap:UIElementTitleProperty.Title="Navigation">
+    <Grid>
+        <TreeView AllowDrop="True" ItemsSource="{Binding Path=Root.Children}" Name="tvExplorer" Grid.Row="1" Grid.ColumnSpan="2"
+                  ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
+                  ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}">
+        </TreeView>
+    </Grid>
+</UserControl>

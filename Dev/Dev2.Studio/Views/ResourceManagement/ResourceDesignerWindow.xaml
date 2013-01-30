@@ -1,0 +1,45 @@
+﻿<!--<UserControl x:Class="Unlimited.Applications.BusinessDesignStudio.Views.ResourceDesignerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"       
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        ap:UIElementTitleProperty.Title="Resource Designer">-->
+<UserControl x:Class="Unlimited.Applications.BusinessDesignStudio.Views.ResourceDesignerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"       
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit">    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <!--<RowDefinition />-->
+        </Grid.RowDefinitions>
+        
+        <avalonEdit:TextEditor 
+            x:Name="txtResourceDef"
+            ScrollViewer.VerticalScrollBarVisibility="Auto" 
+            ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+            FontFamily="Consolas" 
+            FontSize="18" 
+            ShowLineNumbers="True" 
+            SyntaxHighlighting="XML"
+            Grid.Row="0"
+            AutomationProperties.AutomationId="UI_ResourceDesignerTxt_AutoID"
+            />
+        
+        <!--<TextBox
+            Grid.Row="1"
+            AcceptsReturn="True"  
+            ScrollViewer.VerticalScrollBarVisibility="Auto" 
+            ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+            AutoWordSelection="True"  
+            Cursor="IBeam" 
+            FontFamily="Consolas" 
+            FontSize="18" 
+            Foreground="Red" 
+            AcceptsTab="True" 
+            Text="{Binding Path=ServiceDefinition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+            />-->
+        
+    </Grid>
+</UserControl>
