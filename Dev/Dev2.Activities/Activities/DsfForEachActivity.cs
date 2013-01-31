@@ -736,12 +736,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            return GetDebugItems(dataList, StateType.Before, ForEachElementName);
+            // BUG 8104 : Refactor DebugItem
+            // TODO: Implement GetDebugInputs
+            // return GetDebugItems(dataList, StateType.Before, ForEachElementName);
+            return DebugItem.EmptyList;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            return GetDebugItems(dataList, StateType.After, ForEachElementName.Replace("*", ""));
+            // BUG 8104 : Refactor DebugItem
+            // TODO: Implement GetDebugInputs
+            // return GetDebugItems(dataList, StateType.After, ForEachElementName.Replace("*", ""));
+            return DebugItem.EmptyList;
         }
 
         #endregion Get Inputs/Outputs

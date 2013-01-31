@@ -216,7 +216,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(DateTime, dataList))
                 {
-                    debugItem.Label = "Start Date " + debugItem.Label;
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = "Start Date " + debugItem.Label;
                     results.Add(debugItem);
                 }
             }
@@ -225,7 +226,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(InputFormat, dataList))
                 {
-                    debugItem.Label = "Input Format " + debugItem.Label;
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = "Input Format " + debugItem.Label;
                     results.Add(debugItem);
                 }
             }
@@ -234,8 +236,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(TimeModifierAmountDisplay, dataList))
                 {
-                    debugItem.Label = "Add Time " + debugItem.Label;
-                    debugItem.Results[0].Value = debugItem.Results[0].Value + " " + TimeModifierType;
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = "Add Time " + debugItem.Label;
+                    //debugItem.Results[0].Value = debugItem.Results[0].Value + " " + TimeModifierType;
                     results.Add(debugItem);
                 }
             }
@@ -244,7 +247,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(OutputFormat, dataList))
                 {
-                    debugItem.Label = "Output Format " + debugItem.Label;
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = "Output Format " + debugItem.Label;
                     results.Add(debugItem);
                 }
             }

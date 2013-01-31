@@ -14,6 +14,7 @@ using Unlimited.Framework;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
+    // TODO: DELETE UNUSED
     public class DsfForEachActivity_Old : DsfActivityAbstract<bool>
     {
         //string _previousParentID;
@@ -664,20 +665,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
         #endregion Private Methodss
-
-        #region Get Debug Inputs/Outputs
-
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            return GetDebugItems(dataList, StateType.Before, ForEachElementName);
-        }
-
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            return GetDebugItems(dataList, StateType.After, ForEachElementName.Replace("*", ""));
-        }
-
-        #endregion Get Inputs/Outputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

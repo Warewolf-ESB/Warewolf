@@ -197,12 +197,12 @@ namespace Dev2.Diagnostics
             for(var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].Group);
-                writer.Write(items[i].Label);
-                writer.Write(items[i].Results.Count);
-                for(var j = 0; j < items[i].Results.Count; j++)
+                writer.Write(items[i].Count);
+                for(var j = 0; j < items[i].Count; j++)
                 {
-                    writer.Write(items[i].Results[j].Variable);
-                    writer.Write(items[i].Results[j].Value);
+                    var itemResult = items[i][j];
+                    writer.Write((int)itemResult.Type);
+                    writer.Write(itemResult.Value);
                 }
             }
             // ReSharper restore ForCanBeConvertedToForeach
@@ -215,15 +215,14 @@ namespace Dev2.Diagnostics
             {
                 var item = new DebugItem
                 {
-                    Group = reader.ReadString(),
-                    Label = reader.ReadString()
+                    Group = reader.ReadString()
                 };
                 var resultCount = reader.ReadInt32();
                 for(var j = 0; j < resultCount; j++)
                 {
-                    item.Results.Add(new DebugItemResult
+                    item.Add(new DebugItemResult
                     {
-                        Variable = reader.ReadString(),
+                        Type = (DebugItemResultType)reader.ReadInt32(),
                         Value = reader.ReadString()
                     });
                 }

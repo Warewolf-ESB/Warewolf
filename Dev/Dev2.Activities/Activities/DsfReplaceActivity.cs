@@ -157,7 +157,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     foreach (IDebugItem debugItem in CreateDebugItems(s, dataList))
                     {
-                        debugItem.Label = debugItem.Label + " Lookin ";
+                        // BUG 8104 : Refactor DebugItem
+                        //debugItem.Label = debugItem.Label + " Lookin ";
                         results.Add(debugItem);
                     }
                 }
@@ -167,7 +168,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(Find, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Find ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Find ";
                     results.Add(debugItem);
                 }
             }
@@ -176,7 +178,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(ReplaceWith, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Replace With ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Replace With ";
                     results.Add(debugItem);
                 }
             }

@@ -1,6 +1,4 @@
 ﻿using Dev2.Activities;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Dev2.Enums;
 using System;
 using System.Activities;
@@ -8,6 +6,7 @@ using System.Collections.Generic;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
+    // TODO: DELETE UNUSED
     public class DsfAssignActivity : DsfActivityAbstract<string>
     {
 
@@ -45,22 +44,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             throw new NotImplementedException("Nothing here...");
         }
-
-
-        #region Get Debug Inputs/Outputs
-
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            return DebugItem.EmptyList;
-        }
-
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            return GetDebugItems(dataList, StateType.After, FieldValue);
-
-        }
-
-        #endregion Get Inputs/Outputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

@@ -530,8 +530,8 @@ namespace ActivityUnitTests.ActivityTests
 
             var result = testActivity.GetDataListItems(dataList);
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("[[recset().Id]]", result[0].Results[0].Variable);
-            Assert.AreEqual("[[recset().Name]]", result[1].Results[0].Variable);
+            Assert.AreEqual("[[recset().Id]]", result[0][1].Value);
+            Assert.AreEqual("[[recset().Name]]", result[1][1].Value);
         }
 
         [TestMethod]
@@ -545,8 +545,8 @@ namespace ActivityUnitTests.ActivityTests
 
             var result = testActivity.GetDataListItems(dataList, true);
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("[[recset(1).Id]]", result[0].Results[0].Variable);
-            Assert.AreEqual("[[recset(1).Name]]", result[1].Results[0].Variable);
+            Assert.AreEqual("[[recset(1).Id]]", result[0][1].Value);
+            Assert.AreEqual("[[recset(1).Name]]", result[1][1].Value);
         }
         #endregion
 

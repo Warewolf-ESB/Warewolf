@@ -203,17 +203,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         variable = variable.Replace("!~calculation~!", "").Replace("!~~calculation~!", "");
                     }
-                    var item = new DebugItem
-                    {
-                        Label = (i + 1).ToString(CultureInfo.InvariantCulture)
-                    };
-                    item.Results.AddRange(new[]
-                    {
-                        new DebugItemResult { Variable = field.FieldName },
-                        new DebugItemResult { Variable = isFieldValueAVariable ? ("= " + variable) : null, Value = ("= " + theValue)}
-                    });
+                    // BUG 8104 : Refactor DebugItem
+                    //var item = new DebugItem
+                    //{
+                    //    Label = (i + 1).ToString(CultureInfo.InvariantCulture)
+                    //};
+                    //item.Results.AddRange(new[]
+                    //{
+                    //    new DebugItemResult { Variable = field.FieldName },
+                    //    new DebugItemResult { Variable = isFieldValueAVariable ? ("= " + variable) : null, Value = ("= " + theValue)}
+                    //});
 
-                    result.Add(item);
+                    //result.Add(item);
                 }
 
                 if (DataListUtil.IsValueRecordset(field.FieldValue) &&

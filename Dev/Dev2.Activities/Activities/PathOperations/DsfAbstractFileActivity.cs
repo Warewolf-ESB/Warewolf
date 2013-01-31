@@ -180,7 +180,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     foreach (IDebugItem debugItem in CreateDebugItems(val, dataList))
                     {
-                        debugItem.Label = debugItem.Label + labelVal;
+                        // BUG 8104 : Refactor DebugItem
+                        //debugItem.Label = debugItem.Label + labelVal;
                         results.Add(debugItem);
                     }
                 }
@@ -210,7 +211,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     foreach (IDebugItem debugItem in CreateDebugItems(val, dataList))
                     {
-                        debugItem.Label = debugItem.Label;
+                        // BUG 8104 : Refactor DebugItem
+                        //debugItem.Label = debugItem.Label;
                         results.Add(debugItem);
                     }
                 }

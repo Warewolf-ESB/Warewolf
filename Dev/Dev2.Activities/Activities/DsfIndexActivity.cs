@@ -193,7 +193,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(InField, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Field To Look In ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Field To Look In ";
                     results.Add(debugItem);
                 }
             }
@@ -207,7 +208,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(Characters, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Charecters To Look For ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Charecters To Look For ";
                     results.Add(debugItem);
                 }
             }

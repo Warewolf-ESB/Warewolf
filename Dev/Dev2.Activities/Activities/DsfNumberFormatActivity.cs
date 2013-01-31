@@ -149,7 +149,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(Expression, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Number To Format ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Number To Format ";
                     results.Add(debugItem);
                 }
             }
@@ -163,7 +164,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(RoundingDecimalPlaces, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Rounding Decimal Places ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Rounding Decimal Places ";
                     results.Add(debugItem);
                 }
             }
@@ -172,7 +174,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(DecimalPlacesToShow, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Decimal Places To Show ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Decimal Places To Show ";
                     results.Add(debugItem);
                 }
             }

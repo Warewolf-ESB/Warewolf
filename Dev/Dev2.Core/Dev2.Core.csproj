@@ -149,9 +149,12 @@
     <Compile Include="Converters\DateAndTime\TO\TimeZoneTO.cs" />
     <Compile Include="Diagnostics\DebugDispatcher.cs" />
     <Compile Include="Diagnostics\DebugItem.cs" />
+    <Compile Include="Diagnostics\DebugItemResult.cs" />
     <Compile Include="Diagnostics\DebugState.cs" />
+    <Compile Include="Diagnostics\Enums.cs" />
     <Compile Include="Diagnostics\IDebugDispatcher.cs" />
     <Compile Include="Diagnostics\IDebugItem.cs" />
+    <Compile Include="Diagnostics\IDebugItemResult.cs" />
     <Compile Include="Diagnostics\IDebugState.cs" />
     <Compile Include="Diagnostics\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\IDebugWriter.cs" />

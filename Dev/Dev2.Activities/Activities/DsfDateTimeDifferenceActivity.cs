@@ -194,7 +194,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(Input1, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Start Date ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Start Date ";
                     results.Add(debugItem);
                 }
             }
@@ -203,7 +204,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(Input2, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " End Date ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " End Date ";
                     results.Add(debugItem);
                 }
             }
@@ -212,7 +214,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach (IDebugItem debugItem in CreateDebugItems(InputFormat, dataList))
                 {
-                    debugItem.Label = debugItem.Label + " Input Format ";
+                    // BUG 8104 : Refactor DebugItem
+                    //debugItem.Label = debugItem.Label + " Input Format ";
                     results.Add(debugItem);
                 }
             }
