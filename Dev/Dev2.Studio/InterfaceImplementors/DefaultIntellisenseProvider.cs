@@ -413,9 +413,12 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            var getIndex = input;
-            while (DataListUtil.IsValueRecordset(getIndex)) getIndex = DataListUtil.ExtractIndexRegionFromRecordset(getIndex);//2013.01.30: Ashley Lewis  Added this part for Bug 6103
-            results = parser.ParseDataLanguageForIntellisense(getIndex, _cachedDataList, false, filterTO);
+            if(!input.StartsWith("{{"))
+            {
+                var getIndex = input;
+                while(DataListUtil.IsValueRecordset(getIndex)) getIndex = DataListUtil.ExtractIndexRegionFromRecordset(getIndex); //2013.01.30: Ashley Lewis  Added this part for Bug 6103
+                results = parser.ParseDataLanguageForIntellisense(getIndex, _cachedDataList, false, filterTO);
+            }
 
             if (results != null)
             {

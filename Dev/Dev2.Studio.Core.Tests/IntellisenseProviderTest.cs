@@ -1,11 +1,9 @@
 ﻿using System;
-using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.DataList;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -158,6 +156,15 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City().Name]]", getResults[3].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[4].ToString());
         }
+
+        [TestMethod]
+        public void GetIntellisenseResults_With_Expression_Expected_NoResults()
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 10, InputText = "{{var r  = \"[[xpath('//result/node()')]]\";if(r.indexOf(\"success\") == -1){var s = \"No\";}else{var s =\"Yes\";}}}", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(0, getResults.Count);
+        }
+
 
         #endregion
 
