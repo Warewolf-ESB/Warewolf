@@ -19,8 +19,7 @@ namespace Dev2.Studio
         public App()
         {
             //Bug 8403
-            var getExactProcess = System.Reflection.Assembly.GetEntryAssembly();
-            var studioProcesses = Process.GetProcessesByName("Dev2.Studio");
+            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName.Remove(Process.GetCurrentProcess().ProcessName.IndexOf(".vshost")));
             if(studioProcesses.Length > 0)
             {
                 SetForegroundWindow(studioProcesses[0].MainWindowHandle);
