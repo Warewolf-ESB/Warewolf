@@ -1004,7 +1004,7 @@
 			
 			update = buildNewService(serviceName, sourceName, sourceMethod,this.WizardWriteTypeConverter(),this.GenerateMapping(),outputMapping, inputMapping, help, icon, description, tooltip, category, tags);
 			
-			prompt(update);
+			//prompt(update);
 			
 			var status = updateServiceDef(webServer, update);
 			
@@ -1226,6 +1226,9 @@ function generateInputMapping(inputs){
 		}else{
 			emptyToNull[i] = "";
 		}
+		
+		prompt(emptyToNull[i]);
+		
 		i++;
 	});
 	

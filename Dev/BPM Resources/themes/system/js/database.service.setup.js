@@ -417,7 +417,7 @@ function initDatabaseServiceSetup(webServer, serviceDetailsName, serviceDetailsS
 				for(var i = 0; i < functions.length;i++){
 					if(functions[i]==selected){					
 						try{ 
-							//$('#Dev2DatabaseServiceSetupInputTestData tr').not(':first').not(':last').remove();
+
 							if(functionParams[i].indexOf(",") != -1){
 								parms = functionParams[i].split(",");
 								var html = '';
@@ -426,7 +426,6 @@ function initDatabaseServiceSetup(webServer, serviceDetailsName, serviceDetailsS
 								for(var i = 0; i < parms.length; i++){
 									if(!(/^\s*$/).test(parms[i])){
 										html += '<div class="ioMappingInputRow"><div class="ioMappingOutputCol1">' + parms[i] + '</div><div class="ioMappingOutputCol2">' + '<input type="text" class="Dev2InputTestData" id="Dev2InputTestDataFn'+i+'" fnName="'+parms[i]+'" fnType="String" /></div><button type="button" value="..." onClick=displayBigInput("Dev2InputTestDataSP' + i+'","' + parms[i] + '") class="ioMappingRegionBtn">...</button></div>';
-										//html += '<tr><td>' + parms[i] + '</td><td>' + '<input type="text" id="Dev2ServiceSetupInputs_'+parms[i]+'" name="Dev2ServiceSetupInputs_'+parms[i]+'" />' + '</td></tr>';
 									}else{
 										html += '<div class="ioMappingInputRow"><div class="ioMappingOutputCol1">No input parameters for this function</div></div>';
 									}
@@ -436,9 +435,7 @@ function initDatabaseServiceSetup(webServer, serviceDetailsName, serviceDetailsS
 								parms = functionParams[i];
 								var html = '';
 								if(!(/^\s*$/).test(parms)){
-							
 									html += '<div class="ioMappingInputRow"><div class="ioMappingOutputCol1">' + parms + '</div><div class="ioMappingOutputCol2">' + '<input type="text" class="Dev2InputTestData" id="Dev2InputTestDataFn'+i+'" fnName="'+parms+'" fnType="String" /></div><button type="button" value="..." onClick=displayBigInput("Dev2InputTestDataSP0",'+parms[i] +'") class="ioMappingRegionBtn">...</button></div>';
-									//html += '<tr><td>' + parms + '</td><td>' + '<input type="text" id="Dev2ServiceSetupInputs_'+parms+'" name="Dev2ServiceSetupInputs_'+parms+'" />' + '</td></tr>';
 								}else{
 										html += '<div class="ioMappingInputRow"><div class="ioMappingOutputCol1">No input parameters for this function</div></div>';
 								}
