@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Factory;
 using System.Windows;
@@ -11,9 +13,23 @@ namespace Dev2.Studio
     /// </summary>
     public partial class App
     {
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
         public App()
         {
-            InitializeComponent();
+            //Bug 8403
+            var getExactProcess = System.Reflection.Assembly.GetEntryAssembly();
+            var studioProcesses = Process.GetProcessesByName("Dev2.Studio");
+            if(studioProcesses.Length > 0)
+            {
+                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
+                Current.Shutdown();
+            }
+            else
+            {
+                InitializeComponent();
+            }
         }
 
 #if DEBUG
@@ -35,12 +51,13 @@ namespace Dev2.Studio
         }
 #endif
 
-        protected override void OnStartup(StartupEventArgs e) 
+
+        protected override void OnStartup(StartupEventArgs e)
         {
             Browser.Startup();
 
             new Bootstrapper().Start();
-            
+
             base.OnStartup(e);
         }
 
