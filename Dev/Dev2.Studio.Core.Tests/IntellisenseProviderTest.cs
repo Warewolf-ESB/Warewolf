@@ -8,6 +8,7 @@ using Dev2.Studio.Core.ViewModels.DataList;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Threading;
 
 namespace Dev2.Core.Tests
 {
@@ -15,12 +16,15 @@ namespace Dev2.Core.Tests
     public class IntellisenseProviderTest
     {
         private IResourceModel _resourceModel;
+        private static object _testGuard = new object();
 
         #region Test Initialization
 
         [TestInitialize]
         public void Init()
         {
+            Monitor.Enter(_testGuard);
+
 // ReSharper disable InconsistentNaming
             var _testEnvironmentModel = new Mock<IEnvironmentModel>();
 // ReSharper restore InconsistentNaming
@@ -41,6 +45,12 @@ namespace Dev2.Core.Tests
             IDataListViewModel setupDatalist = new DataListViewModel();
             DataListSingleton.SetDataList(setupDatalist);
             DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            Monitor.Exit(_testGuard);
         }
 
         #endregion Test Initialization
