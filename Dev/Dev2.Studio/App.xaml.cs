@@ -19,11 +19,8 @@ namespace Dev2.Studio
         public App()
         {
             //Bug 8403
-            var currentProc = Process.GetCurrentProcess().ProcessName;
-            //if(currentProc.Contains(".vshost")) currentProc = currentProc.Remove(Process.GetCurrentProcess().ProcessName.IndexOf(".vshost"));
-            var studioProcesses = Process.GetProcessesByName(currentProc);
-           // if (Process.GetProcessesByName(currentProc + ".vshost").Length > 0) studioProcesses.ToObservableCollection().Add(Process.GetProcessesByName(currentProc+".vshost")[0]);
-            if (studioProcesses.Length > 1)
+            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            if (studioProcesses.Length > 1)//there's someone in the jacuzzi with us
             {
                 SetForegroundWindow(studioProcesses[0].MainWindowHandle);
                 SetForegroundWindow(studioProcesses[1].MainWindowHandle);
