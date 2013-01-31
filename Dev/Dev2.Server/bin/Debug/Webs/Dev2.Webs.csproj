@@ -128,6 +128,8 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\knockout-2.2.1.js" />
+    <Content Include="wwwroot\Scripts\knockout.validation.min.js" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
     <None Include="wwwroot\Scripts\jquery-1.7.1.intellisense.js" />

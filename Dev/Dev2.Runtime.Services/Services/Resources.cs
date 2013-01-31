@@ -3,6 +3,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.Services.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,16 +44,57 @@ namespace Dev2.Runtime.Services
 
         #endregion
 
+        #region PathsAndNames
+
+        public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
+        {
+            var sourceType = (enSourceType)Enum.Parse(typeof(enSourceType), args);
+
+            var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
+            var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
+            IterateFiles(new[] { RootFolders[sourceType] }, workspaceID, (delimiter, token, content) =>
+            {
+                switch(delimiter.ID)
+                {
+                    case 1:
+                        names.Add(token);
+                        break;
+                    case 2:
+                        paths.Add(token);
+                        break;
+                }
+                return true;
+            }, new Delimiter
+            {
+                ID = 1,
+                Start = " Name=\"",
+                End = "\" "
+            }, new Delimiter
+            {
+                ID = 2,
+                Start = "<Category>",
+                End = "</Category>"
+            });
+
+            return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
+        }
+
+        #endregion
+
         #region Paths
 
         public string Paths(string args, Guid workspaceID, Guid dataListID)
         {
             var result = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            IterateFiles("<Category>", "</Category>", workspaceID, (category, content) =>
+            IterateFiles(workspaceID, (delimiter, category, content) =>
             {
                 result.Add(category);
                 return true;
+            }, new Delimiter
+            {
+                Start = "<Category>",
+                End = "</Category>"
             });
 
             return JsonConvert.SerializeObject(result);
@@ -66,7 +108,7 @@ namespace Dev2.Runtime.Services
         {
             var result = string.Empty;
 
-            IterateFiles(new[] { RootFolders[sourceType] }, " ID=\"", "\" ", workspaceID, (id, content) =>
+            IterateFiles(new[] { RootFolders[sourceType] }, workspaceID, (delimiter, id, content) =>
             {
                 if(resourceID.Equals(id, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -74,6 +116,10 @@ namespace Dev2.Runtime.Services
                     return false;
                 }
                 return true;
+            }, new Delimiter
+            {
+                Start = " ID=\"",
+                End = "\" "
             });
             return result;
         }
@@ -130,14 +176,17 @@ namespace Dev2.Runtime.Services
 
         #region IterateFiles
 
-        static void IterateFiles(string tokenStart, string tokenEnd, Guid workspaceID, Func<string, string, bool> action)
+        static void IterateFiles(Guid workspaceID, Func<Delimiter, string, string, bool> action, params Delimiter[] delimiters)
         {
-            IterateFiles(RootFolders.Values.Distinct(), tokenStart, tokenEnd, workspaceID, action);
+            IterateFiles(RootFolders.Values.Distinct(), workspaceID, action, delimiters);
         }
 
-        static void IterateFiles(IEnumerable<string> folders, string tokenStart, string tokenEnd, Guid workspaceID, Func<string, string, bool> action)
+        static void IterateFiles(IEnumerable<string> folders, Guid workspaceID, Func<Delimiter, string, string, bool> action, params Delimiter[] delimiters)
         {
-            var startTokenLength = tokenStart.Length;
+            if(delimiters == null || delimiters.Length == 0 || action == null || folders == null)
+            {
+                return;
+            }
 
             var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
@@ -147,20 +196,24 @@ namespace Dev2.Runtime.Services
                 {
                     // XML parsing will add overhead - so just read file and use string ops instead
                     var content = File.ReadAllText(file);
-                    var startIdx = content.IndexOf(tokenStart, StringComparison.InvariantCultureIgnoreCase);
-                    if(startIdx == -1)
+                    foreach(var delimiter in delimiters)
                     {
-                        continue;
-                    }
-                    startIdx += startTokenLength;
-                    var endIdx = content.IndexOf(tokenEnd, startIdx, StringComparison.InvariantCultureIgnoreCase);
-                    var length = endIdx - startIdx;
-                    if(length > 0)
-                    {
-                        var tokenValue = content.Substring(startIdx, length);
-                        if(!action(tokenValue, content))
+                        var startTokenLength = delimiter.Start.Length;
+                        var startIdx = content.IndexOf(delimiter.Start, StringComparison.InvariantCultureIgnoreCase);
+                        if(startIdx == -1)
                         {
-                            return;
+                            continue;
+                        }
+                        startIdx += startTokenLength;
+                        var endIdx = content.IndexOf(delimiter.End, startIdx, StringComparison.InvariantCultureIgnoreCase);
+                        var length = endIdx - startIdx;
+                        if(length > 0)
+                        {
+                            var tokenValue = content.Substring(startIdx, length);
+                            if(!action(delimiter, tokenValue, content))
+                            {
+                                return;
+                            }
                         }
                     }
                 }

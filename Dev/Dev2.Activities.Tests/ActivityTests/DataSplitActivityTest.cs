@@ -1,16 +1,13 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Collections.ObjectModel;
 using System.Activities.Statements;
-using Dev2;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract;
-using ActivityUnitTests.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTest
 {
@@ -535,7 +532,7 @@ namespace ActivityUnitTests.ActivityTest
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
 
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error));
-            
+
 
             Assert.AreEqual("896", actual[1]);
             Assert.AreEqual("Branson|0812457", actual[3]);
@@ -776,6 +773,41 @@ No tokenize operations!]]></Error>";
 
             CollectionAssert.AreEqual(expectedRecSet1, actual, new ActivityUnitTests.Utils.StringComparer());
         }
+
+        #region Get Debug Input/Output Tests
+
+        [TestMethod]
+        public void DataSplit_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
+        {
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(1, outRes.Count);
+        }
+
+
+        [TestMethod]
+        public void DataSplit_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
+        {
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[Numeric(*).num]]", "Index", "1", 1) };
+            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(10, outRes.Count);
+        }
+
+        #endregion
 
         #region GetWizardData Tests
 

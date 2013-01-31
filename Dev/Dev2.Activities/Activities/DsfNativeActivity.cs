@@ -875,29 +875,48 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (!string.IsNullOrEmpty(expression))
             {
                 string theValue;
-                if (DataListUtil.IsValueRecordset(expression) && DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
+                string initExpression = expression;
+                if (DataListUtil.IsValueRecordset(expression))
                 {
-                    var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
-                    var recset = GetRecordSet(dataList, expression);
-                    var idxItr = recset.FetchRecordsetIndexes();
-                    while (idxItr.HasMore())
+                    if (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank &&
+                        DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty)
                     {
-                        string error;
-                        var index = idxItr.FetchNextIndex();
-                        var record = recset.FetchRecordAt(index, out error);
-                        // ReSharper disable LoopCanBeConvertedToQuery
-                        foreach (var recordField in record)
-                        // ReSharper restore LoopCanBeConvertedToQuery
+                        expression = expression.Insert(expression.IndexOf(')'), GlobalConstants.StarExpression);
+                    }
+
+                    if (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
+                    {
+                        var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
+                        var recset = GetRecordSet(dataList, expression);
+                        var idxItr = recset.FetchRecordsetIndexes();
+                        while (idxItr.HasMore())
                         {
-                            if (string.IsNullOrEmpty(fieldName) ||
-                                recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+                            string error;
+                            var index = idxItr.FetchNextIndex();
+                            var record = recset.FetchRecordAt(index, out error);
+                            // ReSharper disable LoopCanBeConvertedToQuery
+                            foreach (var recordField in record)
+                            // ReSharper restore LoopCanBeConvertedToQuery
                             {
-                                results.Add(new DebugItem(null, DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
+                                if (string.IsNullOrEmpty(fieldName) ||
+                                    recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    Group = expression
-                                });
+                                    results.Add(new DebugItem(null,
+                                                              DataListUtil.AddBracketsToValueIfNotExist(
+                                                                  recordField.DisplayValue),
+                                                              " = " + recordField.TheValue)
+                                        {
+                                            Group = initExpression
+                                        });
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        theValue = GetValue(dataList, expression);
+                        results.Add(new DebugItem(null, expression,
+                                                  "= " + theValue));
                     }
                 }
                 else

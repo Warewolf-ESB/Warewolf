@@ -39,9 +39,18 @@
         var $resourceName = $("#resourceName");
         var $newFolderDialog = $("#newFolderDialog");
         var $newFolderName = $("#newFolderName");
+        
+        self.caseInsensitiveSort = function (left, right) { return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1); };
 
         self.data = viewModel.data;
         self.isEditing = viewModel.isEditing;
+
+        $.post("Service/Resources/PathsAndNames" + window.location.search, self.data.resourceType(), function (result) {
+            self.resourceFolders(result.Paths);
+            self.resourceFolders.sort(self.caseInsensitiveSort);
+            self.resourceNames(result.Names);
+            self.resourceNames.sort(self.caseInsensitiveSort);
+        });
 
         self.resourceDescription = ko.computed(function () {
             return self.data ? "<b>Server:</b> " + self.data.address() : "";
@@ -58,14 +67,7 @@
                 return folder.toLowerCase().indexOf(term) !== -1;
             });
         });
-        self.caseInsensitiveSort = function (left, right) { return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1); };
-
-        $.post("Service/Resources/PathsAndNames" + window.location.search, null, function (result) {
-            self.resourceFolders(result.Paths);
-            self.resourceFolders.sort(self.caseInsensitiveSort);
-            self.resourceNames(result.Names);
-            self.resourceNames.sort(self.caseInsensitiveSort);
-        });
+       
 
         self.isValidName = function (name) {
             var result = /^[a-zA-Z0-9._\s-]+$/.test(name);

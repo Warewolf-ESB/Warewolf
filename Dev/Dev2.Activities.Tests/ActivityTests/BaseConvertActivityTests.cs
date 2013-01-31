@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
@@ -126,7 +127,7 @@ namespace ActivityUnitTests.ActivityTests
         public void BaseConvert_RecsetWithStarToBinary_Expected_stringToBinary()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Recset(*).Field]]", "Text", "Binary", "[[Recset(*).Field]]", 1) };
-            
+
             SetupArguments(
                 @"<root><Recset><Field>CHANGE THIS TO BINARY</Field></Recset><Recset><Field>New Text to change</Field></Recset><Recset><Field>Other new text to change</Field></Recset></root>"
               , ActivityStrings.BaseConvert_DLShape
@@ -152,7 +153,7 @@ namespace ActivityUnitTests.ActivityTests
         {
 
 
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[test]]", "Text", "Base64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base64", "Text", "[[test]]", 2) }; 
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[test]]", "Text", "Base64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base64", "Text", "[[test]]", 2) };
             SetupArguments(
                 @"<root><test>data</test></root>"
               , @"<root><test/></root>"
@@ -163,7 +164,7 @@ namespace ActivityUnitTests.ActivityTests
             string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "test", out actual, out error);
-            
+
             Assert.AreEqual("data", actual);
         }
 
@@ -202,10 +203,45 @@ namespace ActivityUnitTests.ActivityTests
             string error;
             GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
 
-            Assert.AreEqual(@"<InnerError>Base Conversion Broker was expecting [ Binary ] but the data was not in this format</InnerError>", actual);        
+            Assert.AreEqual(@"<InnerError>Base Conversion Broker was expecting [ Binary ] but the data was not in this format</InnerError>", actual);
         }
 
         #endregion Negative Tests
+
+        #region Get Debug Input/Output Tests
+
+        [TestMethod]
+        public void BaseConvert_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
+        {
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[CompanyName]]", "Text", "Binary", "[[CompanyName]]", 1) };
+            DsfBaseConvertActivity act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(1, outRes.Count);
+        }
+
+
+        [TestMethod]
+        public void BaseConvert_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
+        {
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Customers(*).FirstName]]", "Text", "Binary", "[[Customers(*).FirstName]]", 1) };
+            DsfBaseConvertActivity act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(13, inRes.Count);
+            Assert.AreEqual(10, outRes.Count);
+        }
+
+        #endregion
 
         #region GetWizardData Tests
 

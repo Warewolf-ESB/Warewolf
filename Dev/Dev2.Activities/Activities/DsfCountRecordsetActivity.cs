@@ -155,25 +155,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            var item = new DebugItem("Recordset", RecordsetName, string.Empty);
-            result.Add(item);
-
-            var rs = GetRecordSet(dataList, RecordsetName);
-
-            var idxItr = rs.FetchRecordsetIndexes();
-            while (idxItr.HasMore())
+            if (!string.IsNullOrEmpty(RecordsetName))
             {
-                string error;
-                var index = idxItr.FetchNextIndex();
-                var record = rs.FetchRecordAt(index, out error);
-                // ReSharper disable LoopCanBeConvertedToQuery
-                foreach (var recordField in record)
-                // ReSharper restore LoopCanBeConvertedToQuery
+                result.Add(new DebugItem("Recordset", RecordsetName, null));
+                foreach (IDebugItem debugItem in CreateDebugItems(RecordsetName, dataList))
                 {
-                    result.Add(new DebugItem(index, recordField));
+                    result.Add(debugItem);
                 }
             }
-
             return result;
         }
 
@@ -185,7 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
             var rs = GetRecordSet(dataList, RecordsetName);
-            var count = rs.FetchLastRecordsetIndex() - 1;
+            var count = rs.FetchLastRecordsetIndex();
 
             result.Add(new DebugItem(null, CountNumber, " = " + count.ToString(CultureInfo.InvariantCulture)));
 

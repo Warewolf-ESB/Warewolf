@@ -13,7 +13,7 @@
                     <div>
                         <div class="field">
                             <label for="address">Address:</label>
-                            <input class="required" tabindex="1" maxlength="50" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address" />
+                            <input class="required" tabindex="1" maxlength="50" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address, valueUpdate: 'afterkeydown'" />
                         </div>				
                         <div class="field">
                             <label>Authentication Type:</label>
@@ -30,11 +30,11 @@
                         </div>
                         <div class="field">
                             <label for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
-                            <input tabindex="4" maxlength="50" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName" />
+                            <input tabindex="4" maxlength="50" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName, valueUpdate: 'afterkeydown'" />
                         </div>
                         <div class="field">
                             <label for="password" data-bind="visible: isUserInputVisible">Password:</label>
-                            <input tabindex="5" maxlength="50" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password" />
+                            <input tabindex="5" maxlength="50" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
                         </div>
                         <div style="text-align: right">
                             <span>
@@ -81,13 +81,16 @@
 		var $saveButton = $("#saveButton");
 		var $errDiv = $("#mainFormError");
 		var $errDivSpan = $("#mainFormError span");
-		var $address = $("#address");	
-		
+		var $header = $("#header h1");
+		var $address = $("#address");
+		var $userName = $("#userName");
+		var $password = $("#password");
+        
 		self.saveUri  = "Service/Connections/Save";
 		
         self.data = {
 			resourceID: ko.observable(""),
-            resourceType: ko.observable(""),
+            resourceType: ko.observable("Dev2Server"),
             resourceName: ko.observable(""),
             resourcePath: ko.observable(""),
 			
@@ -103,7 +106,7 @@
 		self.data.resourceID( self.isEditing ? resourceID : $.Guid.Empty() );
 
 		document.title = self.isEditing ? "Edit Server" : "New Server";
-		$("#header h1").text(document.title);
+		$header.text(document.title);
 
 		$.post("Service/Connections/Get" + window.location.search, self.data.resourceID(), function (result) {
 			self.data.resourceID(result.ResourceID);
@@ -119,23 +122,21 @@
 			
 			if(self.isEditing) {
 				document.title = "Edit Server - " + result.ResourceName;
-				$("#header h1").text(document.title);
+				$header.text(document.title);
 			}
 		});
 		
 		self.data.authenticationType.subscribe(function(newValue) {
 			var isUser = newValue == "User";
 			if (isUser) {
-                $("#userName").addClass("required");
-                $("#password").addClass("required");
+			    $userName.addClass("required");
+                $password.addClass("required");
             }
             else {
-                $("#userName").removeClass("required");
-                $("#password").removeClass("required");
+			    $userName.removeClass("required");
+			    $password.removeClass("required");
             }
-			$("#userName").removeClass("error");
-			$("#password").removeClass("error");
-			$mainForm.validate().form();
+		    self.clearErrors();
 			self.isUserInputVisible(isUser);
 		});
 		
@@ -150,6 +151,12 @@
         self.testSucceeded = ko.observable(true);
         self.testError = ko.observable("");
 
+        self.clearErrors = function () {
+            $errDiv.hide();
+            $address.removeClass("error");
+            $userName.removeClass("error");
+            $password.removeClass("error");
+        };
         self.updateHelpText = function (id) {
             var text = self.helpDictionary[id];
             text = text ? text : self.helpDictionary.default;
@@ -227,8 +234,20 @@
 				submitted = true;
 			},
 			showErrors: function(errorMap, errorList) {
-				var errors = this.numberOfInvalids();
-				if(errors == 0) {
+				//var errors = this.numberOfInvalids();
+			    var errors = 0;
+			    if (!self.data.address()) {
+			        errors++;
+			    }
+			    if (self.isUserInputVisible()) {
+			        if (!self.data.userName()) {
+			            errors++;
+			        }
+			        if (!self.data.password()) {
+			            errors++;
+			        }
+			    }
+			    if (errors == 0) {
 					$errDiv.hide();
 				}
 				else {

@@ -1,23 +1,21 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
+using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2;
-using Dev2.DataList;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract;
 
-namespace ActivityUnitTests.ActivityTest {
+namespace ActivityUnitTests.ActivityTest
+{
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
     [TestClass]
-    public class CalculateActivityTest : BaseActivityUnitTest {
-        public CalculateActivityTest() {
+    public class CalculateActivityTest : BaseActivityUnitTest
+    {
+        public CalculateActivityTest()
+        {
             //
             // TODO: Add constructor logic here
             //
@@ -29,11 +27,14 @@ namespace ActivityUnitTests.ActivityTest {
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -61,9 +62,11 @@ namespace ActivityUnitTests.ActivityTest {
         #endregion
 
         [TestMethod]
-        public void CalculateActivity_ValidFunction_Expected_EvalPerformed() {
+        public void CalculateActivity_ValidFunction_Expected_EvalPerformed()
+        {
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfCalculateActivity { Expression = @"Sum([[scalar]], 10)", Result = "[[result]]" }
             };
 
@@ -79,9 +82,11 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void CalculateActivity_SimpleFunctionHandling_Expected_EvalPerformed() {
+        public void CalculateActivity_SimpleFunctionHandling_Expected_EvalPerformed()
+        {
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfCalculateActivity { Expression = @"sum(10,20)", Result = "[[scalar]]" }
             };
 
@@ -96,9 +101,11 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void CalculateActivity_ErrorHandeling_Expected_ErrorTag() {
+        public void CalculateActivity_ErrorHandeling_Expected_ErrorTag()
+        {
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfCalculateActivity { Expression = @"sum(10,20)", Result = "[[//().rec]]" }
             };
 
@@ -116,9 +123,11 @@ namespace ActivityUnitTests.ActivityTest {
         // SN - 07-09-2012 - Commented out until intellisense issue is patched up
 
         [TestMethod]
-        public void CalculateActivity_InValidFunction_Expected_Error() {
+        public void CalculateActivity_InValidFunction_Expected_Error()
+        {
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]];[[RecordSet().Field]])", Result = "[[result]]" }
             };
 
@@ -135,9 +144,11 @@ namespace ActivityUnitTests.ActivityTest {
 
 
         [TestMethod]
-        public void CalculateActivity_CommaSeperatedArgs_Expected_EvalPerformed() {
+        public void CalculateActivity_CommaSeperatedArgs_Expected_EvalPerformed()
+        {
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfCalculateActivity { Expression = @"Sum([[scalar]],[[RecordSet(1).Field]],[[RecordSet(2).Field]])", Result = "[[result]]" }
             };
 
@@ -155,9 +166,11 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void CalculateActivity_RangedArgs_Expected_EvalPerformed() {
+        public void CalculateActivity_RangedArgs_Expected_EvalPerformed()
+        {
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]]:[[RecordSet(2).Field]])", Result = "[[result]]" }
             };
 
@@ -247,27 +260,23 @@ namespace ActivityUnitTests.ActivityTest {
             Assert.AreEqual(expected, actual);
         }
 
-        #region Get Input/Output Tests
+        #region Get Debug Input/Output Tests
 
         [TestMethod]
-        public void CalculateActivity_GetInputs_Expected_One_Input() {
-            DsfCalculateActivity testAct = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]]:[[RecordSet(2).Field]])", Result = "[[result]]" };
+        public void Calculate_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
+        {
+            DsfCalculateActivity act = new DsfCalculateActivity { Expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])", Result = "[[res]]" };
 
-            IBinaryDataList inputs = testAct.GetInputs();
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 1);
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(1, outRes.Count);
         }
 
-        [TestMethod]
-        public void CalculateActivity_GetOutputs_Expected_One_Output() {
-            DsfCalculateActivity testAct = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]]:[[RecordSet(2).Field]])", Result = "[[result]]" };
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
-        }
-
-        #endregion Get Input/Output Tests
+        #endregion
 
         #region Private Test Methods
 

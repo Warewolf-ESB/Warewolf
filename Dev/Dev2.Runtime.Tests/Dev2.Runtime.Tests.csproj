@@ -73,6 +73,7 @@
     <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
+    <Compile Include="Services\ConnectionsMock.cs" />
     <Compile Include="Services\ConnectionTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="Services\ResourceTests.cs" />

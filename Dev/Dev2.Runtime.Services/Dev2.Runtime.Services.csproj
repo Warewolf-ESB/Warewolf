@@ -44,6 +44,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,7 @@
     <Compile Include="ServiceInvoker.cs" />
     <Compile Include="Services\Data\Connection.cs" />
     <Compile Include="Services\Connections.cs" />
+    <Compile Include="Services\Data\Delimiter.cs" />
     <Compile Include="Services\Resources.cs" />
     <Compile Include="Services\Data\Enums.cs" />
     <Compile Include="Services\Help.cs" />

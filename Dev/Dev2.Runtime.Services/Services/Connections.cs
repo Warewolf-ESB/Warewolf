@@ -126,15 +126,35 @@ namespace Dev2.Runtime.Services
 
         #region CanConnectServer
 
-        static ValidationResult CanConnectServer(Connection connection)
+        ValidationResult CanConnectServer(Connection connection)
+        {
+            connection.Address = connection.Address.Replace("localhost", "127.0.0.1");
+            var uri = new Uri(connection.Address);
+
+            // EXPECTED FORMAT: http://{hostname}:{port}/dsf
+            if(uri.Port > 0 && uri.PathAndQuery == "/dsf")
+            {
+                return CanConnectToTcpClient(connection);
+            }
+
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorFields = new ArrayList(new[] { "address" }),
+                ErrorMessage = "Invalid URI: The format is not correct."
+            };
+        }
+
+        #endregion
+
+        #region CanConnectToTcpClient
+
+        protected virtual ValidationResult CanConnectToTcpClient(Connection connection)
         {
             var result = new ValidationResult();
-
             try
             {
-                connection.Address = connection.Address.Replace("localhost", "127.0.0.1");
-                var uri = new UriBuilder(connection.Address);
-
+                var uriBuilder = new UriBuilder(connection.Address);
                 var client = new TCPClient("TestClient");
 
                 #region Try connect
@@ -155,7 +175,7 @@ namespace Dev2.Runtime.Services
                 try
                 {
                     client.NetworkStateChanged += networkStateHandler;
-                    client.Connect(uri.Host, uri.Port);
+                    client.Connect(uriBuilder.Host, uriBuilder.Port);
                     connectCallBack.WaitOne();
                 }
                 finally

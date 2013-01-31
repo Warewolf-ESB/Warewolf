@@ -1,16 +1,64 @@
-﻿using Dev2.Runtime.Services.Data;
+﻿using Dev2.DynamicServices;
+using Dev2.Runtime.Services;
+using Dev2.Runtime.Services.Data;
+using Dev2.Tests.Runtime.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Web.Script.Serialization;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
 {
     [TestClass]
     public class ConnectionTests
     {
+        #region Test
+
+        [TestMethod]
+        public void Test_With_InvalidUriFormat_Expected_ReturnsInvalidResult()
+        {
+            var conn = new Connection
+            {
+                ResourceType = enSourceType.Dev2Server,
+                Address = "http://www.google.co.za"
+            };
+            var connections = new Connections();
+            var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
+            Assert.AreEqual(false, result.IsValid);
+
+        }
+
+        //[TestMethod]
+        //public void Test_With_ValidUriFormatForInvalidHost_Expected_ReturnsInvalidResult()
+        //{
+        //    var conn = new Connection
+        //    {
+        //        ResourceType = enSourceType.Dev2Server,
+        //        //Address = "http://localhost:77/dsf"
+        //        Address = "http://localhost:77/dsf"
+        //    };
+        //    var connections = new Connections();
+        //    var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
+        //    Assert.AreEqual(false, result.IsValid);
+        //}
+
+        [TestMethod]
+        public void Test_With_ValidUriFormat_Expected_ReturnsValidResult()
+        {
+            var conn = new Connection
+            {
+                ResourceType = enSourceType.Dev2Server,
+                Address = "http://192.168.13.42:788/dsf"
+            };
+            var connections = new ConnectionsMock { CanConnectToTcpClientHitCount = 0 };
+            var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
+            Assert.AreEqual(1, connections.CanConnectToTcpClientHitCount);
+            Assert.AreEqual(true, result.IsValid);
+        }
+
+        #endregion
+
         #region ToString Tests
 
         [TestMethod]

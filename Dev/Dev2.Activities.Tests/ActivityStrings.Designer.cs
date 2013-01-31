@@ -385,6 +385,61 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;FirstName&gt;&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;&lt;/LastName&gt;
+        ///		&lt;DOB&gt;&lt;/DOB&gt;
+        ///	&lt;/Customers&gt;
+        ///	&lt;TelNumbers&gt;
+        ///		&lt;number&gt;&lt;/number&gt;
+        ///	&lt;/TelNumbers&gt;
+        ///	&lt;Numeric&gt;
+        ///		&lt;num&gt;&lt;/num&gt;
+        ///	&lt;/Numeric&gt;
+        ///	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+        ///	&lt;CompanyTelNo&gt;&lt;/CompanyTelNo&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string DebugDataListShape {
+            get {
+                return ResourceManager.GetString("DebugDataListShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;FirstName&gt;Wallis&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+        ///		&lt;DOB&gt;1983/02/12&lt;/DOB&gt;
+        ///	&lt;/Customers&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+        ///		&lt;DOB&gt;1981/05/15&lt;/DOB&gt;
+        ///	&lt;/Customers&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;FirstName&gt;Trevor&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Williams-Ros&lt;/LastName&gt;
+        ///		&lt;DOB&gt;1975/04/01&lt;/DOB&gt;
+        ///	&lt;/Customers&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;FirstName&gt;Travis&lt;/FirstName&gt;
+        ///		&lt;LastName&gt;Frisigner&lt;/LastName&gt;
+        ///		&lt;DOB&gt;1981/10/01&lt;/DOB&gt;
+        ///	&lt;/Customers&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;FirstNa [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DebugDataListWithData {
+            get {
+                return ResourceManager.GetString("DebugDataListWithData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;root&gt;
         ///	&lt;recset1&gt;
         ///		&lt;field1&gt;&lt;/field1&gt;
@@ -1613,7 +1668,7 @@ namespace Dev2.Tests.Activities {
         ///	&lt;Customers&gt;
         ///		&lt;FirstName&gt;&lt;/FirstName&gt;
         ///		&lt;LastName&gt;&lt;/LastName&gt;		
-        ///	&lt;/Customers&gt;	
+        ///	&lt;/Customers&gt;
         ///	&lt;ReplaceRecset&gt;
         ///		&lt;replace&gt;&lt;/replace&gt;
         ///	&lt;/ReplaceRecset&gt;	
