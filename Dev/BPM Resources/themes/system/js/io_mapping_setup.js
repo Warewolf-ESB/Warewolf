@@ -1227,8 +1227,6 @@ function generateInputMapping(inputs){
 			emptyToNull[i] = "";
 		}
 		
-		prompt(emptyToNull[i]);
-		
 		i++;
 	});
 	
