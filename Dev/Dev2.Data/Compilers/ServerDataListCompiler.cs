@@ -11,10 +11,10 @@ using Dev2.Enums;
 using Dev2.MathOperations;
 using Dev2.Server.Datalist.Auditing;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Dev2.Server.Datalist
@@ -37,6 +37,20 @@ namespace Dev2.Server.Datalist
 
             _dlServer = dlServ;
         }
+
+        #region Private Method
+        private string CalcPrepValue(string eVal)
+        {
+            double tVal;
+
+            if (!double.TryParse(eVal, out tVal))
+            {
+                eVal = "\"" + eVal + "\"";
+            }
+
+            return eVal;
+        }
+        #endregion
 
         public IBinaryDataListEntry Evaluate(NetworkContext ctx, Guid curDLID, enActionType typeOf, string expression, out ErrorResultTO errors, bool returnExpressionIfNoMatch = false)
         {
@@ -67,7 +81,7 @@ namespace Dev2.Server.Datalist
                 }
                 else if (typeOf == enActionType.Internal)
                 {
-                    //Delete operation is the only internal op                     
+                    // NOTE : Delete operation is the only internal op                     
                     IBinaryDataListEntry tmpEntry;
                     string recsetName = DataListUtil.ExtractRecordsetNameFromValue(expression);
                     bool res = false;
@@ -97,6 +111,80 @@ namespace Dev2.Server.Datalist
                     }
                     result = newDlEntry;
                 }
+                else if(typeOf == enActionType.CalculateSubstitution)
+                {
+                    // Travis.Frisinger : 31.01.2013 - Added to properly levage the internal language   
+
+                    // Break the expression up by , and sub in values?
+                    IDev2DataLanguageParser parser = new Dev2DataLanguageParser();
+                    // 
+                    IList<IIntellisenseResult> myParts = parser.ParseExpressionIntoParts(expression, theDL.FetchIntellisenseParts());
+
+                    // Fetch each DL expression in the master expression and evalaute
+                    // Then build up the correct string to sub in ;)
+                    foreach(IIntellisenseResult p in myParts)
+                    {
+
+                        // Ensure the expression exist and it is not a range operation
+                        if(p.Type == enIntellisenseResultType.Selectable 
+                            && expression.IndexOf(p.Option.DisplayValue, StringComparison.Ordinal) >= 0
+                            && expression.IndexOf((p.Option.DisplayValue+":"), StringComparison.Ordinal)< 0
+                            && expression.IndexOf((":"+p.Option.DisplayValue), StringComparison.Ordinal) < 0)
+                        {
+                            IBinaryDataListEntry bde = InternalEvaluate(p.Option.DisplayValue, theDL, returnExpressionIfNoMatch, out errors);
+                            if(bde.IsRecordset)
+                            {
+                                // recordset op - build up the correct string to inject
+                                IIndexIterator idxItr = bde.FetchRecordsetIndexes();
+                                StringBuilder sb = new StringBuilder();
+
+                                while(idxItr.HasMore())
+                                {
+                                    IList<IBinaryDataListItem> items = bde.FetchRecordAt(idxItr.FetchNextIndex(), out error);
+                                    allErrors.AddError(error);
+                                    foreach(IBinaryDataListItem itm in items)
+                                    {
+                                        //enRecordsetIndexType rType = DataListUtil.GetRecordsetIndexType(p.Option.RecordsetIndex);
+
+                                        // && (rType == enRecordsetIndexType.Blank || rType == enRecordsetIndexType.Numeric) 
+                                        if(itm.TheValue != string.Empty )
+                                        {
+                                            // if numeric leave it, else append ""
+                                            string eVal = CalcPrepValue(itm.TheValue);
+                                            sb.Append(eVal);
+                                            sb.Append(",");
+                                        }
+                                    }
+                                }
+
+                                // Remove trailing ,
+                                string toInject = sb.ToString();
+                                toInject = toInject.Substring(0, (toInject.Length - 1));
+
+                                expression = expression.Replace(p.Option.DisplayValue, toInject);
+
+                            }
+                            else
+                            {
+                                // scalar op
+                                string eVal = CalcPrepValue(bde.FetchScalar().TheValue);
+                                expression = expression.Replace(p.Option.DisplayValue, eVal);
+                            }
+                            allErrors.MergeErrors(errors);
+                        }
+                    }
+
+                    //result = InternalEvaluate(expression, theDL, false, out errors);
+                    allErrors.MergeErrors(errors);
+
+                    IBinaryDataListEntry calcResult = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
+                    IBinaryDataListItem calcItem = Dev2BinaryDataListFactory.CreateBinaryItem(expression, GlobalConstants.EvalautionScalar);
+                    calcResult.TryPutScalar(calcItem, out error);
+                    allErrors.AddError(error);
+                    result = calcResult; // assign for return
+
+                }
+
             }
             else
             {
@@ -1766,11 +1854,6 @@ namespace Dev2.Server.Datalist
                                                 if (!payload.IsIterativePayload())
                                                 {
                                                     // scalar to star
-                                                    //foreach (int k in entry.FetchRecordsetIndexes())
-                                                    //{
-                                                    //    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(evaluatedValue.FetchScalar().TheValue, part.Option.Field), k, out error);
-                                                    //    allErrors.AddError(error);
-                                                    //}
                                                     IIndexIterator ii = entry.FetchRecordsetIndexes();
                                                     while (ii.HasMore())
                                                     {
@@ -1910,18 +1993,6 @@ namespace Dev2.Server.Datalist
                                                 // ensure column match on transfer, at least a subset is being moved....
                                                 if (entry.HasColumns(evaluatedValue.Columns))
                                                 {
-                                                    //foreach (int k in evaluatedValue.FetchRecordsetIndexes())
-                                                    //{
-                                                    //    IList<IBinaryDataListItem> itms = evaluatedValue.FetchRecordAt(k, out error);
-                                                    //    allErrors.AddError(error);
-                                                    //    // all good move it
-                                                    //    foreach (IBinaryDataListItem i in itms)
-                                                    //    {
-                                                    //        //IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem(i.TheValue, loc.Option.Recordset, loc.Option.Field, i.ItemCollectionIndex.ToString());
-                                                    //        entry.TryPutRecordItemAtIndex(i, i.ItemCollectionIndex, out error);
-                                                    //        allErrors.AddError(error);
-                                                    //    }
-                                                    //}
                                                     IIndexIterator ii = evaluatedValue.FetchRecordsetIndexes();
                                                     while (ii.HasMore())
                                                     {

@@ -69,21 +69,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 string result = string.Empty;
                 IFunctionEvaluator functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
-                IList<string> errorList = new List<string>();
                 IEvaluationFunction evaluationFunctionTO = MathOpsFactory.CreateEvaluationExpressionTO(Expression);
-                try
-                {
-                    result = functionEvaluator.EvaluateFunction(evaluationFunctionTO, executionId, out errors);
-                    allErrors.MergeErrors(errors);
 
-                    compiler.Upsert(executionId, Result, result, out errors);
-                    allErrors.MergeErrors(errors);
+                result = functionEvaluator.EvaluateFunction(evaluationFunctionTO, executionId, out errors);
+                allErrors.MergeErrors(errors);
 
-                }
-                catch (Exception ex)
-                {
-                    allErrors.AddError(ex.Message);
-                }
+                compiler.Upsert(executionId, Result, result, out errors);
+                allErrors.MergeErrors(errors);
 
                 compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
                 allErrors.MergeErrors(errors);
@@ -94,8 +86,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfCalculateActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfCalculateActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
 

@@ -8,6 +8,7 @@ namespace Dev2.DataList.Contract
     {
         System,
         User,
-        Internal
+        Internal,
+        CalculateSubstitution
     }
 }

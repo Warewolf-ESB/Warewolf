@@ -239,6 +239,7 @@ namespace ActivityUnitTests.ActivityTest
             GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void CalculateActivity_ConcatenateRecSet_Expected_EvalPerformed()
         {
@@ -255,6 +256,46 @@ namespace ActivityUnitTests.ActivityTest
             string actual = string.Empty;
 
             GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+            Assert.AreEqual(expected, actual);
+        }
+
+        // Bug 8467 - Travis.Frisinger
+        [TestMethod]
+        public void CalculateActivity_RecordsetWithStar_Expected_SumOf10()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]])", Result = "[[sumResult]]" }
+            };
+
+            CurrentDL = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
+            TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
+            IDSFDataObject result = ExecuteProcess();
+            string expected = "10";
+            string error = string.Empty;
+            string actual = string.Empty;
+
+            GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+            Assert.AreEqual(expected, actual);
+        }
+
+        // Bug 8467 - Travis.Frisinger
+        [TestMethod]
+        public void CalculateActivity_MultRecordsetWithStar_Expected_SumOf20()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
+            };
+
+            CurrentDL = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
+            TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
+            IDSFDataObject result = ExecuteProcess();
+            string expected = "20";
+            string error = string.Empty;
+            string actual = string.Empty;
+
+            GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
             Assert.AreEqual(expected, actual);
         }
 

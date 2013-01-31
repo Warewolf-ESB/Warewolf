@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Infragistics.Calculations.Engine;
-using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 using System.Parsing.Intellisense;
 using System.Parsing;
@@ -12,10 +10,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.MathOperations {
     public class FunctionEvaluator : IFunctionEvaluator {
-
-        #region Properties
-
-        #endregion Properties
 
         #region Private Members
 
@@ -44,25 +38,35 @@ namespace Dev2.MathOperations {
 
         #region Public Methods
         /// <summary>
-        /// Entry point for the calculate activity
-        /// Will create a Function Repository call the intellisense parser to aid in creating the evaluation
+        /// Evaluates the function.
         /// </summary>
-        /// <param name="expressionTO"></param>
+        /// <param name="expressionTO">The expression TO.</param>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        /// public IList<string> EvaluateFunction(IEvaluationFunction expressionTO, string dataList, string shape)
         public string EvaluateFunction(IEvaluationFunction expressionTO, Guid curDLID, out ErrorResultTO errors) {
             string expression = expressionTO.Function;
 
             SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
+            ErrorResultTO allErrors = new ErrorResultTO();
+            
+
+            // Travis.Frisinger : 31.01.2013 - Hi-jack this and evaluate all our internal 
+            IBinaryDataListEntry bde = _compiler.Evaluate(curDLID, enActionType.CalculateSubstitution, expression, false, out errors);
+            allErrors.MergeErrors(errors);
+            if (bde != null)
+            {
+                expression = bde.FetchScalar().TheValue;
+            }
+
             Node[] nodes = builder.Build(expression);
-            errors = new ErrorResultTO();
             string result = string.Empty;
 
             if (builder.EventLog.HasEventLogs) {
                 IList<string> err = EvaluateEventLogs(builder.EventLog.GetEventLogs(), expression);
 
                 foreach (string e in err) {
-                    errors.AddError(e);
+                    allErrors.AddError(e);
                 }
             } else {
 
@@ -100,14 +104,16 @@ namespace Dev2.MathOperations {
 
                             // this way we fetch the correct field with the data...
                             IBinaryDataListEntry e = _compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
+                            allErrors.MergeErrors(errors);
                             string error = string.Empty;
                             refNode.EvaluatedValue = e.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;;
+                            allErrors.AddError(error);
 
                             if (pendingIterationRecordSet) {
                                 pendingIterationRecordSet = false;
 
                                 if (refNode.NestedIdentifier != null) {
-                                    errors.AddError("An error occured while parsing { " + expression + " } Iteration operator can not be used with nested recordset identifiers.");
+                                    allErrors.AddError("An error occured while parsing { " + expression + " } Iteration operator can not be used with nested recordset identifiers.");
                                     break;
                                 }
 
@@ -120,6 +126,7 @@ namespace Dev2.MathOperations {
                                 if (bdl.TryGetEntry(evaluateRecordLeft, out entry, out error)) {
                                     totalRecords = entry.FetchLastRecordsetIndex();
                                 }
+                                allErrors.AddError(error);
 
                                 maxRecords = Math.Max(totalRecords, maxRecords);
 
@@ -129,6 +136,7 @@ namespace Dev2.MathOperations {
                         } else if (allNodes[i] is DatalistReferenceNode) {
                             DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
                             IBinaryDataListEntry entry = _compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
+                            allErrors.MergeErrors(errors);
                             string error = string.Empty;
 
                             if (entry.IsRecordset)
@@ -149,12 +157,12 @@ namespace Dev2.MathOperations {
                             BinaryOperatorNode biNode = (BinaryOperatorNode)allNodes[i];
 
                             if (!(biNode.Left is DatalistRecordSetFieldNode)) {
-                                errors.AddError("An error occured while parsing { " + expression + " } Range operator can only be used with record set fields.");
+                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator can only be used with record set fields.");
                                 break;
                             }
 
                             if (!(biNode.Right is DatalistRecordSetFieldNode)) {
-                                errors.AddError("An error occured while parsing { " + expression + " } Range operator can only be used with record set fields.");
+                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator can only be used with record set fields.");
                                 break;
                             }
 
@@ -165,7 +173,7 @@ namespace Dev2.MathOperations {
                             string evaluateFieldRight = (fieldRight.Field != null) ? fieldRight.Field.GetEvaluatedValue() : fieldRight.Identifier.Content;
 
                             if (!String.Equals(evaluateFieldLeft, evaluateFieldRight, StringComparison.Ordinal)) {
-                                errors.AddError("An error occured while parsing { " + expression + " } Range operator must be used with the same record set fields.");
+                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator must be used with the same record set fields.");
                                 break;
                             }
 
@@ -175,7 +183,7 @@ namespace Dev2.MathOperations {
                             evaluateRecordRight = evaluateRecordRight.Substring(2, evaluateRecordRight.IndexOf('(') - 2);
 
                             if (!String.Equals(evaluateRecordLeft, evaluateRecordRight, StringComparison.Ordinal)) {
-                                errors.AddError("An error occured while parsing { " + expression + " } Range operator must be used with the same record sets.");
+                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator must be used with the same record sets.");
                                 break;
                             }
 
@@ -197,7 +205,7 @@ namespace Dev2.MathOperations {
 
                             if (!String.IsNullOrEmpty(rawParamLeft)) {
                                 if (!Int32.TryParse(rawParamLeft, out startIndex) || startIndex <= 0) {
-                                    errors.AddError("An error occured while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
+                                    allErrors.AddError("An error occured while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
                                     break;
                                 }
                             } else {
@@ -206,12 +214,12 @@ namespace Dev2.MathOperations {
 
                             if (!String.IsNullOrEmpty(rawParamRight)) {
                                 if (!Int32.TryParse(rawParamRight, out endIndex) || endIndex <= 0) {
-                                    errors.AddError("An error occured while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
+                                    allErrors.AddError("An error occured while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
                                     break;
                                 }
 
                                 if (endIndex > totalRecords) {
-                                    errors.AddError("An error occured while parsing { " + expression + " } Recordset end index must be a positive whole number that is less than the number of entries in the recordset.");
+                                    allErrors.AddError("An error occured while parsing { " + expression + " } Recordset end index must be a positive whole number that is less than the number of entries in the recordset.");
                                     break;
                                 }
                             } else {
@@ -227,18 +235,12 @@ namespace Dev2.MathOperations {
                                 if (k != startIndex)
                                 {
                                     rangeBuilder.Append("," + entry.TryFetchRecordsetColumnAtIndex(evaluateFieldLeft, k, out error).TheValue);
-                                    if (error != string.Empty)
-                                    {
-                                        errors.AddError(error);
-                                    }
+                                    allErrors.AddError(error);
                                 }
                                 else
                                 {
                                     rangeBuilder.Append(entry.TryFetchRecordsetColumnAtIndex(evaluateFieldLeft, k, out error).TheValue);
-                                    if (error != string.Empty)
-                                    {
-                                        errors.AddError(error);
-                                    }
+                                    allErrors.AddError(error);
                                 }
                             }
 
@@ -265,6 +267,8 @@ namespace Dev2.MathOperations {
                 }
                 while (startedIteration && currentRecord < maxRecords);
             }
+
+            errors = allErrors;
 
             return result;
         }
@@ -451,6 +455,18 @@ namespace Dev2.MathOperations {
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// This method exist becauase the above implementation breaks the goal of a single evaluate method!
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        private string ProperlyEvaluateDev2LanguateInExpression(string expression)
+        {
+
+
+            return "";
         }
 
         #endregion Private Methods
