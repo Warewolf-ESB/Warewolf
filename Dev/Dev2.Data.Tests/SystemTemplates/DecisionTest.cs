@@ -188,13 +188,5 @@ namespace Dev2.Data.Tests.SystemTemplates
 
         #endregion
 
-        #region Conditional Test
-        [TestMethod]
-        public void TestCondition()
-        {
-            
-        }
-
-        #endregion
     }
 }
