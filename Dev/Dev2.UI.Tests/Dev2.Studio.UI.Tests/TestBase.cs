@@ -87,6 +87,10 @@ namespace Dev2.CodedUI.Tests
             }
 
             bool toCheck = false;   // Disable this if you don't want the pre-test validation to occur.
+            if (GetStudioWindowName().Contains("IntegrationTester"))
+            {
+                toCheck = true;
+            }
             // Useful when creating / debugging tests
             if (toCheck)
             {
