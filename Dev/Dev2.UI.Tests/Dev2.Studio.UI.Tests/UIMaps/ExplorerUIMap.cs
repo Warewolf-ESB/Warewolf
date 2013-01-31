@@ -129,6 +129,7 @@
         {
             UITestControl theServer = GetServer(serverName);
             Mouse.Move(theServer, new Point(50, 5));
+            System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right);
             System.Threading.Thread.Sleep(500);
             Keyboard.SendKeys("{Down}");
@@ -140,6 +141,9 @@
         public void Server_RightClick_Connect(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
+            Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
+            Mouse.Move(p);
+            System.Threading.Thread.Sleep(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
             System.Threading.Thread.Sleep(2500);
@@ -154,7 +158,9 @@
         public void Server_RightClick_Delete(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
-            Mouse.Move(theServer, new Point(50, 5));
+            Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
+            Mouse.Move(p);
+            System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
             System.Threading.Thread.Sleep(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
@@ -172,6 +178,7 @@
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
+            System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
             System.Threading.Thread.Sleep(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
@@ -187,6 +194,7 @@
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
+            System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
             System.Threading.Thread.Sleep(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
