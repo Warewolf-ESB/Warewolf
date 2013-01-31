@@ -19,7 +19,10 @@ namespace Dev2.Studio
         public App()
         {
             //Bug 8403
-            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName.Remove(Process.GetCurrentProcess().ProcessName.IndexOf(".vshost")));
+            var currentProc = Process.GetCurrentProcess().ProcessName;
+            if(currentProc.Contains(".vshost")) currentProc = currentProc.Remove(Process.GetCurrentProcess().ProcessName.IndexOf(".vshost"));
+            var studioProcesses = Process.GetProcessesByName(currentProc);
+            if (Process.GetProcessesByName(currentProc + ".vshost").Length > 0) studioProcesses.ToObservableCollection().Add(Process.GetProcessesByName(currentProc+".vshost")[0]);
             if(studioProcesses.Length > 0)
             {
                 SetForegroundWindow(studioProcesses[0].MainWindowHandle);

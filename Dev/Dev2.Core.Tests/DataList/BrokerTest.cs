@@ -137,10 +137,10 @@ namespace Unlimited.UnitTest.Framework.DataList
             to = broker.PersistDebugSession(to);
 
             // just ensure the operation worked successfully with no errors
-            to.DataList = "<DataList><rs><f1/><f2/></rs></DataList>";
+            to.DataList = "<DataList><rs><field/><f2/></rs></DataList>";
             to = broker.InitDebugSession(to);
 
-            Assert.AreEqual("<DataList><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>", to.XmlData);
+            Assert.AreEqual("<DataList><rs><f2>f2Value</f2><field /></rs></DataList>", to.XmlData);
 
             DeleteDir(rootFolder);
         }

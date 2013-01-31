@@ -75,11 +75,53 @@ namespace Dev2.Session
             if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
             {
                 //Bug 8018
-                var errors = new ErrorResultTO();
-                var compiler = DataListFactory.CreateDataListCompiler();
-                var mergedSession = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), tmp.XmlData, to.DataList, out errors);
-                tmp.XmlData = compiler.ConvertFrom(mergedSession, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
-                //End Bug 8018
+                //2013.01.28: Ashley Lewis - Phase 1: Find invalid references in the saved session to variables that don't exist any more
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(tmp.XmlData);
+                XmlNode savedDL = xDoc.SelectSingleNode(@"DataList");
+                var invalidVarNodes = new List<XmlNode>();
+                var invalidFieldNodes = new List<XmlNode>();
+                foreach (XmlNode Vars in savedDL.ChildNodes) // Search all vars
+                {
+                    if (!to.DataList.Contains("<" + Vars.Name + " ") && !to.DataList.Contains("<" + Vars.Name + ">") && !to.DataList.Contains("<" + Vars.Name + "/")) invalidVarNodes.Add(Vars);// build list if invalid record sets or scalar
+                    if (Vars.HasChildNodes)
+                    {
+                        foreach (XmlNode Fields in Vars.ChildNodes) // Search fields too
+                        {
+                            if (!to.DataList.Contains("<" + Fields.Name + " ") && (Fields.Name != "#text") && !to.DataList.Contains("<" + Fields.Name + ">") && !to.DataList.Contains("<" + Fields.Name + "/")) invalidFieldNodes.Add(Fields);// Build list of invalid fields
+                        }
+                    }
+                }
+
+                //2013.01.28: Ashley Lewis - Phase 2: Remove references to variables that don't exist anymore
+                //Remove invalid scalar or record set references
+                foreach (var varNode in invalidVarNodes) savedDL.RemoveChild(varNode);
+                //Remove record set fields
+                foreach (XmlNode Vars in savedDL.ChildNodes) // Search all vars
+                    foreach (var fieldNode in invalidFieldNodes) // For each removed field
+                        if (fieldNode.ParentNode.Name == Vars.Name) // find the recordset it was found in
+                            if (Vars.InnerXml.Contains("<" + fieldNode.Name + " ") || Vars.InnerXml.Contains("<" + fieldNode.Name + ">") || Vars.InnerXml.Contains("<" + fieldNode.Name + "/"))
+                                Vars.RemoveChild(fieldNode); // Remove it
+
+                //2013.01.28: Ashley Lewis - Phase 3: Add new nodes to the saved session
+                xDoc.LoadXml(to.DataList);
+                XmlNode currentDL = xDoc.SelectSingleNode(@"DataList");
+                foreach (XmlNode Vars in currentDL.ChildNodes) // Search all current vars
+                {
+                    if (!savedDL.InnerXml.Contains("<" + Vars.Name + " ") && !savedDL.InnerXml.Contains("<" + Vars.Name + ">") && !savedDL.InnerXml.Contains("<" + Vars.Name + "/")) savedDL.InnerXml += "<"+Vars.Name+"/>";// add if valid record sets or scalar
+                    if (Vars.HasChildNodes)
+                    {
+                        foreach (XmlNode Fields in Vars.ChildNodes) // Search fields tmpo
+                        {
+                            if (!savedDL.InnerXml.Contains("<" + Fields.Name + " ") && (Fields.Name != "#text") && !savedDL.InnerXml.Contains("<" + Fields.Name + ">") && !savedDL.InnerXml.Contains("<" + Fields.Name + "/")) 
+                                savedDL.SelectSingleNode(Fields.ParentNode.Name).InnerXml += "<"+Fields.Name+"/>";// Add valid fields
+                        }
+                    }
+                }
+
+                if (String.IsNullOrEmpty(savedDL.InnerXml)) tmp.RememberInputs = false;
+                else tmp.XmlData = "<DataList>" + savedDL.InnerXml + "</DataList>";
+                //End Bug 8018 
 
                 to.XmlData = !tmp.RememberInputs
                                  ? (to.DataList ?? "<DataList></DataList>")
