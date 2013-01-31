@@ -247,33 +247,55 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ItemsControl Grid.Column="0"  ItemTemplate="{StaticResource ResultDataTemplate}" ItemsSource="{Binding}" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ItemsControl  ItemTemplate="{StaticResource ResultDataTemplate}" ItemsSource="{Binding}" >
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
+                        <!--<TextBlock Grid.Row="1" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
+                            <Hyperlink NavigateUri="{Binding MoreLink}" >
+                                <TextBlock Text="{Binding MoreText}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
+                            </Hyperlink>
+                        </TextBlock>-->
                     </Grid>
                 </DataTemplate>
 
                 <DataTemplate x:Key="DefaultRecordSetInputOutputTemplate">
-                    <Expander Header="{Binding Name}"
-                        AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID">
-                        <ItemsControl MaxHeight="320" ItemsSource="{Binding Items}"
+                    <Expander Header="{Binding Name}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ItemsControl MaxHeight="320" ItemsSource="{Binding Items}"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Stretch"
-                            ItemTemplate="{StaticResource DefaultScalarInputOutputTemplate}">
-                            <ItemsControl.Template>
-                                <ControlTemplate>
-                                    <ScrollViewer HorizontalAlignment="Stretch" 
+                                     ItemTemplate="{StaticResource DefaultScalarInputOutputTemplate}">
+                                <ItemsControl.Template>
+                                    <ControlTemplate>
+                                        <ScrollViewer HorizontalAlignment="Stretch" 
                                                   VerticalScrollBarVisibility="Auto"
                                                   CanContentScroll="True" Grid.Row="1">
-                                        <VirtualizingStackPanel HorizontalAlignment="Stretch" IsItemsHost="True" />
-                                    </ScrollViewer>
-                                </ControlTemplate>
-                            </ItemsControl.Template>
-                        </ItemsControl>
+                                            <VirtualizingStackPanel HorizontalAlignment="Stretch" IsItemsHost="True" />
+                                        </ScrollViewer>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+                            </ItemsControl>
+                            <!--<TextBlock Grid.Row="1" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Hyperlink NavigateUri="{Binding MoreLink}">
+                                    <TextBlock Text="{Binding MoreText}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                </Hyperlink>
+                            </TextBlock>-->
+                        </Grid>
                     </Expander>
                 </DataTemplate>
 
