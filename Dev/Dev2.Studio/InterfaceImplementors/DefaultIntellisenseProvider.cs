@@ -284,6 +284,14 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_textBox != context.TextBox) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results = null;
 
+            if(context.InputText.IndexOf(',') > 0)
+            {
+                var preComma = context.InputText.LastIndexOf(',', context.CaretPosition-1) > 0 ? context.InputText.LastIndexOf(',', context.CaretPosition-1)+1 : 0;
+                var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
+                context.CaretPosition -= preComma;
+                context.InputText = context.InputText.Substring(preComma, postComma-preComma);
+            }
+
             string input = context.InputText;
             enIntellisensePartType filterType = context.FilterType;
             IntellisenseDesiredResultSet desiredResultSet = context.DesiredResultSet;
