@@ -17,7 +17,12 @@ namespace Dev2.Data.Decisions.Operations
             //    throw new InvalidDataException("Wrong number of columns sent");
             //}
 
-            return (String.Compare(cols[0], cols[1], StringComparison.Ordinal)> 0);
+            if(!string.IsNullOrEmpty(cols[0]))
+            {
+                return (String.Compare(cols[0], cols[1], StringComparison.Ordinal) > 0);
+            }
+
+            return false;
         }
     }
 }

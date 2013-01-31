@@ -13,7 +13,12 @@ namespace Dev2.Data.Decisions.Operations
             //    throw new InvalidDataException("Wrong number of columns sent");
             //}
 
-            return !(cols[0].IsAlphaNumeric());
+            if (!string.IsNullOrEmpty(cols[0]))
+            {
+                return !(cols[0].IsAlphaNumeric());
+            }
+
+            return false;
         }
 
         public Enum HandlesType()

@@ -13,6 +13,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2;
 using Dev2.Network.Execution;
 using Unlimited.Framework;
+using Dev2.Data.Util;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -498,6 +499,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Set DataListID to parentID, execution is all done so we need to  clean up an push back against the master DL
 
                 compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
+
+                //GCWriter.WriteData(compiler.ConvertFrom(executionID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors));
                 
                 compiler.ForceDeleteDataListByID(executionID);
                 //Guid outshapeIDToRemove = DataListExecutionID.Get(context);

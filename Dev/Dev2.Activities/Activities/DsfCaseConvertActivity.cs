@@ -89,7 +89,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             foreach (IBinaryDataListItem itm in itr.FetchNextRowData())
                             {
-
                                 IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
                                 //if (tmp.IsRecordset && DataListUtil.GetRecordsetIndexType(item.StringToConvert) == enRecordsetIndexType.Star)
                                 if (DataListUtil.IsValueRecordset(item.Result) && DataListUtil.GetRecordsetIndexType(item.Result) == enRecordsetIndexType.Star)

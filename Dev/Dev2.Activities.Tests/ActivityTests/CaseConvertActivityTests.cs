@@ -232,6 +232,31 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion AllFirstUpper Tests
 
+        #region Blank  Test
+        // Bug 8474 - Travis.Frisinger : Issue was a empty check, not language notation
+        public void CaseConvert_BlankValue_Expected_BlankValue()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]]", 1) };
+
+            SetupArguments(@"<root><testVar></testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"";
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
+        #endregion
+
         #region Error Handling Tests
 
         [TestMethod]

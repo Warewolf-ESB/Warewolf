@@ -38,10 +38,10 @@ namespace Dev2
             Func<string, string> returnedFunc;
             IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem("Error Invalid Conversion Type", GlobalConstants.EvalautionScalar);
             if (_convertFunctions.TryGetValue(conversionType, out returnedFunc)) {
-                if (returnedFunc != null && !string.IsNullOrEmpty(item.TheValue)) {
+                if (returnedFunc != null) {
                     string tmp = returnedFunc.Invoke(item.TheValue);
                     if (item.Namespace != string.Empty) {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName, item.ItemCollectionIndex.ToString());
+                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName, item.ItemCollectionIndex);
                     } else {
                         result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.FieldName);
                     }
