@@ -2,20 +2,21 @@ using Dev2.DataList.Contract.Binary_Objects;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Dev2.Diagnostics
 {
     public class DebugItem : List<IDebugItemResult>, IDebugItem
     {
-        private const int maxNumOfRows = 20;
+        public const int MaxItemDispatchCount = 10;
+        public const int MaxCharDispatchCount = 150;
 
         public static IDebugItem[] EmptyList = new IDebugItem[0];
 
         public string Group { get; set; }
+        public string MoreLink { get; set; }
 
-        public bool ReachedMaxData { get; private set; }
-        public string Link { get; set; }
-
+        #region CTOR
 
         public DebugItem()
         {
@@ -53,9 +54,37 @@ namespace Dev2.Diagnostics
             Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = recordField.TheValue });
         }
 
+        #endregion
+
+        #region Contains
+
         public bool Contains(string filterText)
         {
             return Group.ContainsSafe(filterText) || this.Any(r => r.Value.ContainsSafe(filterText));
         }
+
+        #endregion
+
+        #region ToXml
+
+        public XElement ToXml()
+        {
+            var xml = new XElement("Item");
+            if(!string.IsNullOrEmpty(Group))
+            {
+                xml.Add(new XAttribute("Group", Group));
+            }
+            foreach(var result in this)
+            {
+                if(!string.IsNullOrEmpty(result.Value))
+                {
+                    xml.Add(new XElement("Result", new XAttribute("Type", result.Type), result.Value));
+                }
+            }
+            return xml;
+        }
+
+        #endregion
+
     }
 }

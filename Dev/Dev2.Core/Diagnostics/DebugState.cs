@@ -1,6 +1,10 @@
 ﻿using Dev2.Enums;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Dev2.Diagnostics
 {
@@ -9,12 +13,22 @@ namespace Dev2.Diagnostics
     /// </summary>
     public class DebugState : IDebugState
     {
+        static readonly string InvalidFileNameChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+
+        readonly string _tempPath;
+
         #region Ctor
 
         public DebugState()
         {
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
+
+            _tempPath = Path.Combine(Path.GetTempPath(), "Dev2", "Debug");
+            if(!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
         }
 
         #endregion
@@ -190,13 +204,16 @@ namespace Dev2.Diagnostics
 
         #region IDebugItem serialization helper methods
 
-        static void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
+        void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
         {
+            TryCache(items);
+
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
             for(var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].Group);
+                writer.Write(items[i].MoreLink);
                 writer.Write(items[i].Count);
                 for(var j = 0; j < items[i].Count; j++)
                 {
@@ -215,7 +232,8 @@ namespace Dev2.Diagnostics
             {
                 var item = new DebugItem
                 {
-                    Group = reader.ReadString()
+                    Group = reader.ReadString(),
+                    MoreLink = reader.ReadString()
                 };
                 var resultCount = reader.ReadInt32();
                 for(var j = 0; j < resultCount; j++)
@@ -231,5 +249,99 @@ namespace Dev2.Diagnostics
         }
 
         #endregion
+
+        #region TryCache
+
+        public void TryCache(IList<IDebugItem> items)
+        {
+            if(items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+
+            var group = string.Empty;
+            var count = 0;
+            var i = 0;
+            var groupCache = new List<IDebugItem>();
+
+            while(i < items.Count)
+            {
+                var item = items[i];
+
+                if(string.IsNullOrEmpty(item.Group))
+                {
+                    // Scalar                    
+                    if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+                    {
+                        SaveGroup(groupCache, group);
+                    }
+                    groupCache.Clear();
+                    group = string.Empty;
+                    count = 0;
+                    i++;
+                }
+                else
+                {
+                    // Recordset
+                    if(group != item.Group)
+                    {
+                        if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+                        {
+                            SaveGroup(groupCache, group);
+                        }
+
+                        groupCache.Clear();
+                        group = item.Group;
+                        count = 0;
+                    }
+                    count++;
+                    groupCache.Add(item);
+                    if(count > DebugItem.MaxItemDispatchCount)
+                    {
+                        items.RemoveAt(i);
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region SaveGroup
+
+        public virtual string SaveGroup(IList<IDebugItem> items, string groupName)
+        {
+            if(items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+            if(string.IsNullOrEmpty(groupName))
+            {
+                throw new ArgumentNullException("groupName");
+            }
+
+            var fileName = string.Format("{0}-{1}-{2}-{3}.xml", Name, groupName, StateType, DateTime.Now.ToString("s"));
+            fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
+
+            var path = Path.Combine(_tempPath, fileName);
+            var uriPath = new Uri(path).AbsoluteUri;
+
+            var root = new XElement("Items");
+            foreach(var item in items)
+            {
+                item.MoreLink = uriPath;
+                var xml = item.ToXml();
+                root.Add(xml);
+            }
+            root.Save(path);
+
+            return path;
+        }
+
+        #endregion
+
     }
 }

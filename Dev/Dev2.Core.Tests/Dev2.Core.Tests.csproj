@@ -157,6 +157,8 @@
     <Compile Include="Dev2.Network\ServerNetworkMessageAggregatorTests.cs" />
     <Compile Include="Dev2.Network\StudioNetworkMessageAggregatorTests.cs" />
     <Compile Include="Diagnostics\DebugDispatcherTest.cs" />
+    <Compile Include="Diagnostics\DebugStateMock.cs" />
+    <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />
     <Compile Include="MathOperationTest\FunctionRepositoryTest.cs" />
