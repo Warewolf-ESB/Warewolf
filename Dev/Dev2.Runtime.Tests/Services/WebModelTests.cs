@@ -1,10 +1,8 @@
 ﻿using System;
-using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Runtime.Services;
-using Dev2.Runtime.Services.Data;
 using System.Collections.Generic;
 using Dev2.Data.SystemTemplates;
 
@@ -22,6 +20,9 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
     [TestClass]
     public class WebModelTests
     {
+        /// <summary>
+        /// Travis.Frisinger - Fetches the decision model as a web model
+        /// </summary>
         [TestMethod]
         public void FetchDecisionModel_Expected_WebModel()
         {
@@ -40,6 +41,9 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
 
 
 
+        /// <summary>
+        /// Travis.Frisinger - Fetches the decision model with invalid DataList ID
+        /// </summary>
         [TestMethod]
         public void FetchDecisionModel_Expected_EmptyJsonString()
         {
@@ -56,6 +60,9 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
         }
 
 
+        /// <summary>
+        /// Travis.Frisinger - Fetch a switch model as a web model
+        /// </summary>
         [TestMethod]
         public void FetchSwitchModel_Expected_WebModel()
         {
@@ -68,6 +75,9 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
 
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Fetch a switch model with an invalid DataList ID 
+        /// </summary>
         [TestMethod]
         public void FetchSwitchModel_Expected_EmptyJson()
         {
@@ -80,6 +90,9 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
 
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can it save a web model to the DataList
+        /// </summary>
         [TestMethod]
         public void SaveModelData_Expected_SavedMessage()
         {
@@ -94,6 +107,9 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
         }
 
 
+        /// <summary>
+        /// Travis.Frisinger - Can it return error message with invalid DataList ID
+        /// </summary>
         [TestMethod]
         public void SaveModelData_Null_DataListID_Expected_ErrorMessage()
         {

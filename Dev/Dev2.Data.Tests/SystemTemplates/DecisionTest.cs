@@ -28,6 +28,9 @@ namespace Dev2.Data.Tests.SystemTemplates
         // Some of the tests do not have expected outcomes in there method names - FIXED
 
         #region Model Test
+        /// <summary>
+        /// Travis.Frisinger - Can the core system model conversion happen
+        /// </summary>
         [TestMethod]
         public void CanBootStrapModel_To_JSON_Expect_ValidModel()
         {
@@ -40,6 +43,9 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(expected, result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Convert a JSON model to system model
+        /// </summary>
         [TestMethod]
         public void CanConvertJSON_To_Model_Expect_ValidModel()
         {
@@ -56,6 +62,9 @@ namespace Dev2.Data.Tests.SystemTemplates
         }
 
 
+        /// <summary>
+        /// Travis.Frisinger - Convert betweeen system and web model
+        /// </summary>
         [TestMethod]
         public void CanAddModelItem_And_Convert_ToAndFrom_Expect_ValidModel()
         {
@@ -78,6 +87,10 @@ namespace Dev2.Data.Tests.SystemTemplates
 
         #region Execution Test
         // Sashen: 31-01-2012 : No expected outcome from the test - FIXED
+
+        /// <summary>
+        /// Travis.Frisinger - Can push a system model into the Data List
+        /// </summary>
         [TestMethod]
         public void CanPushModel_To_DataList_Expect_ValidModel()
         {
@@ -100,6 +113,9 @@ namespace Dev2.Data.Tests.SystemTemplates
         }
 
 
+        /// <summary>
+        /// Travis.Frisinger - Can execute a decision stack with mult decisions
+        /// </summary>
         [TestMethod]
         public void CanPushModelWithDecisionStack_To_DataList_Expect_ValidModel()
         {
@@ -122,6 +138,9 @@ namespace Dev2.Data.Tests.SystemTemplates
 
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can execute a decision stack with single decision
+        /// </summary>
         [TestMethod]
         public void CanInvokeDecisionStack_SingleDecision_Expect_True()
         {
@@ -147,6 +166,9 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can it fetch SwitchData
+        /// </summary>
         [TestMethod]
         public void CanFetchSwitchData_Expect_Data()
         {
@@ -169,6 +191,9 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(expected, result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can it return emtpy string with invalid DataList ID
+        /// </summary>
         [TestMethod]
         public void FetchSwitchData_NullDataListID_Expect_NoData()
         {
@@ -191,6 +216,8 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(expected, result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Will the execution of a decision stack fail with an invalid DataList ID
         [TestMethod]
         // [ExpectedException(InvalidExpressionException)] - Test will not import name space keeps giving error
         public void CanInvokeDecisionStack_SingleDecision_NullDataListID_Expect_Exception()
@@ -216,6 +243,9 @@ namespace Dev2.Data.Tests.SystemTemplates
         }
 
 
+        /// <summary>
+        /// Travis.Frisinger - Can it invoke a decision stack with OR condition
+        /// </summary>
         [TestMethod]
         public void CanInvokeDecisionStack_MultipleDecision_With_OR_Expect_True()
         {
@@ -243,6 +273,9 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can it invoke a decision stack with AND condition
+        /// </summary>
         [TestMethod]
         public void CanInvokeDecisionStack_MultipleDecision_With_AND_Expect_False()
         {
@@ -270,6 +303,9 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.IsFalse(result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can it convert a system model into a web model correctly
+        /// </summary>
         [TestMethod]
         public void CanConvert_SystemModel_Into_WebModel_Expect_ValidModel()
         {
@@ -291,6 +327,9 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(expected, result);
         }
 
+        /// <summary>
+        /// Travis.Frisinger - Can it convert a decision stack with a null list of decisions into a web model correctly
+        /// </summary>
         [TestMethod]
         public void CanConvert_SystemModel_Into_WebModel_WithNullDecision_Expect_ValidModel()
         {
