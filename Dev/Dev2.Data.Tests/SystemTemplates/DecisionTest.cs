@@ -6,6 +6,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
+using Dev2.Common;
 
 namespace Dev2.Data.Tests.SystemTemplates
 {
@@ -16,19 +17,19 @@ namespace Dev2.Data.Tests.SystemTemplates
         // No author comment for tests
         // Missing tests:
         // Converting to and from JSON
-        //      Conversion to JSON with a set of decisions
+        //      Conversion to JSON with a set of decisions --- CanPushModelWithDecisionStack_To_DataList_Expect_Pass
         // Push Model To Datalist
-        //      Test to push the model with a null datalist
+        //      Test to push the model with a null datalist -?? The DataList ID is returned by the push operation
         // Invoke Decision Stack:
-        //      No test coverage for FetchSwitchData in the Dev2DataListDecisionHandler
-        //      No tests for ExecuteDecisionStack for a Null DataList
-        //      No tests for Error decisionType
-        //      No test for SystemModel to WebModel conversion with a null Dev2Decision
-        // Some of the tests do not have expected outcomes in there method names
+        //      No test coverage for FetchSwitchData in the Dev2DataListDecisionHandler - FIXED
+        //      No tests for ExecuteDecisionStack for a Null DataList -- FIXED
+        //      No tests for Error decisionType - ? There is a workflow that test all the decision executions
+        //      No test for SystemModel to WebModel conversion with a null Dev2Decision - FIXED
+        // Some of the tests do not have expected outcomes in there method names - FIXED
 
         #region Model Test
         [TestMethod]
-        public void CanBootStrapModel_To_JSON()
+        public void CanBootStrapModel_To_JSON_Expect_ValidModel()
         {
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "False", TrueArmText = "True"};
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
@@ -40,7 +41,7 @@ namespace Dev2.Data.Tests.SystemTemplates
         }
 
         [TestMethod]
-        public void CanConvertJSON_To_Model()
+        public void CanConvertJSON_To_Model_Expect_ValidModel()
         {
             Dev2DecisionStack dds;
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
@@ -56,7 +57,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
 
         [TestMethod]
-        public void CanAddModelItem_And_Convert_ToAndFrom()
+        public void CanAddModelItem_And_Convert_ToAndFrom_Expect_ValidModel()
         {
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
@@ -76,9 +77,9 @@ namespace Dev2.Data.Tests.SystemTemplates
         #endregion
 
         #region Execution Test
-        // Sashen: 31-01-2012 : No expected outcome from the test
+        // Sashen: 31-01-2012 : No expected outcome from the test - FIXED
         [TestMethod]
-        public void CanPushModel_To_DataList()
+        public void CanPushModel_To_DataList_Expect_ValidModel()
         {
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
@@ -93,6 +94,29 @@ namespace Dev2.Data.Tests.SystemTemplates
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
 
             string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            Assert.AreEqual(expected, result);
+
+        }
+
+
+        [TestMethod]
+        public void CanPushModelWithDecisionStack_To_DataList_Expect_ValidModel()
+        {
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
+            IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors = new ErrorResultTO();
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[A]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNumeric });
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[B]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNotNumeric });
+
+            Guid id = dlc.PushSystemModelToDataList(dds, out errors);
+
+            Assert.AreEqual(0, errors.FetchErrors().Count);
+
+            string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
+
+            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""},{""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNotNumeric""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             Assert.AreEqual(expected, result);
 
@@ -121,6 +145,74 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void CanFetchSwitchData_Expect_Data()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateScalarTemplate(string.Empty, "A", string.Empty, true, out error);
+            bdl.TryCreateScalarValue("1", "A", out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            string result = Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[A]]", new List<string>() { bdl.UID.ToString() });
+            string expected = "1";
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void FetchSwitchData_NullDataListID_Expect_NoData()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateScalarTemplate(string.Empty, "A", string.Empty, true, out error);
+            bdl.TryCreateScalarValue("1", "A", out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            string result = Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[A]]", new List<string>() { GlobalConstants.NullDataListID.ToString() });
+            string expected = "";
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        // [ExpectedException(InvalidExpressionException)] - Test will not import name space keeps giving error
+        public void CanInvokeDecisionStack_SingleDecision_NullDataListID_Expect_Exception()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            try
+            {
+                bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { GlobalConstants.NullDataListID.ToString() });
+
+                Assert.Fail("Null DL ID Passes?!");
+            }
+            catch(Exception e)
+            {
+                Assert.AreEqual("Could not evaluate decision data - no DataList ID sent!", e.Message);
+            }
         }
 
 
@@ -178,9 +270,8 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.IsFalse(result);
         }
 
-        // Sashen: 31-01-2012 : Test does not have an expected outcome.
         [TestMethod]
-        public void CanConvert_SystemModel_Into_WebModel()
+        public void CanConvert_SystemModel_Into_WebModel_Expect_ValidModel()
         {
 
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
@@ -196,6 +287,27 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
             string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void CanConvert_SystemModel_Into_WebModel_WithNullDecision_Expect_ValidModel()
+        {
+
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
+            IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors = new ErrorResultTO();
+
+            dds.AddModelItem(null);
+
+            Guid id = dlc.PushSystemModelToDataList(dds, out errors);
+
+            string result = dlc.FetchSystemModelAsWebModel<Dev2DecisionStack>(id, out errors);
+
+            Assert.AreEqual(0, errors.FetchErrors().Count);
+
+            string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             Assert.AreEqual(expected, result);
         }
