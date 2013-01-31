@@ -88,7 +88,7 @@ namespace Dev2.Session
                     {
                         foreach (XmlNode Fields in Vars.ChildNodes) // Search fields too
                         {
-                            if (!to.DataList.Contains("<" + Fields.Name + " ") && (Fields.Name != "#text") && !to.DataList.Contains("<" + Fields.Name + ">") && !to.DataList.Contains("<" + Fields.Name + "/")) invalidFieldNodes.Add(Fields);// Build list of invalid fields
+                            if (!to.DataList.Contains("<" + Fields.Name + " ") && (Fields.Name != "#text") && !to.DataList.Contains("<" + Fields.Name + ">") && !to.DataList.Contains("<" + Fields.Name + "/")) if (Fields.ParentNode != null) invalidFieldNodes.Add(Fields);// Build list of invalid fields
                         }
                     }
                 }
@@ -99,9 +99,10 @@ namespace Dev2.Session
                 //Remove record set fields
                 foreach (XmlNode Vars in savedDL.ChildNodes) // Search all vars
                     foreach (var fieldNode in invalidFieldNodes) // For each removed field
-                        if (fieldNode.ParentNode.Name == Vars.Name) // find the recordset it was found in
-                            if (Vars.InnerXml.Contains("<" + fieldNode.Name + " ") || Vars.InnerXml.Contains("<" + fieldNode.Name + ">") || Vars.InnerXml.Contains("<" + fieldNode.Name + "/"))
-                                Vars.RemoveChild(fieldNode); // Remove it
+                        if (fieldNode.ParentNode!=null) // Confirm is a field
+                            if (fieldNode.ParentNode.Name == Vars.Name) // find the recordset it was found in
+                                if (Vars.InnerXml.Contains("<" + fieldNode.Name + " ") || Vars.InnerXml.Contains("<" + fieldNode.Name + ">") || Vars.InnerXml.Contains("<" + fieldNode.Name + "/")) // Confirm it exists within that recordset
+                                    Vars.RemoveChild(fieldNode); // Remove it
 
                 //2013.01.28: Ashley Lewis - Phase 3: Add new nodes to the saved session
                 xDoc.LoadXml(to.DataList);
