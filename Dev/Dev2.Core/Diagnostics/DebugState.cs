@@ -206,13 +206,14 @@ namespace Dev2.Diagnostics
 
         void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
         {
-            TryCache(items);
+            //TryCache(items);
 
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
             for(var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].Group);
+                writer.Write(items[i].MoreText);
                 writer.Write(items[i].MoreLink);
                 writer.Write(items[i].Count);
                 for(var j = 0; j < items[i].Count; j++)
@@ -233,6 +234,7 @@ namespace Dev2.Diagnostics
                 var item = new DebugItem
                 {
                     Group = reader.ReadString(),
+                    MoreText = reader.ReadString(),
                     MoreLink = reader.ReadString()
                 };
                 var resultCount = reader.ReadInt32();
@@ -257,6 +259,11 @@ namespace Dev2.Diagnostics
             if(items == null)
             {
                 throw new ArgumentNullException("items");
+            }
+
+            if(items.Count <= DebugItem.MaxItemDispatchCount)
+            {
+                return;
             }
 
             var group = string.Empty;
@@ -306,6 +313,10 @@ namespace Dev2.Diagnostics
                     }
                 }
             }
+            if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+            {
+                SaveGroup(groupCache, group);
+            }
         }
 
         #endregion
@@ -333,6 +344,7 @@ namespace Dev2.Diagnostics
             foreach(var item in items)
             {
                 item.MoreLink = uriPath;
+                item.MoreText = "More...";
                 var xml = item.ToXml();
                 root.Add(xml);
             }

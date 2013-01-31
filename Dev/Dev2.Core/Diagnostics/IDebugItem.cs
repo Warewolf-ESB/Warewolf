@@ -9,6 +9,7 @@ namespace Dev2.Diagnostics
     public interface IDebugItem : IList<IDebugItemResult>
     {
         string Group { get; set; }
+        string MoreText { get; set; }
         string MoreLink { get; set; }
 
         bool Contains(string filterText);

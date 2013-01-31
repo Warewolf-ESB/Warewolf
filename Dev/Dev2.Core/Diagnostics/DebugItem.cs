@@ -14,6 +14,7 @@ namespace Dev2.Diagnostics
         public static IDebugItem[] EmptyList = new IDebugItem[0];
 
         public string Group { get; set; }
+        public string MoreText { get; set; }
         public string MoreLink { get; set; }
 
         #region CTOR
