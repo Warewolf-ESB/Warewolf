@@ -32,6 +32,9 @@
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             SendKeys.SendWait("{DOWN}");
             System.Threading.Thread.Sleep(100);
             SendKeys.SendWait("{DOWN}");
@@ -77,7 +80,9 @@
             Mouse.Move(p);
             System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(1500);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             SendKeys.SendWait("{DOWN}");
             System.Threading.Thread.Sleep(100);
             SendKeys.SendWait("{DOWN}");
@@ -105,7 +110,9 @@
             Mouse.Move(p);
             System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(1500);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             SendKeys.SendWait("{UP}");
             System.Threading.Thread.Sleep(100);
             SendKeys.SendWait("{ENTER}");
@@ -134,8 +141,10 @@
         {
             UITestControl theServer = GetServer(serverName);
             Mouse.Move(theServer, new Point(50, 5));
-            Mouse.Click(MouseButtons.Right);
-            System.Threading.Thread.Sleep(500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             Keyboard.SendKeys("{Down}");
             System.Threading.Thread.Sleep(500);
             Keyboard.SendKeys("{Enter}");
@@ -146,8 +155,10 @@
         {
             UITestControl theServer = GetServer(serverName);
             Mouse.Move(theServer, new Point(50, 5));
-            Mouse.Click(MouseButtons.Right);
-            System.Threading.Thread.Sleep(500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             Keyboard.SendKeys("{Down}");
             System.Threading.Thread.Sleep(500);
             Keyboard.SendKeys("{Down}");
@@ -162,6 +173,9 @@
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
@@ -174,6 +188,9 @@
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
