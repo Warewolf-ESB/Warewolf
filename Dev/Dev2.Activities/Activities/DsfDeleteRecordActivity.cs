@@ -99,41 +99,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            var item = new DebugItem("Records", RecordsetName, string.Empty);
-            result.Add(item);
+            //BUG 8104 : Refactor DebugItem
+            //var item = new DebugItem("Records", RecordsetName, string.Empty);
+            //result.Add(item);
 
-            var rs = GetRecordSet(dataList, RecordsetName);
-            string error;
-            int index;
-            Int32.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName), out index);
-            if (index > 0)
-            {
-                if (index < rs.FetchLastRecordsetIndex())
-                {
-                    var record = rs.FetchRecordAt(index, out error);
-                    // ReSharper disable LoopCanBeConvertedToQuery
-                    foreach (var recordField in record)
-                    // ReSharper restore LoopCanBeConvertedToQuery
-                    {
-                        result.Add(new DebugItem(index, recordField));
-                    }
-                }
-            }
-            else
-            {
-                var idxItr = rs.FetchRecordsetIndexes();
-                while (idxItr.HasMore())
-                {
-                    index = idxItr.FetchNextIndex();
-                    var record = rs.FetchRecordAt(index, out error);
-                    // ReSharper disable LoopCanBeConvertedToQuery
-                    foreach (var recordField in record)
-                    // ReSharper restore LoopCanBeConvertedToQuery
-                    {
-                        result.Add(new DebugItem(index, recordField));
-                    }
-                }
-            }
+            //var rs = GetRecordSet(dataList, RecordsetName);
+            //string error;
+            //int index;
+            //Int32.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName), out index);
+            //if (index > 0)
+            //{
+            //    if (index < rs.FetchLastRecordsetIndex())
+            //    {
+            //        var record = rs.FetchRecordAt(index, out error);
+            //        // ReSharper disable LoopCanBeConvertedToQuery
+            //        foreach (var recordField in record)
+            //        // ReSharper restore LoopCanBeConvertedToQuery
+            //        {
+            //            result.Add(new DebugItem(index, recordField));
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    var idxItr = rs.FetchRecordsetIndexes();
+            //    while (idxItr.HasMore())
+            //    {
+            //        index = idxItr.FetchNextIndex();
+            //        var record = rs.FetchRecordAt(index, out error);
+            //        // ReSharper disable LoopCanBeConvertedToQuery
+            //        foreach (var recordField in record)
+            //        // ReSharper restore LoopCanBeConvertedToQuery
+            //        {
+            //            result.Add(new DebugItem(index, recordField));
+            //        }
+            //    }
+            //}
 
             return result;
         }
@@ -145,9 +146,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            var theValue = GetValue(dataList, Result);
+            //BUG 8104 : Refactor DebugItem
+            //var theValue = GetValue(dataList, Result);
 
-            result.Add(new DebugItem("Result", Result.ContainsSafe("[[") ? Result : null, (" = " + theValue)));
+            //result.Add(new DebugItem("Result", Result.ContainsSafe("[[") ? Result : null, (" = " + theValue)));
 
             return result;
         }

@@ -204,54 +204,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-
-            int indexNum = 1;
-            foreach (DataMergeDTO dataMergeDto in MergeCollection)
-            {
-                if (!string.IsNullOrEmpty(dataMergeDto.InputVariable))
-                {
-                    string theValue;
-                    if (DataListUtil.IsValueRecordset(dataMergeDto.InputVariable) && DataListUtil.GetRecordsetIndexType(dataMergeDto.InputVariable) == enRecordsetIndexType.Star)
-                    {
-                        results.Add(new DebugItem(indexNum.ToString() + " Merge ", null, null));
-                        var fieldName = DataListUtil.ExtractFieldNameFromValue(dataMergeDto.InputVariable);
-                        var recset = GetRecordSet(dataList, dataMergeDto.InputVariable);
-                        var idxItr = recset.FetchRecordsetIndexes();
-                        while (idxItr.HasMore())
-                        {
-                            string error;
-                            var index = idxItr.FetchNextIndex();
-                            var record = recset.FetchRecordAt(index, out error);
-                            // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach (var recordField in record)
-                            // ReSharper restore LoopCanBeConvertedToQuery
-                            {
-                                if (string.IsNullOrEmpty(fieldName) ||
-                                    recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-                                    {
-                                        Group = dataMergeDto.InputVariable
-                                    });
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        theValue = GetValue(dataList, dataMergeDto.InputVariable);
-                        results.Add(new DebugItem(indexNum.ToString() + " Merge ", dataMergeDto.InputVariable,
-                                                  "= " + theValue));
-                    }
-                    string atValue = string.Empty;
-                    if (!string.IsNullOrEmpty(dataMergeDto.At))
-                    {
-                        atValue = " = " + dataMergeDto.At;
-                    }
-                    results.Add(new DebugItem(indexNum.ToString() + " With ", dataMergeDto.MergeType, atValue));
-                    indexNum++;
-                }
-            }
+            //BUG 8104 : Refactor DebugItem
+            //int indexNum = 1;
+            //foreach (DataMergeDTO dataMergeDto in MergeCollection)
+            //{
+            //    if (!string.IsNullOrEmpty(dataMergeDto.InputVariable))
+            //    {
+            //        string theValue;
+            //        if (DataListUtil.IsValueRecordset(dataMergeDto.InputVariable) && DataListUtil.GetRecordsetIndexType(dataMergeDto.InputVariable) == enRecordsetIndexType.Star)
+            //        {
+            //            results.Add(new DebugItem(indexNum.ToString() + " Merge ", null, null));
+            //            var fieldName = DataListUtil.ExtractFieldNameFromValue(dataMergeDto.InputVariable);
+            //            var recset = GetRecordSet(dataList, dataMergeDto.InputVariable);
+            //            var idxItr = recset.FetchRecordsetIndexes();
+            //            while (idxItr.HasMore())
+            //            {
+            //                string error;
+            //                var index = idxItr.FetchNextIndex();
+            //                var record = recset.FetchRecordAt(index, out error);
+            //                // ReSharper disable LoopCanBeConvertedToQuery
+            //                foreach (var recordField in record)
+            //                // ReSharper restore LoopCanBeConvertedToQuery
+            //                {
+            //                    if (string.IsNullOrEmpty(fieldName) ||
+            //                        recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //                    {
+            //                        results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
+            //                        {
+            //                            Group = dataMergeDto.InputVariable
+            //                        });
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            theValue = GetValue(dataList, dataMergeDto.InputVariable);
+            //            results.Add(new DebugItem(indexNum.ToString() + " Merge ", dataMergeDto.InputVariable,
+            //                                      "= " + theValue));
+            //        }
+            //        string atValue = string.Empty;
+            //        if (!string.IsNullOrEmpty(dataMergeDto.At))
+            //        {
+            //            atValue = " = " + dataMergeDto.At;
+            //        }
+            //        results.Add(new DebugItem(indexNum.ToString() + " With ", dataMergeDto.MergeType, atValue));
+            //        indexNum++;
+            //    }
+            //}
 
             return results;
         }
@@ -259,38 +259,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-            string theValue;
-            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                int indexNum = 1;
-                var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-                var recset = GetRecordSet(dataList, Result);
-                var idxItr = recset.FetchRecordsetIndexes();
-                while (idxItr.HasMore())
-                {
-                    string error;
-                    var index = idxItr.FetchNextIndex();
-                    var record = recset.FetchRecordAt(index, out error);
-                    // ReSharper disable LoopCanBeConvertedToQuery
-                    foreach (var recordField in record)
-                    // ReSharper restore LoopCanBeConvertedToQuery
-                    {
-                        if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-                            {
-                                Group = Result
-                            });
-                        }
-                    }
-                    indexNum++;
-                }
-            }
-            else
-            {
-                theValue = GetValue(dataList, Result);
-                results.Add(new DebugItem(string.Empty, Result, "= " + theValue));
-            }
+            //BUG 8104 : Refactor DebugItem
+            //string theValue;
+            //if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            //{
+            //    int indexNum = 1;
+            //    var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+            //    var recset = GetRecordSet(dataList, Result);
+            //    var idxItr = recset.FetchRecordsetIndexes();
+            //    while (idxItr.HasMore())
+            //    {
+            //        string error;
+            //        var index = idxItr.FetchNextIndex();
+            //        var record = recset.FetchRecordAt(index, out error);
+            //        // ReSharper disable LoopCanBeConvertedToQuery
+            //        foreach (var recordField in record)
+            //        // ReSharper restore LoopCanBeConvertedToQuery
+            //        {
+            //            if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //            {
+            //                results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
+            //                {
+            //                    Group = Result
+            //                });
+            //            }
+            //        }
+            //        indexNum++;
+            //    }
+            //}
+            //else
+            //{
+            //    theValue = GetValue(dataList, Result);
+            //    results.Add(new DebugItem(string.Empty, Result, "= " + theValue));
+            //}
 
 
             return results;

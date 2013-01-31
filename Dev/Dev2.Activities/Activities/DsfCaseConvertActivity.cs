@@ -172,49 +172,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-
-            int indexNum = 1;
-            foreach (CaseConvertTO caseConvertTo in ConvertCollection)
-            {
-                if (!caseConvertTo.CanRemove())
-                {
-                    string theValue;
-                    if (DataListUtil.IsValueRecordset(caseConvertTo.StringToConvert) && DataListUtil.GetRecordsetIndexType(caseConvertTo.StringToConvert) == enRecordsetIndexType.Star)
-                    {
-                        results.Add(new DebugItem(indexNum.ToString() + " Convert ", null, null));
-                        var fieldName = DataListUtil.ExtractFieldNameFromValue(caseConvertTo.StringToConvert);
-                        var recset = GetRecordSet(dataList, caseConvertTo.StringToConvert);
-                        var idxItr = recset.FetchRecordsetIndexes();
-                        while (idxItr.HasMore())
-                        {
-                            string error;
-                            var index = idxItr.FetchNextIndex();
-                            var record = recset.FetchRecordAt(index, out error);
-                            // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach (var recordField in record)
-                            // ReSharper restore LoopCanBeConvertedToQuery
-                            {
-                                if (string.IsNullOrEmpty(fieldName) ||
-                                    recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-                                    {
-                                        Group = caseConvertTo.StringToConvert
-                                    });
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        theValue = GetValue(dataList, caseConvertTo.StringToConvert);
-                        results.Add(new DebugItem(indexNum.ToString() + " Convert ", caseConvertTo.StringToConvert,
-                                                  "= " + theValue));
-                    }
-                    results.Add(new DebugItem(indexNum.ToString() + " To ", caseConvertTo.ConvertType, null));
-                    indexNum++;
-                }
-            }
+            //BUG 8104 : Refactor DebugItem
+            //int indexNum = 1;
+            //foreach (CaseConvertTO caseConvertTo in ConvertCollection)
+            //{
+            //    if (!caseConvertTo.CanRemove())
+            //    {
+            //        string theValue;
+            //        if (DataListUtil.IsValueRecordset(caseConvertTo.StringToConvert) && DataListUtil.GetRecordsetIndexType(caseConvertTo.StringToConvert) == enRecordsetIndexType.Star)
+            //        {
+            //            results.Add(new DebugItem(indexNum.ToString() + " Convert ", null, null));
+            //            var fieldName = DataListUtil.ExtractFieldNameFromValue(caseConvertTo.StringToConvert);
+            //            var recset = GetRecordSet(dataList, caseConvertTo.StringToConvert);
+            //            var idxItr = recset.FetchRecordsetIndexes();
+            //            while (idxItr.HasMore())
+            //            {
+            //                string error;
+            //                var index = idxItr.FetchNextIndex();
+            //                var record = recset.FetchRecordAt(index, out error);
+            //                // ReSharper disable LoopCanBeConvertedToQuery
+            //                foreach (var recordField in record)
+            //                // ReSharper restore LoopCanBeConvertedToQuery
+            //                {
+            //                    if (string.IsNullOrEmpty(fieldName) ||
+            //                        recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //                    {
+            //                        results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
+            //                        {
+            //                            Group = caseConvertTo.StringToConvert
+            //                        });
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            theValue = GetValue(dataList, caseConvertTo.StringToConvert);
+            //            results.Add(new DebugItem(indexNum.ToString() + " Convert ", caseConvertTo.StringToConvert,
+            //                                      "= " + theValue));
+            //        }
+            //        results.Add(new DebugItem(indexNum.ToString() + " To ", caseConvertTo.ConvertType, null));
+            //        indexNum++;
+            //    }
+            //}
 
             return results;
         }
@@ -222,41 +222,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-            foreach (CaseConvertTO caseConvertTo in ConvertCollection)
-            {
-                string theValue;
-                if (DataListUtil.IsValueRecordset(caseConvertTo.Result) && DataListUtil.GetRecordsetIndexType(caseConvertTo.Result) == enRecordsetIndexType.Star)
-                {
-                    int indexNum = 1;
-                    var fieldName = DataListUtil.ExtractFieldNameFromValue(caseConvertTo.Result);
-                    var recset = GetRecordSet(dataList, caseConvertTo.Result);
-                    var idxItr = recset.FetchRecordsetIndexes();
-                    while (idxItr.HasMore())
-                    {
-                        string error;
-                        var index = idxItr.FetchNextIndex();
-                        var record = recset.FetchRecordAt(index, out error);
-                        // ReSharper disable LoopCanBeConvertedToQuery
-                        foreach (var recordField in record)
-                        // ReSharper restore LoopCanBeConvertedToQuery
-                        {
-                            if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-                                    {
-                                        Group = caseConvertTo.Result
-                                    });
-                            }
-                        }
-                        indexNum++;
-                    }
-                }
-                else
-                {
-                    theValue = GetValue(dataList, caseConvertTo.Result);
-                    results.Add(new DebugItem(string.Empty, caseConvertTo.Result, "= " + theValue));
-                }
-            }
+            //BUG 8104 : Refactor DebugItem
+            //foreach (CaseConvertTO caseConvertTo in ConvertCollection)
+            //{
+            //    string theValue;
+            //    if (DataListUtil.IsValueRecordset(caseConvertTo.Result) && DataListUtil.GetRecordsetIndexType(caseConvertTo.Result) == enRecordsetIndexType.Star)
+            //    {
+            //        int indexNum = 1;
+            //        var fieldName = DataListUtil.ExtractFieldNameFromValue(caseConvertTo.Result);
+            //        var recset = GetRecordSet(dataList, caseConvertTo.Result);
+            //        var idxItr = recset.FetchRecordsetIndexes();
+            //        while (idxItr.HasMore())
+            //        {
+            //            string error;
+            //            var index = idxItr.FetchNextIndex();
+            //            var record = recset.FetchRecordAt(index, out error);
+            //            // ReSharper disable LoopCanBeConvertedToQuery
+            //            foreach (var recordField in record)
+            //            // ReSharper restore LoopCanBeConvertedToQuery
+            //            {
+            //                if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //                {
+            //                    results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
+            //                        {
+            //                            Group = caseConvertTo.Result
+            //                        });
+            //                }
+            //            }
+            //            indexNum++;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        theValue = GetValue(dataList, caseConvertTo.Result);
+            //        results.Add(new DebugItem(string.Empty, caseConvertTo.Result, "= " + theValue));
+            //    }
+            //}
 
             return results;
         }

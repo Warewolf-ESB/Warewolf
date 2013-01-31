@@ -168,10 +168,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            var theValue = GetValue(dataList, SortField);
-            result.Add(new DebugItem("Sort Field", null, null));
-            result.AddRange(GetDebugOutputs(dataList));
-            result.Add(new DebugItem("Sort Order", null, SelectedSort));
+            //BUG 8104 : Refactor DebugItem
+            //var theValue = GetValue(dataList, SortField);
+            //result.Add(new DebugItem("Sort Field", null, null));
+            //result.AddRange(GetDebugOutputs(dataList));
+            //result.Add(new DebugItem("Sort Order", null, SelectedSort));
 
             return result;
         }
@@ -183,28 +184,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-
-            var fieldName = DataListUtil.ExtractFieldNameFromValue(SortField);
-            var rs = GetRecordSet(dataList, SortField);
-            var idxItr = rs.FetchRecordsetIndexes();
-            while (idxItr.HasMore())
-            {
-                string error;
-                var index = idxItr.FetchNextIndex();
-                var record = rs.FetchRecordAt(index, out error);
-                // ReSharper disable LoopCanBeConvertedToQuery
-                foreach (var recordField in record)
-                // ReSharper restore LoopCanBeConvertedToQuery
-                {
-                    if (recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        result.Add(new DebugItem(index, recordField)
-                        {
-                            Group = SortField
-                        });
-                    }
-                }
-            }
+            //BUG 8104 : Refactor DebugItem
+            //var fieldName = DataListUtil.ExtractFieldNameFromValue(SortField);
+            //var rs = GetRecordSet(dataList, SortField);
+            //var idxItr = rs.FetchRecordsetIndexes();
+            //while (idxItr.HasMore())
+            //{
+            //    string error;
+            //    var index = idxItr.FetchNextIndex();
+            //    var record = rs.FetchRecordAt(index, out error);
+            //    // ReSharper disable LoopCanBeConvertedToQuery
+            //    foreach (var recordField in record)
+            //    // ReSharper restore LoopCanBeConvertedToQuery
+            //    {
+            //        if (recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //        {
+            //            result.Add(new DebugItem(index, recordField)
+            //            {
+            //                Group = SortField
+            //            });
+            //        }
+            //    }
+            //}
 
             return result;
         }

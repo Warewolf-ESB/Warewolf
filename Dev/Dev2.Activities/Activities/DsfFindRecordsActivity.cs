@@ -177,85 +177,85 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
+            //BUG 8104 : Refactor DebugItem
+            //IList<string> fieldsList = FieldsToSearch.Split(',');
+            //if (fieldsList.Count > 0)
+            //{
+            //    var theValue = GetValue(dataList, fieldsList[0]);
+            //    result.Add(new DebugItem("Lookin", "", ""));
+            //    foreach (string field in fieldsList)
+            //    {
+            //        if (DataListUtil.IsValueRecordset(field))
+            //        {
+            //            var fieldName = DataListUtil.ExtractFieldNameFromValue(field);
+            //            var recset = GetRecordSet(dataList, field);
+            //            var idxItr = recset.FetchRecordsetIndexes();
+            //            while (idxItr.HasMore())
+            //            {
+            //                string error;
+            //                var index = idxItr.FetchNextIndex();
+            //                var record = recset.FetchRecordAt(index, out error);
+            //                // ReSharper disable LoopCanBeConvertedToQuery
+            //                foreach (var recordField in record)
+            //                // ReSharper restore LoopCanBeConvertedToQuery
+            //                {
+            //                    if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //                    {
+            //                        result.Add(new DebugItem(index, recordField)
+            //                        {
+            //                            Group = field
+            //                        });
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            theValue = GetValue(dataList, field);
+            //            result.Add(new DebugItem("", field, "= " + theValue));
+            //        }
+            //    }
+            //}
 
-            IList<string> fieldsList = FieldsToSearch.Split(',');
-            if (fieldsList.Count > 0)
-            {
-                var theValue = GetValue(dataList, fieldsList[0]);
-                result.Add(new DebugItem("Lookin", "", ""));
-                foreach (string field in fieldsList)
-                {
-                    if (DataListUtil.IsValueRecordset(field))
-                    {
-                        var fieldName = DataListUtil.ExtractFieldNameFromValue(field);
-                        var recset = GetRecordSet(dataList, field);
-                        var idxItr = recset.FetchRecordsetIndexes();
-                        while (idxItr.HasMore())
-                        {
-                            string error;
-                            var index = idxItr.FetchNextIndex();
-                            var record = recset.FetchRecordAt(index, out error);
-                            // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach (var recordField in record)
-                            // ReSharper restore LoopCanBeConvertedToQuery
-                            {
-                                if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    result.Add(new DebugItem(index, recordField)
-                                    {
-                                        Group = field
-                                    });
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        theValue = GetValue(dataList, field);
-                        result.Add(new DebugItem("", field, "= " + theValue));
-                    }
-                }
-            }
+            //string searchValue = SearchCriteria;
+            //if (SearchCriteria.ContainsSafe("[["))
+            //{
+            //    if (DataListUtil.IsValueRecordset(searchValue) && DataListUtil.GetRecordsetIndexType(searchValue) == enRecordsetIndexType.Star)
+            //    {
+            //        result.Add(new DebugItem("Find Where " + SearchType, null, null));
 
-            string searchValue = SearchCriteria;
-            if (SearchCriteria.ContainsSafe("[["))
-            {
-                if (DataListUtil.IsValueRecordset(searchValue) && DataListUtil.GetRecordsetIndexType(searchValue) == enRecordsetIndexType.Star)
-                {
-                    result.Add(new DebugItem("Find Where " + SearchType, null, null));
-
-                    var fieldName = DataListUtil.ExtractFieldNameFromValue(searchValue);
-                    var recset = GetRecordSet(dataList, searchValue);
-                    var idxItr = recset.FetchRecordsetIndexes();
-                    while (idxItr.HasMore())
-                    {
-                        string error;
-                        var index = idxItr.FetchNextIndex();
-                        var record = recset.FetchRecordAt(index, out error);
-                        // ReSharper disable LoopCanBeConvertedToQuery
-                        foreach (var recordField in record)
-                        // ReSharper restore LoopCanBeConvertedToQuery
-                        {
-                            if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                result.Add(new DebugItem(index, recordField)
-                                {
-                                    Group = searchValue
-                                });
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    searchValue = GetValue(dataList, SearchCriteria);
-                    result.Add(new DebugItem("Find Where " + SearchType, SearchCriteria, "= " + searchValue));
-                }
-            }
-            else
-            {
-                result.Add(new DebugItem("Find Where " + SearchType, null, searchValue));
-            }
+            //        var fieldName = DataListUtil.ExtractFieldNameFromValue(searchValue);
+            //        var recset = GetRecordSet(dataList, searchValue);
+            //        var idxItr = recset.FetchRecordsetIndexes();
+            //        while (idxItr.HasMore())
+            //        {
+            //            string error;
+            //            var index = idxItr.FetchNextIndex();
+            //            var record = recset.FetchRecordAt(index, out error);
+            //            // ReSharper disable LoopCanBeConvertedToQuery
+            //            foreach (var recordField in record)
+            //            // ReSharper restore LoopCanBeConvertedToQuery
+            //            {
+            //                if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //                {
+            //                    result.Add(new DebugItem(index, recordField)
+            //                    {
+            //                        Group = searchValue
+            //                    });
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        searchValue = GetValue(dataList, SearchCriteria);
+            //        result.Add(new DebugItem("Find Where " + SearchType, SearchCriteria, "= " + searchValue));
+            //    }
+            //}
+            //else
+            //{
+            //    result.Add(new DebugItem("Find Where " + SearchType, null, searchValue));
+            //}
 
             return result;
         }
@@ -263,38 +263,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-            string theValue;
-            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                int indexNum = 1;
-                var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-                var recset = GetRecordSet(dataList, Result);
-                var idxItr = recset.FetchRecordsetIndexes();
-                while (idxItr.HasMore())
-                {
-                    string error;
-                    var index = idxItr.FetchNextIndex();
-                    var record = recset.FetchRecordAt(index, out error);
-                    // ReSharper disable LoopCanBeConvertedToQuery
-                    foreach (var recordField in record)
-                    // ReSharper restore LoopCanBeConvertedToQuery
-                    {
-                        if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-                            {
-                                Group = Result
-                            });
-                        }
-                    }
-                    indexNum++;
-                }
-            }
-            else
-            {
-                theValue = GetValue(dataList, Result);
-                results.Add(new DebugItem(string.Empty, Result, "= " + theValue));
-            }
+            //BUG 8104 : Refactor DebugItem
+            //string theValue;
+            //if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            //{
+            //    int indexNum = 1;
+            //    var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+            //    var recset = GetRecordSet(dataList, Result);
+            //    var idxItr = recset.FetchRecordsetIndexes();
+            //    while (idxItr.HasMore())
+            //    {
+            //        string error;
+            //        var index = idxItr.FetchNextIndex();
+            //        var record = recset.FetchRecordAt(index, out error);
+            //        // ReSharper disable LoopCanBeConvertedToQuery
+            //        foreach (var recordField in record)
+            //        // ReSharper restore LoopCanBeConvertedToQuery
+            //        {
+            //            if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            //            {
+            //                results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
+            //                {
+            //                    Group = Result
+            //                });
+            //            }
+            //        }
+            //        indexNum++;
+            //    }
+            //}
+            //else
+            //{
+            //    theValue = GetValue(dataList, Result);
+            //    results.Add(new DebugItem(string.Empty, Result, "= " + theValue));
+            //}
 
 
             return results;

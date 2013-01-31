@@ -113,33 +113,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            //TODO: Implement the needed code for wen using recorset notaion with a star
 
             var result = new List<IDebugItem>();
+            //BUG 8104 : Refactor DebugItem
+            //string tmpExp = Expression;
+            //if (Expression.ContainsSafe("[["))
+            //{
+            //    IDev2DataLanguageParser languageParser = DataListFactory.CreateLanguageParser();
+            //    var partsList = languageParser.MakeParts(Expression);
+            //    foreach (ParseTO parseTo in partsList)
+            //    {
+            //        string val = GetValue(dataList, DataListUtil.AddBracketsToValueIfNotExist(parseTo.Payload));
 
-            string tmpExp = Expression;
-            if (Expression.ContainsSafe("[["))
-            {
-                IDev2DataLanguageParser languageParser = DataListFactory.CreateLanguageParser();
-                var partsList = languageParser.MakeParts(Expression);
-                foreach (ParseTO parseTo in partsList)
-                {
-                    string val = GetValue(dataList, DataListUtil.AddBracketsToValueIfNotExist(parseTo.Payload));
-
-                    tmpExp = tmpExp.Replace(DataListUtil.AddBracketsToValueIfNotExist(parseTo.Payload), val);
-                }
-                result.Add(new DebugItem(1.ToString(), Expression, " = " + tmpExp));
-            }
+            //        tmpExp = tmpExp.Replace(DataListUtil.AddBracketsToValueIfNotExist(parseTo.Payload), val);
+            //    }
+            //    result.Add(new DebugItem(1.ToString(), Expression, " = " + tmpExp));
+            //}
 
             return result;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            //TODO: Implement the needed code for wen using recorset notaion with a star
             var result = new List<IDebugItem>();
-            string theValue = GetValue(dataList, Result);
-            result.Add(new DebugItem("1", Result, " = " + theValue));
+            //BUG 8104 : Refactor DebugItem
+            //string theValue = GetValue(dataList, Result);
+            //result.Add(new DebugItem("1", Result, " = " + theValue));
 
             return result;
         }

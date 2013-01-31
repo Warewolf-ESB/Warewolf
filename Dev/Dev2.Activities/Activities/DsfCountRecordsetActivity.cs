@@ -7,7 +7,6 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -173,10 +172,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            var rs = GetRecordSet(dataList, RecordsetName);
-            var count = rs.FetchLastRecordsetIndex();
+            //BUG 8104 : Refactor DebugItem
+            //var rs = GetRecordSet(dataList, RecordsetName);
+            //var count = rs.FetchLastRecordsetIndex();
 
-            result.Add(new DebugItem(null, CountNumber, " = " + count.ToString(CultureInfo.InvariantCulture)));
+            //result.Add(new DebugItem(null, CountNumber, " = " + count.ToString(CultureInfo.InvariantCulture)));
 
             return result;
         }
