@@ -25,6 +25,11 @@
 
     <Activities:ImagePathConverter x:Key="ImagePathConverter" />
 
+    <SolidColorBrush x:Key="DebugItemLabelBrush" Color="Black"/>
+    <SolidColorBrush x:Key="DebugItemValueBrush" Color="#9bbb59"/>
+    <SolidColorBrush x:Key="DebugItemVariableBrush" Color="Purple"/>
+
+    <converters:DebugItemResultTypeToColorConverter x:Key="DebugItemResultTypeToColorConverter" />
     <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />

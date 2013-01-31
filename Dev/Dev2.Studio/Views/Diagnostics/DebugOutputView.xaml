@@ -240,36 +240,14 @@
             </i:Interaction.Behaviors>
             <TreeView.Resources>
                 <DataTemplate x:Key="ResultDataTemplate">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Variable}" Foreground="Purple" Visibility="{Binding Variable, Converter={StaticResource StringToVisibilityConverter}}"/>
-                        <!--<TextBlock Grid.Column="1" Text="=" Margin="3,0,3,0" Visibility="{Binding Variable, Converter={StaticResource StringToVisibilityConverter}}"/>-->
-
-                        <!--<TextBlock Grid.Column="1" Text="=" 
-                                   Margin="3,0,3,0" >
-                            <TextBlock.Visibility>
-                                <MultiBinding Converter="{StaticResource MultipleStringToVisilityValueConverter}">
-                                    <Binding Path="Variable"/>
-                                    <Binding Path="Value"/>
-                                </MultiBinding>
-                            </TextBlock.Visibility>
-                        </TextBlock>-->
-                        
-                        <TextBlock Grid.Column="2" Text="{Binding Value}" Margin="3,0,3,0" />
-                    </Grid>
+                    <TextBlock Grid.Column="0" Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
                 </DataTemplate>
                 <DataTemplate x:Key="DefaultScalarInputOutputTemplate">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Label}" Margin="0,0,3,0"/>
-                        <ItemsControl Grid.Column="1"  ItemTemplate="{StaticResource ResultDataTemplate}" ItemsSource="{Binding Results}" >
+                        <ItemsControl Grid.Column="0"  ItemTemplate="{StaticResource ResultDataTemplate}" ItemsSource="{Binding}" >
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
