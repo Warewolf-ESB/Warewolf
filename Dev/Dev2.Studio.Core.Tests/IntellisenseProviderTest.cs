@@ -26,10 +26,7 @@ namespace Dev2.Core.Tests
             var _testEnvironmentModel = new Mock<IEnvironmentModel>();
             _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
-            _resourceModel = new ResourceModel(_testEnvironmentModel.Object);
-            _resourceModel.ResourceName = "test";
-            _resourceModel.ResourceType = ResourceType.Service;
-            _resourceModel.DataList = @"
+            _resourceModel = new ResourceModel(_testEnvironmentModel.Object) { ResourceName = "test", ResourceType = ResourceType.Service, DataList = @"
             <DataList>
                     <Scalar/>
                     <Country/>
@@ -39,7 +36,7 @@ namespace Dev2.Core.Tests
                         <GeoLocation />
                     </City>
              </DataList>
-            ";
+            " };
 
             IDataListViewModel setupDatalist = new DataListViewModel();
             DataListSingleton.SetDataList(setupDatalist);
@@ -243,24 +240,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void PerformResultInsertion_With_PartialScalar_AndRegion_Expected_ResultInsertsText()
         {
-            var _myEnvironmentModel = new Mock<IEnvironmentModel>();
-            _myEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
-
-            var _myResourceModel = new ResourceModel(_myEnvironmentModel.Object);
-            _myResourceModel.ResourceName = "test";
-            _myResourceModel.ResourceType = ResourceType.Service;
-            _myResourceModel.DataList = @"
-            <DataList>
-                    <Scalar/>
-                    <Country/>
-                    <State />
-                    <City>
-                        <Name/>
-                        <GeoLocation />
-                    </City>
-             </DataList>
-            ";
-
             var context = new IntellisenseProviderContext { CaretPosition = 14, InputText = "[[recset([[sca).field]]", DesiredResultSet = 0, State = true };
             Assert.AreEqual("[[recset([[scalar]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context));
         }
