@@ -192,6 +192,7 @@
       <DependentUpon>TestResourceStringsTest.resx</DependentUpon>
     </Compile>
     <Compile Include="IntellisenseProviderTest.cs" />
+    <Compile Include="AppTests.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\MediatorMessageTrapper.cs" />
