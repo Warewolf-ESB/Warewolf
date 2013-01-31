@@ -12,6 +12,19 @@ namespace Dev2.Data.Tests.SystemTemplates
     [TestClass]
     public class DecisionTest
     {
+        // Sashen : 31-01-2012 : Test Review
+        // No author comment for tests
+        // Missing tests:
+        // Converting to and from JSON
+        //      Conversion to JSON with a set of decisions
+        // Push Model To Datalist
+        //      Test to push the model with a null datalist
+        // Invoke Decision Stack:
+        //      No test coverage for FetchSwitchData in the Dev2DataListDecisionHandler
+        //      No tests for ExecuteDecisionStack for a Null DataList
+        //      No tests for Error decisionType
+        //      No test for SystemModel to WebModel conversion with a null Dev2Decision
+        // Some of the tests do not have expected outcomes in there method names
 
         #region Model Test
         [TestMethod]
@@ -63,6 +76,7 @@ namespace Dev2.Data.Tests.SystemTemplates
         #endregion
 
         #region Execution Test
+        // Sashen: 31-01-2012 : No expected outcome from the test
         [TestMethod]
         public void CanPushModel_To_DataList()
         {
@@ -164,7 +178,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.IsFalse(result);
         }
 
-        
+        // Sashen: 31-01-2012 : Test does not have an expected outcome.
         [TestMethod]
         public void CanConvert_SystemModel_Into_WebModel()
         {
