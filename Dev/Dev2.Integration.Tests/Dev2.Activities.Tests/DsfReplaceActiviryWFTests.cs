@@ -65,7 +65,7 @@ Dr Guerrera</Document><ReplaceCount>5</ReplaceCount>";
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             ResponseData = TestHelper.CleanUp(ResponseData);
 
-            Assert.IsTrue(ResponseData.Contains(expected));
+            StringAssert.Contains(ResponseData, expected);
         }
     }
 }
