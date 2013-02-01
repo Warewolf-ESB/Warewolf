@@ -14,7 +14,7 @@
     <RootNamespace>Dev2.Server.Web</RootNamespace>
     <AssemblyName>Dev2.Server.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -128,8 +128,9 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
-    <Content Include="wwwroot\Scripts\knockout-2.2.1.js" />
-    <Content Include="wwwroot\Scripts\knockout.validation.min.js" />
+    <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
+    <Content Include="wwwroot\Views\Services\General.htm" />
+    <Content Include="wwwroot\Views\Sources\Database.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
     <None Include="wwwroot\Scripts\jquery-1.7.1.intellisense.js" />
@@ -170,7 +171,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4340</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Dev2</IISUrl>
+          <IISUrl>http://localhost:4340/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

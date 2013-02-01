@@ -34,75 +34,75 @@
 </div>
 <script type="text/javascript">
 
-	function AppViewModel() {
-		var self = this;
-		var $mainForm = $("#mainForm");
+    function AppViewModel() {
+        var self = this;
+        var $mainForm = $("#mainForm");
 
-		// set title
-		document.title = "Switch Case";
-		
-		self.data = {
-		
-			SwitchVariable : ko.observable("")
-			
-		};
-		
-		self.save = function(){
-			if(!$mainForm.validate().form()){
-				return;
-			}
-			
-			var dlID = window.location.search;			
-			var jsonData = ko.toJSON(self.data);
+        // set title
+        document.title = "Switch Case";
 
-			//alert(jsonData);
-			
-			$.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
-				
-				$("#Dev2Msg").html(result.message);
+        self.data = {
 
-				Dev2Awesomium.Close();
-				return true;
-				
+            SwitchVariable: ko.observable("")
+
+        };
+
+        self.save = function () {
+            if (!$mainForm.validate().form()) {
+                return;
+            }
+
+            var dlID = window.location.search;
+            var jsonData = ko.toJSON(self.data);
+
+            //alert(jsonData);
+
+            $.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
+
+                $("#Dev2Msg").html(result.message);
+
+                Dev2Awesomium.Close();
+                return true;
+
             });
-		};
-		
-		self.cancel = function () {
+        };
+
+        self.cancel = function () {
             Dev2Awesomium.Cancel();
             return true;
         };
-		
-		self.Load = function(){
-			var dlID = window.location.search; //.replace("postdlid", "dlid");
-		
-			// FetchSwitchCase
-			var request = $.ajax({
-				url: "Service/WebModel/FetchSwitchExpression" + dlID,
-				type: "post"
-			});
-			
-			request.done(function(response, textStatus, json){
-				if(response.SwitchVariable != undefined){
-					self.data.SwitchVariable(response.SwitchVariable);
-				}
-			});
-			
-			request.fail(function(response, textStatus, json){
-				alert("An error occured : " + JSON.stringify(response));
-			});
-			
-			
-		}
-		
-		self.Load();
 
-	}
-	 
-	 var vm = new AppViewModel();
-		
-	 ko.applyBindings(vm);	
-	 
-	 $("input[type=submit], a, button").button();
-		
+        self.Load = function () {
+            var dlID = window.location.search; //.replace("postdlid", "dlid");
+
+            // FetchSwitchCase
+            var request = $.ajax({
+                url: "Service/WebModel/FetchSwitchExpression" + dlID,
+                type: "post"
+            });
+
+            request.done(function (response, textStatus, json) {
+                if (response.SwitchVariable != undefined) {
+                    self.data.SwitchVariable(response.SwitchVariable);
+                }
+            });
+
+            request.fail(function (response, textStatus, json) {
+                alert("An error occured : " + JSON.stringify(response));
+            });
+
+
+        }
+
+        self.Load();
+
+    }
+
+    var vm = new AppViewModel();
+
+    ko.applyBindings(vm);
+
+    $("input[type=submit], a, button").button();
+
 </script>
 
