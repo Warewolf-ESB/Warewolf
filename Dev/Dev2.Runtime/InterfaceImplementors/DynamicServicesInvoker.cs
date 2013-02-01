@@ -18,6 +18,7 @@ using Dev2.DB_Support;
 using Dev2.DynamicServices;
 using Dev2.PathOperations;
 using Dev2.Reflection;
+using Dev2.Runtime.Security;
 using Dev2.Server.Datalist;
 using Dev2.Workspaces;
 using Microsoft.CSharp;
@@ -1682,11 +1683,50 @@ namespace Dev2.Runtime.InterfaceImplementors
                 // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
                 if(resourceName == "*")
                 {
-                    Host.RestoreResources(new[] { "Sources", "Services", "ActivityDefs" });
+                    Host.RestoreResources(new[] { "Sources", "Services" });
                 }
                 else
                 {
-                    Host.RestoreResources(new[] { resourceType }, resourceName);
+                    //
+                    // Ugly conversion between studio resource type and server resource type
+                    //
+                    enDynamicServiceObjectType serviceType;
+                    string directory;
+                    if (resourceType == "WorkflowService" ||
+                        resourceType == "Website" || resourceType == "HumanInterfaceProcess")
+                    {
+                        directory = "Services";
+                        serviceType = enDynamicServiceObjectType.WorkflowActivity;
+                    }
+                    else if (resourceType == "Service")
+                    {
+                        directory = "Services";
+                        serviceType = enDynamicServiceObjectType.DynamicService;
+                    }
+                    else if (resourceType == "Source")
+                    {
+                        directory = "Sources";
+                        serviceType = enDynamicServiceObjectType.Source;
+                    }
+                    else
+                    {
+                        throw new Exception("Unexpected resource type '" + resourceType + "'.");
+                    }
+
+                    //
+                    // Copy the file from the server workspace into the current workspace
+                    //
+                    _workspace.Update(new WorkspaceItem(_workspace.ID, HostSecurityProvider.Instance.ServerID)
+                        {
+                            Action = WorkspaceItemAction.Edit,
+                            ServiceName = resourceName,
+                            ServiceType = serviceType.ToString()
+                        });
+                    
+                    //
+                    // Reload resources
+                    //
+                    Host.RestoreResources(new[] { directory }, resourceName);
                 }
                 xmlResponse.Response = string.Concat("'", resourceName, "' Reloaded...");
             }

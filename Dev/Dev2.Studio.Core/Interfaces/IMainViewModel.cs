@@ -1,9 +1,8 @@
-﻿using System;
-using System.Windows.Input;
-using Dev2.Studio.Core.AppResources;
+﻿using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using Unlimited.Framework;
+using System;
+using System.Windows.Input;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -37,7 +36,6 @@ namespace Dev2.Studio.Core.Interfaces
 
         void AddDependencyVisualizerDocument(IResourceModel resource);
         void AddHelpDocument(IResourceModel resource);
-        void AddResourceDocument(IResourceModel resource);
         void AddStartTabs();
         void AddWorkflowDocument(IResourceModel resource);
         void Debug(IContextualResourceModel model);

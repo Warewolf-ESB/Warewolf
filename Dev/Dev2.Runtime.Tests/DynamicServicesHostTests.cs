@@ -21,9 +21,11 @@ namespace Dev2.DynamicServices.Test
         const string SourceName = "CitiesDatabase";
 
         public const string ServerConnection1Name = "ServerConnection1";
+        public const string ServerConnection1ResourceName = "MyDevServer";
         public const string ServerConnection1ID = "{68F5B4FE-4573-442A-BA0C-5303F828344F}";
 
         public const string ServerConnection2Name = "ServerConnection2";
+        public const string ServerConnection2ResourceName = "MySecondDevServer";
         public const string ServerConnection2ID = "{70238921-FDC7-4F7A-9651-3104EEDA1211}";
 
         static string _testDir;
@@ -106,14 +108,15 @@ namespace Dev2.DynamicServices.Test
                 _testSourceDefinition = xml.ToString();
 
                 xml = XmlResource.Fetch(ServerConnection1Name);
-                xml.Save(Path.Combine(_sourcesPath, ServerConnection1Name + ".xml"));
-                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection1Name + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverSourcesPath, ServerConnection1Name + ".xml"));
+                xml.Save(Path.Combine(_sourcesPath, ServerConnection1ResourceName + ".xml"));
+                xml.Save(Path.Combine(_sourcesPath, ServerConnection1ResourceName + ".xml"));
+                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection1ResourceName + ".V" + VersionNo + ".xml"));
+                xml.Save(Path.Combine(serverSourcesPath, ServerConnection1ResourceName + ".xml"));
 
                 xml = XmlResource.Fetch(ServerConnection2Name);
-                xml.Save(Path.Combine(_sourcesPath, ServerConnection2Name + ".xml"));
-                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection2Name + ".V" + VersionNo + ".xml"));
-                xml.Save(Path.Combine(serverSourcesPath, ServerConnection2Name + ".xml"));
+                xml.Save(Path.Combine(_sourcesPath, ServerConnection2ResourceName + ".xml"));
+                xml.Save(Path.Combine(sourcesVersionControlPath, ServerConnection2ResourceName + ".V" + VersionNo + ".xml"));
+                xml.Save(Path.Combine(serverSourcesPath, ServerConnection2ResourceName + ".xml"));
 
                 #endregion
 

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\Enums.cs" />
+    <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />

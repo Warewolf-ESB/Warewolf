@@ -5,6 +5,9 @@ namespace Dev2.Common
 {
     public static class GlobalConstants
     {
+        //Resource Constants
+        public const string ResourceFileExtension = ".xml";
+
         //Windows Service constants
         public const string ServiceName = "Warewolf Server";
 

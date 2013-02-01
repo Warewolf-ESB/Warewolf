@@ -122,7 +122,7 @@ namespace Dev2.Session
 
                 if (String.IsNullOrEmpty(savedDL.InnerXml)) tmp.RememberInputs = false;
                 else tmp.XmlData = "<DataList>" + savedDL.InnerXml + "</DataList>";
-                //End Bug 8018 
+                //End Bug 8018
 
                 to.XmlData = !tmp.RememberInputs
                                  ? (to.DataList ?? "<DataList></DataList>")

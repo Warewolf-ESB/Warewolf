@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
+using System.Threading;
 using Unlimited.Framework;
 
 namespace Dev2.DynamicServices.Test
@@ -14,6 +15,11 @@ namespace Dev2.DynamicServices.Test
     [TestClass]
     public class DynamicServicesInvokerTest
     {
+        #region Class Members
+
+        public static object _testGuard = new object();
+
+        #endregion Class Members
 
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
@@ -24,6 +30,18 @@ namespace Dev2.DynamicServices.Test
         [ClassCleanup]
         public static void MyClassCleanup()
         {
+        }
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
         }
 
         #region UpdateWorkspaceItem

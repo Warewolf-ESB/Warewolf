@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dev2.Studio.Core.AppResources.Attributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.AppResources.Attributes;
 
 namespace Dev2.Studio.Core.AppResources.Enums
 {

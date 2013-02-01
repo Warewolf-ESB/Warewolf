@@ -99,8 +99,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
             reloadPayload.ResourceName = resourceName;
-            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
-            ;
+            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType); ;
 
             string reloadResult = Environment.DsfChannel.ExecuteCommand(reloadPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
@@ -117,7 +116,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "GetResourceService";
             findPayload.ResourceName = resourceName;
-            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
+            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);;
             ;
             findPayload.Roles = string.Join(",", SecurityContext.Roles);
 
@@ -145,7 +144,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                     else
                     {
-                        effectedResources.Add(resourceToUpdate);
+                        effectedResources.Add(resource);
                         _workflowDb.Add(resource);
                         if (ItemAdded != null)
                         {

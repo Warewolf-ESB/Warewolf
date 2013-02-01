@@ -91,8 +91,8 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 Point currentPosition = e.GetPosition(inputElement);
 
-                if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10) ||
-                    (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10))
+                if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) ||
+                    (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
                 {
                     DataObject dragData = new DataObject();
                     ResourceTreeViewModel dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;

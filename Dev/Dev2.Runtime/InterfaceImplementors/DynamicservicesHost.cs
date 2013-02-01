@@ -10,22 +10,22 @@
 //                  method in the classes constructor.
 #endregion
 
-using System.Text;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime;
 using Dev2.Runtime.InterfaceImplementors;
+using Dev2.Runtime.Security;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
-using Dev2.Runtime.Security;
 using Unlimited.Framework;
-using Dev2.Common;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
@@ -523,10 +523,14 @@ namespace Dev2.DynamicServices
             var filePaths = new List<string>();
             foreach(string directoryName in directoryNames)
             {
-                var dirPath = Path.Combine(_workspacePath, directoryName);
-                if(Directory.Exists(dirPath))
+                DirectoryInfo directory = new DirectoryInfo(Path.Combine(_workspacePath, directoryName));
+                if (directory.Exists)
                 {
-                    filePaths.AddRange(Directory.GetFiles(dirPath));
+                    // TODO 2013-01-13, brendon.page, this linq query was put in to ensure only valid file types are loaded.
+                    //                                It is NOT a permenant solution. This code needs to be refactored so that it is extensible and testible, 
+                    //                                ideally to using the repository pattern.
+                    List<string> validFileNames = directory.GetFiles().Where(f => f.Extension.Equals(GlobalConstants.ResourceFileExtension, StringComparison.InvariantCultureIgnoreCase)).Select(f => f.FullName).ToList();
+                    filePaths.AddRange(validFileNames);
                 }
             }
             RestoreResources(filePaths, resourceName);
@@ -538,14 +542,44 @@ namespace Dev2.DynamicServices
             //
             // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
             //             Refactored to enable unit testing
+            var resourceIndex = new Dictionary<string, string>();
             var resources = new List<DynamicServiceObjectBase>();
-            foreach(var fileName in filePaths)
+            foreach(string fileName in filePaths)
             {
-                var fileContent = File.ReadAllText(fileName);
+                string fileContent;
+                using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Delete))
+                {
+                    using (var textReader = new StreamReader(fileStream))
+                    {
+                        fileContent = textReader.ReadToEnd();
+                    }
+                }
+
                 var isValid = HostSecurityProvider.Instance.VerifyXml(fileContent);
                 if(isValid)
                 {
-                    resources.AddRange(GenerateObjectGraphFromString(fileContent));
+                    // TODO 2013-01-13, brendon.page, this logic query was put in to ensure duplicate resources aren't loaded from different files.
+                    //                                It is NOT a permenant solution. This code needs to be refactored so that it is extensible and testible, 
+                    //                                ideally to using the repository pattern.
+                    List<DynamicServiceObjectBase> generatedResources = GenerateObjectGraphFromString(fileContent);
+                    foreach (DynamicServiceObjectBase dynamicServiceObjectBase in generatedResources)
+                    {
+                        if (!Path.GetFileNameWithoutExtension(fileName).Equals(dynamicServiceObjectBase.Name, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            TraceWriter.WriteTrace(string.Format("Resource '{0}' wasn't loaded from file '{1}' because the file name doesn't match the resource name.", dynamicServiceObjectBase.Name, fileName));
+                            continue;
+                        }
+
+                        string existingFileName;
+                        if (resourceIndex.TryGetValue(dynamicServiceObjectBase.Name, out existingFileName))
+                        {
+                            TraceWriter.WriteTrace(string.Format("Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.", dynamicServiceObjectBase.Name, fileName, existingFileName));
+                            continue;
+                        }
+
+                        resourceIndex.Add(dynamicServiceObjectBase.Name, fileName);
+                        resources.Add(dynamicServiceObjectBase);
+                    }
                 }
             }
             RestoreResources(resources, resourceName);
@@ -580,7 +614,7 @@ namespace Dev2.DynamicServices
                     RemoveItemsNotInResources(resources, null, WorkflowActivityDefs, _activityLock, enDynamicServiceObjectType.WorkflowActivity);
                 }
             }
-
+            
             foreach(var resource in resources)
             {
                 if(string.IsNullOrEmpty(resourceName) ||

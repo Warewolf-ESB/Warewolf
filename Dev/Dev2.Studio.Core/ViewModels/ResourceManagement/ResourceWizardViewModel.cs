@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+﻿using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Messages;
-using Unlimited.Framework;
-using Dev2.Studio.Core.Models;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using Microsoft.Win32;
-using System.ComponentModel;
 using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition;
-using System.Xml.Linq;
-using System.Windows;
-using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Windows;
+using System.Xml.Linq;
 
 
 namespace Dev2.Studio.Core.ViewModels {
@@ -208,26 +198,7 @@ namespace Dev2.Studio.Core.ViewModels {
                 bool savedByWizard = (_resource.ResourceType == ResourceType.Source || _resource.ResourceType == ResourceType.Service);
                 bool newResource = (res == null);
 
-                if (!savedByWizard && newResource)
-                {
-                    _resource.Environment.Resources.Save(_resource);
-                    if (_resource.ResourceType == ResourceType.WorkflowService)
-                    {
-                        Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resource);
-                    }
-                    else
-                    {
-                        Mediator.SendMessage(MediatorMessages.AddResourceDocument, _resource);
-                    }
-
-                    EventAggregator.Publish(new UpdateResourceMessage(_resource));
-                }
-                else if (!savedByWizard && !newResource)
-                {
-                    _resource.Environment.Resources.Save(_resource);
-                    EventAggregator.Publish(new UpdateResourceMessage(_resource));
-                }
-                else if (savedByWizard)
+                if (savedByWizard)
                 {
                     //
                     // Reload resource call
@@ -238,6 +209,46 @@ namespace Dev2.Studio.Core.ViewModels {
                         EventAggregator.Publish(new UpdateResourceMessage(resource));
                     }
                 }
+                else
+                {
+                    _resource.Environment.Resources.Save(_resource);
+                    EventAggregator.Publish(new UpdateResourceMessage(_resource));
+                }    
+                
+                if (newResource && _resource.ResourceType == ResourceType.WorkflowService)
+                {
+                    Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resource);
+                }
+
+                //if (!savedByWizard && newResource)
+                //{
+                //    _resource.Environment.Resources.Save(_resource);
+                //    if (_resource.ResourceType == ResourceType.WorkflowService)
+                //    {
+                //        Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resource);
+                //    }
+                //    else
+                //    {
+                //        Mediator.SendMessage(MediatorMessages.AddResourceDocument, _resource);
+                //    }
+                //    EventAggregator.Publish(new UpdateResourceMessage(_resource));
+                //}
+                //else if (!savedByWizard && !newResource)
+                //{
+                //    _resource.Environment.Resources.Save(_resource);
+                //    EventAggregator.Publish(new UpdateResourceMessage(_resource));
+                //}
+                //else if (savedByWizard)
+                //{
+                //    //
+                //    // Reload resource call
+                //    //
+                //    List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
+                //    foreach (IResourceModel resource in effectedResources)
+                //    {
+                //        EventAggregator.Publish(new UpdateResourceMessage(resource));
+                //    }
+                //}
             }
 
             Close();

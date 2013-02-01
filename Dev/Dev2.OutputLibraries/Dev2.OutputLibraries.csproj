@@ -183,7 +183,8 @@
       <Link>WPF.JoshSmith.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Dev2.Server.exe.secureconfig">
+    <None Include="..\Dev2.Server\Dev2.Server.exe.secureconfig">
+      <Link>Dev2.Server.exe.secureconfig</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
