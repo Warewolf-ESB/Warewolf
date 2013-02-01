@@ -17,7 +17,7 @@ namespace Dev2.Data.Tests.SystemTemplates
         // No author comment for tests
         // Missing tests:
         // Converting to and from JSON
-        //      Conversion to JSON with a set of decisions - FIXED though there where already other test that covered this functionality
+        //      Conversion to JSON with a set of decisions - FIXED 
         // Push Model To Datalist
         //      Test to push the model with a null datalist -?? The DataList ID is returned by the push operation
         // Invoke Decision Stack:
