@@ -28,7 +28,7 @@ namespace Dev2.Diagnostics
             if(!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
-        }
+            }
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace Dev2.Diagnostics
         /// <param name="writer">The writer to which this instance is written.</param>
         public void Write(IDebugWriter writer)
         {
-            if (writer == null)
+            if(writer == null)
             {
                 return;
             }
@@ -206,22 +206,23 @@ namespace Dev2.Diagnostics
 
         void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
         {
-            //TryCache(items);
+            TryCache(items);
 
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
-            for (var i = 0; i < items.Count; i++)
+            for(var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].MoreText);
                 writer.Write(items[i].MoreLink);
                 writer.Write(items[i].Count);
-                for (var j = 0; j < items[i].Count; j++)
+                for(var j = 0; j < items[i].Count; j++)
                 {
                     var itemResult = items[i][j];
                     writer.Write((int)itemResult.Type);
                     writer.Write(itemResult.Value);
                     writer.Write(itemResult.GroupName);
                     writer.Write(itemResult.GroupIndex);
+                    writer.Write(itemResult.MoreLink);
                 }
             }
             // ReSharper restore ForCanBeConvertedToForeach
@@ -230,7 +231,7 @@ namespace Dev2.Diagnostics
         static void Deserialize(IByteReaderBase reader, ICollection<IDebugItem> items)
         {
             var count = reader.ReadInt32();
-            for (var i = 0; i < count; i++)
+            for(var i = 0; i < count; i++)
             {
                 var item = new DebugItem
                 {
@@ -240,14 +241,15 @@ namespace Dev2.Diagnostics
 
                 //Add stuff for SentanceId : TWR
                 var resultCount = reader.ReadInt32();
-                for (var j = 0; j < resultCount; j++)
+                for(var j = 0; j < resultCount; j++)
                 {
                     item.Add(new DebugItemResult
                     {
                         Type = (DebugItemResultType)reader.ReadInt32(),
                         Value = reader.ReadString(),
                         GroupName = reader.ReadString(),
-                        GroupIndex = reader.ReadInt32()
+                        GroupIndex = reader.ReadInt32(),
+                        MoreLink = reader.ReadString()
                     });
                 }
                 items.Add(item);
@@ -265,62 +267,90 @@ namespace Dev2.Diagnostics
                 throw new ArgumentNullException("items");
             }
 
-            if(items.Count <= DebugItem.MaxItemDispatchCount)
+            foreach(var debugItem in items)
             {
-                return;
-            }
-
-            var group = string.Empty;
-            var count = 0;
-            var i = 0;
-            var groupCache = new List<IDebugItem>();
-
-            while(i < items.Count)
-            {
-                var item = items[i];
-
-                if(string.IsNullOrEmpty(item.Group))
+                foreach(var result in debugItem)
                 {
-                    // Scalar                    
-                    if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+                    if(!string.IsNullOrEmpty(result.Value) && result.Value.Length > DebugItem.MaxCharDispatchCount)
                     {
-                        SaveGroup(groupCache, group);
-                    }
-                    groupCache.Clear();
-                    group = string.Empty;
-                    count = 0;
-                    i++;
-                }
-                else
-                {
-                    // Recordset
-                    if(group != item.Group)
-                    {
-                        if(groupCache.Count > DebugItem.MaxItemDispatchCount)
-                        {
-                            SaveGroup(groupCache, group);
-                        }
-
-                        groupCache.Clear();
-                        group = item.Group;
-                        count = 0;
-                    }
-                    count++;
-                    groupCache.Add(item);
-                    if(count > DebugItem.MaxItemDispatchCount)
-                    {
-                        items.RemoveAt(i);
-                    }
-                    else
-                    {
-                        i++;
+                        result.MoreLink = SaveFile(result.Value);
+                        result.Value = result.Value.Substring(0, DebugItem.ActCharDispatchCount);
                     }
                 }
             }
-            if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+
+            //var group = string.Empty;
+            //var count = 0;
+            //var i = 0;
+            //var groupCache = new List<IDebugItem>();
+
+            //while(i < items.Count)
+            //{
+            //    var item = items[i];
+
+            //    if(string.IsNullOrEmpty(item.Group))
+            //    {
+            //        // Scalar                    
+            //        if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+            //        {
+            //            SaveGroup(groupCache, group);
+            //        }
+            //        groupCache.Clear();
+            //        group = string.Empty;
+            //        count = 0;
+            //        i++;
+            //    }
+            //    else
+            //    {
+            //        // Recordset
+            //        if(group != item.Group)
+            //        {
+            //            if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+            //            {
+            //                SaveGroup(groupCache, group);
+            //            }
+
+            //            groupCache.Clear();
+            //            group = item.Group;
+            //            count = 0;
+            //        }
+            //        count++;
+            //        groupCache.Add(item);
+            //        if(count > DebugItem.MaxItemDispatchCount)
+            //        {
+            //            items.RemoveAt(i);
+            //        }
+            //        else
+            //        {
+            //            i++;
+            //        }
+            //    }
+            //}
+            //if(groupCache.Count > DebugItem.MaxItemDispatchCount)
+            //{
+            //    SaveGroup(groupCache, group);
+            //}
+        }
+
+        #endregion
+
+
+        #region SaveFile
+
+        public virtual string SaveFile(string contents)
+        {
+            if(string.IsNullOrEmpty(contents))
             {
-                SaveGroup(groupCache, group);
+                throw new ArgumentNullException("contents");
             }
+
+            var fileName = string.Format("{0}-{1}-{2}-{3}.txt", Name, StateType, DateTime.Now.ToString("s"), Guid.NewGuid());
+            fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
+
+            var path = Path.Combine(_tempPath, fileName);
+            File.WriteAllText(path, contents);
+
+            return new Uri(path).AbsoluteUri;
         }
 
         #endregion

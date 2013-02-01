@@ -6,5 +6,6 @@ namespace Dev2.Diagnostics
         public string Value { get; set; }
         public string GroupName { get; set; }
         public int GroupIndex { get; set; }
+        public string MoreLink { get; set; }
     }
 }

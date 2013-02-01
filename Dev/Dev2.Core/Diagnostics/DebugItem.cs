@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace Dev2.Diagnostics
@@ -11,6 +12,7 @@ namespace Dev2.Diagnostics
     {
         public const int MaxItemDispatchCount = 10;
         public const int MaxCharDispatchCount = 150;
+        public const int ActCharDispatchCount = 100;
 
         public static IDebugItem[] EmptyList = new IDebugItem[0];
 
@@ -72,19 +74,72 @@ namespace Dev2.Diagnostics
 
         public XElement ToXml()
         {
-            var xml = new XElement("Item");
-            if(!string.IsNullOrEmpty(Group))
-            {
-                xml.Add(new XAttribute("Group", Group));
-            }
+            var xml = new XElement("Items");
+
+            var infoText = new StringBuilder();
+            var rowText = new StringBuilder();
+
+            var recName = string.Empty;
+            var recIndex = 0;
+            XElement recXml = null;
+
             foreach(var result in this)
             {
-                if(!string.IsNullOrEmpty(result.Value))
+                if(string.IsNullOrEmpty(result.Value))
                 {
-                    xml.Add(new XElement("Result", new XAttribute("Type", result.Type), result.Value));
+                    continue;
+                }
+
+                if(string.IsNullOrEmpty(result.GroupName))
+                {
+                    Append(infoText, result.Value);
+                }
+                else
+                {
+                    AddChild(xml, "Item", infoText);
+
+                    if(result.GroupName != recName)
+                    {
+                        rowText.Length = 0;
+                        recIndex = result.GroupIndex;
+                        recName = result.GroupName;
+                        recXml = new XElement("Rec", new XAttribute("name", recName));
+                        xml.Add(recXml);
+                    }
+
+                    if(result.GroupIndex != recIndex)
+                    {
+                        rowText.Length = 0;
+                        recIndex = result.GroupIndex;
+                        AddChild(recXml, "Row", rowText);
+                    }
+
+                    Append(rowText, result.Value);
                 }
             }
+
+            AddChild(xml, "Item", infoText);
+            AddChild(recXml, "Row", rowText);
+
             return xml;
+        }
+
+        static void AddChild(XContainer parent, string textName, StringBuilder text)
+        {
+            if(text.Length > 0 && parent != null)
+            {
+                parent.Add(new XElement(textName, text.ToString()));
+                text.Length = 0;
+            }
+        }
+
+        static void Append(StringBuilder text, string str)
+        {
+            if(text.Length > 0)
+            {
+                text.Append(' ');
+            }
+            text.Append(str);
         }
 
         #endregion

@@ -6,5 +6,6 @@
         string Value { get; set; }
         string GroupName { get; set; }
         int GroupIndex { get; set; }
+        string MoreLink { get; set; }
     }
 }
