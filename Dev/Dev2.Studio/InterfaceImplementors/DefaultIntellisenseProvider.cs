@@ -287,7 +287,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if(context.InputText.IndexOf(',') > 0)
             {
-                var preComma = context.InputText.LastIndexOf(',', context.CaretPosition-1) > 0 ? context.InputText.LastIndexOf(',', context.CaretPosition-1)+1 : 0;
+                var preComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0) > 0 ? context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0) + 1 : 0;
                 var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
                 context.CaretPosition -= preComma;
                 context.InputText = context.InputText.Substring(preComma, postComma-preComma);
