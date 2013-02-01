@@ -33,8 +33,11 @@ namespace Dev2.Data.Decisions.Operations
                 {
                     try
                     {
-                        DateTime dt = DateTime.Parse(c);
-                        dtVal[pos] = dt;
+                        DateTime dt = new DateTime();
+                        if (DateTime.TryParse(c, out dt))
+                        {
+                            dtVal[pos] = dt;
+                        }
                     }
                     catch
                     {

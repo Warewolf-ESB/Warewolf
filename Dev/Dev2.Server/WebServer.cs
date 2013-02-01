@@ -65,22 +65,27 @@ namespace Dev2
 
             bool isXmlData = false;
              
+            // Commented out by Michael by instruction of Travis pending the refactor
+            /*
             try
             {
                 string baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
                 int startIdx = baseStr.IndexOf("?");
                 if(startIdx > 0)
                 {
+                    
                     XmlDocument xDoc = new XmlDocument();
                     string payload = baseStr.Substring((startIdx + 1));
                     xDoc.LoadXml(payload);
                     formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(payload);
                     isXmlData = true;
+                     
                 }
             }
             catch(Exception)
             {
             }
+             */
 
             if(!isXmlData)
             {
