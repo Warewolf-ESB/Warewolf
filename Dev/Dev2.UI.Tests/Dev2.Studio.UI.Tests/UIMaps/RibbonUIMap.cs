@@ -24,20 +24,23 @@
 
             for (int j = 0; j < uIRibbonTabList.Tabs.Count; j++)
             {
-                if (uIRibbonTabList.Tabs[j].GetProperty("AutomationID").ToString() == menuAutomationID && uIRibbonTabList.Tabs[j].GetProperty("ControlType").ToString() == "TabPage" && uIRibbonTabList.Tabs[j].GetProperty("ClassName").ToString() == "Uia.RibbonTab")
+                if (uIRibbonTabList.Tabs[j].GetProperty("AutomationID").ToString() == menuAutomationID)
                 {
-                    string headerText = uIRibbonTabList.Tabs[j].GetProperty("Header").ToString();
-                    try
+                    if (uIRibbonTabList.Tabs[j].GetProperty("ControlType").ToString() == "TabPage" && uIRibbonTabList.Tabs[j].GetProperty("ClassName").ToString() == "Uia.RibbonTab")
                     {
-                        UITestControl topParent = theControl.TopParent;
+                        string headerText = uIRibbonTabList.Tabs[j].GetProperty("Header").ToString();
+                        try
+                        {
+                            UITestControl topParent = theControl.TopParent;
+                        }
+                        catch
+                        {
+                            // Do nothing
+                        }
+                        //string parentName = topParent.Au
+                        theControl = uIRibbonTabList.Tabs[j];
+                        break;
                     }
-                    catch
-                    {
-                        // Do nothing
-                    }
-                    //string parentName = topParent.Au
-                    theControl = uIRibbonTabList.Tabs[j];
-                    break;
                 }
             }
 
@@ -49,16 +52,17 @@
             {
                 altControl = theControl.GetChildren()[0];
             }
-            int pX = theControl.Left + 5;
-            int pY = theControl.Top + 5;
+            int pX = altControl.Left + 5;
+            int pY = altControl.Top + 5;
             Point p = new Point();
-            if (oX != pX)
+            
+            if ((oX != pX) && (pX != 4 && pY != 4))
             {
-                p = new Point(theControl.Left + 5, theControl.Top + 5);
+                p = new Point(altControl.Left + 5, altControl.Top + 5); 
             }
             else
             {
-                p = new Point(altControl.Left + 5, altControl.Top + 5);
+                p = new Point(theControl.Left + 5, theControl.Top + 5);
             }
             
             Mouse.Click(p);
