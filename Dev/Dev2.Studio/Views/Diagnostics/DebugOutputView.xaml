@@ -239,25 +239,10 @@
                 <b:TreeviewScrollToEndOnNewContent />
             </i:Interaction.Behaviors>
             <TreeView.Resources>
-                <DataTemplate x:Key="ResultDataTemplate">
-                    <TextBlock Grid.Column="0" Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
-                </DataTemplate>
-                <DataTemplate x:Key="DefaultScalarInputOutputTemplate">
+                
+                <DataTemplate x:Key="DebugLineItemTemplate">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <ItemsControl  ItemTemplate="{StaticResource ResultDataTemplate}" ItemsSource="{Binding}" >
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                        <TextBlock Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
                         <!--<TextBlock Grid.Row="1" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
                             <Hyperlink NavigateUri="{Binding MoreLink}" >
                                 <TextBlock Text="{Binding MoreText}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
@@ -266,98 +251,40 @@
                     </Grid>
                 </DataTemplate>
 
-                <DataTemplate x:Key="DefaultRecordSetInputOutputTemplate">
-                    <Expander Header="{Binding Name}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID">
+                <DataTemplate x:Key="DebugLineGroupRowTemplate">
+                    <ItemsControl ItemsSource="{Binding Value.LineItems}" ItemTemplate="{StaticResource DebugLineItemTemplate}" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </DataTemplate>
+
+                <DataTemplate x:Key="DebugLineGroupTemplate">
+                    <Expander Header="{Binding GroupName}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <ItemsControl MaxHeight="320" ItemsSource="{Binding Items}"
-                                      HorizontalAlignment="Stretch"
-                                      HorizontalContentAlignment="Stretch"
-                                     ItemTemplate="{StaticResource DefaultScalarInputOutputTemplate}">
-                                <ItemsControl.Template>
-                                    <ControlTemplate>
-                                        <ScrollViewer HorizontalAlignment="Stretch" 
-                                                  VerticalScrollBarVisibility="Auto"
-                                                  CanContentScroll="True" Grid.Row="1">
-                                            <VirtualizingStackPanel HorizontalAlignment="Stretch" IsItemsHost="True" />
-                                        </ScrollViewer>
-                                    </ControlTemplate>
-                                </ItemsControl.Template>
-                            </ItemsControl>
-                            <!--<TextBlock Grid.Row="1" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
-                                <Hyperlink NavigateUri="{Binding MoreLink}">
-                                    <TextBlock Text="{Binding MoreText}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
-                                </Hyperlink>
-                            </TextBlock>-->
+                            <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource DebugLineGroupRowTemplate}"/>
+                            </ScrollViewer>                            
                         </Grid>
                     </Expander>
                 </DataTemplate>
 
-                <DataTemplate x:Key="NotFoundInputOutputTemplate">
-                    <TextBlock Text="No Template found!" />
-                </DataTemplate>
-
-                <Diagnostics:InputOutputDataTemplateSelector x:Key="DefaultTemplateSelector" ScalarTemplate="{StaticResource NotFoundInputOutputTemplate}"
-                                                             RecordSetTemplate="{StaticResource NotFoundInputOutputTemplate}"/>
-
-                <Diagnostics:InputOutputDataTemplateSelectorCollection x:Key="InputOutputTemplateSelectors">
-                    <Diagnostics:InputOutputDataTemplateSelector Key="CommentActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFlowDecisionActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}" />
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFlowSwitchActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}" />
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}" />
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfWorkflowActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="AssertActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfAssignActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfBaseConvertActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfCalculateActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfCaseConvertActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfCheckpointActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfCommentActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfCountRecordsetActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfDeleteRecordActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfTagCountActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfDataSplitActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfIndexActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfDataMergeActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfDataValidationActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfDateTimeActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfDateTimeDifferenceActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFileForEachActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFindRecordsActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfForEachActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfHttpActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfMultiAssignActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfRemoteActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfReplaceActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfRemoveActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfReturnToCallerActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfSortRecordsActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfWebPageActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfWebSiteActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfNumberFormatActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="TransformActivity" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFileRead" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFileWrite" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfFolderRead" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfPathCopy" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfPathCreate" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfPathDelete" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfPathMove" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfPathRename" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfUnZip" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                    <Diagnostics:InputOutputDataTemplateSelector Key="DsfZip" ScalarTemplate="{StaticResource DefaultScalarInputOutputTemplate}" RecordSetTemplate="{StaticResource DefaultRecordSetInputOutputTemplate}"/>
-                </Diagnostics:InputOutputDataTemplateSelectorCollection>
-
-                <Converters:IDebugStateToTemplateSelectorConverter x:Key="IDebugStateToTemplateSelectorConverter" DataTemplateSelectors="{StaticResource InputOutputTemplateSelectors}"
-                                                           DefaultTemplateSelector="{StaticResource DefaultTemplateSelector}"/>
+                <Diagnostics:DebugLineTemplateSelector x:Key="DebugLineTemplateSelector" ItemTemplate="{StaticResource DebugLineItemTemplate}" GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
                 
+                <DataTemplate x:Key="DebugLinesTemplate">
+                    <Grid>
+                        <ItemsControl ItemsSource="{Binding LineItems}" ItemTemplateSelector="{StaticResource DebugLineTemplateSelector}" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
+                </DataTemplate>
+                                               
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type LocalDiagnostics:DebugStringTreeViewItemViewModel}">
                     <TextBlock Text="{Binding Content}" HorizontalAlignment="Stretch"/>
                 </HierarchicalDataTemplate>
@@ -413,40 +340,34 @@
                             <Run Text="Time" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" 
-                                    Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource EndTimeVisibility}">
                             <Run Text="Time" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
-                                    Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource DurationVisibility}">
                             <Run Text="Duration" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}" 
-                                    Style="{StaticResource DurationVisibility}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}" Style="{StaticResource DurationVisibility}"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource InputsVisibility}">
                             <Run Text="Inputs" />
                             <Run Text=": " />
                         </TextBlock>
-                        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True"
-                                Style="{StaticResource InputsVisibility}">
-                            <ItemsControl ItemsSource="{Binding Inputs}" ItemTemplateSelector="{Binding Content, Converter={StaticResource IDebugStateToTemplateSelectorConverter}}" AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
+                        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource InputsVisibility}">
+                            <ItemsControl ItemsSource="{Binding Inputs}" ItemTemplate="{StaticResource DebugLinesTemplate}" AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
                         </StackPanel>
 
                         <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource OutputsVisibility}">
                             <Run Text="Outputs" />
                             <Run Text=": " />
                         </TextBlock>
-                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True"
-                                    Style="{StaticResource OutputsVisibility}">
-                            <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplateSelector="{Binding Content, Converter={StaticResource IDebugStateToTemplateSelectorConverter}}" 
-                                          AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
+                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource OutputsVisibility}">
+                            <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplate="{StaticResource DebugLinesTemplate}" AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                         </StackPanel>
                     </Grid>
                 </HierarchicalDataTemplate>

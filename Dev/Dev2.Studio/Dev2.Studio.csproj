@@ -300,12 +300,17 @@
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
+    <Compile Include="Diagnostics\DebugLineGroup.cs" />
+    <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
+    <Compile Include="Diagnostics\DebugLineItem.cs" />
+    <Compile Include="Diagnostics\DebugLine.cs" />
+    <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
+    <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Webs\RootWebSite.cs" />
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="AppResources\Comparers\DeployStatsTOComparer.cs" />
     <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\IDebugStateToTemplateSelectorConverter.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelToImageConverter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -335,16 +340,13 @@
     <Compile Include="Custom Dev2 Controls\Connections\ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Diagnostics\DebugOuputInputOutputGroup.cs" />
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
     <Compile Include="Diagnostics\DebugOutputTreeGenerationStrategy.cs" />
-    <Compile Include="Diagnostics\InputOutputDataTemplateSelectorCollection.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBox.cs" />
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
-    <Compile Include="Diagnostics\InputOutputDataTemplateSelector.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\FeedbackFactory.cs" />
     <Compile Include="Factory\TreeViewModelFactory.cs" />

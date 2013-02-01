@@ -88,32 +88,41 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
         {
             //
-            // Build inputs
+            // Build destinationList
             //
             destinationList.Clear();
-            var groups = new Dictionary<string, DebugOuputInputOutputGroup>();
 
-            foreach(IDebugItem item in debugItems)
+            foreach(var item in debugItems)
             {
-                if(string.IsNullOrEmpty(item.Group))
+                var list = new DebugLine();
+                var groups = new Dictionary<string, DebugLineGroup>();
+                foreach(var result in item)
                 {
-                    destinationList.Add(item);
-                }
-                else
-                {
-                    DebugOuputInputOutputGroup group;
-                    if(groups.TryGetValue(item.Group, out group))
+                    if(string.IsNullOrEmpty(result.GroupName))
                     {
-                        group.Items.Add(item);
+                        list.LineItems.Add(new DebugLineItem(result));
                     }
                     else
                     {
-                        group = new DebugOuputInputOutputGroup(item.Group);
-                        group.Items.Add(item);
-                        groups.Add(item.Group, group);
-                        destinationList.Add(group); // BUG 8104 - TASK 8126 : TWR - moved here to prevent duplicate outputs for recordsets with same GroupID
+                        DebugLineGroup group;
+                        if(!groups.TryGetValue(result.GroupName, out group))
+                        {
+                            group = new DebugLineGroup(result.GroupName);
+                            groups.Add(group.GroupName, group);
+                            list.LineItems.Add(group);
+                        }
+
+                        DebugLineGroupRow row;
+                        if(!group.Rows.TryGetValue(result.GroupIndex, out row))
+                        {
+                            row = new DebugLineGroupRow();
+                            group.Rows.Add(result.GroupIndex, row);
+                        }
+                        row.LineItems.Add(new DebugLineItem(result));
                     }
                 }
+
+                destinationList.Add(list);
             }
         }
 
