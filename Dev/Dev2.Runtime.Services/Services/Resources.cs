@@ -52,6 +52,10 @@ namespace Dev2.Runtime.Services
 
             var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
             var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
+            if(sourceType == enSourceType.Dev2Server)
+            {
+                names.Add("localhost"); // auto-added to studio on startup
+            }
             IterateFiles(new[] { RootFolders[sourceType] }, workspaceID, (delimiter, token, content) =>
             {
                 switch(delimiter.ID)
