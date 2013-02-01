@@ -23,7 +23,7 @@ namespace Dev2.Data.Tests.SystemTemplates
         // Invoke Decision Stack:
         //      No test coverage for FetchSwitchData in the Dev2DataListDecisionHandler - FIXED
         //      No tests for ExecuteDecisionStack for a Null DataList -- FIXED
-        //      No tests for Error decisionType - ? There is a workflow that test all the decision executions, I believe Barney sent an email ( 28/01/2013 ) to you asking for this to be included in the QA process
+        //      No tests for Error decisionType - ? There is a workflow that test all the decision executions, I believe Barney sent an email ( 28/01/2013 ) to you asking for this to be included in the QA process. We need to convert it with Trevors Util and make a quick integration test.
         //      No test for SystemModel to WebModel conversion with a null Dev2Decision - FIXED
         // Some of the tests do not have expected outcomes in there method names - FIXED
 
