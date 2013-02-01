@@ -241,14 +241,13 @@
             <TreeView.Resources>
                 
                 <DataTemplate x:Key="DebugLineItemTemplate">
-                    <Grid>
+                    <StackPanel>
                         <TextBlock Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
-                        <!--<TextBlock Grid.Row="1" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Hyperlink NavigateUri="{Binding MoreLink}" >
-                                <TextBlock Text="{Binding MoreText}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
-                            </Hyperlink>
-                        </TextBlock>-->
-                    </Grid>
+                        <!--<Hyperlink NavigateUri="{Binding MoreLink}" >
+                                <TextBlock Text="More..." Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
+                            </Hyperlink>-->
+                        <!--<TextBlock Text="{Binding MoreLink}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>-->
+                    </StackPanel>
                 </DataTemplate>
 
                 <DataTemplate x:Key="DebugLineGroupRowTemplate">
@@ -262,13 +261,15 @@
                 </DataTemplate>
 
                 <DataTemplate x:Key="DebugLineGroupTemplate">
-                    <Expander Header="{Binding GroupName}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID" Style="{StaticResource PlusMinusExpander}">
-                        <Grid>
-                            <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource DebugLineGroupRowTemplate}"/>
-                            </ScrollViewer>                            
-                        </Grid>
-                    </Expander>
+                    <StackPanel>
+                        <Expander Header="{Binding GroupName}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID" Style="{StaticResource PlusMinusExpander}">
+                            <Grid>
+                                <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource DebugLineGroupRowTemplate}"/>
+                                </ScrollViewer>
+                            </Grid>
+                        </Expander>
+                    </StackPanel>
                 </DataTemplate>
 
                 <Diagnostics:DebugLineTemplateSelector x:Key="DebugLineTemplateSelector" ItemTemplate="{StaticResource DebugLineItemTemplate}" GroupTemplate="{StaticResource DebugLineGroupTemplate}" />

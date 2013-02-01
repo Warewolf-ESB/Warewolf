@@ -107,7 +107,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         DebugLineGroup group;
                         if(!groups.TryGetValue(result.GroupName, out group))
                         {
-                            group = new DebugLineGroup(result.GroupName);
+                            group = new DebugLineGroup(result.GroupName)
+                            {
+                                MoreLink = item.MoreLink,
+                                MoreText = item.MoreText
+                            };
+
                             groups.Add(group.GroupName, group);
                             list.LineItems.Add(group);
                         }
