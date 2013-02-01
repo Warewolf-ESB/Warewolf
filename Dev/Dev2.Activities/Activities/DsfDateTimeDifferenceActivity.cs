@@ -183,47 +183,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Private Methods
 
-
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
 
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Start Date" });
             if (!string.IsNullOrEmpty(Input1))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Input1, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(Input1, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Start Date ";
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            results.Add(itemToAdd);
 
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "End Date" });
             if (!string.IsNullOrEmpty(Input2))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Input2, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(Input2, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " End Date ";
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            results.Add(itemToAdd);
 
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Input Format" });
             if (!string.IsNullOrEmpty(InputFormat))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(InputFormat, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(InputFormat, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Input Format ";
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            results.Add(itemToAdd);
 
-            if (!string.IsNullOrEmpty(OutputType))
-            {
-                results.Add(new DebugItem(" Output Type ", OutputType, null));
-            }
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Output in" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = OutputType });
+            results.Add(itemToAdd);
 
             return results;
         }

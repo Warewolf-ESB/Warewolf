@@ -98,44 +98,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-
-            //BUG 8104 : Refactor DebugItem
-            //var item = new DebugItem("Records", RecordsetName, string.Empty);
-            //result.Add(item);
-
-            //var rs = GetRecordSet(dataList, RecordsetName);
-            //string error;
-            //int index;
-            //Int32.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName), out index);
-            //if (index > 0)
-            //{
-            //    if (index < rs.FetchLastRecordsetIndex())
-            //    {
-            //        var record = rs.FetchRecordAt(index, out error);
-            //        // ReSharper disable LoopCanBeConvertedToQuery
-            //        foreach (var recordField in record)
-            //        // ReSharper restore LoopCanBeConvertedToQuery
-            //        {
-            //            result.Add(new DebugItem(index, recordField));
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    var idxItr = rs.FetchRecordsetIndexes();
-            //    while (idxItr.HasMore())
-            //    {
-            //        index = idxItr.FetchNextIndex();
-            //        var record = rs.FetchRecordAt(index, out error);
-            //        // ReSharper disable LoopCanBeConvertedToQuery
-            //        foreach (var recordField in record)
-            //        // ReSharper restore LoopCanBeConvertedToQuery
-            //        {
-            //            result.Add(new DebugItem(index, recordField));
-            //        }
-            //    }
-            //}
-
+            if (!string.IsNullOrEmpty(RecordsetName))
+            {
+                DebugItem itemToAdd = new DebugItem
+                    {
+                        new DebugItemResult {Type = DebugItemResultType.Label, Value = "Recordset"}
+                    };
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(RecordsetName, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                result.Add(itemToAdd);
+            }
             return result;
         }
 
@@ -146,10 +120,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //var theValue = GetValue(dataList, Result);
-
-            //result.Add(new DebugItem("Result", Result.ContainsSafe("[[") ? Result : null, (" = " + theValue)));
+            if (!string.IsNullOrEmpty(Result))
+            {
+                DebugItem itemToAdd = new DebugItem();
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(Result, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                result.Add(itemToAdd);
+            }
 
             return result;
         }

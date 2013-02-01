@@ -134,7 +134,7 @@
                                         <DataGrid x:Name="outputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataMappingViewModel.Outputs}">
                                             <DataGrid.Columns>
-                                                <DataGridTemplateColumn Header="To variable" Width="SizeToCells" MinWidth="65" IsReadOnly="False">
+                                                <DataGridTemplateColumn Header="From service" Width="SizeToCells" MinWidth="65" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Path=DisplayName}" TextTrimming="CharacterEllipsis">
@@ -145,7 +145,7 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Header="From service" Width="*" MinWidth="125"  IsReadOnly="False">
+                                                <DataGridTemplateColumn Header="To variable" Width="*" MinWidth="125"  IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <dev2:IntellisenseTextBox WrapInBrackets="True" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="OutputTxt_KeyUp"></dev2:IntellisenseTextBox>

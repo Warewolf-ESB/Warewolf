@@ -188,36 +188,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Look In Field" });
             if (!string.IsNullOrEmpty(InField))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(InField, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Field To Look In ";
-                    results.Add(debugItem);
-                }
+                itemToAdd.AddRange(CreateDebugItems(InField, dataList));
             }
+            results.Add(itemToAdd);
 
-            if (!string.IsNullOrEmpty(Index))
-            {
-                results.Add(new DebugItem(" Index To Find", Index, null));
-            }
+            itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Find" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Index });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Of" });
 
             if (!string.IsNullOrEmpty(Characters))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Characters, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Charecters To Look For ";
-                    results.Add(debugItem);
-                }
+                itemToAdd.AddRange(CreateDebugItems(Characters, dataList));
             }
+            results.Add(itemToAdd);
 
-            if (!string.IsNullOrEmpty(Direction))
-            {
-                results.Add(new DebugItem(" Direction To Search In ", Direction, null));
-            }
+            itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Direction" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Direction });
+            results.Add(itemToAdd);
 
             return results;
         }
@@ -225,14 +218,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
+            DebugItem itemToAdd = new DebugItem();
             if (!string.IsNullOrEmpty(Result))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Result, dataList))
-                {
-                    results.Add(debugItem);
-                }
+                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
             }
-
+            results.Add(itemToAdd);
             return results;
         }
 

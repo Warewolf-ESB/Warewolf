@@ -212,46 +212,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IList<IDebugItem> results = new List<IDebugItem>();
 
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Start Date" });
             if (!string.IsNullOrEmpty(DateTime))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(DateTime, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(DateTime, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = "Start Date " + debugItem.Label;
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            results.Add(itemToAdd);
 
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Input Format" });
             if (!string.IsNullOrEmpty(InputFormat))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(InputFormat, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(InputFormat, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = "Input Format " + debugItem.Label;
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            results.Add(itemToAdd);
 
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Add" });
             if (!string.IsNullOrEmpty(TimeModifierAmountDisplay))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(TimeModifierAmountDisplay, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(TimeModifierAmountDisplay, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = "Add Time " + debugItem.Label;
-                    //debugItem.Results[0].Value = debugItem.Results[0].Value + " " + TimeModifierType;
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = TimeModifierType });
+            results.Add(itemToAdd);
 
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Output Format" });
             if (!string.IsNullOrEmpty(OutputFormat))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(OutputFormat, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(OutputFormat, dataList))
                 {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = "Output Format " + debugItem.Label;
-                    results.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
             }
+            results.Add(itemToAdd);
+
             return results;
         }
 
@@ -260,10 +269,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<IDebugItem> results = new List<IDebugItem>();
             if (!string.IsNullOrEmpty(Result))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Result, dataList))
+                DebugItem itemToAdd = new DebugItem();
+
+                if (!string.IsNullOrEmpty(Result))
                 {
-                    results.Add(debugItem);
+                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(Result, dataList))
+                    {
+                        itemToAdd.Add(debugItemResult);
+                    }
                 }
+                results.Add(itemToAdd);
             }
             return results;
         }

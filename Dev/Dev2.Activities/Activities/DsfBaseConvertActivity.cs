@@ -188,52 +188,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //_debugItems = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression)).Select(c => c.FromExpression).ToArray();
 
-            //int indexNum = 1;
-            //foreach (BaseConvertTO baseConvertTo in ConvertCollection)
-            //{
-            //    if (!baseConvertTo.CanRemove())
-            //    {
-            //        string theValue;
-            //        if (DataListUtil.IsValueRecordset(baseConvertTo.FromExpression) && DataListUtil.GetRecordsetIndexType(baseConvertTo.FromExpression) == enRecordsetIndexType.Star)
-            //        {
-            //            results.Add(new DebugItem(indexNum.ToString() + " Convert ", null, null));
-            //            var fieldName = DataListUtil.ExtractFieldNameFromValue(baseConvertTo.FromExpression);
-            //            var recset = GetRecordSet(dataList, baseConvertTo.FromExpression);
-            //            var idxItr = recset.FetchRecordsetIndexes();
-            //            while (idxItr.HasMore())
-            //            {
-            //                string error;
-            //                var index = idxItr.FetchNextIndex();
-            //                var record = recset.FetchRecordAt(index, out error);
-            //                // ReSharper disable LoopCanBeConvertedToQuery
-            //                foreach (var recordField in record)
-            //                // ReSharper restore LoopCanBeConvertedToQuery
-            //                {
-            //                    if (string.IsNullOrEmpty(fieldName) ||
-            //                        recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-            //                    {
-            //                        results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-            //                        {
-            //                            Group = baseConvertTo.FromExpression
-            //                        });
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            theValue = GetValue(dataList, baseConvertTo.FromExpression);
-            //            results.Add(new DebugItem(indexNum.ToString() + " Convert ", baseConvertTo.FromExpression,
-            //                                      "= " + theValue));
-            //        }
-            //        results.Add(new DebugItem(indexNum.ToString() + " From ", baseConvertTo.FromType, null));
-            //        results.Add(new DebugItem(indexNum.ToString() + " To ", baseConvertTo.ToType, null));
-            //        indexNum++;
-            //    }
-            //}
+            int indexCounter = 1;
+            foreach (BaseConvertTO baseConvertTo in ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression)))
+            {
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Convert" });
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(baseConvertTo.FromExpression, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "From" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = baseConvertTo.FromType });
+
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "To" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = baseConvertTo.ToType });
+
+                results.Add(itemToAdd);
+                indexCounter++;
+            }
 
             return results;
         }
@@ -241,42 +216,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //foreach (string outputExpression in _debugItems)
-            //{
-            //    string theValue;
-            //    if (DataListUtil.IsValueRecordset(outputExpression) && DataListUtil.GetRecordsetIndexType(outputExpression) == enRecordsetIndexType.Star)
-            //    {
-            //        int indexNum = 1;
-            //        var fieldName = DataListUtil.ExtractFieldNameFromValue(outputExpression);
-            //        var recset = GetRecordSet(dataList, outputExpression);
-            //        var idxItr = recset.FetchRecordsetIndexes();
-            //        while (idxItr.HasMore())
-            //        {
-            //            string error;
-            //            var index = idxItr.FetchNextIndex();
-            //            var record = recset.FetchRecordAt(index, out error);
-            //            // ReSharper disable LoopCanBeConvertedToQuery
-            //            foreach (var recordField in record)
-            //            // ReSharper restore LoopCanBeConvertedToQuery
-            //            {
-            //                if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-            //                {
-            //                    results.Add(new DebugItem(indexNum.ToString(), DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), " = " + recordField.TheValue)
-            //                        {
-            //                            Group = outputExpression
-            //                        });
-            //                }
-            //            }
-            //            indexNum++;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        theValue = GetValue(dataList, outputExpression);
-            //        results.Add(new DebugItem(string.Empty, outputExpression, "= " + theValue));
-            //    }
-            //}
+            int indexCounter = 1;
+            foreach (BaseConvertTO baseConvertTo in ConvertCollection)
+            {
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(baseConvertTo.ToExpression, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                results.Add(itemToAdd);
+                indexCounter++;
+            }
 
             return results;
         }

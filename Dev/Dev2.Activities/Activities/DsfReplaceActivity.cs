@@ -149,40 +149,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
+            results.Add(itemToAdd);
             IList<string> fieldsList = FieldsToSearch.Split(',');
             if (fieldsList.Count > 0)
             {
                 foreach (string s in fieldsList)
                 {
-                    foreach (IDebugItem debugItem in CreateDebugItems(s, dataList))
-                    {
-                        // BUG 8104 : Refactor DebugItem
-                        //debugItem.Label = debugItem.Label + " Lookin ";
-                        results.Add(debugItem);
-                    }
+                    itemToAdd = new DebugItem();
+                    itemToAdd.AddRange(CreateDebugItems(s, dataList));
+                    results.Add(itemToAdd);
                 }
             }
 
-            if (!string.IsNullOrEmpty(Find))
-            {
-                foreach (IDebugItem debugItem in CreateDebugItems(Find, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Find ";
-                    results.Add(debugItem);
-                }
-            }
+            itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Find" });
+            itemToAdd.AddRange(CreateDebugItems(Find, dataList));
+            results.Add(itemToAdd);
 
-            if (!string.IsNullOrEmpty(ReplaceWith))
-            {
-                foreach (IDebugItem debugItem in CreateDebugItems(ReplaceWith, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Replace With ";
-                    results.Add(debugItem);
-                }
-            }
+            itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Replace With" });
+            itemToAdd.AddRange(CreateDebugItems(ReplaceWith, dataList));
+            results.Add(itemToAdd);
 
             return results;
         }
@@ -193,10 +182,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (!string.IsNullOrEmpty(Result))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Result, dataList))
-                {
-                    results.Add(debugItem);
-                }
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
+                results.Add(itemToAdd);
             }
 
             return results;

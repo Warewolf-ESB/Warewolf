@@ -813,19 +813,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Create Debug Item
 
-        public IList<IDebugItem> CreateDebugItems(string expression, IBinaryDataList dataList)
+        public IList<IDebugItemResult> CreateDebugItems(string expression, IBinaryDataList dataList)
         {
-            IList<IDebugItem> results = new List<IDebugItem>();
+            IList<IDebugItemResult> results = new List<IDebugItemResult>();
 
 
             if (!string.IsNullOrEmpty(expression))
             {
+                if (!expression.ContainsSafe("[["))
+                {
+                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = expression });
+                    return results;
+                }
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
                 string error;
                 IBinaryDataListEntry entry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
                 string initExpression = expression;
-                string theValue;
 
                 if (entry.IsRecordset)
                 {
@@ -836,6 +840,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         expression = expression.Insert(expression.IndexOf(')'), GlobalConstants.StarExpression);
                         indexType = DataListUtil.GetRecordsetIndexType(expression);
+                        entry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
                     }
                     if (indexType == enRecordsetIndexType.Numeric)
                     {
@@ -845,7 +850,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IList<IBinaryDataListItem> row = entry.FetchRecordAt(recsetIndex, out error);
                         foreach (IBinaryDataListItem binaryDataListItem in row)
                         {
-                            results.Add(new DebugItem("", binaryDataListItem.DisplayValue, binaryDataListItem.TheValue));
+                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(binaryDataListItem.DisplayValue) });
+                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = binaryDataListItem.TheValue });
                         }
                     }
                     else
@@ -863,13 +870,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (string.IsNullOrEmpty(fieldName) ||
                                     recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    results.Add(new DebugItem(null,
-                                                              DataListUtil.AddBracketsToValueIfNotExist(
-                                                                  recordField.DisplayValue),
-                                                              " = " + recordField.TheValue)
-                                        {
-                                            Group = initExpression
-                                        });
+                                    DebugItem itemToAdd = new DebugItem();
+                                    if (indexType == enRecordsetIndexType.Star)
+                                    {
+                                        string recsetName = DataListUtil.CreateRecordsetDisplayValue(entry.Namespace,
+                                                                                                     recordField
+                                                                                                         .FieldName,
+                                                                                                     index.ToString());
+                                        recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
+                                        itemToAdd.Group = initExpression;
+                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
+                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
+                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = recordField.TheValue, GroupName = initExpression, GroupIndex = index });
+                                    }
+                                    else
+                                    {
+                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue) });
+                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = recordField.TheValue });
+                                    }
                                 }
                             }
                         }
@@ -878,12 +897,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     IBinaryDataListItem item = entry.FetchScalar();
-                    results.Add(new DebugItem(null, expression,
-                                              item.TheValue));
+                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = expression });
+                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = item.TheValue });
                 }
             }
             return results;
         }
+
+        #endregion
+
+        #region Private Methods
+
+
 
         #endregion
     }

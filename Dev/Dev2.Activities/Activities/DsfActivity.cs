@@ -2,9 +2,11 @@
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Network.Execution;
 using System;
 using System.Activities;
+using System.Collections;
 using System.Collections.Generic;
 using Unlimited.Framework;
 
@@ -27,7 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfActivity(string toolboxFriendlyName, string iconPath, string serviceName, string dataTags, string resultValidationRequiredTags, string resultValidationExpression)
             : base(serviceName)
         {
-            if(string.IsNullOrEmpty(serviceName))
+            if (string.IsNullOrEmpty(serviceName))
             {
                 throw new ArgumentNullException("serviceName");
             }
@@ -163,7 +165,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
 
-                if(dataObject.IsDataListScoped)
+                if (dataObject.IsDataListScoped)
                 {
                     // we need to manually manage stuff from there for foreach invoke
                     executionID = compiler.Shape(executionID, enDev2ArgumentType.Input, InputMapping, out errors);
@@ -176,10 +178,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 // Bind service name
                 string executionServiceName = string.Empty;
-                if(!string.IsNullOrEmpty(ServiceName))
+                if (!string.IsNullOrEmpty(ServiceName))
                 {
                     // ghost service ;)
-                    if(DataListUtil.IsEvaluated(ServiceName))
+                    if (DataListUtil.IsEvaluated(ServiceName))
                     {
                         // Re-assign the executionID since we need all the data!!!
                         ghostID = compiler.FetchParentID(executionID);
@@ -238,14 +240,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         dataObject
                 );
 
-                if(!DeferExecution)
+                if (!DeferExecution)
                 {
 
                     // In all cases the ShapeOutput will have merged the execution data up into the current
                     Guid result = GlobalConstants.NullDataListID;
                     ErrorResultTO tmpErrors = new ErrorResultTO();
 
-                    if(workspaceChannel == null)
+                    if (workspaceChannel == null)
                     {
                         throw new Exception("FATAL ERROR : Null workspace channel!!");
                         //result = binder.InvokeDsfService(instruction, uri, executionID);
@@ -264,12 +266,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     bool whereErrors = compiler.HasErrors(executionID);
 
-                    if(!whereErrors)
+                    if (!whereErrors)
                     {
                         string entry = compiler.EvaluateSystemEntry(executionID, enSystemTag.FormView, out errors);
                         allErrors.MergeErrors(errors);
 
-                        if(entry != string.Empty)
+                        if (entry != string.Empty)
                         {
                             createResumptionPoint = true;
                             //compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
@@ -281,7 +283,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
 
-                    if((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
+                    if ((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
                     {
                         dataObject.ServiceName = ServiceName;
                         dataObject.ParentServiceName = ParentServiceName;
@@ -305,7 +307,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         // Travis.Frisinger - 24.07.2012, Brendon.Page - 2012-12-03 Moved here because this logic only should run if not being bookmarked
-                        if(result == GlobalConstants.NullDataListID || result != dataObject.DataListID)
+                        if (result == GlobalConstants.NullDataListID || result != dataObject.DataListID)
                         {
                             allErrors.AddError("Failed to execute instruction [ " + instruction + " ] DataListID [ " + dataObject.DataListID + " ]");
                         }
@@ -315,7 +317,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.DataListID = parentID;
                         }
 
-                        if(dataObject.IsDataListScoped)
+                        if (dataObject.IsDataListScoped)
                         {
                             compiler.Shape(executionID, enDev2ArgumentType.Output_Append_Style, OutputMapping, out errors);
                             allErrors.MergeErrors(errors);
@@ -338,10 +340,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if(!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
+                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
                 {
                     // Handle Errors
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         string err = DisplayAndWriteError("DsfBaseActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
@@ -384,10 +386,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             string inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
             string inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
-            if(!errors.HasErrors())
+            if (!errors.HasErrors())
             {
                 Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
-                if(!errors.HasErrors())
+                if (!errors.HasErrors())
                 {
                     result = compiler.FetchBinaryDataList(dlID, out errors);
                 }
@@ -414,10 +416,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             string outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
             string outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
-            if(!errors.HasErrors())
+            if (!errors.HasErrors())
             {
                 Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
-                if(!errors.HasErrors())
+                if (!errors.HasErrors())
                 {
                     result = compiler.FetchBinaryDataList(dlID, out errors);
                 }
@@ -450,6 +452,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Overridden ActivityAbstact Methods
 
+        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        {
+
+            IDev2LanguageParser parser = DataListFactory.CreateInputParser();
+            IList<IDev2Definition> inputs = parser.Parse(InputMapping);
+
+            IList<IDebugItem> results = new List<IDebugItem>();
+            foreach (IDev2Definition dev2Definition in inputs)
+            {
+                string displayName = dev2Definition.Name;
+                if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                {
+                    displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
+                }
+                DebugItem itemToAdd = new DebugItem
+                    {
+                        new DebugItemResult {Type = DebugItemResultType.Label, Value = displayName},                        
+                    };
+                itemToAdd.AddRange(CreateDebugItems(dev2Definition.RawValue, dataList));
+                results.Add(itemToAdd);
+            }
+
+            return results;
+        }
+
+        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        {
+            IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
+            IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
+
+            IList<IDebugItem> results = new List<IDebugItem>();
+            foreach (IDev2Definition dev2Definition in inputs)
+            {
+                DebugItem itemToAdd = new DebugItem
+                    {
+                        new DebugItemResult {Type = DebugItemResultType.Label, Value = dev2Definition.Name},                        
+                    };
+
+                itemToAdd.AddRange(CreateDebugItems(dev2Definition.RawValue, dataList));
+                results.Add(itemToAdd);
+            }
+
+            return results;
+        }
+
+        #region Get ForEach Input/Output Updates
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             throw new NotImplementedException();
@@ -459,5 +508,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

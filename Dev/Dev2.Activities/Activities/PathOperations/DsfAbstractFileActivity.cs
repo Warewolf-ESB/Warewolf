@@ -176,15 +176,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string labelVal = string.IsNullOrEmpty(inputAttribs[0].UserVisibleName) ? string.Empty : (" " + inputAttribs[0].UserVisibleName + " ");
                 var val = propertyInfo.GetValue(this, null) as String;
 
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelVal });
                 if (!string.IsNullOrEmpty(val))
                 {
-                    foreach (IDebugItem debugItem in CreateDebugItems(val, dataList))
-                    {
-                        // BUG 8104 : Refactor DebugItem
-                        //debugItem.Label = debugItem.Label + labelVal;
-                        results.Add(debugItem);
-                    }
+                    itemToAdd.AddRange(CreateDebugItems(val, dataList));
                 }
+                results.Add(itemToAdd);
             }
 
             return results;
@@ -207,15 +205,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var val = propertyInfo.GetValue(this, null) as String;
 
+                DebugItem itemToAdd = new DebugItem();
                 if (!string.IsNullOrEmpty(val))
                 {
-                    foreach (IDebugItem debugItem in CreateDebugItems(val, dataList))
-                    {
-                        // BUG 8104 : Refactor DebugItem
-                        //debugItem.Label = debugItem.Label;
-                        results.Add(debugItem);
-                    }
+                    itemToAdd.AddRange(CreateDebugItems(val, dataList));
                 }
+                results.Add(itemToAdd);
             }
 
             return results;

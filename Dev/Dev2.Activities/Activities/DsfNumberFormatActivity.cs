@@ -145,55 +145,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IList<IDebugItem> results = new List<IDebugItem>();
 
+            DebugItem itemToAdd = new DebugItem();
             if (!string.IsNullOrEmpty(Expression))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Expression, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Number To Format ";
-                    results.Add(debugItem);
-                }
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Number To Format" });
+                itemToAdd.AddRange(CreateDebugItems(Expression, dataList));
             }
+            results.Add(itemToAdd);
 
-            if (!string.IsNullOrEmpty(RoundingType))
-            {
-                results.Add(new DebugItem(" Rounding Type ", RoundingType, null));
-            }
+            itemToAdd = new DebugItem();
 
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Type" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = RoundingType });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Decimal Places" });
             if (!string.IsNullOrEmpty(RoundingDecimalPlaces))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(RoundingDecimalPlaces, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Rounding Decimal Places ";
-                    results.Add(debugItem);
-                }
+                itemToAdd.AddRange(CreateDebugItems(RoundingDecimalPlaces, dataList));
             }
+            results.Add(itemToAdd);
 
+            itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Decimals To Show" });
             if (!string.IsNullOrEmpty(DecimalPlacesToShow))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(DecimalPlacesToShow, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = debugItem.Label + " Decimal Places To Show ";
-                    results.Add(debugItem);
-                }
+                itemToAdd.AddRange(CreateDebugItems(DecimalPlacesToShow, dataList));
             }
-
+            results.Add(itemToAdd);
             return results;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
-
+            DebugItem itemToAdd = new DebugItem();
             if (!string.IsNullOrEmpty(Result))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Result, dataList))
-                {
-                    results.Add(debugItem);
-                }
+                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
             }
+            results.Add(itemToAdd);
             return results;
         }
 

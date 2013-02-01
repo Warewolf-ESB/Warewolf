@@ -28,7 +28,7 @@ namespace Dev2.Diagnostics
             if(!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
-            }
+        }
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace Dev2.Diagnostics
         /// <param name="writer">The writer to which this instance is written.</param>
         public void Write(IDebugWriter writer)
         {
-            if(writer == null)
+            if (writer == null)
             {
                 return;
             }
@@ -210,12 +210,12 @@ namespace Dev2.Diagnostics
 
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
-            for(var i = 0; i < items.Count; i++)
+            for (var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].MoreText);
                 writer.Write(items[i].MoreLink);
                 writer.Write(items[i].Count);
-                for(var j = 0; j < items[i].Count; j++)
+                for (var j = 0; j < items[i].Count; j++)
                 {
                     var itemResult = items[i][j];
                     writer.Write((int)itemResult.Type);
@@ -230,15 +230,17 @@ namespace Dev2.Diagnostics
         static void Deserialize(IByteReaderBase reader, ICollection<IDebugItem> items)
         {
             var count = reader.ReadInt32();
-            for(var i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var item = new DebugItem
                 {
                     MoreText = reader.ReadString(),
                     MoreLink = reader.ReadString()
                 };
+
+                //Add stuff for SentanceId : TWR
                 var resultCount = reader.ReadInt32();
-                for(var j = 0; j < resultCount; j++)
+                for (var j = 0; j < resultCount; j++)
                 {
                     item.Add(new DebugItemResult
                     {

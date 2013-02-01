@@ -39,6 +39,7 @@ namespace Dev2.Common
         public const string ActivityRSResult = "Dev2ActivityResults";
         public const string ActivityRSField = "Dev2Result";
         public const string StarExpression = "*";
+        public const string EqualsExpression = "=";
         public const int AllIndexes = -1;
         public static readonly Guid NullDataListID = Guid.Empty;
         public const string OkExeResult = "<Dev2Status>Ok</Dev2Status>";

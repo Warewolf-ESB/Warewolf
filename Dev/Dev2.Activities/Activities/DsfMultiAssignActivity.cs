@@ -9,6 +9,7 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 // ReSharper disable CheckNamespace
@@ -180,70 +181,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
+            int indexCounter = 1;
+            foreach (ActivityDTO activityDto in FieldsCollection.Where(c => !c.CanRemove()))
+            {
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = activityDto.FieldName });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
 
-            //BUG 8104 : Refactor DebugItem
-            //for (var i = 0; i < FieldsCollection.Count; i++)
-            //{
-            //    var field = FieldsCollection[i];
-            //    if (string.IsNullOrEmpty(field.FieldName))
-            //    {
-            //        continue;
-            //    }
-
-            //    var isFieldValueAVariable = field.FieldValue.ContainsSafe("[[");
-            //    var variable = isFieldValueAVariable ? field.FieldValue : field.FieldName;
-            //    var theValue = GetValue(dataList, variable);
-            //    if (theValue == null && isFieldValueAVariable)
-            //    {
-            //        theValue = GetValue(dataList, field.FieldName);
-            //    }
-            //    if (theValue != null)
-            //    {
-            //        if (isFieldValueAVariable)
-            //        {
-            //            variable = variable.Replace("!~calculation~!", "").Replace("!~~calculation~!", "");
-            //        }
-            //        var item = new DebugItem
-            //        {
-            //            Label = (i + 1).ToString(CultureInfo.InvariantCulture)
-            //        };
-            //        item.Results.AddRange(new[]
-            //        {
-            //            new DebugItemResult { Variable = field.FieldName },
-            //            new DebugItemResult { Variable = isFieldValueAVariable ? ("= " + variable) : null, Value = ("= " + theValue)}
-            //        });
-
-            //        result.Add(item);
-            //    }
-
-            //    if (DataListUtil.IsValueRecordset(field.FieldValue) &&
-            //        DataListUtil.GetRecordsetIndexType(field.FieldValue) == enRecordsetIndexType.Star)
-            //    {
-            //        result.Add(new DebugItem((i + 1).ToString(), field.FieldName, "= "));
-            //        var fieldName = DataListUtil.ExtractFieldNameFromValue(field.FieldValue);
-            //        var recset = GetRecordSet(dataList, field.FieldValue);
-            //        var idxItr = recset.FetchRecordsetIndexes();
-            //        while (idxItr.HasMore())
-            //        {
-            //            string error;
-            //            var index = idxItr.FetchNextIndex();
-            //            var record = recset.FetchRecordAt(index, out error);
-            //            // ReSharper disable LoopCanBeConvertedToQuery
-            //            foreach (var recordField in record)
-            //            // ReSharper restore LoopCanBeConvertedToQuery
-            //            {
-            //                if (string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-            //                {
-            //                    result.Add(new DebugItem(index, recordField)
-            //                    {
-            //                        Group = variable
-            //                    });
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(activityDto.FieldValue, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                indexCounter++;
+                result.Add(itemToAdd);
+            }
             return result;
         }
 

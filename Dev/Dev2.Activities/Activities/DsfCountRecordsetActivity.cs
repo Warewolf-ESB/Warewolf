@@ -156,11 +156,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (!string.IsNullOrEmpty(RecordsetName))
             {
-                result.Add(new DebugItem("Recordset", RecordsetName, null));
-                foreach (IDebugItem debugItem in CreateDebugItems(RecordsetName, dataList))
+                DebugItem itemToAdd = new DebugItem("Recordset", RecordsetName, null);
+
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(RecordsetName, dataList))
                 {
-                    result.Add(debugItem);
+                    itemToAdd.Add(debugItemResult);
                 }
+                result.Add(itemToAdd);
             }
             return result;
         }
@@ -172,11 +174,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //var rs = GetRecordSet(dataList, RecordsetName);
-            //var count = rs.FetchLastRecordsetIndex();
 
-            //result.Add(new DebugItem(null, CountNumber, " = " + count.ToString(CultureInfo.InvariantCulture)));
+            if (!string.IsNullOrEmpty(CountNumber))
+            {
+                DebugItem itemToAdd = new DebugItem();
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(CountNumber, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                result.Add(itemToAdd);
+            }
 
             return result;
         }

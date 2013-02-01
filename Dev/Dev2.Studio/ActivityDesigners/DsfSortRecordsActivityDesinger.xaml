@@ -9,8 +9,8 @@
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:IIDev2="clr-namespace:Dev2.Studio.InterfaceImplementors"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    MaxWidth="200"
-    Width="200">
+    MaxWidth="220"
+    Width="220">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

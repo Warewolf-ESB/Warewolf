@@ -10,6 +10,7 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -89,7 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 CleanArguments(ResultsCollection);
 
-                if(ResultsCollection.Count > 0)
+                if (ResultsCollection.Count > 0)
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, SourceString, false, out errors);
                     allErrors.MergeErrors(errors);
@@ -101,12 +102,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     // TODO : Properly fetch the total number of executions....?
 
-                    while(itr.HasMoreRecords())
+                    while (itr.HasMoreRecords())
                     {
                         IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                        foreach(IBinaryDataListItem c in cols)
+                        foreach (IBinaryDataListItem c in cols)
                         {
-                            if(!string.IsNullOrEmpty(c.TheValue))
+                            if (!string.IsNullOrEmpty(c.TheValue))
                             {
                                 IDev2Tokenizer tokenizer = CreateSplitPattern(c.TheValue, ResultsCollection, compiler, executionId);
                                 int opCnt = 0;
@@ -114,7 +115,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 ActivityUpsertTO result = new ActivityUpsertTO();
                                 int end = (ResultsCollection.Count - 1);
 
-                                while(tokenizer.HasMoreOps() && opCnt < iterNumber)
+                                while (tokenizer.HasMoreOps() && opCnt < iterNumber)
                                 {
 
                                     string tmp = tokenizer.NextToken();
@@ -122,7 +123,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);
 
                                     // Per pass
-                                    if(pos == end)
+                                    if (pos == end)
                                     {
                                         pos = 0;
                                         opCnt++;
@@ -146,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -154,7 +155,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     string err = DisplayAndWriteError("DsfDataSplitActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
@@ -172,9 +173,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string error = string.Empty;
             dtb.ToTokenize = StringToSplit;
 
-            for(int i = 0; i < Args.Count; i++)
+            for (int i = 0; i < Args.Count; i++)
             {
-                switch(Args[i].SplitType)
+                switch (Args[i].SplitType)
                 {
                     case "Index":
                         try
@@ -182,12 +183,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             IBinaryDataListEntry entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
                             string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             int indexNum = Convert.ToInt32(index);
-                            if(indexNum > 0)
+                            if (indexNum > 0)
                             {
                                 dtb.AddIndexOp(indexNum);
                             }
                         }
-                        catch(Exception) { }
+                        catch (Exception) { }
                         break;
 
                     case "End":
@@ -203,22 +204,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         break;
 
                     case "New Line":
-                        if(StringToSplit.Contains("\r\n"))
+                        if (StringToSplit.Contains("\r\n"))
                         {
                             dtb.AddTokenOp("\r\n", Args[i].Include);
                         }
-                        else if(StringToSplit.Contains("\n"))
+                        else if (StringToSplit.Contains("\n"))
                         {
                             dtb.AddTokenOp("\n", Args[i].Include);
                         }
-                        else if(StringToSplit.Contains("\r"))
+                        else if (StringToSplit.Contains("\r"))
                         {
                             dtb.AddTokenOp("\r", Args[i].Include);
                         }
                         break;
 
                     case "Chars":
-                        if(!string.IsNullOrEmpty(Args[i].At))
+                        if (!string.IsNullOrEmpty(Args[i].At))
                         {
                             IBinaryDataListEntry entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
                             string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
@@ -234,9 +235,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void CleanArguments(IList<DataSplitDTO> Args)
         {
             int count = 0;
-            while(count < Args.Count)
+            while (count < Args.Count)
             {
-                if(Args[count].SplitType == "Index" && string.IsNullOrEmpty(Args[count].At) || Args[count].SplitType == "Chars" && string.IsNullOrEmpty(Args[count].At))
+                if (Args[count].SplitType == "Index" && string.IsNullOrEmpty(Args[count].At) || Args[count].SplitType == "Chars" && string.IsNullOrEmpty(Args[count].At))
                 {
                     Args.RemoveAt(count);
                 }
@@ -261,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             result.TryCreateScalarTemplate(string.Empty, "ReverseOrder", string.Empty, true, out error);
             result.TryCreateScalarValue(ReverseOrder.ToString(), "ReverseOrder", out error);
             result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach(DataSplitDTO item in ResultsCollection)
+            foreach (DataSplitDTO item in ResultsCollection)
             {
                 result.TryCreateRecordsetValue(item.SplitType, "SplitType", recordsetName, item.IndexNumber, out error);
                 result.TryCreateRecordsetValue(item.At, "At", recordsetName, item.IndexNumber, out error);
@@ -280,32 +281,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-
-            if(!string.IsNullOrEmpty(SourceString))
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "String To Split" });
+            foreach (IDebugItemResult debugItemResult in CreateDebugItems(SourceString, dataList))
             {
-                foreach(IDebugItem debugItem in CreateDebugItems(SourceString, dataList))
-                {
-                    // BUG 8104 : Refactor DebugItem
-                    //debugItem.Label = "String To Split " + debugItem.Label;
-                    result.Add(debugItem);
-                }
+                itemToAdd.Add(debugItemResult);
             }
-
-            foreach(DataSplitDTO dataSplitDto in ResultsCollection)
+            result.Add(itemToAdd);
+            int indexToShow = 1;
+            foreach (DataSplitDTO dataSplitDto in ResultsCollection)
             {
-                if(!string.IsNullOrEmpty(dataSplitDto.OutputVariable) || ((dataSplitDto.At == "Index" || dataSplitDto.At == "Chars") && string.IsNullOrEmpty(dataSplitDto.At)))
+                itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Split Using" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = dataSplitDto.SplitType });
+                if (!string.IsNullOrEmpty(dataSplitDto.At))
                 {
-                    result.Add(new DebugItem("Split using", dataSplitDto.SplitType, null));
-                    if(dataSplitDto.SplitType == "Index" || dataSplitDto.SplitType == "Chars")
+                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.At, dataList))
                     {
-                        foreach(IDebugItem debugItem in CreateDebugItems(dataSplitDto.At, dataList))
-                        {
-                            // BUG 8104 : Refactor DebugItem
-                            //debugItem.Label = "At " + debugItem.Label;
-                            result.Add(debugItem);
-                        }
+                        itemToAdd.Add(debugItemResult);
                     }
                 }
+                result.Add(itemToAdd);
+                indexToShow++;
             }
             return result;
         }
@@ -318,17 +316,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            for(var i = 0; i < ResultsCollection.Count; i++)
+            int indexToShow = 1;
+            foreach (DataSplitDTO dataSplitDto in ResultsCollection)
             {
-                var field = ResultsCollection[i];
-
-                if(!string.IsNullOrEmpty(field.OutputVariable))
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
+                if (!string.IsNullOrEmpty(dataSplitDto.OutputVariable))
                 {
-                    foreach(IDebugItem debugItem in CreateDebugItems(field.OutputVariable, dataList))
+                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.OutputVariable, dataList))
                     {
-                        result.Add(debugItem);
+                        itemToAdd.Add(debugItemResult);
                     }
                 }
+                result.Add(itemToAdd);
+                indexToShow++;
             }
             return result;
         }
@@ -341,18 +342,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach(Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
                 var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t.Item1));
 
                 // issues updates
-                foreach(var a in items)
+                foreach (var a in items)
                 {
                     a.At = t.Item2;
                 }
 
-                if(SourceString == t.Item1)
+                if (SourceString == t.Item1)
                 {
                     SourceString = t.Item2;
                 }
@@ -361,13 +362,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach(Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
                 var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t.Item1));
 
                 // issues updates
-                foreach(var a in items)
+                foreach (var a in items)
                 {
                     a.OutputVariable = t.Item2;
                 }

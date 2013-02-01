@@ -56,24 +56,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string rawRecsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, SortField);
                 string sortField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, SortField);
 
-                bool descOrder = false;
-
-                if (String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Forward"))
-                {
-                    descOrder = false;
-                }
-                else
-                {
-                    descOrder = true;
-                }
+                bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
 
                 // Travis.Frisinger : New Stuff....
                 if (!string.IsNullOrEmpty(rawRecsetName))
                 {
-                    string fetchStr = string.Empty;
-
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
-                    fetchStr = DataListUtil.AddBracketsToValueIfNotExist(rawRecsetName + "(*)");
                     IBinaryDataListEntry rsData;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
                     allErrors.AddError(error);
@@ -167,12 +155,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
+            DebugItem itemToAdd;
+            if (!string.IsNullOrEmpty(SortField))
+            {
+                itemToAdd = new DebugItem
+                    {
+                        new DebugItemResult {Type = DebugItemResultType.Label, Value = "Sort Field"}
+                    };
 
-            //BUG 8104 : Refactor DebugItem
-            //var theValue = GetValue(dataList, SortField);
-            //result.Add(new DebugItem("Sort Field", null, null));
-            //result.AddRange(GetDebugOutputs(dataList));
-            //result.Add(new DebugItem("Sort Order", null, SelectedSort));
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(SortField, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                result.Add(itemToAdd);
+            }
+            itemToAdd = new DebugItem
+                {
+                    new DebugItemResult {Type = DebugItemResultType.Label, Value = "Sort Order"},
+                    new DebugItemResult {Type = DebugItemResultType.Value, Value = SelectedSort}
+                };
+            result.Add(itemToAdd);
 
             return result;
         }
@@ -184,28 +186,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //var fieldName = DataListUtil.ExtractFieldNameFromValue(SortField);
-            //var rs = GetRecordSet(dataList, SortField);
-            //var idxItr = rs.FetchRecordsetIndexes();
-            //while (idxItr.HasMore())
-            //{
-            //    string error;
-            //    var index = idxItr.FetchNextIndex();
-            //    var record = rs.FetchRecordAt(index, out error);
-            //    // ReSharper disable LoopCanBeConvertedToQuery
-            //    foreach (var recordField in record)
-            //    // ReSharper restore LoopCanBeConvertedToQuery
-            //    {
-            //        if (recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-            //        {
-            //            result.Add(new DebugItem(index, recordField)
-            //            {
-            //                Group = SortField
-            //            });
-            //        }
-            //    }
-            //}
+            if (!string.IsNullOrEmpty(SortField))
+            {
+                DebugItem itemToAdd = new DebugItem();
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(SortField, dataList))
+                {
+                    itemToAdd.Add(debugItemResult);
+                }
+                result.Add(itemToAdd);
+            }
 
             return result;
         }
