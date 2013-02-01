@@ -1182,7 +1182,7 @@ namespace Dev2.Studio
 
             debugTO = new DebugTO
                 {
-                    DataList = input.ResourceModel.DataList,
+                    DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList) ? input.ResourceModel.DataList : "<DataList></DataList>",//Bug 8363 & Bug 8018
                     ServiceName = input.ResourceModel.ResourceName,
                     WorkflowID = input.ResourceModel.ResourceName,
                     WorkflowXaml = input.ResourceModel.WorkflowXaml,
