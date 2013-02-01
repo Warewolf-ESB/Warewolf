@@ -262,7 +262,7 @@
                 </DataTemplate>
 
                 <DataTemplate x:Key="DebugLineGroupTemplate">
-                    <Expander Header="{Binding GroupName}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID">
+                    <Expander Header="{Binding GroupName}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID" Style="{StaticResource PlusMinusExpander}">
                         <Grid>
                             <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                                 <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource DebugLineGroupRowTemplate}"/>
