@@ -35,6 +35,7 @@ using System.Threading;
 using System.Security.Principal;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 
 
 namespace Dev2.CodedUI.Tests
@@ -308,7 +309,36 @@ namespace Dev2.CodedUI.Tests
 
         #region Add Server Tests
 
-        // Bugs 8394 and related need to be fixed before this is done
+        [TestMethod]
+        public void NewServer_SaveConnectionWithInvalidName_Expected_SaveWindowDoesNotAppear()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClickNewServerButton();
+            NewServerUIMap.EnterServerAddress("http://www.google.co.za/dsf");
+            NewServerUIMap.ClickSaveConnection();
+            string result = NewServerUIMap.SaveWindow_EnterNameText_Return_NameText("test");
+            if (result != "test")
+            {
+                NewServerUIMap.SaveWindow_ClickCancel();
+                NewServerUIMap.CloseWindow();
+                Assert.Fail("The save window did not appear!");
+            }
+            NewServerUIMap.SaveWindow_ClickCancel();
+            NewServerUIMap.ClearServerAddress();
+            NewServerUIMap.EnterServerAddress("invalidName");
+            NewServerUIMap.ClickSaveConnection();
+            result = NewServerUIMap.SaveWindow_EnterNameText_Return_NameText("test");
+            if (result == "test")
+            {
+                Assert.Fail("The save window appeared with an invalid Server name!");
+            }
+            NewServerUIMap.CloseWindow();
+            if (NewServerUIMap.IsNewServerWindowOpen())
+            {
+                Assert.Fail("The New Server window was unable to close!");
+            }
+
+        }
 
         #endregion Add Server Tests
 
@@ -2748,6 +2778,25 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Feedback UI Map
 
+        #region New Server UI Map
+
+        public NewServerUIMap NewServerUIMap
+        {
+            get
+            {
+                if (_newServerUIMap == null)
+                {
+                    _newServerUIMap = new NewServerUIMap();
+                }
+
+                return _newServerUIMap;
+            }
+        }
+
+        private NewServerUIMap _newServerUIMap;
+
+        #endregion Database Wizard UI Map
+        
         #region Plugin Wizard UI Map
 
         public PluginServiceWizardUIMap PluginServiceWizardUIMap

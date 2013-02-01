@@ -18,6 +18,14 @@
     
     public partial class ExplorerUIMap
     {
+        public void ClickNewServerButton()
+        {
+            UITestControl explorerPane = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
+            UITestControl browseButton = new UITestControl();
+            browseButton = explorerPane.GetChildren()[6].GetChildren()[0].GetChildren()[2];
+            Mouse.Click(browseButton, new Point(5, 5));
+        }
+
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
