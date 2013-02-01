@@ -29,6 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
         {
+
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
@@ -66,10 +67,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IActivityIOOperationsEndPoint endpoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(IOpath);
                 try
                 {
+                    // Travis.Frisinger - 01.02.2013 - Bug 8579
+                    // fake it so we have a deferred read ;) -- Slightly silly, but consistent
                     string result = broker.Get(endpoint);
+                    //MakeDeferredAction();
+
                     outputs[0].OutputStrings.Add(result);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     allErrors.AddError(e.Message);
                 }

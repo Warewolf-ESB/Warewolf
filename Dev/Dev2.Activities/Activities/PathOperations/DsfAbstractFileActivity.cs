@@ -21,8 +21,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </summary>
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
-
-        private string preExecute = string.Empty;
+        // Travis.Frisinger - 01.02.2013 : Bug 8579
+        private bool _isStandardUpsert = true;
 
         public DsfAbstractFileActivity(string displayName)
             : base(displayName)
@@ -55,36 +55,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //Execute the concrete action for the specified activity
                     outputs = ExecuteConcreteAction(context, out errors);
                     allErrors.MergeErrors(errors);
-                    if (outputs.Count > 0)
+
+                    if(_isStandardUpsert)
                     {
-                        //IList<string> expressionList = new List<string>();
-                        //IList<string> valueList = new List<string>();
-                        foreach (OutputTO output in outputs)
+                        if(outputs.Count > 0)
                         {
-                            if (output.OutputStrings.Count > 0)
+                            //IList<string> expressionList = new List<string>();
+                            //IList<string> valueList = new List<string>();
+                            foreach(OutputTO output in outputs)
                             {
-                                foreach (string value in output.OutputStrings)
+                                if(output.OutputStrings.Count > 0)
                                 {
-                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    foreach(string value in output.OutputStrings)
                                     {
-                                        errors.AddError(value);
-                                    }
-                                    else
-                                    {
-                                        toUpsert.Add(output.OutPutDescription, value);
+                                        if(output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                        {
+                                            errors.AddError(value);
+                                        }
+                                        else
+                                        {
+                                            toUpsert.Add(output.OutPutDescription, value);
+                                        }
+
                                     }
 
+                                    toUpsert.FlushIterationFrame();
                                 }
-
-                                toUpsert.FlushIterationFrame();
                             }
+
+                            compiler.Upsert(executionId, toUpsert, out errors);
+                            allErrors.MergeErrors(errors);
+                            compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
+                            allErrors.MergeErrors(errors);
+
                         }
-
-                        compiler.Upsert(executionId, toUpsert, out errors);
-                        allErrors.MergeErrors(errors);
-                        compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                        allErrors.MergeErrors(errors);
-
+                    }
+                    else
+                    {
+                        // we have a special deferred operation, treat it as such ;)
                     }
                 }
                 catch (Exception ex)
@@ -103,6 +111,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+
+        /// <summary>
+        /// Makes the deferred action.
+        /// </summary>
+        public void MakeDeferredAction()
+        {
+            _isStandardUpsert = false;
+        }
+        
         /// <summary>
         /// Status : New
         /// Purpose : To provide an overidable concrete method to execute an activity's logic through
@@ -111,6 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="error">The error.</param>
         /// <returns></returns>
         protected abstract IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO error);
+
 
         #region Properties
 

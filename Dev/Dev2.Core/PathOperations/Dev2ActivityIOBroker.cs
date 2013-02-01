@@ -20,16 +20,25 @@ namespace Dev2.PathOperations
 
         // See interfaces summary's for more detail
 
-        public string Get(IActivityIOOperationsEndPoint path)
+        public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
 
-            Stream s = path.Get(path.IOPath);
-            byte[] bytes = new byte[s.Length];
-            s.Position = 0;
-            s.Read(bytes, 0, (int)s.Length);
-            s.Close();
+            if(!deferredRead)
+            {
+                Stream s = path.Get(path.IOPath);
+                byte[] bytes = new byte[s.Length];
+                s.Position = 0;
+                s.Read(bytes, 0, (int)s.Length);
+                s.Close();
 
-            return Encoding.UTF8.GetString(bytes);
+                return Encoding.UTF8.GetString(bytes);
+            }
+            else
+            {
+                // Travis.Frisinger - 01.02.2013 : Bug 8579
+                // If we want to deferr the read of data, just return the file name ;)
+                return path.IOPath.Path;
+            }
         }
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)

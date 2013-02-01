@@ -9,20 +9,20 @@ namespace Dev2.PathOperations
     /// </summary>
     public interface IActivityOperationsBroker
     {
-
         /// <summary>
         /// Get the contents of a path as a string
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path.</param>
+        /// <param name="deferredRead">if set to <c>true</c> [deferred read].</param>
         /// <returns></returns>
-        string Get(IActivityIOOperationsEndPoint path);
+        string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false);
 
         /// <summary>
         /// Dump a payload to a location as per the value of args
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="args"></param>
-        //void Put(IActivityIOOperationsEndPoint from, Dev2PutOperationTO args);
+        /// <param name="dst">The DST.</param>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args);
 
 
