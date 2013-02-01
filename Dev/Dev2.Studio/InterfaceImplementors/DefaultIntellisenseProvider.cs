@@ -223,7 +223,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if (currentText.Length == index)
             {
-                string recsetName = input.Contains(")") ? input.Substring(2, input.IndexOf(')')-2) : null;
+                string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(')-2) : null;
                 if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions for overwrite
                     if (recsetName.ToLower().StartsWith(currentText.ToLower()) || currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[[")) //user typed a partial recordset name
                         if (currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[["))
@@ -275,7 +275,8 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
             }
 
-            return currentText.Substring(currentText.IndexOf("[["), currentText.Length - currentText.IndexOf("[["));//Trim
+            //return !currentText.Contains('(') ? currentText.Substring(currentText.IndexOf("[["), currentText.Length - currentText.IndexOf("[[")) : currentText;//Trim if no brackets
+            return currentText;//No Trim
         }
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)

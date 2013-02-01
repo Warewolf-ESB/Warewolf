@@ -16,7 +16,9 @@ namespace Dev2.Core.Tests
     public class IntellisenseProviderTest
     {
         private IResourceModel _resourceModel;
-        private static object _testGuard = new object();
+// ReSharper disable InconsistentNaming
+        private static readonly object _testGuard = new object();
+// ReSharper restore InconsistentNaming
 
         #region Test Initialization
 
@@ -72,6 +74,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach(var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -87,6 +90,7 @@ namespace Dev2.Core.Tests
             //Assert.AreEqual("[[City()]]", getResults[3].ToString());
             //Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             //Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -102,6 +106,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -117,6 +122,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -132,6 +138,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -142,6 +149,7 @@ namespace Dev2.Core.Tests
             var context = new IntellisenseProviderContext { CaretPosition = 12, InputText = "[[City([[sca).Name]]", DesiredResultSet = IntellisenseDesiredResultSet.Default };
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -152,6 +160,7 @@ namespace Dev2.Core.Tests
             var context = new IntellisenseProviderContext { CaretPosition = 10, InputText = "City([[sca).Name]]", DesiredResultSet = IntellisenseDesiredResultSet.Default };
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -166,6 +175,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[2].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[3].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[4].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -180,6 +190,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[2].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[3].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[4].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -205,6 +216,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -220,6 +232,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -235,6 +248,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         [TestMethod]
@@ -250,6 +264,71 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void GetIntellisenseResults_With_Sum_Expected_AllVarsInResults()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 6, InputText = "Sum([[", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void GetIntellisenseResults_With_Sum_AndAfterComma_Expected_AllVarsInResults()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 17, InputText = "Sum([[Scalar]],[[", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void GetIntellisenseResults_With_Sum_AndBeforeComma_Expected_AllVarsInResults()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 6, InputText = "Sum([[,[[Scalar]])", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void GetIntellisenseResults_With_Sum_AndWithinCommas_Expected_AllVarsInResults()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 16, InputText = "Sum([[State]],[[,[[Scalar]])", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
         #endregion
@@ -385,6 +464,14 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             Assert.AreEqual("[[recset().field]]+[[Scalar]]+[[Car]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[Car]]", new IntellisenseProviderContext { CaretPosition = 32, InputText = "[[recset().field]]+[[Scalar]]+[[", DesiredResultSet = 0 }));
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void PerformResultInsertion_With_PartialScalar_AndRegion_AndAfterSum_Expected_ResultInsertsText()
+        // ReSharper restore InconsistentNaming
+        {
+            Assert.AreEqual("Sum([[Scalar]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[Scalar]]", new IntellisenseProviderContext { CaretPosition = 9, InputText = "Sum([[Sca", DesiredResultSet = 0 }));
         }
         #endregion
 

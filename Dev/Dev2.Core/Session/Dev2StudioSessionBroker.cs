@@ -74,7 +74,12 @@ namespace Dev2.Session
 
             if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
             {
-                //Bug 8018
+                ////Bug 8018
+                //var svrCompiler = DataListFactory.CreateServerDataListCompiler(); 
+                //var errors = new ErrorResultTO();
+                //var mergeGuid = svrCompiler.ConvertTo(null, null, Encoding.UTF8.GetBytes(tmp.XmlData), to.DataList, out errors);
+                //tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, null, out errors).FetchAsString();
+
                 //2013.01.28: Ashley Lewis - Phase 1: Find invalid references in the saved session to variables that don't exist any more
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(tmp.XmlData);
