@@ -1,4 +1,5 @@
 using Dev2.DataList.Contract.Binary_Objects;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Dev2.Diagnostics
 
         public static IDebugItem[] EmptyList = new IDebugItem[0];
 
+        [Obsolete]
         public string Group { get; set; }
         public string MoreText { get; set; }
         public string MoreLink { get; set; }
@@ -29,13 +31,14 @@ namespace Dev2.Diagnostics
         }
 
         // Travis.Frisinger - 28.01.2013 : Added for decision node
+        [Obsolete]
         public DebugItem(string scalarVariable, string scalarValue)
             : this()
         {
             Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = scalarVariable });
             Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = scalarValue });
         }
-
+        [Obsolete]
         public DebugItem(string label, string scalarVariable, string scalarValue)
             : this()
         {
@@ -43,16 +46,15 @@ namespace Dev2.Diagnostics
             Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = scalarVariable });
             Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = scalarValue });
         }
-
+        [Obsolete]
         public DebugItem(int index, IBinaryDataListItem recordField)
             : this()
         {
             var idxStr = index.ToString(CultureInfo.InvariantCulture);
-            Group = recordField.Namespace;
 
-            Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = idxStr });
-            Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("[[{0}({1}).{2}]]", recordField.Namespace, idxStr, recordField.FieldName) });
-            Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = recordField.TheValue });
+            Add(new DebugItemResult { GroupName = recordField.Namespace, Type = DebugItemResultType.Label, Value = idxStr });
+            Add(new DebugItemResult { GroupName = recordField.Namespace, Type = DebugItemResultType.Variable, Value = string.Format("[[{0}({1}).{2}]]", recordField.Namespace, idxStr, recordField.FieldName) });
+            Add(new DebugItemResult { GroupName = recordField.Namespace, Type = DebugItemResultType.Value, Value = recordField.TheValue });
         }
 
         #endregion
@@ -61,7 +63,7 @@ namespace Dev2.Diagnostics
 
         public bool Contains(string filterText)
         {
-            return Group.ContainsSafe(filterText) || this.Any(r => r.Value.ContainsSafe(filterText));
+            return this.Any(r => r.Value.ContainsSafe(filterText) || r.GroupName.ContainsSafe(filterText));
         }
 
         #endregion

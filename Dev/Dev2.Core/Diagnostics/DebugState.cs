@@ -212,7 +212,6 @@ namespace Dev2.Diagnostics
             // ReSharper disable ForCanBeConvertedToForeach
             for(var i = 0; i < items.Count; i++)
             {
-                writer.Write(items[i].Group);
                 writer.Write(items[i].MoreText);
                 writer.Write(items[i].MoreLink);
                 writer.Write(items[i].Count);
@@ -221,6 +220,8 @@ namespace Dev2.Diagnostics
                     var itemResult = items[i][j];
                     writer.Write((int)itemResult.Type);
                     writer.Write(itemResult.Value);
+                    writer.Write(itemResult.GroupName);
+                    writer.Write(itemResult.GroupIndex);
                 }
             }
             // ReSharper restore ForCanBeConvertedToForeach
@@ -233,7 +234,6 @@ namespace Dev2.Diagnostics
             {
                 var item = new DebugItem
                 {
-                    Group = reader.ReadString(),
                     MoreText = reader.ReadString(),
                     MoreLink = reader.ReadString()
                 };
@@ -243,7 +243,9 @@ namespace Dev2.Diagnostics
                     item.Add(new DebugItemResult
                     {
                         Type = (DebugItemResultType)reader.ReadInt32(),
-                        Value = reader.ReadString()
+                        Value = reader.ReadString(),
+                        GroupName = reader.ReadString(),
+                        GroupIndex = reader.ReadInt32()
                     });
                 }
                 items.Add(item);
