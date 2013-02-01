@@ -253,7 +253,7 @@ namespace Dev2.CodedUI.Tests
         {
             // Create the Workflow
             var testBase = new TestBase();
-            //testBase.CreateCustomWorkflow("6501");
+            testBase.CreateCustomWorkflow("6501");
 
             // Set some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("6501");
@@ -512,7 +512,7 @@ namespace Dev2.CodedUI.Tests
             studioWindow.WindowTitles.Add(TestBase.GetStudioWindowName());
             studioWindow.Find();
 
-            Point closeButton = new Point(studioWindow.BoundingRectangle.X + studioWindow.Width - 25, studioWindow.BoundingRectangle.Y + 25);
+            Point closeButton = new Point(studioWindow.BoundingRectangle.X + studioWindow.Width - 25, studioWindow.BoundingRectangle.Y + 15);
             
             // Its far - Move faster
             Mouse.MouseMoveSpeed *= 2;

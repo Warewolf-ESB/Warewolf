@@ -124,6 +124,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl serverListItem = new UITestControl(uITvExplorerTree);
             serverListItem.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
             serverListItem.SearchProperties.Add("ControlType", "TreeItem");
+            
             serverListItem.Find();
 
             Thread.Sleep(500);

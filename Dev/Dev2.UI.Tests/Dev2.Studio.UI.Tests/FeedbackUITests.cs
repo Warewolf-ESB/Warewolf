@@ -12,13 +12,12 @@ namespace Dev2.Studio.UI.Tests
     [TestClass]
     public class FeedbackUITests
     {
-        TestBase myTestBase = new TestBase();
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
         public void CheckStartIsValid()
         {
             // Use the base class for validity checks - Easier to control :D
-            myTestBase.CheckStartIsValid();
+            //myTestBase.CheckStartIsValid();
         }
 
         #region Coded UI Tests

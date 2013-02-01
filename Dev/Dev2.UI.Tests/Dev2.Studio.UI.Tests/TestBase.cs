@@ -87,7 +87,7 @@ namespace Dev2.CodedUI.Tests
                 throw new Exception("Error - Cannot close all instances of IE!");
             }
 
-            bool toCheck = false;   // Disable this if you don't want the pre-test validation to occur.
+            bool toCheck = true;   // Disable this if you don't want the pre-test validation to occur.
             if (GetStudioWindowName().Contains("IntegrationTester"))
             {
                 toCheck = true;
@@ -99,7 +99,7 @@ namespace Dev2.CodedUI.Tests
                 try
                 {
                     //Process[] processList = System.Diagnostics.Process.GetProcesses();
-                    List<Process> findDev2Servers = System.Diagnostics.Process.GetProcesses().Where(p => p.ProcessName.Equals("Dev2.Server")).ToList();
+                    List<Process> findDev2Servers = System.Diagnostics.Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server")).ToList();
                     int serverCounter = findDev2Servers.Count();
                     if (serverCounter != 1)
                     {
@@ -344,6 +344,10 @@ namespace Dev2.CodedUI.Tests
 
         #region Dev2ServiceDetails Wizard Tests
 
+        /*
+        
+        All commented out until Travis completes Bug 8477
+        
         // 1 Test for Standard Workflow Creation
         [TestMethod]
         public void StandardWorkflowCreation_Expected_WorkflowCreated()
@@ -365,7 +369,7 @@ namespace Dev2.CodedUI.Tests
         public void WorkflowProperties_Expected_PropertiesWindowPopulates()
         {
             // Create the Workflow
-            //CreateCustomWorkflow("StandardWorkflowProperties", "CODEDUITESTCATEGORY");
+            CreateCustomWorkflow("StandardWorkflowProperties", "CODEDUITESTCATEGORY");
             UITestControl theTab = TabManagerUIMap.FindTabByName("StandardWorkflowProperties");
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
 
@@ -418,10 +422,11 @@ namespace Dev2.CodedUI.Tests
         // 1 Test for Plugin Source Creation
         // 1 Test for Plugin Source Properties (It should populate)
 
+        */
+
         #endregion
 
         #region Test Case Backlog
-
         // Backlog 5378.1
         /*
         - MVR
@@ -853,7 +858,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
 
             // Give the slow IE time to open ;D
-            System.Threading.Thread.Sleep(2500);
+            System.Threading.Thread.Sleep(15000);
 
             // Check if the IE Body contains the data list item
             string IEText = ExternalUIMap.GetIEBodyText();
