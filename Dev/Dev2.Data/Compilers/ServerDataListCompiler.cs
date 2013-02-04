@@ -1514,25 +1514,40 @@ namespace Dev2.Server.Datalist
                                                 {
                                                     errors.AddError(error);
                                                 }
+
+
+                                                // Travis.Frisinger - Bug 8608
+
+                                                IBinaryDataListItem valT = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
+
+                                                string subVal = string.Empty;
+
+                                                if (val != null)
+                                                {
+                                                    subVal = valT.TheValue;
+                                                }
+
+                                                expression = expression.Replace(p.Option.DisplayValue, subVal);
+
                                                 // now evaluate the expression correctly to replace this token
-                                                expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                                //expression = expression.Replace(p.Option.DisplayValue, string.Empty);
                                             }
                                         }
                                         else
                                         {
                                             // they want the entire recordset? -- blank expression
-                                            // Travis.Frisinger - Bug 8608
                                             
-                                            IBinaryDataListItem valT = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
+                                            
+                                            //IBinaryDataListItem valT = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
 
-                                            string subVal = string.Empty;
+                                            //string subVal = string.Empty;
 
-                                            if(val != null && !string.IsNullOrEmpty(p.Option.Field))
-                                            {
-                                                subVal = valT.TheValue;
-                                            }
+                                            //if(val != null && !string.IsNullOrEmpty(p.Option.Field))
+                                            //{
+                                            //    subVal = valT.TheValue;
+                                            //}
 
-                                            expression = expression.Replace(p.Option.DisplayValue, subVal);
+                                            expression = expression.Replace(p.Option.DisplayValue, string.Empty);
                                             // Check for an index and remove all but this index ;)
                                             if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
                                             {

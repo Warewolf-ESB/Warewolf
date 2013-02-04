@@ -98,6 +98,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
         }
 
+        // Bug 8608
         [TestMethod]
         public void Evaluate_UserRecordsetLastIndex_Expect_Value() {
             ErrorResultTO errors = new ErrorResultTO();
@@ -108,13 +109,12 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
             IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, Dev2.DataList.Contract.enActionType.User, "[[rs1().f1]]", out errors);
 
-            int idx = result.FetchLastRecordsetIndex();
-
             Assert.IsFalse(errors.HasErrors());
-            Assert.AreEqual("f1.2", (result.FetchRecordAt(idx, out error))[0].TheValue);
+            Assert.AreEqual("f1.2", result.FetchScalar().TheValue);
 
         }
 
+        // Bug 8608
         [TestMethod]
         public void Evaluate_UserRecordsetWithEvaluatedIndex_Expect_Value() {
             ErrorResultTO errors = new ErrorResultTO();
@@ -124,10 +124,8 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
             IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, Dev2.DataList.Contract.enActionType.User, "[[rs1([[scalar1]]).f1]]", out errors);
 
-            int idx = result.FetchLastRecordsetIndex();
-
             Assert.IsFalse(errors.HasErrors());
-            Assert.AreEqual("f1.1", (result.FetchRecordAt(idx, out error))[0].TheValue);
+            Assert.AreEqual("f1.1", result.FetchScalar().TheValue);
 
         }
 
