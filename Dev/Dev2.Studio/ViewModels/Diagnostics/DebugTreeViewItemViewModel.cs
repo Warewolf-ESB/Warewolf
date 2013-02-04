@@ -58,6 +58,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             IsExpanded = isExpanded;
             IsSelected = isSelected;
             AddedAsParent = addedAsParent;
+            Inputs = new List<object>();
+            Outputs = new List<object>();
 
             if(environmentRepository != null && content != null)
             {
@@ -65,11 +67,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 content.Server = env.Name;
             }
 
-            Inputs = new List<object>();
-            Outputs = new List<object>();
-
-            BuildBindableListFromDebugItems(content.Inputs, Inputs);
-            BuildBindableListFromDebugItems(content.Outputs, Outputs);
+            if(content != null)
+            {
+                BuildBindableListFromDebugItems(content.Inputs, Inputs);
+                BuildBindableListFromDebugItems(content.Outputs, Outputs);
+            }
         }
 
         #endregion Constructor
@@ -100,6 +102,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // Build destinationList
             //
             destinationList.Clear();
+            if(debugItems == null)
+            {
+                return;
+            }
 
             foreach(var item in debugItems)
             {
