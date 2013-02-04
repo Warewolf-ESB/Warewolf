@@ -183,29 +183,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 DebugItem itemToAdd = new DebugItem();
                 string userModel = dds.GenerateUserFriendlyModel();
 
-                //foreach (Dev2Decision dev2Decision in dds.TheStack)
-                //{
-                //    if (dev2Decision.Col1.Contains("[["))
-                //    {
-                //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
-                //        ErrorResultTO errors = new ErrorResultTO();
-                //        var dlEntry = c.Evaluate(dataList.UID, enActionType.User, dev2Decision.Col1, true, out errors);
-                //        dl
-                //        userModel.Replace(dev2Decision.Col1, "");
-                //    }
-                //    if (dev2Decision.Col2.Contains("[["))
-                //    {
-                //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col2, dataList));
-                //        userModel.Replace(dev2Decision.Col2, "");
-                //    }
-                //    if (dev2Decision.Col3.Contains("[["))
-                //    {
-                //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col3, dataList));
-                //        userModel.Replace(dev2Decision.Col3, "");
-                //    }
-                //}
-                //result.Add(itemToAdd);
+                foreach (Dev2Decision dev2Decision in dds.TheStack)
+                {
+                    if (DataListUtil.IsEvaluated(dev2Decision.Col1))
+                    {
+                        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
+                        ErrorResultTO errors = new ErrorResultTO();
 
+                        userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList));
+                    }
+                    if (DataListUtil.IsEvaluated(dev2Decision.Col2))
+                    {
+                        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col2, dataList));
+                        ErrorResultTO errors = new ErrorResultTO();
+
+                        userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList));
+                    }
+                    if (DataListUtil.IsEvaluated(dev2Decision.Col3))
+                    {
+                        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col3, dataList));
+                        ErrorResultTO errors = new ErrorResultTO();
+
+                        userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList));
+                    }
+                }
+                result.Add(itemToAdd);
+
+                itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Statement" });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = userModel });
@@ -244,9 +248,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> result = new List<IDebugItem>();
-
+            string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = _theResult.ToString() });
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            string val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText);
+
+
+            Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+
+            if (_theResult.ToString() == "True")
+            {
+                resultString = dds.TrueArmText;
+            }
+            else if (_theResult.ToString() == "False")
+            {
+                resultString = dds.FalseArmText;
+            }
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
             result.Add(itemToAdd);
 
             return result;
@@ -261,15 +279,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private string EvaluateExpressiomToStringValue(string Expression, IBinaryDataList dataList)
         {
             string result = string.Empty;
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
 
-            //if (dev2Decision.Col1.Contains("[["))
-            //        {
-            //            itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
-            //            ErrorResultTO errors = new ErrorResultTO();
-            //            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, dev2Decision.Col1, true, out errors);
-            //            dl
-            //            userModel.Replace(dev2Decision.Col1, "");
-            //        }
+            ErrorResultTO errors = new ErrorResultTO();
+            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, Expression, true, out errors);
+            if (dlEntry.IsRecordset)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Numeric)
+                {
+                    int index;
+                    if (int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(Expression), out index))
+                    {
+                        string error;
+                        IList<IBinaryDataListItem> listOfCols = dlEntry.FetchRecordAt(index, out error);
+                        foreach (IBinaryDataListItem binaryDataListItem in listOfCols)
+                        {
+                            result = binaryDataListItem.TheValue;
+                        }
+                    }
+                }
+                else
+                {
+                    //TODO: When recordset star notation is viable in the desicion then please implement this.The bug for this fix is 
+                    result = string.Empty;
+                }
+            }
+            else
+            {
+                IBinaryDataListItem scalarItem = dlEntry.FetchScalar();
+                result = scalarItem.TheValue;
+            }
+
 
             return result;
         }

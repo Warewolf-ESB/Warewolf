@@ -269,6 +269,7 @@ Format can't be null/empty.]]></Error>";
         [TestMethod]
         public void DateTimeDiffernce_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
+            //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
             DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(1).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[res]]" };
 
             IList<IDebugItem> inRes;

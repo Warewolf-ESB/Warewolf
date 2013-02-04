@@ -152,6 +152,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DateTime_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
+            //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
             DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
 
             IList<IDebugItem> inRes;

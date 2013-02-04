@@ -1,4 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.Diagnostics;
+using Dev2.Tests.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -58,37 +65,68 @@ namespace ActivityUnitTests.ActivityTests
         #region GetDebugInputs/Outputs
 
         #region Decision tests
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104
+        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         //Bug 8104
         public void FileRead_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            //DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            //Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
 
-            //dds.AddModelItem(new Dev2Decision() { Col1 = "[[A]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNumeric });
-            //dds.AddModelItem(new Dev2Decision() { Col1 = "[[B]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNotNumeric });
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[CompanyName]]", Col2 = string.Empty, Col3 = "2", EvaluationFn = enDecisionType.IsContains });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
 
 
-            //act.ExpressionText = "";
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(3, inRes[0].Count);
+            Assert.AreEqual(3, inRes[1].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].Count);
+        }
+
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104
+        /// </summary>
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        //Bug 8104
+        public void FileRead_Get_Debug_Input_Output_With_Recordset_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(1).FirstName]]", Col2 = string.Empty, Col3 = "b", EvaluationFn = enDecisionType.IsContains });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
 
 
-            //IList<IDebugItem> inRes;
-            //IList<IDebugItem> outRes;
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
 
-            //CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-            //                                                    ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
-            //Assert.AreEqual(4, inRes.Count);
-            //Assert.AreEqual(4, inRes[0].Count);
-            //Assert.AreEqual(1, inRes[1].Count);
-            //Assert.AreEqual(1, inRes[2].Count);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(3, inRes[0].Count);
+            Assert.AreEqual(3, inRes[1].Count);
 
-            //Assert.AreEqual(1, outRes.Count);
-            //Assert.AreEqual(3, outRes[0].Count);
-
-            Assert.Inconclusive();
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].Count);
         }
 
         #endregion

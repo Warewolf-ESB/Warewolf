@@ -402,41 +402,44 @@ namespace ActivityUnitTests.ActivityTest
 
         #region Get Debug Input/Output Tests
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104
+        /// </summary>
         [TestMethod]
         public void Foreach_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
-            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+            //Used recordset with a numeric index as a scalar because it the only place were i had numeric values and it evalues to a scalar 
+            DsfForEachActivity act = new DsfForEachActivity { ForEachElementName = "[[Numeric(1).num]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(4, inRes[0].Count);
-            Assert.AreEqual(4, inRes[1].Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(4, outRes[0].Count);
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(3, inRes[0].Count);
+
+            Assert.AreEqual(0, outRes.Count);
         }
 
-
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104
+        /// </summary>
         [TestMethod]
         public void Foreach_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[Numeric(*).num]]", "Index", "1", 1) };
-            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            DsfForEachActivity act = new DsfForEachActivity { ForEachElementName = "[[Numeric(*).num]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(4, inRes[0].Count);
-            Assert.AreEqual(4, inRes[1].Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(31, outRes[0].Count);
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(30, inRes[0].Count);
+
+            Assert.AreEqual(0, outRes.Count);
         }
 
         #endregion
