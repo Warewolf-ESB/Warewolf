@@ -1,4 +1,5 @@
-﻿using Dev2.Core.Tests.Utils;
+﻿using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Studio;
@@ -34,7 +35,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Initialize()
         {
-            //ImportService.CurrentContext = CompositionInitializer.EmptyInitialize();
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
             _helper = new DataListViewModelTestHelper();
 
             _mockMediatorRepo = new Mock<IMediatorRepo>();

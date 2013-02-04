@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -14,6 +11,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnAttached();
             AssociatedObject.GotFocus += AssociatedObject_GotFocus;           
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+        }
+
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
 
         void AssociatedObject_GotFocus(object sender, EventArgs e)
@@ -24,12 +28,14 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnDetaching()
         {         
             AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             base.OnDetaching();
         }
 
         public void Dispose()
         {
-            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;         
+            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
     }
 }

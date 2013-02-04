@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using Dev2.Composition;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -53,6 +54,8 @@ namespace Dev2.Core.Tests {
         public void MyTestInitialize() 
         {
             Monitor.Enter(_testGuard);
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             IList<IDev2Definition> inputDev2defList = new List<IDev2Definition>();
 
@@ -111,6 +114,7 @@ namespace Dev2.Core.Tests {
             _mockresource.Setup(res => res.Environment).Returns(Dev2MockFactory.SetupEnvironmentModel().Object);
 
             _mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(_mockresource.Object);
+            DataListSingleton.SetDataList(_mockDataListViewModel.Object);
             //_mockDataListViewModel.Setup(dlvm => dlvm.RootDataListItem).Returns(_mockDataListItemViewModel.Object);
 
             _mockWebActivity.SetupAllProperties();

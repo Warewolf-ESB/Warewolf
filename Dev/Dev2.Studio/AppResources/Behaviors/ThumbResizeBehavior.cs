@@ -27,6 +27,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnDetaching();
 
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
             AssociatedObject.DragDelta -= AssociatedObject_DragDelta;
         }
 

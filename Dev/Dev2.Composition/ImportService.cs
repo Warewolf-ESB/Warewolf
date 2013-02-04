@@ -278,6 +278,13 @@ namespace Dev2.Composition
         //    }
         //}
 
+        public static void ReleaseExports<T>()
+        {
+            ImportService importService = GetContextualImportService();
+            var exports = importService.Container.GetExports<T>();
+            importService.Container.ReleaseExports(exports);
+        }
+
         /// <summary>
         /// Satisfies the imports on an object
         /// </summary>
@@ -309,6 +316,8 @@ namespace Dev2.Composition
                 {
                     p.Initialize();
                 }
+
+                
             }
         }
 

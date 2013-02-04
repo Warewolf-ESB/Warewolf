@@ -5,6 +5,7 @@
         xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
         xmlns:uf="clr-namespace:Unlimited.Applications.BusinessDesignStudio"                    
         xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    xmlns:framework="clr-namespace:Unlimited.Framework;assembly=Dev2.Studio.Core"
     ap:UIElementTitleProperty.Title="MainWindow" >
     <!--<UserControl.DataContext>
         <autolayout:LayoutGridViewModel />
@@ -35,7 +36,7 @@
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="autolayout:LayoutObjectViewModel">
+                    <DataTemplate DataType="framework:LayoutObjectViewModel">
                         <Border AllowDrop="True"  Background="LightGray" Margin="1,1,1,1" PreviewMouseDown="AutoLayoutGrid_PreviewMouseDown" PreviewDrop="Border_PreviewDrop"  PreviewMouseMove="AutoLayoutGrid_PreviewMouseMove" >
                             <uf:LayoutObjectView  />
                         </Border>

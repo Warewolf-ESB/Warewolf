@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Dev2.Studio.Core.AppResources.Browsers;
+﻿using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Factory;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -13,23 +11,9 @@ namespace Dev2.Studio
     /// </summary>
     public partial class App
     {
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
         public App()
         {
-            //Bug 8403
-            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if (studioProcesses.Length > 1)//there's someone in the jacuzzi with us
-            {
-                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
-                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
-                Current.Shutdown();
-            }
-            else
-            {
-                InitializeComponent();
-            }
+            InitializeComponent();
         }
 
 #if DEBUG

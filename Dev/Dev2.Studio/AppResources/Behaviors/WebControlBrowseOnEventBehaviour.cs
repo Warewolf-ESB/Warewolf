@@ -35,12 +35,20 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             AssociatedObject.DataContextChanged -= AssociatedObject_DataContextChanged;
             AssociatedObject.DataContextChanged += AssociatedObject_DataContextChanged;
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+        }
+
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            AssociatedObject.DataContextChanged -= AssociatedObject_DataContextChanged;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
 
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             AssociatedObject.DataContextChanged -= AssociatedObject_DataContextChanged;
         }
 
@@ -124,6 +132,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public void Dispose()
         {
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             AssociatedObject.DataContextChanged -= AssociatedObject_DataContextChanged;
             UnsubscribeFromEvent(BrowseRequestedEventName, AssociatedObject.DataContext);
         }

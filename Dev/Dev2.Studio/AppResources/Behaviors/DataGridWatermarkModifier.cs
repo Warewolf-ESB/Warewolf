@@ -1,15 +1,11 @@
-﻿using System;
+﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Interactivity;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows;
 using System.Reflection;
-using System.Activities.Presentation.Model;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -39,30 +35,16 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnAttached();
 
-            observable = AssociatedObject.Items as INotifyCollectionChanged;
-            if (observable != null)
-            {
-                observable.CollectionChanged += new NotifyCollectionChangedEventHandler(observable_CollectionChanged);
-            }
-
-            INotifyPropertyChanged notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
-            if (notifyPropertyChangedImplimentor != null)
-            {
-                notifyPropertyChangedImplimentor.PropertyChanged += new PropertyChangedEventHandler(notifyPropertyChangedImplimentor_PropertyChanged);
-            }
+            SubscribeToEvents();
 
 
-            dataGridItems = AssociatedObject.Items as ItemCollection;
+            dataGridItems = AssociatedObject.Items;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-        }
-
-        protected override void OnChanged()
-        {
-            base.OnChanged();
+            UnsubscribeFromEvents();
         }
 
         #endregion Override Methods
@@ -167,11 +149,49 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
+        private void SubscribeToEvents()
+        {
+            observable = AssociatedObject.Items;
+            if (observable != null)
+            {
+                observable.CollectionChanged -= observable_CollectionChanged;
+                observable.CollectionChanged += observable_CollectionChanged;
+            }
 
+            INotifyPropertyChanged notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
+            if (notifyPropertyChangedImplimentor != null)
+            {
+                notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;
+            }
+
+            AssociatedObject.Loaded += AssociatedObjectOnLoaded;
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            observable = AssociatedObject.Items;
+            if (observable != null)
+            {
+                observable.CollectionChanged -= observable_CollectionChanged;
+            }
+
+            INotifyPropertyChanged notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
+            if (notifyPropertyChangedImplimentor != null)
+            {
+                notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;
+            }
+
+            AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
+        }
 
         #endregion Private Methods
 
         #region Event Handlers
+
+        private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UnsubscribeFromEvents();
+        }
 
         private void observable_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

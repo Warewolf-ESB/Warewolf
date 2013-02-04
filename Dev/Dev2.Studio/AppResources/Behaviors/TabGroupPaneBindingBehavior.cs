@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Infragistics.Windows.DockManager;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interactivity;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Infragistics.Windows.DockManager;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -117,7 +115,6 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             TabGroupPaneBindingBehavior itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
             if (itemsControlBindingBehavior == null) return;
-
 
             itemsControlBindingBehavior.UpdateDestinationItems();
 

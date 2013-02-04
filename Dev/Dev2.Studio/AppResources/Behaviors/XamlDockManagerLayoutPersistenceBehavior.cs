@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Dev2.Studio.Core.Models;
+using Infragistics.Windows.DockManager;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Interactivity;
-using Dev2.Studio.Core.Models;
-using Infragistics.Windows.DockManager;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -30,8 +29,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             AssociatedObject.Initialized -= AssociatedObjectOnInitialized;
             AssociatedObject.Initialized += AssociatedObjectOnInitialized;
-
-           
         }
 
         protected override void OnDetaching()

@@ -1,12 +1,12 @@
 ﻿#region
 
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.ViewModels.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.ViewModels.Diagnostics;
 
 #endregion
 
@@ -28,6 +28,15 @@ namespace Dev2.Studio.AppResources.Behaviors
             base.OnAttached();
 
             AssociatedObject.Loaded += AssociatedObjectLoaded;
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+        }
+
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (_collection != null)
+            {
+                _collection.CollectionChanged -= CollectionCollectionChanged;
+            }
         }
 
         void AssociatedObjectLoaded(object sender, RoutedEventArgs e)
@@ -37,6 +46,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             _collection = AssociatedObject.ItemsSource as ObservableCollection<DebugTreeViewItemViewModel>;
             if(_collection != null)
             {
+                _collection.CollectionChanged -= CollectionCollectionChanged;
                 _collection.CollectionChanged += CollectionCollectionChanged;
             }
 

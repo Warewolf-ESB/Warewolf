@@ -1,9 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Windows;
+﻿using Dev2.Composition;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -12,6 +7,12 @@ using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
@@ -34,6 +35,9 @@ namespace Dev2.Core.Tests
         public void MyTestInitialize()
         {
             Monitor.Enter(_testGuard);
+
+            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
+
             LayoutDesigner = new WorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object);
             Mock<IEnvironmentModel> _moqEnvironment = new Mock<IEnvironmentModel>();
             Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();

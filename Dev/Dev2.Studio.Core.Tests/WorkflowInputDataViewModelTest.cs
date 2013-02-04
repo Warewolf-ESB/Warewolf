@@ -1,4 +1,5 @@
-﻿using Dev2.Session;
+﻿using Dev2.Composition;
+using Dev2.Session;
 using Dev2.Studio.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -50,7 +51,9 @@ namespace Dev2.Core.Tests {
         //
         //Use TestInitialize to run code before running each result
         [TestInitialize()]
-        public void EnvironmentTestsInitialize() {
+        public void EnvironmentTestsInitialize() 
+        {
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             debugTO.ServiceName="TestWorkflow";
             debugTO.WorkflowID="TestWorkflow";
@@ -61,9 +64,6 @@ namespace Dev2.Core.Tests {
             debugTO.RememberInputs=false;            
             
             //_worfflowInputDataviewModel = new WorkflowInputDataViewModel(_mockDebug.Object);
-
-
-            
         }
         //
         //Use TestCleanup to run code after each result has run

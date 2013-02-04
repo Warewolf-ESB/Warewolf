@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Interactivity;
+﻿using Dev2.Studio.Core;
+using Dev2.Studio.ViewModels.Navigation;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core;
-using System.Windows.Controls;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels.Navigation;
+using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -86,7 +79,11 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             if (AssociatedObject != null)
             {
+                AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+
                 AssociatedObject.MouseDown += AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
             }
         }
 
@@ -98,12 +95,18 @@ namespace Dev2.Studio.AppResources.Behaviors
             if (AssociatedObject != null)
             {
                 AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             }
         }
 
         #endregion Private Methods
 
         #region Event Handler Methods
+
+        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UnsubscribeToEvents();
+        }
 
         private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
         {

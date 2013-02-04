@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using Dev2.Composition;
+﻿using Dev2.Composition;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.Base;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace Dev2.Core.Tests.ViewModelTests
 {
@@ -63,6 +63,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void MyTestInitialize() 
         {
             Monitor.Enter(_testLock);
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
         
         // Use TestCleanup to run code after each test has run

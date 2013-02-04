@@ -18,6 +18,7 @@ using System.Xml.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using Dev2.Composition;
 
 
 namespace Dev2.Core.Tests {
@@ -58,8 +59,8 @@ namespace Dev2.Core.Tests {
         [TestInitialize()]
         public void MyTestInitialize() {
 
-            //5559 Check this test when refactor is finished
-            //_mockMainViewModel.Setup(mainVM => mainVM.ActiveEnvironment).Returns(_moqEnvironment.Object);
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+
             _mockMainViewModel.Setup(mainVM => mainVM.OpenWebsiteCommand.Execute(null)).Verifiable();
 
             _moqEnvironment.Setup(env => env.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));

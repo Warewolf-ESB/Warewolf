@@ -1,8 +1,5 @@
 ﻿#region
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
@@ -19,6 +16,9 @@ using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
 using Moq;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Windows;
 
 #endregion
 
@@ -36,10 +36,10 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
+            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+
             IMainViewModel mainViewModel = new MainViewModel();
             ImportService.AddExportedValueToContainer(mainViewModel);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
-            ImportService.SatisfyImports(mainViewModel);
 
             return importServiceContext;
         }
@@ -50,6 +50,19 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            return importServiceContext;
+        }
+
+        internal static ImportServiceContext InitializeForMeflessBaseViewModel()
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            Mock<IEventAggregator> mockEventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
 
             return importServiceContext;
         }

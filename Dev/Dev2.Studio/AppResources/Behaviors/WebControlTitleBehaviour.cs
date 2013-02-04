@@ -47,15 +47,17 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void SubscribeToEvents()
         {
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
             AssociatedObject.PropertyChanged += OnWebControlProperteryChanged;
         }
 
         private void UnsubscribeFromEvents()
         {
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             AssociatedObject.PropertyChanged -= OnWebControlProperteryChanged;
         }
 
-        void OnWebControlProperteryChanged(object sender, PropertyChangedEventArgs args)
+        private void OnWebControlProperteryChanged(object sender, PropertyChangedEventArgs args)
         {
             switch(args.PropertyName)
             {
@@ -66,6 +68,11 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }));
                     break;
             }
+        }
+
+        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UnsubscribeFromEvents();
         }
 
         #endregion

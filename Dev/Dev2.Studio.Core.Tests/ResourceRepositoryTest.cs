@@ -1,5 +1,6 @@
 ﻿using BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudio;
 using Dev2;
+using Dev2.Composition;
 using Dev2.Core.Tests;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core;
@@ -63,6 +64,8 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+
             resourceModel.Setup(res => res.ResourceName).Returns("Resource");
             resourceModel.Setup(res => res.DisplayName).Returns("My New Resource");
             resourceModel.Setup(res => res.ServiceDefinition).Returns("My new Resource service definition");

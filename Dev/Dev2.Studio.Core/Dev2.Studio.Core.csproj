@@ -250,6 +250,8 @@
     <Compile Include="Mediator\WeakAction.cs" />
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
+    <Compile Include="Messages\AbstractTabMessage.cs" />
+    <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\ResourceCheckedMessage.cs" />
     <Compile Include="Messages\EnvironmentConnectedMessage.cs" />
     <Compile Include="Messages\EnvironmentDisconnectedMessage.cs" />
@@ -257,6 +259,7 @@
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
+    <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
@@ -327,6 +330,7 @@
     <Compile Include="ViewModels\Administration\Dev2DialogueViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseValidate.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Base\MefLessBaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\DataListShowMissing\PopUp.cs" />
     <Compile Include="ViewModels\DataListShowMissing\IPopUp.cs" />

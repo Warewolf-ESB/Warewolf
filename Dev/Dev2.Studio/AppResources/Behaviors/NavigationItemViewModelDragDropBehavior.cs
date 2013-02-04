@@ -57,11 +57,18 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 return;
             }
-            
+
+            AssociatedObject.MouseMove -= AssociatedObject_MouseMove;
+            AssociatedObject.Drop -= AssociatedObject_Drop;
+            AssociatedObject.DragOver -= AssociatedObject_DragOver;
+            AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+
             AssociatedObject.MouseMove += AssociatedObject_MouseMove;
             AssociatedObject.Drop += AssociatedObject_Drop;
             AssociatedObject.DragOver += AssociatedObject_DragOver;
             AssociatedObject.MouseDown += AssociatedObject_MouseDown;
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
         }
 
         /// <summary>
@@ -75,12 +82,18 @@ namespace Dev2.Studio.AppResources.Behaviors
                 AssociatedObject.Drop -= AssociatedObject_Drop;
                 AssociatedObject.DragOver -= AssociatedObject_DragOver;
                 AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             }
         }
 
         #endregion Private Methods
 
         #region Event Handler Methods
+
+        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UnsubscribeToEvents();
+        }
 
         private void AssociatedObject_MouseMove(object sender, MouseEventArgs e)
         {

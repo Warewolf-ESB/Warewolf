@@ -552,7 +552,9 @@ namespace Dev2.UI
         public IntellisenseTextBox()
         {
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
+            Unloaded += OnUnloaded;
         }
+
         #endregion
 
         #region Load Handling
@@ -576,6 +578,16 @@ namespace Dev2.UI
             }
         }
         #endregion
+
+        #region Unloaded Handeling
+
+        private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            Unloaded -= OnUnloaded;
+
+        }
+
+        #endregion Unloaded Handeling
 
         #region Template Handling
         public override void OnApplyTemplate()

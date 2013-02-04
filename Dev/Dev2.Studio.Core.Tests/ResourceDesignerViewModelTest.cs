@@ -1,13 +1,9 @@
-﻿using Dev2.Studio.Core.AppResources;
+﻿using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
 using Moq;
-using Dev2.Studio.Core;
-using System.Xml.Linq;
 
 namespace Dev2.Core.Tests
 {
@@ -57,11 +53,6 @@ namespace Dev2.Core.Tests
         //{
         //}
         //
-        //Use TestInitialize to run code before running each result
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
         //
         //Use TestCleanup to run code after each result has run
         //[TestCleanup()]
@@ -73,6 +64,8 @@ namespace Dev2.Core.Tests
 
         [TestInitialize]
         public void MyTestInitialize() {
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             Mock<IResourceModel> m = new Mock<IResourceModel>();
             m.Setup(c => c.ServiceDefinition).Returns("result");

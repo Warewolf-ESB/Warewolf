@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            ImportService.CurrentContext = null;
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockDataMappingViewModel = Dev2MockFactory.SetupIDataMappingViewModel();
             _mockWebActivity = Dev2MockFactory.SetupWebActivityMock();

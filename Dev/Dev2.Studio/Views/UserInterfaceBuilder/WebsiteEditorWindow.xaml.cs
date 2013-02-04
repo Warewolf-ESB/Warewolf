@@ -1,7 +1,11 @@
-﻿using Dev2.Studio.Core.AppResources.Browsers;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Indentation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -16,11 +20,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
     /// <summary>
     /// Interaction logic for WebsiteEditorWindow.xaml
     /// </summary>
-    public partial class WebsiteEditorWindow
+    public partial class WebsiteEditorWindow : IHandle<TabClosedMessage>
     {
-        readonly WebsiteEditorViewModel _viewModel;
+        #region Class Members
 
+        private readonly WebsiteEditorViewModel _viewModel;
         private IMainViewModel _mainViewModel;
+
+        #endregion
+
+        #region Constructor
+
+        public WebsiteEditorWindow(WebsiteEditorViewModel viewModel)
+        {
+            InitializeComponent();
+            _viewModel = viewModel;
+            webBrowser.Initialize();
+            ImportService.SatisfyImports(this);
+            EventAggregator.Subscribe(this);
+            SetUpTextEditor();
+        }
+
+        #endregion
+
+        #region Properties
+
+        [Import]
+        public IEventAggregator EventAggregator { get; set; }
 
         [Import]
         public IMainViewModel MainViewModel
@@ -35,14 +61,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
             }
         }
 
-        public WebsiteEditorWindow(WebsiteEditorViewModel viewModel)
-        {
-            InitializeComponent();
-            webBrowser.Initialize();
+        #endregion Properties
 
-            _viewModel = viewModel;
-            SetUpTextEditor();
-        }
+        #region Private Methods
 
         private void SetUpTextEditor()
         {
@@ -53,7 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
             foldingStrategy = new XmlFoldingStrategy();
             foldingManager = FoldingManager.Install(txtHtml.TextArea);
             foldingStrategy.UpdateFoldings(foldingManager, txtHtml.Document);
-            txtHtml.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
+            txtHtml.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
 
             DispatcherTimer foldingUpdateTimer = new DispatcherTimer();
             foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
@@ -75,7 +96,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
 
         }
 
-        private void layoutTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        #endregion
+
+        #region Event Handlers
+
+        void layoutTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var viewModel = DataContext as WebsiteEditorViewModel;
             if(viewModel != null)
@@ -134,10 +159,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
             }
         }
 
-
-        private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton == System.Windows.Input.MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)
+            if(e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)
             {
                 var layoutObj = (e.Source as dynamic).DataContext as LayoutObjectViewModel;
                 if(layoutObj != null)
@@ -147,7 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
             }
         }
 
-        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
             if(e.ClickCount >= 2)
@@ -160,14 +184,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
             }
         }
 
-        private void searchTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void webResourceTreeView_Selected(object sender, RoutedEventArgs e)
+        void webResourceTreeView_Selected(object sender, RoutedEventArgs e)
         {
             _viewModel.SelectedWebResource = (e.OriginalSource as dynamic).DataContext;
         }
+
+        #endregion
+
+        #region Implementation of IHandle<TabClosedMessage>
+
+        public void Handle(TabClosedMessage message)
+        {
+            if (message.Context.Equals(this))
+            {
+                EventAggregator.Unsubscribe(this);
+                webBrowser.Dispose();
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,6 +12,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnAttached();
             AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+        }
+
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
 
         void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -57,12 +61,14 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnDetaching()
         {
             AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             base.OnDetaching();
         }
 
         public void Dispose()
         {
             AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -26,6 +27,8 @@ namespace Dev2.Core.Tests
         public void Init()
         {
             Monitor.Enter(_testGuard);
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
 // ReSharper disable InconsistentNaming
             var _testEnvironmentModel = new Mock<IEnvironmentModel>();

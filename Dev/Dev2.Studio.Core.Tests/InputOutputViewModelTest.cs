@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Core.ViewModels;
+﻿using Dev2.Composition;
+using Dev2.Studio.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.Studio.Core.Interfaces;
@@ -62,7 +63,9 @@ namespace Dev2.Core.Tests {
         //
         //Use TestInitialize to run code before running each result
         [TestInitialize()]
-        public void MyTestInitialize() {
+        public void MyTestInitialize() 
+        {
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             _inputOutputViewModel = new InputOutputViewModel(testObject.Name, testObject.Value, testObject.MapsTo, testObject.DefaultValue, testObject.Required, testObject.RecordSetName);
 

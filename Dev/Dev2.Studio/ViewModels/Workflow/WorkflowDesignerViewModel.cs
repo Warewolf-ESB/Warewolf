@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using Dev2.Composition;
+using Caliburn.Micro;
 using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
@@ -31,7 +32,6 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Parsing.Intellisense;
 using System.Windows;
@@ -45,7 +45,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : BaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>
+    public class WorkflowDesignerViewModel : MefLessBaseViewModel, IWorkflowDesignerViewModel, IDisposable
     {
         #region Fields
 
@@ -85,6 +85,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public WorkflowDesignerViewModel(IContextualResourceModel resource)
         {
+            SecurityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            PopUp = ImportService.GetExportValue<IPopUp>();
+            MediatorRepo = ImportService.GetExportValue<IMediatorRepo>();
+            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
+
             _workflowModel = resource;
             _designerManagementService = new DesignerManagementService(_workflowModel.Environment.Resources);
         }
@@ -92,17 +97,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Properties
 
-        [Import]
         public IFrameworkSecurityContext SecurityContext { get; set; }
 
         //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
-        [Import]
         public IPopUp PopUp { get; set; }
 
-        [Import]
         public IMediatorRepo MediatorRepo { get; set; }
 
-        [Import]
         public IWizardEngine WizardEngine { get; set; }
 
         public object SelectedModelItem

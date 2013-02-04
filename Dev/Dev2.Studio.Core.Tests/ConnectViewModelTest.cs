@@ -42,12 +42,13 @@ namespace Dev2.Core.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-          _mockResourceModel = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
-          _mockEnvironmentModel = new Mock<IEnvironmentModel>();
-          _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
-          _mockFilePersistance = new Mock<IFilePersistenceProvider>();
-          _mockResource = Dev2MockFactory.SetupResourceModelMock();
-          connectViewmodel = new ConnectViewModel();
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+            _mockResourceModel = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
+            _mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
+            _mockFilePersistance = new Mock<IFilePersistenceProvider>();
+            _mockResource = Dev2MockFactory.SetupResourceModelMock();
+            connectViewmodel = new ConnectViewModel();
         }
 
         #endregion

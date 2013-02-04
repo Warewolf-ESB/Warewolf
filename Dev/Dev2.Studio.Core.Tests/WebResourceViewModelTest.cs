@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Composition;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -42,8 +43,11 @@ namespace Dev2.Core.Tests.ViewModelTest {
         // public static void MyClassCleanup() { }
         //
         // Use TestInitialize to run code before running each result 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
+        [TestInitialize()]
+        public void MyTestInitialize() 
+        { 
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+        }
         //
         // Use TestCleanup to run code after each result has run
         // [TestCleanup()]

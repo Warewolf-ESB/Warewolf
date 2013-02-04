@@ -1,17 +1,13 @@
 ﻿#define Debug
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interactivity;
 using Dev2.Composition;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.UiAutomation;
+using System.Activities.Presentation.Model;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -20,11 +16,10 @@ namespace Dev2.Studio.AppResources.Behaviors
         #region Ctor
         public AutomationIdCreationBehaviour()
         {
-            ImportService.SatisfyImports(this);
+            WindowNavigationBehavior = ImportService.GetExportValue<IDev2WindowManager>();
         }
         #endregion Ctor
 
-        [Import]
         public IDev2WindowManager WindowNavigationBehavior { get; set; }
 
         #region Override Methods
@@ -37,20 +32,25 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             base.OnAttached();
 
+            AssociatedObject.Click -= AssociatedObject_Click;
             AssociatedObject.Click += AssociatedObject_Click;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+        }
 
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            WindowNavigationBehavior = null;
+            AssociatedObject.Click -= AssociatedObject_Click;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
 
         void AssociatedObject_Click(object sender, RoutedEventArgs e)
         {
 #if Debug
             //AutomationIdCreaterView view = new AutomationIdCreaterView();
-            string _automationId = string.Empty;
-            ModelItem modItem = AutomationIdCreation;
-            if (modItem.Properties["AutomationID"].ComputedValue != null)
-            {
-                _automationId = modItem.Properties["AutomationID"].ComputedValue.ToString();
-            }
+            string _automationId = ModelItemUtils.GetProperty("AutomationID", AutomationIdCreation) as string ?? string.Empty;;
+
             AutomationIdCreaterViewModel viewModel = new AutomationIdCreaterViewModel();
             if (!string.IsNullOrEmpty(_automationId))
             {
@@ -62,14 +62,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             //view.ShowDialog();
             if (viewModel.DialogResult == ViewModelDialogResults.Okay)
             {
-                modItem.Properties["AutomationID"].ComputedValue = viewModel.AutomationID;
+                ModelItemUtils.SetProperty("AutomationID", viewModel.AutomationID, AutomationIdCreation);
             }
 #endif
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
         }
 
         #endregion Override Methods

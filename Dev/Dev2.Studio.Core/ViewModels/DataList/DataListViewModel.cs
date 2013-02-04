@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.Core.ViewModels.DataList
 {
-    public class DataListViewModel : BaseViewModel, IDataListViewModel
+    public class DataListViewModel : MefLessBaseViewModel, IDataListViewModel
     {
         #region Fields
 

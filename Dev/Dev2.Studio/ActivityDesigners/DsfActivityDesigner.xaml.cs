@@ -38,6 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InitializeComponent();
             Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
         }
 
         #endregion Constructor
@@ -217,8 +218,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Event Handlers
 
+        private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            Loaded -= OnLoaded;
+            Unloaded -= OnUnloaded;
+
+            Context.Items.Unsubscribe<Selection>(SelectionChanged);
+            Context.Services.Unsubscribe<IDesignerManagementService>(SetDesignerManagementService);
+
+            SetDesignerManagementService(null);
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            Loaded -= OnLoaded;
             DataContext = _viewModel;
         }
 

@@ -30,14 +30,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
 
             _layoutObjectModel = layoutObject;
             _layoutObjectModel.NavigateRequested += NavigateRequested;
+
+            Closed += OnClosed;
         }
 
         #endregion
+
+        #region Event Handlers
+
+        private void OnClosed(object sender, EventArgs eventArgs)
+        {
+            Browser.Dispose();
+        }
+
+        #endregion Event Handlers
+
+        #region Protected Methods
 
         protected void NavigateRequested(string uri)
         {
             _layoutObjectModel.NavigateRequested -= NavigateRequested;
             Browser.LoadSafe(uri);
         }
+
+        #endregion Protected Methods
     }
 }

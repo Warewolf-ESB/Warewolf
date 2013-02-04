@@ -9,12 +9,15 @@ namespace Dev2.Studio.AppResources.Behaviors
 {
     public class DataGridMouseScrollBehavior : Behavior<Dev2DataGrid>
     {
-
         #region Override Methods
 
         protected override void OnAttached()
         {
             base.OnAttached();
+
+            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
+            AssociatedObject.PreviewMouseWheel -= AssociatedObject_doCustomScroll;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
 
             AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
             AssociatedObject.PreviewMouseWheel += AssociatedObject_doCustomScroll;
@@ -56,6 +59,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
             AssociatedObject.PreviewMouseWheel -= AssociatedObject_doCustomScroll;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
 
         void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)

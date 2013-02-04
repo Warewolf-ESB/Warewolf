@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Dev2.Studio.AppResources.ExtensionMethods;
+using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using System.Windows.Media;
-using Dev2.Studio.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -59,17 +55,23 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnAttached();
             AssociatedObject.Loaded += AssociatedObject_Loaded;
+            AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            CleanUp();
         }
 
         #endregion Override Methods
 
         #region Event Handlers
+
+        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            CleanUp();
+        }
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
@@ -93,15 +95,21 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Tear Down
 
-        public void Dispose()
+        private void CleanUp()
         {
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
 
             _expandAllButton.Command = null;
             _collapseAllButton.Command = null;
 
             _expandAllButton = null;
             _collapseAllButton = null;
+        }
+
+        public void Dispose()
+        {
+            CleanUp();
         }
 
         #endregion Tear Down

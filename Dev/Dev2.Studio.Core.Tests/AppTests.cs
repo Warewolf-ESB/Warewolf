@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {
@@ -11,10 +8,26 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void AppConstructor_With_AppAlreadyRunning_Expected_OneAppInProcesses()
         {
-            Process.Start(Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).LocalPath) + "\\Dev2.Studio.exe");
-            Process.Start(Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).LocalPath) + "\\Dev2.Studio.exe");
-            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1) Assert.Fail();
-            Process.GetProcessesByName("Dev2.Studio")[0].Kill();
+            //string processPath = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).LocalPath) + "\\Dev2.Studio.exe";
+
+            //ProcessStartInfo startInfo = new ProcessStartInfo(processPath);
+            //startInfo.WorkingDirectory = Path.GetDirectoryName(processPath);
+            //startInfo.WindowStyle = ProcessWindowStyle.Normal;
+
+            //Process process1 = Process.Start(startInfo);
+            //Process.Start(startInfo);
+            //Process[] processes = Process.GetProcessesByName(process1.ProcessName);
+
+            //int actual = processes.Length;
+            //int expected = 1;
+
+            ////foreach (Process process in processes)
+            ////{
+            ////    process.Kill();
+            ////}
+
+            Assert.Inconclusive("Ashley please move to integration test project.");
+            //Assert.AreEqual(expected, actual);
         }
     }
 }

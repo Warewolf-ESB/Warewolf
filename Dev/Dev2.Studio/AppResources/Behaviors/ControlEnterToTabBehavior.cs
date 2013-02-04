@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Interactivity;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors {
-    public class ControlEnterToTabBehavior : Behavior<Control>, IDisposable {
+    public class ControlEnterToTabBehavior : Behavior<Control>, IDisposable 
+    {
         protected override void OnAttached() {
             base.OnAttached();
-            AssociatedObject.PreviewKeyDown += new KeyEventHandler(AssociatedObject_PreviewKeyDown);
-            AssociatedObject.Unloaded += new RoutedEventHandler(AssociatedObject_Unloaded);
+            AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded += AssociatedObject_Unloaded;
         }
 
         void AssociatedObject_Unloaded(object sender, RoutedEventArgs e) {
@@ -30,12 +28,13 @@ namespace Dev2.Studio.AppResources.Behaviors {
 
         protected override void OnDetaching() {
             base.OnDetaching();
-            AssociatedObject.PreviewKeyDown -= new KeyEventHandler(AssociatedObject_PreviewKeyDown);
+            AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded -= AssociatedObject_Unloaded;
         }
 
         public void Dispose() {
-            AssociatedObject.PreviewKeyDown -= new KeyEventHandler(AssociatedObject_PreviewKeyDown);
-            AssociatedObject.Unloaded -= new RoutedEventHandler(AssociatedObject_Unloaded);
+            AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded -= AssociatedObject_Unloaded;
         }
     }
 }

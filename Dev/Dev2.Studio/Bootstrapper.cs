@@ -12,15 +12,20 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace Dev2.Studio
 {
     public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
         protected override void PrepareApplication()
         {
             base.PrepareApplication();
@@ -118,6 +123,8 @@ namespace Dev2.Studio
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            CheckForDuplicateProcess();
+
             bool start = true;
 #if !DEBUG
             start = CheckWindowsService();
@@ -144,6 +151,18 @@ namespace Dev2.Studio
         #endregion Public Methods 
 
         #region Private Methods
+
+        private void CheckForDuplicateProcess()
+        {
+            //Bug 8403
+            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            if (studioProcesses.Length > 1)//there's someone in the jacuzzi with us
+            {
+                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
+                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
+                App.Current.Shutdown();
+            }
+        }
 
         //private void PreloadReferences()
         //{

@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using Caliburn.Micro;
+﻿using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Network;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 using Bootstrapper = Dev2.Studio.Bootstrapper;
 
 namespace Dev2.Core.Tests
@@ -12,7 +11,6 @@ namespace Dev2.Core.Tests
     {
         public FullTestAggregateCatalog()
         {
-            this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEventAggregator))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(Bootstrapper))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEnvironmentModel))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkMessageBroker))));
@@ -24,7 +22,6 @@ namespace Dev2.Core.Tests
     {
         public FullStudioAggregateCatalog()
         {
-            this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEventAggregator))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(Bootstrapper))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEnvironmentModel))));
         }

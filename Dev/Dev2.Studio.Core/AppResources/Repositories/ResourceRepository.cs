@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
@@ -6,7 +7,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -29,7 +29,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IEnvironmentModel Environment { get; private set; }
 
-        [Import]
         public IFrameworkSecurityContext SecurityContext { get; set; }
 
         Guid WorkspaceID
@@ -53,6 +52,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _reservedServices = new List<string>();
             _workflowDb = new List<IResourceModel>();
             Environment = environment;
+            SecurityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
         }
 
         #endregion Constructor

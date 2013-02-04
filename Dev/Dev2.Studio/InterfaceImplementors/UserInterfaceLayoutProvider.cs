@@ -1649,7 +1649,6 @@ namespace Dev2.Studio
             var viewModel = new WebsiteEditorViewModel(webActivity);
             ImportService.SatisfyImports(viewModel);
             var editor = new WebsiteEditorWindow(viewModel);
-            ImportService.SatisfyImports(editor);
             UIElementTitleProperty.SetTitle(editor, string.Format("{0}.website", webActivity.ResourceModel.ResourceName));
             UIElementImageProperty.SetImage(editor, "pack://application:,,,/Images/webpagebuilder.png");
             UIElementTabActionContext.SetTabActionContext(editor, TabActionContexts.Website);

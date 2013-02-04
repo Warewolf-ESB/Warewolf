@@ -126,6 +126,10 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void SubscribeToEvents()
         {
+            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
+            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            
             AssociatedObject.LayoutUpdated += AssociatedObjectLayoutUpdated;
             AssociatedObject.Loaded += AssociatedObject_Loaded;
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
