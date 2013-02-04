@@ -6,8 +6,8 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:Dev2="clr-namespace:Dev2.UI"
-    MaxWidth="200"
-    Width="200"
+    MaxWidth="220"
+    Width="220"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>

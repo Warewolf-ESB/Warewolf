@@ -184,13 +184,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int indexCounter = 1;
             foreach (ActivityDTO activityDto in FieldsCollection.Where(c => !c.CanRemove()))
             {
+                string variable = activityDto.FieldValue;
+
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = activityDto.FieldName });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
 
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(activityDto.FieldValue, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(variable, dataList))
                 {
+
+                    if (debugItemResult.Type == DebugItemResultType.Variable && debugItemResult.Value.ContainsSafe("!~calculation~!"))
+                    {
+                        debugItemResult.Value = debugItemResult.Value.Replace("!~calculation~!", "").Replace("!~~calculation~!", "");
+                    }
+
                     itemToAdd.Add(debugItemResult);
                 }
                 indexCounter++;

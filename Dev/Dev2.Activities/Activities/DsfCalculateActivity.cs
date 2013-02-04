@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -105,22 +106,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-
             var result = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //string tmpExp = Expression;
-            //if (Expression.ContainsSafe("[["))
-            //{
-            //    IDev2DataLanguageParser languageParser = DataListFactory.CreateLanguageParser();
-            //    var partsList = languageParser.MakeParts(Expression);
-            //    foreach (ParseTO parseTo in partsList)
-            //    {
-            //        string val = GetValue(dataList, DataListUtil.AddBracketsToValueIfNotExist(parseTo.Payload));
 
-            //        tmpExp = tmpExp.Replace(DataListUtil.AddBracketsToValueIfNotExist(parseTo.Payload), val);
-            //    }
-            //    result.Add(new DebugItem(1.ToString(), Expression, " = " + tmpExp));
-            //}
+            ErrorResultTO errors = new ErrorResultTO();
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Calculate" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = Expression });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataListEntry entry = compiler.Evaluate(dataList.UID, enActionType.CalculateSubstitution, Expression, false, out errors);
+            IBinaryDataListItem item = entry.FetchScalar();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.TheValue });
+            result.Add(itemToAdd);
 
             return result;
         }
@@ -128,10 +125,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            //BUG 8104 : Refactor DebugItem
-            //string theValue = GetValue(dataList, Result);
-            //result.Add(new DebugItem("1", Result, " = " + theValue));
-
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.AddRange(CreateDebugItems(Result, dataList));
+            result.Add(itemToAdd);
             return result;
         }
 
@@ -170,3 +166,4 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
     }
 }
+

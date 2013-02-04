@@ -7,8 +7,8 @@
     xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
-    MaxWidth="200"
-    Width="200"
+    MaxWidth="230"
+    Width="230"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>

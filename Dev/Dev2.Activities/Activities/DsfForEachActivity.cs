@@ -139,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // flag it as scoped so we can use a single DataList
                 dataObject.IsDataListScoped = true;
 
-                if(exePayload.MaxExecutions > 0)
+                if (exePayload.MaxExecutions > 0)
                 {
 
                     // set the iteration data ;)
@@ -160,14 +160,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                  */
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     string err = DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
@@ -186,7 +186,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string newOutputs = string.Empty;
 
             // Now mutate the mappings ;)
-            if(operationalData.InnerActivity.OrigInnerInputMapping != null)
+            if (operationalData.InnerActivity.OrigInnerInputMapping != null)
             {
                 // (*) == ({idx}) ;)
                 newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
@@ -202,18 +202,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string token = "*";
 
-                if(idx > 1)
+                if (idx > 1)
                 {
                     token = (idx - 1).ToString();
                 }
 
-                if(tmp != null)
+                if (tmp != null)
                 {
                     IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
                     IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                     // amend inputs ;)
-                    foreach(DsfForEachItem d in data)
+                    foreach (DsfForEachItem d in data)
                     {
                         string input = d.Value;
                         input = input.Replace("(" + token + ")", "(" + idx + ")");
@@ -223,7 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     // push updates for Inputs
                     tmp.UpdateForEachInputs(updates, context);
-                    if(idx == 1)
+                    if (idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedInputs = updates;
                     }
@@ -236,7 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     updates = new List<Tuple<string, string>>();
 
                     // amend inputs ;)
-                    foreach(DsfForEachItem d in data)
+                    foreach (DsfForEachItem d in data)
                     {
                         string input = d.Value;
                         input = input.Replace("(" + token + ")", "(" + idx + ")");
@@ -246,24 +246,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     // push updates 
                     tmp.UpdateForEachOutputs(updates, context);
-                    if(idx == 1)
+                    if (idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedOutputs = updates;
                     }
 
                     operationalData.InnerActivity.CurCodedOutputs = updates;
                 }
-                else if(tmp == null)
+                else if (tmp == null)
                 {
                     var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
 
-                    if(tmp2 != null && !(tmp2 is DsfForEachActivity))
+                    if (tmp2 != null && !(tmp2 is DsfForEachActivity))
                     {
                         IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
-                        foreach(DsfForEachItem d in data)
+                        foreach (DsfForEachItem d in data)
                         {
                             string output = d.Value;
                             output = output.Replace("(" + token + ")", "(" + idx + ")");
@@ -273,7 +273,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         // push updates 
                         tmp2.UpdateForEachInputs(updates, context);
-                        if(idx == 1)
+                        if (idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedInputs = updates;
                         }
@@ -284,7 +284,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
-                        foreach(DsfForEachItem d in data)
+                        foreach (DsfForEachItem d in data)
                         {
                             string input = d.Value;
                             input = input.Replace("(" + token + ")", "(" + idx + ")");
@@ -294,7 +294,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         // push updates 
                         tmp2.UpdateForEachOutputs(updates, context);
-                        if(idx == 1)
+                        if (idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedOutputs = updates;
                         }
@@ -307,7 +307,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             }
 
-            if(operationalData.InnerActivity.OrigInnerOutputMapping != null)
+            if (operationalData.InnerActivity.OrigInnerOutputMapping != null)
             {
                 // (*) == ({idx}) ;)
                 newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
@@ -316,13 +316,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
             var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if(dev2ActivityIoMapping != null)
+            if (dev2ActivityIoMapping != null)
             {
                 dev2ActivityIoMapping.InputMapping = newInputs;
             }
 
             var activityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if(activityIoMapping != null)
+            if (activityIoMapping != null)
             {
                 activityIoMapping.OutputMapping = newOutputs;
             }
@@ -342,16 +342,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IBinaryDataListEntry token = compiler.Evaluate(dlID, enActionType.User, iterateToken, false, out errors);
             ForEachBootstrapTO result = new ForEachBootstrapTO(enForEachExecutionType.Scalar, 0, null);
 
-            if(token != null)
+            if (token != null)
             {
                 int totalPasses;
 
-                if(token.IsRecordset)
+                if (token.IsRecordset)
                 {
                     // Extract the index for iteration count...
                     string idx = DataListUtil.ExtractIndexRegionFromRecordset(iterateToken);
 
-                    if(!Int32.TryParse(idx, out totalPasses))
+                    if (!Int32.TryParse(idx, out totalPasses))
                     {
                         totalPasses = token.FetchLastRecordsetIndex();
                     }
@@ -361,14 +361,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     // ghost 
-                    if(!DataListUtil.isRootVariable(iterateToken))
+                    if (!DataListUtil.isRootVariable(iterateToken))
                     {
                         result = new ForEachBootstrapTO(enForEachExecutionType.GhostService, Int32.MaxValue, token);
                     }
                     else
                     {
                         // numeric
-                        if(Int32.TryParse(token.FetchScalar().TheValue, out totalPasses))
+                        if (Int32.TryParse(token.FetchScalar().TheValue, out totalPasses))
                         {
                             result = new ForEachBootstrapTO(enForEachExecutionType.Numeric, totalPasses, null);
                         }
@@ -391,23 +391,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
 
-            if(activity != null)
+            if (activity != null)
             {
 
-                if(operationalData.InnerActivity.OrigCodedInputs != null)
+                if (operationalData.InnerActivity.OrigCodedInputs != null)
                 {
                     var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
 
                     int idx = operationalData.IterationCount;
 
-                    if(tmp != null)
+                    if (tmp != null)
                     {
                         // Restore Inputs ;)
                         IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
-                        foreach(DsfForEachItem d in data)
+                        foreach (DsfForEachItem d in data)
                         {
                             string input = d.Value;
                             input = input.Replace("(" + idx + ")", "(*)");
@@ -424,7 +424,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
-                        foreach(DsfForEachItem d in data)
+                        foreach (DsfForEachItem d in data)
                         {
                             string input = d.Value;
                             input = input.Replace("(" + idx + ")", "(*)");
@@ -441,13 +441,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
 
                         // Restore Inputs ;)
-                        if(tmp2 != null)
+                        if (tmp2 != null)
                         {
                             IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
                             IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                             // amend inputs ;)
-                            foreach(DsfForEachItem d in data)
+                            foreach (DsfForEachItem d in data)
                             {
                                 string input = d.Value;
                                 input = input.Replace("(" + idx + ")", "(*)");
@@ -464,7 +464,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             updates = new List<Tuple<string, string>>();
 
                             // amend inputs ;)
-                            foreach(DsfForEachItem d in data)
+                            foreach (DsfForEachItem d in data)
                             {
                                 string input = d.Value;
                                 input = input.Replace("(" + idx + ")", "(*)");
@@ -499,7 +499,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2ActivityIOMapping tmp = DataFunc.Handler as IDev2ActivityIOMapping;
                 result = new ForEachInnerActivityTO(tmp);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 error = e.Message;
             }
@@ -510,11 +510,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void ActivityCompleted(NativeActivityContext context, ActivityInstance instance, bool result)
         {
 
-            if(operationalData != null)
+            if (operationalData != null)
             {
                 operationalData.IncIterationCount();
 
-                if(operationalData.HasMoreData())
+                if (operationalData.HasMoreData())
                 {
                     // Re-jigger the mapping ;)
                     IterateIOMapping((operationalData.IterationCount + 1), context);
@@ -736,17 +736,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            // BUG 8104 : Refactor DebugItem
-            // TODO: Implement GetDebugInputs
-            // return GetDebugItems(dataList, StateType.Before, ForEachElementName);
-            return DebugItem.EmptyList;
+            IList<IDebugItem> results = new List<IDebugItem>();
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.AddRange(CreateDebugItems(ForEachElementName, dataList));
+            results.Add(itemToAdd);
+            return results;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            // BUG 8104 : Refactor DebugItem
-            // TODO: Implement GetDebugInputs
-            // return GetDebugItems(dataList, StateType.After, ForEachElementName.Replace("*", ""));
             return DebugItem.EmptyList;
         }
 

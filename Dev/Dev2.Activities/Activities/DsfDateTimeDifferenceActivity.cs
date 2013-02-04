@@ -240,10 +240,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (!string.IsNullOrEmpty(Result))
             {
-                foreach (IDebugItem debugItem in CreateDebugItems(Result, dataList))
-                {
-                    results.Add(debugItem);
-                }
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
+                results.Add(itemToAdd);
             }
             return results;
         }

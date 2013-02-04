@@ -1,4 +1,5 @@
 ﻿using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -106,12 +107,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var flowNode = CreateFlowNode();
             var designer = target as ActivityDesigner;
             ModelItem modelItem = null;
-            if(designer != null)
+            if (designer != null)
             {
                 var modelProperty = designer.ModelItem.Properties["Nodes"];
-                if(modelProperty != null)
+                if (modelProperty != null)
                 {
-                    if(modelProperty.Collection != null)
+                    if (modelProperty.Collection != null)
                     {
                         modelItem = modelProperty.Collection.Add(flowNode);
                     }
@@ -182,24 +183,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string userModel = dds.GenerateUserFriendlyModel();
 
-                result.Add(new DebugItem("1", "Expression", userModel));
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Expression" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = userModel });
+                result.Add(itemToAdd);
 
             }
-            catch(JsonSerializationException e)
+            catch (JsonSerializationException e)
             {
                 Dev2Switch ds = new Dev2Switch() { SwitchVariable = val };
 
                 string userModel = ds.GenerateUserFriendlyModel();
 
-                result.Add(new DebugItem("1", "Switch", userModel));  
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Switch" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = userModel });
+                result.Add(itemToAdd);
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                result.Add(new DebugItem("Error", e.Message));
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Error" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = e.Message });
+                result.Add(itemToAdd);
             }
 
             return result;
-            
+
             //return GetDebugItems(dataList, StateType.Before, ExpressionText);
         }
 
@@ -209,7 +223,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IList<IDebugItem> result = new List<IDebugItem>();
 
-            result.Add(new DebugItem("Result", _theResult.ToString()));
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Result" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = _theResult.ToString() });
+            result.Add(itemToAdd);
 
             return result;
 

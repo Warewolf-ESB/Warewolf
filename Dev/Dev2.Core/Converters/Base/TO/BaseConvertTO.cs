@@ -12,7 +12,6 @@ namespace Dev2
         private string _toType;
         private string _fromExpression;
         private string _toExpression;
-        private string _indexNumber;
 
         #endregion
 
