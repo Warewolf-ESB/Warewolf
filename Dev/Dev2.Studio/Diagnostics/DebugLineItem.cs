@@ -12,9 +12,13 @@ namespace Dev2.Studio.Diagnostics
         {
             Type = result.Type;
             Value = result.Value;
+            MoreLink = result.MoreLink;
         }
 
+        public string MoreLink { get; set; }
         public DebugItemResultType Type { get; set; }
         public string Value { get; set; }
+
+
     }
 }

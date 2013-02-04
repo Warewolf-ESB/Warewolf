@@ -189,25 +189,25 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesInputOnName_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.Inputs.Add(new DebugItem(null, "cake", null));
+            var debugState = new DebugState();
+            debugState.Inputs.Add(new DebugItem { new DebugItemResult { Type = DebugItemResultType.Variable, Value = "cake" } });
 
-            bool expected = true;
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
+            const bool Expected = true;
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesOuputOnValue_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.Outputs.Add(new DebugItem(null, null, "cake"));
+            var debugState = new DebugState();
+            debugState.Outputs.Add(new DebugItem { new DebugItemResult { Type = DebugItemResultType.Value, Value = "cake" } });
 
-            bool expected = true;
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
+            const bool Expected = true;
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
         }
 
         #endregion Tests

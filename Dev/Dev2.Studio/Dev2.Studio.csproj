@@ -304,6 +304,7 @@
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
     <Compile Include="Diagnostics\DebugLine.cs" />
+    <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Webs\RootWebSite.cs" />

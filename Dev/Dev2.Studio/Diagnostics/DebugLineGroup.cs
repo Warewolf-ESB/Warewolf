@@ -10,10 +10,8 @@ namespace Dev2.Studio.Diagnostics
             Rows = new Dictionary<int, DebugLineGroupRow>();
         }
 
+        public string MoreLink { get; set; }
         public string GroupName { get; set; }
         public Dictionary<int, DebugLineGroupRow> Rows { get; private set; }
-
-        public string MoreText { get; set; }
-        public string MoreLink { get; set; }
     }
 }

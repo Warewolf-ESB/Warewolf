@@ -239,14 +239,13 @@
                 <b:TreeviewScrollToEndOnNewContent />
             </i:Interaction.Behaviors>
             <TreeView.Resources>
-                
+                <Diagnostics:MoreLinkCommand x:Key="MoreLinkCommand" />
                 <DataTemplate x:Key="DebugLineItemTemplate">
-                    <StackPanel>
+                    <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
-                        <!--<Hyperlink NavigateUri="{Binding MoreLink}" >
-                                <TextBlock Text="More..." Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>
-                            </Hyperlink>-->
-                        <!--<TextBlock Text="{Binding MoreLink}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"/>-->
+                        <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="15" Command="{StaticResource MoreLinkCommand}" CommandParameter="{Binding MoreLink}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
+                            <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
+                        </Button>
                     </StackPanel>
                 </DataTemplate>
 

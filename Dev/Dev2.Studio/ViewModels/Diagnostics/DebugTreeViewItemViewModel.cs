@@ -109,8 +109,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             group = new DebugLineGroup(result.GroupName)
                             {
-                                MoreLink = item.MoreLink,
-                                MoreText = item.MoreText
+                                MoreLink = result.MoreLink
                             };
 
                             groups.Add(group.GroupName, group);
