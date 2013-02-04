@@ -717,6 +717,8 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             if (!errors.HasErrors())
             {
                 result = _compiler.FetchBinaryDataList(dlGuid, out errors);
+                _compiler.ForceDeleteDataListByID(dlGuid);
+
                 if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);

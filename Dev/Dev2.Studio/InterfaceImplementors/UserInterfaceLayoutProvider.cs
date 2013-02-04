@@ -413,7 +413,7 @@ namespace Dev2.Studio
                     }
                     if(removeTab)
                     {
-                        if(ActiveDocument.Equals(documentToRemove))
+                        if(ActiveDocument != null && ActiveDocument.Equals(documentToRemove))
                         {
                             RemoveDataList();
                         }

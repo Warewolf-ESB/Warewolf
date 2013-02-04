@@ -2614,6 +2614,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             MediatorRepo.deregisterAllItemMessages(this.GetHashCode());
             _wd = null;
+            _designerManagementService.Dispose();
+
             base.Dispose();
         }
 
