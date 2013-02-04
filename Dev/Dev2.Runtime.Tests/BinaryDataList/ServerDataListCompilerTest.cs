@@ -98,7 +98,8 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
         }
 
-        // Bug 8608
+
+        // Travis.Frisinger -  Bug 8608
         [TestMethod]
         public void Evaluate_UserRecordsetLastIndex_Expect_Value() {
             ErrorResultTO errors = new ErrorResultTO();
@@ -114,7 +115,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
         }
 
-        // Bug 8608
+        // Travis.Frisinger - Bug 8608
         [TestMethod]
         public void Evaluate_UserRecordsetWithEvaluatedIndex_Expect_Value() {
             ErrorResultTO errors = new ErrorResultTO();
