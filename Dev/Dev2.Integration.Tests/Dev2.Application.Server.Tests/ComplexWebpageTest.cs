@@ -195,7 +195,8 @@ namespace Dev2.Integration.Tests
                 }
 
                 // Ensure we can see the "saved" data in the result
-                Assert.AreNotEqual(-1, result.IndexOf("<inputRegion>TestValue</inputRegion>"));
+                Assert.Inconclusive("This test has been converted to an Inconclusive since the Web Framework has been removed.");
+                //Assert.AreNotEqual(-1, result.IndexOf("<inputRegion>TestValue</inputRegion>"));
             }
             else
             {
