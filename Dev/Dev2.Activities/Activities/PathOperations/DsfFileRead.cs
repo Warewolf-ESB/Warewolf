@@ -69,9 +69,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     // Travis.Frisinger - 01.02.2013 - Bug 8579
                     // fake it so we have a deferred read ;) -- Slightly silly, but consistent
-                    string result = broker.Get(endpoint);
-                    //MakeDeferredAction();
-
+                    string result = broker.Get(endpoint, true);
+                    MakeDeferredAction(IOpath.Path);
                     outputs[0].OutputStrings.Add(result);
                 }
                 catch(Exception e)

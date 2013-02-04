@@ -76,7 +76,9 @@
     <Compile Include="Auditing\IDev2DataListAuditor.cs" />
     <Compile Include="Binary Objects\BinaryDataList.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
+    <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
+    <Compile Include="Binary Objects\BinaryDataListUtil.cs" />
     <Compile Include="Binary Objects\DataListItem.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListDictionary.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListEntryStorage.cs" />
@@ -131,6 +133,34 @@
     <Compile Include="Decisions\Operations\IsText.cs" />
     <Compile Include="Decisions\Operations\IsXml.cs" />
     <Compile Include="LanguageValidation\Dev2DataLanguageRegionValidator.cs" />
+    <Compile Include="PathOperations\ActivityIOFactory.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOBroker.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOPath.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOPathUtils.cs" />
+    <Compile Include="PathOperations\Dev2FileSystemProvider.cs" />
+    <Compile Include="PathOperations\Dev2FTPProvider.cs" />
+    <Compile Include="PathOperations\enActivityPathType.cs" />
+    <Compile Include="PathOperations\Enums\enPathType.cs" />
+    <Compile Include="PathOperations\Interfaces\IActivityIOOperationsEndPoint.cs" />
+    <Compile Include="PathOperations\Interfaces\IActivityIOPath.cs" />
+    <Compile Include="PathOperations\Interfaces\IActivityOperationsBroker.cs" />
+    <Compile Include="PathOperations\Interfaces\IFileWrite.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathAuth.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathCertVerify.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathInput.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathOutput.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathOverwrite.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathRead.cs" />
+    <Compile Include="PathOperations\Interfaces\IRepository.cs" />
+    <Compile Include="PathOperations\Interfaces\IRepositoryItem.cs" />
+    <Compile Include="PathOperations\Interfaces\IResult.cs" />
+    <Compile Include="PathOperations\Interfaces\IUnZip.cs" />
+    <Compile Include="PathOperations\Interfaces\IZip.cs" />
+    <Compile Include="PathOperations\TO\Dev2CRUDOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutRawOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2UnZipOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2ZipOperationTO.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>

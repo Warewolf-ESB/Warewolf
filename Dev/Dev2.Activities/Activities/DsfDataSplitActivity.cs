@@ -77,13 +77,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDev2DataLanguageParser parser = context.GetExtension<IDev2DataLanguageParser>();
             IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
+            //Guid executionId = DataListExecutionID.Get(context);
 
             try
             {
@@ -92,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (ResultsCollection.Count > 0)
                 {
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, SourceString, false, out errors);
+                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -109,7 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             if (!string.IsNullOrEmpty(c.TheValue))
                             {
-                                IDev2Tokenizer tokenizer = CreateSplitPattern(c.TheValue, ResultsCollection, compiler, executionId);
+                                IDev2Tokenizer tokenizer = CreateSplitPattern(c.TheValue, ResultsCollection, compiler, dlID);
                                 int opCnt = 0;
                                 int pos = 0;
                                 ActivityUpsertTO result = new ActivityUpsertTO();
@@ -136,11 +135,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 }
 
-                                compiler.Upsert(executionId, toUpsert, out errors);
+                                compiler.Upsert(dlID, toUpsert, out errors);
                                 allErrors.MergeErrors(errors);
 
-                                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                                allErrors.MergeErrors(errors);
+                                //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
+                                //allErrors.MergeErrors(errors);
                             }
                         }
                     }
@@ -158,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (allErrors.HasErrors())
                 {
                     string err = DisplayAndWriteError("DsfDataSplitActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    compiler.UpsertSystemTag(dlID, enSystemTag.Error, err, out errors);
                 }
             }
         }

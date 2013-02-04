@@ -69,6 +69,7 @@
     <Compile Include="CommunicationResponse.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="Responses\BinaryResponse.cs" />
+    <Compile Include="Responses\BufferedStringResponse.cs" />
     <Compile Include="Responses\DynamicFileResponse.cs" />
     <Compile Include="Responses\EmptyResponse.cs" />
     <Compile Include="Responses\NotFoundResponse.cs" />

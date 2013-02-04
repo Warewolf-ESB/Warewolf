@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 
 namespace Unlimited.Applications.WebServer.Responses
@@ -22,6 +24,8 @@ namespace Unlimited.Applications.WebServer.Responses
         {
             base.Write(context);
             context.Response.ContentType = _contentType;
+
+           
         }
     }
 }

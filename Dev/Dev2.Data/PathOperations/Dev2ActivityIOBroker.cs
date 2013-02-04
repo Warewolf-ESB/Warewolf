@@ -41,7 +41,7 @@ namespace Dev2.PathOperations
                 
                 // Serialize to binary and return 
                 BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
-                return bdlUtil.SerializeDeferredBinaryDataListItem(path);
+                return bdlUtil.SerializeDeferredItem(path);
 
             }
         }

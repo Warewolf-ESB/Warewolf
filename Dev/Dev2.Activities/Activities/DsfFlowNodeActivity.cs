@@ -190,7 +190,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 result.Add(itemToAdd);
 
             }
-            catch (JsonSerializationException e)
+            catch (JsonSerializationException)
             {
                 Dev2Switch ds = new Dev2Switch() { SwitchVariable = val };
 

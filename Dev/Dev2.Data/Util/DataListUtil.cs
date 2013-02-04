@@ -60,7 +60,8 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string ComposeIntoUserVisibleRecordset(string rs, string idx, string field)
         {
-            return (rs + "(" + idx + ")." + field);
+            return string.Format("{0}({1}).{2}", rs, idx, field);
+            //return (rs + "(" + idx + ")." + field);
         }
 
         /// <summary>
@@ -72,7 +73,8 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string ComposeIntoUserVisibleRecordset(string rs, int idx, string field)
         {
-            return (rs + "(" + idx + ")." + field);
+            return string.Format("{0}({1}).{2}", rs, idx, field);
+            //return (rs + "(" + idx + ")." + field);
         }
 
         /// <summary>

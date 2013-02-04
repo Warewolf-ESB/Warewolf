@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -1165,10 +1166,10 @@ namespace Dev2.Server.Datalist
         /// <returns></returns>
         private IBinaryDataListEntry InternalEvaluate(string expression, IBinaryDataList bdl, bool toRoot, out ErrorResultTO errors)
         {
-            IBinaryDataListEntry result = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty);
+            IBinaryDataListEntry result;
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            string error = string.Empty;
+            string error;
             errors = new ErrorResultTO();
             string calcExp = string.Empty;
 
@@ -1191,6 +1192,12 @@ namespace Dev2.Server.Datalist
             }
 
             errors = allErrors;
+
+            // Avoid nulls ;)
+            if(result == null)
+            {
+                result = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty);
+            }
 
             return result;
         }
@@ -1327,333 +1334,367 @@ namespace Dev2.Server.Datalist
         }
 
         /// <summary>
+        /// Determines whether the specified payload is evaluated.
+        /// NOTE: This method also exist in the DataListUtil class
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsEvaluated(string payload)
+        {
+            bool result = false;
+
+            if (payload.IndexOf("[[") >= 0)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Internals the data list evaluate.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
         private IBinaryDataListEntry InternalDataListEvaluate(string expression, IBinaryDataList bdl, bool toRoot, out ErrorResultTO errors)
         {
-            string result = string.Empty;
-            IBinaryDataListEntry lastFetch = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty);
-            errors = new ErrorResultTO();
-            string error = string.Empty;
-
-            bool designTimeBinding = RequiresDesignTimeBinding(bdl, out error);
-            //30-11-2012 - Massimo.Guerrera
-            bool isIterationDriven = IsIterationDriven(bdl, out error);
-            string eval = expression;
-            int matchCnt = 0;
-            int iterationCnt = 0;
-            int iterationTotal = 0;
-
-            // fetch total number of iterations
-            if (isIterationDriven)
+            if (IsEvaluated(expression))
             {
-                iterationTotal = FetchEvaluationIterationCount(expression);
-            }
+                //string result = string.Empty;
+                IBinaryDataListEntry lastFetch = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty);
+                errors = new ErrorResultTO();
+                string error = string.Empty;
 
-            bool tokenSub = RequiresTokenSub(bdl, out error);
+                bool designTimeBinding = RequiresDesignTimeBinding(bdl, out error);
+                //30-11-2012 - Massimo.Guerrera
+                bool isIterationDriven = IsIterationDriven(bdl, out error);
+                string eval = expression;
+                int matchCnt = 0;
+                int iterationCnt = 0;
+                int iterationTotal = 0;
 
-
-            bool foundMatch = true;
-            bool hasError = false;
-            IDictionary<string, string> _notFoundReplaceParts = new Dictionary<string, string>();
-
-            // evaluation functions ;)
-            Func<bool> loopEval;
-            if (toRoot)
-            {
-                loopEval = () => { return (!DataListUtil.isRootVariable(expression)); };
-            }
-            else if (isIterationDriven)
-            {
-                loopEval = () => { return (iterationCnt < iterationTotal && expression != string.Empty); };
-            }
-            else
-            {
-                loopEval = () => { return (isEvaluated(expression) && foundMatch); };
-            }
-
-
-            if (isEvaluated(eval))
-            {
-                // if evaluate to root do so, else evaluate the expression fully
-                //while ( ((toRoot && !DataListUtil.isRootVariable(expression)) || (isRecursiveOp(expression) && foundMatch)) ) {
-                IList<string> RecursiveVals = new List<string>();
-                while (loopEval())
+                // fetch total number of iterations
+                if (isIterationDriven)
                 {
-                    foundMatch = false;
-                    IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(expression, bdl.FetchIntellisenseParts());
-                    foreach (IIntellisenseResult p in expressionParts)
+                    iterationTotal = FetchEvaluationIterationCount(expression);
+                }
+
+                //bool tokenSub = RequiresTokenSub(bdl, out error);
+
+
+                bool foundMatch = true;
+                bool hasError = false;
+                IDictionary<string, string> _notFoundReplaceParts = new Dictionary<string, string>();
+
+                // evaluation functions ;)
+                Func<bool> loopEval;
+                if (toRoot)
+                {
+                    loopEval = () => { return (!DataListUtil.isRootVariable(expression)); };
+                }
+                else if (isIterationDriven)
+                {
+                    loopEval = () => { return (iterationCnt < iterationTotal && expression != string.Empty); };
+                }
+                else
+                {
+                    loopEval = () => { return (isEvaluated(expression) && foundMatch); };
+                }
+
+
+                if (isEvaluated(eval))
+                {
+                    // if evaluate to root do so, else evaluate the expression fully
+                    //while ( ((toRoot && !DataListUtil.isRootVariable(expression)) || (isRecursiveOp(expression) && foundMatch)) ) {
+                    IList<string> RecursiveVals = new List<string>();
+                    while (loopEval())
                     {
-
-                        if (p.Type == enIntellisenseResultType.Error)
-                        {
-                            hasError = true;
-                            errors.AddError(p.Message);
-                            // attempt to remove the fragement not found if outside of design mode
-                            if (!designTimeBinding)
-                            {
-                                expression = expression.Replace(p.Option.DisplayValue, "");
-                            }
-                        }
-                        else if (p.Type == enIntellisenseResultType.Selectable && expression.Contains(p.Option.DisplayValue))
+                        foundMatch = false;
+                        IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(expression, bdl.FetchIntellisenseParts());
+                        foreach (IIntellisenseResult p in expressionParts)
                         {
 
-                            // Evaluate from the DataList
-                            IBinaryDataListEntry val;
-                            bool fetchOk = false;
-                            if (p.Option.IsScalar)
+                            if (p.Type == enIntellisenseResultType.Error)
                             {
-                                fetchOk = bdl.TryGetEntry(p.Option.Field, out val, out error);
-                            }
-                            else
-                            {
-                                fetchOk = bdl.TryGetEntry(p.Option.Recordset, out val, out error);
-                            }
-
-                            if (!fetchOk)
-                            {
-                                errors.AddError(error);
-                            }
-                            else
-                            {
-                                matchCnt++;
-                                foundMatch = true;
-                                lastFetch = val.Clone(enTranslationDepth.Data, out error); // clone to avoid mutation issues
-                                errors.AddError(error);
-
-
-                            }
-
-                            if (p.Option.IsScalar && val != null)
-                            {
-                                RecursiveVals.Add(p.Option.DisplayValue);
-                                if (RecursiveVals.FirstOrDefault(c => c.Equals(val.FetchScalar().TheValue)) == null)
+                                hasError = true;
+                                errors.AddError(p.Message);
+                                // attempt to remove the fragement not found if outside of design mode
+                                if (!designTimeBinding)
                                 {
-                                    //p.Option.DisplayValue != val.FetchScalar().TheValue
-                                    expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
+                                    expression = expression.Replace(p.Option.DisplayValue, "");
+                                }
+                            }
+                            else if (p.Type == enIntellisenseResultType.Selectable && expression.Contains(p.Option.DisplayValue))
+                            {
+
+                                // Evaluate from the DataList
+                                IBinaryDataListEntry val;
+                                bool fetchOk = false;
+                                if (p.Option.IsScalar)
+                                {
+                                    fetchOk = bdl.TryGetEntry(p.Option.Field, out val, out error);
                                 }
                                 else
                                 {
-
-                                    return lastFetch;
+                                    fetchOk = bdl.TryGetEntry(p.Option.Recordset, out val, out error);
                                 }
 
-                            }
-                            else if (val != null)
-                            {
-                                // process the recordset
-                                string idx = string.Empty;
-                                if (p.Option.HasRecordsetIndex)
+                                if (!fetchOk)
                                 {
-                                    idx = p.Option.RecordsetIndex;
+                                    errors.AddError(error);
+                                }
+                                else
+                                {
+                                    matchCnt++;
+                                    foundMatch = true;
+                                    lastFetch = val.Clone(enTranslationDepth.Data, out error); // clone to avoid mutation issues
+                                    errors.AddError(error);
+
+
                                 }
 
-                                enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
-
-                                if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                                if (p.Option.IsScalar && val != null)
                                 {
-
-                                    int myIdx = -1;
-                                    if (idxType == enRecordsetIndexType.Numeric)
+                                    RecursiveVals.Add(p.Option.DisplayValue);
+                                    if (RecursiveVals.FirstOrDefault(c => c.Equals(val.FetchScalar().TheValue)) == null)
                                     {
-                                        myIdx = Int32.Parse(idx);
+                                        //p.Option.DisplayValue != val.FetchScalar().TheValue
+                                        expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
                                     }
                                     else
                                     {
-                                        myIdx = val.FetchLastRecordsetIndex();
+
+                                        return lastFetch;
                                     }
 
-                                    if (p.Option.Field != null && p.Option.Field != string.Empty)
+                                }
+                                else if (val != null)
+                                {
+                                    // process the recordset
+                                    string idx = string.Empty;
+                                    if (p.Option.HasRecordsetIndex)
                                     {
-                                        // we want an entry at a set location
-                                        IBinaryDataListItem col = val.TryFetchRecordsetColumnAtIndex(p.Option.Field, myIdx, out error);
-                                        if (error != string.Empty)
+                                        idx = p.Option.RecordsetIndex;
+                                    }
+
+                                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
+
+                                    if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                                    {
+
+                                        int myIdx;
+                                        if (idxType == enRecordsetIndexType.Numeric)
                                         {
-                                            hasError = true;
-                                            matchCnt--;
-                                            errors.AddError(error);
-                                            lastFetch = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty); // set a blank match too ;)
-                                            expression = expression.Replace(p.Option.DisplayValue, string.Empty); // blank the match to avoid looping ;)
+                                            myIdx = Int32.Parse(idx);
                                         }
                                         else
                                         {
-                                            // build up the result, via a strip all but method?
-                                            lastFetch.MakeRecordsetEvaluateReady(myIdx, col.FieldName, out error);
+                                            myIdx = val.FetchLastRecordsetIndex();
+                                        }
+
+                                        if (p.Option.Field != null && p.Option.Field != string.Empty)
+                                        {
+                                            // we want an entry at a set location
+                                            IBinaryDataListItem col = val.TryFetchRecordsetColumnAtIndex(p.Option.Field, myIdx, out error);
                                             if (error != string.Empty)
                                             {
+                                                hasError = true;
+                                                matchCnt--;
                                                 errors.AddError(error);
+                                                lastFetch = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty); // set a blank match too ;)
+                                                expression = expression.Replace(p.Option.DisplayValue, string.Empty); // blank the match to avoid looping ;)
                                             }
-                                            // now evaluate the expression correctly to replace this token
+                                            else
+                                            {
+                                                // build up the result, via a strip all but method?
+                                                lastFetch.MakeRecordsetEvaluateReady(myIdx, col.FieldName, out error);
+                                                if (error != string.Empty)
+                                                {
+                                                    errors.AddError(error);
+                                                }
+                                                // now evaluate the expression correctly to replace this token
+                                                expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // they want the entire recordset? -- blank expression
                                             expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                            // Check for an index and remove all but this index ;)
+                                            if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                                            {
+                                                lastFetch.MakeRecordsetEvaluateReady(myIdx, GlobalConstants.AllColumns, out error);
+                                                if (error != string.Empty)
+                                                {
+                                                    errors.AddError(error);
+                                                }
+                                            }
+                                            // else already handled because we fetched it all ;)
+
                                         }
                                     }
-                                    else
+                                    else if (idxType == enRecordsetIndexType.Error)
                                     {
-                                        // they want the entire recordset? -- blank expression
-                                        expression = expression.Replace(p.Option.DisplayValue, string.Empty);
-                                        // Check for an index and remove all but this index ;)
-                                        if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                                        // we all it all
+                                        errors.AddError("Invalid Recordset Index");
+                                        foundMatch = false;
+                                    }
+                                    else if (idxType == enRecordsetIndexType.Star)
+                                    {
+                                        // they want the whole thing, send it and blank expression
+                                        if (p.Option.Field != null || p.Option.Field != string.Empty)
                                         {
-                                            lastFetch.MakeRecordsetEvaluateReady(myIdx, GlobalConstants.AllColumns, out error);
+                                            // keep only this field
+                                            string field = p.Option.Field;
+                                            if (field == string.Empty)
+                                            {
+                                                field = GlobalConstants.AllColumns;
+                                            }
+                                            lastFetch.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, field, out error);
                                             if (error != string.Empty)
                                             {
                                                 errors.AddError(error);
                                             }
-                                        }
-                                        // else already handled because we fetched it all ;)
+                                        } // else we need a column match to process by evaluate
 
-                                    }
-                                }
-                                else if (idxType == enRecordsetIndexType.Error)
-                                {
-                                    // we all it all
-                                    errors.AddError("Invalid Recordset Index");
-                                    foundMatch = false;
-                                }
-                                else if (idxType == enRecordsetIndexType.Star)
-                                {
-                                    // they want the whole thing, send it and blank expression
-                                    if (p.Option.Field != null || p.Option.Field != string.Empty)
-                                    {
-                                        // keep only this field
-                                        string field = p.Option.Field;
-                                        if (field == string.Empty)
+                                        expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                        if (expression != string.Empty && expression != " ") //Bug 7836
                                         {
-                                            field = GlobalConstants.AllColumns;
+                                            hasError = true;
+                                            matchCnt--;
+                                            errors.AddError("Attempt to use Recordset with * in a complex expression");
                                         }
-                                        lastFetch.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, field, out error);
-                                        if (error != string.Empty)
-                                        {
-                                            errors.AddError(error);
-                                        }
-                                    } // else we need a column match to process by evaluate
-
-                                    expression = expression.Replace(p.Option.DisplayValue, string.Empty);
-                                    if (expression != string.Empty && expression != " ")//Bug 7836
-                                    {
-                                        hasError = true;
-                                        matchCnt--;
-                                        errors.AddError("Attempt to use Recordset with * in a complex expression");
                                     }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (designTimeBinding)
-                            {
-                                // we need to keep unbound references in this mode
-                                if (expression.IndexOf(p.Option.DisplayValue) >= 0)
-                                {
-                                    Guid tmp = _dlServer.IDProvider.AllocateID();
-                                    string replace = string.Concat("Dev2", tmp.ToString());
-                                    expression = expression.Replace(p.Option.DisplayValue, replace);
-                                    _notFoundReplaceParts.Add(p.Option.DisplayValue, replace);
-                                    foundMatch = true;
-                                    matchCnt++;
                                 }
                             }
                             else
                             {
-                                // it needs to be evaluated, blank it
-                                if (expression.Contains(p.Option.DisplayValue))
+                                if (designTimeBinding)
                                 {
-                                    foundMatch = true;
-                                    matchCnt++;
-                                    expression = expression.Replace(p.Option.DisplayValue, string.Empty);
-                                }
-                                else if (hasError)
-                                {
-                                    // we have a funny script segment that contains brackets ( or most likely... )
-                                    //foundMatch = false;
-                                    if (isIterationDriven)
+                                    // we need to keep unbound references in this mode
+                                    if (expression.IndexOf(p.Option.DisplayValue) >= 0)
                                     {
-                                        matchCnt++; // force an interation
+                                        Guid tmp = _dlServer.IDProvider.AllocateID();
+                                        string replace = string.Concat("Dev2", tmp.ToString());
+                                        expression = expression.Replace(p.Option.DisplayValue, replace);
+                                        _notFoundReplaceParts.Add(p.Option.DisplayValue, replace);
+                                        foundMatch = true;
+                                        matchCnt++;
                                     }
                                 }
-                            }
+                                else
+                                {
+                                    // it needs to be evaluated, blank it
+                                    if (expression.Contains(p.Option.DisplayValue))
+                                    {
+                                        foundMatch = true;
+                                        matchCnt++;
+                                        expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                    }
+                                    else if (hasError)
+                                    {
+                                        // we have a funny script segment that contains brackets ( or most likely... )
+                                        //foundMatch = false;
+                                        if (isIterationDriven)
+                                        {
+                                            matchCnt++; // force an interation
+                                        }
+                                    }
+                                }
 
+                            }
+                        }
+
+                        // if iteration driven clear the list and inc the counter ;)
+                        if (isIterationDriven && matchCnt > 0)
+                        {
+                            expressionParts = new List<IIntellisenseResult>(); // clear the list ;)
+                            iterationCnt++;
+                            matchCnt = 0;
                         }
                     }
+                }
 
-                    // if iteration driven clear the list and inc the counter ;)
-                    if (isIterationDriven && matchCnt > 0)
+                if (hasError)
+                {
+                    // if has error, do not mutate expression
+                }
+                else
+                {
+                    // nothing was evaluated, meep
+                    if (matchCnt == 0 && isEvaluated(expression) && !toRoot && !isIterationDriven)
                     {
-                        expressionParts = new List<IIntellisenseResult>(); // clear the list ;)
-                        iterationCnt++;
-                        matchCnt = 0;
+                        expression = string.Empty;
+                    }
+                    else if (matchCnt == 0 && !isEvaluated(expression) && !isIterationDriven)
+                    {
+                        expression = eval;
                     }
                 }
-            }
 
-            if (hasError)
-            {
-                // if has error, do not mutate expression
-            }
-            else
-            {
-                // nothing was evaluated, meep
-                if (matchCnt == 0 && isEvaluated(expression) && !toRoot && !isIterationDriven)
+                // now evaluate for {{ regions and execute
+                if (expression.Contains("{{"))
                 {
-                    expression = string.Empty;
-                }
-                else if (matchCnt == 0 && !isEvaluated(expression) && !isIterationDriven)
-                {
-                    expression = eval;
-                }
-            }
-
-            // now evaluate for {{ regions and execute
-            if (expression.Contains("{{"))
-            {
-                string codepattern = @"(?<code>\{\{.*\}\})";
-                string jScriptCode = string.Empty;
-                Match match = Regex.Match(expression, codepattern, RegexOptions.Singleline);
-                if (match.Success)
-                {
-                    jScriptCode = match.Value;
-                    // Travis.Frisinger : 07.08.2012 
-                    // if there is valid non JS code, extract it and swap the tmp in later ;)
-                    string jsCode = string.Concat("Dev2_JS_HOLDER_", Guid.NewGuid());
-
-                    expression = expression.Replace(jScriptCode, jsCode).Trim();
-
-                    if (!string.IsNullOrEmpty(jScriptCode))
+                    string codepattern = @"(?<code>\{\{.*\}\})";
+                    string jScriptCode = string.Empty;
+                    Match match = Regex.Match(expression, codepattern, RegexOptions.Singleline);
+                    if (match.Success)
                     {
-                        string codeToExecute = jScriptCode.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
-                        string returnVal = JScriptEvaluator.EvaluateToString(codeToExecute);
-                        expression = expression.Replace(jsCode, returnVal.Trim());
+                        jScriptCode = match.Value;
+                        // Travis.Frisinger : 07.08.2012 
+                        // if there is valid non JS code, extract it and swap the tmp in later ;)
+                        string jsCode = string.Concat("Dev2_JS_HOLDER_", Guid.NewGuid());
+
+                        expression = expression.Replace(jScriptCode, jsCode).Trim();
+
+                        if (!string.IsNullOrEmpty(jScriptCode))
+                        {
+                            string codeToExecute = jScriptCode.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
+                            string returnVal = JScriptEvaluator.EvaluateToString(codeToExecute);
+                            expression = expression.Replace(jsCode, returnVal.Trim());
+                        }
                     }
                 }
-            }
 
-            // keep the references to design time variables
-            if (designTimeBinding)
-            {
-                foreach (string key in _notFoundReplaceParts.Keys)
+                // keep the references to design time variables
+                if (designTimeBinding)
                 {
-                    expression = expression.Replace(_notFoundReplaceParts[key], key);
+                    foreach (string key in _notFoundReplaceParts.Keys)
+                    {
+                        expression = expression.Replace(_notFoundReplaceParts[key], key);
+                    }
                 }
+
+                // finally, bundle up the expression as the result if it has not been evaluated fully ;)
+                if (expression != string.Empty && expression != " ") //Bug 7836
+                {
+                    // we just need to return the expression as is in a IBinaryDataListEntry
+                    IBinaryDataListEntry tmp = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
+                    tmp.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(expression, GlobalConstants.EvalautionScalar), out error);
+                    lastFetch = tmp; // return the expression as the result now ;)
+                }
+
+                // super finally, remove the iteration evaluation since this is a wizard specific feature ;)
+                if (isIterationDriven)
+                {
+                    UpsertSystemTag(bdl.UID, enSystemTag.EvaluateIteration, "false", out errors);
+                }
+
+                return lastFetch;
             }
 
-            // finally, bundle up the expression as the result if it has not been evaluated fully ;)
-            if (expression != string.Empty && expression != " ")//Bug 7836
-            {
-                // we just need to return the expression as is in a IBinaryDataListEntry
-                IBinaryDataListEntry tmp = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
-                tmp.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(expression, GlobalConstants.EvalautionScalar), out error);
-                lastFetch = tmp; // return the expression as the result now ;)
-            }
+            // else
+            errors = new ErrorResultTO();
+            string error2;
+            //IBinaryDataListEntry lastFetch2 = new BinaryDataListEntry(GlobalConstants.EvalautionScalar, string.Empty);
+            IBinaryDataListEntry lastFetch2 = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, out error2);
 
-            // super finally, remove the iteration evaluation since this is a wizard specific feature ;)
-            if (isIterationDriven)
-            {
-                UpsertSystemTag(bdl.UID, enSystemTag.EvaluateIteration, "false", out errors);
-            }
-
-            return lastFetch;
+            //Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
+            lastFetch2.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(expression, GlobalConstants.EvalautionScalar), out error2);
+            errors.AddError(error2);
+            return lastFetch2;
         }
 
         /// <summary>
@@ -1789,12 +1830,24 @@ namespace Dev2.Server.Datalist
                         // now we have the part, build up the item to push into the entry....
                         if (part != null)
                         {
+                            string itemVal;
                             // Process evaluated values via some Generic magic....
                             IBinaryDataListEntry evaluatedValue = null;
                             if (typeof(T) == typeof(string))
                             {
+                                itemVal = frameItem.Value.ToString();
 
-                                evaluatedValue = InternalEvaluate(frameItem.Value.ToString(), bdl, false, out errors);
+                                //if(IsEvaluated(frameItem.Value.ToString()))
+                                //{
+                                    evaluatedValue = InternalEvaluate(itemVal, bdl, false, out errors);
+                                    allErrors.AddError(error);
+                                //}
+                                //else
+                                //{
+                                   // evaluatedValue = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, out error); // set to a default value to enter evaluation
+                                    //evaluatedValue.FetchScalar().UpdateValue(itemVal);
+                                    allErrors.AddError(error);
+                                //}
 
                                 //evaluatedValue = Evaluate(ctx, curDLID, enActionType.User, frameItem.Value.ToString(),
                                 // out errors);
@@ -1817,19 +1870,34 @@ namespace Dev2.Server.Datalist
                                     {
                                         if (!evaluatedValue.IsRecordset)
                                         {
-                                            entry.TryPutScalar(
-                                                Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                    evaluatedValue.FetchScalar().TheValue, part.Option.Field), out error);
+                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                            IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
+
+                                            tmpI.UpdateField(part.Option.Field);
+                                            entry.TryPutScalar(tmpI, out error);
                                             allErrors.AddError(error);
+
+                                            //entry.TryPutScalar(
+                                            //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                            //        evaluatedValue.FetchScalar().TheValue, part.Option.Field), out error);
+                                            //allErrors.AddError(error);
                                         }
                                         else
                                         {
+
                                             // process it as a recordset to scalar ie last value is placed ;)
-                                            entry.TryPutScalar(
-                                                Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                    evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error)
-                                                                  .TheValue, part.Option.Field), out error);
+                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                            IBinaryDataListItem tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
+                                            tmpI.UpdateField(part.Option.Field);
+                                            entry.TryPutScalar(tmpI, out error);
                                             allErrors.AddError(error);
+
+                                            // process it as a recordset to scalar ie last value is placed ;)
+                                            //entry.TryPutScalar(
+                                            //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                            //        evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error)
+                                            //                      .TheValue, part.Option.Field), out error);
+                                            //allErrors.AddError(error);
                                         }
                                     } // else do nothing
                                 }
@@ -1858,32 +1926,57 @@ namespace Dev2.Server.Datalist
                                                     while (ii.HasMore())
                                                     {
                                                         int next = ii.FetchNextIndex();
-                                                        entry.TryPutRecordItemAtIndex(
-                                                            Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                                evaluatedValue.FetchScalar().TheValue, part.Option.Field),
-                                                            next, out error);
+                                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                        IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
+                                                        tmpI.UpdateField(part.Option.Field);
+                                                        entry.TryPutRecordItemAtIndex(tmpI, next, out error);
                                                         allErrors.AddError(error);
+
+                                                        //entry.TryPutRecordItemAtIndex(
+                                                        //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                                        //        evaluatedValue.FetchScalar().TheValue, part.Option.Field),
+                                                        //    next, out error);
+                                                        //allErrors.AddError(error);
                                                     }
                                                 }
                                                 else
                                                 {
                                                     // we need to move the iteration overwrite indexs ?
-                                                    entry.TryPutRecordItemAtIndex(
-                                                        Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                            evaluatedValue.FetchScalar().TheValue, part.Option.Recordset,
-                                                            part.Option.Field, idx), idx, out error);
+                                                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                    IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
+                                                    tmpI.UpdateField(part.Option.Field);
+                                                    tmpI.UpdateRecordset(part.Option.Recordset);
+                                                    tmpI.UpdateIndex(idx);
+
+                                                    entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+
                                                     allErrors.AddError(error);
+
+                                                    //entry.TryPutRecordItemAtIndex(
+                                                    //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                                    //        evaluatedValue.FetchScalar().TheValue, part.Option.Recordset,
+                                                    //        part.Option.Field, idx), idx, out error);
+                                                    //allErrors.AddError(error);
                                                 }
                                             }
                                             else
                                             {
                                                 // scalar to index
-                                                IBinaryDataListItem item =
-                                                    Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                        evaluatedValue.FetchScalar().TheValue, part.Option.Recordset,
-                                                        part.Option.Field, idx);
-                                                entry.TryPutRecordItemAtIndex(item, idx, out error);
+                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+
+                                                IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
+                                                tmpI.UpdateRecordset(part.Option.Recordset);
+                                                tmpI.UpdateField(part.Option.Field);
+                                                tmpI.UpdateIndex(idx);
+                                                entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
                                                 allErrors.AddError(error);
+
+                                                //IBinaryDataListItem item =
+                                                //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                                //        evaluatedValue.FetchScalar().TheValue, part.Option.Recordset,
+                                                //        part.Option.Field, idx);
+                                                //entry.TryPutRecordItemAtIndex(item, idx, out error);
+                                                //allErrors.AddError(error);
                                             }
                                         }
                                         else
@@ -1941,24 +2034,42 @@ namespace Dev2.Server.Datalist
                                                         allErrors.AddError(error);
                                                         if (itms != null && itms.Count == 1)
                                                         {
-                                                            IBinaryDataListItem itm =
-                                                                Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                                    itms[0].TheValue, part.Option.Recordset,
-                                                                    part.Option.Field, index);
-                                                            entry.TryPutRecordItemAtIndex(itm, index, out error);
+                                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                            IBinaryDataListItem tmpI = itms[0].Clone();
+                                                            tmpI.UpdateRecordset(part.Option.Recordset);
+                                                            tmpI.UpdateField(part.Option.Field);
+                                                            tmpI.UpdateIndex(index);
+                                                            entry.TryPutRecordItemAtIndex(tmpI, index, out error);
                                                             allErrors.AddError(error);
+
+                                                            //IBinaryDataListItem itm =
+                                                            //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                                            //        itms[0].TheValue, part.Option.Recordset,
+                                                            //        part.Option.Field, index);
+                                                            //entry.TryPutRecordItemAtIndex(itm, index, out error);
+                                                            //allErrors.AddError(error);
                                                         }
                                                         else if (itms != null && itms.Count > 1)
                                                         {
                                                             // all good move it
                                                             foreach (IBinaryDataListItem i in itms)
                                                             {
-                                                                IBinaryDataListItem itm =
-                                                                    Dev2BinaryDataListFactory.CreateBinaryItem(
-                                                                        i.TheValue, part.Option.Recordset,
-                                                                        part.Option.Field, index);
-                                                                entry.TryPutRecordItemAtIndex(itm, index, out error);
+                                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                                IBinaryDataListItem tmpI = i.Clone();
+
+                                                                tmpI.UpdateRecordset(part.Option.Recordset);
+                                                                tmpI.UpdateField(part.Option.Field);
+                                                                tmpI.UpdateIndex(index);
+
+                                                                entry.TryPutRecordItemAtIndex(tmpI, index, out error);
                                                                 allErrors.AddError(error);
+
+                                                                //IBinaryDataListItem itm =
+                                                                //    Dev2BinaryDataListFactory.CreateBinaryItem(
+                                                                //        i.TheValue, part.Option.Recordset,
+                                                                //        part.Option.Field, index);
+                                                                //entry.TryPutRecordItemAtIndex(itm, index, out error);
+                                                                //allErrors.AddError(error);
                                                             }
                                                         }
                                                     }

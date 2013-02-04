@@ -66,7 +66,18 @@ namespace Dev2.Server.DataList.Translators
                                 result.Append("<");
                                 result.Append(fName);
                                 result.Append(">");
-                                result.Append(col.TheValue);
+
+                                // Travis.Frisinger 04.02.2013
+                                if (!col.IsDeferredRead)
+                                {
+                                    result.Append(col.TheValue);
+                                }
+                                else
+                                {
+                                    // deferred read, just print the location
+                                    result.Append(col.FetchDeferredLocation());
+                                    
+                                }
                                 result.Append("</");
                                 result.Append(fName);
                                 result.Append(">");
@@ -86,7 +97,16 @@ namespace Dev2.Server.DataList.Translators
                             result.Append("<");
                             result.Append(fName);
                             result.Append(">");
-                            result.Append(val.TheValue);
+                            // Travis.Frisinger 04.02.2013
+                            if(!val.IsDeferredRead)
+                            {
+                                result.Append(val.TheValue);
+                            }
+                            else
+                            {
+                                // deferred read, just print the location
+                                result.Append(val.FetchDeferredLocation());
+;                           }
                             result.Append("</");
                             result.Append(fName);
                             result.Append(">");

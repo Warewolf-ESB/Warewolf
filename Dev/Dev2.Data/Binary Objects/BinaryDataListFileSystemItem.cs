@@ -1,20 +1,45 @@
-﻿using Dev2.DataList.Contract.Binary_Objects.Structs;
-using System;
+﻿using System;
+using System.Text;
+using Dev2.Data.Binary_Objects;
+using Dev2.DataList.Contract.Binary_Objects.Structs;
+using Dev2.PathOperations;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    [Serializable]
-    public class BinaryDataListItem : IBinaryDataListItem
+    public class BinaryDataListFileSystemItem : IBinaryDataListItem
     {
         #region Internal Struct
 
         private SBinaryDataListItem _internalObj = new SBinaryDataListItem();
+        private string _fileData;
+        private string _filePath;
 
         #endregion
 
         #region Properties
 
-        public string TheValue { get { return _internalObj.TheValue; } private set { _internalObj.TheValue = value; } }
+        // Properly return the data from the file system on demand
+        public string TheValue { 
+            
+            get
+            {
+                if(string.IsNullOrEmpty(_fileData))
+                {
+                    // Use File Broker ;)
+                    BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
+                    IActivityIOOperationsEndPoint endPoint = bdlUtil.DeserializeDeferredItem<IActivityIOOperationsEndPoint>(_internalObj.TheValue);
+                    IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                    _fileData = broker.Get(endPoint, false);
+                }
+
+                return _fileData;
+            }
+
+            private set
+            {
+                throw new NotImplementedException("Set for FileSystem Items is not implemented");
+            } 
+        }
 
         public int ItemCollectionIndex { get { return _internalObj.ItemCollectionIndex; } private set { _internalObj.ItemCollectionIndex = value; } }
 
@@ -22,12 +47,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public string FieldName { get { return _internalObj.FieldName; } private set { _internalObj.FieldName = value; } }
 
-        //public string DisplayValue { get { return _internalObj.DisplayValue; } private set { _internalObj.DisplayValue = value; } }
 
         public string DisplayValue { 
             get
             {
-                if (_internalObj.ItemCollectionIndex >= 0 && _internalObj.DisplayValue == null)
+                if (_internalObj.ItemCollectionIndex >= 0 && _internalObj.DisplayValue.Length < 1)
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
@@ -41,17 +65,18 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public bool IsDeferredRead { get { return false; } }
+        public bool IsDeferredRead { get { return true; } }
 
         #endregion Properties
 
         #region Internal Methods
 
-        internal BinaryDataListItem(string val, string ns, string field, string idx) 
+        internal BinaryDataListFileSystemItem(string base64Obj, string filePath, string ns, string field, string idx)
         {
-            _internalObj.TheValue = val;
+            _internalObj.TheValue = base64Obj;
             _internalObj.Namespace = ns;
             _internalObj.FieldName = field;
+            _filePath = filePath;
             int tmp;
             if (Int32.TryParse(idx, out tmp))
             {
@@ -63,21 +88,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        internal BinaryDataListItem(string val, string ns, string field, int idx)
+        internal BinaryDataListFileSystemItem(string base64Obj, string filePath, string ns, string field, int idx)
         {
-            _internalObj.TheValue = val;
+            _internalObj.TheValue = base64Obj;
+            _filePath = filePath;
             _internalObj.Namespace = ns;
             _internalObj.FieldName = field;
             _internalObj.ItemCollectionIndex = idx;
-            // Travis.Frisinger
-            // This is a performance killer, removed for bug 8579
-            // And should have been amended above in the property
-            //_internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);//Bug 7891 - null display value
         }
 
-        internal BinaryDataListItem(string val, string fieldName)
+        internal BinaryDataListFileSystemItem(string base64Obj, string filePath, string fieldName)
         {
-            _internalObj.TheValue = val;
+            _internalObj.TheValue = base64Obj;
+            _filePath = filePath;
             _internalObj.Namespace = string.Empty;
             _internalObj.FieldName = fieldName;
             _internalObj.ItemCollectionIndex = -1;
@@ -90,11 +113,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if (_internalObj.ItemCollectionIndex > 0)
             {
-                result = new BinaryDataListItem(_internalObj.TheValue, _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
+                result = new BinaryDataListFileSystemItem(_internalObj.TheValue, _filePath , _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
             }
             else
             {
-                result = new BinaryDataListItem(_internalObj.TheValue, _internalObj.FieldName);
+                result = new BinaryDataListFileSystemItem(_internalObj.TheValue, _filePath, _internalObj.FieldName);
             }
 
             return result;
@@ -102,7 +125,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public void HtmlEncodeRegionBrackets()
         {
-            _internalObj.TheValue = DataListUtil.HtmlEncodeRegionBrackets(_internalObj.TheValue);
+            throw new NotImplementedException("FileSystem Item Cannot Add Brackets!");
         }
 
         public void UpdateValue(string val)
@@ -127,7 +150,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public string FetchDeferredLocation()
         {
-            throw new NotImplementedException("Standard BinaryDataList Item is does not support this feature");
+            StringBuilder result = new StringBuilder("Contents not visible because this value is a deferred read of  '");
+
+            result.Append(_filePath);
+            result.Append("'");
+            return result.ToString();
         }
 
         #endregion Internal Methods

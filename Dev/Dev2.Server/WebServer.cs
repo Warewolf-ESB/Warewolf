@@ -601,6 +601,8 @@ namespace Dev2
             string correctedURI = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
             string executePayload = null;
 
+            DateTime startTS = DateTime.Now;
+
             if(clientID != null)
             {
                 Guid clientGuid;
@@ -616,7 +618,6 @@ namespace Dev2
             {
                 executePayload = _dsf.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
             }
-
 
             // Travis.Frisinger - 404 hack
             if(executePayload.IndexOf("<InnerError>", StringComparison.Ordinal) > 0 && executePayload.IndexOf("' Not Found", StringComparison.Ordinal) > 0)
@@ -645,7 +646,8 @@ namespace Dev2
                 }
                 else
                 {
-                    return new StringCommunicationResponseWriter(result, "text/xml");
+                    // Travis.Frisinger - 04.02.2013 Bug 8579
+                    return new BufferedStringResponse(result, "text/xml");
                 }
             }
             else if(executePayload.IndexOf("</JSON>") >= 0)
@@ -665,11 +667,13 @@ namespace Dev2
                     result = CleanupHtml(result.Substring(start, (end - start)));
                 }
 
-                return new StringCommunicationResponseWriter(result, "application/json");
+                // Travis.Frisinger - 04.02.2013 Bug 8579
+                return new BufferedStringResponse(result, "application/json");
             }
             else
             {
-                return new StringCommunicationResponseWriter(result, "text/xml");
+                // Travis.Frisinger - 04.02.2013 Bug 8579
+                return new BufferedStringResponse(result, "text/xml");
             }
         }
         #endregion

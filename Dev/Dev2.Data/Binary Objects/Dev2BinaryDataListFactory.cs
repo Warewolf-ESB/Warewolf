@@ -6,7 +6,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
 {
     public static class Dev2BinaryDataListFactory
     {
-        private static IBinaryDataListItem _blankBinarnyDataListItem = CreateBinaryItem(string.Empty, string.Empty);
+        // ReSharper disable InconsistentNaming
+        private static readonly IBinaryDataListItem _blankBinarnyDataListItem = CreateBinaryItem(string.Empty, string.Empty);
+        // ReSharper restore InconsistentNaming
 
 
         /// <summary>
@@ -96,6 +98,33 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
 
         /// <summary>
+        /// Creates the file system item.
+        /// </summary>
+        /// <param name="base64Obj">The base64 obj.</param>
+        /// <param name="fileLoc">The file loc.</param>
+        /// <param name="ns">The ns.</param>
+        /// <param name="field">The field.</param>
+        /// <param name="idx">The idx.</param>
+        /// <returns></returns>
+        public static IBinaryDataListItem CreateFileSystemItem(string base64Obj, string fileLoc, string ns, string field, int idx)
+        {
+            return new BinaryDataListFileSystemItem(base64Obj,fileLoc, ns, field, idx);
+        }
+
+        /// <summary>
+        /// Creates the file system item.
+        /// </summary>
+        /// <param name="base64Obj">The base64 obj.</param>
+        /// <param name="fileLoc">The file loc.</param>
+        /// <param name="field">The field.</param>
+        /// <returns></returns>
+        public static IBinaryDataListItem CreateFileSystemItem(string base64Obj, string fileLoc,string field)
+        {
+            return new BinaryDataListFileSystemItem(base64Obj,fileLoc, field);
+        }
+
+
+        /// <summary>
         /// Creates the column.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -154,8 +183,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Creates the entry.
         /// </summary>
-        /// <param name="field">The field.</param>
+        /// <param name="recordset">The recordset.</param>
         /// <param name="desc">The desc.</param>
+        /// <param name="cols">The cols.</param>
         /// <returns></returns>
         public static IBinaryDataListEntry CreateEntry(string recordset, string desc, IList<Dev2Column> cols)
         {

@@ -23,6 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         // Travis.Frisinger - 01.02.2013 : Bug 8579
         private bool _isStandardUpsert = true;
+        private string _deferredLoc = string.Empty;
 
         public DsfAbstractFileActivity(string displayName)
             : base(displayName)
@@ -43,8 +44,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
+            //Guid executionId = DataListExecutionID.Get(context);
 
+            IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
             // Process if no errors
@@ -56,44 +58,68 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outputs = ExecuteConcreteAction(context, out errors);
                     allErrors.MergeErrors(errors);
 
-                    if(_isStandardUpsert)
+                    if(outputs.Count > 0)
                     {
-                        if(outputs.Count > 0)
+                        //IList<string> expressionList = new List<string>();
+                        //IList<string> valueList = new List<string>();
+                        foreach(OutputTO output in outputs)
                         {
-                            //IList<string> expressionList = new List<string>();
-                            //IList<string> valueList = new List<string>();
-                            foreach(OutputTO output in outputs)
+                            if(output.OutputStrings.Count > 0)
                             {
-                                if(output.OutputStrings.Count > 0)
+                                foreach(string value in output.OutputStrings)
                                 {
-                                    foreach(string value in output.OutputStrings)
+                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
-                                        if(output.OutPutDescription == GlobalConstants.ErrorPayload)
-                                        {
-                                            errors.AddError(value);
-                                        }
-                                        else
+                                        errors.AddError(value);
+                                    }
+                                    else
+                                    {
+                                        if(_isStandardUpsert)
                                         {
                                             toUpsert.Add(output.OutPutDescription, value);
                                         }
-
+                                        else
+                                        {
+                                            // deferred read ;)
+                                            string error;
+                                            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
+                                            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
+                                            allErrors.AddError(error);
+;                                           toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
+                                        }
                                     }
 
+                                }
+
+                                if(_isStandardUpsert)
+                                {
                                     toUpsert.FlushIterationFrame();
                                 }
+                                else
+                                {
+                                    // deferred read ;)
+                                    toUpsertDeferred.FlushIterationFrame();
+                                }
                             }
-
-                            compiler.Upsert(executionId, toUpsert, out errors);
-                            allErrors.MergeErrors(errors);
-                            compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                            allErrors.MergeErrors(errors);
-
                         }
+
+                        if(_isStandardUpsert)
+                        {
+                            compiler.Upsert(dlID, toUpsert, out errors);
+                        }
+                        else
+                        {
+                            // deferred read ;)
+                            compiler.Upsert(dlID, toUpsertDeferred, out errors);
+                        }
+
+                        allErrors.MergeErrors(errors);
+
+                        //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
+                        //allErrors.MergeErrors(errors);
+
                     }
-                    else
-                    {
-                        // we have a special deferred operation, treat it as such ;)
-                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -115,9 +141,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Makes the deferred action.
         /// </summary>
-        public void MakeDeferredAction()
+        public void MakeDeferredAction(string deferredLoc)
         {
             _isStandardUpsert = false;
+            _deferredLoc = deferredLoc;
         }
         
         /// <summary>

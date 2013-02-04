@@ -49,6 +49,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
         string DisplayValue { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this instance is deferred read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is deferred read; otherwise, <c>false</c>.
+        /// </value>
+        bool IsDeferredRead { get; }
+
+        /// <summary>
         /// Clones this instance.
         /// </summary>
         /// <returns></returns>
@@ -58,6 +66,37 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Ecodes the region brackets in Html.
         /// </summary>      
         void HtmlEncodeRegionBrackets();
+
+        /// <summary>
+        /// Updates the value.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        void UpdateValue(string val);
+
+        /// <summary>
+        /// Updates the field.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        void UpdateField(string val);
+
+        /// <summary>
+        /// Updates the recordset.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        void UpdateRecordset(string val);
+
+        /// <summary>
+        /// Updates the index.
+        /// </summary>
+        /// <param name="idx">The idx.</param>
+        void UpdateIndex(int idx);
+
+        /// <summary>
+        /// Fetches the deferred location.
+        /// </summary>
+        /// <returns></returns>
+        string FetchDeferredLocation();
+
 
     }
 }

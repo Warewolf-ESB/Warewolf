@@ -74,7 +74,28 @@ namespace Dev2.Integration.Tests.Load_Tests
             string exp = "<myPrimes><value> 104729</value></myPrimes>"; // Last value in the file
 
             Assert.IsTrue(result.IndexOf(exp) > 0);
-            Assert.IsTrue(duration <= 10.0);
+            // Travis.Frisinger - Bug 8579
+            // Was 10.0 Moved to 2.5
+            Assert.IsTrue(duration <= 2.5); 
+        }
+
+        // Travis.Frisinger - Bug 8579
+        [TestMethod]
+        public void FileWith200kLine_Expect200kRecordsetEntries_In_Under_25Seconds()
+        {
+
+            string path = ServerSettings.WebserverURI + "DataSplit200kEntryFile_Expect_Sub5SecondProcess";
+
+            DateTime start = DateTime.Now;
+            string result = TestHelper.PostDataToWebserver(path);
+            DateTime end = DateTime.Now;
+
+            string exp = "00199999"; // Last value in the file to ensure it was read ;)
+
+            double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
+
+            Assert.IsTrue(result.IndexOf(exp) > 0);
+            Assert.IsTrue(duration <= 25.0);
         }
     }
 }

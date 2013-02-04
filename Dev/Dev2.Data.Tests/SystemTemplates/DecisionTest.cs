@@ -224,9 +224,6 @@ namespace Dev2.Data.Tests.SystemTemplates
         {
             IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
 
-            string error;
-            ErrorResultTO errors;
-
             // ExecuteDecisionStack
             string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 

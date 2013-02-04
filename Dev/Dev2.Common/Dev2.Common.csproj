@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
