@@ -114,10 +114,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 Dev2Column colToFind = Columns.FirstOrDefault(c => c.ColumnName == column);
 
 
-                if (colToFind != null)
+                if(colToFind != null)
                 {
                     result = Columns.IndexOf(colToFind);
                     _strToColIdx[column] = result; // save to cache ;)
+                }
+                else
+                {
+                    result = -1; // it failed, default back to non-valid index
                 }
             }
 

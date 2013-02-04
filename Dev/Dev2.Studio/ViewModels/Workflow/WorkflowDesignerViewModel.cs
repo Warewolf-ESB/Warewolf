@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Decision;
+﻿using Caliburn.Micro;
+using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.Studio.AppResources.AttachedProperties;
@@ -10,6 +11,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
@@ -43,7 +45,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : BaseViewModel, IWorkflowDesignerViewModel, IDisposable
+    public class WorkflowDesignerViewModel : BaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>
     {
         #region Fields
 
@@ -2333,6 +2335,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _filteredDataListParts = MissingDataListParts(workflowFields);
                 dataListViewModel.AddMissingDataListItems(_filteredDataListParts);
             }
+        }
+
+        /// <summary>
+        /// Handles the specified UpdateResourcemessage by updating the resource
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/01/23</date>
+        public void Handle(UpdateResourceMessage message)
+        {
+            _workflowModel.Update(message.ResourceModel);
         }
 
         #endregion

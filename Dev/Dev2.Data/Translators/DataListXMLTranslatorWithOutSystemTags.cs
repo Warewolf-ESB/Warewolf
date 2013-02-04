@@ -139,10 +139,20 @@ namespace Dev2.Server.DataList.Translators
                     try
                     {
                         string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
+                        XmlDocument xDoc = new XmlDocument();
+                        try
+                        {
+                            xDoc.LoadXml(toLoad);
+                        }
+                        catch
+                        {
+                            // Append new root tags ;)
+                            toLoad = "<root>" + toLoad + "</root>";
+                            xDoc.LoadXml(toLoad);
+                        }
+
                         if (!string.IsNullOrEmpty(toLoad))
                         {
-                            XmlDocument xDoc = new XmlDocument();
-                            xDoc.LoadXml(toLoad);
                             XmlNodeList children = xDoc.DocumentElement.ChildNodes;
 
                             HashSet<string> procssesNamespaces = new HashSet<string>();
@@ -212,23 +222,7 @@ namespace Dev2.Server.DataList.Translators
 
                             }
 
-                            // Transfer System Tags
-                            IBinaryDataListEntry sysEntry;
-                            for (int i = 0; i < TranslationConstants.systemTags.Length; i++)
-                            {
-                                string key = TranslationConstants.systemTags.GetValue(i).ToString(); ;
-                                string query = String.Concat("//", key);
-                                XmlNode n = xDoc.SelectSingleNode(query);
-
-                                if (n != null)
-                                {
-                                    string bkey = GlobalConstants.SystemTagNamespace + "." + key;
-                                    if (result.TryGetEntry(bkey, out sysEntry, out error))
-                                    {
-                                        sysEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(n.InnerXml, bkey), out error);
-                                    }
-                                }
-                            }
+                            
                         }
                     }
                     catch (Exception e)
