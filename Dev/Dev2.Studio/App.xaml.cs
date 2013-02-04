@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Factory;
 using System;
@@ -16,7 +17,14 @@ namespace Dev2.Studio
         public App()
         {
             CheckForDuplicateProcess();//Bug 8403
-            InitializeComponent();
+
+            /*bool createdNew;
+
+            var m = new Mutex(true, "Dev2.Studio", out createdNew);
+
+            if (!createdNew) Current.Shutdown();
+            else */
+                InitializeComponent();
         }
 
 #if DEBUG
