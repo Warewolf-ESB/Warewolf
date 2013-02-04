@@ -1,5 +1,4 @@
-﻿using System;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -9,6 +8,7 @@ using Dev2.Studio.Core.ViewModels.DataList;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Threading;
 
 namespace Dev2.Core.Tests
@@ -379,6 +379,16 @@ namespace Dev2.Core.Tests
         {
             var context = new IntellisenseProviderContext { CaretPosition = 5, InputText = "[[set", DesiredResultSet = IntellisenseDesiredResultSet.Default };
             Assert.AreEqual("[[recset()]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset()]]", context));
+        }
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void NoFieldResultInsertion_Where_CaretPositionIsZero_Expected_DoesNotThrowException()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 0, InputText = "", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            //The only reason this logic needs to run is to check that a zero caret position doesn't crash it!!!
+            string actual = new DefaultIntellisenseProvider().PerformResultInsertion("", context);
+            Assert.AreEqual("", actual);
         }
         [TestMethod]
 // ReSharper disable InconsistentNaming

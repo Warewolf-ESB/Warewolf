@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using Unlimited.Framework;
+﻿using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-
-using System.Windows;
-using System.Parsing.Intellisense;
-using Dev2.UI;
-using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.UI;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Parsing.Intellisense;
+using System.Text;
+using System.Windows;
 
 namespace Dev2.Studio.InterfaceImplementors
 {
@@ -125,6 +123,7 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion
 
         #region Result Handling
+        // TODO Brendon.Page This methods needs a major refactor, while doign so please consider the single responsibility principle!!!!!!!!
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
             string appendText = input + context.InputText.Substring(context.CaretPosition, context.InputText.Length - context.CaretPosition);
@@ -257,11 +256,26 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else
             {
-                var firstBrace = currentText.LastIndexOf('(', index);
-                var secondBrace = currentText.LastIndexOf(')');
-                var depthIndex = currentText.Substring(firstBrace+1, secondBrace-firstBrace-1);
-                if (depthIndex.StartsWith("[["))
+                if (index < 0 || index > currentText.Length - 1)
+                {
                     prepend = false;
+                }
+                else
+                {
+                    var firstBrace = currentText.LastIndexOf('(', index);
+                    var secondBrace = currentText.LastIndexOf(')');
+
+                    var length = secondBrace-firstBrace-1;
+                    if (length >= 0)
+                    {
+                        var depthIndex = currentText.Substring(firstBrace + 1, length);
+                        if (depthIndex.StartsWith("[["))
+                        {
+                            prepend = false;
+                        }
+                    }
+                }
+               
                 currentText = currentText.Substring(0, index);
                 currentText = currentText.Insert(index, appendText);
 
@@ -294,6 +308,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private bool isBetweenBraces(string value, int pos)
         {
+            if (pos < 0 || pos > value.Length - 1) return false;
             return (value.LastIndexOf('(', pos) != -1 && value.IndexOf(')', pos) != -1);
         }
 
