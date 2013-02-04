@@ -34,6 +34,8 @@ namespace Dev2.DynamicServices.Test
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
+            
+
             // HACK: shorten test directory path by removing auto generated folder....
             var parentDir = Directory.GetParent(testContext.TestDir);
             var tempDir = testContext.TestDir.Remove(0, parentDir.FullName.Length);
@@ -55,6 +57,8 @@ namespace Dev2.DynamicServices.Test
 
             var xml = XmlResource.Fetch(ServiceName);
             xml.Save(Path.Combine(_servicesPath, ServiceName + ".xml"));
+
+            _testInstance = WorkspaceRepository.Instance;
         }
 
         [ClassCleanup]
