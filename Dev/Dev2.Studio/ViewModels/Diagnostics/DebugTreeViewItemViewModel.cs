@@ -1,9 +1,12 @@
 ﻿using Dev2.Diagnostics;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
@@ -48,13 +51,19 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region Constructor
 
-        public DebugStateTreeViewItemViewModel(IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = true, bool isSelected = false, bool addedAsParent = false)
+        public DebugStateTreeViewItemViewModel(IFrameworkRepository<IEnvironmentModel> environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = true, bool isSelected = false, bool addedAsParent = false)
             : base(parent)
         {
             _content = content;
             IsExpanded = isExpanded;
             IsSelected = isSelected;
             AddedAsParent = addedAsParent;
+
+            if(environmentRepository != null && content != null)
+            {
+                var env = environmentRepository.All().FirstOrDefault(e => e.ID == content.ServerID) ?? EnvironmentRepository.DefaultEnvironment;
+                content.Server = env.Name;
+            }
 
             Inputs = new List<object>();
             Outputs = new List<object>();

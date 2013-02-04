@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Dev2.Diagnostics;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.Diagnostics;
-using Dev2.Studio.ViewModels.Diagnostics;
 
 namespace Dev2.Studio.Diagnostics
 {
@@ -11,14 +12,16 @@ namespace Dev2.Studio.Diagnostics
     {
         #region Class Members
 
-        private DebugOutputFilterStrategy _debugOutputFilterStrategy;
+        readonly DebugOutputFilterStrategy _debugOutputFilterStrategy;
+        readonly IFrameworkRepository<IEnvironmentModel> _environmentRepository;
 
         #endregion Class Members
 
         #region Constructor
 
-        public DebugOutputTreeGenerationStrategy()
+        public DebugOutputTreeGenerationStrategy(IFrameworkRepository<IEnvironmentModel> environmentRepository = null)
         {
+            _environmentRepository = environmentRepository;
             _debugOutputFilterStrategy = new DebugOutputFilterStrategy();
         }
 
@@ -51,47 +54,47 @@ namespace Dev2.Studio.Diagnostics
             //
             // Check if content should be placed in the tree
             //
-            if (!string.IsNullOrWhiteSpace(filterText) && !_debugOutputFilterStrategy.Filter(newContent, filterText)) return null;
+            if(!string.IsNullOrWhiteSpace(filterText) && !_debugOutputFilterStrategy.Filter(newContent, filterText)) return null;
 
             DebugTreeViewItemViewModel newItem = null;
             IDebugState debugState = newContent as IDebugState;
 
-            if (debugState != null)
+            if(debugState != null)
             {
                 //
                 // Find the node which to add the item to
                 //
                 DebugTreeViewItemViewModel parentItem = null;
-                if (!addedAsParent)
+                if(!addedAsParent)
                 {
                     parentItem = FindParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
                 }
-                    
-                if (parentItem == null)
+
+                if(parentItem == null)
                 {
                     parentItem = AddMissingParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
                 }
 
-                if (depthLimit <= 0 || operationDepth < depthLimit)
+                if(depthLimit <= 0 || operationDepth < depthLimit)
                 {
-                    if (parentItem == null)
+                    if(parentItem == null)
                     {
                         //
                         // Add as root node
                         //
-                        newItem = new DebugStateTreeViewItemViewModel(debugState, null, true, false, addedAsParent);
+                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, debugState, null, true, false, addedAsParent);
                         AddOrInsertItem(rootItems, existingContent, debugState, newItem, addedAsParent);
                         return newItem;
                     }
                     else
                     {
-                        newItem = new DebugStateTreeViewItemViewModel(debugState, parentItem, true, false, addedAsParent);
+                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, debugState, parent: parentItem, isExpanded: true, isSelected: false, addedAsParent: addedAsParent);
                         AddOrInsertItem(parentItem.Children, existingContent, debugState, newItem, addedAsParent);
                         return newItem;
                     }
                 }
             }
-            else if (newContent is string && !string.IsNullOrWhiteSpace(newContent.ToString()))
+            else if(newContent is string && !string.IsNullOrWhiteSpace(newContent.ToString()))
             {
                 newItem = new DebugStringTreeViewItemViewModel(newContent as string, null, true, false, addedAsParent);
                 AddOrInsertItem(rootItems, existingContent, newContent, newItem, addedAsParent);
@@ -112,7 +115,7 @@ namespace Dev2.Studio.Diagnostics
         private void AddOrInsertItem(ObservableCollection<DebugTreeViewItemViewModel> destinationCollection, List<object> existingContent,
             object content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
         {
-            if (!addedAsParent)
+            if(!addedAsParent)
             {
                 destinationCollection.Add(treeviewItem);
             }
@@ -120,16 +123,16 @@ namespace Dev2.Studio.Diagnostics
             {
                 int originalIndex = existingContent.IndexOf(content);
 
-                if (originalIndex < 0)
+                if(originalIndex < 0)
                 {
                     throw new Exception("Content not found in original list.");
                 }
 
                 bool insterted = false;
-                for (int i = 0; i < destinationCollection.Count; i++)
+                for(int i = 0; i < destinationCollection.Count; i++)
                 {
                     int itemIndex = existingContent.IndexOf(destinationCollection[i]);
-                    if (itemIndex > originalIndex)
+                    if(itemIndex > originalIndex)
                     {
                         insterted = true;
                         destinationCollection.Insert(i, treeviewItem);
@@ -137,7 +140,7 @@ namespace Dev2.Studio.Diagnostics
                     }
                 }
 
-                if (!insterted)
+                if(!insterted)
                 {
                     destinationCollection.Add(treeviewItem);
                 }
@@ -151,17 +154,17 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel FindParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.DisplayName  == debugState.ParentID)
+            if(string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.DisplayName == debugState.ParentID)
             {
                 return null;
             }
 
-            foreach (DebugTreeViewItemViewModel item in rootItems)
+            foreach(DebugTreeViewItemViewModel item in rootItems)
             {
                 DebugTreeViewItemViewModel match = item.FindSelfOrChild(n =>
                 {
                     DebugStateTreeViewItemViewModel debugStateTreeViewItemViewModel = n as DebugStateTreeViewItemViewModel;
-                    if (debugStateTreeViewItemViewModel == null)
+                    if(debugStateTreeViewItemViewModel == null)
                     {
                         return false;
                     }
@@ -169,7 +172,7 @@ namespace Dev2.Studio.Diagnostics
                     return debugStateTreeViewItemViewModel.Content.DisplayName == debugState.ParentID;
                 });
 
-                if (match != null)
+                if(match != null)
                 {
                     operationDepth = match.GetDepth() + 1;
                     return match;
@@ -186,13 +189,13 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel AddMissingParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
+            if(string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
             {
                 return null;
             }
 
             IDebugState parent = existingContent.FirstOrDefault(o => o is IDebugState && o != debugState && ((IDebugState)o).ID == debugState.ParentID) as IDebugState;
-            if (parent == null)
+            if(parent == null)
             {
                 return null;
             }
