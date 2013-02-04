@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -90,6 +91,52 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion Get Input/Output Tests
 
+        #region GetDebugInputs/Outputs
 
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void FileRead_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfFileRead act = new DsfFileRead { InputPath = "[[CompanyName]]", Result = "[[CompanyName]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(1, inRes[1].Count);
+            Assert.AreEqual(1, inRes[2].Count);            
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void FileRead_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfFileRead act = new DsfFileRead { InputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+
+            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(31, inRes[0].Count);
+            Assert.AreEqual(1, inRes[1].Count);
+            Assert.AreEqual(1, inRes[2].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);          
+        }
+
+        #endregion
     }
 }

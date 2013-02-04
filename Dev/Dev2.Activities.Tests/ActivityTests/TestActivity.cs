@@ -28,7 +28,7 @@ namespace ActivityUnitTests.ActivityTests
             IsWorkflow = true;
             IsSimulationEnabled = false;
         }
-        
+
         protected override void OnExecute(NativeActivityContext context)
         {
         }

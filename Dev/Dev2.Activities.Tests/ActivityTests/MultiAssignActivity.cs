@@ -1,30 +1,29 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
-using Dev2;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using ActivityUnitTests.Utils;
-using Dev2.DataList;
-using System.Xml.Linq;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract;
+using System.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTest {
+namespace ActivityUnitTests.ActivityTest
+{
     /// <summary>
     /// Summary description for AssignActivity
     /// </summary>
     [TestClass]
-    public class MultiAssignActivity : BaseActivityUnitTest {
+    public class MultiAssignActivity : BaseActivityUnitTest
+    {
         IList<string> _fieldName;
         IList<string> _fieldValue;
         ObservableCollection<ActivityDTO> _fieldCollection = new ObservableCollection<ActivityDTO>();
         public MultiAssignActivity()
-            : base() {
+            : base()
+        {
             //
             // TODO: Add constructor logic here
             //
@@ -36,11 +35,14 @@ namespace ActivityUnitTests.ActivityTest {
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -59,7 +61,8 @@ namespace ActivityUnitTests.ActivityTest {
         //
         // Use TestInitialize to run code before running each test 
         [TestInitialize()]
-        public void MyTestInitialize() {
+        public void MyTestInitialize()
+        {
 
 
             _fieldName = new List<string>();
@@ -89,7 +92,8 @@ namespace ActivityUnitTests.ActivityTest {
             _fieldValue.Add("testValue10");
 
 
-            for(int i = 0; i < _fieldName.Count; i++) {
+            for (int i = 0; i < _fieldName.Count; i++)
+            {
                 _fieldCollection.Add(new ActivityDTO(_fieldName[i], _fieldValue[i], _fieldCollection.Count));
             }
 
@@ -105,7 +109,8 @@ namespace ActivityUnitTests.ActivityTest {
         #region MultiAssign Functionality Tests
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleExpression() {
+        public void AssignRecordSetWithEvaluatedSingleExpression()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             SetupArguments(
@@ -123,7 +128,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void RecursiveEvaluation() {
+        public void RecursiveEvaluation()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[recset]]", "gRec", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[field]]", "opt", _fieldCollection.Count));
@@ -168,7 +174,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedDoubleExpressionSameRecordSet() {
+        public void AssignRecordSetWithEvaluatedDoubleExpressionSameRecordSet()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec().display]]", _fieldCollection.Count));
@@ -188,7 +195,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedSingleExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
 
@@ -206,13 +214,14 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedDoubleExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedDoubleExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec().display]]", _fieldCollection.Count));
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
-                          , "<root>"+ActivityStrings.mult_assign_expression_both_sides_single_rs_adl+"</root>"
+                          , "<root>" + ActivityStrings.mult_assign_expression_both_sides_single_rs_adl + "</root>"
                           , _fieldCollection
                           );
             IDSFDataObject result = ExecuteProcess();
@@ -228,7 +237,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedRecursiveRightSingleAssignMultRecords() {
+        public void AssignRecordSetWithEvaluatedRecursiveRightSingleAssignMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[rsElement]]", "gRec", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[rsFieldElement]]", "opt", _fieldCollection.Count));
@@ -252,7 +262,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleOutOfBoundRightIndexExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedSingleOutOfBoundRightIndexExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec(100).opt]]", _fieldCollection.Count));
 
@@ -269,7 +280,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleOutOfBoundLeftIndexExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedSingleOutOfBoundLeftIndexExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             SetupArguments(
@@ -287,7 +299,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleOutOfBoundBothIndexExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedSingleOutOfBoundBothIndexExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec(100).opt]]", _fieldCollection.Count));
 
@@ -306,7 +319,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultOutOfBoundLeftIndexExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedMultOutOfBoundLeftIndexExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).display]]", "[[gRec().display]]", _fieldCollection.Count));
@@ -325,7 +339,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultOutOfBoundBothIndexExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedMultOutOfBoundBothIndexExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec(100).opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).display]]", "[[gRec(100).display]]", _fieldCollection.Count));
@@ -343,7 +358,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultOutOfBoundRightIndexExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedMultOutOfBoundRightIndexExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec(100).opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec(100).display]]", _fieldCollection.Count));
@@ -362,7 +378,8 @@ namespace ActivityUnitTests.ActivityTest {
 
 
         [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultLeftIndexInBoundsExpressionMultRecords() {
+        public void AssignRecordSetWithEvaluatedMultLeftIndexInBoundsExpressionMultRecords()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec(1).display]]", "[[gRec().display]]", _fieldCollection.Count));
@@ -385,7 +402,8 @@ namespace ActivityUnitTests.ActivityTest {
         // -- End New
 
         [TestMethod]
-        public void MultiAssignTenAtOnce_Expected_MultiAssignCorrectlySetsAllScalarValues() {
+        public void MultiAssignTenAtOnce_Expected_MultiAssignCorrectlySetsAllScalarValues()
+        {
             SetupArguments(
                             ActivityStrings.NewScalarShape
                           , ActivityStrings.NewScalarShape
@@ -401,7 +419,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MultiAssignWithAnEmptyField_Expected_FieldInDataListNotAssignedValue() {
+        public void MultiAssignWithAnEmptyField_Expected_FieldInDataListNotAssignedValue()
+        {
             _fieldCollection[0].FieldName = "";
 
             SetupArguments(
@@ -419,7 +438,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MultiAssignWithAnEmptyValue_Expected_FieldInDataListNotAssignedValue() {
+        public void MultiAssignWithAnEmptyValue_Expected_FieldInDataListNotAssignedValue()
+        {
             _fieldCollection[0].FieldValue = "";
             _fieldCollection[1].FieldValue = "";
             SetupArguments(
@@ -470,7 +490,8 @@ namespace ActivityUnitTests.ActivityTest {
         //        }
 
         [TestMethod]
-        public void MultiAssignWithSpecialCharsInValue() {
+        public void MultiAssignWithSpecialCharsInValue()
+        {
             _fieldCollection[0].FieldValue = "testValue@#";
 
             SetupArguments(
@@ -488,7 +509,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MutiAssignWithAddingOneRecSets() {
+        public void MutiAssignWithAddingOneRecSets()
+        {
             _fieldCollection.Add(new ActivityDTO("[[testRecSet1().testRec1]]", "testRecValue1", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
             SetupArguments(
@@ -506,7 +528,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MutiAssignWithAddingTenRecSets_Expected_RecordSetPopulatedToIndex() {
+        public void MutiAssignWithAddingTenRecSets_Expected_RecordSetPopulatedToIndex()
+        {
             _fieldCollection.Add(new ActivityDTO("[[testRecSet1(10).testRec1]]", "testRecValue1", _fieldCollection.Count));
 
             SetupArguments(
@@ -525,7 +548,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten() {
+        public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten()
+        {
             _fieldCollection.Add(new ActivityDTO("[[testRecSet1(1).testRec1]]", "testRecValue1", _fieldCollection.Count));
 
             SetupArguments(
@@ -543,7 +567,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void ScalarInRecordset_Expected_MultiAssignCorrectlyIdentifiesField() {
+        public void ScalarInRecordset_Expected_MultiAssignCorrectlyIdentifiesField()
+        {
 
             _fieldCollection.Clear();
 
@@ -571,7 +596,8 @@ namespace ActivityUnitTests.ActivityTest {
         #region Language Tests
 
         [TestMethod]
-        public void StarToStar_Expected_AllValuesOverwrittenWithRecordSetFrom() {
+        public void StarToStar_Expected_AllValuesOverwrittenWithRecordSetFrom()
+        {
 
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec(*).opt]]", _fieldCollection.Count));
@@ -601,7 +627,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void Star_To_NoIndex_Expected_ValuesAppendedToRecordSet() {
+        public void Star_To_NoIndex_Expected_ValuesAppendedToRecordSet()
+        {
 
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec().opt]]", "[[cRec(*).opt]]", _fieldCollection.Count));
@@ -625,11 +652,12 @@ namespace ActivityUnitTests.ActivityTest {
             Assert.AreEqual(17, data.Count);
             Assert.AreEqual("Value1", data[7]);
             Assert.AreEqual("Value10", data[16]);
-            
+
         }
 
         [TestMethod]
-        public void NoIndex_To_Star_LastValueOverwritesAllCurrentDataListValues() {
+        public void NoIndex_To_Star_LastValueOverwritesAllCurrentDataListValues()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec().opt]]", _fieldCollection.Count));
 
@@ -664,14 +692,15 @@ namespace ActivityUnitTests.ActivityTest {
             string error = string.Empty;
             IList<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
 
-            Assert.AreEqual(7,actual.Count);
+            Assert.AreEqual(7, actual.Count);
             Assert.AreEqual("Value10", actual[6]);
             Assert.AreEqual("Value10", actual[0]);
             //Assert.AreEqual(expected, actual); // This keeps throwing error about wrong format ?!?!
         }
 
         [TestMethod]
-        public void Index_To_Star_Expected_AllValuesOverwrittenByIndexValue() {
+        public void Index_To_Star_Expected_AllValuesOverwrittenByIndexValue()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec(2).opt]]", _fieldCollection.Count));
 
@@ -707,7 +736,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void Star_To_Index_Expected_IndexSetToLastValueOfAssignedRecordSet() {
+        public void Star_To_Index_Expected_IndexSetToLastValueOfAssignedRecordSet()
+        {
 
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "[[cRec(*).opt]]", _fieldCollection.Count));
@@ -726,7 +756,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void StarToScalar_Expected_ScalarSetToLastValueInRecordSet() {
+        public void StarToScalar_Expected_ScalarSetToLastValueInRecordSet()
+        {
 
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "[[cRec(*).opt]]", _fieldCollection.Count));
@@ -755,13 +786,15 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void ScalarToStar_Expected_AllRecordsOverwrittenWithScalarValue() {
+        public void ScalarToStar_Expected_AllRecordsOverwrittenWithScalarValue()
+        {
 
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "testData", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[testScalar]]", _fieldCollection.Count));
 
-            TestStartNode = new FlowStep {
+            TestStartNode = new FlowStep
+            {
                 Action = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = _fieldCollection }
             };
 
@@ -785,7 +818,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void RemoveItem_Expected_BlankItemsRemoved() {
+        public void RemoveItem_Expected_BlankItemsRemoved()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "testData", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[testScalar]]", _fieldCollection.Count));
@@ -810,7 +844,8 @@ namespace ActivityUnitTests.ActivityTest {
         #region Calculate Mode Tests
 
         [TestMethod]
-        public void MutiAssign_CalculateMode_PrefixEncasing_Test() {
+        public void MutiAssign_CalculateMode_PrefixEncasing_Test()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[Variable]]", DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)", _fieldCollection.Count));
 
@@ -830,7 +865,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MutiAssign_CalculateMode_SuffixEncasing_Test() {
+        public void MutiAssign_CalculateMode_SuffixEncasing_Test()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[Variable]]", "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix, _fieldCollection.Count));
 
@@ -850,7 +886,8 @@ namespace ActivityUnitTests.ActivityTest {
 
         // changed this test to faciliate the existing evaluate approach, hence the expected is now "" not 5
         [TestMethod]
-        public void MutiAssign_CalculateMode_ValidEncasing_Test() {
+        public void MutiAssign_CalculateMode_ValidEncasing_Test()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfMultiAssignActivity.CalculateTextConvertFormat, "sum(5)"), _fieldCollection.Count));
 
@@ -870,7 +907,8 @@ namespace ActivityUnitTests.ActivityTest {
         }
 
         [TestMethod]
-        public void MutiAssign_ErrorHandeling_Expected_ErrorTag() {
+        public void MutiAssign_ErrorHandeling_Expected_ErrorTag()
+        {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[//().rec]]", "testData", _fieldCollection.Count));
 
@@ -889,7 +927,8 @@ namespace ActivityUnitTests.ActivityTest {
         #region GetWizardData Tests
 
         [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList() {
+        public void GetWizardData_Expected_Correct_IBinaryDataList()
+        {
             bool passTest = true;
 
             _fieldCollection.Clear();
@@ -903,11 +942,14 @@ namespace ActivityUnitTests.ActivityTest {
 
             IBinaryDataList binaryDL = testAct.GetWizardData();
             var recsets = binaryDL.FetchRecordsetEntries();
-            if(recsets.Count != 1) {
+            if (recsets.Count != 1)
+            {
                 passTest = false;
             }
-            else {
-                if(recsets[0].Columns.Count != 2) {
+            else
+            {
+                if (recsets[0].Columns.Count != 2)
+                {
                     passTest = false;
                 }
             }
@@ -916,16 +958,50 @@ namespace ActivityUnitTests.ActivityTest {
 
         #endregion GetWizardData Tests
 
+        #region GetDebugInputs/Outputs
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void Assign_Get_Debug_Input_Output_With_All_Notation_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>();
+            fieldsCollection.Add(new ActivityDTO("[[CompanyName]]", "The Unlimited", 1));
+            fieldsCollection.Add(new ActivityDTO("[[Customers(1).FirstName]]", "TestName", 2));
+            fieldsCollection.Add(new ActivityDTO("[[Numeric(*).num]]", "123456789", 3));
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(0, inRes.Count);
+
+            Assert.AreEqual(3, outRes.Count);
+            Assert.AreEqual(4, outRes[0].Count);
+            Assert.AreEqual(4, outRes[1].Count);
+            Assert.AreEqual(4, outRes[2].Count);
+        }
+
+        #endregion
+
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, IList<ActivityDTO> assignFields, string outputMapping = null) {
-            if(outputMapping == null) {
-                TestStartNode = new FlowStep {
+        private void SetupArguments(string currentDL, string testData, IList<ActivityDTO> assignFields, string outputMapping = null)
+        {
+            if (outputMapping == null)
+            {
+                TestStartNode = new FlowStep
+                {
                     Action = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = _fieldCollection }
                 };
             }
-            else {
-                TestStartNode = new FlowStep {
+            else
+            {
+                TestStartNode = new FlowStep
+                {
                     Action = new DsfMultiAssignActivity { OutputMapping = outputMapping, FieldsCollection = _fieldCollection }
                 };
             }
@@ -933,7 +1009,8 @@ namespace ActivityUnitTests.ActivityTest {
             CurrentDL = currentDL;
         }
 
-        private string GetSimpleADL() {
+        private string GetSimpleADL()
+        {
             return @"<ADL>
   <cRec>
     <opt></opt>

@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
@@ -334,6 +335,27 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         #endregion Get Input/Output Tests
+
+        #region GetDebugInputs/Outputs
+
+        [TestMethod]
+        public void SortRecord_Get_Debug_Input_Output_With_Recordset_Using_Star_Index_With_Field_Expected_Pass()
+        {
+            DsfSortRecordsActivity act = new DsfSortRecordsActivity { SortField = "[[Customers(*).DOB]]", SelectedSort = "Forward" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(31, inRes[0].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(30, outRes[0].Count);
+        }
+
+        #endregion
 
         #region Private Test Methods
 

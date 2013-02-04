@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
@@ -259,6 +260,49 @@ Format can't be null/empty.]]></Error>";
         }
 
         #endregion Error Test Cases
+
+        #region Get Debug Input/Output Tests
+
+        [TestMethod]
+        public void DateTimeDiffernce_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
+        {
+            DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(1).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[res]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(2, inRes[2].Count);
+            Assert.AreEqual(2, inRes[3].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+
+        [TestMethod]
+        public void DateTimeDiffernce_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
+        {
+            DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(*).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[Numeric(*).num]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(31, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(2, inRes[2].Count);
+            Assert.AreEqual(2, inRes[3].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(30, outRes[0].Count);
+        }
+
+        #endregion
 
         #region Get Input/Output Tests
 

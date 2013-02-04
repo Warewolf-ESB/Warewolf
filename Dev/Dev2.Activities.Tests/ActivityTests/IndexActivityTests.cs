@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
@@ -294,6 +295,54 @@ namespace ActivityUnitTests.ActivityTests
 
 
         #endregion Index Negative Tests
+
+        #region GetDebugInputs/Outputs
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void Index_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfIndexActivity act = new DsfIndexActivity { InField = "[[CompanyName]]",Index = "First Occurance",Characters = "2",Direction = "Left To Right",Result = "[[res]]"};
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(2, inRes[2].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void Index_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfIndexActivity act = new DsfIndexActivity { InField = "[[Customers(*).FirstName]]", Index = "First Occurance", Characters = "b", Direction = "Left To Right", Result = "[[Numeric(*).num]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(31, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(2, inRes[2].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(30, outRes[0].Count);
+        }
+
+        #endregion
 
         #region Get Input/Output Tests
 

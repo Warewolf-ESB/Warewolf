@@ -180,11 +180,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-
+                DebugItem itemToAdd = new DebugItem();
                 string userModel = dds.GenerateUserFriendlyModel();
 
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Expression" });
+                //foreach (Dev2Decision dev2Decision in dds.TheStack)
+                //{
+                //    if (dev2Decision.Col1.Contains("[["))
+                //    {
+                //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
+                //        userModel.Replace(dev2Decision.Col1, "");
+                //    }
+                //    if (dev2Decision.Col2.Contains("[["))
+                //    {
+                //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col2, dataList));
+                //        userModel.Replace(dev2Decision.Col2, "");
+                //    }
+                //    if (dev2Decision.Col3.Contains("[["))
+                //    {
+                //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col3, dataList));
+                //        userModel.Replace(dev2Decision.Col3, "");
+                //    }
+                //}
+                //result.Add(itemToAdd);
+
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Statement" });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = userModel });
                 result.Add(itemToAdd);
@@ -224,8 +243,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<IDebugItem> result = new List<IDebugItem>();
 
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Result" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = _theResult.ToString() });
             result.Add(itemToAdd);
 

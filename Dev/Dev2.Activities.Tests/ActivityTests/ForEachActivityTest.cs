@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dev2;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using Dev2;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Activities;
 using Moq;
+using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTest
 {
@@ -80,7 +81,7 @@ namespace ActivityUnitTests.ActivityTest
                           , ActivityStrings.ForEachDataListShape
                           , "2"
                           );
-          IDSFDataObject result = ExecuteForEachProcess();
+            IDSFDataObject result = ExecuteForEachProcess();
             _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
         }
 
@@ -169,115 +170,115 @@ namespace ActivityUnitTests.ActivityTest
 
         #region Input Mapping Tests
 
-//        [TestMethod]
-//        public void InputMapping_UsingRecordSetWithStar_Expected_EverythingMapped()
-//        {
-//            ErrorResultTO errors = new ErrorResultTO();
-//            string error = string.Empty;
+        //        [TestMethod]
+        //        public void InputMapping_UsingRecordSetWithStar_Expected_EverythingMapped()
+        //        {
+        //            ErrorResultTO errors = new ErrorResultTO();
+        //            string error = string.Empty;
 
-//            SetupArguments(
-//                            ActivityStrings.ForEachCurrentDataList
-//                          , ActivityStrings.ForEachDataListShape
-//                          , "1"
-//                          );
-
-
-//            IDSFDataObject result = ExecuteForEachProcess();
-
-//            IBinaryDataList bdl = _compiler.FetchBinaryDataList(result.DataListID, out errors);
-
-//            IBinaryDataListEntry entry;
-//            bdl.TryGetEntry("resultVar", out entry, out error);
-
-//            Assert.AreEqual("recVal1", entry.FetchScalar().TheValue);
-
-//            //_mockChannel.Verify(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
-//        }
-
-//        [TestMethod]
-//        public void InputMapping_IndexInRecordSet_Expected_OnlyIterateForIndexNumberinRecordSet()
-//        {
-//            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
-//            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "[[recset(1).rec2]]");
-//            SetupArguments(
-//                            ActivityStrings.ForEachCurrentDataList
-//                          , ActivityStrings.ForEachDataListShape
-//                          , "[[recset(*)]]"
-//                          , true
-//                          , inputMapping
-//                          );
-
-//            IDSFDataObject result = ExecuteForEachProcess();
-
-//            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
-//        <innertest>rec2Val1</innertest>
-//      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
-//        }
-
-//        [TestMethod]
-//        public void InputMapping_RecsetWithoutIndex_Expected_LastValueAlwaysMapped()
-//        {
-//            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
-//            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "[[recset().rec2]]");
-
-//            string activityDataList = ActivityStrings.ForEachCurrentDataList;
-//            activityDataList = activityDataList.Insert(activityDataList.LastIndexOf("</recset>") + "</recset>".Length, "\r\n<recset><rec>recVal6</rec><rec2>rec2Val6</rec2></recset>");
-
-//            SetupArguments(
-//                            activityDataList
-//                          , ActivityStrings.ForEachDataListShape
-//                          , "[[recset(*)]]"
-//                          , true
-//                          , inputMapping
-//                          );
-
-//            IDSFDataObject result = ExecuteForEachProcess();
-
-//            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
-//        <innertest>rec2Val6</innertest>
-//      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(6));
-//        }
-
-//        [TestMethod]
-//        public void InputMapping_RecsetWithScalar_Expected_ScalarAlwaysMapped()
-//        {
-//            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
-//            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "[[var]]");
-//            SetupArguments(
-//                            ActivityStrings.ForEachCurrentDataList
-//                          , ActivityStrings.ForEachDataListShape
-//                          , "[[recset(*)]]"
-//                          , true
-//                          , inputMapping
-//                          );
-//            IDSFDataObject result = ExecuteForEachProcess();
-
-//            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
-//        <innertest>Static_Scalar</innertest>
-//      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
-//        }
-
-//        [TestMethod]
-//        public void InputMapping_RecsetWithStatic_Expected_StaticAlwaysMapped()
-//        {
-//            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
-//            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "Hello");
-
-//            SetupArguments(
-//                            ActivityStrings.ForEachCurrentDataList
-//                          , ActivityStrings.ForEachDataListShape
-//                          , "[[recset()]]"
-//                          , true
-//                          , inputMapping
-//                          );
+        //            SetupArguments(
+        //                            ActivityStrings.ForEachCurrentDataList
+        //                          , ActivityStrings.ForEachDataListShape
+        //                          , "1"
+        //                          );
 
 
-//            IDSFDataObject result = ExecuteForEachProcess();
+        //            IDSFDataObject result = ExecuteForEachProcess();
 
-//            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
-//        <innertest>Hello</innertest>
-//      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
-//        }
+        //            IBinaryDataList bdl = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+
+        //            IBinaryDataListEntry entry;
+        //            bdl.TryGetEntry("resultVar", out entry, out error);
+
+        //            Assert.AreEqual("recVal1", entry.FetchScalar().TheValue);
+
+        //            //_mockChannel.Verify(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+        //        }
+
+        //        [TestMethod]
+        //        public void InputMapping_IndexInRecordSet_Expected_OnlyIterateForIndexNumberinRecordSet()
+        //        {
+        //            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
+        //            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "[[recset(1).rec2]]");
+        //            SetupArguments(
+        //                            ActivityStrings.ForEachCurrentDataList
+        //                          , ActivityStrings.ForEachDataListShape
+        //                          , "[[recset(*)]]"
+        //                          , true
+        //                          , inputMapping
+        //                          );
+
+        //            IDSFDataObject result = ExecuteForEachProcess();
+
+        //            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
+        //        <innertest>rec2Val1</innertest>
+        //      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+        //        }
+
+        //        [TestMethod]
+        //        public void InputMapping_RecsetWithoutIndex_Expected_LastValueAlwaysMapped()
+        //        {
+        //            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
+        //            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "[[recset().rec2]]");
+
+        //            string activityDataList = ActivityStrings.ForEachCurrentDataList;
+        //            activityDataList = activityDataList.Insert(activityDataList.LastIndexOf("</recset>") + "</recset>".Length, "\r\n<recset><rec>recVal6</rec><rec2>rec2Val6</rec2></recset>");
+
+        //            SetupArguments(
+        //                            activityDataList
+        //                          , ActivityStrings.ForEachDataListShape
+        //                          , "[[recset(*)]]"
+        //                          , true
+        //                          , inputMapping
+        //                          );
+
+        //            IDSFDataObject result = ExecuteForEachProcess();
+
+        //            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
+        //        <innertest>rec2Val6</innertest>
+        //      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(6));
+        //        }
+
+        //        [TestMethod]
+        //        public void InputMapping_RecsetWithScalar_Expected_ScalarAlwaysMapped()
+        //        {
+        //            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
+        //            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "[[var]]");
+        //            SetupArguments(
+        //                            ActivityStrings.ForEachCurrentDataList
+        //                          , ActivityStrings.ForEachDataListShape
+        //                          , "[[recset(*)]]"
+        //                          , true
+        //                          , inputMapping
+        //                          );
+        //            IDSFDataObject result = ExecuteForEachProcess();
+
+        //            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
+        //        <innertest>Static_Scalar</innertest>
+        //      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+        //        }
+
+        //        [TestMethod]
+        //        public void InputMapping_RecsetWithStatic_Expected_StaticAlwaysMapped()
+        //        {
+        //            string inputMapping = ActivityStrings.ForEach_Input_Mapping;
+        //            inputMapping = inputMapping.Replace("[[recset(*).rec2]]", "Hello");
+
+        //            SetupArguments(
+        //                            ActivityStrings.ForEachCurrentDataList
+        //                          , ActivityStrings.ForEachDataListShape
+        //                          , "[[recset()]]"
+        //                          , true
+        //                          , inputMapping
+        //                          );
+
+
+        //            IDSFDataObject result = ExecuteForEachProcess();
+
+        //            _mockChannel.Verify(channel => channel.ExecuteCommand(It.Is<string>(c => c.Contains(@"<innertesting>
+        //        <innertest>Hello</innertest>
+        //      </innertesting>")), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+        //        }
 
         #endregion Input Mapping Tests
 
@@ -398,6 +399,47 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         #endregion Output Mapping Tests
+
+        #region Get Debug Input/Output Tests
+
+        [TestMethod]
+        public void Foreach_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
+        {
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(4, outRes[0].Count);
+        }
+
+
+        [TestMethod]
+        public void Foreach_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
+        {
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[Numeric(*).num]]", "Index", "1", 1) };
+            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(31, outRes[0].Count);
+        }
+
+        #endregion
 
         #region Private Test Methods
 

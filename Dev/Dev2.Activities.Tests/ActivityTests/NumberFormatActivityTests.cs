@@ -2,6 +2,7 @@
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -40,12 +41,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Methods
 
-        private void SetupArguments(string currentDL, string testData, string result, string expression, 
+        private void SetupArguments(string currentDL, string testData, string result, string expression,
             enRoundingType roundingType, string roundingDecimalPlaces, string decimalPlacesToShow)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfNumberFormatActivity 
+                Action = new DsfNumberFormatActivity
                 {
                     Expression = expression,
                     Result = result,
@@ -261,9 +262,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GetWizardData_Expected_Correct_IBinaryDataList()
         {
-            DsfNumberFormatActivity testAct = new DsfNumberFormatActivity 
-            { 
-                Expression = "[[SomeVariable]]", 
+            DsfNumberFormatActivity testAct = new DsfNumberFormatActivity
+            {
+                Expression = "[[SomeVariable]]",
                 RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.None),
                 RoundingDecimalPlaces = "",
                 DecimalPlacesToShow = "",
@@ -279,6 +280,54 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion GetWizardData Tests
+
+        #region GetDebugInputs/Outputs
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void NumberFormating_Get_Debug_Input_Output_With_Recordset_Using_Numeric_Notation_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfNumberFormatActivity act = new DsfNumberFormatActivity { Expression = "[[Numeric(1).num]]", RoundingType = "Up", RoundingDecimalPlaces = "2", DecimalPlacesToShow = "2", Result = "[[res]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(2, inRes[2].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void NumberFormating_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
+        // ReSharper restore InconsistentNaming
+        {
+            DsfNumberFormatActivity act = new DsfNumberFormatActivity { Expression = "[[Numeric(*).num]]", RoundingType = "Up", RoundingDecimalPlaces = "2", DecimalPlacesToShow = "2", Result = "[[Numeric(*).num]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(31, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(2, inRes[2].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(30, outRes[0].Count);
+        }
+
+        #endregion
 
     }
 }

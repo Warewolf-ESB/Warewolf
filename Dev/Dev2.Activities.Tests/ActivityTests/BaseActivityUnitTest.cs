@@ -322,6 +322,25 @@ namespace ActivityUnitTests
             ExecuteProcess();
             outputResults = activity.GetDebugOutputs(dl);
         }
+
+        public void CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
+                                                  string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+
+            TestData = dataListWithData;
+            CurrentDL = dataListShape;
+
+            _compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDL, out errors);
+            IBinaryDataList dl = _compiler.FetchBinaryDataList(ExecutionID, out errors);
+            inputResults = activity.GetDebugInputs(dl);
+            outputResults = activity.GetDebugOutputs(dl);
+        }
         #endregion
 
         #region Retrieve DataList Values

@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -306,37 +307,40 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Get Debug Input/Output Tests
 
-        //BUG 8104 : Refactor DebugItem
-        //[TestMethod]
-        //public void CaseConvert_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
-        //{
-        //    IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { new CaseConvertTO("[[CompanyName]]", "UPPER", "[[CompanyName]]", 1) };
-        //    DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
+        [TestMethod]
+        public void CaseConvert_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { new CaseConvertTO("[[CompanyName]]", "UPPER", "[[CompanyName]]", 1) };
+            DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
 
-        //    IList<IDebugItem> inRes;
-        //    IList<IDebugItem> outRes;
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
 
-        //    CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-        //                                                        ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-        //    Assert.AreEqual(2, inRes.Count);
-        //    Assert.AreEqual(1, outRes.Count);
-        //}
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(7, inRes[0].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(4, outRes[0].Count);
+        }
 
 
-        //[TestMethod]
-        //public void CaseConvert_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
-        //{
-        //    IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { new CaseConvertTO("[[Customers(*).FirstName]]", "UPPER", "[[Customers(*).FirstName]]", 1) };
-        //    DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
+        [TestMethod]
+        public void CaseConvert_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { new CaseConvertTO("[[Customers(*).FirstName]]", "UPPER", "[[Customers(*).FirstName]]", 1) };
+            DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
 
-        //    IList<IDebugItem> inRes;
-        //    IList<IDebugItem> outRes;
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
 
-        //    CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-        //                                                        ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-        //    Assert.AreEqual(12, inRes.Count);
-        //    Assert.AreEqual(10, outRes.Count);
-        //}
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(34, inRes[0].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(31, outRes[0].Count);
+        }
 
         #endregion
 

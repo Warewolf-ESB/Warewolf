@@ -1,5 +1,4 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ namespace ActivityUnitTests.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    public class PathCreateTests : BaseActivityUnitTest
+    public class DsfActivityTests : BaseActivityUnitTest
     {
-        public PathCreateTests()
+        public DsfActivityTests()
         {
             //
             // TODO: Add constructor logic here
@@ -60,38 +59,14 @@ namespace ActivityUnitTests.ActivityTests
         //
         #endregion
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void PathCreateActivity_GetInputs_Expected_Five_Input()
-        {
-            DsfPathCreate testAct = new DsfPathCreate();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 5);
-        }
-
-        [TestMethod]
-        public void PathCreateActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfPathCreate testAct = new DsfPathCreate();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
-        }
-
-        #endregion Get Input/Output Tests
-
         #region GetDebugInputs/Outputs
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void Create_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
+        public void DsfActivity_Get_Debug_Input_Output_With_All_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            DsfPathCreate act = new DsfPathCreate { OutputPath = "[[CompanyName]]", Result = "[[CompanyName]]" };
+            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
@@ -101,36 +76,18 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(5, inRes.Count);
             Assert.AreEqual(4, inRes[0].Count);
-            Assert.AreEqual(1, inRes[1].Count);
-            Assert.AreEqual(1, inRes[3].Count);
-            Assert.AreEqual(1, inRes[4].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(4, inRes[2].Count);
+            Assert.AreEqual(4, inRes[3].Count);
+            Assert.AreEqual(4, inRes[4].Count);
 
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
-        }
+            Assert.AreEqual(5, outRes.Count);
+            Assert.AreEqual(4, outRes[0].Count);
+            Assert.AreEqual(4, outRes[1].Count);
+            Assert.AreEqual(4, outRes[2].Count);
+            Assert.AreEqual(4, outRes[3].Count);
+            Assert.AreEqual(4, outRes[4].Count);
 
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Create_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfPathCreate act = new DsfPathCreate { OutputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
-
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
-
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            Assert.AreEqual(5, inRes.Count);
-            Assert.AreEqual(31, inRes[0].Count);
-            Assert.AreEqual(1, inRes[1].Count);
-            Assert.AreEqual(1, inRes[2].Count);
-            Assert.AreEqual(1, inRes[3].Count);
-            Assert.AreEqual(1, inRes[4].Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
         }
 
         #endregion

@@ -93,6 +93,7 @@
     <Compile Include="ActivityTests\DateTimeDifferenceTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityAbstractTest.cs" />
+    <Compile Include="ActivityTests\DsfFlowNodeTests.cs" />
     <Compile Include="ActivityTests\FindRecordsActivityTest.cs" />
     <Compile Include="ActivityTests\ForEachActivityTest.cs" />
     <Compile Include="ActivityTests\HighLevel ActivityTests.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="ActivityTests\NativeActivityTest.cs" />
     <Compile Include="ActivityTests\TestActivityAbstract.cs" />
     <Compile Include="ActivityTests\NegativeActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\WebpageActivity.cs" />
     <Compile Include="ActivityTests\WorkflowDesignerViewModel.cs" />

@@ -6008,4 +6008,10 @@ iiiiiiiiiiii</value>
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="DsfActivityInputMapping" xml:space="preserve">
+    <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="[[scalar]]" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="[[Numeric(2).num]]" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[Numeric(3).num]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[Numeric(4).num]]" /&gt;&lt;/Inputs&gt;</value>
+  </data>
+  <data name="DsfActivityOutputMapping" xml:space="preserve">
+    <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[CompanyName]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[Numeric(2),num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="[[Numeric(3),num]]" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[Customer(1).FirstName]]" /&gt;&lt;/Outputs&gt;</value>
+  </data>
 </root>

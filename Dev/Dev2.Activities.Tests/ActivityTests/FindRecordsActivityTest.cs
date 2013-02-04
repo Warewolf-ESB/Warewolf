@@ -1,18 +1,12 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Collections.ObjectModel;
 using System.Activities.Statements;
-using Dev2;
-using Dev2.DataList;
-
-using Dev2.Diagnostics;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract;
+using System.Collections.Generic;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 
 namespace ActivityUnitTests.ActivityTest
@@ -99,7 +93,7 @@ namespace ActivityUnitTests.ActivityTest
             bdl.TryGetEntry("Result", out entry, out error);
 
 
-            Assert.AreEqual(6,entry.ItemCollectionSize());
+            Assert.AreEqual(6, entry.ItemCollectionSize());
         }
 
         [TestMethod]
@@ -211,6 +205,44 @@ namespace ActivityUnitTests.ActivityTest
 
             Assert.IsTrue(_compiler.HasErrors(result.DataListID));
         }
+
+        #region Get Debug Input/Output Tests
+
+        [TestMethod]
+        public void FindRecord_Get_Debug_Input_Output_With_Recordset_Using_Star_Index_With_Field_Expected_Pass()
+        {
+            DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*).DOB]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(31, inRes[0].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+        [TestMethod]
+        public void FindRecord_Get_Debug_Input_Output_With_Recordset_With_Star_Index_Expected_Pass()
+        {
+            DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*)]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(91, inRes[0].Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+        #endregion
 
         #region Get Input/Output Tests
 

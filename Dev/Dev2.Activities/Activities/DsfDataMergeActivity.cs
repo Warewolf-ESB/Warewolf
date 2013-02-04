@@ -208,6 +208,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int indexToShow = 1;
             foreach (DataMergeDTO dataMergeDto in MergeCollection)
             {
+                if (dataMergeDto.MergeType == "None" && dataMergeDto.IndexNumber == MergeCollection.Count &&
+                    dataMergeDto.InputVariable == string.Empty)
+                {
+                    continue;
+                }
+
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Merge" });

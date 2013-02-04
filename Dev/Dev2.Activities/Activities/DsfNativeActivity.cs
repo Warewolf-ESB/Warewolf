@@ -599,7 +599,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
                     enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
 
-                    if (indexType == enRecordsetIndexType.Blank && fieldName == string.Empty)
+                    if (indexType == enRecordsetIndexType.Blank)
                     {
                         expression = expression.Insert(expression.IndexOf(')'), GlobalConstants.StarExpression);
                         indexType = DataListUtil.GetRecordsetIndexType(expression);
@@ -614,7 +614,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IList<IBinaryDataListItem> row = entry.FetchRecordAt(recsetIndex, out error);
                         foreach (IBinaryDataListItem binaryDataListItem in row)
                         {
-                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(binaryDataListItem.DisplayValue) });
+                            string displayName = DataListUtil.CreateRecordsetDisplayValue(binaryDataListItem.Namespace,
+                                                                                          binaryDataListItem.FieldName,
+                                                                                          recsetIndex.ToString(
+                                                                                              CultureInfo
+                                                                                                  .InvariantCulture));
+                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(displayName) });
                             results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                             results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = binaryDataListItem.TheValue });
                         }

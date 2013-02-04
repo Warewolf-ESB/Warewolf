@@ -290,6 +290,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int indexToShow = 1;
             foreach (DataSplitDTO dataSplitDto in ResultsCollection)
             {
+                if (dataSplitDto.SplitType == "Index" && dataSplitDto.IndexNumber == ResultsCollection.Count &&
+                    dataSplitDto.At == string.Empty)
+                {
+                    continue;
+                }
                 itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Split Using" });

@@ -787,9 +787,11 @@ No tokenize operations!]]></Error>";
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            //Assert.AreEqual(3, inRes.Count);
-            //Assert.AreEqual(1, outRes.Count);
-            Assert.Inconclusive();
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(4, outRes[0].Count);
         }
 
 
@@ -804,9 +806,11 @@ No tokenize operations!]]></Error>";
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            //Assert.AreEqual(3, inRes.Count);
-            //Assert.AreEqual(10, outRes.Count);
-            Assert.Inconclusive();
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(4, inRes[0].Count);
+            Assert.AreEqual(4, inRes[1].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(31, outRes[0].Count);
         }
 
         #endregion
