@@ -308,6 +308,9 @@ namespace ActivityUnitTests.ActivityTest
 
         #region Get Debug Input/Output Tests
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DeleteRecord_Get_Debug_Input_Output_With_Recordset_Expected_Pass()
         {

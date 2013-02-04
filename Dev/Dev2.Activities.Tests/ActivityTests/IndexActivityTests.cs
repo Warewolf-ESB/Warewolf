@@ -298,12 +298,15 @@ namespace ActivityUnitTests.ActivityTests
 
         #region GetDebugInputs/Outputs
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void Index_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            DsfIndexActivity act = new DsfIndexActivity { InField = "[[CompanyName]]",Index = "First Occurance",Characters = "2",Direction = "Left To Right",Result = "[[res]]"};
+            DsfIndexActivity act = new DsfIndexActivity { InField = "[[CompanyName]]", Index = "First Occurance", Characters = "2", Direction = "Left To Right", Result = "[[res]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
@@ -320,6 +323,9 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(3, outRes[0].Count);
         }
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void Index_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()

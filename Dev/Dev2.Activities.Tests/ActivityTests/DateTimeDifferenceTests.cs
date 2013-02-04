@@ -263,6 +263,9 @@ Format can't be null/empty.]]></Error>";
 
         #region Get Debug Input/Output Tests
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DateTimeDiffernce_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
@@ -282,7 +285,9 @@ Format can't be null/empty.]]></Error>";
             Assert.AreEqual(3, outRes[0].Count);
         }
 
-
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DateTimeDiffernce_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {

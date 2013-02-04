@@ -776,6 +776,9 @@ No tokenize operations!]]></Error>";
 
         #region Get Debug Input/Output Tests
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DataSplit_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
@@ -794,7 +797,9 @@ No tokenize operations!]]></Error>";
             Assert.AreEqual(4, outRes[0].Count);
         }
 
-
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DataSplit_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {

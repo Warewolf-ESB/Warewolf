@@ -338,6 +338,9 @@ namespace ActivityUnitTests.ActivityTest
 
         #region GetDebugInputs/Outputs
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void SortRecord_Get_Debug_Input_Output_With_Recordset_Using_Star_Index_With_Field_Expected_Pass()
         {

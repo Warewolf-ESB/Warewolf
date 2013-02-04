@@ -188,6 +188,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //    if (dev2Decision.Col1.Contains("[["))
                 //    {
                 //        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
+                //        ErrorResultTO errors = new ErrorResultTO();
+                //        var dlEntry = c.Evaluate(dataList.UID, enActionType.User, dev2Decision.Col1, true, out errors);
+                //        dl
                 //        userModel.Replace(dev2Decision.Col1, "");
                 //    }
                 //    if (dev2Decision.Col2.Contains("[["))
@@ -251,7 +254,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //return GetDebugItems(dataList, StateType.After, _theResult.ToString());
         }
 
-        #endregion Get Inputs/Outputs
+        #endregion
+
+        #region Private Debug Methods
+
+        private string EvaluateExpressiomToStringValue(string Expression, IBinaryDataList dataList)
+        {
+            string result = string.Empty;
+
+            //if (dev2Decision.Col1.Contains("[["))
+            //        {
+            //            itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
+            //            ErrorResultTO errors = new ErrorResultTO();
+            //            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, dev2Decision.Col1, true, out errors);
+            //            dl
+            //            userModel.Replace(dev2Decision.Col1, "");
+            //        }
+
+            return result;
+        }
+
+        #endregion
 
         protected abstract FlowNode CreateFlowNode();
 

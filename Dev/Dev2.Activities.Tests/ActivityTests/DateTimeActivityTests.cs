@@ -146,6 +146,9 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Get Debug Input/Output Tests
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DateTime_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
@@ -165,7 +168,9 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(3, outRes[0].Count);
         }
 
-
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DateTime_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {

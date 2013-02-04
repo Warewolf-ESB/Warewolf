@@ -1,16 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
+using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2;
-using Dev2.DataList;
-
-using Dev2.Diagnostics;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -93,6 +86,9 @@ namespace ActivityUnitTests.ActivityTests
 
         #region GetDebugInputs/Outputs
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void FileRead_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
@@ -109,12 +105,15 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].Count);
             Assert.AreEqual(1, inRes[1].Count);
-            Assert.AreEqual(1, inRes[2].Count);            
+            Assert.AreEqual(1, inRes[2].Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].Count);
         }
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void FileRead_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
@@ -134,7 +133,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(1, inRes[2].Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);          
+            Assert.AreEqual(3, outRes[0].Count);
         }
 
         #endregion

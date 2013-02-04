@@ -303,6 +303,9 @@ namespace ActivityUnitTests.ActivityTest
 
         #region Get Debug Input/Output Tests
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void Calculate_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {
@@ -319,6 +322,9 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(3, outRes[0].Count);
         }
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void Calculate_Get_Debug_Input_Output_With_Recordsets_Using_Star_Expected_Pass()
         {

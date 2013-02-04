@@ -340,6 +340,9 @@ Wallis0000Buchan
         #endregion GetWizardData Tests
 
         #region Get Debug Input/Output Tests
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DataMerge_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
@@ -358,7 +361,9 @@ Wallis0000Buchan
             Assert.AreEqual(3, outRes[0].Count);
         }
 
-
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         public void DataMerge_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {

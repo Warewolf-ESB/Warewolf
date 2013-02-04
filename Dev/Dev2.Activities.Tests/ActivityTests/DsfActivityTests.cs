@@ -61,6 +61,9 @@ namespace ActivityUnitTests.ActivityTests
 
         #region GetDebugInputs/Outputs
 
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void DsfActivity_Get_Debug_Input_Output_With_All_Notation_Expected_Pass()
