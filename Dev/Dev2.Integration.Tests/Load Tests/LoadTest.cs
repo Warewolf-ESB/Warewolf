@@ -94,8 +94,19 @@ namespace Dev2.Integration.Tests.Load_Tests
 
             double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
 
-            Assert.IsTrue(result.IndexOf(exp) > 0);
-            Assert.IsTrue(duration <= 25.0);
+            StringAssert.Contains(result, exp);
+            if (duration <= 25.0)
+            {
+                Assert.AreEqual(1,1);
+            }
+            else if (duration <= 40.0)
+            {
+                Assert.Inconclusive("Your PC passed the test, although it was a bit slow - It meant to take less than 25 seconds, but it took " + duration);
+            }
+            else
+            {
+                Assert.Fail("The process took too long to run!");
+            }
         }
     }
 }
