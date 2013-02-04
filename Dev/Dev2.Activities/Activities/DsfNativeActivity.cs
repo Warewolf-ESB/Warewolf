@@ -111,7 +111,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override sealed void Execute(NativeActivityContext context)
         {
             _isOnDemandSimulation = false;
-            _isDebug = false;
             InstanceID = Guid.NewGuid().ToString();
 
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -141,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
             }
 
-            if (!IsDebugByPassed && _isDebug)
+            if (!IsDebugByPassed) //Juries TODO && _isDebug
             {
                 DispatchDebugState(context, StateType.Before, false);
             }
@@ -249,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             hasError = hasError || compiler.HasErrors(dataListExecutionID);
             try
             {
-                if (!IsDebugByPassed && _isDebug)
+                if (!IsDebugByPassed) //Juries TODO  && _isDebug
                 {
                     DispatchDebugState(context, StateType.After, hasError);
                 }
@@ -290,7 +289,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
         }
 
-        #endregion  
+        #endregion
 
         #region GetDebugInputs/Outputs
 
@@ -320,7 +319,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState = new DebugState
                 {
                     ID = InstanceID,
-                    ParentID = _parentInstanceID,
+                    ParentID = dataObject.ParentInstanceID,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = DateTime.Now,
@@ -333,6 +332,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name = GetType().Name,
                     HasError = hasError
                 };
+
+                // Bug 8595 - Juries
+                var type = GetType();
+                var instance = Activator.CreateInstance(type);
+                var activity = instance as Activity;
+                if(activity != null)
+                    _debugState.Name = activity.DisplayName;
+                //End Bug 8595
+
                 Copy(GetDebugInputs(dataList), _debugState.Inputs);
             }
             else
@@ -565,7 +573,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-    
+
         #region Create Debug Item
 
         public IList<IDebugItemResult> CreateDebugItems(string expression, IBinaryDataList dataList)

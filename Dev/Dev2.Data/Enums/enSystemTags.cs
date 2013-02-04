@@ -62,6 +62,7 @@ namespace Dev2.DataList.Contract
         Bookmark,
         ParentWorkflowInstanceId,
         ParentServiceName,
+        ParentInstanceID,
         BDSDebugMode,
         WebServerUrl,
         Service,

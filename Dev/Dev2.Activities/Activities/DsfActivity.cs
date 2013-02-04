@@ -206,10 +206,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 bool.TryParse(debugMode, out _IsDebug);
 
-                // set the parent service
-                dataObject.ParentServiceName = executionServiceName;
-
-
                 // Strip System Tags
                 compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
                 allErrors.MergeErrors(errors);
@@ -232,6 +228,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.ParentWorkflowInstanceId, context.WorkflowInstanceId.ToString(), out errors);
                 compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, context.WorkflowInstanceId.ToString(), out errors);
                 allErrors.MergeErrors(errors);
+
+                // set the parent service
+                dataObject.ParentServiceName = executionServiceName;
+                dataObject.ParentInstanceID = executionServiceName;
+                var b = dataObject.ServiceName;
+                dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
                 string instruction = UnlimitedObject.GenerateServiceRequest(
                         executionServiceName,

@@ -110,20 +110,33 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                     using(ServerExecutionInstance execution = fabrication.Execute())
                     {
                         string versionDirectory = Path.Combine(fabrication.GetCommonDirectoryPath(ServerCommonDirectory.Services), "VersionControl");
-                        string[] initialFiles = Directory.GetFiles(versionDirectory);
-                        int initialCount = 0;
 
-                        for(int i = 0; i < initialFiles.Length; i++)
-                            if(initialFiles[i].Contains(serviceName + ".V"))
-                                initialCount++;
+                        int initialCount = 0;
+                        string[] initialFiles;
+
+                        if (Directory.GetDirectories(fabrication.GetCommonDirectoryPath(ServerCommonDirectory.Services))
+                                    .Contains(versionDirectory))
+                        {
+                            initialFiles = Directory.GetFiles(versionDirectory);
+
+                            for (int i = 0; i < initialFiles.Length; i++)
+                                if (initialFiles[i].Contains(serviceName + ".V"))
+                                    initialCount++;
+                        }
 
                         string actualResult = TestHelper.PostDataToWebserver(postData);
+
+                        if (!Directory.GetDirectories(fabrication.GetCommonDirectoryPath(ServerCommonDirectory.Services))
+                                     .Contains(versionDirectory))
+                        {
+                            Assert.Fail("Directory not created.");
+                        }
 
                         initialFiles = Directory.GetFiles(versionDirectory);
                         int postCount = 0;
 
-                        for(int i = 0; i < initialFiles.Length; i++)
-                            if(initialFiles[i].Contains(serviceName + ".V"))
+                        for (int i = 0; i < initialFiles.Length; i++)
+                            if (initialFiles[i].Contains(serviceName + ".V"))
                                 postCount++;
 
                         Assert.IsTrue(postCount == initialCount + 1);
