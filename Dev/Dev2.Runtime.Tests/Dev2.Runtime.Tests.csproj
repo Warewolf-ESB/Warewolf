@@ -73,6 +73,7 @@
     <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
+    <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="Services\ConnectionsMock.cs" />
     <Compile Include="Services\ConnectionTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DynamicServiceRepositoryTest.cs" />
     <Compile Include="TestHelper.cs" />
-    <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="WorkspaceTest.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
