@@ -18,6 +18,7 @@ namespace Dev2.Studio.Core.Models
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
+        public Guid ServerID { get; set; }
 
         public enTranslationDepth DatalistOutMergeDepth { get; set; }
         public DataListMergeFrequency DatalistOutMergeFrequency { get; set; }

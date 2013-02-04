@@ -17,6 +17,7 @@ namespace Dev2
         bool IsDebug { get; set; }
         Guid WorkspaceID { get; set; }
         bool IsOnDemandSimulation { get; set; }
+        Guid ServerID { get; set; }
 
         Guid DatalistOutMergeID { get; set; }
         enDataListMergeTypes DatalistOutMergeType { get; set; }

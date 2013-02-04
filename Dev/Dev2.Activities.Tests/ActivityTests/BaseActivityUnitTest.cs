@@ -199,7 +199,12 @@ namespace ActivityUnitTests
                 throw new Exception(errorString);
             }
 
-            DsfDataObject dataObject = new DsfDataObject(CurrentDL, ExecutionID);
+            DsfDataObject dataObject = new DsfDataObject(CurrentDL, ExecutionID)
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid()
+            };
             invoker.WorkflowApplication(svc, dataObject, TestData);
             return dataObject;
         }
@@ -242,7 +247,12 @@ namespace ActivityUnitTests
                     throw new Exception(errorString);
                 }
 
-                DsfDataObject dataObject = new DsfDataObject(CurrentDL, exID);
+                DsfDataObject dataObject = new DsfDataObject(CurrentDL, exID)
+                {
+                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                    //       if this is NOT provided which will cause the tests to fail!
+                    ServerID = Guid.NewGuid() 
+                };
                 _mockChannel = new Mock<IFrameworkWorkspaceChannel>();
                 _mockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .Returns((string svcName, Guid wsId, Guid executionID) => { return executionID.ToString(); }).Verifiable();

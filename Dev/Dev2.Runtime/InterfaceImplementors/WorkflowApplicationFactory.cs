@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using Dev2.Network.Execution;
+using Dev2.Runtime.Security;
+using Dev2.Workspaces;
+using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Runtime.DurableInstancing;
-using System.Activities;
-using Dev2.DataList.Contract;
-using Dev2.Network.Execution;
-using Dev2.Workspaces;
+using System.Threading;
 using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
@@ -34,6 +35,14 @@ namespace Dev2.DynamicServices
             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.StartedCallback);
 
             dataTransferObject.WorkspaceID = workspace.ID;
+
+            // NOTE: Don't remove this Guid.Empty check otherwise Activity unit tests will fail!
+            //       See BaseActivityUnitTest.ExecuteProcess
+            if(dataTransferObject.ServerID == Guid.Empty)
+            {
+                dataTransferObject.ServerID = HostSecurityProvider.Instance.ServerID;
+            }
+
             //string modifiedData = dataTransferObject.XmlData;
 
             Dictionary<string, object> inputarguments = new Dictionary<string, object>();
@@ -41,11 +50,11 @@ namespace Dev2.DynamicServices
             WorkflowApplication wfApp = null;
 
             // Is this still needed????
-            if (Guid.TryParse(dataTransferObject.ParentWorkflowInstanceId, out parentWorkflowInstanceId))
+            if(Guid.TryParse(dataTransferObject.ParentWorkflowInstanceId, out parentWorkflowInstanceId))
             {
                 inputarguments.Add("ParentWorkflowInstanceId", parentWorkflowInstanceId);
 
-                if (!string.IsNullOrEmpty(dataTransferObject.ParentServiceName))
+                if(!string.IsNullOrEmpty(dataTransferObject.ParentServiceName))
                 {
                     inputarguments.Add("ParentServiceName", dataTransferObject.ParentServiceName);
                 }
@@ -55,15 +64,15 @@ namespace Dev2.DynamicServices
             // Travis.Frisinger : 2012.11.07 - Removed for new DataList Server
             //inputarguments.Add("AmbientDataList", new List<string> { dataTransferObject.XmlData });
             // changed to passing in DataListID for decision nodes ;)
-            inputarguments.Add("AmbientDataList", new List<string> { dataTransferObject.DataListID.ToString() } );
+            inputarguments.Add("AmbientDataList", new List<string> { dataTransferObject.DataListID.ToString() });
 
-            if ((parentWorkflowInstanceId != Guid.Empty && instanceId == Guid.Empty) || string.IsNullOrEmpty(bookmarkName))
+            if((parentWorkflowInstanceId != Guid.Empty && instanceId == Guid.Empty) || string.IsNullOrEmpty(bookmarkName))
             {
                 wfApp = new WorkflowApplication(workflowActivity, inputarguments);
             }
             else
             {
-                if (!string.IsNullOrEmpty(bookmarkName))
+                if(!string.IsNullOrEmpty(bookmarkName))
                 {
                     wfApp = new WorkflowApplication(workflowActivity);
                 }
@@ -71,7 +80,7 @@ namespace Dev2.DynamicServices
 
             wfApp.InstanceStore = new FileSystemInstanceStore();
 
-            if (executionExtensions != null)
+            if(executionExtensions != null)
             {
                 executionExtensions.ToList().ForEach(exec => wfApp.Extensions.Add(exec));
             }
@@ -87,11 +96,11 @@ namespace Dev2.DynamicServices
             wfApp.Extensions.Add(compiler);
             wfApp.Extensions.Add(parser);
 
-            using (ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
+            using(ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
             {
                 WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, parentWorkflowInstanceId, isDebug);
 
-                if (instanceId == Guid.Empty)
+                if(instanceId == Guid.Empty)
                 {
                     Interlocked.Increment(ref Balance);
                     run.Instance.Run();
@@ -103,7 +112,7 @@ namespace Dev2.DynamicServices
 
                     try
                     {
-                        if (!string.IsNullOrEmpty(bookmarkName))
+                        if(!string.IsNullOrEmpty(bookmarkName))
                         {
                             //IDSFDataObject resumptionDataObject = dataTransferObject.Clone();
                             var existingDLID = dataTransferObject.DataListID;
@@ -122,21 +131,21 @@ namespace Dev2.DynamicServices
 
                         waitHandle.Wait();
                     }
-                    catch (InstanceNotReadyException)
+                    catch(InstanceNotReadyException)
                     {
                         Interlocked.Decrement(ref Balance);
                         ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
                         return null;
                     }
-                    catch (InstancePersistenceException)
+                    catch(InstancePersistenceException)
                     {
                         Interlocked.Decrement(ref Balance);
                         ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
                         return run.DataTransferObject;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         Interlocked.Decrement(ref Balance);
                         var error = new UnlimitedObject(ex);
@@ -287,7 +296,8 @@ namespace Dev2.DynamicServices
             {
             }
 
-            private void OnCompleted(WorkflowApplicationCompletedEventArgs args) {
+            private void OnCompleted(WorkflowApplicationCompletedEventArgs args)
+            {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
                 IDataListCompiler compiler = args.GetInstanceExtensions<IDataListCompiler>().First();
                 // PBI : 5376 Removed line below
@@ -295,7 +305,7 @@ namespace Dev2.DynamicServices
 
                 try
                 {
-                    if (!_isDebug)
+                    if(!_isDebug)
                     {
                         IDictionary<string, object> outputs = args.Outputs;
 
@@ -322,18 +332,18 @@ namespace Dev2.DynamicServices
                         object objcreateResumptionPoint;
 
 
-                        if (outputs.TryGetValue("CreateResumuptionPoint", out objcreateResumptionPoint))
+                        if(outputs.TryGetValue("CreateResumuptionPoint", out objcreateResumptionPoint))
                         {
                             createResumptionPoint = (bool)objcreateResumptionPoint;
                         }
 
                         PooledServiceActivity wfActivity = null;
 
-                        if (!String.IsNullOrEmpty(parentServiceName == null ? String.Empty : parentServiceName.ToString()) && Guid.TryParse(parentId.ToString(), out _parentWorkflowInstanceID))
+                        if(!String.IsNullOrEmpty(parentServiceName == null ? String.Empty : parentServiceName.ToString()) && Guid.TryParse(parentId.ToString(), out _parentWorkflowInstanceID))
                         {
-                            if (_parentWorkflowInstanceID != _currentInstanceID)
+                            if(_parentWorkflowInstanceID != _currentInstanceID)
                             {
-                                if (_workspace.Host != null)
+                                if(_workspace.Host != null)
                                 {
                                     IEnumerable<DynamicService> services;
                                     _workspace.Host.LockServices();
@@ -347,12 +357,12 @@ namespace Dev2.DynamicServices
                                         _workspace.Host.UnlockServices();
                                     }
 
-                                    if (services.Count() > 0)
+                                    if(services.Count() > 0)
                                     {
                                         _currentInstanceID = _parentWorkflowInstanceID;
                                         var actionSet = services.First().Actions;
 
-                                        if (_result.WorkflowResumeable)
+                                        if(_result.WorkflowResumeable)
                                         {
                                             ServiceAction serviceAction = actionSet.First();
                                             wfActivity = serviceAction.PopActivity();
@@ -376,7 +386,8 @@ namespace Dev2.DynamicServices
                 {
                     ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
                 }
-                finally {
+                finally
+                {
                     _waitHandle.Set();
                 }
 

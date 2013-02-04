@@ -110,6 +110,7 @@ namespace Dev2.DynamicServices
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
+        public Guid ServerID { get; set; }
 
         public Guid DatalistOutMergeID { get; set; }
         public enTranslationDepth DatalistOutMergeDepth { get; set; }

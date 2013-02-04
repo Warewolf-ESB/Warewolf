@@ -327,6 +327,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
                     DisplayName = DisplayName,
                     IsSimulation = ShouldExecuteSimulation,
+                    ServerID = dataObject.ServerID,
                     Server = string.Empty,
                     Version = string.Empty,
                     Name = GetType().Name,
