@@ -224,14 +224,17 @@ namespace Dev2.DynamicServices
 
         #region Association Methods
 
-        public void SaveInstanceAssociation(Guid instanceId,
-            Guid instanceKeyToAssociate, Boolean isDelete)
+        public string GetSaveInstanceAssociationPath(Guid instanceId, Guid instanceKeyToAssociate)
+        {
+            var fileName = String.Format("Key.{0}.{1}.xml", instanceKeyToAssociate, instanceId);
+            return Path.Combine(_dataDirectory, fileName);
+        }
+
+        public void SaveInstanceAssociation(Guid instanceId, Guid instanceKeyToAssociate, Boolean isDelete)
         {
             try
             {
-                String fileName = String.Format("Key.{0}.{1}.xml",
-                    instanceKeyToAssociate, instanceId);
-                String fullPath = Path.Combine(_dataDirectory, fileName);
+                var fullPath = GetSaveInstanceAssociationPath(instanceId, instanceKeyToAssociate);
                 if(!isDelete)
                 {
                     if(!File.Exists(fullPath))

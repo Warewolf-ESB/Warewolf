@@ -150,6 +150,7 @@
     <Compile Include="Diagnostics\DebugDispatcher.cs" />
     <Compile Include="Diagnostics\DebugItem.cs" />
     <Compile Include="Diagnostics\DebugItemResult.cs" />
+    <Compile Include="Diagnostics\DebugItemResultEqualityComparer.cs" />
     <Compile Include="Diagnostics\DebugState.cs" />
     <Compile Include="Diagnostics\Enums.cs" />
     <Compile Include="Diagnostics\IDebugDispatcher.cs" />

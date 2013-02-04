@@ -159,6 +159,7 @@
     <Compile Include="Diagnostics\DebugDispatcherTest.cs" />
     <Compile Include="Diagnostics\DebugStateMock.cs" />
     <Compile Include="Diagnostics\DebugStateTests.cs" />
+    <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />
     <Compile Include="MathOperationTest\FunctionRepositoryTest.cs" />
@@ -228,9 +229,7 @@
     <None Include="Binaries\TestingArchive_NoPwd.zip" />
     <None Include="Binaries\TestingArchive_Pwd.zip" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Weave\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>
