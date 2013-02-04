@@ -302,5 +302,22 @@ namespace Unlimited.UnitTest.Framework {
         }
 
         #endregion Generate DataList From Defs Tests
+
+
+        #region Evaluation Test
+
+        // Bug 8609
+        [TestMethod]
+        public void Can_Sub_Recordset_With_Index_Expect()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            string error;
+
+            IBinaryDataListEntry entry = _compiler.Evaluate(dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
+
+            Assert.AreEqual("r1.f1.value", entry.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue);
+        }
+
+        #endregion
     }
 }

@@ -1521,7 +1521,18 @@ namespace Dev2.Server.Datalist
                                         else
                                         {
                                             // they want the entire recordset? -- blank expression
-                                            expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                            // Travis.Frisinger - Bug 8608
+                                            
+                                            IBinaryDataListItem valT = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
+
+                                            string subVal = string.Empty;
+
+                                            if(val != null && !string.IsNullOrEmpty(p.Option.Field))
+                                            {
+                                                subVal = valT.TheValue;
+                                            }
+
+                                            expression = expression.Replace(p.Option.DisplayValue, subVal);
                                             // Check for an index and remove all but this index ;)
                                             if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
                                             {
