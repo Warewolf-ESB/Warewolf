@@ -50,7 +50,6 @@ namespace Dev2.DynamicServices
                 }               
                 IsOnDemandSimulation = isOnDemandSimulation;
 
-                _parentServiceName = dataObject.GetValue("ParentServiceName");
                 _parentWorkflowInstanceId = dataObject.GetValue("ParentWorkflowInstanceId");
 
                 Guid executionCallbackID;
@@ -67,6 +66,7 @@ namespace Dev2.DynamicServices
                 }
 
                 ParentInstanceID = dataObject.GetValue("ParentInstanceID");
+                ParentServiceName = dataObject.GetValue("ParentServiceName");
 
                 if(dataObject.Bookmark is string)
                 {

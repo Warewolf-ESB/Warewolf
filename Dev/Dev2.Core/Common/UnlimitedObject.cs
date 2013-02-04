@@ -1356,7 +1356,7 @@ namespace Unlimited.Framework
                 input.BookmarkExecutionCallbackID = parentRequest.BookmarkExecutionCallbackID;
                 input.WorkspaceID = parentRequest.WorkspaceID;
                 input.IsDataListScoped = parentRequest.IsDataListScoped; 
-                input.ParentInstanceID = parentRequest.ParentInstanceID;
+                input.ParentServiceName = parentRequest.ParentServiceName;
                 input.ParentWorkflowInstanceId = parentRequest.ParentWorkflowInstanceId;
     
             }

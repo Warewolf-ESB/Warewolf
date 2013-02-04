@@ -47,7 +47,7 @@ namespace Dev2.Diagnostics
         /// <summary>
         /// Gets or sets the parent ID.
         /// </summary>
-        public string ParentID { get; set; }
+        public string ParentName { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the state.
@@ -159,7 +159,7 @@ namespace Dev2.Diagnostics
         {
             WorkspaceID = reader.ReadGuid();
             ID = reader.ReadString();
-            ParentID = reader.ReadString();
+            ParentName = reader.ReadString();
             StateType = (StateType)reader.ReadInt32();
             DisplayName = reader.ReadString();
             Name = reader.ReadString();
@@ -181,7 +181,7 @@ namespace Dev2.Diagnostics
         {
             writer.Write(WorkspaceID);
             writer.Write(ID);
-            writer.Write(ParentID);
+            writer.Write(ParentName);
             writer.Write((int)StateType);
             writer.Write(DisplayName);
             writer.Write(Name);

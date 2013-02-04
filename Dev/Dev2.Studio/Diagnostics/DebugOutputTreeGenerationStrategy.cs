@@ -69,7 +69,7 @@ namespace Dev2.Studio.Diagnostics
                 {
                     parentItem = FindParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
                 }
-
+                    
                 if(parentItem == null)
                 {
                     parentItem = AddMissingParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
@@ -154,7 +154,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel FindParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if(string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.DisplayName == debugState.ParentID)
+            if (string.IsNullOrWhiteSpace(debugState.ParentName) || debugState.DisplayName == debugState.ParentName)
             {
                 return null;
             }
@@ -169,7 +169,7 @@ namespace Dev2.Studio.Diagnostics
                         return false;
                     }
 
-                    return debugStateTreeViewItemViewModel.Content.DisplayName == debugState.ParentID;
+                    return debugStateTreeViewItemViewModel.Content.DisplayName == debugState.ParentName;
                 });
 
                 if(match != null)
@@ -189,13 +189,13 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel AddMissingParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if(string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
+            if (string.IsNullOrWhiteSpace(debugState.ParentName) || debugState.ID == debugState.ParentName)
             {
                 return null;
             }
 
-            IDebugState parent = existingContent.FirstOrDefault(o => o is IDebugState && o != debugState && ((IDebugState)o).ID == debugState.ParentID) as IDebugState;
-            if(parent == null)
+            IDebugState parent = existingContent.FirstOrDefault(o => o is IDebugState && o != debugState && ((IDebugState)o).ID == debugState.ParentName) as IDebugState;
+            if (parent == null)
             {
                 return null;
             }

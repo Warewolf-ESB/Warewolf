@@ -118,7 +118,7 @@ namespace Dev2.Tests.Diagnostics
             {
                 WorkspaceID = Guid.NewGuid(),
                 ID = "ID",
-                ParentID = "ParentID",
+                ParentName = "ParentID",
                 StateType = StateType.Before,
                 DisplayName = "DisplayName",
                 Name = "Name",
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Diagnostics
 
             Assert.AreEqual(debugStateIn.WorkspaceID, debugStateOut.WorkspaceID);
             Assert.AreEqual(debugStateIn.ID, debugStateOut.ID);
-            Assert.AreEqual(debugStateIn.ParentID, debugStateOut.ParentID);
+            Assert.AreEqual(debugStateIn.ParentName, debugStateOut.ParentName);
             Assert.AreEqual(debugStateIn.StateType, debugStateOut.StateType);
             Assert.AreEqual(debugStateIn.DisplayName, debugStateOut.DisplayName);
             Assert.AreEqual(debugStateIn.Name, debugStateOut.Name);

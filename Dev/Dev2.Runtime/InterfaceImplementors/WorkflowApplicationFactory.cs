@@ -60,7 +60,6 @@ namespace Dev2.DynamicServices
                 }
             }
 
-
             // Travis.Frisinger : 2012.11.07 - Removed for new DataList Server
             //inputarguments.Add("AmbientDataList", new List<string> { dataTransferObject.XmlData });
             // changed to passing in DataListID for decision nodes ;)

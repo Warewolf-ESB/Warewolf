@@ -319,7 +319,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState = new DebugState
                 {
                     ID = InstanceID,
-                    ParentID = dataObject.ParentInstanceID,
+                    ParentName = dataObject.ServiceName,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = DateTime.Now,

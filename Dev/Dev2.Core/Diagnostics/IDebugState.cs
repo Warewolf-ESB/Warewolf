@@ -22,7 +22,7 @@ namespace Dev2.Diagnostics
         /// <summary>
         /// Gets or sets the parent ID.
         /// </summary>
-        string ParentID { get; set; }
+        string ParentName { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the state.
