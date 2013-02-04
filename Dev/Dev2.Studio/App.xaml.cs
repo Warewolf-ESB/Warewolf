@@ -16,15 +16,12 @@ namespace Dev2.Studio
     {
         public App()
         {
-            CheckForDuplicateProcess();//Bug 8403
-
-            /*bool createdNew;
-
-            var m = new Mutex(true, "Dev2.Studio", out createdNew);
-
-            if (!createdNew) Current.Shutdown();
-            else */
-                InitializeComponent();
+            //CheckForDuplicateProcess();//Bug 8403
+            bool isNotRunning;
+            new System.Threading.Mutex(true, "Dev2.Studio", out isNotRunning);
+            if (!isNotRunning)
+                Environment.Exit(Environment.ExitCode);
+            InitializeComponent();
         }
 
 #if DEBUG
