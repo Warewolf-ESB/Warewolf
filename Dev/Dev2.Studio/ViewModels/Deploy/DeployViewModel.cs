@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -10,17 +11,16 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Explorer;
+using Dev2.Studio.ViewModels.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
-using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Studio.ViewModels.Deploy
 {
-    public class DeployViewModel : BaseViewModel,
+    public class DeployViewModel : MefLessBaseViewModel,
         IHandle<ResourceCheckedMessage>
     {
         #region Class Members
@@ -106,6 +106,10 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
+
+        public IDev2WindowManager WindowNavigationBehavior { get; private set; }
+
+        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; private set; }
 
         public bool CanDeploy
         {
@@ -226,12 +230,6 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        [Import(typeof(IDev2WindowManager))]
-        public IDev2WindowManager WindowNavigationBehavior { get; set; }
-
-        [Import]
-        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
-
         #endregion
 
         #region Private Methods
@@ -241,6 +239,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Initialize(IServerProvider serverProvider)
         {
+            WindowNavigationBehavior = ImportService.GetExportValue<IDev2WindowManager>();
+            EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
+
             _deployStatsCalculator = new DeployStatsCalculator();
             _deployService = new DeployService();
             _serverProvider = serverProvider;
@@ -264,6 +265,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
                 SelectServerFromInitialValue();
             });
+
+
         }
 
         /// <summary>

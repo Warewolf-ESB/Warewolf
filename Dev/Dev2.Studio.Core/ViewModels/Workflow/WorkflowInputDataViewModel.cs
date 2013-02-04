@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace Dev2.Studio.Core.ViewModels
 {
-    public class WorkflowInputDataViewModel : BaseViewModel
+    public class WorkflowInputDataViewModel : MefLessBaseViewModel
     {
         #region Fields
         //2012.10.11: massimo.guerrera - Added for PBI 5781

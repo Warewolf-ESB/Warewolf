@@ -21,18 +21,26 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// </summary>
     /// <author>jurie.smit</author>
     /// <date>2013/01/15</date>
-    public sealed class ExceptionViewModel : BaseViewModel, IExceptionViewModel
+    public sealed class ExceptionViewModel : MefLessBaseViewModel, IExceptionViewModel
     {
         #region private fields
         private BindableCollection<ExceptionUIModel> _exception;
         private string _stackTrace;
         #endregion
 
+        #region Constructor
+
+        public ExceptionViewModel()
+        {
+            WindowNavigation = ImportService.GetExportValue<IWindowManager>();
+            FeedbackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
+        }
+
+        #endregion Constructor
+
         #region public properties
-        [Import(typeof(IWindowManager))]
         public IWindowManager WindowNavigation { get; set; }
 
-        [Import(typeof(IFeedbackInvoker))]
         public IFeedbackInvoker FeedbackInvoker { get; set; }
 
         public IFeedbackAction FeedbackAction { get; set; }
@@ -96,7 +104,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/01/15</date>
         public void Show()
         {
-                WindowNavigation.ShowDialog(this);
+            WindowNavigation.ShowDialog(this);
         }
 
         /// <summary>

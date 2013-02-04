@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Dev2.Studio.Core.ViewModels.Base;
 using System.Activities.Presentation.Model;
 using System.ComponentModel;
 using System.Windows.Input;
-using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
-    public abstract class BaseActivityViewModel : INotifyPropertyChanged, IDisposable
+    public abstract class BaseActivityViewModel : INotifyPropertyChanged
     {
         #region Fields
 
@@ -207,9 +206,5 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         }
 
         #endregion INotifyPropertyChanged
-
-        public virtual void Dispose()
-        {
-        }
     }
 }

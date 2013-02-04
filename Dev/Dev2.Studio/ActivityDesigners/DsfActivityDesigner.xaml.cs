@@ -62,6 +62,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void InitializeViewModel()
         {
+            if (_viewModel != null)
+            {
+                _viewModel.Dispose();
+            }
+
             _viewModel = new DsfActivityViewModel(ModelItem);
             if (_designerManagementService != null)
             {
@@ -220,13 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            Loaded -= OnLoaded;
-            Unloaded -= OnUnloaded;
-
-            Context.Items.Unsubscribe<Selection>(SelectionChanged);
-            Context.Services.Unsubscribe<IDesignerManagementService>(SetDesignerManagementService);
-
-            SetDesignerManagementService(null);
+            CleanUp();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -408,10 +407,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Tear Down
 
-        public void Dispose()
+        private void CleanUp()
         {
+            Loaded -= OnLoaded;
+            Unloaded -= OnUnloaded;
+
+            if (_viewModel != null)
+            {
+                _viewModel.Dispose();
+            }
+
+            Context.Items.Unsubscribe<Selection>(SelectionChanged);
+            Context.Services.Unsubscribe<IDesignerManagementService>(SetDesignerManagementService);
+
             SetDesignerManagementService(null);
             _workflowDesignerSelection = null;
+            _viewModel = null;
+
+            DataContext = null;
+        }
+
+        public void Dispose()
+        {
+            CleanUp();
         }
 
         #endregion Tear Down

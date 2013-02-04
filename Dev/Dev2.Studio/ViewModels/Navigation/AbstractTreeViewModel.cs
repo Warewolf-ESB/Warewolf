@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.Composition;
 
 #endregion
 
@@ -23,7 +24,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public abstract class AbstractTreeViewModel : BaseViewModel, ITreeNode, IContextCommands
+    public abstract class AbstractTreeViewModel : MefLessBaseViewModel, ITreeNode, IContextCommands
     {
         #region private fields
 
@@ -48,6 +49,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 parent.Add(this);
             }
+
+            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
         }
 
         #endregion ctor + init
@@ -64,7 +67,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        [Import]
         public IWizardEngine WizardEngine { get; set; }
 
         /// <summary>

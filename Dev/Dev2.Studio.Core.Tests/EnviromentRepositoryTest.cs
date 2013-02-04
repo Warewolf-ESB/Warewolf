@@ -1,7 +1,6 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Xml.Linq;
 
 namespace Dev2.Core.Tests
 {
@@ -551,7 +548,11 @@ namespace Dev2.Core.Tests
                 var securityContext = new Mock<IFrameworkSecurityContext>();
                 securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
-                return new EnvironmentModel
+                var eventAggregator = new Mock<IEventAggregator>();
+
+                IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+                return new EnvironmentModel(eventAggregator.Object, securityContext.Object, environmentConnection)
                 {
                     EnvironmentConnection = new EnvironmentConnection { SecurityContext = securityContext.Object },
                     ID = Guid.NewGuid(),

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
+﻿using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
@@ -20,7 +20,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// for the TreeView (the RootItems property), a bindable
     /// SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : BaseViewModel
+    public class DebugOutputViewModel : MefLessBaseViewModel
     {
         #region Fields
 
@@ -67,6 +67,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
             Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
+
+            EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
         }
 
         #endregion
@@ -79,7 +81,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         /// The environment repository.
         /// </value>
-        [Import]
         public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
 
         /// <summary>

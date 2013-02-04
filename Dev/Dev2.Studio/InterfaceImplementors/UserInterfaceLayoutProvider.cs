@@ -1466,7 +1466,6 @@ namespace Dev2.Studio
                 UIElementImageProperty.SetImage(workflowDesignerWindow, iconPath);
 
                 var workflowVm = new WorkflowDesignerViewModel(resource);
-                ImportService.SatisfyImports(workflowVm);
                 var designerAttributes = new Dictionary<Type, Type>();
                 designerAttributes.Add(typeof(DsfActivity), typeof(DsfActivityDesigner));
                 designerAttributes.Add(typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner));

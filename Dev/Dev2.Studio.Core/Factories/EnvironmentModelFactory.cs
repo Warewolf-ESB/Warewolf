@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using System;
@@ -9,8 +10,11 @@ namespace Dev2.Studio.Core.Factories
     {
         public static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
         {
-            IEnvironmentModel environment = new EnvironmentModel();
-            ImportService.SatisfyImports(environment);
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
 
             environment.ID = id;
             environment.DsfAddress = applicationServerUri;
@@ -26,8 +30,11 @@ namespace Dev2.Studio.Core.Factories
 
             if(server != null)
             {
-                environment = new EnvironmentModel();
-                ImportService.SatisfyImports(environment);
+                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+                IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+                environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
 
                 Guid id;
                 if(!Guid.TryParse(server.ID, out id))
@@ -47,7 +54,11 @@ namespace Dev2.Studio.Core.Factories
 
         public static IEnvironmentModel CreateEnvironmentModel(IEnvironmentModel sourceEnvironment)
         {
-            IEnvironmentModel environment = new EnvironmentModel();
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
 
             if(sourceEnvironment != null)
             {

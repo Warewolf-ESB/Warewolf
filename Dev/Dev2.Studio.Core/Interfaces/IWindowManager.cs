@@ -10,9 +10,9 @@ namespace Dev2.Studio.Core.Interfaces
     /// </summary>
     public interface IDev2WindowManager
     {
-        void Show(BaseViewModel viewModel);
-        void Show(Window window, BaseViewModel viewModel);
-        void ShowDialog(Window window, BaseViewModel viewModel);
-        void ShowDialog(BaseViewModel viewModel);
+        void Show(MefLessBaseViewModel viewModel);
+        void Show(Window window, MefLessBaseViewModel viewModel);
+        void ShowDialog(Window window, MefLessBaseViewModel viewModel);
+        void ShowDialog(MefLessBaseViewModel viewModel);
     }
 }

@@ -64,6 +64,12 @@ namespace Dev2.Core.Tests
             Mock<IEventAggregator> mockEventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
 
+            Mock<IDev2WindowManager> dev2WindowManager = new Mock<IDev2WindowManager>();
+            ImportService.AddExportedValueToContainer(dev2WindowManager.Object);
+
+            Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
+            ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
+
             return importServiceContext;
         }
 
@@ -205,7 +211,7 @@ namespace Dev2.Core.Tests
             // set up window behavior
             var winBehavior = new Mock<IDev2WindowManager>();
 
-            winBehavior.Setup(w => w.ShowDialog(It.IsAny<BaseViewModel>())).Callback<BaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Okay);
+            winBehavior.Setup(w => w.ShowDialog(It.IsAny<MefLessBaseViewModel>())).Callback<MefLessBaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Okay);
             ImportService.AddExportedValueToContainer(repo.Object);
             ImportService.AddExportedValueToContainer(winBehavior.Object);
 
@@ -240,7 +246,7 @@ namespace Dev2.Core.Tests
             // set up window behavior
             var winBehavior = new Mock<IDev2WindowManager>();
 
-            winBehavior.Setup(w => w.ShowDialog(It.IsAny<BaseViewModel>())).Callback<BaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Cancel);
+            winBehavior.Setup(w => w.ShowDialog(It.IsAny<MefLessBaseViewModel>())).Callback<MefLessBaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Cancel);
             ImportService.AddExportedValueToContainer(repo.Object);
             ImportService.AddExportedValueToContainer(winBehavior.Object);
 

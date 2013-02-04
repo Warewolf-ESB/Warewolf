@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Factories;
@@ -8,7 +7,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network.DataList;
 using Dev2.Studio.Core.Network.Execution;
 using System;
-using System.ComponentModel.Composition;
 using System.Network;
 using System.Windows;
 using System.Xml.Linq;
@@ -16,7 +14,7 @@ using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
 {
-    public class EnvironmentModel : IEnvironmentModel, IPostCompositionInitializable
+    public class EnvironmentModel : IEnvironmentModel
     {
         #region Class Members
 
@@ -25,17 +23,28 @@ namespace Dev2.Studio.Core.Models
 
         #endregion Class Members
 
+        #region Constructor
+
+        public EnvironmentModel(IEventAggregator eventAggregator, IFrameworkSecurityContext securityContext, IEnvironmentConnection environmentConnection)
+        {
+            EventAggregator = eventAggregator;
+            SecurityContext = securityContext;
+            EnvironmentConnection = environmentConnection;
+
+            EnvironmentConnection.LoginStateChanged += EnvironmentConnection_LoginStateChanged;
+        }
+
+        #endregion Constructor
+
         #region Properties
 
         public Guid ID { get; set; }
 
-        public bool AlreadyInitialized { get; private set; }
+        public IEventAggregator EventAggregator { get; private set; }
 
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
+        public IFrameworkSecurityContext SecurityContext { get; private set; }
 
-        [Import]
-        public IFrameworkSecurityContext SecurityContext { get; set; }
+        public IEnvironmentConnection EnvironmentConnection { get; set; }
 
         public string Name
         {
@@ -120,9 +129,6 @@ namespace Dev2.Studio.Core.Models
                 }
             }
         }
-
-        [Import]
-        public IEnvironmentConnection EnvironmentConnection { get; set; }
 
         public IFrameworkDataChannel DsfChannel
         {
@@ -260,17 +266,6 @@ namespace Dev2.Studio.Core.Models
                 );
 
             return xml.ToString();
-        }
-
-        public void Initialize()
-        {
-            if(AlreadyInitialized || EnvironmentConnection == null)
-            {
-                return;
-            }
-
-            AlreadyInitialized = true;
-            EnvironmentConnection.LoginStateChanged += EnvironmentConnection_LoginStateChanged;
         }
 
         #endregion Methods

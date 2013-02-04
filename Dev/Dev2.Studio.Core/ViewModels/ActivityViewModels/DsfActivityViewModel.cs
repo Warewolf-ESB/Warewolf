@@ -285,8 +285,22 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         #endregion Private Methods
 
         #region Dispose
-        public override void Dispose()
+        public void Dispose()
         {
+            if (PropertyCollection != null)
+            {
+                PropertyCollection.Clear();
+            }
+
+
+            if (ErrorCollection != null)
+            {
+                ErrorCollection.Clear();
+            }
+
+            _modelItem = null;
+            DataMappingViewModel = null;
+
             if (!string.IsNullOrEmpty(_hasWizKeyToDereg))
             {
                 Mediator.DeRegister(MediatorMessages.HasWizard, _hasWizKeyToDereg);
