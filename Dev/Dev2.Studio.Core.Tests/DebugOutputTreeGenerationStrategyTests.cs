@@ -45,32 +45,32 @@ namespace Dev2.Core.Tests
             _testExistingContent = new List<object>();
 
             DebugState DebugState1 = new DebugState { ID = "1", ParentName = "1" };
-            DebugStateTreeViewItemViewModel _testTreeRoot1 = new DebugStateTreeViewItemViewModel(DebugState1, null);
+            DebugStateTreeViewItemViewModel _testTreeRoot1 = new DebugStateTreeViewItemViewModel(null, DebugState1, null);
             _testRootItems.Add(_testTreeRoot1);
             _testExistingContent.Add(DebugState1);
 
             DebugState DebugState1_1 = new DebugState { ID = "1_1", ParentName = "1" };
-            DebugStateTreeViewItemViewModel _testTree1_1 = new DebugStateTreeViewItemViewModel(DebugState1_1, null);
+            DebugStateTreeViewItemViewModel _testTree1_1 = new DebugStateTreeViewItemViewModel(null, DebugState1_1, null);
             _testTreeRoot1.Children.Add(_testTree1_1);
             _testExistingContent.Add(DebugState1_1);
 
             DebugState DebugState1_2 = new DebugState { ID = "1_2", ParentName = "1" };
-            DebugStateTreeViewItemViewModel _testTree1_2 = new DebugStateTreeViewItemViewModel(DebugState1_2, null);
+            DebugStateTreeViewItemViewModel _testTree1_2 = new DebugStateTreeViewItemViewModel(null, DebugState1_2, null);
             _testTreeRoot1.Children.Add(_testTree1_2);
             _testExistingContent.Add(DebugState1_2);
 
             DebugState DebugState2 = new DebugState { ID = "2", ParentName = "2" };
-            DebugStateTreeViewItemViewModel _testTreeRoot2 = new DebugStateTreeViewItemViewModel(DebugState2, null);
+            DebugStateTreeViewItemViewModel _testTreeRoot2 = new DebugStateTreeViewItemViewModel(null, DebugState2, null);
             _testRootItems.Add(_testTreeRoot2);
             _testExistingContent.Add(DebugState2);
 
             DebugState DebugState2_1 = new DebugState { ID = "2_1", ParentName = "2" };
-            DebugStateTreeViewItemViewModel _testTree2_1 = new DebugStateTreeViewItemViewModel(DebugState2_1, null);
+            DebugStateTreeViewItemViewModel _testTree2_1 = new DebugStateTreeViewItemViewModel(null, DebugState2_1, null);
             _testTreeRoot2.Children.Add(_testTree2_1);
             _testExistingContent.Add(DebugState2_1);
 
             DebugState DebugState2_2 = new DebugState { ID = "2_2", ParentName = "2" };
-            DebugStateTreeViewItemViewModel _testTree2_2 = new DebugStateTreeViewItemViewModel(DebugState2_2, null);
+            DebugStateTreeViewItemViewModel _testTree2_2 = new DebugStateTreeViewItemViewModel(null, DebugState2_2, null);
             _testTreeRoot2.Children.Add(_testTree2_2);
             _testExistingContent.Add(DebugState2_2);
 
