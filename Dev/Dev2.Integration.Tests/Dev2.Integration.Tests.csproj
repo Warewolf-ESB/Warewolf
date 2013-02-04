@@ -325,7 +325,7 @@
     <Compile Include="Test utils\WebTester\Workers\PostWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\WebserverGetWorker.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Workflow Driven Test\Ghost_Service_DataList.cs" />
-    <Compile Include="BootstrapperTests.cs" />
+    <Compile Include="AppTests.cs" />
     <Compile Include="wizard_test_strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

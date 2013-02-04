@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests
 {
     [TestClass]
-    public class BootstrapperTests
+    public class AppTests
     {
         [TestMethod]
         public void PrepareApplication_With_ExistingApplication_Expect_OnlyOneApplication()
