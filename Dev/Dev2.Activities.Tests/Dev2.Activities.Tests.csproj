@@ -126,8 +126,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ActivityStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestSortActivity.cs" />
-    <Compile Include="TestNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\TestActivity.cs" />
     <Compile Include="Utils\TestUtil.cs" />

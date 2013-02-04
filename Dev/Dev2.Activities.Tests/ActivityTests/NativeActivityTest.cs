@@ -6,7 +6,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Simulation;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -505,49 +504,6 @@ namespace ActivityUnitTests.ActivityTests
             Assert.Fail("DsfNativeActivity.IsDebugByPassed not found.");
         }
 
-        #endregion
-
-        #region GetDataListItems
-
-        [TestMethod]
-        public void GetDataListItems_WithNullDataList_Expected_EmptyList()
-        {
-            var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new TestNativeActivity(debugDispatcher.Object);
-            var result = testActivity.GetDataListItems(null);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void GetDataListItems_WithDataListAndIncludeIndexInRecordSetNameFalse_Expected_IndexNotIncludedInName()
-        {
-            var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new TestNativeActivity(debugDispatcher.Object);
-            var dataList = TestNativeActivity.CreateBinaryDataList(
-                "<root><recset><Id/><Name/></recset></root>",
-                "<root><recset><Id>1</Id><Name>Adam Fauntleroy</Name></recset></root>");
-
-            var result = testActivity.GetDataListItems(dataList);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("[[recset().Id]]", result[0][1].Value);
-            Assert.AreEqual("[[recset().Name]]", result[1][1].Value);
-        }
-
-        [TestMethod]
-        public void GetDataListItems_WithDataListAndIncludeIndexInRecordSetNameTrue_Expected_IndexIncludedInName()
-        {
-            var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new TestNativeActivity(debugDispatcher.Object);
-            var dataList = TestNativeActivity.CreateBinaryDataList(
-                "<root><recset><Id/><Name/></recset></root>",
-                "<root><recset><Id>1</Id><Name>Adam Fauntleroy</Name></recset></root>");
-
-            var result = testActivity.GetDataListItems(dataList, true);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("[[recset(1).Id]]", result[0][1].Value);
-            Assert.AreEqual("[[recset(1).Name]]", result[1][1].Value);
-        }
         #endregion
 
 

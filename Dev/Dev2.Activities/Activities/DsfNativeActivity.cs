@@ -290,213 +290,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
         }
 
-        #endregion
-
-        //BUG 8104 : Refactor DebugItem
-        //#region GetValue
-
-        //protected static string GetValue(IBinaryDataList dataList, string variable)
-        //{
-        //    if (!variable.ContainsSafe("[["))
-        //    {
-        //        return variable;
-        //    }
-
-        //    IBinaryDataListEntry entry;
-        //    string error;
-        //    dataList.TryGetEntry(variable, out entry, out error);
-        //    if (entry != null)
-        //    {
-        //        var scalar = entry.FetchScalar();
-        //        return scalar.TheValue;
-        //    }
-        //    var rs = GetRecordSet(dataList, variable);
-        //    if (rs != null)
-        //    {
-        //        int index;
-        //        var fieldName = DataListUtil.ExtractFieldNameFromValue(variable);
-        //        if (Int32.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(variable), out index))
-        //        {
-        //            var record = rs.FetchRecordAt(index, out error);
-        //            // ReSharper disable LoopCanBeConvertedToQuery
-        //            foreach (var recordField in record)
-        //            // ReSharper restore LoopCanBeConvertedToQuery
-        //            {
-        //                if (recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-        //                {
-        //                    return recordField.TheValue;
-        //                }
-        //            }
-        //        }
-        //        else if (DataListUtil.GetRecordsetIndexType(variable) == enRecordsetIndexType.Blank)
-        //        {
-        //            index = rs.ItemCollectionSize();
-        //            var record = rs.FetchRecordAt(index, out error);
-        //            // ReSharper disable LoopCanBeConvertedToQuery
-        //            foreach (var recordField in record)
-        //            // ReSharper restore LoopCanBeConvertedToQuery
-        //            {
-        //                if (recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-        //                {
-        //                    return recordField.TheValue;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        //#endregion
-
-        //#region GetRecordSet
-
-        //protected static IBinaryDataListEntry GetRecordSet(IBinaryDataList dataList, string variable)
-        //{
-        //    var recordsetName = DataListUtil.ExtractRecordsetNameFromValue(variable);
-
-        //    IBinaryDataListEntry entry;
-        //    string error;
-        //    dataList.TryGetEntry(recordsetName, out entry, out error);
-        //    return entry;
-        //}
-
-        //#endregion
-
-        #region GetDataListItems
-
-        //
-        // TWR: virtual to enable testing - NEVER OVERRIDE IN DESCENDANT!!!
-        //
-        // BUG 8104 - TASK 8126 : TWR - added includeIndexInRecordSetName parameter
-        protected virtual IList<IDebugItem> GetDataListItems(NativeActivityContext context, bool includeIndexInRecordSetName = false)
-        {
-            return GetDataListItems(GetDataList(context), includeIndexInRecordSetName);
-        }
-
-        protected IList<IDebugItem> GetDataListItems(IBinaryDataList dataList, bool includeIndexInRecordSetName = false)
-        {
-            var result = new List<IDebugItem>();
-
-            if (dataList == null)
-            {
-                return result;
-            }
-
-            foreach (var key in dataList.FetchAllUserKeys())
-            {
-                string error;
-                IBinaryDataListEntry entry;
-                if (dataList.TryGetEntry(key, out entry, out error))
-                {
-                    if (entry.IsRecordset)
-                    {
-                        var idxItr = entry.FetchRecordsetIndexes();
-                        while (idxItr.HasMore())
-                        {
-                            var index = idxItr.FetchNextIndex();
-                            var record = entry.FetchRecordAt(index, out error);
-                            foreach (var recordField in record)
-                            {
-                                var idxStr = index.ToString(CultureInfo.InvariantCulture);
-                                result.Add(
-                                    // BUG 8104 - TASK 8126 : TWR - include option for recordset index in name
-                                    new DebugItem(idxStr,
-                                        string.Format("[[{0}({1}).{2}]]",
-                                            recordField.Namespace,
-                                            (includeIndexInRecordSetName ? index.ToString(CultureInfo.InvariantCulture) : ""),
-                                            recordField.FieldName),
-                                        ("= " + recordField.TheValue))
-                                    {
-                                        Group = recordField.Namespace
-                                    });
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var scalar = entry.FetchScalar();
-                        result.Add(new DebugItem(null, string.Format("[[{0}]]", scalar.FieldName), string.IsNullOrEmpty(scalar.TheValue) ? string.Empty : "= " + scalar.TheValue));
-                    }
-                }
-            }
-            return result;
-        }
-
-        protected virtual IList<IDebugItem> GetDataListItems(NativeActivityContext context, params string[] userValues)
-        {
-            return GetDataListItems(GetDataList(context), userValues);
-        }
-
-        protected IList<IDebugItem> GetDataListItems(IBinaryDataList dataList, params string[] userValues)
-        {
-            var result = new List<IDebugItem>();
-
-            if (dataList != null)
-            {
-                var entries = dataList.FetchAllEntries();
-                foreach (var userValue in userValues)
-                {
-                    if (userValue.IndexOf("[[", StringComparison.OrdinalIgnoreCase) == -1)
-                    {
-                        // static value
-                        result.Add(new DebugItem(null, null, userValue));
-                        continue;
-                    }
-
-                    foreach (var entry in entries)
-                    {
-                        if (entry.IsRecordset)
-                        {
-                            if (userValue.IndexOf(entry.Namespace, StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                #region Add each row of recordset
-
-                                var idxItr = entry.FetchRecordsetIndexes();
-                                while (idxItr.HasMore())
-                                {
-                                    string error;
-                                    var index = idxItr.FetchNextIndex();
-                                    var record = entry.FetchRecordAt(index, out error);
-                                    result.AddRange((from recordField in record
-                                                     let idxStr = index.ToString(CultureInfo.InvariantCulture)
-                                                     select new DebugItem(index, recordField)
-                                                     {
-                                                         Group = userValue
-                                                     }));
-                                }
-
-                                #endregion
-                            }
-                        }
-                        else
-                        {
-                            var scalar = entry.FetchScalar();
-                            if (userValue.IndexOf(scalar.FieldName, StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                result.Add(new DebugItem(null, string.Format("[[{0}]]", scalar.FieldName), scalar.TheValue));
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        #endregion
+        #endregion  
 
         #region GetDebugInputs/Outputs
 
         public virtual IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            return GetDataListItems(dataList);
+            return DebugItem.EmptyList;
         }
 
         public virtual IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            return GetDataListItems(dataList);
+            return DebugItem.EmptyList;
         }
 
         #endregion
@@ -760,57 +565,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-
-        //BUG 8104 : Refactor DebugItem
-        //#region GetDebugResults
-
-        //public virtual IList<IDebugItem> GetDebugResults(IBinaryDataList dataList, string variable, string label)
-        //{
-        //    var result = new List<IDebugItem>();
-
-        //    if(variable.ContainsSafe("[["))
-        //    {
-        //        if(DataListUtil.IsValueRecordset(variable) && DataListUtil.GetRecordsetIndexType(variable) == enRecordsetIndexType.Star)
-        //        {
-        //            result.Add(new DebugItem(label + variable, null, null));
-
-        //            var fieldName = DataListUtil.ExtractFieldNameFromValue(variable);
-        //            var recset = GetRecordSet(dataList, variable);
-        //            var idxItr = recset.FetchRecordsetIndexes();
-        //            while(idxItr.HasMore())
-        //            {
-        //                string error;
-        //                var index = idxItr.FetchNextIndex();
-        //                var record = recset.FetchRecordAt(index, out error);
-        //                // ReSharper disable LoopCanBeConvertedToQuery
-        //                foreach(var recordField in record)
-        //                // ReSharper restore LoopCanBeConvertedToQuery
-        //                {
-        //                    if(string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-        //                    {
-        //                        result.Add(new DebugItem(index, recordField)
-        //                        {
-        //                            Group = variable
-        //                        });
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            string val = GetValue(dataList, variable);
-        //            result.Add(new DebugItem(label + variable, variable, "= " + val));
-        //        }
-        //    }
-        //    else
-        //    {
-        //        result.Add(new DebugItem(label + variable, null, variable));
-        //    }
-        //    return result;
-        //}
-
-        //#endregion
-
+    
         #region Create Debug Item
 
         public IList<IDebugItemResult> CreateDebugItems(string expression, IBinaryDataList dataList)
@@ -827,7 +582,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
-                string error;
                 IBinaryDataListEntry entry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
                 string initExpression = expression;
 
@@ -842,6 +596,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         indexType = DataListUtil.GetRecordsetIndexType(expression);
                         entry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
                     }
+                    string error;
                     if (indexType == enRecordsetIndexType.Numeric)
                     {
                         int recsetIndex;
@@ -870,7 +625,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (string.IsNullOrEmpty(fieldName) ||
                                     recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    DebugItem itemToAdd = new DebugItem();
                                     if (indexType == enRecordsetIndexType.Star)
                                     {
                                         string recsetName = DataListUtil.CreateRecordsetDisplayValue(entry.Namespace,
@@ -878,7 +632,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                                          .FieldName,
                                                                                                      index.ToString());
                                         recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
-                                        itemToAdd.Group = initExpression;
                                         results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
                                         results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
                                         results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = recordField.TheValue, GroupName = initExpression, GroupIndex = index });

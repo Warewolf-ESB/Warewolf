@@ -335,56 +335,6 @@ namespace ActivityUnitTests.ActivityTest
 
         #endregion Get Input/Output Tests
 
-        #region GetDebugInputs/Outputs
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit test
-        public void GetDebugInputs_Expected_RecordSetNamesContainRowIndex()
-        // ReSharper restore InconsistentNaming
-        {
-            //var sortActivity = new TestSortActivity();
-
-            //sortActivity.Reset();
-            //sortActivity.GetDebugInputs(null);
-            //Assert.IsTrue(sortActivity.GetDataListItemsParamIncludeIndexInRecordSetName.HasValue && sortActivity.GetDataListItemsParamIncludeIndexInRecordSetName.Value);
-            //Assert.AreEqual(1, sortActivity.GetDataListItemsCallCount);
-            Assert.Inconclusive();
-        }
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit test
-        public void GetDebugOutputs_Expected_RecordSetNamesContainRowIndex()
-        // ReSharper restore InconsistentNaming
-        {
-            //var sortActivity = new TestSortActivity();
-
-            //sortActivity.Reset();
-            //sortActivity.GetDebugOutputs(null);
-            //Assert.IsTrue(sortActivity.GetDataListItemsParamIncludeIndexInRecordSetName.HasValue && sortActivity.GetDataListItemsParamIncludeIndexInRecordSetName.Value);
-            //Assert.AreEqual(1, sortActivity.GetDataListItemsCallCount);
-
-            //var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new DsfSortRecordsActivity( /*debugDispatcher.Object*/)
-            {
-                SortField = "[[recset().Name]]",
-                SelectedSort = "Forward"
-            };
-            var dataList = TestNativeActivity.CreateBinaryDataList(
-                "<root><recset><Id/><Name/></recset></root>",
-                "<root><recset><Id>1</Id><Name>James Fauntleroy</Name></recset><Id>2</Id><Name>Adam Smith</Name></recset></root>");
-
-            var result = testActivity.GetDebugOutputs(dataList);
-            //Assert.AreEqual(4, result.Count);
-            //Assert.AreEqual("[[recset().Id]]", result[0].Results[0].Variable);
-            //Assert.AreEqual("[[recset().Name]]", result[1].Results[0].Variable);
-            Assert.Inconclusive();
-
-        }
-
-        #endregion
-
-
-
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string sortField, string selectedSort)

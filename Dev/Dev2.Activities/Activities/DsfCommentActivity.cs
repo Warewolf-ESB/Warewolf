@@ -10,7 +10,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public DsfCommentActivity()
         {
-            this.DisplayName = "Comment";
+            DisplayName = "Comment";
         }
         public string Text { get; set; }
         protected override void Execute(CodeActivityContext context)
@@ -29,7 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new List<IDebugItem>
             {
-                new DebugItem(null, null, Text)
+                new DebugItem{ new DebugItemResult { Type = DebugItemResultType.Value, Value = Text }}
             };
         }
 
