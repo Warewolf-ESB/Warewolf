@@ -105,8 +105,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFileOffFileSystemTest");
-            string expected = @"<DataList><FileReadResult>ABC</FileReadResult><WriteFileRes>Successful</WriteFileRes><DeleteFileRes>Successful</DeleteFileRes><CreateFileRes></CreateFileRes><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
-
+            //string expected = @"<DataList><FileReadResult>ABC</FileReadResult><WriteFileRes>Successful</WriteFileRes><DeleteFileRes>Successful</DeleteFileRes><CreateFileRes></CreateFileRes><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            // A deferred read is expected RE Travis's feedback rom The Unlimited
+            string expected = "Contents not visible because this value is a deferred read of";
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             StringAssert.Contains(ResponseData, expected);
