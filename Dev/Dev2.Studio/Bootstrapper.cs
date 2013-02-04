@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Network;
 using Dev2.Network.Execution;
@@ -23,11 +25,9 @@ namespace Dev2.Studio
 {
     public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
         protected override void PrepareApplication()
         {
+            CheckProcesses();//Bug 8403
             base.PrepareApplication();
             CheckPath();
         }
@@ -276,6 +276,20 @@ namespace Dev2.Studio
         private static bool IsUnc(Uri sysUri)
         {
             return sysUri.IsUnc;
+        }
+
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        private void CheckProcesses()
+        {
+            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            if (studioProcesses.Length > 1)
+            {
+                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
+                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
+                this.Application.Shutdown();
+            }
         }
 
         #endregion Private Methods
