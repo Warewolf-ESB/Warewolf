@@ -250,18 +250,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TreeViewItem">
-                	<ControlTemplate.Resources>
-                		<Storyboard x:Key="Storyboard1">
-                			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ItemsHost">
-                				<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}"/>
-                			</ObjectAnimationUsingKeyFrames>
-                		</Storyboard>
-                		<Storyboard x:Key="Storyboard2">
-                			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ItemsHost">
-                				<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-                			</ObjectAnimationUsingKeyFrames>
-                		</Storyboard>
-                	</ControlTemplate.Resources>
                     <StackPanel x:Name="stackPanel">
                     	<VisualStateManager.VisualStateGroups>
                     		<VisualStateGroup x:Name="CommonStates"/>
@@ -345,7 +333,7 @@
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                		<Trigger Property="IsExpanded" Value="True">
+                		<!--<Trigger Property="IsExpanded" Value="True">
                 			<Trigger.EnterActions>
                 				<BeginStoryboard x:Name="Storyboard2_BeginStoryboard" Storyboard="{StaticResource Storyboard2}"/>
                 			</Trigger.EnterActions>
@@ -354,7 +342,7 @@
                 			<Trigger.EnterActions>
                 				<BeginStoryboard Storyboard="{StaticResource Storyboard1}"/>
                 			</Trigger.EnterActions>
-                		</Trigger>
+                		</Trigger>-->
                 		<Trigger Property="IsExpanded" Value="False"/>
                 		<Trigger Property="HasItems" Value="False">
                 			<Setter TargetName="Expander" Property="Visibility" Value="Hidden" />

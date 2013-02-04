@@ -151,7 +151,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel FindParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
+            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.DisplayName  == debugState.ParentID)
             {
                 return null;
             }
@@ -166,7 +166,7 @@ namespace Dev2.Studio.Diagnostics
                         return false;
                     }
 
-                    return debugStateTreeViewItemViewModel.Content.ID == debugState.ParentID;
+                    return debugStateTreeViewItemViewModel.Content.DisplayName == debugState.ParentID;
                 });
 
                 if (match != null)
