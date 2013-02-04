@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             ImportService.SatisfyImports(emailAction);
 
             emailAction.StartFeedback();
-            mockWindowManager.Verify(c => c.Show(It.IsAny<BaseViewModel>()), Times.Once());
+            mockWindowManager.Verify(c => c.Show(It.IsAny<SimpleBaseViewModel>()), Times.Once());
         }
     }
 }

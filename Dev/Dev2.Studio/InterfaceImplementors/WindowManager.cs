@@ -15,7 +15,7 @@ namespace Dev2.Studio.InterfaceImplementors
     [Export(typeof(IDev2WindowManager))]
     public class Dev2WindowManager : IDev2WindowManager
     {
-        public void Show(MefLessBaseViewModel viewModel)
+        public void Show(SimpleBaseViewModel viewModel)
         {
             var window = LocateView(viewModel.GetType());
             if (window == null) return;
@@ -25,21 +25,21 @@ namespace Dev2.Studio.InterfaceImplementors
             window.Show();
         }
 
-        public void Show(Window window, MefLessBaseViewModel viewModel)
+        public void Show(Window window, SimpleBaseViewModel viewModel)
         {
             window.Owner = Application.Current.MainWindow;
             window.DataContext = viewModel;
             window.Show();
         }
 
-        public void ShowDialog(Window window, MefLessBaseViewModel viewModel)
+        public void ShowDialog(Window window, SimpleBaseViewModel viewModel)
         {
             window.Owner = Application.Current.MainWindow;
             window.DataContext = viewModel;
             window.ShowDialog();
         }
 
-        public void ShowDialog(MefLessBaseViewModel viewModel)
+        public void ShowDialog(SimpleBaseViewModel viewModel)
         {
             var window = LocateView(viewModel.GetType());
             if (window == null) return;

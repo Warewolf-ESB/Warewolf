@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core;
+﻿using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Factories;
-using Unlimited.Framework;
-using System.Collections.ObjectModel;
-
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.ViewModels.Base;
+using System;
 
 namespace Dev2.Studio.Core.ViewModels {
-    public class InputOutputViewModel : BaseViewModel, IInputOutputViewModel, ICloneable {
+    public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable {
        
         private bool _isSelected;
         private string _name;

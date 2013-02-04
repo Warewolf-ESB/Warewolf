@@ -1,5 +1,6 @@
 ﻿using CefSharp.Wpf;
 using Dev2.Common;
+using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Exceptions;
@@ -10,7 +11,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -20,7 +20,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.ViewModels
 {
-    public class WebsiteEditorViewModel : BaseViewModel, IWebsiteEditorViewModel
+    public class WebsiteEditorViewModel : SimpleBaseViewModel, IWebsiteEditorViewModel
     {
         #region Class Members
 
@@ -59,6 +59,10 @@ namespace Dev2.Studio.Core.ViewModels
 
         public WebsiteEditorViewModel(IWebActivity webActivity)
         {
+            WebCommunication = ImportService.GetExportValue<IWebCommunication>();
+            FileNameProvider = ImportService.GetExportValue<IFileNameProvider>();
+            UserMessageProvider = ImportService.GetExportValue<IUserMessageProvider>();
+
             if(webActivity == null)
             {
                 throw new ArgumentNullException("webActivity");
@@ -78,13 +82,10 @@ namespace Dev2.Studio.Core.ViewModels
 
         public Window Owner { get; set; }
 
-        [Import]
         public IWebCommunication WebCommunication { get; set; }
 
-        [Import]
         public IFileNameProvider FileNameProvider { get; set; }
 
-        [Import]
         public IUserMessageProvider UserMessageProvider { get; set; }
 
         public bool IsValidMarkup

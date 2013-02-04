@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using Dev2.Composition;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -9,7 +10,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml;
@@ -18,8 +18,7 @@ using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 namespace Dev2.Studio.Core.ViewModels
 {
-    [Export(typeof(IDataMappingViewModel))]
-    public class DataMappingViewModel : BaseViewModel, IDataMappingViewModel
+    public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
     {
         #region Locals
 
@@ -49,26 +48,16 @@ namespace Dev2.Studio.Core.ViewModels
         #endregion Locals
 
         #region Imports
-        private IMainViewModel _mainViewModel;
 
-        [Import]
-        public IMainViewModel MainViewModel
-        {
-            get
-            {
-                return _mainViewModel;
-            }
-            set
-            {
-                _mainViewModel = value;
-            }
-        }
+        public IMainViewModel MainViewModel { get; set; }
 
         #endregion Imports
 
         #region Ctor
         public DataMappingViewModel(IWebActivity activity)
         {
+            MainViewModel = ImportService.GetExportValue<IMainViewModel>();
+
             _activity = activity;
             _actionManager = new ActionManager();
             _inputs = new ObservableCollection<IInputOutputViewModel>();

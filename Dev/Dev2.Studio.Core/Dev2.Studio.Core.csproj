@@ -330,7 +330,7 @@
     <Compile Include="ViewModels\Administration\Dev2DialogueViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseValidate.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
-    <Compile Include="ViewModels\Base\MefLessBaseViewModel.cs" />
+    <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\DataListShowMissing\PopUp.cs" />
     <Compile Include="ViewModels\DataListShowMissing\IPopUp.cs" />

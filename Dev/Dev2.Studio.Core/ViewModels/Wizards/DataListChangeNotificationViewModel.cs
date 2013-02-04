@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Dev2.Studio.Core.ViewModels.Base;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
-using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Studio.Core.ViewModels.Wizards
 {
-    public class DataListChangeNotificationViewModel : BaseViewModel
+    public class DataListChangeNotificationViewModel : SimpleBaseViewModel
     {
         private RelayCommand _okCommand;
 

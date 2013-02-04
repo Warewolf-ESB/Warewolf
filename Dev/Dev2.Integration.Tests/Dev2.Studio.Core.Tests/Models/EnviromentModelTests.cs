@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -18,14 +19,18 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
-            IEnvironmentModel environment = new EnvironmentModel();
-            ImportService.SatisfyImports(environment);
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
+            
             //Explicitly set the environment connection so that it uses a random username
             environment.EnvironmentConnection = new EnvironmentConnection(Guid.NewGuid().ToString(), "cake");
             environment.Name = "conn";
             environment.DsfAddress = new Uri(ServerSettings.DsfAddress);
 
-            IEnvironmentModel auxEnvironment = new EnvironmentModel();
+            IEnvironmentModel auxEnvironment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
             ImportService.SatisfyImports(auxEnvironment);
             auxEnvironment.Name = "auxconn";
             auxEnvironment.DsfAddress = new Uri(ServerSettings.DsfAddress);
@@ -45,14 +50,17 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
-            IEnvironmentModel environment = new EnvironmentModel();
-            ImportService.SatisfyImports(environment);
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
             //Explicitly set the environment connection so that it uses a random username
             environment.EnvironmentConnection = new EnvironmentConnection(Guid.NewGuid().ToString(), "cake");
             environment.Name = "conn";
             environment.DsfAddress = new Uri(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));
 
-            IEnvironmentModel auxEnvironment = new EnvironmentModel();
+            IEnvironmentModel auxEnvironment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
             ImportService.SatisfyImports(auxEnvironment);
             auxEnvironment.Name = "auxconn";
             auxEnvironment.DsfAddress = new Uri(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));

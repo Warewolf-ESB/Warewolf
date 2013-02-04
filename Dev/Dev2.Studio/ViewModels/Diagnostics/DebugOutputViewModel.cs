@@ -20,7 +20,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// for the TreeView (the RootItems property), a bindable
     /// SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : MefLessBaseViewModel
+    public class DebugOutputViewModel : SimpleBaseViewModel
     {
         #region Fields
 

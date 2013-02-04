@@ -1,20 +1,18 @@
-﻿using System.Linq;
+﻿using Dev2.Composition;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Actions;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
+using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Dev2;
-using Dev2.Studio.Core;
 using System.Xml.Linq;
-using Dev2.Studio.Core.Actions;
-using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition;
-using System.Xml;
-using System;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.Factories;
 
 namespace Unlimited.Framework {
 
-    public class LayoutObjectViewModel : BaseViewModel, ILayoutObjectViewModel 
+    public class LayoutObjectViewModel : SimpleBaseViewModel, ILayoutObjectViewModel 
     {
         #region Locals
 
@@ -64,11 +62,20 @@ namespace Unlimited.Framework {
 
         #endregion Events
 
+        #region Constructor
+
+        public LayoutObjectViewModel()
+        {
+            WebCommunication = ImportService.GetExportValue<IWebCommunication>();
+        }
+
+        #endregion
+
+
         #region Properties
 
         public Window Owner { get; set; }
 
-        [Import]
         public IWebCommunication WebCommunication { get; set; }
 
         /// <summary>

@@ -17,7 +17,7 @@ using Unlimited.Applications.BusinessDesignStudio.Undo;
 namespace Unlimited.Framework
 {
 
-    public class LayoutGridViewModel : BaseViewModel, ILayoutGridViewModel
+    public class LayoutGridViewModel : SimpleBaseViewModel, ILayoutGridViewModel
     {
         #region Locals
 

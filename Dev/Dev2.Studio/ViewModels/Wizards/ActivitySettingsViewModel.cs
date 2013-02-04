@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Network.Execution;
@@ -13,12 +11,14 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
+using System;
+using System.Windows.Input;
 using Action = System.Action;
 
 
 namespace Dev2.Studio.ViewModels.Wizards
 {
-    public class ActivitySettingsViewModel : BaseViewModel, 
+    public class ActivitySettingsViewModel : SimpleBaseViewModel, 
         IHandle<EnvironmentConnectedMessage>, IHandle<EnvironmentDisconnectedMessage>
     {
         #region Class Members
@@ -87,13 +87,14 @@ namespace Dev2.Studio.ViewModels.Wizards
 
             _wizardInvocationTO = wizardInvocationTO;
             _hostResource = hostResource;
+
+            Popup = ImportService.GetExportValue<IPopUp>();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        [Import]
         public IPopUp Popup { get; set; }
 
         public bool ShowConnectPrompt

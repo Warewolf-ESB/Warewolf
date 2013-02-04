@@ -14,7 +14,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// It provides support for property change notifications 
     /// and has a DisplayName property.  This class is abstract.
     /// </summary>
-    public abstract class BaseViewModel : MefLessBaseViewModel, IDisposable
+    public abstract class BaseViewModel : SimpleBaseViewModel, IDisposable
     {
         #region Constructor
 

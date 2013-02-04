@@ -24,7 +24,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public abstract class AbstractTreeViewModel : MefLessBaseViewModel, ITreeNode, IContextCommands
+    public abstract class AbstractTreeViewModel : SimpleBaseViewModel, ITreeNode, IContextCommands
     {
         #region private fields
 

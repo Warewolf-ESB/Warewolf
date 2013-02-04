@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
-    public abstract class MefLessBaseViewModel : BaseValidatable, IDisposable
+    public abstract class SimpleBaseViewModel : BaseValidatable, IDisposable
     {
         #region Class Members
 
@@ -17,7 +17,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         #region Constructor
 
-        protected MefLessBaseViewModel()
+        protected SimpleBaseViewModel()
         {
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             if (EventAggregator != null)

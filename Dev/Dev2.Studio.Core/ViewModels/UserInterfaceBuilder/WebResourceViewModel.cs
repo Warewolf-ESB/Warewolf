@@ -1,12 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
-using System.Windows.Input;
-using System.Windows;
+﻿using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Dev2.Studio.Core {
-    public class WebResourceViewModel : BaseViewModel, IWebResourceViewModel {
+    public class WebResourceViewModel : SimpleBaseViewModel, IWebResourceViewModel {
         #region Locals
         private readonly ObservableCollection<IWebResourceViewModel> _children;
         RelayCommand _copyCommand;

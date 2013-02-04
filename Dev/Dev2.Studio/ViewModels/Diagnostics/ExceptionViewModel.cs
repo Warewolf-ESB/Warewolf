@@ -1,17 +1,13 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Feedback;
+using Dev2.Studio.Model;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Factory;
-using Dev2.Studio.Feedback;
-using Dev2.Studio.Feedback.Actions;
-using Dev2.Studio.Model;
 using IWindowManager = Dev2.Studio.Core.Interfaces.IDev2WindowManager;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -21,7 +17,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// </summary>
     /// <author>jurie.smit</author>
     /// <date>2013/01/15</date>
-    public sealed class ExceptionViewModel : MefLessBaseViewModel, IExceptionViewModel
+    public sealed class ExceptionViewModel : SimpleBaseViewModel, IExceptionViewModel
     {
         #region private fields
         private BindableCollection<ExceptionUIModel> _exception;

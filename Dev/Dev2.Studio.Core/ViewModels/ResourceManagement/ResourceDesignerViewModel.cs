@@ -1,15 +1,12 @@
-﻿using System;
-using System.Text;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Models;
-using Unlimited.Framework;
+﻿using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
+using System;
+using System.Text;
 
 namespace Dev2.Studio.Core.ViewModels {
-    public class ResourceDesignerViewModel : BaseViewModel, IDisposable, IResourceDesignerViewModel 
+    public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IResourceDesignerViewModel 
     {
         #region Class Members
 

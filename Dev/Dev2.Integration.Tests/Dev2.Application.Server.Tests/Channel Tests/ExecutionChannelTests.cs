@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Threading;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.Integration.Tests.MEF;
@@ -50,7 +51,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             conn.Address = new Uri(ServerSettings.DsfAddress);
             conn.Connect();
 
-            IEnvironmentModel environment = new EnvironmentModel();
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+
+            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
             environment.EnvironmentConnection = conn;
 
             //

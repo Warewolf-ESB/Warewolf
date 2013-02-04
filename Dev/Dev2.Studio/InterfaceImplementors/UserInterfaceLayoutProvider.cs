@@ -696,7 +696,6 @@ namespace Dev2.Studio
         internal void WorkflowActivitySelected(IWebActivity activity)
         {
             var mappingVm = new DataMappingViewModel(activity);
-            ImportService.SatisfyImports(mappingVm);
             var mappingView = new DataMapping { DataContext = mappingVm };
 
             if(DataMappingPane == null)
@@ -1263,7 +1262,6 @@ namespace Dev2.Studio
 
             var resourceModel = ResourceModelFactory.CreateResourceModel(environment, resourceType, resourceType);
             var resourceViewModel = new ResourceWizardViewModel(resourceModel);
-            ImportService.SatisfyImports(resourceViewModel);
 
             var doesServiceExist = environment.Resources.Find(r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
 
@@ -1317,7 +1315,6 @@ namespace Dev2.Studio
             if(doesServiceExist)
             {
                 var resourceViewModel = new ResourceWizardViewModel(resourceModelToEdit);
-                ImportService.SatisfyImports(resourceViewModel);
 
                 Uri requestUri;
                 if(!Uri.TryCreate(resourceModelToEdit.Environment.WebServerAddress, "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit), out requestUri))

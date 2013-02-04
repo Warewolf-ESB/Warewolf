@@ -20,7 +20,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Deploy
 {
-    public class DeployViewModel : MefLessBaseViewModel,
+    public class DeployViewModel : SimpleBaseViewModel,
         IHandle<ResourceCheckedMessage>
     {
         #region Class Members

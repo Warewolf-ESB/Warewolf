@@ -1,17 +1,17 @@
-﻿using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+﻿using Dev2.Composition;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Windows;
 using System.Xml.Linq;
 
 
 namespace Dev2.Studio.Core.ViewModels {
-    public class ResourceWizardViewModel : BaseViewModel, IPropertyEditorWizard
+    public class ResourceWizardViewModel : SimpleBaseViewModel, IPropertyEditorWizard
     {
         #region Class Members
 
@@ -24,6 +24,8 @@ namespace Dev2.Studio.Core.ViewModels {
 
         public ResourceWizardViewModel(IContextualResourceModel model)
         {
+            WebCommunication = ImportService.GetExportValue<IWebCommunication>();
+            PopupProvider = ImportService.GetExportValue<IPopUp>();
             _resource = model;
         }
 
@@ -33,10 +35,8 @@ namespace Dev2.Studio.Core.ViewModels {
 
         public Window Owner { get; set; }
 
-        [Import]
         public IWebCommunication WebCommunication { get; set; }
 
-        [Import]
         public IPopUp PopupProvider { get; set; }
 
         public string Title {

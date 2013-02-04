@@ -1,17 +1,14 @@
-﻿using System.Windows;
-using Dev2.Studio.AppResources.ExtensionMethods;
+﻿using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Input;
-using System.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.Help
 {
@@ -20,8 +17,7 @@ namespace Dev2.Studio.ViewModels.Help
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <datetime>2013/01/14-09:12 AM</datetime>
-    [Export]
-    public sealed class FeedbackViewModel : BaseViewModel
+    public sealed class FeedbackViewModel : SimpleBaseViewModel
     {
         #region private fields
         private ICommand _sendCommand;
@@ -43,6 +39,8 @@ namespace Dev2.Studio.ViewModels.Help
 
         public FeedbackViewModel(string attachmentPath)
         {
+            SysInfoService = ImportService.GetExportValue<ISystemInfoService>();
+
             var sysInfo = SysInfoService.GetSystemInfo();
             Init(sysInfo, attachmentPath);
             SelectedCategory = "Feedback";
@@ -203,7 +201,6 @@ namespace Dev2.Studio.ViewModels.Help
         /// </value>
         /// <author>Jurie.smit</author>
         /// <datetime>2013/01/14-09:17 AM</datetime>
-        [Import(typeof(ISystemInfoService))]
         public ISystemInfoService SysInfoService { get; set; }
 
         /// <summary>

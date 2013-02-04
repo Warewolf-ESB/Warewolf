@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Dev2.Studio.Core.ViewModels.Base;
 using System.Windows.Input;
-using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Studio.ViewModels.UiAutomation
 {    
-    public class AutomationIdCreaterViewModel :BaseViewModel
+    public class AutomationIdCreaterViewModel : SimpleBaseViewModel
     {
         #region Fields
 

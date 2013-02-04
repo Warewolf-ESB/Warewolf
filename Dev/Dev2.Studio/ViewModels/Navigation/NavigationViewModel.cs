@@ -3,6 +3,7 @@
 #region
 
 using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
@@ -14,7 +15,6 @@ using Dev2.Studio.Factory;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 
@@ -27,7 +27,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public class NavigationViewModel : BaseViewModel,
+    public class NavigationViewModel : SimpleBaseViewModel,
                                        IHandle<EnvironmentConnectedMessage>, IHandle<EnvironmentDisconnectedMessage>,
                                        IHandle<UpdateResourceMessage>
     {
@@ -51,6 +51,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public NavigationViewModel(bool useAuxiliryConnections)
         {
+            UserInterfaceLayoutProvider = ImportService.GetExportValue<IUserInterfaceLayoutProvider>();
+            EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
+            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
+
             _useAuxiliryConnections = useAuxiliryConnections;
 
             _environments = new List<IEnvironmentModel>();
@@ -61,13 +65,10 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region public properties
 
-        [Import]
         public IUserInterfaceLayoutProvider UserInterfaceLayoutProvider { get; set; }
 
-        [Import]
         public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
 
-        [Import]
         public IWizardEngine WizardEngine { get; set; }
 
         /// <summary>
