@@ -20,6 +20,7 @@ namespace Dev2.Integration.Tests
             Process process1 = Process.Start(startInfo);
             */
             Process.Start("Dev2.Studio.exe");
+            Process.Start("Dev2.Studio.exe");
             Process[] processes = Process.GetProcessesByName("Dev2.Studio");
 
             int actual = processes.Length;
