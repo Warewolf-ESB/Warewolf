@@ -27,7 +27,6 @@ namespace Dev2.Studio
     {
         protected override void PrepareApplication()
         {
-            CheckProcesses();//Bug 8403
             base.PrepareApplication();
             CheckPath();
         }
@@ -123,7 +122,6 @@ namespace Dev2.Studio
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            CheckForDuplicateProcess();
 
             bool start = true;
 #if !DEBUG
@@ -152,17 +150,6 @@ namespace Dev2.Studio
 
         #region Private Methods
 
-        private void CheckForDuplicateProcess()
-        {
-            //Bug 8403
-            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if (studioProcesses.Length > 1)//there's someone in the jacuzzi with us
-            {
-                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
-                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
-                App.Current.Shutdown();
-            }
-        }
 
         //private void PreloadReferences()
         //{
@@ -276,20 +263,6 @@ namespace Dev2.Studio
         private static bool IsUnc(Uri sysUri)
         {
             return sysUri.IsUnc;
-        }
-
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        private void CheckProcesses()
-        {
-            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if (studioProcesses.Length > 1)
-            {
-                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
-                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
-                this.Application.Shutdown();
-            }
         }
 
         #endregion Private Methods

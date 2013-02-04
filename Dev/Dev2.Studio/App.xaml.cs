@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.Core.AppResources.Browsers;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Factory;
 using System;
 using System.Windows;
@@ -13,6 +15,7 @@ namespace Dev2.Studio
     {
         public App()
         {
+            CheckForDuplicateProcess();//Bug 8403
             InitializeComponent();
         }
 
@@ -66,5 +69,19 @@ namespace Dev2.Studio
                 Current.Shutdown();
             }
         }
+        private void CheckForDuplicateProcess()
+        {
+            //Bug 8403
+            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            if (studioProcesses.Length > 1)
+            {
+                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
+                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
+                Current.Shutdown();
+            }
+        }
+
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }
