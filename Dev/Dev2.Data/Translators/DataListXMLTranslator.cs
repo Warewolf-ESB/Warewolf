@@ -157,13 +157,9 @@ namespace Dev2.Server.DataList.Translators
                     try {
                         string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
                         XmlDocument xDoc = new XmlDocument();
-                        try
+                        if (DataListUtil.IsXml(toLoad)) xDoc.LoadXml(toLoad);
+                        else // Append new root tags ;)
                         {
-                            xDoc.LoadXml(toLoad);
-                        }
-                        catch
-                        {
-                            // Append new root tags ;)
                             toLoad = "<root>" + toLoad + "</root>";
                             xDoc.LoadXml(toLoad);
                         }

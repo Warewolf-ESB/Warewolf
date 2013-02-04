@@ -246,33 +246,33 @@ namespace Dev2.Studio.Core.Models {
             }
             set {
 
-                if(!string.IsNullOrEmpty(value)){
-                    try {
-                        dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(value);
+                //if(!string.IsNullOrEmpty(value)){
+                //    try {
+                //        dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(value);
 
-                        if (data != null) {
-                            if (data.Comment is string) {
-                                this.Comment = data.Comment;
-                            }
+                //        if (data != null) {
+                //            if (data.Comment is string) {
+                //                this.Comment = data.Comment;
+                //            }
 
-                            if (data.Category is string) {
+                //            if (data.Category is string) {
 
-                                this.Category = data.Category;
-                            }
+                //                this.Category = data.Category;
+                //            }
 
-                            if (data.Tags is string) {
-                                this.Tags = data.Tags;
-                            }
+                //            if (data.Tags is string) {
+                //                this.Tags = data.Tags;
+                //            }
 
-                            if (data.HelpLink is string) {
-                                if (!string.IsNullOrEmpty(data.HelpLink)) {
-                                    this.HelpLink = data.HelpLink;
-                                }
-                            }
-                        }
-                    }
-                    catch {}
-                }
+                //            if (data.HelpLink is string) {
+                //                if (!string.IsNullOrEmpty(data.HelpLink)) {
+                //                    this.HelpLink = data.HelpLink;
+                //                }
+                //            }
+                //        }
+                //    }
+                //    catch {}
+                //}
 
                 _serviceDefinition = value;
                 NotifyOfPropertyChange("ServiceDefinition");

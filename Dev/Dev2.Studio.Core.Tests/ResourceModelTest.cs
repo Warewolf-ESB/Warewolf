@@ -44,17 +44,6 @@ namespace Dev2.Core.Tests {
 
         #endregion Test Initialization
 
-        #region ServiceDefinition Tests
-
-        [TestMethod]
-        public void ServiceDefinition_SetterWithResourceModelProperty_ExpectedSerializedServiceDefinitionFromXMLServiceDefinition() {
-            string XmlServiceDefinition = @"<Service Name=""abc""><Inputs/><Outputs/>    <DataList>        <Country/>        <State />        <City>  <Name/>            <GeoLocation />        </City>    </DataList>   <Category>My Test Category</Category></Service>";
-            _resourceModel.ServiceDefinition = XmlServiceDefinition;
-            Assert.IsTrue(!String.IsNullOrEmpty(_resourceModel.Category));
-        }
-
-        #endregion ServiceDefinition Tests
-
         #region Update Tests
 
 

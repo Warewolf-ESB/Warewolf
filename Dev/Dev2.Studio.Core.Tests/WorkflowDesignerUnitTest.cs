@@ -1,9 +1,12 @@
 ﻿using Dev2.Composition;
 using Dev2.Studio;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -376,6 +379,17 @@ namespace Dev2.Core.Tests
             return wf;
         }
 
+        private WorkflowDesignerViewModel InitializeWorkflowDesignerForCategoryFunctionality(IContextualResourceModel resourceModel)
+        {
+
+            WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resourceModel);
+            var designerAttributes = new Dictionary<Type, Type>();
+            wf.MediatorRepo = _mockMediatorRepo.Object;
+            wf.InitializeDesigner(designerAttributes);
+
+            return wf;
+        }
+
         private int GetAddRemoveDataListItemsCount(string xamlInput)
         {
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -471,5 +485,26 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Internal Test Methods
+
+
+
+        [TestMethod]
+        public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
+        {
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForCategoryFunctionality(mockResourceModel.Object);
+
+            mockResourceModel.Setup(r => r.Category).Returns("Testing");
+            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+            workflowDesigner.Handle(updatemsg);
+
+            mockResourceModel.Setup(r => r.Category).Returns("Testing2");
+            updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+            workflowDesigner.Handle(updatemsg);
+
+            Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
+        }
+
     }
 }

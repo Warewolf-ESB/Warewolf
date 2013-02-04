@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
@@ -44,7 +45,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable
+    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>
     {
         #region Fields
 

@@ -149,7 +149,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
             for (int i = index - 1; i >= 0; i--)
             {
-                if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
+                var test = currentText.Substring(i, index - i);
+                if (appendText.StartsWith(test, StringComparison.OrdinalIgnoreCase))
                 {
                     lastIndex = index;
                     foundMinimum = i;
@@ -223,22 +224,23 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if (currentText.Length == index)
             {
-                string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(')-2) : null;
-                if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions for overwrite
-                    if (recsetName.ToLower().StartsWith(currentText.ToLower()) || currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[[")) //user typed a partial recordset name
-                        if (currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[["))
-                        {
-                            prepend = false;
-                            currentText += appendText; //Append
-                        }
-                        else currentText += appendText; //Append
-                    else if (appendText.ToLower().Contains(currentText.ToLower())) //confirm user typed a partial field
-                        currentText = appendText; //Overwrite
-                    else
-                    {//avoid dangling else
+                string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(') - 2) : null;
+                if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions to allow for overwrite (previously only ever appended text)
+                    if (recsetName.ToLower().StartsWith(!currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[") ? currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower() : currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().Substring(2, currentText.Length - currentText.LastIndexOf('(') - 3))) //user typed a partial recordset name
+                    {
+                        prepend = !currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[");
                         currentText += appendText; //Append
                     }
-                else if(currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(')+1 : 0).StartsWith("[["))
+                    else
+                    {
+                        if (appendText.IndexOf(')') != -1 && !recsetName.ToLower().Contains(currentText.ToLower()))
+                        {
+                            prepend = false;
+                            currentText = currentText.Remove(currentText.IndexOf(')') >= 0 ? currentText.IndexOf(')') : 0, currentText.Length - (currentText.IndexOf(')') != -1 ? currentText.IndexOf(')') : 0)) + appendText.Remove(0, appendText.IndexOf(')')); // User typed a partial fieldname, just append that fieldname
+                        }
+                        else currentText = appendText; // User typed a partial recset name within the index of a record set
+                    }
+                else if (currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[[")) // Already starts with [[ - dont prepend
                 {
                     prepend = false;
                     currentText += appendText; //Append
@@ -279,16 +281,41 @@ namespace Dev2.Studio.InterfaceImplementors
             return currentText;//No Trim
         }
 
+        private string cleanupInput(string value, int pos, out int newPos)
+        {
+            newPos = pos;
+            if (!value.StartsWith("{{")) while(isBetweenBraces(value, pos-1))
+            {
+                value = getBetweenBraces(value, pos, out newPos);
+                pos = newPos;
+            }
+            return value;
+        }
+
+        private bool isBetweenBraces(string value, int pos)
+        {
+            return (value.LastIndexOf('(', pos) != -1 && value.IndexOf(')', pos) != -1);
+        }
+
+        private string getBetweenBraces(string value, int pos, out int newPos)
+        {
+            newPos = pos-value.LastIndexOf('(', pos)-1;
+            return value.Substring(value.LastIndexOf('(', pos)+1, value.IndexOf(')', pos) - value.LastIndexOf('(', pos)-1);
+        }
+
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
             if (_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
             if (_textBox != context.TextBox) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results = null;
 
+            var caretPosition = context.CaretPosition;
+            var indexCaretPosition = caretPosition - 1;
             if(context.InputText.IndexOf(',') > 0)
             {
-                var preComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0) > 0 ? context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0) + 1 : 0;
-                var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
+                var lastIndexOfComma = context.InputText.LastIndexOf(',', caretPosition > 0 ? indexCaretPosition : 0);
+                var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
+                var postComma = context.InputText.IndexOf(',', caretPosition) > 0 ? context.InputText.IndexOf(',', caretPosition) : context.InputText.Length;
                 context.CaretPosition -= preComma;
                 context.InputText = context.InputText.Substring(preComma, postComma-preComma);
             }
@@ -302,15 +329,17 @@ namespace Dev2.Studio.InterfaceImplementors
                 case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl("[[", filterType); break;
                 case IntellisenseDesiredResultSet.ClosestMatch:
                 default:
-                    {
-
-                        if (context.CaretPosition > 0 && context.InputText.Length > 0 && context.CaretPosition < context.InputText.Length)
+                {
+                    int newPos;
+                    input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
+                    context.CaretPosition = newPos;
+                        if (caretPosition > 0 && context.InputText.Length > 0 && caretPosition < context.InputText.Length)
                         {
-                            char letter = context.InputText[context.CaretPosition];
+                            char letter = context.InputText[caretPosition];
 
                             if (char.IsWhiteSpace(letter))
                             {
-                                results = GetIntellisenseResultsImpl(input.Substring(0, context.CaretPosition), filterType);
+                                results = GetIntellisenseResultsImpl(input.Substring(0, caretPosition), filterType);
                             }
                             else results = GetIntellisenseResultsImpl(input, filterType);
                         }
@@ -327,7 +356,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             int foundMinimum = -1;
                             int foundLength = 0;
 
-                            for (int i = context.CaretPosition - 1; i >= 0; i--)
+                            for (int i = indexCaretPosition; i >= 0; i--)
                             {
                                 char currentChar = context.InputText[i];
 
@@ -344,7 +373,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                     else
                                     {
                                         foundMinimum = i;
-                                        foundLength = context.CaretPosition - i;
+                                        foundLength = caretPosition - i;
                                     }
                                 }
                             }
@@ -422,12 +451,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            if(!input.StartsWith("{{"))
-            {
-                var getIndex = input;
-                while(DataListUtil.IsValueRecordset(getIndex)) getIndex = DataListUtil.ExtractIndexRegionFromRecordset(getIndex); //2013.01.30: Ashley Lewis  Added this part for Bug 6103
-                results = parser.ParseDataLanguageForIntellisense(getIndex, _cachedDataList, false, filterTO);
-            }
+            results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
 
             if (results != null)
             {
