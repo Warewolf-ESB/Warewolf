@@ -1,8 +1,8 @@
 ﻿
+using Dev2.DataList;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using Dev2.DataList;
 
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -13,10 +13,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public IList<string> ItemList { get; set; }
 
         public DsfFindRecordsActivityDesigner()
-        {            
+        {
             InitializeComponent();
             ItemList = FindRecsetOptions.FindAll().Select(c => c.HandlesType()).ToList();
-            cbxWhere.ItemsSource = ItemList.OrderBy(c=>c);            
+            cbxWhere.ItemsSource = ItemList.OrderBy(c => c);
         }
 
 
@@ -32,8 +32,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     txtMatch.IsEnabled = false;
+                    txtMatch.Text = string.Empty;
                 }
-            }            
+            }
         }
     }
 }

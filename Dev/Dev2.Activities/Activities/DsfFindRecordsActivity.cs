@@ -178,10 +178,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
             string[] fieldsList = FieldsToSearch.Split(',');
+            DebugItem itemToAdd = new DebugItem();
             foreach (string s in fieldsList)
             {
-                DebugItem itemToAdd = new DebugItem
-                    {
+
+                itemToAdd = new DebugItem{
                         new DebugItemResult {Type = DebugItemResultType.Label, Value = "Fields To Search"}
                     };
 
@@ -195,17 +196,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 result.Add(itemToAdd);
             }
 
-            if (!string.IsNullOrEmpty(SearchCriteria))
+            itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
+            itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = SearchType });
+            foreach (IDebugItemResult debugItemResult in CreateDebugItems(SearchCriteria, dataList))
             {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
-                itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = SearchType });
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(SearchCriteria, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                result.Add(itemToAdd);
+                itemToAdd.Add(debugItemResult);
             }
+            result.Add(itemToAdd);
+
 
             return result;
         }

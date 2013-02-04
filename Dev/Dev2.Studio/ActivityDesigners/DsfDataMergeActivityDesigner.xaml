@@ -11,8 +11,9 @@
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors">
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Grid Actions" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-            <MenuItem Header="Delete Row" Click="MenuItem_Click"/>
+            <MenuItem Header="Grid Actions" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
+                <MenuItem Header="Delete Row" Click="MenuItem_Click"/>
+            </MenuItem>            
             <MenuItem Header="Create AutomationID">
                 <i:Interaction.Behaviors>
                     <local:AutomationIdCreationBehaviour AutomationIdCreation="{Binding Path=ModelItem}"/>
