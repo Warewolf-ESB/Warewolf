@@ -13,7 +13,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Pl
         public void TestPluginsReturningXMLFromJson()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningXMLFromJson");
-            string expected = @"<Names><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Names><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Names><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Names><DepartmentName>Accounts</DepartmentName><EmployeeName>Joe</EmployeeName></Names><OtherNames><Name>RandomData</Name></OtherNames><OtherNames><Name>RandomData1</Name></OtherNames><ScalarName>Dev2</ScalarName>";
+            string expected = @"<ScalarName>Dev2</ScalarName><Names><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Names><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Names><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Names><DepartmentName>Accounts</DepartmentName><EmployeeName>Joe</EmployeeName></Names><OtherNames><Name>RandomData</Name></OtherNames><OtherNames><Name>RandomData1</Name></OtherNames>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
