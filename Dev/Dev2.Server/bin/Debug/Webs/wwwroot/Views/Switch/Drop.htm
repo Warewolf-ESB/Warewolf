@@ -13,14 +13,14 @@
                     <div>
 
 						<div class="field">
-							<label class="wideLabel"> &nbsp; &nbsp;Evaluates a DataList variable and switches based upon its value</label>
+							<label class="wideLabel"> &nbsp; &nbsp;Checks a variable and then switches the execution if it finds a matching case.</label>
 						</div>
 						
 						<!--  KO Template -->
 						<div style="width:100%;">							
 							<div>
-								<label style="float:left; width:300px; margin-left:-85px;">DataList variable to evaluate : </label>
-								<input type="text" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on this"/>	
+								<label style="float:left; width:300px; margin-left:-85px;">Variable to Switch on : </label>
+								<input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on This Variable"/>	
 							</div>
 						</div>
 
@@ -111,6 +111,9 @@
 	 ko.applyBindings(vm);	
 	 
 	 $("input[type=submit], a, button").button();
+
+     // set focus to the input box
+	 //$("#SwitchVariable").focus();
 		
 </script>
 
