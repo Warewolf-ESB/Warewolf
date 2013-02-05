@@ -333,8 +333,7 @@ namespace ActivityUnitTests.ActivityTest
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(4, inRes[0].Count);
             Assert.AreEqual(1, outRes.Count);

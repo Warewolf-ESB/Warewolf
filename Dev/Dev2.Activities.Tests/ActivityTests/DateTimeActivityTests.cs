@@ -180,8 +180,8 @@ namespace ActivityUnitTests.ActivityTests
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(31, inRes[0].Count);
             Assert.AreEqual(2, inRes[1].Count);
