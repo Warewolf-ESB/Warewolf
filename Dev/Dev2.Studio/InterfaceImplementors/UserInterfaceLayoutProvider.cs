@@ -936,7 +936,7 @@ namespace Dev2.Studio
                         var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                         var callBackHandler = new Dev2DecisionCallbackHandler();
-                        callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 480, Height = 270 };
+                        callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
 
                         callBackHandler.Owner.ShowDialog();
 
@@ -1004,7 +1004,7 @@ namespace Dev2.Studio
                 var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                 var callBackHandler = new Dev2DecisionCallbackHandler();
-                callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 480, Height = 270 };
+                callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
 
                 callBackHandler.Owner.ShowDialog();
 
@@ -1075,7 +1075,7 @@ namespace Dev2.Studio
                 var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                 var callBackHandler = new Dev2DecisionCallbackHandler();
-                callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 480, Height = 270 };
+                callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
 
                 callBackHandler.Owner.ShowDialog();
 
