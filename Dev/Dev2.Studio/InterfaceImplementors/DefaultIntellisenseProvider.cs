@@ -346,9 +346,12 @@ namespace Dev2.Studio.InterfaceImplementors
                 default:
                 {
                     int newPos;
-                    input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
-                    context.CaretPosition = newPos;
-                        if (caretPosition > 0 && context.InputText.Length > 0 && caretPosition < context.InputText.Length)
+                    if(context.CaretPosition >= 0 && context.CaretPosition <= input.Length)
+                    {
+                        input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
+                        context.CaretPosition = Math.Min(newPos, input.Length);
+                    }
+                    if (caretPosition > 0 && context.InputText.Length > 0 && caretPosition < context.InputText.Length)
                         {
                             char letter = context.InputText[caretPosition];
 
