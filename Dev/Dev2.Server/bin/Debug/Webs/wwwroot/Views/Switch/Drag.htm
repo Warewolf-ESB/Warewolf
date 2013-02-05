@@ -62,7 +62,6 @@
 
             var jsonData = ko.toJSON(self.data);
 
-            
             //alert(jsonData);
 
             $.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {

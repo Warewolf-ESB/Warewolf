@@ -35,9 +35,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 return _fileData;
             }
 
-            private set
+            set
             {
-                throw new NotImplementedException("Set for FileSystem Items is not implemented");
+                _fileData = value;
             } 
         }
 
