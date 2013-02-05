@@ -324,13 +324,16 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_textBox != context.TextBox) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results = null;
 
-            var caretPosition = context.CaretPosition;
-            var indexCaretPosition = caretPosition - 1;
             if (context.InputText.IndexOf(',') > 0)
             {
-                var lastIndexOfComma = context.InputText.LastIndexOf(',', caretPosition > 0 ? indexCaretPosition : 0);
+                var lastIndexOfComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0);
                 var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
-                var postComma = context.InputText.IndexOf(',', caretPosition) > 0 ? context.InputText.IndexOf(',', caretPosition) : context.InputText.Length;
+                int postComma;
+                if (context.InputText.IndexOf(',', context.CaretPosition) > 0)
+                    postComma = context.InputText.IndexOf(',', context.CaretPosition);
+                else if (context.InputText.IndexOf(')', context.CaretPosition) > 0)
+                    postComma = context.InputText.IndexOf(')', context.CaretPosition);
+                else postComma = context.InputText.Length;
                 context.CaretPosition -= preComma;
                 context.InputText = context.InputText.Substring(preComma, postComma - preComma);
                 context.CaretPosition = Math.Min(context.CaretPosition, context.InputText.Length);
