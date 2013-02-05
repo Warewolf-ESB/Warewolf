@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 namespace Dev2.Diagnostics {
     public class DebugDispatcher : IDebugDispatcher {
         // The Guid is the workspace ID of the writer
-        readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
+        private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
+        //private static ConcurrentQueue<IDebugState> _writerQueue = new ConcurrentQueue<IDebugState>();
+        //private static Thread _writerThread = new Thread(WriteLoop);
+        //private static ManualResetEventSlim _writeWaithandle = new ManualResetEventSlim(false);
+        //private static object _waitHandleGuard = new object();
 
         #region Singleton Instance
 
@@ -20,8 +24,14 @@ namespace Dev2.Diagnostics {
 
         #region Initialization
 
+        //static DebugDispatcher()
+        //{
+        //    //_writerThread.Start();
+        //}
+
         // Prevent instantiation
-        DebugDispatcher() {
+        DebugDispatcher() 
+        {
 
         }
 
@@ -100,13 +110,55 @@ namespace Dev2.Diagnostics {
         /// <returns>The task that was created.</returns>
         public Task Write(IDebugState debugState) {
             IDebugWriter writer;
-            if (debugState == null || (writer = Get(debugState.WorkspaceID)) == null) {
+            if (debugState == null || (writer = Get(debugState.WorkspaceID)) == null)
+            {
                 return null;
             }
 
             return Task.Factory.StartNew(() => debugState.Write(writer));
+
+            //lock(_waitHandleGuard)
+            //{
+            //    _writerQueue.Enqueue(debugState);
+            //    _writeWaithandle.Set();                
+            //}
+
+            //Task t = new Task(() => { });
+            //t.Start();
+            //return t;
         }
 
         #endregion
+
+        //#region WriteLoop
+
+        //private static void WriteLoop()
+        //{
+        //    //TODO Monitor app exit and finish loop
+        //    while(true)
+        //    {
+        //        _writeWaithandle.Wait();
+
+        //        IDebugState debugState;
+        //        if (_writerQueue.TryDequeue(out debugState))
+        //        {
+        //            IDebugWriter writer;
+        //            if (debugState != null && (writer = Instance.Get(debugState.WorkspaceID)) != null)
+        //            {
+        //                debugState.Write(writer);
+        //            }
+        //        }
+
+        //        lock (_waitHandleGuard)
+        //        {
+        //            if (_writerQueue.Count == 0)
+        //            {
+        //                _writeWaithandle.Reset();
+        //            }
+        //        }
+        //    }
+        //}
+
+        //#endregion WriteLoop
     }
 }
