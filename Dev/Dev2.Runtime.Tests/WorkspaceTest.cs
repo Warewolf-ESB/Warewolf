@@ -207,7 +207,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void DeleteDecreasesItemCountByOne()
         {
-            lock (l)
+            lock (_testInstance)
             {
                 // this will add
                 var workspace = _testInstance.Get(Guid.NewGuid());
@@ -221,8 +221,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void DeleteNullItem_Expected_NoOperationPerformed()
         {
-            // this will add
-            lock (l)
+            lock (_testInstance)
             {
                 var expected = _testInstance.Count;
                 _testInstance.Delete(null);
@@ -233,14 +232,14 @@ namespace Dev2.DynamicServices.Test
         #endregion Delete
 
         #region Save
-
         [TestMethod]
         public void SaveWithNewWorkspaceIncreasesItemCountByOne()
         {
-            lock (l)
+            lock (_testInstance)
             {
                 var expected = _testInstance.Count + 1;
-                var workspace = new Workspace(Guid.NewGuid());
+                Guid myGuid = Guid.NewGuid();
+                var workspace = new Workspace(myGuid);
                 _testInstance.Save(workspace);
                 Assert.AreEqual(expected, _testInstance.Count);
             }
@@ -294,9 +293,13 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithNewWorkspaceIDIncreasesItemCountByOne()
         {
-            var expected = _testInstance.Count + 1;
-            var workspace = _testInstance.Get(Guid.NewGuid());
-            Assert.AreEqual(expected, _testInstance.Count);
+            lock (_testInstance)
+            {
+                WorkspaceRepository myRepo = WorkspaceRepository.Instance;
+                var expected = myRepo.Count + 1;
+                var workspace = myRepo.Get(Guid.NewGuid());
+                Assert.AreEqual(expected, myRepo.Count);
+            }
         }
 
         [TestMethod]
