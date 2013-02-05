@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -23,13 +24,15 @@ namespace Dev2.Core.Tests
         /// <summary>
         /// Created variables used in tests globally 
         /// </summary>
-        Mock<IEnvironmentModel> _environmentmodel = new Mock<IEnvironmentModel>();
+        readonly Mock<IEnvironmentModel> _environmentmodel = new Mock<IEnvironmentModel>();
         Mock<IEnvironmentConnection> _environmentConnection = new Mock<IEnvironmentConnection>();
-        IFrameworkRepository<IEnvironmentModel> repos;
-        Object _lock = new object();
-        string test = "result";
+        IFrameworkRepository<IEnvironmentModel> _repos;
+        readonly Object _lock = new object();
+        const string Test = "result";
 
-        static ImportServiceContext _importServiceContext;
+        static ImportServiceContext ImportServiceContext;
+
+        private static readonly object TestGuard = new object();
 
         #endregion Variables
 
@@ -60,7 +63,7 @@ namespace Dev2.Core.Tests
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel();
+            ImportServiceContext = CompositionInitializer.InitializeMockedMainViewModel();
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
@@ -71,21 +74,22 @@ namespace Dev2.Core.Tests
         [TestInitialize()]
         public void EnvironmentRepositoryTestsInitialize()
         {
+            Monitor.Enter(TestGuard);
 
             lock(_lock)
             {
-                ImportService.CurrentContext = _importServiceContext;
+                ImportService.CurrentContext = ImportServiceContext;
 
-                repos = new EnvironmentRepository();
+                _repos = new EnvironmentRepository();
 
                 //Clear out any exiting environments
-                foreach (var item in repos.All().ToList())
+                foreach (var item in _repos.All().ToList())
                 {
-                    repos.Remove(item);
+                    _repos.Remove(item);
                 }
 
                 _environmentmodel.Setup(prop => prop.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
-                _environmentmodel.Setup(prop => prop.Name).Returns(test);
+                _environmentmodel.Setup(prop => prop.Name).Returns(Test);
                 _environmentmodel.Setup(prop => prop.WebServerPort).Returns(1234);
                 _environmentmodel.Setup(prop => prop.Connect());
 
@@ -94,10 +98,10 @@ namespace Dev2.Core.Tests
         }
 
 
-        [TestCleanup()]
+        [TestCleanup]
         public void MyTestCleanup()
         {
-            
+            Monitor.Exit(TestGuard);
         }
         
 
@@ -115,10 +119,10 @@ namespace Dev2.Core.Tests
             lock(_lock)
             {
                 //Arrange
-                repos.Save(_environmentmodel.Object);
+                _repos.Save(_environmentmodel.Object);
                 //Act
-                ICollection<IEnvironmentModel> returnedEnv = repos.All();
-                var ret = returnedEnv.First(c => c.Name == test);
+                ICollection<IEnvironmentModel> returnedEnv = _repos.All();
+                var ret = returnedEnv.First(c => c.Name == Test);
                 //Assert
                 Assert.AreEqual(_environmentmodel.Object.Name, ret.Name);
             }
@@ -135,10 +139,10 @@ namespace Dev2.Core.Tests
             {
                 //Arrange
                 _environmentmodel.Setup(prop => prop.IsConnected).Returns(false);
-                repos.Save(_environmentmodel.Object);
+                _repos.Save(_environmentmodel.Object);
                 //Act
-                ICollection<IEnvironmentModel> returnedEnv = repos.All();
-                var ret = returnedEnv.First(c => c.Name == test);
+                ICollection<IEnvironmentModel> returnedEnv = _repos.All();
+                var ret = returnedEnv.First(c => c.Name == Test);
                 //Assert
                 Assert.IsFalse(ret.IsConnected);
             }
@@ -160,9 +164,9 @@ namespace Dev2.Core.Tests
                 Mock<IEnvironmentModel> envModel = new Mock<IEnvironmentModel>();
                 envModel.Setup(c => c.Name).Returns("result");
 
-                repos.Save(envModel.Object);
+                _repos.Save(envModel.Object);
 
-                Assert.IsTrue(repos.All().Count == 1);
+                Assert.IsTrue(_repos.All().Count == 1);
             }
 
         }
@@ -176,12 +180,12 @@ namespace Dev2.Core.Tests
                 Mock<IEnvironmentModel> envModel = Dev2MockFactory.SetupEnvironmentModel();
                 envModel.Setup(model => model.Name).Returns("Test");
                 //Save the First Environment Model to the Repo
-                repos.Save(envModel.Object);
+                _repos.Save(envModel.Object);
 
                 //Save the Environment Again
-                repos.Save(envModel.Object);
+                _repos.Save(envModel.Object);
 
-                Assert.IsInstanceOfType(repos.FindSingle(repo => repo.Name == "Test"), typeof(IEnvironmentModel));
+                Assert.IsInstanceOfType(_repos.FindSingle(repo => repo.Name == "Test"), typeof(IEnvironmentModel));
             }
         }
 
@@ -198,12 +202,12 @@ namespace Dev2.Core.Tests
                 secondEntryEnvModel.Setup(model => model.Name).Returns("SecondEnvironmentModel");
 
                 //Save the First Environment Model to the Repo
-                repos.Save(envModel.Object);
+                _repos.Save(envModel.Object);
 
                 //Save the Environment Again
-                repos.Save(secondEntryEnvModel.Object);
+                _repos.Save(secondEntryEnvModel.Object);
 
-                Assert.AreEqual(2, repos.All().Count);
+                Assert.AreEqual(2, _repos.All().Count);
             }
         }
 
@@ -235,14 +239,14 @@ namespace Dev2.Core.Tests
             lock(_lock)
             {
                 //Act
-                ICollection<IEnvironmentModel> returnedEnv = repos.All();
-                repos.Save(_environmentmodel.Object);
+                ICollection<IEnvironmentModel> returnedEnv = _repos.All();
+                _repos.Save(_environmentmodel.Object);
 
                 Mock<IEnvironmentModel> secondEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
                 secondEnvironmentModel.Setup(e => e.Name).Returns("NonExistantEnvironment");
 
-                repos.Remove(secondEnvironmentModel.Object);
-                int envs = repos.All().Count;
+                _repos.Remove(secondEnvironmentModel.Object);
+                int envs = _repos.All().Count;
 
                 //Assert
                 Assert.IsTrue(envs == 1);

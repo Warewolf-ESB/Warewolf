@@ -17,25 +17,21 @@ namespace Dev2.Core.Tests
     public class IntellisenseProviderTest
     {
         private IResourceModel _resourceModel;
-// ReSharper disable InconsistentNaming
-        private static readonly object _testGuard = new object();
-// ReSharper restore InconsistentNaming
+        private static readonly object TestGuard = new object();
 
         #region Test Initialization
 
         [TestInitialize]
         public void Init()
         {
-            Monitor.Enter(_testGuard);
+            Monitor.Enter(TestGuard);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
-// ReSharper disable InconsistentNaming
-            var _testEnvironmentModel = new Mock<IEnvironmentModel>();
-// ReSharper restore InconsistentNaming
-            _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            var testEnvironmentModel = new Mock<IEnvironmentModel>();
+            testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
-            _resourceModel = new ResourceModel(_testEnvironmentModel.Object) { ResourceName = "test", ResourceType = ResourceType.Service, DataList = @"
+            _resourceModel = new ResourceModel(testEnvironmentModel.Object) { ResourceName = "test", ResourceType = ResourceType.Service, DataList = @"
             <DataList>
                     <Scalar/>
                     <Country/>
@@ -55,7 +51,7 @@ namespace Dev2.Core.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            Monitor.Exit(_testGuard);
+            Monitor.Exit(TestGuard);
         }
 
         #endregion Test Initialization

@@ -62,7 +62,7 @@ namespace Dev2.Studio.InterfaceImplementors
             //_entryDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
             Optional = false;
             HandlesResultInsertion = true;
-            
+
             if (_designTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(_designTestObject))
             {
                 _isUpdated = true;
@@ -87,7 +87,7 @@ namespace Dev2.Studio.InterfaceImplementors
             StringBuilder result = new StringBuilder("<ADL>");
             OptomizedObservableCollection<IDataListItemModel> dataList = null;
 
-       if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
+            if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
             {
                 dataList = DataListSingleton.ActiveDataList.DataList;
             }
@@ -98,7 +98,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if (!_hasCachedDatalist || _isUpdated)
                 {
-                    
+
                     //int count = dataList.Count;
 
                     //for (int i = 0; i < count; i++)
@@ -116,7 +116,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if (wasRebuilt)
             {
-             //   _cachedDataList = result.ToString();
+                //   _cachedDataList = result.ToString();
                 _cachedDataList = DataListSingleton.ActiveDataList.Resource.DataList;
             }
         }
@@ -182,7 +182,7 @@ namespace Dev2.Studio.InterfaceImplementors
             else
             {
                 lastIndex = currentText.LastIndexOf("[[", index);
-                
+
                 if (lastIndex != -1 && index >= lastIndex + 2)
                 {
                     int previousIndex = currentText.LastIndexOf("]]", index);
@@ -265,7 +265,7 @@ namespace Dev2.Studio.InterfaceImplementors
                     var firstBrace = currentText.LastIndexOf('(', index);
                     var secondBrace = currentText.LastIndexOf(')');
 
-                    var length = secondBrace-firstBrace-1;
+                    var length = secondBrace - firstBrace - 1;
                     if (length >= 0)
                     {
                         var depthIndex = currentText.Substring(firstBrace + 1, length);
@@ -275,7 +275,7 @@ namespace Dev2.Studio.InterfaceImplementors
                         }
                     }
                 }
-               
+
                 currentText = currentText.Substring(0, index);
                 currentText = currentText.Insert(index, appendText);
 
@@ -298,11 +298,11 @@ namespace Dev2.Studio.InterfaceImplementors
         private string cleanupInput(string value, int pos, out int newPos)
         {
             newPos = pos;
-            if (!value.StartsWith("{{")) while(isBetweenBraces(value, pos-1))
-            {
-                value = getBetweenBraces(value, pos, out newPos);
-                pos = newPos;
-            }
+            if (!value.StartsWith("{{")) while (isBetweenBraces(value, pos - 1))
+                {
+                    value = getBetweenBraces(value, pos, out newPos);
+                    pos = newPos;
+                }
             return value;
         }
 
@@ -314,8 +314,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private string getBetweenBraces(string value, int pos, out int newPos)
         {
-            newPos = pos-value.LastIndexOf('(', pos)-1;
-            return value.Substring(value.LastIndexOf('(', pos)+1, value.IndexOf(')', pos) - value.LastIndexOf('(', pos)-1);
+            newPos = pos - value.LastIndexOf('(', pos) - 1;
+            return value.Substring(value.LastIndexOf('(', pos) + 1, value.IndexOf(')', pos) - value.LastIndexOf('(', pos) - 1);
         }
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
@@ -326,13 +326,14 @@ namespace Dev2.Studio.InterfaceImplementors
 
             var caretPosition = context.CaretPosition;
             var indexCaretPosition = caretPosition - 1;
-            if(context.InputText.IndexOf(',') > 0)
+            if (context.InputText.IndexOf(',') > 0)
             {
                 var lastIndexOfComma = context.InputText.LastIndexOf(',', caretPosition > 0 ? indexCaretPosition : 0);
                 var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
                 var postComma = context.InputText.IndexOf(',', caretPosition) > 0 ? context.InputText.IndexOf(',', caretPosition) : context.InputText.Length;
                 context.CaretPosition -= preComma;
-                context.InputText = context.InputText.Substring(preComma, postComma-preComma);
+                context.InputText = context.InputText.Substring(preComma, postComma - preComma);
+                context.CaretPosition = Math.Min(context.CaretPosition, context.InputText.Length);
             }
 
             string input = context.InputText;
@@ -344,20 +345,20 @@ namespace Dev2.Studio.InterfaceImplementors
                 case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl("[[", filterType); break;
                 case IntellisenseDesiredResultSet.ClosestMatch:
                 default:
-                {
-                    int newPos;
-                    if(context.CaretPosition >= 0 && context.CaretPosition <= input.Length)
                     {
-                        input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
-                        context.CaretPosition = Math.Min(newPos, input.Length);
-                    }
-                    if (caretPosition > 0 && context.InputText.Length > 0 && caretPosition < context.InputText.Length)
+                        int newPos;
+                        if (context.CaretPosition >= 0 && context.CaretPosition <= input.Length)
                         {
-                            char letter = context.InputText[caretPosition];
+                            input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
+                            context.CaretPosition = Math.Min(newPos, input.Length);
+                        }
+                        if (context.CaretPosition > 0 && context.InputText.Length > 0 && context.CaretPosition < context.InputText.Length)
+                        {
+                            char letter = context.InputText[context.CaretPosition];
 
                             if (char.IsWhiteSpace(letter))
                             {
-                                results = GetIntellisenseResultsImpl(input.Substring(0, caretPosition), filterType);
+                                results = GetIntellisenseResultsImpl(input.Substring(0, context.CaretPosition), filterType);
                             }
                             else results = GetIntellisenseResultsImpl(input, filterType);
                         }
@@ -374,7 +375,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             int foundMinimum = -1;
                             int foundLength = 0;
 
-                            for (int i = indexCaretPosition; i >= 0; i--)
+                            for (int i = context.CaretPosition - 1; i >= 0; i--)
                             {
                                 char currentChar = context.InputText[i];
 
@@ -391,7 +392,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                     else
                                     {
                                         foundMinimum = i;
-                                        foundLength = caretPosition - i;
+                                        foundLength = context.CaretPosition - i;
                                     }
                                 }
                             }
@@ -583,7 +584,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                         case 2:
                                             {
                                                 displayName = "Missing Recordset";
-                                                message = "Datalist recordset \"" + identifier + "\" does not exist in your datalist."; 
+                                                message = "Datalist recordset \"" + identifier + "\" does not exist in your datalist.";
                                                 break;
                                             }
                                         case 3:
