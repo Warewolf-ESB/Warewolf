@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
         {
             IDataListCompiler testCompiler = DataListFactory.CreateDataListCompiler();
 
-            var stack = new Dev2Switch() { SwitchVariable = "[[Dummy]]" };
+            var stack = new Dev2Switch() { SwitchVariable = "" };
             
             var error = new ErrorResultTO();
             Guid MyModel = testCompiler.PushSystemModelToDataList(stack, out error);
