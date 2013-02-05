@@ -51,9 +51,9 @@ namespace Dev2.Data.Binary_Objects
                 }
                 else
                 {
-                    _masterData[mIdx] = new Dictionary<int, IList<IBinaryDataListItem>>(GlobalConstants.DefaultColumnSizeLvl1);
+                    _masterData[mIdx] = new Dictionary<int, IList<IBinaryDataListItem>>(GlobalConstants.DefaultDataListCacheSizeLvl1);
                     //_masterData[mIdx] = new BinaryDataListDictionary<IList<IBinaryDataListItem>>();
-                    _masterData[mIdx][sIdx] = new List<IBinaryDataListItem>();
+                    _masterData[mIdx][sIdx] = new List<IBinaryDataListItem>(GlobalConstants.DefaultColumnSizeLvl1);
                     _masterData[mIdx][sIdx] = value;
 
                     _populatedKeys.SetMaxValue(key);
@@ -73,7 +73,7 @@ namespace Dev2.Data.Binary_Objects
             {
                 _masterData[mIdx] = new Dictionary<int, IList<IBinaryDataListItem>>(GlobalConstants.DefaultDataListCacheSizeLvl1);
                 //_masterData[mIdx] = new BinaryDataListDictionary<IList<IBinaryDataListItem>>();
-                _masterData[mIdx][sIdx] = new List<IBinaryDataListItem>();
+                _masterData[mIdx][sIdx] = new List<IBinaryDataListItem>(GlobalConstants.DefaultColumnSizeLvl1);
                 value = _masterData[mIdx][sIdx];
             }
             else
