@@ -315,6 +315,9 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private string getBetweenBraces(string value, int pos, out int newPos)
         {
+            newPos = pos;
+            if (pos < 0 || pos > value.Length - 1) return "";
+
             newPos = pos - value.LastIndexOf('(', pos) - 1;
             return value.Substring(value.LastIndexOf('(', pos) + 1, value.IndexOf(')', pos) - value.LastIndexOf('(', pos) - 1);
         }
@@ -325,13 +328,15 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_textBox != context.TextBox) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results = null;
 
-            var caretPosition = context.CaretPosition;
-            var indexCaretPosition = caretPosition - 1;
+            //var caretPosition = context.CaretPosition;
+            //var indexCaretPosition = caretPosition - 1;
             if (context.InputText.IndexOf(',') > 0)
             {
-                var lastIndexOfComma = context.InputText.LastIndexOf(',', caretPosition > 0 ? indexCaretPosition : 0);
+                //var lastIndexOfComma = context.InputText.LastIndexOf(',', caretPosition > 0 ? indexCaretPosition : 0);
+                var lastIndexOfComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0);
                 var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
-                var postComma = context.InputText.IndexOf(',', caretPosition) > 0 ? context.InputText.IndexOf(',', caretPosition) : context.InputText.Length;
+                //var postComma = context.InputText.IndexOf(',', caretPosition) > 0 ? context.InputText.IndexOf(',', caretPosition) : context.InputText.Length;
+                var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
                 context.CaretPosition -= preComma;
                 context.InputText = context.InputText.Substring(preComma, postComma - preComma);
             }
@@ -349,13 +354,16 @@ namespace Dev2.Studio.InterfaceImplementors
                         int newPos;
                         input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
                         context.CaretPosition = newPos;
-                        if (caretPosition > 0 && context.InputText.Length > 0 && caretPosition < context.InputText.Length)
+                        //if (caretPosition > 0 && context.InputText.Length > 0 && caretPosition < context.InputText.Length)
+                        if (context.CaretPosition > 0 && context.InputText.Length > 0 && context.CaretPosition < context.InputText.Length)
                         {
-                            char letter = context.InputText[caretPosition];
+                            //char letter = context.InputText[caretPosition];
+                            char letter = context.InputText[context.CaretPosition];
 
                             if (char.IsWhiteSpace(letter))
                             {
-                                results = GetIntellisenseResultsImpl(input.Substring(0, caretPosition), filterType);
+                                //results = GetIntellisenseResultsImpl(input.Substring(0, caretPosition), filterType);
+                                results = GetIntellisenseResultsImpl(input.Substring(0, context.CaretPosition), filterType);
                             }
                             else results = GetIntellisenseResultsImpl(input, filterType);
                         }
@@ -372,7 +380,8 @@ namespace Dev2.Studio.InterfaceImplementors
                             int foundMinimum = -1;
                             int foundLength = 0;
 
-                            for (int i = indexCaretPosition; i >= 0; i--)
+                            //for (int i = indexCaretPosition; i >= 0; i--)
+                            for (int i = context.CaretPosition - 1; i >= 0; i--)
                             {
                                 char currentChar = context.InputText[i];
 
@@ -389,7 +398,8 @@ namespace Dev2.Studio.InterfaceImplementors
                                     else
                                     {
                                         foundMinimum = i;
-                                        foundLength = caretPosition - i;
+                                        //foundLength = caretPosition - i;
+                                        foundLength = context.CaretPosition - i;
                                     }
                                 }
                             }

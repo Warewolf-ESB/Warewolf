@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Dev2.MathOperations;
+using Dev2.Studio.Core.Interfaces;
+using Infragistics.Calculations.CalcManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Dev2.MathOperations;
-using Dev2.Studio.Core.Interfaces;
 using System.Parsing;
 using System.Parsing.Intellisense;
-using Infragistics.Calculations.CalcManager;
+using System.Text;
 using System.Windows.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.InterfaceImplementors
 {

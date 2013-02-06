@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2.Composition;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.ViewModels.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Composition;
+using System;
 using System.IO;
 
 namespace Dev2.Core.Tests.ViewModelTests
@@ -53,20 +50,22 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             var feedbackViewModel = new FeedbackViewModel();
-            Assert.IsTrue(feedbackViewModel.Comment == @"Comments : 
+            string versionNumber = Dev2.Studio.Core.StringResources.CurrentVersion;
+            StringAssert.Contains(feedbackViewModel.Comment, @"Comments : 
 
 
 I Like the product : YES/NO
 I Use the product everyday : YES/NO
 My name is Earl : YES/NO
 Really, my name is Earl : YES/NO
-OS version : Windows 7 Professional ServicePack 1 1.1.1.1 64-bit
-Product Version : 0.5A 32-bit");
-            
+OS version : ");
+            StringAssert.Contains(feedbackViewModel.Comment, "Product Version : " + versionNumber);
+
             CollectionAssert.AllItemsAreUnique(feedbackViewModel.Categories);
 
-            mockSysInfo.Verify(c => c.GetSystemInfo() ,Times.Once());
+            mockSysInfo.Verify(c => c.GetSystemInfo(), Times.Once());
         }
+
 
         [TestMethod]
         public void Send_Given_ValidCommService_Expected_SendMethodInvokedOnCommService()

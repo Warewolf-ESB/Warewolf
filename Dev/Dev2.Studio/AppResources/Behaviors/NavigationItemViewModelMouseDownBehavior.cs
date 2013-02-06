@@ -105,7 +105,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            UnsubscribeToEvents();
+            //UnsubscribeToEvents();
         }
 
         private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
