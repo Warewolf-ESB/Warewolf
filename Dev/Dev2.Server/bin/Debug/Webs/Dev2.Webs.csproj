@@ -128,6 +128,7 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Views\Decisions\Model.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
@@ -155,6 +156,9 @@
     <Content Include="wwwroot\Views\Decisions\Wizard.htm" />
     <Content Include="wwwroot\Views\Dialogs\SaveDialog.htm" />
     <Content Include="wwwroot\Views\Sources\Server.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Qunit_Test\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
