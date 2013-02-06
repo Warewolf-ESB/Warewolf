@@ -64,7 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Qunit_Test\Decisions\Model_Test.js" />
+    <Content Include="Qunit_Test\Decisions\DecisionModel_Test.js" />
     <Content Include="Qunit_Test\Switch\DragModel_Test.js" />
     <Content Include="Qunit_Test\Switch\DropModel_Test.js" />
     <Content Include="wwwroot\Content\Site.css" />
@@ -131,7 +131,7 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
-    <Content Include="wwwroot\Views\Decisions\Model.js" />
+    <Content Include="wwwroot\Views\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
