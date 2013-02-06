@@ -163,7 +163,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0.2.7.
+        ///   Looks up a localized string similar to 0.2.7.3.
         /// </summary>
         public static string CurrentVersion {
             get {
