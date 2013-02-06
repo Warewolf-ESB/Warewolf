@@ -136,7 +136,6 @@
     <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.js" />
     <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
-    <Content Include="wwwroot\Scripts\Sources\Service.js" />
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServiceViewModel.js" />
     <Content Include="wwwroot\Views\Decisions\DecisionModel.js" />
