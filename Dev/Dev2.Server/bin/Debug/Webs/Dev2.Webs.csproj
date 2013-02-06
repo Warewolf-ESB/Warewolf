@@ -65,6 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Qunit_Test\Decisions\Model_Test.js" />
+    <Content Include="Qunit_Test\Switch\DragModel_Test.js" />
+    <Content Include="Qunit_Test\Switch\DropModel_Test.js" />
     <Content Include="wwwroot\Content\Site.css" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
