@@ -326,14 +326,13 @@ namespace Dev2.Core.Tests
             foreach (var result in getResults) Assert.IsFalse(result.IsError);
         }
 
+        //BUG 8736
         [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_Sum_AndAfterComma_AndBeforeBrace_Expected_AllVarsInResults()
-        // ReSharper restore InconsistentNaming
+        public void GetIntellisenseResultsWithSumAndAfterCommaAndBeforeBraceExpectedAllVarsInResults()
         {
             var context = new IntellisenseProviderContext { CaretPosition = 17, InputText = "Sum([[Scalar]],[[)", DesiredResultSet = IntellisenseDesiredResultSet.EntireSet };
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual(getResults.Count, 6);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
@@ -341,6 +340,78 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
             foreach (var result in getResults) Assert.IsFalse(result.IsError, "An error occurent in one of the results");
+        }
+
+        //BUG 8736
+        [TestMethod]
+        public void GetIntellisenseResultsWhereBracketOfRecordsetIsClosedExpectedNoResultsAndException()
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 6, InputText = "City()", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(0, getResults.Count);
+        }
+
+        //BUG 8736
+        [TestMethod]
+        public void GetIntellisenseResultsWhereCommaEnteredForInfragisticsFunctonExpectedNoResultsAndException()
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 15, InputText = "Sum([[Scalar]],", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(0, getResults.Count);
+        }
+
+        //BUG 8736
+        [TestMethod]
+        public void GetIntellisenseResultsWithAdjacentRegionsInParamaterOfInfragisticsFunctionExpectedAllVarsInResults()
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 27, InputText = "Sum([[Scalar]],[[Scalar]][[", DesiredResultSet = IntellisenseDesiredResultSet.EntireSet };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(6, getResults.Count);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            foreach (var result in getResults) Assert.IsFalse(result.IsError, "An error occurent in one of the results");
+        }
+
+        //BUG 8736
+        [TestMethod]
+        public void GetIntellisenseResultsWhereCarretPositionPastTheLengthOfTheInputTextExpectedNoResultsAndException()
+        {
+            var context = new IntellisenseProviderContext { CaretPosition = 16, InputText = "Sum([[Scalar]],", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(0, getResults.Count);
+        }
+
+        //BUG 8736
+        [TestMethod]
+        public void GetIntellisenseResultsWhereCarretPositionLessThanZeroExpectedNoResultsAndException()
+        {
+            var context = new IntellisenseProviderContext 
+            { 
+                CaretPosition = -1, 
+                InputText = "Sum([[Scalar]],", 
+                DesiredResultSet = IntellisenseDesiredResultSet.Default 
+            };
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(0, getResults.Count);
+        }
+
+        //BUG 8736
+        [TestMethod]
+        public void GetIntellisenseResultsWhereInputTextContainsSpecialCharactersExpectedNoResultsAndException()
+        {
+            var context = new IntellisenseProviderContext 
+            { 
+                CaretPosition = 30, 
+                InputText = "!@#$%^&*()_+[]{}\\|;:'\",./?><", 
+                DesiredResultSet = IntellisenseDesiredResultSet.Default 
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual(0, getResults.Count);
         }
 
         #endregion
@@ -485,6 +556,33 @@ namespace Dev2.Core.Tests
         {
             var context = new IntellisenseProviderContext { CaretPosition = 24, InputText = "[[recset([[scalar]]).fie", DesiredResultSet = 0, State = true };
             Assert.AreEqual("[[recset([[scalar]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset().field]]", context));
+        }
+
+
+        //Bug 8736
+        [TestMethod]
+        public void PerformResultInsertionWithPartialScalarAndFullRegionExpectedResultInsertsText()
+        {
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext { CaretPosition = 3, InputText = "[[S]]", DesiredResultSet = IntellisenseDesiredResultSet.Default };
+
+            string exprected = "[[Scalar]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[Scalar]]", intellisenseProviderContext);
+
+            Assert.AreEqual(exprected, actual);
+        }
+
+        //Bug 8736
+        [TestMethod]
+        public void PerformResultInsertionWithPartialRecordsetAndFullRegionExpectedResultInsertsText()
+        {
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext { CaretPosition = 7, InputText = "[[City(]]", DesiredResultSet = IntellisenseDesiredResultSet.Default, State = true};
+
+            string exprected = "[[City().GeoLocation]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
+
+            Assert.AreEqual(exprected, actual);
         }
         #endregion
 
