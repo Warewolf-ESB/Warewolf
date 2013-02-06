@@ -81,8 +81,56 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
+            var data = @"<ADL>
+  <Recset>
+	<Field1>Mr A</Field1>
+	<Field2>25</Field2>
+	<Field3>a@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr B</Field1>
+	<Field2>651</Field2>
+	<Field3>b@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr C</Field1>
+	<Field2>48</Field2>
+	<Field3>c@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr D</Field1>
+	<Field2>1</Field2>
+	<Field3>d@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr E</Field1>
+	<Field2>22</Field2>
+	<Field3>e@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr F</Field1>
+	<Field2>321</Field2>
+	<Field3>f@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr G</Field1>
+	<Field2>51</Field2>
+	<Field3>g@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr H</Field1>
+	<Field2>2120</Field2>
+	<Field3>h@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr I</Field1>
+	<Field2>46</Field2>
+	<Field3>i@abc.co.za</Field3>
+  </Recset>
+</ADL>";
+
             CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
-            TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
+            TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
             string actual = string.Empty;
@@ -111,8 +159,56 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
+            var data = @"<ADL>
+  <Recset>
+	<Field1>Mr A</Field1>
+	<Field2>25</Field2>
+	<Field3>a@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr B</Field1>
+	<Field2>651</Field2>
+	<Field3>b@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr C</Field1>
+	<Field2>48</Field2>
+	<Field3>c@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr D</Field1>
+	<Field2>1</Field2>
+	<Field3>d@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr E</Field1>
+	<Field2>22</Field2>
+	<Field3>e@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr F</Field1>
+	<Field2>321</Field2>
+	<Field3>f@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr G</Field1>
+	<Field2>51</Field2>
+	<Field3>g@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr H</Field1>
+	<Field2>2120</Field2>
+	<Field3>h@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr I</Field1>
+	<Field2>46</Field2>
+	<Field3>i@abc.co.za</Field3>
+  </Recset>
+</ADL>";
+
             CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
-            TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
+            TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
             string actual = string.Empty;
@@ -140,8 +236,56 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
+            var data = @"<ADL>
+  <Recset>
+	<Field1>Mr A</Field1>
+	<Field2>25</Field2>
+	<Field3>a@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr B</Field1>
+	<Field2>651</Field2>
+	<Field3>b@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr C</Field1>
+	<Field2>48</Field2>
+	<Field3>c@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr D</Field1>
+	<Field2>1</Field2>
+	<Field3>d@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr E</Field1>
+	<Field2>22</Field2>
+	<Field3>e@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr F</Field1>
+	<Field2>321</Field2>
+	<Field3>f@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr G</Field1>
+	<Field2>51</Field2>
+	<Field3>g@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr H</Field1>
+	<Field2>2120</Field2>
+	<Field3>h@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr I</Field1>
+	<Field2>46</Field2>
+	<Field3>i@abc.co.za</Field3>
+  </Recset>
+</ADL>";
+
             CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
-            TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
+            TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
             string actual = string.Empty;

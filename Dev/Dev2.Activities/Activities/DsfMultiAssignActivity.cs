@@ -112,10 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     // Merge Back into list
                     compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                    if (errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
-                    }
+                    allErrors.MergeErrors(errors);
                 }
 
             }
@@ -124,8 +121,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfWebpageActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfWebpageActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
 

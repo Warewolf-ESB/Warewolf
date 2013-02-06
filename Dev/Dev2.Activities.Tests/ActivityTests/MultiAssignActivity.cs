@@ -179,9 +179,12 @@ namespace ActivityUnitTests.ActivityTest
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec().display]]", _fieldCollection.Count));
+
+            var data = "<ADL><gRec><opt>Value1</opt><display>display1</display></gRec></ADL>";
+
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
-                          , ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
+                          , "<root>" + data +"</root>"
                           , _fieldCollection
                           );
             IDSFDataObject result = ExecuteProcess();
@@ -200,9 +203,11 @@ namespace ActivityUnitTests.ActivityTest
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
 
+            var data = "<root><gRec><opt>Value1</opt><display>display1</display></gRec></root>";
+
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
-                          , ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
+                          , data
                           , _fieldCollection
                           );
             IDSFDataObject result = ExecuteProcess();
@@ -219,9 +224,12 @@ namespace ActivityUnitTests.ActivityTest
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec().display]]", _fieldCollection.Count));
+
+            var data = "<ADL><gRec><opt>Value1</opt><display>display1</display></gRec></ADL>";
+
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
-                          , "<root>" + ActivityStrings.mult_assign_expression_both_sides_single_rs_adl + "</root>"
+                          , "<root>" + data + "</root>"
                           , _fieldCollection
                           );
             IDSFDataObject result = ExecuteProcess();
@@ -248,9 +256,11 @@ namespace ActivityUnitTests.ActivityTest
             _fieldCollection.Add(new ActivityDTO("[[gRec(2).display]]", "display2", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[[[rsElement]]().[[rsFieldElement]]]]", _fieldCollection.Count));
 
+            var data = "<root><rsElement></rsElement><rsFieldElement></rsFieldElement><gRec><opt></opt><display></display></gRec></root>";
+
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_mult_eval_fields_rs_adl
-                          , ActivityStrings.mult_assign_expression_both_sides_mult_eval_fields_rs_adl
+                          , data
                           , _fieldCollection
                           );
             IDSFDataObject result = ExecuteProcess();
@@ -515,7 +525,7 @@ namespace ActivityUnitTests.ActivityTest
             _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
             SetupArguments(
                             ActivityStrings.recsetDataListShape
-                          , ActivityStrings.recsetDataListShape
+                          , "<root></root>"
                          , _fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
@@ -579,7 +589,7 @@ namespace ActivityUnitTests.ActivityTest
 
             SetupArguments(
                 ActivityStrings.scalar_in_recordset_adl
-              , ActivityStrings.scalar_in_recordset_adl
+              , "<root></root>"
              , _fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();

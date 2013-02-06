@@ -114,12 +114,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 ActivityUpsertTO result = new ActivityUpsertTO();
                                 int end = (ResultsCollection.Count - 1);
 
+                                bool added = false;
                                 while (tokenizer.HasMoreOps() && opCnt < iterNumber)
                                 {
 
                                     string tmp = tokenizer.NextToken();
 
-                                    toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);
+                                    if(!string.IsNullOrEmpty(ResultsCollection[pos].OutputVariable))
+                                    {
+                                        toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);
+                                    }
 
                                     // Per pass
                                     if (pos == end)

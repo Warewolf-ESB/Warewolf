@@ -444,6 +444,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             else if (result == 1 && _internalObj._appendIndex == -1)
             {
                 _internalObj._appendIndex = 2; // first pass
+                if(!_internalObj.IsEmtpy())
+                {
+                    result++;
+                }
             }
             else if (result > 1)
             {
@@ -666,26 +670,28 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public bool IsEmpty()
         {
-            bool result = false;
+            //bool result = false;
 
-            if (IsRecordset)
-            {
-                if (FetchAppendRecordsetIndex() == 1)
-                {
-                    result = true;
-                }
-            }
-            else
-            {
-                // scalar processing
-                if (FetchScalar().TheValue == string.Empty)
-                {
-                    result = true;
-                }
-            }
+            //if (IsRecordset)
+            //{
+            //    if (FetchAppendRecordsetIndex() == 1)
+            //    {
+            //        result = true;
+            //    }
+            //}
+            //else
+            //{
+            //    // scalar processing
+            //    if (FetchScalar().TheValue == string.Empty)
+            //    {
+            //        result = true;
+            //    }
+            //}
 
-            return result;
-            }
+            //return result;
+
+            return _internalObj.IsEmtpy();
+        }
 
         public bool TryDeleteRows(string index)
         {

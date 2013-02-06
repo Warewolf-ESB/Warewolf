@@ -195,7 +195,7 @@ namespace ActivityUnitTests.ActivityTest
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
             _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 2));
 
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
+            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { @"me|TelNo|
@@ -243,37 +243,38 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void NoResultVariableInAnyRow_Expected_Still_Split_But_Dont_Insert_Any()
-        {
+        // Bug : 8725
+        //[TestMethod]
+        //public void NoResultVariableInAnyRow_Expected_Still_Split_But_Dont_Insert_Any()
+        //{
 
-            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 2));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
+        //    _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
+        //    _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 2));
+        //    SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+        //    IDSFDataObject result = ExecuteProcess();
 
-            List<bool> isPopulated = new List<bool>();
-            ErrorResultTO errors = new ErrorResultTO();
-            IBinaryDataList dList = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+        //    List<bool> isPopulated = new List<bool>();
+        //    ErrorResultTO errors = new ErrorResultTO();
+        //    IBinaryDataList dList = _compiler.FetchBinaryDataList(result.DataListID, out errors);
 
-            foreach (string data in dList.FetchAllKeys())
-            {
-                IBinaryDataListEntry entry = null;
-                string error = string.Empty;
-                dList.TryGetEntry(data, out entry, out error);
-                if (entry.FetchAppendRecordsetIndex() == 1)
-                {
-                    isPopulated.Add(false);
-                }
-                else
-                {
-                    isPopulated.Add(true);
-                }
-            }
+        //    foreach (string data in dList.FetchAllKeys())
+        //    {
+        //        IBinaryDataListEntry entry = null;
+        //        string error = string.Empty;
+        //        dList.TryGetEntry(data, out entry, out error);
+        //        if (entry.FetchAppendRecordsetIndex() == 1)
+        //        {
+        //            isPopulated.Add(false);
+        //        }
+        //        else
+        //        {
+        //            isPopulated.Add(true);
+        //        }
+        //    }
 
-            CollectionAssert.DoesNotContain(isPopulated, true);
-        }
+        //    CollectionAssert.DoesNotContain(isPopulated, true);
+        //}
 
         [TestMethod]
         public void IndexTypeSplit_Expected_Split_At_An_Index()
@@ -420,7 +421,7 @@ namespace ActivityUnitTests.ActivityTest
         {
             _resultsCollection.Add(new DataSplitDTO("[[recset2().field2]]", "Tab", "", 1));
             string sourceString = "Test	Data	To	Split";
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, sourceString, _resultsCollection);
+            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, sourceString, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> { "Test", "Data", "To", "Split" };
@@ -576,7 +577,7 @@ namespace ActivityUnitTests.ActivityTest
             _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 1));
             _resultsCollection.Add(new DataSplitDTO("[[recset1().rec1]]", "Index", "15", 2));
 
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataList_NewPreEx, Source, _resultsCollection);
+            SetupArguments("<root></root>", ActivityStrings.DataList_NewPreEx, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { @"me|TelNo|
 1.Mr"

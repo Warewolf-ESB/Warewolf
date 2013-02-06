@@ -114,7 +114,7 @@ namespace ActivityUnitTests.ActivityTests
 
             string expected = @"010000110100100001000001010011100100011101000101001000000101010001001000010010010101001100100000010101000100111100100000010000100100100101001110010000010101001001011001";
             string error = string.Empty;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Recset", "Field", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Recset", "Field", out error)[1];
 
             Assert.AreEqual(expected, actual);
         }
