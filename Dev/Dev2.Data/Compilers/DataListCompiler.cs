@@ -526,6 +526,20 @@ namespace Dev2.DataList.Contract
             return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).FetchErrors());
         }
 
+        /// <summary>
+        /// Clears the errors.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/02/06</date>
+        public void ClearErrors(Guid curDLID)
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            var list = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            if (list != null) 
+                list.ClearErrors();
+        }
+
         public bool SetParentID(Guid curDLID, Guid newParent)
         {
             bool result = true;

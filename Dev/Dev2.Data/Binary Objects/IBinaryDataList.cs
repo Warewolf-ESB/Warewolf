@@ -187,6 +187,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         string FetchErrors();
 
+        /// <summary>
+        /// Clears the errors.
+        /// </summary>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/02/06</date>
+        void ClearErrors();
+
         #endregion
     }
 }

@@ -84,6 +84,22 @@ namespace Dev2.DataList.Contract
         }
 
         /// <summary>
+        /// Makes the error collection user ready.
+        /// </summary>
+        /// <returns></returns>
+        public string MakeDisplayReady()
+        {
+            StringBuilder result = new StringBuilder();
+
+            foreach(string e in _errorList)
+            {
+                result.AppendLine(e);
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
         /// Makes the error collection data list insert ready.
         /// </summary>
         /// <returns></returns>

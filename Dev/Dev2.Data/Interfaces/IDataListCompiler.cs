@@ -433,6 +433,14 @@ namespace Dev2.DataList.Contract
         string FetchErrors(Guid curDLID);
 
         /// <summary>
+        /// Clears the errors.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/02/06</date>
+        void ClearErrors(Guid curDLID);
+
+        /// <summary>
         /// Sets the parent ID.
         /// </summary>
         /// <param name="curDLID">The cur DLID.</param>

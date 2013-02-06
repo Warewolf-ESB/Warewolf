@@ -182,6 +182,25 @@
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
+            
+            <Style x:Key="ErrorsVisibility">
+                <Style.Setters>
+                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                </Style.Setters>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding DataContext.HighlighError, ElementName=DebugOutput}" Value="True" />
+                            <Condition Binding="{Binding Content.HasError, Converter={StaticResource BoolToVisibilityConverterPositive}}" Value="Visible" />
+                            <Condition Binding="{Binding AddedAsParent}" Value="False" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
         
         <Grid.RowDefinitions>
@@ -305,6 +324,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" >
@@ -369,6 +389,13 @@
                         <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource OutputsVisibility}">
                             <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplate="{StaticResource DebugLinesTemplate}" AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                         </StackPanel>
+                        
+                        <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource ErrorsVisibility}">
+                            <Run Text="Error" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}"/>
+
                     </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>

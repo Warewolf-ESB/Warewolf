@@ -21,6 +21,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping
     {
+        ErrorResultTO errors;
+
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
@@ -50,7 +52,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         readonly bool _isExecuteAsync;
         string _previousParentInstanceID;
         IDebugState _debugState;
-        bool _isDebug;
         bool _isOnDemandSimulation;
 
         #region ShouldExecuteSimulation
@@ -119,11 +120,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (dataObject != null && compiler != null)
             {
+                compiler.ClearErrors(dataObject.DataListID);
+
                 if (!dataObject.IsDataListScoped)
                 {
-                    ErrorResultTO errors;
                     var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
                     DataListExecutionID.Set(context, dataListExecutionID);
+
                 }
                 else
                 {
@@ -135,15 +138,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject != null)
             {
                 _previousParentInstanceID = dataObject.ParentInstanceID;
-                _isDebug = dataObject.IsDebug;
                 _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
             }
 
+
             OnBeforeExecute(context);
 
-            if (!IsDebugByPassed) //Juries TODO && _isDebug
+            if (!IsDebugByPassed)
             {
-                DispatchDebugState(context, StateType.Before, false);
+                DispatchDebugState(context, StateType.Before);
             }
             try
             {
@@ -212,7 +215,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (compiler != null && dataObject != null)
                 {
                     var allErrors = new ErrorResultTO();
-                    ErrorResultTO errors;
                     var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
                     allErrors.MergeErrors(errors);
 
@@ -246,12 +248,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataListExecutionID = dataObject.DataListID;
             }
 
-            hasError = hasError || compiler.HasErrors(dataListExecutionID);
             try
             {
-                if (!IsDebugByPassed) //Juries TODO  && _isDebug
+                if (!IsDebugByPassed)
                 {
-                    DispatchDebugState(context, StateType.After, hasError);
+                    DispatchDebugState(context, StateType.After);
                 }
             }
             finally
@@ -268,7 +269,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.ForceDeleteDataListByID(dataListExecutionID);
                 }
 
-                if (dataObject != null && !dataObject.IsDataListScoped)
+                if (!dataObject.IsDataListScoped)
                 {
                     dataObject.ParentInstanceID = _previousParentInstanceID;
                 }
@@ -314,12 +315,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
-        void DispatchDebugState(NativeActivityContext context, StateType stateType, bool hasError)
+        void DispatchDebugState(NativeActivityContext context, StateType stateType)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = context.GetExtension<IDataListCompiler>();
-            ErrorResultTO errors;
+
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
+            
+            bool hasError = compiler.HasErrors(dataObject.DataListID);
+
+            string errorMessage = String.Empty;
+            if(hasError)
+            {
+                errorMessage = compiler.FetchErrors(dataObject.DataListID);
+            }
 
             if (stateType == StateType.Before)
             {
@@ -338,7 +347,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Server = string.Empty,
                     Version = string.Empty,
                     Name = GetType().Name,
-                    HasError = hasError
+                    HasError = hasError,
+                    ErrorMessage = errorMessage
                 };
 
                 // Bug 8595 - Juries
@@ -356,6 +366,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.StateType = stateType;
                 _debugState.EndTime = DateTime.Now;
                 _debugState.HasError = hasError;
+                _debugState.ErrorMessage = errorMessage;
                 Copy(GetDebugOutputs(dataList), _debugState.Outputs);
             }
 
@@ -450,12 +461,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
-            return GetDataListItemsForEach(context, StateType.Before);
+            return GetDataListItemsForEach(context);
         }
 
         public virtual IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
         {
-            return GetDataListItemsForEach(context, StateType.After);
+            return GetDataListItemsForEach(context);
         }
 
         #endregion
@@ -469,7 +480,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return DsfForEachItem.EmptyList;
             }
 
-            var items = GetDataListItemsForEach(context, stateType);
+            var items = GetDataListItemsForEach(context);
             var result = new List<DsfForEachItem>();
 
             foreach (var s in strings)
@@ -523,7 +534,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDataListItemsForEach
 
-        static IList<DsfForEachItem> GetDataListItemsForEach(NativeActivityContext context, StateType stateType)
+        static IList<DsfForEachItem> GetDataListItemsForEach(NativeActivityContext context)
         {
             var result = new List<DsfForEachItem>();
 
@@ -593,11 +604,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!expression.ContainsSafe("[["))
                 {
-                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = expression });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = expression });
                     return results;
                 }
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors;
+
                 IBinaryDataListEntry entry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
                 string initExpression = expression;
 
@@ -626,9 +637,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                           recsetIndex.ToString(
                                                                                               CultureInfo
                                                                                                   .InvariantCulture));
-                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(displayName) });
-                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                            results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = binaryDataListItem.TheValue });
+                            results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(displayName) });
+                            results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                            results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = binaryDataListItem.TheValue });
                         }
                     }
                     else
@@ -651,17 +662,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         string recsetName = DataListUtil.CreateRecordsetDisplayValue(entry.Namespace,
                                                                                                      recordField
                                                                                                          .FieldName,
-                                                                                                     index.ToString());
+                                                                                                     index.ToString(CultureInfo.InvariantCulture));
                                         recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
-                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
-                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = recordField.TheValue, GroupName = initExpression, GroupIndex = index });
+                                        results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
+                                        results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
+                                        results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = recordField.TheValue, GroupName = initExpression, GroupIndex = index });
                                     }
                                     else
                                     {
-                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue) });
-                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                                        results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = recordField.TheValue });
+                                        results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue) });
+                                        results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                                        results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = recordField.TheValue });
                                     }
                                 }
                             }
@@ -671,9 +682,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     IBinaryDataListItem item = entry.FetchScalar();
-                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = expression });
-                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                    results.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = item.TheValue });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = expression });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.TheValue });
                 }
             }
             return results;
