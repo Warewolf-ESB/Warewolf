@@ -171,7 +171,8 @@ namespace Dev2.Studio.Core
                  {
                      DataChannel = new FrameworkDataChannelWrapper(this, _client, dns, port);
 
-                     DataChannel.ExecuteCommand(string.Format("<x><Service>{0}</Service></x>", Guid.NewGuid().ToString()), _client.AccountID, GlobalConstants.NullDataListID);
+                     // Commented out by Michael as it was a legacy test (Informed by Brendon)
+                     // DataChannel.ExecuteCommand(string.Format("<x><Service>{0}</Service></x>", Guid.NewGuid().ToString()), _client.AccountID, GlobalConstants.NullDataListID);
                      ExecutionChannel = new ExecutionClientChannel(_client);
                      DataListChannel = new DataListClientChannel(_client);
                  }
