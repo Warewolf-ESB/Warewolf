@@ -1,8 +1,8 @@
 ﻿/* Model for Decision Wizard */
 function DecisionViewModel() {
     var self = this;
-    var $mainForm = $("#mainForm");
-    var $decisionView = $("#decisionView");
+    //var $mainForm = $("#mainForm");
+    //var $decisionView = $("#decisionView");
 
     // set title
     document.title = "Decision Flow";
