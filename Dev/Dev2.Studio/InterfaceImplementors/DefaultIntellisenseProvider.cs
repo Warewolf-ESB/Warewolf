@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Globalization;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -20,7 +21,7 @@ namespace Dev2.Studio.InterfaceImplementors
     public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider
     {
         #region Readonly Members
-        internal static readonly DependencyObject _designTestObject = new DependencyObject();
+        internal static readonly DependencyObject DesignTestObject = new DependencyObject();
         #endregion
 
         #region FilterCondition
@@ -47,9 +48,8 @@ namespace Dev2.Studio.InterfaceImplementors
         //private object _mediatorKey;
         private string _mediatorKey;
         private string _cachedDataList;
-        private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         private IntellisenseTextBox _textBox;
-        private SyntaxTreeBuilder _builder = new SyntaxTreeBuilder();
+        private readonly SyntaxTreeBuilder _builder = new SyntaxTreeBuilder();
 
         //private StringValueCollection<IntellisenseTokenDefinition> _recordDefinitions;
         //private StringValueCollection<IntellisenseTokenDefinition> _entryDefinitions;
@@ -63,7 +63,7 @@ namespace Dev2.Studio.InterfaceImplementors
             Optional = false;
             HandlesResultInsertion = true;
 
-            if (_designTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(_designTestObject))
+            if (DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
                 _isUpdated = true;
                 CreateDataList();
@@ -148,7 +148,6 @@ namespace Dev2.Studio.InterfaceImplementors
             int index = context.CaretPosition;
             string currentText = context.InputText;
 
-            int minimum = Math.Max(0, index - appendText.Length);
             int foundMinimum = -1;
             int foundLength = 0;
             int lastIndex = 0;
@@ -162,7 +161,7 @@ namespace Dev2.Studio.InterfaceImplementors
                     foundMinimum = i;
                     foundLength = index - i;
                 }
-                else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(), StringComparison.OrdinalIgnoreCase) == -1)
+                else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
                 {
                     i = -1;
                 }
@@ -173,11 +172,11 @@ namespace Dev2.Studio.InterfaceImplementors
                 currentText = currentText.Substring(0, foundMinimum) + appendText.Substring(0, foundLength) + currentText.Substring(foundMinimum + foundLength, currentText.Length - (foundMinimum + foundLength));
                 appendText = appendText.Remove(0, foundLength);
 
-                int nextIndex = currentText.IndexOf("]]", lastIndex);
+                int nextIndex = currentText.IndexOf("]]", lastIndex, StringComparison.Ordinal);
 
                 if (nextIndex >= index)
                 {
-                    int previousIndex = currentText.IndexOf("[[", index);
+                    int previousIndex = currentText.IndexOf("[[", index, StringComparison.Ordinal);
 
                     if (previousIndex == -1 || previousIndex > nextIndex)
                     {
@@ -188,15 +187,15 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else
             {
-                lastIndex = currentText.LastIndexOf("[[", index);
+                lastIndex = currentText.LastIndexOf("[[", index, StringComparison.Ordinal);
 
                 if (lastIndex != -1 && index >= lastIndex + 2)
                 {
-                    int previousIndex = currentText.LastIndexOf("]]", index);
+                    int previousIndex = currentText.LastIndexOf("]]", index, StringComparison.Ordinal);
 
                     if (lastIndex + 2 < currentText.Length && previousIndex < lastIndex)
                     {
-                        int nextIndex = currentText.IndexOf("]]", lastIndex + 2);
+                        int nextIndex = currentText.IndexOf("]]", lastIndex + 2, StringComparison.Ordinal);
 
                         if (nextIndex > index)
                         {
@@ -232,7 +231,9 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(') - 2) : null;
                 if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions to allow for overwrite (previously only ever appended text)
-                    if (recsetName.ToLower().StartsWith(!currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[") ? currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower() : currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().Substring(2, currentText.Length - currentText.LastIndexOf('(') - 3))) //user typed a partial recordset name
+                    {
+                    //if (recsetName.ToLower().StartsWith(!currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[") ? currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower() : currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().Substring(2, currentText.Length - currentText.LastIndexOf('(') - 3))) //user typed a partial recordset name
+                    if (IsPartialRecordSetOrRecorsSetWithOutField(currentText, recsetName))
                     {
                         prepend = !currentText.StartsWith("[[");
                         currentText += appendText; //Append
@@ -246,6 +247,7 @@ namespace Dev2.Studio.InterfaceImplementors
                         }
                         else currentText = appendText; // User typed a partial recset name within the index of a record set
                     }
+                }
                 else if (currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[[")) // Already starts with [[ - dont prepend
                 {
                     prepend = false;
@@ -302,10 +304,52 @@ namespace Dev2.Studio.InterfaceImplementors
             return currentText;//No Trim
         }
 
-        private string cleanupInput(string value, int pos, out int newPos)
+        private bool IsPartialRecordSetOrRecorsSetWithOutField(string currentText, string recsetName)
+        {
+            string testAfterOpenBracket = currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower();
+
+            if (testAfterOpenBracket.Contains(")."))
+            {
+                return true;
+            }
+
+            string workingRecordsetTextwithoutBrackets;
+            if (string.IsNullOrWhiteSpace(testAfterOpenBracket))
+            {
+                workingRecordsetTextwithoutBrackets = RemoveOpeningBrackets(currentText);
+            }
+            else
+            {
+                workingRecordsetTextwithoutBrackets = RemoveOpeningBrackets(testAfterOpenBracket);
+            }
+
+            bool isPartialRecordset;
+            if (workingRecordsetTextwithoutBrackets.Length <= recsetName.Length)
+            {
+                isPartialRecordset = recsetName.ToLower().StartsWith(workingRecordsetTextwithoutBrackets.ToLower());
+            }
+            else
+            {
+                isPartialRecordset = workingRecordsetTextwithoutBrackets.ToLower().StartsWith(recsetName.ToLower());
+            }
+
+            return isPartialRecordset;
+        }
+
+        private string RemoveOpeningBrackets(string text)
+        {
+            if (text.StartsWith("[["))
+            {
+                text = text.Substring(2);
+            }
+
+            return text;
+        }
+
+        private string CleanupInput(string value, int pos, out int newPos)
         {
             newPos = pos;
-            if (!value.StartsWith("{{")) while (isBetweenBraces(value, pos - 1))
+            if (!value.StartsWith("{{")) while (IsBetweenBraces(value, pos - 1))
                 {
                     value = getBetweenBraces(value, pos, out newPos);
                     pos = newPos;
@@ -314,7 +358,7 @@ namespace Dev2.Studio.InterfaceImplementors
         }
 
         // Travis.Frisinger : Rolled-back to CI 8121 since it was over-writen by 3 other check-ins
-        private bool isBetweenBraces(string value, int pos)
+        private bool IsBetweenBraces(string value, int pos)
         {
             if (pos < 0 || pos > value.Length - 1) return false;
             return (value.LastIndexOf('(', pos) != -1 && value.IndexOf(')', pos) != -1);
@@ -325,15 +369,21 @@ namespace Dev2.Studio.InterfaceImplementors
             newPos = pos;
             if (pos < 0 || pos > value.Length - 1) return "";
 
+            int start = value.LastIndexOf('(', pos) + 1;
+            int length = value.IndexOf(')', pos) - value.LastIndexOf('(', pos) - 1;
+
+            if (start < 0 || length <= 0 || start + length > value.Length - 1) return "";
+
             newPos = pos - value.LastIndexOf('(', pos) - 1;
-            return value.Substring(value.LastIndexOf('(', pos) + 1, value.IndexOf(')', pos) - value.LastIndexOf('(', pos) - 1);
+
+            return value.Substring(start, length);
         }
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
             if (_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
-            if (_textBox != context.TextBox) _textBox = context.TextBox as IntellisenseTextBox;
-            IList<IIntellisenseResult> results = null;
+            if (!Equals(_textBox, context.TextBox)) _textBox = context.TextBox as IntellisenseTextBox;
+            IList<IIntellisenseResult> results;
 
             if (context.CaretPosition > context.InputText.Length || context.CaretPosition < 0)
             {
@@ -349,6 +399,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 context.InputText = context.InputText.Substring(preComma, postComma - preComma);
             }
 
+            int originalCaretPosition = context.CaretPosition;
             string input = context.InputText;
             enIntellisensePartType filterType = context.FilterType;
             IntellisenseDesiredResultSet desiredResultSet = context.DesiredResultSet;
@@ -356,11 +407,10 @@ namespace Dev2.Studio.InterfaceImplementors
             switch (desiredResultSet)
             {
                 case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl("[[", filterType); break;
-                case IntellisenseDesiredResultSet.ClosestMatch:
                 default:
                     {
                         int newPos;
-                        input = cleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
+                        input = CleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
                         context.CaretPosition = newPos;
                         if (context.CaretPosition > 0 && context.InputText.Length > 0 && context.CaretPosition < context.InputText.Length)
                         {
@@ -370,7 +420,10 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 results = GetIntellisenseResultsImpl(input.Substring(0, context.CaretPosition), filterType);
                             }
-                            else results = GetIntellisenseResultsImpl(input, filterType);
+                            else
+                            {
+                                results = GetIntellisenseResultsImpl(input, filterType);
+                            }
                         }
                         else
                         {
@@ -379,6 +432,10 @@ namespace Dev2.Studio.InterfaceImplementors
 
                         if (results == null || results.Count == 0 && HandlesResultInsertion)
                         {
+                            //Reset carret position before searching for minimum, 
+                            //This is only needed because the caret position is modified,
+                            //This is a HACK, the caret position should never be modified,
+                            context.CaretPosition = originalCaretPosition;
                             IList<IIntellisenseResult> previousResults = results;
 
                             string appendText = null;
@@ -406,8 +463,6 @@ namespace Dev2.Studio.InterfaceImplementors
                                     }
                                 }
                             }
-
-
 
                             if (foundMinimum != -1)
                             {
@@ -471,7 +526,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
-            IList<IIntellisenseResult> results = null;
+            IList<IIntellisenseResult> results;
             CreateDataList();
 
             IntellisenseFilterOpsTO filterTO = new IntellisenseFilterOpsTO();
@@ -572,7 +627,10 @@ namespace Dev2.Studio.InterfaceImplementors
                             else if (allNodes[i].GetType() == typeof(DatalistReferenceNode))
                             {
                                 DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
+                                if(refNode != null)
+                                {
                                 identifier = refNode.Identifier.Content;
+                                }
                                 kind = 1;
                             }
 

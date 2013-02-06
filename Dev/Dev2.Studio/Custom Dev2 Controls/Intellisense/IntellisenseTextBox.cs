@@ -845,7 +845,20 @@ namespace Dev2.UI
 
                     _cachedState = null;
 
-                    IList<IntellisenseProviderResult> results = provider.GetIntellisenseResults(context);
+                    IList<IntellisenseProviderResult> results = null;
+
+                    try
+                    {
+                        results = provider.GetIntellisenseResults(context);
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch
+                    // ReSharper restore EmptyGeneralCatchClause
+                    {
+                        //This try catch is to prevent the intellisense box from ever being crashed from a provider.
+                        //This catch is intentionally blanks since if a provider throws an exception the intellisense
+                        //box should simbly ignore that provider.
+                    }
 
                     if (results != null && results.Count > 0)
                     {
@@ -1192,7 +1205,19 @@ namespace Dev2.UI
                         _suppressChangeOpen = true;
                         IntellisenseProviderContext context = new IntellisenseProviderContext() { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
 
-                        Text = currentProvider.PerformResultInsertion(appendText, context);
+                        try
+                        {
+                            Text = currentProvider.PerformResultInsertion(appendText, context);
+                        }
+                        // ReSharper disable EmptyGeneralCatchClause
+                        catch
+                        // ReSharper restore EmptyGeneralCatchClause
+                        {
+                            //This try catch is to prevent the intellisense box from ever being crashed from a provider.
+                            //This catch is intentionally blanks since if a provider throws an exception the intellisense
+                            //box should simbly ignore that provider.
+                        }
+                        
                         Select(context.CaretPositionOnPopup, 0);
 
                         IsOpen = false;
@@ -1303,7 +1328,19 @@ namespace Dev2.UI
                             _suppressChangeOpen = true;
                             IntellisenseProviderContext context = new IntellisenseProviderContext() { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
 
-                            Text = currentProvider.PerformResultInsertion(appendText, context);
+                            try
+                            {
+                                Text = currentProvider.PerformResultInsertion(appendText, context);
+                            }
+                            // ReSharper disable EmptyGeneralCatchClause
+                            catch
+                            // ReSharper restore EmptyGeneralCatchClause
+                            {
+                                //This try catch is to prevent the intellisense box from ever being crashed from a provider.
+                                //This catch is intentionally blanks since if a provider throws an exception the intellisense
+                                //box should simbly ignore that provider.
+                            }
+
                             Select(context.CaretPositionOnPopup, 0);
 
                             IsOpen = false;
