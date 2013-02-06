@@ -14,7 +14,7 @@
     <RootNamespace>Dev2.Server.Web</RootNamespace>
     <AssemblyName>Dev2.Server.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -64,9 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Qunit_Test\Decisions\DecisionModel_Test.js" />
-    <Content Include="Qunit_Test\Switch\DragModel_Test.js" />
-    <Content Include="Qunit_Test\Switch\DropModel_Test.js" />
+    <Content Include="Tests\Decisions\DecisionModel_Test.js" />
+    <Content Include="Tests\Switch\DragModel_Test.js" />
+    <Content Include="Tests\Switch\DropModel_Test.js" />
     <Content Include="Tests\Sources\ServiceTests.js" />
     <Content Include="wwwroot\Content\qunit-1.11.0.css" />
     <Content Include="wwwroot\Content\Site.css" />
@@ -167,7 +167,9 @@
     <Content Include="wwwroot\Views\Dialogs\SaveDialog.htm" />
     <Content Include="wwwroot\Views\Sources\Server.htm" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Qunit_Test\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -183,7 +185,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4340</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Dev2.Webs</IISUrl>
+          <IISUrl>http://localhost:4340/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

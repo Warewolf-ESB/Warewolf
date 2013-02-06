@@ -1,5 +1,5 @@
 ﻿/* Model for Decision Wizard */
-function AppViewModel() {
+function DecisionViewModel() {
     var self = this;
     var $mainForm = $("#mainForm");
     var $decisionView = $("#decisionView");

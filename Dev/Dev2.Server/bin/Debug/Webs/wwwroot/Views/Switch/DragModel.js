@@ -1,4 +1,4 @@
-﻿function AppViewModel() {
+﻿function DragViewModel() {
     var self = this;
     var $mainForm = $("#mainForm");
 
