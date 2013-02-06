@@ -10,26 +10,21 @@
 //                  
 #endregion
 
-using Dev2.DynamicServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Dev2.DynamicServices {
     #region Using Directives
+    using Dev2.Common;
+    using Dev2.DataList.Contract;
+    using Dev2.Util;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Xml.Linq;
-    using Dev2;
-    using System.Text.RegularExpressions;
-    using System.Collections;
-    
-    using System.Diagnostics;
     using System.Activities;
     using System.Activities.XamlIntegration;
+    using System.Collections.Generic;
     using System.IO;
-    using Dev2.DataList.Contract;
-    using Dev2.Common;
-    using Dev2.Util;
+    using System.Linq;
+    using System.Text;
     #endregion
 
     #region Service Action Class - Represents a single action within a service
@@ -71,6 +66,7 @@ namespace Dev2.DynamicServices {
         /// <summary>
         /// The type of action that this action will invoke
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public enActionType ActionType { get; set; }
         /// <summary>
         /// The name of the data source - maps to a source in the sources list of the service directory

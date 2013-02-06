@@ -66,6 +66,7 @@
     <Compile Include="Security\ISecureConfig.cs" />
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
+    <Compile Include="Services\Data\ServiceActionWrapper.cs" />
     <Compile Include="Services\Data\Connection.cs" />
     <Compile Include="Services\Connections.cs" />
     <Compile Include="Services\Data\Delimiter.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Services\Help.cs" />
     <Compile Include="Services\Data\HelpDictionary.cs" />
     <Compile Include="Services\Data\Resource.cs" />
+    <Compile Include="Services\ServiceActions.cs" />
     <Compile Include="Services\WebModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +95,7 @@
   <ItemGroup>
     <None Include="Security\Security.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

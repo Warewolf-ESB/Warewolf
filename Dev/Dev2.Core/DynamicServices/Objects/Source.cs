@@ -7,14 +7,14 @@
 //                  Data consumers are applications that leverage the Dynamic Service Engine
 #endregion
 
-using Dev2.DynamicServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Unlimited.Framework;
 
 namespace Dev2.DynamicServices {
     #region Using Directives
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
+
 
     #endregion
 
@@ -40,6 +40,7 @@ namespace Dev2.DynamicServices {
         /// <summary>
         /// The type of the data source
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public enSourceType Type { get; set; }
         /// <summary>
         /// The connection string to the data source: This applies only to SqlDatabase and MySqlDatabase type data sources

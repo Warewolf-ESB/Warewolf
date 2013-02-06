@@ -10,15 +10,16 @@
 //                  
 #endregion
 
-using Dev2.DynamicServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Dev2.DynamicServices {
     #region Using Directives
-    using System;
+
     #endregion
 
-    #region Validator Class - Represents a validator that can validate any Service Action Input
-    /// <summary>
+                                   #region Validator Class - Represents a validator that can validate any Service Action Input
+                                   /// <summary>
     /// Provides a representation of a validator.
     /// Describes the types of validation that can occur
     /// </summary>
@@ -32,6 +33,7 @@ namespace Dev2.DynamicServices {
         /// <summary>
         /// The type of validation required
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public enValidationType ValidatorType { get; set; }
         /// <summary>
         /// The regular expression to evaluate - applies only if the validation type is Regex or RequiredAndRegex 
