@@ -84,160 +84,19 @@
 <div id="saveDialogContainer">
 </div>
 
-<!-- Import the model here ;) -->
+<!-- Import Model  -->
 <script type="text/javascript" src="Model.js"></script>
 
-<!-- Bind actions to the model ;) -->
 <script type="text/javascript">
-	
-    self.ShowDelete = function(idx){
-        var result = false;
-			
-        if(self.data.TheStack().length > 1 && idx >=0){
-            result = true;
-        }
-			
-        return result;
-    };
-	 	 
-    self.addRow = function() {
-        // Default Row ;)
-        self.data.TheStack.push({ Col1: '', Col2: '',  Col3: '', PopulatedColumnCnt : 0, EvaluationFn : 'IsNotError' });
-			
-        // Find the element and select it. -- decisionRow
-        var $span =  $("#decisionRow:last-child");
-			
-        //var $li = $span.parent();
-        //self.selectResourcePathElement($span);
-        $decisionView.scrollTo($span, 280); // height of container
-			
-        // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
-			
-    };
-	 
-    self.removeRow = function() {
-			
-        // always keep at least one ;)
-        //if(self.data.TheStack().length > 1){
-        self.data.TheStack.remove(this);
-        //}
-			
-    };
-		
-    self.rowChanged = function(elm){
-			
-        var idx = self.data.TheStack().indexOf(elm);
-        var val = elm.EvaluationFn;
-			
-        // find function element to use ;)
-        var cnt = ko.utils.arrayFirst(self.data.decisionFunctions(), function(item){
-            return elm.EvaluationFn === item.optionValue;
-        });
-			
-        self.data.TheStack.splice(idx,1, {Col1: elm.Col1, Col2: elm.Col2,  Col3: elm.Col3, PopulatedColumnCnt : cnt.columnCount, EvaluationFn : val});
-			
-        // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
-			
-    };
-				
-    self.toggleMode = function(){
-			
-        if(!self.data.IsAnd()){
-            self.data.Mode("OR");
-            self.data.IsAnd(false);
-        }else{
-            self.data.Mode("AND");
-            self.data.IsAnd(true);
-        }		
-			
-        return true;
-    };
-		
-    self.save = function(){
-        if(!$mainForm.validate().form()){
-            return;
-        }
-			
-        var dlID = window.location.search;			
-        var jsonData = ko.toJSON(self.data);
 
-        //alert(jsonData);
-			
-        $.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
-				
-            $("#Dev2Msg").html(result.message);
+    // build model
+	var vm = new AppViewModel();
 
-            Dev2Awesomium.Close();
-            return true;
-				
-        });
-    };
+    // load model
+	vm.self.Load();
 		
-    self.cancel = function () {
-        Dev2Awesomium.Cancel();
-        return true;
-    };
-		
-    self.AddDecision = function(data){
-        self.data.TheStack.push(data);
-        // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
-    }
-		
-    self.Load = function(){
-        var dlID = window.location.search; //.replace("postdlid", "dlid");
-		
-        var request = $.ajax({
-            url: "Service/WebModel/FetchDecisionModel" + dlID,
-            type: "post"
-        });
-			
-        request.done(function(response, textStatus, json){
-				
-            if(response.TheStack != undefined){
-                // load decisions
-                for(var i = 0; i < response.TheStack.length; i++){
-                    vm.AddDecision({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2,  Col3: response.TheStack[i].Col3, PopulatedColumnCnt : response.TheStack[i].PopulatedColumnCount, EvaluationFn : response.TheStack[i].EvaluationFn });
-					
-                }
-					
-                // set Stack data
-                self.data.Mode(response.Mode);
-					
-                if(response.Mode == "AND"){
-                    self.data.IsAnd(true);
-                }else{
-                    self.data.IsAnd(false);
-                }
-
-                // set the arms
-                self.data.TrueArmText(response.TrueArmText); 
-					
-                self.data.FalseArmText(response.FalseArmText);
-					
-            }else{
-				
-                // Add a decision
-                vm.AddDecision({ Col1: '', Col2: '',  Col3: '', PopulatedColumnCnt : 0, EvaluationFn : 'IsNotError' });
-            }
-        });
-			
-        request.fail(function(response, textStatus, json){
-            alert("An error occured : " + JSON.stringify(response));
-        });
-			
-			
-    }
-		
-    self.Load();
-
-    }
-	 
-        var vm = new AppViewModel();
-		
-        ko.applyBindings(vm);	
+    // apply model
+	ko.applyBindings(vm);	
 		
 </script>
 
