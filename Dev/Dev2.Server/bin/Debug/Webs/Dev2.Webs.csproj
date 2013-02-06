@@ -14,7 +14,7 @@
     <RootNamespace>Dev2.Server.Web</RootNamespace>
     <AssemblyName>Dev2.Server.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -67,6 +67,8 @@
     <Content Include="Qunit_Test\Decisions\DecisionModel_Test.js" />
     <Content Include="Qunit_Test\Switch\DragModel_Test.js" />
     <Content Include="Qunit_Test\Switch\DropModel_Test.js" />
+    <Content Include="Tests\Sources\ServiceTests.js" />
+    <Content Include="wwwroot\Content\qunit-1.11.0.css" />
     <Content Include="wwwroot\Content\Site.css" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -131,32 +133,35 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.js" />
+    <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
+    <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
+    <Content Include="wwwroot\Scripts\Sources\Service.js" />
     <Content Include="wwwroot\Views\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
+    <Content Include="wwwroot\Views\Sources\Service.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Views\Switch\DragModel.js" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
     <Content Include="wwwroot\Views\Switch\DropModel.js" />
-    <None Include="wwwroot\Scripts\jquery-1.7.1.intellisense.js" />
-    <Content Include="wwwroot\Scripts\jquery-1.7.1.js" />
-    <Content Include="wwwroot\Scripts\jquery-1.7.1.min.js" />
-    <Content Include="wwwroot\Scripts\jquery-ui-1.8.20.js" />
-    <Content Include="wwwroot\Scripts\jquery-ui-1.8.20.min.js" />
-    <Content Include="wwwroot\Scripts\jquery.Guid.js" />
-    <Content Include="wwwroot\Scripts\jquery.scrollTo-1.4.3.1.js" />
-    <Content Include="wwwroot\Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="wwwroot\Scripts\jquery.unobtrusive-ajax.min.js" />
-    <None Include="wwwroot\Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="wwwroot\Scripts\jquery.validate.js" />
-    <Content Include="wwwroot\Scripts\jquery.validate.min.js" />
-    <Content Include="wwwroot\Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="wwwroot\Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="wwwroot\Scripts\knockout-2.1.0.debug.js" />
-    <Content Include="wwwroot\Scripts\knockout-2.1.0.js" />
-    <Content Include="wwwroot\Scripts\modernizr-2.5.3.js" />
-    <Content Include="wwwroot\Scripts\placeMe-1.0.js" />
+    <None Include="wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery-1.7.1.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery-1.7.1.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery-ui-1.8.20.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery-ui-1.8.20.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.Guid.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.scrollTo-1.4.3.1.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.unobtrusive-ajax.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.unobtrusive-ajax.min.js" />
+    <None Include="wwwroot\Scripts\fx\jquery.validate-vsdoc.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.validate.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.validate.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.validate.unobtrusive.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.validate.unobtrusive.min.js" />
+    <Content Include="wwwroot\Scripts\fx\modernizr-2.5.3.js" />
+    <Content Include="wwwroot\Scripts\fx\placeMe-1.0.js" />
     <Content Include="wwwroot\Scripts\_references.js" />
     <Content Include="wwwroot\Views\Decisions\Wizard.htm" />
     <Content Include="wwwroot\Views\Dialogs\SaveDialog.htm" />
@@ -178,7 +183,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4340</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:4340/</IISUrl>
+          <IISUrl>http://localhost/Dev2.Webs</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
