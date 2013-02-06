@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Dev2.Installation", "Dev2.Installation\Dev2.Installation.isproj", "{319DB561-508A-4C59-A863-12295A2CD50B}"
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Dev2.Installation", "Dev2.Installation\Dev2.Installation.isproj", "{695A42AC-DAAE-41D3-937C-49A97EC89348}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -19,12 +19,12 @@ Global
 		SingleImage|Default = SingleImage|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{319DB561-508A-4C59-A863-12295A2CD50B}.CD_ROM|Default.ActiveCfg = CD_ROM
-		{319DB561-508A-4C59-A863-12295A2CD50B}.CD_ROM|Default.Build.0 = CD_ROM
-		{319DB561-508A-4C59-A863-12295A2CD50B}.DVD-5|Default.ActiveCfg = DVD-5
-		{319DB561-508A-4C59-A863-12295A2CD50B}.DVD-5|Default.Build.0 = DVD-5
-		{319DB561-508A-4C59-A863-12295A2CD50B}.SingleImage|Default.ActiveCfg = SingleImage
-		{319DB561-508A-4C59-A863-12295A2CD50B}.SingleImage|Default.Build.0 = SingleImage
+		{695A42AC-DAAE-41D3-937C-49A97EC89348}.CD_ROM|Default.ActiveCfg = CD_ROM
+		{695A42AC-DAAE-41D3-937C-49A97EC89348}.CD_ROM|Default.Build.0 = CD_ROM
+		{695A42AC-DAAE-41D3-937C-49A97EC89348}.DVD-5|Default.ActiveCfg = DVD-5
+		{695A42AC-DAAE-41D3-937C-49A97EC89348}.DVD-5|Default.Build.0 = DVD-5
+		{695A42AC-DAAE-41D3-937C-49A97EC89348}.SingleImage|Default.ActiveCfg = SingleImage
+		{695A42AC-DAAE-41D3-937C-49A97EC89348}.SingleImage|Default.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

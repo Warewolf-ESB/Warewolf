@@ -340,32 +340,32 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>AdornedControl.dll</td><td>{CD625ED0-F04E-4C06-B9D6-EA718A5FEEED}</td><td>STUDIO</td><td>2</td><td/><td>adornedcontrol.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Caliburn.Micro.dll</td><td>{A2AF782B-3449-484D-9C48-C7D93124D01C}</td><td>STUDIO</td><td>2</td><td/><td>caliburn.micro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>CefSharp.Wpf.dll</td><td>{515A2EDE-B2E2-4367-B66B-AAC0E8E27F72}</td><td>STUDIO</td><td>2</td><td/><td>cefsharp.wpf.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>CefSharp.dll</td><td>{E85CCF2F-8A61-47E9-BABF-597412025D30}</td><td>STUDIO</td><td>2</td><td/><td>cefsharp.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>CommandLine.dll</td><td>{00AFC421-2121-4145-AC06-D5A5D1930672}</td><td>SERVER</td><td>2</td><td/><td>commandline.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>DEV2.MultiPartFormPasser.dll</td><td>{833C1517-40AA-433B-9DE8-6879B2C16820}</td><td>SERVER</td><td>2</td><td/><td>dev2.multipartformpasser.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Activities.dll</td><td>{28B12537-5BBD-488E-B3A3-4CEDDFEF376D}</td><td>STUDIO</td><td>2</td><td/><td>dev2.activities.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Activities.dll1</td><td>{3CE272AF-9543-487A-933E-F026368B578C}</td><td>SERVER</td><td>2</td><td/><td>dev2.activities.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Common.dll</td><td>{82A0D453-DB00-4950-A595-55B33593646D}</td><td>STUDIO</td><td>2</td><td/><td>dev2.common.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Common.dll1</td><td>{A393677F-7E6E-4AFF-9628-253ACBA12796}</td><td>SERVER</td><td>2</td><td/><td>dev2.common.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Composition.dll</td><td>{B8D44717-6F17-4B80-8983-D4ACF4432F34}</td><td>STUDIO</td><td>2</td><td/><td>dev2.composition.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Core.dll</td><td>{64102193-5471-4BE0-A79E-824D32AEA980}</td><td>STUDIO</td><td>2</td><td/><td>dev2.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Core.dll1</td><td>{52519D71-C295-4562-80AE-7B584AD2DD40}</td><td>SERVER</td><td>2</td><td/><td>dev2.core.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Data.dll</td><td>{BE07922F-5E76-4169-956E-49055E9C506F}</td><td>STUDIO</td><td>2</td><td/><td>dev2.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Data.dll1</td><td>{5DB69792-B0A8-40B9-BC67-4C4B3D1828A0}</td><td>SERVER</td><td>2</td><td/><td>dev2.data.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Network.dll</td><td>{BE9EF86B-2103-4DC3-BC6F-CA1D90ACAED4}</td><td>STUDIO</td><td>2</td><td/><td>dev2.network.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Network.dll1</td><td>{050FA50C-B793-43D2-9905-1D16C303143C}</td><td>SERVER</td><td>2</td><td/><td>dev2.network.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Runtime.Services.dll</td><td>{2517A448-80A9-4903-BC10-B6CE27F19738}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.services.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Runtime.WebServer.dll</td><td>{42B265A6-B485-4B60-B8FA-4BBA08B211D2}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.webserver.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Runtime.dll</td><td>{48CE1524-692C-423F-9FE8-C3A5F8E42748}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Server.exe</td><td>{A62DD44E-A435-4292-BA38-C207A2C1C71A}</td><td>SERVER</td><td>2</td><td/><td>dev2.server.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Studio.Core.dll</td><td>{565ECD1F-438B-4B5E-ACF9-501BC4F268F6}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AdornedControl.dll</td><td>{4F2C7986-C2A4-4DCF-95D9-09FEB2307067}</td><td>STUDIO</td><td>2</td><td/><td>adornedcontrol.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Caliburn.Micro.dll</td><td>{20552896-10B2-453C-A850-337750F2B926}</td><td>STUDIO</td><td>2</td><td/><td>caliburn.micro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>CefSharp.Wpf.dll</td><td>{885FFB84-6E14-4C25-B154-6B31DFE38E38}</td><td>STUDIO</td><td>2</td><td/><td>cefsharp.wpf.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>CefSharp.dll</td><td>{B3B8488A-0B7C-45EE-A141-8B8B4498F468}</td><td>STUDIO</td><td>2</td><td/><td>cefsharp.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>CommandLine.dll</td><td>{610D9848-9E7C-4F76-8FFD-8684774F3E8F}</td><td>SERVER</td><td>2</td><td/><td>commandline.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>DEV2.MultiPartFormPasser.dll</td><td>{67973531-753B-4CA0-A63F-74B8DBF68EE6}</td><td>SERVER</td><td>2</td><td/><td>dev2.multipartformpasser.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Activities.dll</td><td>{AF8BF75F-E8A5-4EBD-B418-495BCFBBEAD7}</td><td>STUDIO</td><td>2</td><td/><td>dev2.activities.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Activities.dll1</td><td>{9684F3A8-8B3A-4681-94AF-20E691A7B47B}</td><td>SERVER</td><td>2</td><td/><td>dev2.activities.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Common.dll</td><td>{8B9CFF9F-E0F5-4996-B2D9-3C4B0BAF2D76}</td><td>STUDIO</td><td>2</td><td/><td>dev2.common.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Common.dll1</td><td>{F963020B-05A0-4563-BA3D-C4B821A34A34}</td><td>SERVER</td><td>2</td><td/><td>dev2.common.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Composition.dll</td><td>{2A5BCF7A-0FA7-466B-9396-692B12B66317}</td><td>STUDIO</td><td>2</td><td/><td>dev2.composition.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Core.dll</td><td>{D9AB3393-8BB1-43B2-AA62-939F3746495C}</td><td>STUDIO</td><td>2</td><td/><td>dev2.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Core.dll1</td><td>{23DB254F-04D8-44D4-A584-773AE89211CE}</td><td>SERVER</td><td>2</td><td/><td>dev2.core.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Data.dll</td><td>{7AE98FC9-EC50-4540-AD70-A47D258ACB2B}</td><td>STUDIO</td><td>2</td><td/><td>dev2.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Data.dll1</td><td>{BA90B339-30E0-40E5-90E4-E89467EF973B}</td><td>SERVER</td><td>2</td><td/><td>dev2.data.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Network.dll</td><td>{62390FFF-2528-4BC8-B6A0-0EBBFAA49116}</td><td>STUDIO</td><td>2</td><td/><td>dev2.network.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Network.dll1</td><td>{999983B2-AD03-4895-B077-EDF093753A36}</td><td>SERVER</td><td>2</td><td/><td>dev2.network.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Runtime.Services.dll</td><td>{70654BB6-3450-4F50-8331-E751206D87FA}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.services.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Runtime.WebServer.dll</td><td>{C6733085-F078-49DC-BF34-C91B4A36ADFB}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.webserver.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Runtime.dll</td><td>{F9B2AC57-66A1-4AF1-B985-C9BB237F0D26}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Server.exe</td><td>{8B79257F-56BB-44CA-B587-19FAD6545C6A}</td><td>SERVER</td><td>2</td><td/><td>dev2.server.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Studio.Core.dll</td><td>{EF95CCB5-575B-4CA1-9722-E483F7F92DD5}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Dev2.Studio.exe</td><td>{F781AFA2-2F32-4A3A-A362-21C0812CAD83}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.UndoFramework.dll</td><td>{EB293277-C3E8-4287-B07D-CE3E25AFE216}</td><td>STUDIO</td><td>2</td><td/><td>dev2.undoframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>HttpFramework.dll</td><td>{3A6D733B-2161-43AE-AFE0-EB14F59AD592}</td><td>SERVER</td><td>2</td><td/><td>httpframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ICSharpCode.AvalonEdit.dll</td><td>{AECC2277-B8BC-49BA-A270-E74AB38A0E8C}</td><td>STUDIO</td><td>2</td><td/><td>icsharpcode.avalonedit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.UndoFramework.dll</td><td>{4E7050F7-4348-43DB-B250-354D82FCC67D}</td><td>STUDIO</td><td>2</td><td/><td>dev2.undoframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>HttpFramework.dll</td><td>{311ED803-763B-4448-A19C-B6CD9BB24EA2}</td><td>SERVER</td><td>2</td><td/><td>httpframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ICSharpCode.AvalonEdit.dll</td><td>{4EF54D7C-AECB-4D1F-89E9-5167E193E50A}</td><td>STUDIO</td><td>2</td><td/><td>icsharpcode.avalonedit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{C1F4E31D-CD05-448D-8219-0B3C299A8C6B}</td><td>STUDIO</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{B50F613B-505C-4C54-BEC8-3645089E1BB7}</td><td>SERVER</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{55AC4B46-F3C7-48A0-B9AC-B825765C533E}</td><td>BLACKTIE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -378,7 +378,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT17</td><td>{E1DF3520-80D6-4367-B1A5-EF60B186C973}</td><td>IMAGES2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT18</td><td>{5070362F-9BF2-412E-B030-69C69DC2142E}</td><td>IMAGES3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT19</td><td>{F10422DF-332C-4F23-AF90-CC656EA6F8BC}</td><td>JS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{938005B7-F9D8-4283-8FF1-6C15902C0A30}</td><td>HELP</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{5F2042A9-0853-488F-9E3D-29F4CA398305}</td><td>HELP</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT20</td><td>{2D01B71B-3DCE-4F8F-880D-7AD74EC73706}</td><td>DARKHIVE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT21</td><td>{55CE3B31-08D8-47AE-8FA6-7B3A3A2F17E2}</td><td>CSS2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT22</td><td>{6F301508-2C1D-4E0B-81BA-F95BB7D53BE5}</td><td>IMAGES4</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -389,7 +389,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT27</td><td>{B6901AEA-1B3B-4D6F-897B-6671E439D01E}</td><td>IMAGES6</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT28</td><td>{9493DB74-2D28-42D0-A1FC-2AEFBDF6E384}</td><td>IMAGES7</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT29</td><td>{2A74F1CF-7CF0-4E61-9C90-D4151D77DF3C}</td><td>JS3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{7462923F-3DA5-43FE-825C-0B460FA02966}</td><td>LOCALES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{921E00A0-6A34-469A-B794-FF6A1F5F9303}</td><td>LOCALES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT30</td><td>{F52497C5-17DC-40AC-AF2E-A4A9D460FAAF}</td><td>MENUS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT31</td><td>{DFB16EE7-EF74-40D3-A9CE-4811875012E8}</td><td>CSS4</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT32</td><td>{BC3FBDDD-E071-4DF9-AB2A-B3B9E33CD226}</td><td>DROPDOWN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -440,34 +440,34 @@
 		<row><td>ISX_DEFAULTCOMPONENT73</td><td>{3237EDB2-5CC4-4AA2-9119-795ED6B4E219}</td><td>CSS9</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{E3EE158F-4B67-43EE-956A-2415ABE50BB5}</td><td>SOURCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{17874C38-7D39-451D-BF1B-E5EF0F891BF9}</td><td>THEMES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>{73E0636F-1F68-4D9A-AEC1-A8010B96344B}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.calculation</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td>{43FD9652-A9A8-462B-8550-7F678684E4BB}</td><td>SERVER</td><td>2</td><td/><td>infragisticswpf4.calculation1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td>{9B5CCC17-63C3-442D-ACBC-628A706FB37C}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.dockmanager</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>{F16552BA-B60E-44BE-A245-3AE2B0C8376E}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.math.calcul</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td>{8745B27C-FB64-4A0B-B7DA-247B8AD59A68}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.math.v12.1.</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.v12.1.dll</td><td>{42DB2E5F-117E-4ABB-BAA5-AEAA5FEE9991}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.v12.1.dll1</td><td>{4E04D97A-B8DF-40D0-995D-5E41382F9966}</td><td>SERVER</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Ionic.Zip.Reduced.dll</td><td>{B9B86BDF-8E1E-4223-ABC9-1752608FBD7C}</td><td>STUDIO</td><td>2</td><td/><td>ionic.zip.reduced.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Ionic.Zip.Reduced.dll1</td><td>{0DE74B50-6982-4984-994C-BC118B7A9061}</td><td>SERVER</td><td>2</td><td/><td>ionic.zip.reduced.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Microsoft.Expression.Interactions.dll</td><td>{FD7090C4-DEC2-438A-B4F3-A3ED8FEF294D}</td><td>STUDIO</td><td>2</td><td/><td>microsoft.expression.interac</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Microsoft.Windows.Shell.dll</td><td>{1F53E320-C107-4AAD-91F8-6B247A6F56D3}</td><td>STUDIO</td><td>2</td><td/><td>microsoft.windows.shell.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Newtonsoft.Json.dll</td><td>{43C4F751-332A-48D1-B70D-208D8CEC4F94}</td><td>STUDIO</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Newtonsoft.Json.dll1</td><td>{842E5882-786F-423B-867F-F85A91A0B40C}</td><td>SERVER</td><td>2</td><td/><td>newtonsoft.json.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>RibbonControlsLibrary.dll</td><td>{F9A6846C-8843-47AE-94FF-A165111EBCD4}</td><td>STUDIO</td><td>2</td><td/><td>ribboncontrolslibrary.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Reactive.dll</td><td>{E796CBD1-D1EE-48B1-9344-92745E5F18AD}</td><td>STUDIO</td><td>2</td><td/><td>system.reactive.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Windows.Interactivity.dll</td><td>{6A9F4811-8A7B-41E3-8637-669FE0AE6CA4}</td><td>STUDIO</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>WPF.JoshSmith.dll</td><td>{87270B8B-75D6-4571-85C7-553086EDC8E2}</td><td>STUDIO</td><td>2</td><td/><td>wpf.joshsmith.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Weave.dll</td><td>{06AB07FF-02B5-4875-90E5-33D0CE251185}</td><td>STUDIO</td><td>2</td><td/><td>weave.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Weave.dll1</td><td>{F673DDA0-6E07-40AB-8C0B-F2970BF144AE}</td><td>SERVER</td><td>2</td><td/><td>weave.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>avcodec_54.dll</td><td>{1C8E4131-F94F-4D32-9A01-B619030E1D53}</td><td>STUDIO</td><td>2</td><td/><td>avcodec_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>avformat_54.dll</td><td>{A910B9C0-F2E7-4282-8E25-04EAD5116A57}</td><td>STUDIO</td><td>2</td><td/><td>avformat_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>avutil_51.dll</td><td>{C3CC4404-8087-4BE7-8E68-A80FF18566F7}</td><td>STUDIO</td><td>2</td><td/><td>avutil_51.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>d3dcompiler_43.dll</td><td>{937B0F1A-FD3F-4CA5-A62C-EAE804374777}</td><td>STUDIO</td><td>2</td><td/><td>d3dcompiler_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>d3dx9_43.dll</td><td>{147462E0-84E2-48B7-9238-7CC1985E24C0}</td><td>STUDIO</td><td>2</td><td/><td>d3dx9_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>icudt.dll</td><td>{F385E8AE-F975-4088-A7C7-3EDA74528F6C}</td><td>STUDIO</td><td>2</td><td/><td>icudt.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>libEGL.dll</td><td>{0FA29EC7-4AB6-44E7-AC9D-2C7B7DA60E9F}</td><td>STUDIO</td><td>2</td><td/><td>libegl.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>libGLESv2.dll</td><td>{C9B3AC68-F463-4AA2-92C2-D411E1EEDA41}</td><td>STUDIO</td><td>2</td><td/><td>libglesv2.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>libcef.dll</td><td>{BF4EE8DA-2D9E-4737-9739-8B753A8CBC00}</td><td>STUDIO</td><td>2</td><td/><td>libcef.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>{170E9E5E-422E-4909-B4FC-B544B2CB8C66}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.calculation</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td>{730424C3-E412-475D-97EB-FCE76355FFAF}</td><td>SERVER</td><td>2</td><td/><td>infragisticswpf4.calculation1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td>{D2EEA3DE-8BC3-458D-B555-6C274B1BF4A4}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.dockmanager</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>{828056AD-2DB5-426E-8703-C4354061D58E}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.math.calcul</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td>{76F6F3F3-8217-4B59-B7E8-2A85C8817C08}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.math.v12.1.</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.v12.1.dll</td><td>{CF1C43A6-EE26-45BF-9C5D-D418870965E2}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.v12.1.dll1</td><td>{DA1B2CD6-90F8-482C-B6B4-736890FBF918}</td><td>SERVER</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Ionic.Zip.Reduced.dll</td><td>{F039ABF3-1C68-42FF-B79E-9CB86C2F54A3}</td><td>STUDIO</td><td>2</td><td/><td>ionic.zip.reduced.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Ionic.Zip.Reduced.dll1</td><td>{E7E957D0-C5E9-4E0B-A679-C0174A77AC92}</td><td>SERVER</td><td>2</td><td/><td>ionic.zip.reduced.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Microsoft.Expression.Interactions.dll</td><td>{DE5DF0EB-22B7-4303-870E-2774D4C19F38}</td><td>STUDIO</td><td>2</td><td/><td>microsoft.expression.interac</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Microsoft.Windows.Shell.dll</td><td>{5DD884B1-1F69-42E0-8982-6D6B0FA41A2C}</td><td>STUDIO</td><td>2</td><td/><td>microsoft.windows.shell.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll</td><td>{899CFE88-E018-481D-809C-810A326F845E}</td><td>STUDIO</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll1</td><td>{BC2DC298-8D78-45BF-9A9C-940391FA47E1}</td><td>SERVER</td><td>2</td><td/><td>newtonsoft.json.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>RibbonControlsLibrary.dll</td><td>{904EDAC2-F437-4442-9763-D722B7F46C49}</td><td>STUDIO</td><td>2</td><td/><td>ribboncontrolslibrary.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Reactive.dll</td><td>{148FDE4D-D7C0-444D-8B37-A2799B1F8FC0}</td><td>STUDIO</td><td>2</td><td/><td>system.reactive.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Windows.Interactivity.dll</td><td>{99373301-F810-4A72-9206-4A84C5B86B74}</td><td>STUDIO</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>WPF.JoshSmith.dll</td><td>{98E816CF-4D13-4CFC-9252-B978209EA765}</td><td>STUDIO</td><td>2</td><td/><td>wpf.joshsmith.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Weave.dll</td><td>{BD413833-9362-4316-9B7A-32E7F9586E20}</td><td>STUDIO</td><td>2</td><td/><td>weave.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Weave.dll1</td><td>{21EED275-8DEA-4C6A-9C39-456BD446DEA1}</td><td>SERVER</td><td>2</td><td/><td>weave.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>avcodec_54.dll</td><td>{89341F69-35B2-4338-B8B3-35C6CDFC47C8}</td><td>STUDIO</td><td>2</td><td/><td>avcodec_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>avformat_54.dll</td><td>{E75EB5A6-F844-469A-8BBB-D23A15E78BF6}</td><td>STUDIO</td><td>2</td><td/><td>avformat_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>avutil_51.dll</td><td>{3E06FF64-6CCD-4BB0-9559-5C7FFB1803FA}</td><td>STUDIO</td><td>2</td><td/><td>avutil_51.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>d3dcompiler_43.dll</td><td>{B573C897-6F5A-44DA-9DF6-490EFC1AA9B3}</td><td>STUDIO</td><td>2</td><td/><td>d3dcompiler_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>d3dx9_43.dll</td><td>{588FBEBC-1E7D-46D3-AB13-3F57BDA5212C}</td><td>STUDIO</td><td>2</td><td/><td>d3dx9_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>icudt.dll</td><td>{73B799FA-D857-4288-BBD8-F77FD280CDF5}</td><td>STUDIO</td><td>2</td><td/><td>icudt.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>libEGL.dll</td><td>{4C3F93FF-B6A1-4F23-8E40-A9F4B6747A9B}</td><td>STUDIO</td><td>2</td><td/><td>libegl.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>libGLESv2.dll</td><td>{D1305F25-1993-45D1-A3B9-FEB18DCEECAA}</td><td>STUDIO</td><td>2</td><td/><td>libglesv2.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>libcef.dll</td><td>{8D003F96-E9DC-44AE-86A8-D8E14938D610}</td><td>STUDIO</td><td>2</td><td/><td>libcef.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -2492,6 +2492,7 @@
 		<row><td>libcef.dll</td><td>libcef.dll</td><td>libcef.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\libcef.dll</td><td>1</td><td/></row>
 		<row><td>libegl.dll</td><td>libEGL.dll</td><td>libEGL.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\libEGL.dll</td><td>1</td><td/></row>
 		<row><td>libglesv2.dll</td><td>libGLESv2.dll</td><td>LIBGLE~1.DLL|libGLESv2.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\libGLESv2.dll</td><td>1</td><td/></row>
+		<row><td>lifecycleconfig.xml</td><td>ISX_DEFAULTCOMPONENT1</td><td>LIFECY~1.XML|LifecycleConfig.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\LifecycleConfig.xml</td><td>1</td><td/></row>
 		<row><td>lightness.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>LIGHTN~1.PNG|lightness.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\lightness.png</td><td>1</td><td/></row>
 		<row><td>link.gif</td><td>ISX_DEFAULTCOMPONENT51</td><td>link.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\link.gif</td><td>1</td><td/></row>
 		<row><td>link.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>LINKWI~1.XML|Link.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Link.wiz.xml</td><td>1</td><td/></row>
@@ -3109,32 +3110,32 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>AdornedControl.dll</td><td/><td/><td>_08E091AA_12C9_4B4A_98B7_66B920CA31D3_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Caliburn.Micro.dll</td><td/><td/><td>_7750DF2B_D525_4A42_9397_5A1F9B8F2D85_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>CefSharp.Wpf.dll</td><td/><td/><td>_4BCE7F3F_99D6_4672_BC10_7353BBD989AA_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>CefSharp.dll</td><td/><td/><td>_233ECB67_3F28_4457_8FAD_3D41F6FBF1FC_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>CommandLine.dll</td><td/><td/><td>_310B3078_0F6A_4CE6_A378_CE1E1735184C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>DEV2.MultiPartFormPasser.dll</td><td/><td/><td>_70BF136D_3F18_4642_B1D2_37329B6CC00B_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Activities.dll</td><td/><td/><td>_185925FC_CB41_41C4_941A_2BEB7E148DB8_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Activities.dll1</td><td/><td/><td>_2AAABD97_4613_42BF_9A6A_BF8EC30F5B45_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Common.dll</td><td/><td/><td>_AD753323_4C4E_41C8_A27B_34B61C1DFE52_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Common.dll1</td><td/><td/><td>_D39148A4_A936_40BA_9992_6B9B61AEFC16_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Composition.dll</td><td/><td/><td>_24CA4C79_8F2B_47CD_8343_6C9D88B65486_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Core.dll</td><td/><td/><td>_19DE520B_74FA_4831_AD83_72223BF13FE0_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Core.dll1</td><td/><td/><td>_1A32BCBB_D864_49DC_879F_599C5ACB9A07_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Data.dll</td><td/><td/><td>_7C62B00A_95EA_4300_AF3E_07F3AB000357_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Data.dll1</td><td/><td/><td>_84CC15AE_67C9_4E39_A12A_1341E25F02C0_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Network.dll</td><td/><td/><td>_3C8263C9_F9D1_4FD4_A5CE_6A1537222CCC_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Network.dll1</td><td/><td/><td>_C2926713_E523_4F2E_899A_7BF6AF1DCC54_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Runtime.Services.dll</td><td/><td/><td>_D803FCD6_2680_4E08_B98E_6BC0E9050D72_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Runtime.WebServer.dll</td><td/><td/><td>_F5BC3A2B_FB22_40EA_B76A_FEE78017025E_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Runtime.dll</td><td/><td/><td>_2298CFCB_FCC8_45A7_97D7_757036341954_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Server.exe</td><td/><td/><td>_A55E3BA6_F226_4BBB_B307_37CE60DDE2F4_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Studio.Core.dll</td><td/><td/><td>_C5160A68_9238_4A3B_AB33_C784ABCF89E7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AdornedControl.dll</td><td/><td/><td>_72714CD8_CF43_45AD_A5CB_AF4EBC0064F0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Caliburn.Micro.dll</td><td/><td/><td>_DE45251B_5911_4992_823C_A109CFE24BFF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>CefSharp.Wpf.dll</td><td/><td/><td>_20FE78A7_F2FE_43C6_9D49_90F3B562A7F7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>CefSharp.dll</td><td/><td/><td>_C3745D44_7BE4_4661_B65E_C9021D7F3DDD_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>CommandLine.dll</td><td/><td/><td>_228959F9_190A_4C68_8F12_5D86167E8E70_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>DEV2.MultiPartFormPasser.dll</td><td/><td/><td>_FD21640F_EB8B_41AA_9CAA_6BCBC16EE738_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Activities.dll</td><td/><td/><td>_7269B3F9_E597_447E_B0CF_AEE728992054_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Activities.dll1</td><td/><td/><td>_2971F0ED_5758_4A35_A575_2205573326CE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Common.dll</td><td/><td/><td>_7B6352B9_9C04_41F4_861A_91336932A639_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Common.dll1</td><td/><td/><td>_E58749EA_1CC8_4C44_B038_470CA73079BC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Composition.dll</td><td/><td/><td>_38201FCF_4D32_47EE_93A4_0A9C9140CC68_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Core.dll</td><td/><td/><td>_859C3477_B898_4A7E_81C5_B3E9EAA91804_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Core.dll1</td><td/><td/><td>_6376514E_1C9A_4813_A996_F588E06CDA1F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Data.dll</td><td/><td/><td>_1E819A0D_6E04_4290_980D_542754730CF2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Data.dll1</td><td/><td/><td>_7B38E361_98FC_4BA5_87D0_A8F60D176CBC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Network.dll</td><td/><td/><td>_92AF3831_CEDE_4783_8690_781A539ADC17_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Network.dll1</td><td/><td/><td>_CABE90FD_05C5_4BC6_9F8D_58BD0BE5C5B8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Runtime.Services.dll</td><td/><td/><td>_AA28EBB1_AE25_47CA_8B16_1AFB1FC5AFE7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Runtime.WebServer.dll</td><td/><td/><td>_A4B02BDA_105B_44F0_AED2_5CA985923282_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Runtime.dll</td><td/><td/><td>_60D4A809_9C33_47A2_9D0F_AC0262774716_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Server.exe</td><td/><td/><td>_0F807D89_4B93_47C3_8B45_0BF58608ACFF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Studio.Core.dll</td><td/><td/><td>_02D95407_64A4_4AAC_AFD8_DA64C0783A5D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Dev2.Studio.exe</td><td/><td/><td>_E7584D81_296E_4758_B373_66439D94445D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.UndoFramework.dll</td><td/><td/><td>_C288BAC5_5C2F_4175_A21A_3F9FDA4C60E2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>HttpFramework.dll</td><td/><td/><td>_23280D82_33A1_48CD_BBC8_DDAE543EC741_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ICSharpCode.AvalonEdit.dll</td><td/><td/><td>_29947E96_809C_4C9A_B8D8_7C88029CDF16_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.UndoFramework.dll</td><td/><td/><td>_AD3A480F_A5C8_4F3B_87BE_F312B3985E3B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>HttpFramework.dll</td><td/><td/><td>_147A6CAE_9958_4D0F_84C4_FFA882EE1FDC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ICSharpCode.AvalonEdit.dll</td><td/><td/><td>_D5AF4B6C_9C5F_44B9_B2BC_FC56B5C1191C_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_04FCC6C0_6906_47DF_B6E0_57DD053A5BEE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_01476F60_2561_4663_B69F_F098760CFEA2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_55010380_36D0_4FAF_AC99_D1B314C01AED_FILTER</td><td/><td/><td/><td/></row>
@@ -3147,7 +3148,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT17</td><td/><td/><td>_344E53A0_76FE_47C5_815C_74B86B8BFA86_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT18</td><td/><td/><td>_A3C216DF_F8D9_452C_9FBA_6E9C034B8FBB_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT19</td><td/><td/><td>_4BE27CC7_19D6_4D6A_A012_AB24CE07E0F3_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_90EB2CB1_0B98_4504_B4A4_DD3159534DBF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_CECFAD11_1B51_45B5_87B3_ABCBC8637D89_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT20</td><td/><td/><td>_7EDBE675_90D2_4AC3_BE7E_59C0932C8DE9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT21</td><td/><td/><td>_E9A995F9_B735_479C_92D4_4D1DCC6053BE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT22</td><td/><td/><td>_EF9B0730_FBE5_43F0_BC08_6A261470B991_FILTER</td><td/><td/><td/><td/></row>
@@ -3158,7 +3159,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT27</td><td/><td/><td>_53C7C12A_2F1B_456D_947C_A0D123F0B401_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT28</td><td/><td/><td>_AC18359B_6AD9_40A6_A13B_28F35629E366_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT29</td><td/><td/><td>_7960C075_BF41_4F87_824A_52389D1FEA7A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_6E2162C4_9B37_4064_8C51_39695E51F9CF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_96BFB035_4357_4AB5_8289_FE610B743083_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT30</td><td/><td/><td>_50079AF5_1351_46B4_BC2B_7E1ABAE7EA4B_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT31</td><td/><td/><td>_74CC3FC7_5D17_4B6C_B67B_B7994C262B55_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT32</td><td/><td/><td>_AB5155FB_45AD_4D75_B5B0_7577EC6F0713_FILTER</td><td/><td/><td/><td/></row>
@@ -3209,34 +3210,34 @@
 		<row><td>ISX_DEFAULTCOMPONENT73</td><td/><td/><td>_5DCCBDA6_BE8B_46E0_99A1_888BD8741B7A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_74DBAFF3_691F_4039_9244_9236FFCB26DD_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_6CA68832_6506_4436_94AC_3CDA5D96C083_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td/><td/><td>_A25919EA_0BA2_4372_982D_3AC057737FC2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td/><td/><td>_17853C5F_5C04_4945_B0F1_AB259F0F924D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td/><td/><td>_7554FB0D_A5BA_4F27_80BC_70AC7D99CB66_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td/><td/><td>_FA70B2EE_EAE2_4CA0_A9D3_E4920B4E2304_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td/><td/><td>_2BAC2FA9_43B0_4813_8E56_F3C10AD85DF8_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.v12.1.dll</td><td/><td/><td>_4EABB141_F0DC_4B14_8597_5E9FE71A6D3D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.v12.1.dll1</td><td/><td/><td>_9C9EC9AF_7FA8_4311_A47C_4A5FAC024E4C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Ionic.Zip.Reduced.dll</td><td/><td/><td>_697B6FA3_AB9C_4B4C_9593_77F769B931C2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Ionic.Zip.Reduced.dll1</td><td/><td/><td>_429E6887_DD78_4D03_9CDD_5ACA7FF98CED_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Microsoft.Expression.Interactions.dll</td><td/><td/><td>_72D36F60_AE9F_453C_AE31_15F0C7F6488B_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Microsoft.Windows.Shell.dll</td><td/><td/><td>_EF4AE3BB_A68D_45C2_B5E8_8D14FA649E91_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_16832F19_D47D_4A18_BCA0_1841542A9B3C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Newtonsoft.Json.dll1</td><td/><td/><td>_402E39BB_CA0F_42CF_8A87_86E314CB74F0_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>RibbonControlsLibrary.dll</td><td/><td/><td>_CE6A5D98_9EEF_4062_BD43_3BA05DB0AE71_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Reactive.dll</td><td/><td/><td>_C171319C_10C9_41D7_9C80_BA05822A5F11_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_BEA8F3A7_48E5_42EF_A5EF_D18DD1F1ECCD_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>WPF.JoshSmith.dll</td><td/><td/><td>_BB8E5685_52F4_4081_A375_18BB86F62308_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Weave.dll</td><td/><td/><td>_C5441305_406C_47D8_9028_FFAF12FE82DD_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Weave.dll1</td><td/><td/><td>_5CDF26A4_33EF_4E09_868A_9D3341260A7B_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>avcodec_54.dll</td><td/><td/><td>_9ED9F375_C8D4_417B_B3EC_91AE7B36F91A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>avformat_54.dll</td><td/><td/><td>_E6017A18_37D5_47CC_9D46_ED58077DD3BA_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>avutil_51.dll</td><td/><td/><td>_0A3CA79F_B1E5_43DA_BA98_D7EB2E76AA2A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>d3dcompiler_43.dll</td><td/><td/><td>_FECFC303_CAFF_4AD4_B03E_626998DF7049_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>d3dx9_43.dll</td><td/><td/><td>_C749054B_D0A6_4ED3_A8A2_77BC5D78FE5F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>icudt.dll</td><td/><td/><td>_B1D1D7DE_B1F9_4A39_9C43_B6EDA2F305B8_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>libEGL.dll</td><td/><td/><td>_ECFC357D_6221_4286_BCDE_453F362BDB88_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>libGLESv2.dll</td><td/><td/><td>_63AF1371_D965_47B0_BC3F_69B083B8CF96_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>libcef.dll</td><td/><td/><td>_3AECD777_0EAD_4D96_983F_F0B1E925DCEB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td/><td/><td>_98A36030_16DC_4628_8707_8FD65A4FB997_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td/><td/><td>_7DB3B8F6_639C_46AD_BE4F_D46E221510A6_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td/><td/><td>_35B173D1_6267_4092_B3DD_AE2FB1D68C9E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td/><td/><td>_B0347373_028F_4AD7_8262_1305CF718D2D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td/><td/><td>_D24266B2_6FD5_4827_934B_B867231A457D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.v12.1.dll</td><td/><td/><td>_BAC46FC1_1BA9_4F26_8AF4_6F78D6AE538B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.v12.1.dll1</td><td/><td/><td>_8FF77E6F_D981_4FD9_BCCD_882975357427_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Ionic.Zip.Reduced.dll</td><td/><td/><td>_0426A65E_63DE_44CF_A0FD_67FA720E1E87_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Ionic.Zip.Reduced.dll1</td><td/><td/><td>_71791A90_E98A_4811_8A54_BA3C945B8CBB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Microsoft.Expression.Interactions.dll</td><td/><td/><td>_3217C2E7_F149_4080_997E_B28FC2F410AA_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Microsoft.Windows.Shell.dll</td><td/><td/><td>_923CE685_593D_4622_B158_C660D5D0AF82_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_7E20FDE8_F48D_43E7_B251_D1ED41B55898_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll1</td><td/><td/><td>_F6563B58_A96C_484F_BAC6_E49FA89E0155_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>RibbonControlsLibrary.dll</td><td/><td/><td>_3C415B37_93EB_4BE2_A538_D2D566668748_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Reactive.dll</td><td/><td/><td>_59BA221A_CE22_4EB2_9023_23A7DE264910_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_8AF5EDBF_A2F2_4A52_99CB_D8CC8475D5FC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>WPF.JoshSmith.dll</td><td/><td/><td>_AC6FAF65_A953_460E_B244_DA7AC86AB6EE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Weave.dll</td><td/><td/><td>_EED38C45_DF13_48F6_9248_2C8B3E6C683A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Weave.dll1</td><td/><td/><td>_CF1FA0DB_C0AC_4197_B15E_B569E04AEECC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>avcodec_54.dll</td><td/><td/><td>_CB80A2A9_BA2D_4345_B6A3_C3F4DDEBDABB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>avformat_54.dll</td><td/><td/><td>_E823CC25_E0D4_463F_8E91_1F753A010D57_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>avutil_51.dll</td><td/><td/><td>_A3CB8411_F21B_40DD_A2E2_F78ACF3A9A75_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>d3dcompiler_43.dll</td><td/><td/><td>_2FF23F38_A084_4108_B77E_16491675BD34_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>d3dx9_43.dll</td><td/><td/><td>_87FB857F_2FC3_4420_A63A_80F4EA1505CC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>icudt.dll</td><td/><td/><td>_B3119EDA_57A1_4857_A1AB_72A28BBE5F52_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>libEGL.dll</td><td/><td/><td>_B25ABCDF_0498_4585_9F37_D977349E33CB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>libGLESv2.dll</td><td/><td/><td>_D1343DF0_48D3_499D_ACC1_8DAADFC1E2B8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>libcef.dll</td><td/><td/><td>_5CE638D2_7063_4306_8D36_FD73B5E285EF_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -5633,9 +5634,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
-		<row><td>ProductCode</td><td>{10E19EDB-9EF2-42DB-89D4-FEEA1776BB1F}</td><td/></row>
+		<row><td>ProductCode</td><td>{FB6072D0-56B8-4AB9-812C-9A3E5C07E05F}</td><td/></row>
 		<row><td>ProductName</td><td>Warewolf</td><td/></row>
-		<row><td>ProductVersion</td><td>0.2.7.1</td><td/></row>
+		<row><td>ProductVersion</td><td>0.2.7.2</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -5647,7 +5648,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>RestartManagerOption</td><td>CloseRestart</td><td/></row>
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40FULL</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40FULL;ISACTIONPROP1</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{8608F6FB-4B8A-4131-B341-E7BC658885CC}</td><td/></row>
@@ -5921,6 +5922,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
+		<row><td>{8608F6FB-4B8A-4131-B341-E7BC658885CC}</td><td>0.2.7.1</td><td>0.2.7.1</td><td>1033</td><td>768</td><td/><td>ISACTIONPROP1</td><td>0.2.7.1</td></row>
 	</table>
 
 	<table name="Verb">
