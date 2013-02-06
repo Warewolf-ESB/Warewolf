@@ -7,7 +7,6 @@
  xmlns:s1="clr-namespace:System;assembly=System.Core"
  xmlns:s2="clr-namespace:System;assembly=System"
  xmlns:s3="clr-namespace:System;assembly=System.ServiceModel"
- xmlns:s4="clr-namespace:System;assembly=System.AddIn"
  xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities"
  xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
