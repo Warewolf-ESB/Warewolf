@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Qunit_Test\Decisions\Model_Test.js" />
     <Content Include="wwwroot\Content\Site.css" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -157,9 +158,7 @@
     <Content Include="wwwroot\Views\Dialogs\SaveDialog.htm" />
     <Content Include="wwwroot\Views\Sources\Server.htm" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Qunit_Test\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
