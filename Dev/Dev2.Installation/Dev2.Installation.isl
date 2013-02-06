@@ -52,13 +52,13 @@
 	<summary>
 		<codepage>1252</codepage>
 		<title>##ID_STRING3##</title>
-		<subject>##ID_STRING7##</subject>
+		<subject>##ID_STRING10##</subject>
 		<author>##ID_STRING2##</author>
 		<keywords>Installer,MSI</keywords>
 		<comments>Contact:  Your local administrator</comments>
 		<template>Intel;1033</template>
 		<lastauthor>Administrator</lastauthor>
-		<revnumber>{C4559B65-9FE2-4FC2-A084-042DA15D5E03}</revnumber>
+		<revnumber>{528F728A-A4B0-4D7E-8258-951FA49B276B}</revnumber>
 		<lastprinted/>
 		<createdtm>06/21/1999 15:00</createdtm>
 		<lastsavedtm>07/14/2000 18:50</lastsavedtm>
@@ -225,6 +225,7 @@
 	<table name="AppSearch">
 		<col key="yes" def="s72">Property</col>
 		<col key="yes" def="s72">Signature_</col>
+		<row><td>DOTNETVERSION40FULL</td><td>DotNet40Full</td></row>
 	</table>
 
 	<table name="BBControl">
@@ -339,46 +340,134 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>AdornedControl.dll</td><td>{5DED6CAA-28B6-4AD8-8C1B-86C222D7A8A9}</td><td>INSTALLDIR</td><td>2</td><td/><td>adornedcontrol.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Caliburn.Micro.dll</td><td>{453C5BF6-ABEA-4508-A5FD-D5FBE314945D}</td><td>INSTALLDIR</td><td>2</td><td/><td>caliburn.micro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>CefSharp.Wpf.dll</td><td>{7865EE98-FB1E-4D65-BC7F-D250ADEFA29C}</td><td>INSTALLDIR</td><td>2</td><td/><td>cefsharp.wpf.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>CefSharp.dll</td><td>{2F712EBE-9D77-40F3-954E-C80738E38E15}</td><td>INSTALLDIR</td><td>2</td><td/><td>cefsharp.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Activities.dll</td><td>{B59D6372-AE6B-4FE0-AF5C-CB9595832EB7}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.activities.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Common.dll</td><td>{6A53B06F-F55D-498B-8106-B6712300F890}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.common.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Composition.dll</td><td>{21CC756F-7731-4AF1-931F-160947582769}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.composition.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Core.dll</td><td>{5502B09A-04CA-4591-8238-0FBFF33B339E}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Data.dll</td><td>{15B621AD-B5D9-462F-95E6-20328E6E4A39}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Network.dll</td><td>{6E325FBE-09DF-4A75-A0DE-546987A094C3}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.network.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Studio.Core.dll</td><td>{B8319CCF-B561-4B98-87E5-6367267024E4}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.studio.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Studio.exe</td><td>{6220D771-BD63-438D-9E11-8FB0D0A4AF51}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.studio.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.UndoFramework.dll</td><td>{67D125AB-C925-4DD0-B14E-34D8A33C11B7}</td><td>INSTALLDIR</td><td>2</td><td/><td>dev2.undoframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ICSharpCode.AvalonEdit.dll</td><td>{16920F4A-0247-42D1-AAEE-05B31FC80D49}</td><td>INSTALLDIR</td><td>2</td><td/><td>icsharpcode.avalonedit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT</td><td>{4C239EF2-27CA-45BE-93F8-39DCD083AF22}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{40A45D1F-3695-4414-AAB4-449AC58CB725}</td><td>HELP</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{798697E4-6074-4449-B088-4D3369A92FB9}</td><td>LOCALES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>{4B140751-7447-4D55-9594-4FC39738CA92}</td><td>INSTALLDIR</td><td>2</td><td/><td>infragisticswpf4.calculation</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td>{64070FCB-8107-4AF6-B36C-584F76867AD0}</td><td>INSTALLDIR</td><td>2</td><td/><td>infragisticswpf4.dockmanager</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>{263D099D-8BDB-4B90-80A9-3A8F927E6B18}</td><td>INSTALLDIR</td><td>2</td><td/><td>infragisticswpf4.math.calcul</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td>{F874F882-2119-4D72-81BB-DED6FBF55F78}</td><td>INSTALLDIR</td><td>2</td><td/><td>infragisticswpf4.math.v12.1.</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>InfragisticsWPF4.v12.1.dll</td><td>{CF1108C7-9933-4495-80F5-B554F4F118EE}</td><td>INSTALLDIR</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Ionic.Zip.Reduced.dll</td><td>{E4C742F5-0735-47F6-A0EB-A62994C7549B}</td><td>INSTALLDIR</td><td>2</td><td/><td>ionic.zip.reduced.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Microsoft.Expression.Interactions.dll</td><td>{CD7B0A34-D4C9-47A9-8EBA-BB3556F71CB1}</td><td>INSTALLDIR</td><td>2</td><td/><td>microsoft.expression.interac</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Microsoft.Windows.Shell.dll</td><td>{9E02483F-EC55-4D51-ADA0-52EF86F72F9D}</td><td>INSTALLDIR</td><td>2</td><td/><td>microsoft.windows.shell.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Newtonsoft.Json.dll</td><td>{3D501A23-C5CF-44FD-AB8A-F50740CF16D0}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>RibbonControlsLibrary.dll</td><td>{6BCDF568-A34A-4CAF-AFFB-731C4C6478FC}</td><td>INSTALLDIR</td><td>2</td><td/><td>ribboncontrolslibrary.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Reactive.dll</td><td>{9EE35B68-7208-4489-9C94-435C4E5BC929}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.reactive.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Windows.Interactivity.dll</td><td>{7EF0B69E-3613-4359-9042-1731CF3E1900}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>WPF.JoshSmith.dll</td><td>{8FE607C0-6B5F-47B7-9669-54CA3AD83B35}</td><td>INSTALLDIR</td><td>2</td><td/><td>wpf.joshsmith.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Weave.dll</td><td>{B49F6BEB-A21E-4BEA-B7B7-0039845E7498}</td><td>INSTALLDIR</td><td>2</td><td/><td>weave.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>avcodec_54.dll</td><td>{44C6B8A2-D82D-4049-AC07-E8CE03B7EF3D}</td><td>INSTALLDIR</td><td>2</td><td/><td>avcodec_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>avformat_54.dll</td><td>{C74F5CB0-4174-449C-80B5-6D5BBC29DB38}</td><td>INSTALLDIR</td><td>2</td><td/><td>avformat_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>avutil_51.dll</td><td>{8FF1D734-9E79-4846-B093-912D181A9E5A}</td><td>INSTALLDIR</td><td>2</td><td/><td>avutil_51.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>d3dcompiler_43.dll</td><td>{30523E54-455F-4F1F-A2EC-3650CC22094C}</td><td>INSTALLDIR</td><td>2</td><td/><td>d3dcompiler_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>d3dx9_43.dll</td><td>{734B6C83-0BC0-48A8-88AE-5F4198B3E4A4}</td><td>INSTALLDIR</td><td>2</td><td/><td>d3dx9_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>icudt.dll</td><td>{AB7EBE0D-4913-4F23-938D-00F7B73A9182}</td><td>INSTALLDIR</td><td>2</td><td/><td>icudt.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>libEGL.dll</td><td>{02C39B4F-31FD-47E7-A9EB-78B8D7AC89CC}</td><td>INSTALLDIR</td><td>2</td><td/><td>libegl.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>libGLESv2.dll</td><td>{0AE1A496-218A-4DE4-84C3-1AB72BF14577}</td><td>INSTALLDIR</td><td>2</td><td/><td>libglesv2.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>libcef.dll</td><td>{7F7F1EFD-4BD7-4E6B-BE96-3E0A0148B136}</td><td>INSTALLDIR</td><td>2</td><td/><td>libcef.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AdornedControl.dll</td><td>{CD625ED0-F04E-4C06-B9D6-EA718A5FEEED}</td><td>STUDIO</td><td>2</td><td/><td>adornedcontrol.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Caliburn.Micro.dll</td><td>{A2AF782B-3449-484D-9C48-C7D93124D01C}</td><td>STUDIO</td><td>2</td><td/><td>caliburn.micro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>CefSharp.Wpf.dll</td><td>{515A2EDE-B2E2-4367-B66B-AAC0E8E27F72}</td><td>STUDIO</td><td>2</td><td/><td>cefsharp.wpf.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>CefSharp.dll</td><td>{E85CCF2F-8A61-47E9-BABF-597412025D30}</td><td>STUDIO</td><td>2</td><td/><td>cefsharp.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>CommandLine.dll</td><td>{00AFC421-2121-4145-AC06-D5A5D1930672}</td><td>SERVER</td><td>2</td><td/><td>commandline.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>DEV2.MultiPartFormPasser.dll</td><td>{833C1517-40AA-433B-9DE8-6879B2C16820}</td><td>SERVER</td><td>2</td><td/><td>dev2.multipartformpasser.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Activities.dll</td><td>{28B12537-5BBD-488E-B3A3-4CEDDFEF376D}</td><td>STUDIO</td><td>2</td><td/><td>dev2.activities.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Activities.dll1</td><td>{3CE272AF-9543-487A-933E-F026368B578C}</td><td>SERVER</td><td>2</td><td/><td>dev2.activities.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Common.dll</td><td>{82A0D453-DB00-4950-A595-55B33593646D}</td><td>STUDIO</td><td>2</td><td/><td>dev2.common.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Common.dll1</td><td>{A393677F-7E6E-4AFF-9628-253ACBA12796}</td><td>SERVER</td><td>2</td><td/><td>dev2.common.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Composition.dll</td><td>{B8D44717-6F17-4B80-8983-D4ACF4432F34}</td><td>STUDIO</td><td>2</td><td/><td>dev2.composition.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Core.dll</td><td>{64102193-5471-4BE0-A79E-824D32AEA980}</td><td>STUDIO</td><td>2</td><td/><td>dev2.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Core.dll1</td><td>{52519D71-C295-4562-80AE-7B584AD2DD40}</td><td>SERVER</td><td>2</td><td/><td>dev2.core.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Data.dll</td><td>{BE07922F-5E76-4169-956E-49055E9C506F}</td><td>STUDIO</td><td>2</td><td/><td>dev2.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Data.dll1</td><td>{5DB69792-B0A8-40B9-BC67-4C4B3D1828A0}</td><td>SERVER</td><td>2</td><td/><td>dev2.data.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Network.dll</td><td>{BE9EF86B-2103-4DC3-BC6F-CA1D90ACAED4}</td><td>STUDIO</td><td>2</td><td/><td>dev2.network.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Network.dll1</td><td>{050FA50C-B793-43D2-9905-1D16C303143C}</td><td>SERVER</td><td>2</td><td/><td>dev2.network.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Runtime.Services.dll</td><td>{2517A448-80A9-4903-BC10-B6CE27F19738}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.services.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Runtime.WebServer.dll</td><td>{42B265A6-B485-4B60-B8FA-4BBA08B211D2}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.webserver.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Runtime.dll</td><td>{48CE1524-692C-423F-9FE8-C3A5F8E42748}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Server.exe</td><td>{A62DD44E-A435-4292-BA38-C207A2C1C71A}</td><td>SERVER</td><td>2</td><td/><td>dev2.server.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Studio.Core.dll</td><td>{565ECD1F-438B-4B5E-ACF9-501BC4F268F6}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Studio.exe</td><td>{F781AFA2-2F32-4A3A-A362-21C0812CAD83}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.UndoFramework.dll</td><td>{EB293277-C3E8-4287-B07D-CE3E25AFE216}</td><td>STUDIO</td><td>2</td><td/><td>dev2.undoframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>HttpFramework.dll</td><td>{3A6D733B-2161-43AE-AFE0-EB14F59AD592}</td><td>SERVER</td><td>2</td><td/><td>httpframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ICSharpCode.AvalonEdit.dll</td><td>{AECC2277-B8BC-49BA-A270-E74AB38A0E8C}</td><td>STUDIO</td><td>2</td><td/><td>icsharpcode.avalonedit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td>{C1F4E31D-CD05-448D-8219-0B3C299A8C6B}</td><td>STUDIO</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{B50F613B-505C-4C54-BEC8-3645089E1BB7}</td><td>SERVER</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{55AC4B46-F3C7-48A0-B9AC-B825765C533E}</td><td>BLACKTIE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT11</td><td>{7AE01376-F3CB-4797-BD46-B5D6E328FACC}</td><td>CSS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT12</td><td>{0FA7C892-821B-4904-BAB8-99084B0EC93C}</td><td>IMAGES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT13</td><td>{BA2628FB-4251-4626-9B97-79C3D93DC4E4}</td><td>IMAGES1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT14</td><td>{2BA828B5-1444-4D9E-8329-CF33200FFCBA}</td><td>JS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT15</td><td>{0A85E9A9-AFC2-4702-A876-5291FBA770D4}</td><td>CUPERTINO</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT16</td><td>{7B7C15DD-6AA9-49D3-8728-0C3A632CB6AA}</td><td>CSS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT17</td><td>{E1DF3520-80D6-4367-B1A5-EF60B186C973}</td><td>IMAGES2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT18</td><td>{5070362F-9BF2-412E-B030-69C69DC2142E}</td><td>IMAGES3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT19</td><td>{F10422DF-332C-4F23-AF90-CC656EA6F8BC}</td><td>JS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{938005B7-F9D8-4283-8FF1-6C15902C0A30}</td><td>HELP</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT20</td><td>{2D01B71B-3DCE-4F8F-880D-7AD74EC73706}</td><td>DARKHIVE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT21</td><td>{55CE3B31-08D8-47AE-8FA6-7B3A3A2F17E2}</td><td>CSS2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT22</td><td>{6F301508-2C1D-4E0B-81BA-F95BB7D53BE5}</td><td>IMAGES4</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT23</td><td>{66B2EDAA-5F7F-42C6-B30B-DD8CFB6E6DD6}</td><td>IMAGES5</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT24</td><td>{67AC2CC9-DC69-4708-8203-CC99E9E7E715}</td><td>JS2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT25</td><td>{046BDEF7-B0A6-44C8-934F-E70C1E9D1B1A}</td><td>EGGPLANT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT26</td><td>{D9A82BCC-8059-4676-8CDC-8B3F4145ACCC}</td><td>CSS3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT27</td><td>{B6901AEA-1B3B-4D6F-897B-6671E439D01E}</td><td>IMAGES6</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT28</td><td>{9493DB74-2D28-42D0-A1FC-2AEFBDF6E384}</td><td>IMAGES7</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT29</td><td>{2A74F1CF-7CF0-4E61-9C90-D4151D77DF3C}</td><td>JS3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{7462923F-3DA5-43FE-825C-0B460FA02966}</td><td>LOCALES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT30</td><td>{F52497C5-17DC-40AC-AF2E-A4A9D460FAAF}</td><td>MENUS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT31</td><td>{DFB16EE7-EF74-40D3-A9CE-4811875012E8}</td><td>CSS4</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT32</td><td>{BC3FBDDD-E071-4DF9-AB2A-B3B9E33CD226}</td><td>DROPDOWN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT33</td><td>{208F49C3-6679-4191-8470-EDED336DC272}</td><td>JS4</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT34</td><td>{BD9EDABF-D625-46E6-AB1E-784ABF04C494}</td><td>DROPDOWN1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT35</td><td>{A6A51A1F-5986-4AD2-B28E-337B01F52ED2}</td><td>REDMOND</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT36</td><td>{F37AB64C-4473-4B7F-8872-3E3B8EEA3875}</td><td>CSS5</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT37</td><td>{58C38853-CE1F-4FEF-B9D7-2E3A9E4BACFC}</td><td>IMAGES8</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT38</td><td>{43CEFC30-8F42-4333-B379-C9C2B8AAC2A0}</td><td>IMAGES9</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT39</td><td>{6C3E8C1B-D1A5-45A1-9AE9-212BAD156530}</td><td>JS5</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{E8DEE3FD-2C2E-4A38-B970-1E572D951270}</td><td>ICONS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT40</td><td>{A78258CA-0F56-40EA-839C-F3E45DF40FF8}</td><td>RELEASEENGINEERING</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT41</td><td>{757F40CD-AFD9-4301-898C-27C0406559D6}</td><td>CSS6</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT42</td><td>{F633BE3F-4430-464A-8FB8-BB2DBB3CF700}</td><td>IMAGES10</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT43</td><td>{C1E54E7E-75BF-4CF3-BE39-82A3425421D1}</td><td>JS6</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT44</td><td>{5FD0502A-5FA9-4E68-AB7B-CE9DC5949C3F}</td><td>SMOOTHNESS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT45</td><td>{5F84E926-ED4C-4377-A43C-EC78CFF35FFB}</td><td>CSS7</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT46</td><td>{38A04A14-746C-40B8-9262-B42625A6DE05}</td><td>IMAGES11</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT47</td><td>{6CACE125-31E5-4B5D-8B43-FE0065F61C65}</td><td>IMAGES12</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT48</td><td>{398E1060-B129-42A6-85AD-29979DCA24ED}</td><td>JS7</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT49</td><td>{FE8F532A-81E3-4E51-8AA6-9AB90E5C7AAB}</td><td>SYSTEM</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{A82F5E06-E420-4D70-A348-B075F72E466F}</td><td>PLUGINS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT50</td><td>{0682913E-02F3-41C5-AB4A-1FAD195208E9}</td><td>CSS8</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT51</td><td>{25FECC11-C862-484F-9C71-63C766849AF6}</td><td>IMAGES13</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT52</td><td>{68E3FDF6-2BD1-4BD3-86EE-F7CD3F602E64}</td><td>IMAGES14</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT53</td><td>{52C1B2A9-E7FE-4A4D-903C-C2E44A4891A5}</td><td>JS8</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT54</td><td>{5D64F103-83FE-4226-84B9-CB338C3A9B78}</td><td>SKIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT55</td><td>{9D0D5353-C0F2-4D02-BC7F-5EE99ADDA3D5}</td><td>WEBS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT56</td><td>{3527074C-8C0A-4B79-8FE7-52410778D321}</td><td>WWWROOT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT57</td><td>{A5079FFD-00B2-4228-B582-A4B3DE4A7DA0}</td><td>CONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT58</td><td>{33F5E302-6C7A-4D20-9A68-183B2DC43089}</td><td>THEMES1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT59</td><td>{BBC0C910-1796-4B04-87A3-4C0920D4B717}</td><td>BASE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{2DE4D004-B089-49CB-8CA3-4D4F68BBEB32}</td><td>SCRIPTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT60</td><td>{01292E89-7057-4073-AF5A-668122FE6425}</td><td>IMAGES15</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT61</td><td>{3D272D83-176A-4B60-B3C7-0A8A77E86695}</td><td>MINIFIED</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT62</td><td>{A7A8C77F-D846-4AE3-8578-75115BC8B283}</td><td>IMAGES16</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT63</td><td>{2FCB1465-C069-4472-A7B2-2C3361761E1F}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT64</td><td>{7E564802-EB6A-4684-B99B-33F2FC64252A}</td><td>IMAGES17</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT65</td><td>{7915281E-43DF-479E-9AF4-8B4F1671DC6C}</td><td>DATABASEDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT66</td><td>{E11E8413-4728-49D0-9FF2-EE46D9757494}</td><td>SCRIPTS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT67</td><td>{99FB0904-7FEC-4E6B-A1E5-A1B6E92B8D42}</td><td>VIEWS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT68</td><td>{67D4DA36-AF0A-49C2-9F44-64507F2B6226}</td><td>DECISIONS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT69</td><td>{54C28560-E14C-481A-908B-128206EDFB98}</td><td>DIALOGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{A450A437-393A-4AA9-878A-230218104F9C}</td><td>SERVICES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT70</td><td>{EBE5A3D0-D791-45EF-B5F0-77F2CD304EEE}</td><td>SERVICES1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT71</td><td>{38EE03EF-C3B0-4320-BB6E-1E6ABBFB7FF3}</td><td>SOURCES1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT72</td><td>{A925B5EF-5D03-4784-9C21-FB87508E976F}</td><td>SWITCH</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT73</td><td>{3237EDB2-5CC4-4AA2-9119-795ED6B4E219}</td><td>CSS9</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{E3EE158F-4B67-43EE-956A-2415ABE50BB5}</td><td>SOURCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{17874C38-7D39-451D-BF1B-E5EF0F891BF9}</td><td>THEMES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>{73E0636F-1F68-4D9A-AEC1-A8010B96344B}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.calculation</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td>{43FD9652-A9A8-462B-8550-7F678684E4BB}</td><td>SERVER</td><td>2</td><td/><td>infragisticswpf4.calculation1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td>{9B5CCC17-63C3-442D-ACBC-628A706FB37C}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.dockmanager</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>{F16552BA-B60E-44BE-A245-3AE2B0C8376E}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.math.calcul</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td>{8745B27C-FB64-4A0B-B7DA-247B8AD59A68}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.math.v12.1.</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.v12.1.dll</td><td>{42DB2E5F-117E-4ABB-BAA5-AEAA5FEE9991}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>InfragisticsWPF4.v12.1.dll1</td><td>{4E04D97A-B8DF-40D0-995D-5E41382F9966}</td><td>SERVER</td><td>2</td><td/><td>infragisticswpf4.v12.1.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Ionic.Zip.Reduced.dll</td><td>{B9B86BDF-8E1E-4223-ABC9-1752608FBD7C}</td><td>STUDIO</td><td>2</td><td/><td>ionic.zip.reduced.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Ionic.Zip.Reduced.dll1</td><td>{0DE74B50-6982-4984-994C-BC118B7A9061}</td><td>SERVER</td><td>2</td><td/><td>ionic.zip.reduced.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Microsoft.Expression.Interactions.dll</td><td>{FD7090C4-DEC2-438A-B4F3-A3ED8FEF294D}</td><td>STUDIO</td><td>2</td><td/><td>microsoft.expression.interac</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Microsoft.Windows.Shell.dll</td><td>{1F53E320-C107-4AAD-91F8-6B247A6F56D3}</td><td>STUDIO</td><td>2</td><td/><td>microsoft.windows.shell.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll</td><td>{43C4F751-332A-48D1-B70D-208D8CEC4F94}</td><td>STUDIO</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll1</td><td>{842E5882-786F-423B-867F-F85A91A0B40C}</td><td>SERVER</td><td>2</td><td/><td>newtonsoft.json.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>RibbonControlsLibrary.dll</td><td>{F9A6846C-8843-47AE-94FF-A165111EBCD4}</td><td>STUDIO</td><td>2</td><td/><td>ribboncontrolslibrary.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Reactive.dll</td><td>{E796CBD1-D1EE-48B1-9344-92745E5F18AD}</td><td>STUDIO</td><td>2</td><td/><td>system.reactive.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Windows.Interactivity.dll</td><td>{6A9F4811-8A7B-41E3-8637-669FE0AE6CA4}</td><td>STUDIO</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>WPF.JoshSmith.dll</td><td>{87270B8B-75D6-4571-85C7-553086EDC8E2}</td><td>STUDIO</td><td>2</td><td/><td>wpf.joshsmith.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Weave.dll</td><td>{06AB07FF-02B5-4875-90E5-33D0CE251185}</td><td>STUDIO</td><td>2</td><td/><td>weave.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Weave.dll1</td><td>{F673DDA0-6E07-40AB-8C0B-F2970BF144AE}</td><td>SERVER</td><td>2</td><td/><td>weave.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>avcodec_54.dll</td><td>{1C8E4131-F94F-4D32-9A01-B619030E1D53}</td><td>STUDIO</td><td>2</td><td/><td>avcodec_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>avformat_54.dll</td><td>{A910B9C0-F2E7-4282-8E25-04EAD5116A57}</td><td>STUDIO</td><td>2</td><td/><td>avformat_54.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>avutil_51.dll</td><td>{C3CC4404-8087-4BE7-8E68-A80FF18566F7}</td><td>STUDIO</td><td>2</td><td/><td>avutil_51.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>d3dcompiler_43.dll</td><td>{937B0F1A-FD3F-4CA5-A62C-EAE804374777}</td><td>STUDIO</td><td>2</td><td/><td>d3dcompiler_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>d3dx9_43.dll</td><td>{147462E0-84E2-48B7-9238-7CC1985E24C0}</td><td>STUDIO</td><td>2</td><td/><td>d3dx9_43.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>icudt.dll</td><td>{F385E8AE-F975-4088-A7C7-3EDA74528F6C}</td><td>STUDIO</td><td>2</td><td/><td>icudt.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>libEGL.dll</td><td>{0FA29EC7-4AB6-44E7-AC9D-2C7B7DA60E9F}</td><td>STUDIO</td><td>2</td><td/><td>libegl.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>libGLESv2.dll</td><td>{C9B3AC68-F463-4AA2-92C2-D411E1EEDA41}</td><td>STUDIO</td><td>2</td><td/><td>libglesv2.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>libcef.dll</td><td>{BF4EE8DA-2D9E-4737-9739-8B753A8CBC00}</td><td>STUDIO</td><td>2</td><td/><td>libcef.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -947,7 +1036,7 @@
 		<row><td>CustomSetup</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
 		<row><td>CustomSetup</td><td>Next</td><td>[_IsSetupTypeMin]</td><td>Custom</td><td>1</td><td>0</td></row>
 		<row><td>CustomSetupTips</td><td>OK</td><td>EndDialog</td><td>Return</td><td>1</td><td>1</td></row>
-		<row><td>CustomerInformation</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>1</td><td>1</td></row>
+		<row><td>CustomerInformation</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>CustomerInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>EndDialog</td><td>Exit</td><td>(SERIALNUMVALRETRYLIMIT) And (SERIALNUMVALRETRYLIMIT&lt;0) And (SERIALNUMVALRETURN&lt;&gt;SERIALNUMVALSUCCESSRETVAL)</td><td>2</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>(Not SERIALNUMVALRETURN) OR (SERIALNUMVALRETURN=SERIALNUMVALSUCCESSRETVAL)</td><td>3</td></row>
@@ -958,7 +1047,7 @@
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>DATABASEDIR</td><td>1</td><td>2</td></row>
 		<row><td>DatabaseFolder</td><td>Next</td><td>NewDialog</td><td>SetupType</td><td>1</td><td>1</td></row>
-		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>0</td></row>
+		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>DestinationFolder</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>INSTALLDIR</td><td>1</td><td>2</td></row>
@@ -975,11 +1064,11 @@
 		<row><td>InstallChangeFolder</td><td>Up</td><td>DirectoryListUp</td><td>0</td><td>1</td><td>0</td></row>
 		<row><td>InstallWelcome</td><td>Back</td><td>NewDialog</td><td>SplashBitmap</td><td>Display_IsBitmapDlg</td><td>0</td></row>
 		<row><td>InstallWelcome</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
-		<row><td>InstallWelcome</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>1</td><td>0</td></row>
-		<row><td>LicenseAgreement</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>1</td><td>0</td></row>
+		<row><td>InstallWelcome</td><td>Next</td><td>NewDialog</td><td>DestinationFolder</td><td>1</td><td>0</td></row>
+		<row><td>LicenseAgreement</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>ISPrintButton</td><td>DoAction</td><td>ISPrint</td><td>1</td><td>0</td></row>
-		<row><td>LicenseAgreement</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>AgreeToLicense = "Yes"</td><td>0</td></row>
+		<row><td>LicenseAgreement</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>AgreeToLicense = "Yes"</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Back</td><td>NewDialog</td><td>MaintenanceWelcome</td><td>1</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Next</td><td>NewDialog</td><td>CustomSetup</td><td>_IsMaintenance = "Change"</td><td>12</td></row>
@@ -1010,7 +1099,7 @@
 		<row><td>ReadmeInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>ReadmeInformation</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>CustomSetup</td><td>Installed OR _IsSetupTypeMin = "Custom"</td><td>2</td></row>
-		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>NOT Installed</td><td>1</td></row>
+		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>DestinationFolder</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed AND _IsMaintenance = "Reinstall"</td><td>3</td></row>
 		<row><td>ReadyToInstall</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>ReadyToInstall</td><td>InstallNow</td><td>EndDialog</td><td>Return</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
@@ -1047,9 +1136,11 @@
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>6</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>5</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>10</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>StartServiceAfterMaintenance</td><td>Installed</td><td>3</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>6</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>[StartServiceAfterMaintenance]</td><td>StartServiceAfterMaintenance</td><td>Installed</td><td>4</td></row>
 		<row><td>SetupError</td><td>A</td><td>EndDialog</td><td>ErrorAbort</td><td>1</td><td>0</td></row>
 		<row><td>SetupError</td><td>C</td><td>EndDialog</td><td>ErrorCancel</td><td>1</td><td>0</td></row>
 		<row><td>SetupError</td><td>I</td><td>EndDialog</td><td>ErrorIgnore</td><td>1</td><td>0</td></row>
@@ -1087,6 +1178,27 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>CSS4</td><td>ISX_DEFAULTCOMPONENT31</td></row>
+		<row><td>DATABASEDIR</td><td>ISX_DEFAULTCOMPONENT65</td></row>
+		<row><td>IMAGES1</td><td>ISX_DEFAULTCOMPONENT13</td></row>
+		<row><td>IMAGES10</td><td>ISX_DEFAULTCOMPONENT42</td></row>
+		<row><td>IMAGES12</td><td>ISX_DEFAULTCOMPONENT47</td></row>
+		<row><td>IMAGES3</td><td>ISX_DEFAULTCOMPONENT18</td></row>
+		<row><td>IMAGES5</td><td>ISX_DEFAULTCOMPONENT23</td></row>
+		<row><td>IMAGES7</td><td>ISX_DEFAULTCOMPONENT28</td></row>
+		<row><td>IMAGES9</td><td>ISX_DEFAULTCOMPONENT38</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT63</td></row>
+		<row><td>JS4</td><td>ISX_DEFAULTCOMPONENT33</td></row>
+		<row><td>MENUS</td><td>ISX_DEFAULTCOMPONENT30</td></row>
+		<row><td>PLUGINS</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>RELEASEENGINEERING</td><td>ISX_DEFAULTCOMPONENT40</td></row>
+		<row><td>SKIN</td><td>ISX_DEFAULTCOMPONENT54</td></row>
+		<row><td>SOURCES</td><td>ISX_DEFAULTCOMPONENT8</td></row>
+		<row><td>SYSTEM</td><td>ISX_DEFAULTCOMPONENT49</td></row>
+		<row><td>THEMES</td><td>ISX_DEFAULTCOMPONENT9</td></row>
+		<row><td>THEMES1</td><td>ISX_DEFAULTCOMPONENT58</td></row>
+		<row><td>VIEWS</td><td>ISX_DEFAULTCOMPONENT67</td></row>
+		<row><td>WEBS</td><td>ISX_DEFAULTCOMPONENT55</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1104,9 +1216,14 @@
 		<row><td>ISSelfRegisterFinalize</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFinalize</td><td/><td/></row>
 		<row><td>ISSetAllUsers</td><td>257</td><td>SetAllUsers.dll</td><td>SetAllUsers</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISUnSelfRegisterFiles</td><td/><td/></row>
+		<row><td>InstallService</td><td>1106</td><td>dev2.server.exe</td><td>-i</td><td/><td/></row>
+		<row><td>RemoveServiceAfterUninstall</td><td>1122</td><td>SystemFolder</td><td>[SystemFolder]sc.exe delete "Warewolf Server"</td><td/><td/></row>
 		<row><td>SetARPINSTALLLOCATION</td><td>51</td><td>ARPINSTALLLOCATION</td><td>[INSTALLDIR]</td><td/><td/></row>
 		<row><td>SetAllUsersProfileNT</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%SystemRoot]\Profiles\All Users</td><td/><td/></row>
 		<row><td>ShowMsiLog</td><td>226</td><td>SystemFolder</td><td>[SystemFolder]notepad.exe "[MsiLogFileLocation]"</td><td/><td>Shows Property-driven MSI Log</td></row>
+		<row><td>StartServiceAfterMaintenance</td><td>82</td><td>dev2.server.exe</td><td>-s</td><td/><td/></row>
+		<row><td>StopServiceBeforeInstall</td><td>98</td><td>SystemFolder</td><td>[SystemFolder]sc.exe stop "Warewolf Server"</td><td/><td/></row>
+		<row><td>StopServiceBeforeMaintenance</td><td>98</td><td>SystemFolder</td><td>[SystemFolder]sc.exe stop "Warewolf Server"</td><td/><td/></row>
 		<row><td>setAllUsersProfile2K</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%ALLUSERSPROFILE]</td><td/><td/></row>
 		<row><td>setUserProfileNT</td><td>51</td><td>USERPROFILE</td><td>[%USERPROFILE]</td><td/><td/></row>
 	</table>
@@ -1169,41 +1286,123 @@
 		<row><td>ALLUSERSPROFILE</td><td>TARGETDIR</td><td>.:ALLUSE~1|All Users</td><td/><td>0</td><td/></row>
 		<row><td>AdminToolsFolder</td><td>TARGETDIR</td><td>.:Admint~1|AdminTools</td><td/><td>0</td><td/></row>
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
+		<row><td>BASE</td><td>THEMES1</td><td>base</td><td/><td>0</td><td/></row>
+		<row><td>BLACKTIE</td><td>THEMES</td><td>blacktie</td><td/><td>0</td><td/></row>
+		<row><td>CONTENT</td><td>WWWROOT</td><td>Content</td><td/><td>0</td><td/></row>
+		<row><td>CSS</td><td>BLACKTIE</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS1</td><td>CUPERTINO</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS2</td><td>DARKHIVE</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS3</td><td>EGGPLANT</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS4</td><td>MENUS</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS5</td><td>REDMOND</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS6</td><td>RELEASEENGINEERING</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS7</td><td>SMOOTHNESS</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS8</td><td>SYSTEM</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CSS9</td><td>SERVER</td><td>css</td><td/><td>0</td><td/></row>
+		<row><td>CUPERTINO</td><td>THEMES</td><td>CUPERT~1|cupertino</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
+		<row><td>DARKHIVE</td><td>THEMES</td><td>darkhive</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
-		<row><td>DEV2_STUDIO</td><td>WAREWOLF</td><td>Studio</td><td/><td>0</td><td/></row>
+		<row><td>DECISIONS</td><td>VIEWS</td><td>DECISI~1|Decisions</td><td/><td>0</td><td/></row>
+		<row><td>DEV2_SERVER_X64</td><td>ProgramFilesFolder</td><td>Warewolf</td><td/><td>0</td><td/></row>
+		<row><td>DIALOGS</td><td>VIEWS</td><td>Dialogs</td><td/><td>0</td><td/></row>
+		<row><td>DROPDOWN</td><td>CSS4</td><td>dropdown</td><td/><td>0</td><td/></row>
+		<row><td>DROPDOWN1</td><td>JS4</td><td>dropdown</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
+		<row><td>EGGPLANT</td><td>THEMES</td><td>eggplant</td><td/><td>0</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
-		<row><td>HELP</td><td>INSTALLDIR</td><td>Help</td><td/><td>0</td><td/></row>
-		<row><td>INSTALLDIR</td><td>DEV2_STUDIO</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>HELP</td><td>STUDIO</td><td>Help</td><td/><td>0</td><td/></row>
+		<row><td>ICONS</td><td>SERVER</td><td>icons</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES</td><td>CSS</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES1</td><td>BLACKTIE</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES10</td><td>RELEASEENGINEERING</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES11</td><td>CSS7</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES12</td><td>SMOOTHNESS</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES13</td><td>CSS8</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES14</td><td>SYSTEM</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES15</td><td>BASE</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES16</td><td>MINIFIED</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES17</td><td>WWWROOT</td><td>Images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES2</td><td>CSS1</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES3</td><td>CUPERTINO</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES4</td><td>CSS2</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES5</td><td>DARKHIVE</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES6</td><td>CSS3</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES7</td><td>EGGPLANT</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES8</td><td>CSS5</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES9</td><td>REDMOND</td><td>images</td><td/><td>0</td><td/></row>
+		<row><td>INSTALLDIR</td><td>DEV2_SERVER_X64</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
 		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>ISYourDataBaseDir</td><td>INSTALLDIR</td><td>Database</td><td/><td>0</td><td/></row>
-		<row><td>LOCALES</td><td>INSTALLDIR</td><td>locales</td><td/><td>0</td><td/></row>
+		<row><td>JS</td><td>BLACKTIE</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS1</td><td>CUPERTINO</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS2</td><td>DARKHIVE</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS3</td><td>EGGPLANT</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS4</td><td>MENUS</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS5</td><td>REDMOND</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS6</td><td>RELEASEENGINEERING</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS7</td><td>SMOOTHNESS</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>JS8</td><td>SYSTEM</td><td>js</td><td/><td>0</td><td/></row>
+		<row><td>LOCALES</td><td>STUDIO</td><td>locales</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
+		<row><td>MENUS</td><td>THEMES</td><td>menus</td><td/><td>0</td><td/></row>
+		<row><td>MINIFIED</td><td>BASE</td><td>minified</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>WAREWOLF</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY1</td><td>TARGETDIR</td><td>NEW_DIRECTORY1</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY10</td><td>TARGETDIR</td><td>NEW_DIRECTORY10</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY11</td><td>TARGETDIR</td><td>NEW_DIRECTORY11</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY12</td><td>TARGETDIR</td><td>NEW_DIRECTORY12</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY2</td><td>TARGETDIR</td><td>NEW_DIRECTORY2</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY3</td><td>TARGETDIR</td><td>NEW_DIRECTORY3</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY4</td><td>TARGETDIR</td><td>NEW_DIRECTORY4</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY5</td><td>TARGETDIR</td><td>NEW_DIRECTORY5</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY6</td><td>TARGETDIR</td><td>NEW_DIRECTORY6</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY7</td><td>TARGETDIR</td><td>NEW_DIRECTORY7</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY8</td><td>TARGETDIR</td><td>NEW_DIRECTORY8</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY9</td><td>TARGETDIR</td><td>NEW_DIRECTORY9</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
+		<row><td>PLUGINS</td><td>SERVER</td><td>Plugins</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
 		<row><td>PrintHoodFolder</td><td>TARGETDIR</td><td>.:PRINTH~1|PrintHood</td><td/><td>0</td><td/></row>
 		<row><td>ProgramFilesFolder</td><td>TARGETDIR</td><td>.:PROGRA~1|program files</td><td/><td>0</td><td/></row>
 		<row><td>ProgramMenuFolder</td><td>TARGETDIR</td><td>.:Programs</td><td/><td>3</td><td/></row>
+		<row><td>REDMOND</td><td>THEMES</td><td>redmond</td><td/><td>0</td><td/></row>
+		<row><td>RELEASEENGINEERING</td><td>THEMES</td><td>RELEAS~1|ReleaseEngineering</td><td/><td>0</td><td/></row>
 		<row><td>RecentFolder</td><td>TARGETDIR</td><td>.:Recent</td><td/><td>0</td><td/></row>
+		<row><td>SCRIPTS</td><td>SERVER</td><td>scripts</td><td/><td>0</td><td/></row>
+		<row><td>SCRIPTS1</td><td>WWWROOT</td><td>Scripts</td><td/><td>0</td><td/></row>
+		<row><td>SERVER</td><td>INSTALLDIR</td><td>Server</td><td/><td>0</td><td/></row>
+		<row><td>SERVICES</td><td>SERVER</td><td>Services</td><td/><td>0</td><td/></row>
+		<row><td>SERVICES1</td><td>VIEWS</td><td>Services</td><td/><td>0</td><td/></row>
+		<row><td>SKIN</td><td>JS8</td><td>skin</td><td/><td>0</td><td/></row>
+		<row><td>SMOOTHNESS</td><td>THEMES</td><td>SMOOTH~1|smoothness</td><td/><td>0</td><td/></row>
+		<row><td>SOURCES</td><td>SERVER</td><td>Sources</td><td/><td>0</td><td/></row>
+		<row><td>SOURCES1</td><td>VIEWS</td><td>Sources</td><td/><td>0</td><td/></row>
+		<row><td>STUDIO</td><td>INSTALLDIR</td><td>Studio</td><td/><td>0</td><td/></row>
+		<row><td>SWITCH</td><td>VIEWS</td><td>Switch</td><td/><td>0</td><td/></row>
+		<row><td>SYSTEM</td><td>THEMES</td><td>system</td><td/><td>0</td><td/></row>
 		<row><td>SendToFolder</td><td>TARGETDIR</td><td>.:SendTo</td><td/><td>3</td><td/></row>
 		<row><td>StartMenuFolder</td><td>TARGETDIR</td><td>.:STARTM~1|Start Menu</td><td/><td>3</td><td/></row>
 		<row><td>StartupFolder</td><td>TARGETDIR</td><td>.:StartUp</td><td/><td>3</td><td/></row>
 		<row><td>System16Folder</td><td>TARGETDIR</td><td>.:System</td><td/><td>0</td><td/></row>
 		<row><td>SystemFolder</td><td>TARGETDIR</td><td>.:System32</td><td/><td>0</td><td/></row>
 		<row><td>TARGETDIR</td><td/><td>SourceDir</td><td/><td>0</td><td/></row>
+		<row><td>THEMES</td><td>SERVER</td><td>themes</td><td/><td>0</td><td/></row>
+		<row><td>THEMES1</td><td>CONTENT</td><td>themes</td><td/><td>0</td><td/></row>
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
+		<row><td>VIEWS</td><td>WWWROOT</td><td>Views</td><td/><td>0</td><td/></row>
 		<row><td>WAREWOLF</td><td>ProgramFilesFolder</td><td>Warewolf</td><td/><td>0</td><td/></row>
+		<row><td>WEBS</td><td>SERVER</td><td>Webs</td><td/><td>0</td><td/></row>
+		<row><td>WWWROOT</td><td>WEBS</td><td>wwwroot</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>dev2</td><td>ProgramMenuFolder</td><td>Warewolf</td><td/><td>1</td><td/></row>
@@ -1902,33 +2101,121 @@
 		<row><td>AlwaysInstall</td><td>Caliburn.Micro.dll</td></row>
 		<row><td>AlwaysInstall</td><td>CefSharp.Wpf.dll</td></row>
 		<row><td>AlwaysInstall</td><td>CefSharp.dll</td></row>
+		<row><td>AlwaysInstall</td><td>CommandLine.dll</td></row>
+		<row><td>AlwaysInstall</td><td>DEV2.MultiPartFormPasser.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Activities.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Activities.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Common.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Common.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Composition.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Core.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Core.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Data.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Data.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Network.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Network.dll1</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Runtime.Services.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Runtime.WebServer.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Runtime.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Dev2.Server.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Studio.Core.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.Studio.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Dev2.UndoFramework.dll</td></row>
+		<row><td>AlwaysInstall</td><td>HttpFramework.dll</td></row>
 		<row><td>AlwaysInstall</td><td>ICSharpCode.AvalonEdit.dll</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT10</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT11</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT12</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT13</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT14</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT15</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT16</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT17</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT18</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT19</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT20</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT21</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT22</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT23</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT24</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT25</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT26</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT27</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT28</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT29</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT30</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT31</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT32</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT33</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT34</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT35</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT36</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT37</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT38</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT39</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT40</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT41</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT42</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT43</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT44</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT45</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT46</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT47</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT48</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT49</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT50</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT51</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT52</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT53</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT54</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT55</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT56</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT57</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT58</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT59</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT60</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT61</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT62</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT63</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT64</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT65</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT66</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT67</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT68</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT69</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT70</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT71</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT72</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT73</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td></row>
+		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.DockManager.v12.1.dll</td></row>
 		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td></row>
 		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.Math.v12.1.dll</td></row>
 		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.v12.1.dll</td></row>
+		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.v12.1.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Ionic.Zip.Reduced.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Ionic.Zip.Reduced.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Microsoft.Expression.Interactions.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Microsoft.Windows.Shell.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Newtonsoft.Json.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Newtonsoft.Json.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>RibbonControlsLibrary.dll</td></row>
 		<row><td>AlwaysInstall</td><td>System.Reactive.dll</td></row>
 		<row><td>AlwaysInstall</td><td>System.Windows.Interactivity.dll</td></row>
 		<row><td>AlwaysInstall</td><td>WPF.JoshSmith.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Weave.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Weave.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>avcodec_54.dll</td></row>
 		<row><td>AlwaysInstall</td><td>avformat_54.dll</td></row>
 		<row><td>AlwaysInstall</td><td>avutil_51.dll</td></row>
@@ -1952,101 +2239,620 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>_.gif</td><td>ISX_DEFAULTCOMPONENT6</td><td>3.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\3.gif</td><td>1</td><td/></row>
+		<row><td>_.gif1</td><td>ISX_DEFAULTCOMPONENT51</td><td>3.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\3.gif</td><td>1</td><td/></row>
+		<row><td>_references.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>_REFER~1.JS|_references.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\_references.js</td><td>1</td><td/></row>
+		<row><td>ace.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>ace.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\ace.js</td><td>1</td><td/></row>
+		<row><td>ace.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>ace.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\ace.js</td><td>1</td><td/></row>
 		<row><td>adornedcontrol.dll</td><td>AdornedControl.dll</td><td>ADORNE~1.DLL|AdornedControl.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\AdornedControl.dll</td><td>1</td><td/></row>
-		<row><td>am.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>am.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\am.pak</td><td>1</td><td/></row>
-		<row><td>ar.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ar.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ar.pak</td><td>1</td><td/></row>
+		<row><td>ajax_loader.gif</td><td>ISX_DEFAULTCOMPONENT64</td><td>AJAX-L~1.GIF|ajax-loader.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\ajax-loader.gif</td><td>1</td><td/></row>
+		<row><td>am.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>am.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\am.pak</td><td>1</td><td/></row>
+		<row><td>ar.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ar.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ar.pak</td><td>1</td><td/></row>
+		<row><td>arial.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>arial.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\arial.js</td><td>1</td><td/></row>
 		<row><td>avcodec_54.dll</td><td>avcodec_54.dll</td><td>AVCODE~1.DLL|avcodec-54.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\avcodec-54.dll</td><td>1</td><td/></row>
 		<row><td>avformat_54.dll</td><td>avformat_54.dll</td><td>AVFORM~1.DLL|avformat-54.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\avformat-54.dll</td><td>1</td><td/></row>
 		<row><td>avutil_51.dll</td><td>avutil_51.dll</td><td>AVUTIL~1.DLL|avutil-51.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\avutil-51.dll</td><td>1</td><td/></row>
-		<row><td>bg.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>bg.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\bg.pak</td><td>1</td><td/></row>
-		<row><td>bn.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>bn.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\bn.pak</td><td>1</td><td/></row>
-		<row><td>ca.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ca.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ca.pak</td><td>1</td><td/></row>
+		<row><td>basewizard.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>BASEWI~1.XML|BaseWizard.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\BaseWizard.xml</td><td>1</td><td/></row>
+		<row><td>bg.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>bg.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\bg.pak</td><td>1</td><td/></row>
+		<row><td>blacktie.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>BlackTie.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\BlackTie.xml</td><td>1</td><td/></row>
+		<row><td>bluestyle.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>BLUEST~1.CSS|bluestyle.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\bluestyle.css</td><td>1</td><td/></row>
+		<row><td>bn.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>bn.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\bn.pak</td><td>1</td><td/></row>
+		<row><td>bootstrapwebsite.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>BOOTST~1.XML|BootStrapWebsite.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\BootStrapWebsite.xml</td><td>1</td><td/></row>
+		<row><td>button.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>BUTTON~1.XML|Button.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Button.wiz.xml</td><td>1</td><td/></row>
+		<row><td>button.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Button.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Button.xml</td><td>1</td><td/></row>
+		<row><td>ca.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ca.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ca.pak</td><td>1</td><td/></row>
+		<row><td>calendar_day.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>CALEND~1.PNG|calendar-day.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\calendar-day.png</td><td>1</td><td/></row>
 		<row><td>caliburn.micro.dll</td><td>Caliburn.Micro.dll</td><td>CALIBU~1.DLL|Caliburn.Micro.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Caliburn.Micro.dll</td><td>1</td><td/></row>
 		<row><td>cefsharp.dll</td><td>CefSharp.dll</td><td>CefSharp.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\CefSharp.dll</td><td>1</td><td/></row>
 		<row><td>cefsharp.wpf.dll</td><td>CefSharp.Wpf.dll</td><td>CEFSHA~1.DLL|CefSharp.Wpf.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\CefSharp.Wpf.dll</td><td>1</td><td/></row>
+		<row><td>checkbox.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>CHECKB~1.XML|Checkbox.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Checkbox.wiz.xml</td><td>1</td><td/></row>
+		<row><td>checkbox.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Checkbox.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Checkbox.xml</td><td>1</td><td/></row>
 		<row><td>chrome.pak</td><td>ISX_DEFAULTCOMPONENT</td><td>chrome.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\chrome.pak</td><td>1</td><td/></row>
-		<row><td>cs.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>cs.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\cs.pak</td><td>1</td><td/></row>
+		<row><td>clientsidevalidationoptions.</td><td>ISX_DEFAULTCOMPONENT7</td><td>CLIENT~1.XML|ClientSideValidationOptions.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ClientSideValidationOptions.xml</td><td>1</td><td/></row>
+		<row><td>commandline.dll</td><td>CommandLine.dll</td><td>COMMAN~1.DLL|CommandLine.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\CommandLine.dll</td><td>1</td><td/></row>
+		<row><td>cross.png</td><td>ISX_DEFAULTCOMPONENT52</td><td>cross.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\images\cross.png</td><td>1</td><td/></row>
+		<row><td>cross.png1</td><td>ISX_DEFAULTCOMPONENT64</td><td>cross.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\cross.png</td><td>1</td><td/></row>
+		<row><td>cs.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>cs.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\cs.pak</td><td>1</td><td/></row>
+		<row><td>cssclassinject.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>CSSCLA~1.XML|CssClassInject.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\CssClassInject.xml</td><td>1</td><td/></row>
+		<row><td>cuf_run.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>cuf_run.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\cuf_run.js</td><td>1</td><td/></row>
+		<row><td>cufon_yui.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>CUFON-~1.JS|cufon-yui.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\cufon-yui.js</td><td>1</td><td/></row>
+		<row><td>cupertino.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>CUPERT~1.PNG|cupertino.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\cupertino.png</td><td>1</td><td/></row>
+		<row><td>cupertion.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>CUPERT~1.XML|Cupertion.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Cupertion.xml</td><td>1</td><td/></row>
+		<row><td>customscriptinject.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>CUSTOM~1.XML|CustomScriptInject.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\CustomScriptInject.xml</td><td>1</td><td/></row>
 		<row><td>d3dcompiler_43.dll</td><td>d3dcompiler_43.dll</td><td>D3DCOM~1.DLL|d3dcompiler_43.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\d3dcompiler_43.dll</td><td>1</td><td/></row>
 		<row><td>d3dx9_43.dll</td><td>d3dx9_43.dll</td><td>d3dx9_43.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\d3dx9_43.dll</td><td>1</td><td/></row>
-		<row><td>da.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>da.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\da.pak</td><td>1</td><td/></row>
-		<row><td>de.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>de.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\de.pak</td><td>1</td><td/></row>
+		<row><td>da.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>da.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\da.pak</td><td>1</td><td/></row>
+		<row><td>darkhive.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DarkHive.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\DarkHive.xml</td><td>1</td><td/></row>
+		<row><td>data_grid.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DATAGR~1.XML|Data Grid.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Data Grid.wiz.xml</td><td>1</td><td/></row>
+		<row><td>data_grid.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DATAGR~1.XML|Data Grid.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Data Grid.xml</td><td>1</td><td/></row>
+		<row><td>database.htm</td><td>ISX_DEFAULTCOMPONENT71</td><td>Database.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Sources\Database.htm</td><td>1</td><td/></row>
+		<row><td>database.service.setup.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>DATABA~1.JS|database.service.setup.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\database.service.setup.js</td><td>1</td><td/></row>
+		<row><td>database.service.setup.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>DATABA~1.JS|database.service.setup.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\database.service.setup.js</td><td>1</td><td/></row>
+		<row><td>database.source.management.j</td><td>ISX_DEFAULTCOMPONENT6</td><td>DATABA~1.JS|database.source.management.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\database.source.management.js</td><td>1</td><td/></row>
+		<row><td>database.source.management.j1</td><td>ISX_DEFAULTCOMPONENT53</td><td>DATABA~1.JS|database.source.management.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\database.source.management.js</td><td>1</td><td/></row>
+		<row><td>databasesourcemanagement.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DATABA~1.XML|DatabaseSourceManagement.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\DatabaseSourceManagement.xml</td><td>1</td><td/></row>
+		<row><td>databasestep2.htm</td><td>ISX_DEFAULTCOMPONENT70</td><td>DATABA~1.HTM|DatabaseStep2.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Services\DatabaseStep2.htm</td><td>1</td><td/></row>
+		<row><td>date.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>date.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\date.js</td><td>1</td><td/></row>
+		<row><td>date_picker.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DATEPI~1.XML|Date Picker.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Date Picker.wiz.xml</td><td>1</td><td/></row>
+		<row><td>date_picker.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DATEPI~1.XML|Date Picker.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Date Picker.xml</td><td>1</td><td/></row>
+		<row><td>de.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>de.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\de.pak</td><td>1</td><td/></row>
+		<row><td>demo_page.css</td><td>ISX_DEFAULTCOMPONENT41</td><td>DEMO_P~1.CSS|demo_page.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\demo_page.css</td><td>1</td><td/></row>
+		<row><td>demo_page.css1</td><td>ISX_DEFAULTCOMPONENT50</td><td>DEMO_P~1.CSS|demo_page.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\demo_page.css</td><td>1</td><td/></row>
+		<row><td>demo_page.css2</td><td>ISX_DEFAULTCOMPONENT73</td><td>DEMO_P~1.CSS|demo_page.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\demo_page.css</td><td>1</td><td/></row>
+		<row><td>demo_table.css</td><td>ISX_DEFAULTCOMPONENT41</td><td>DEMO_T~1.CSS|demo_table.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\demo_table.css</td><td>1</td><td/></row>
+		<row><td>demo_table.css1</td><td>ISX_DEFAULTCOMPONENT50</td><td>DEMO_T~1.CSS|demo_table.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\demo_table.css</td><td>1</td><td/></row>
+		<row><td>demo_table.css2</td><td>ISX_DEFAULTCOMPONENT73</td><td>DEMO_T~1.CSS|demo_table.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\demo_table.css</td><td>1</td><td/></row>
+		<row><td>demo_table_jui.css</td><td>ISX_DEFAULTCOMPONENT41</td><td>DEMO_T~1.CSS|demo_table_jui.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\demo_table_jui.css</td><td>1</td><td/></row>
+		<row><td>demo_table_jui.css1</td><td>ISX_DEFAULTCOMPONENT50</td><td>DEMO_T~1.CSS|demo_table_jui.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\demo_table_jui.css</td><td>1</td><td/></row>
+		<row><td>demo_table_jui.css2</td><td>ISX_DEFAULTCOMPONENT73</td><td>DEMO_T~1.CSS|demo_table_jui.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\demo_table_jui.css</td><td>1</td><td/></row>
 		<row><td>dev2.activities.dll</td><td>Dev2.Activities.dll</td><td>DEV2AC~1.DLL|Dev2.Activities.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Activities.dll</td><td>1</td><td/></row>
+		<row><td>dev2.activities.dll1</td><td>Dev2.Activities.dll1</td><td>DEV2AC~1.DLL|Dev2.Activities.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Activities.dll</td><td>1</td><td/></row>
 		<row><td>dev2.common.dll</td><td>Dev2.Common.dll</td><td>DEV2CO~1.DLL|Dev2.Common.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Common.dll</td><td>1</td><td/></row>
+		<row><td>dev2.common.dll1</td><td>Dev2.Common.dll1</td><td>DEV2CO~1.DLL|Dev2.Common.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Common.dll</td><td>1</td><td/></row>
 		<row><td>dev2.composition.dll</td><td>Dev2.Composition.dll</td><td>DEV2CO~1.DLL|Dev2.Composition.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Composition.dll</td><td>1</td><td/></row>
 		<row><td>dev2.core.dll</td><td>Dev2.Core.dll</td><td>DEV2CO~1.DLL|Dev2.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Core.dll</td><td>1</td><td/></row>
+		<row><td>dev2.core.dll1</td><td>Dev2.Core.dll1</td><td>DEV2CO~1.DLL|Dev2.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Core.dll</td><td>1</td><td/></row>
 		<row><td>dev2.data.dll</td><td>Dev2.Data.dll</td><td>DEV2DA~1.DLL|Dev2.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Data.dll</td><td>1</td><td/></row>
+		<row><td>dev2.data.dll1</td><td>Dev2.Data.dll1</td><td>DEV2DA~1.DLL|Dev2.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Data.dll</td><td>1</td><td/></row>
+		<row><td>dev2.multipartformpasser.dll</td><td>DEV2.MultiPartFormPasser.dll</td><td>DEV2MU~1.DLL|DEV2.MultiPartFormPasser.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\DEV2.MultiPartFormPasser.dll</td><td>1</td><td/></row>
 		<row><td>dev2.network.dll</td><td>Dev2.Network.dll</td><td>DEV2NE~1.DLL|Dev2.Network.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Network.dll</td><td>1</td><td/></row>
+		<row><td>dev2.network.dll1</td><td>Dev2.Network.dll1</td><td>DEV2NE~1.DLL|Dev2.Network.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Network.dll</td><td>1</td><td/></row>
+		<row><td>dev2.runtime.dll</td><td>Dev2.Runtime.dll</td><td>DEV2RU~1.DLL|Dev2.Runtime.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Runtime.dll</td><td>1</td><td/></row>
+		<row><td>dev2.runtime.services.dll</td><td>Dev2.Runtime.Services.dll</td><td>DEV2RU~1.DLL|Dev2.Runtime.Services.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Runtime.Services.dll</td><td>1</td><td/></row>
+		<row><td>dev2.runtime.webserver.dll</td><td>Dev2.Runtime.WebServer.dll</td><td>DEV2RU~1.DLL|Dev2.Runtime.WebServer.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Runtime.WebServer.dll</td><td>1</td><td/></row>
+		<row><td>dev2.server.exe</td><td>Dev2.Server.exe</td><td>DEV2SE~1.EXE|Dev2.Server.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>1</td><td/></row>
+		<row><td>dev2.server.exe.config</td><td>ISX_DEFAULTCOMPONENT1</td><td>DEV2SE~1.CON|Dev2.Server.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe.config</td><td>1</td><td/></row>
 		<row><td>dev2.studio.core.dll</td><td>Dev2.Studio.Core.dll</td><td>DEV2ST~1.DLL|Dev2.Studio.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.Core.dll</td><td>1</td><td/></row>
 		<row><td>dev2.studio.exe</td><td>Dev2.Studio.exe</td><td>DEV2ST~1.EXE|Dev2.Studio.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>1</td><td/></row>
 		<row><td>dev2.studio.exe.config</td><td>ISX_DEFAULTCOMPONENT</td><td>DEV2ST~1.CON|Dev2.Studio.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe.config</td><td>1</td><td/></row>
 		<row><td>dev2.undoframework.dll</td><td>Dev2.UndoFramework.dll</td><td>DEV2UN~1.DLL|Dev2.UndoFramework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.UndoFramework.dll</td><td>1</td><td/></row>
-		<row><td>el.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>el.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\el.pak</td><td>1</td><td/></row>
-		<row><td>en_gb.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>en-GB.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\en-GB.pak</td><td>1</td><td/></row>
-		<row><td>en_us.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>en-US.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\en-US.pak</td><td>1</td><td/></row>
-		<row><td>es.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>es.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\es.pak</td><td>1</td><td/></row>
-		<row><td>es_419.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>es-419.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\es-419.pak</td><td>1</td><td/></row>
-		<row><td>et.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>et.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\et.pak</td><td>1</td><td/></row>
-		<row><td>fa.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>fa.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fa.pak</td><td>1</td><td/></row>
-		<row><td>fi.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>fi.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fi.pak</td><td>1</td><td/></row>
-		<row><td>fil.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>fil.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fil.pak</td><td>1</td><td/></row>
-		<row><td>fr.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>fr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fr.pak</td><td>1</td><td/></row>
-		<row><td>gu.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>gu.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\gu.pak</td><td>1</td><td/></row>
-		<row><td>he.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>he.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\he.pak</td><td>1</td><td/></row>
-		<row><td>hi.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>hi.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\hi.pak</td><td>1</td><td/></row>
-		<row><td>hr.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>hr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\hr.pak</td><td>1</td><td/></row>
-		<row><td>hu.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>hu.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\hu.pak</td><td>1</td><td/></row>
+		<row><td>dev2dropdownmenu.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DEV2DR~1.XML|Dev2DropDownMenu.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Dev2DropDownMenu.wiz.xml</td><td>1</td><td/></row>
+		<row><td>dev2dropdownmenu.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DEV2DR~1.XML|Dev2DropDownMenu.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Dev2DropDownMenu.xml</td><td>1</td><td/></row>
+		<row><td>dev2js.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>Dev2JS.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\Dev2JS.js</td><td>1</td><td/></row>
+		<row><td>dev2servicedetails.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DEV2SE~1.XML|Dev2ServiceDetails.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Dev2ServiceDetails.xml</td><td>1</td><td/></row>
+		<row><td>drag.htm</td><td>ISX_DEFAULTCOMPONENT72</td><td>Drag.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Switch\Drag.htm</td><td>1</td><td/></row>
+		<row><td>drive_upload.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>DRIVE-~1.PNG|drive-upload.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\drive-upload.png</td><td>1</td><td/></row>
+		<row><td>drop.htm</td><td>ISX_DEFAULTCOMPONENT72</td><td>Drop.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Switch\Drop.htm</td><td>1</td><td/></row>
+		<row><td>drop_down_list.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DROPDO~1.XML|Drop Down List.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Drop Down List.wiz.xml</td><td>1</td><td/></row>
+		<row><td>drop_down_list.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DROPDO~1.XML|Drop Down List.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Drop Down List.xml</td><td>1</td><td/></row>
+		<row><td>dropdown.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>dropdown.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\dropdown.png</td><td>1</td><td/></row>
+		<row><td>dynamicwebpartgeneration.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>DYNAMI~1.XML|DynamicWebpartGeneration.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\DynamicWebpartGeneration.xml</td><td>1</td><td/></row>
+		<row><td>eggplant.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Eggplant.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Eggplant.xml</td><td>1</td><td/></row>
+		<row><td>el.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>el.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\el.pak</td><td>1</td><td/></row>
+		<row><td>en_gb.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>en-GB.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\en-GB.pak</td><td>1</td><td/></row>
+		<row><td>en_us.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>en-US.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\en-US.pak</td><td>1</td><td/></row>
+		<row><td>error.png</td><td>ISX_DEFAULTCOMPONENT64</td><td>error.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\error.png</td><td>1</td><td/></row>
+		<row><td>es.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>es.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\es.pak</td><td>1</td><td/></row>
+		<row><td>es_419.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>es-419.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\es-419.pak</td><td>1</td><td/></row>
+		<row><td>et.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>et.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\et.pak</td><td>1</td><td/></row>
+		<row><td>fa.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>fa.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fa.pak</td><td>1</td><td/></row>
+		<row><td>favicon.ico</td><td>ISX_DEFAULTCOMPONENT56</td><td>favicon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\favicon.ico</td><td>1</td><td/></row>
+		<row><td>fetchdynamicgriddata.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>FETCHD~1.XML|FetchDynamicGridData.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\FetchDynamicGridData.xml</td><td>1</td><td/></row>
+		<row><td>fetchdynamicwebpartdata.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>FETCHD~1.XML|FetchDynamicWebpartData.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\FetchDynamicWebpartData.xml</td><td>1</td><td/></row>
+		<row><td>fi.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>fi.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fi.pak</td><td>1</td><td/></row>
+		<row><td>fil.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>fil.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fil.pak</td><td>1</td><td/></row>
+		<row><td>file.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>FILEWI~1.XML|File.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\File.wiz.xml</td><td>1</td><td/></row>
+		<row><td>file.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>File.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\File.xml</td><td>1</td><td/></row>
+		<row><td>fileinput.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>FILEIN~1.CSS|fileInput.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\fileInput.css</td><td>1</td><td/></row>
+		<row><td>folder_open.png</td><td>ISX_DEFAULTCOMPONENT64</td><td>FOLDER~1.PNG|folder-open.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\folder-open.png</td><td>1</td><td/></row>
+		<row><td>fr.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>fr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\fr.pak</td><td>1</td><td/></row>
+		<row><td>general.htm</td><td>ISX_DEFAULTCOMPONENT70</td><td>General.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Services\General.htm</td><td>1</td><td/></row>
+		<row><td>grid.custom.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>GRIDCU~1.CSS|grid.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\grid.custom.css</td><td>1</td><td/></row>
+		<row><td>gu.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>gu.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\gu.pak</td><td>1</td><td/></row>
+		<row><td>he.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>he.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\he.pak</td><td>1</td><td/></row>
+		<row><td>helpregion.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>HELPRE~1.XML|HelpRegion.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\HelpRegion.wiz.xml</td><td>1</td><td/></row>
+		<row><td>helpregion.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>HELPRE~1.XML|HelpRegion.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\HelpRegion.xml</td><td>1</td><td/></row>
+		<row><td>hi.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>hi.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\hi.pak</td><td>1</td><td/></row>
+		<row><td>hr.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>hr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\hr.pak</td><td>1</td><td/></row>
+		<row><td>html.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>HTML.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\HTML.png</td><td>1</td><td/></row>
+		<row><td>htmlwidget.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>HTMLWI~1.XML|HtmlWidget.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\HtmlWidget.wiz.xml</td><td>1</td><td/></row>
+		<row><td>htmlwidget.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>HTMLWI~1.XML|HtmlWidget.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\HtmlWidget.xml</td><td>1</td><td/></row>
+		<row><td>httpframework.dll</td><td>HttpFramework.dll</td><td>HTTPFR~1.DLL|HttpFramework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\HttpFramework.dll</td><td>1</td><td/></row>
+		<row><td>hu.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>hu.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\hu.pak</td><td>1</td><td/></row>
+		<row><td>icons.gif</td><td>ISX_DEFAULTCOMPONENT50</td><td>icons.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\icons.gif</td><td>1</td><td/></row>
+		<row><td>icons.gif1</td><td>ISX_DEFAULTCOMPONENT73</td><td>icons.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\icons.gif</td><td>1</td><td/></row>
 		<row><td>icsharpcode.avalonedit.dll</td><td>ICSharpCode.AvalonEdit.dll</td><td>ICSHAR~1.DLL|ICSharpCode.AvalonEdit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\ICSharpCode.AvalonEdit.dll</td><td>1</td><td/></row>
 		<row><td>icudt.dll</td><td>icudt.dll</td><td>icudt.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\icudt.dll</td><td>1</td><td/></row>
-		<row><td>id.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>id.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\id.pak</td><td>1</td><td/></row>
+		<row><td>id.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>id.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\id.pak</td><td>1</td><td/></row>
+		<row><td>image.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>image.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\image.png</td><td>1</td><td/></row>
+		<row><td>image.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>IMAGEW~1.XML|Image.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Image.wiz.xml</td><td>1</td><td/></row>
+		<row><td>image.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Image.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Image.xml</td><td>1</td><td/></row>
+		<row><td>index.html</td><td>ISX_DEFAULTCOMPONENT10</td><td>INDEX~1.HTM|index.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\index.html</td><td>1</td><td/></row>
+		<row><td>index.html1</td><td>ISX_DEFAULTCOMPONENT15</td><td>INDEX~1.HTM|index.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\index.html</td><td>1</td><td/></row>
+		<row><td>index.html2</td><td>ISX_DEFAULTCOMPONENT20</td><td>INDEX~1.HTM|index.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\index.html</td><td>1</td><td/></row>
+		<row><td>index.html3</td><td>ISX_DEFAULTCOMPONENT25</td><td>INDEX~1.HTM|index.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\index.html</td><td>1</td><td/></row>
+		<row><td>index.html4</td><td>ISX_DEFAULTCOMPONENT35</td><td>INDEX~1.HTM|index.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\index.html</td><td>1</td><td/></row>
+		<row><td>index.html5</td><td>ISX_DEFAULTCOMPONENT44</td><td>INDEX~1.HTM|index.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\index.html</td><td>1</td><td/></row>
 		<row><td>infragisticswpf4.calculation</td><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>INFRAG~1.DLL|InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>1</td><td/></row>
+		<row><td>infragisticswpf4.calculation1</td><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td>INFRAG~1.DLL|InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>1</td><td/></row>
 		<row><td>infragisticswpf4.dockmanager</td><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td>INFRAG~1.DLL|InfragisticsWPF4.DockManager.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\InfragisticsWPF4.DockManager.v12.1.dll</td><td>1</td><td/></row>
 		<row><td>infragisticswpf4.math.calcul</td><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>INFRAG~1.DLL|InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td>1</td><td/></row>
 		<row><td>infragisticswpf4.math.v12.1.</td><td>InfragisticsWPF4.Math.v12.1.dll</td><td>INFRAG~1.DLL|InfragisticsWPF4.Math.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\InfragisticsWPF4.Math.v12.1.dll</td><td>1</td><td/></row>
 		<row><td>infragisticswpf4.math.v12.1.1</td><td>ISX_DEFAULTCOMPONENT</td><td>INFRAG~1.XML|InfragisticsWPF4.Math.v12.1.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\InfragisticsWPF4.Math.v12.1.xml</td><td>1</td><td/></row>
 		<row><td>infragisticswpf4.v12.1.dll</td><td>InfragisticsWPF4.v12.1.dll</td><td>INFRAG~1.DLL|InfragisticsWPF4.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\InfragisticsWPF4.v12.1.dll</td><td>1</td><td/></row>
+		<row><td>infragisticswpf4.v12.1.dll1</td><td>InfragisticsWPF4.v12.1.dll1</td><td>INFRAG~1.DLL|InfragisticsWPF4.v12.1.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\InfragisticsWPF4.v12.1.dll</td><td>1</td><td/></row>
+		<row><td>injectlabel_new.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>INJECT~1.XML|InjectLabel_New.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\InjectLabel_New.xml</td><td>1</td><td/></row>
+		<row><td>injectrequiredtracking.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>INJECT~1.XML|InjectRequiredTracking.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\InjectRequiredTracking.xml</td><td>1</td><td/></row>
+		<row><td>io_mapping_setup.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>IO_MAP~1.JS|io_mapping_setup.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\io_mapping_setup.js</td><td>1</td><td/></row>
+		<row><td>io_mapping_setup.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>IO_MAP~1.JS|io_mapping_setup.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\io_mapping_setup.js</td><td>1</td><td/></row>
 		<row><td>ionic.zip.reduced.dll</td><td>Ionic.Zip.Reduced.dll</td><td>IONICZ~1.DLL|Ionic.Zip.Reduced.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Ionic.Zip.Reduced.dll</td><td>1</td><td/></row>
-		<row><td>it.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>it.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\it.pak</td><td>1</td><td/></row>
-		<row><td>ja.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ja.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ja.pak</td><td>1</td><td/></row>
-		<row><td>kn.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>kn.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\kn.pak</td><td>1</td><td/></row>
-		<row><td>ko.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ko.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ko.pak</td><td>1</td><td/></row>
+		<row><td>ionic.zip.reduced.dll1</td><td>Ionic.Zip.Reduced.dll1</td><td>IONICZ~1.DLL|Ionic.Zip.Reduced.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Ionic.Zip.Reduced.dll</td><td>1</td><td/></row>
+		<row><td>it.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>it.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\it.pak</td><td>1</td><td/></row>
+		<row><td>ja.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ja.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ja.pak</td><td>1</td><td/></row>
+		<row><td>javascript.file.template.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JAVASC~1.JS|javascript.file.template.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\javascript.file.template.js</td><td>1</td><td/></row>
+		<row><td>jquery.datatables.min.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.dynatree.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery.dynatree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.dynatree.js</td><td>1</td><td/></row>
+		<row><td>jquery.dynatree.js1</td><td>ISX_DEFAULTCOMPONENT43</td><td>JQUERY~1.JS|jquery.dynatree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\jquery.dynatree.js</td><td>1</td><td/></row>
+		<row><td>jquery.dynatree.js2</td><td>ISX_DEFAULTCOMPONENT53</td><td>JQUERY~1.JS|jquery.dynatree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\jquery.dynatree.js</td><td>1</td><td/></row>
+		<row><td>jquery.guid.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.Guid.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.Guid.js</td><td>1</td><td/></row>
+		<row><td>jquery.jeditable.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery.jeditable.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.jeditable.js</td><td>1</td><td/></row>
+		<row><td>jquery.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>jquery.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.js</td><td>1</td><td/></row>
+		<row><td>jquery.jstree.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery.jstree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.jstree.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js1</td><td>ISX_DEFAULTCOMPONENT14</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js2</td><td>ISX_DEFAULTCOMPONENT19</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js3</td><td>ISX_DEFAULTCOMPONENT24</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js4</td><td>ISX_DEFAULTCOMPONENT29</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js5</td><td>ISX_DEFAULTCOMPONENT39</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js6</td><td>ISX_DEFAULTCOMPONENT43</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js7</td><td>ISX_DEFAULTCOMPONENT48</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.min.js8</td><td>ISX_DEFAULTCOMPONENT53</td><td>JQUERY~1.JS|jquery.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\jquery.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.scrollto_1.4.3.1.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.scrollTo-1.4.3.1.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.scrollTo-1.4.3.1.js</td><td>1</td><td/></row>
+		<row><td>jquery.treeview.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>JQUERY~1.CSS|jquery.treeview.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\jquery.treeview.css</td><td>1</td><td/></row>
+		<row><td>jquery.treeview.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery.treeview.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery.treeview.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.accordion.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.accordion.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.accordion.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.accordion.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.accordion.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.accordion.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.all.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.all.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.all.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.autocomplete.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.autocomplete.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.autocomplete.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.autocomplete.min.c</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.autocomplete.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.autocomplete.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.base.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.base.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.base.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.button.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.button.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.button.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.button.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.button.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.core.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.core.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.core.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.core.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.core.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.core.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.datepicker.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.datepicker.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.datepicker.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.datepicker.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.datepicker.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.datepicker.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.dialog.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.dialog.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.dialog.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.dialog.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.dialog.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.dialog.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js</td><td>ISX_DEFAULTCOMPONENT14</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js1</td><td>ISX_DEFAULTCOMPONENT19</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js2</td><td>ISX_DEFAULTCOMPONENT24</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js3</td><td>ISX_DEFAULTCOMPONENT29</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js4</td><td>ISX_DEFAULTCOMPONENT39</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js5</td><td>ISX_DEFAULTCOMPONENT43</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js6</td><td>ISX_DEFAULTCOMPONENT48</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.min.js7</td><td>ISX_DEFAULTCOMPONENT53</td><td>JQUERY~1.JS|jquery.ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\jquery.ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.potato.menu.css</td><td>ISX_DEFAULTCOMPONENT32</td><td>JQUERY~1.CSS|jquery.ui.potato.menu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\menus\css\dropdown\jquery.ui.potato.menu.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.potato.menu.js</td><td>ISX_DEFAULTCOMPONENT34</td><td>JQUERY~1.JS|jquery.ui.potato.menu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\menus\js\dropdown\jquery.ui.potato.menu.js</td><td>1</td><td/></row>
+		<row><td>jquery.ui.progressbar.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.progressbar.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.progressbar.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.progressbar.min.cs</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.progressbar.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.progressbar.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.resizable.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.resizable.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.resizable.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.resizable.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.resizable.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.resizable.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.selectable.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.selectable.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.selectable.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.selectable.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.selectable.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.selectable.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.slider.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.slider.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.slider.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.slider.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.slider.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.slider.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.tabs.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.tabs.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.tabs.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.tabs.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.tabs.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.tabs.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.theme.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery.ui.theme.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery.ui.theme.css</td><td>1</td><td/></row>
+		<row><td>jquery.ui.theme.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery.ui.theme.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.theme.min.css</td><td>1</td><td/></row>
+		<row><td>jquery.unobtrusive_ajax.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.unobtrusive-ajax.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.unobtrusive-ajax.js</td><td>1</td><td/></row>
+		<row><td>jquery.unobtrusive_ajax.min.</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.unobtrusive-ajax.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.unobtrusive-ajax.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.validate.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.validate.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.validate.js</td><td>1</td><td/></row>
+		<row><td>jquery.validate.min.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.validate.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.validate.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.validate.unobtrusive.</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.validate.unobtrusive.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.validate.unobtrusive.js</td><td>1</td><td/></row>
+		<row><td>jquery.validate.unobtrusive.1</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.validate.unobtrusive.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.validate.unobtrusive.min.js</td><td>1</td><td/></row>
+		<row><td>jquery.validate_vsdoc.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery.validate-vsdoc.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery.validate-vsdoc.js</td><td>1</td><td/></row>
+		<row><td>jquery_1.7.1.intellisense.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery-1.7.1.intellisense.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery-1.7.1.intellisense.js</td><td>1</td><td/></row>
+		<row><td>jquery_1.7.1.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery-1.7.1.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery-1.7.1.js</td><td>1</td><td/></row>
+		<row><td>jquery_1.7.1.min.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery-1.7.1.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery-1.7.1.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.css</td><td>ISX_DEFAULTCOMPONENT59</td><td>JQUERY~1.CSS|jquery-ui.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\jquery-ui.css</td><td>1</td><td/></row>
+		<row><td>jquery_ui.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>JQUERY~1.JS|jquery-ui.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\jquery-ui.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.css</td><td>ISX_DEFAULTCOMPONENT61</td><td>JQUERY~1.CSS|jquery-ui.min.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\jquery-ui.min.css</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.js</td><td>ISX_DEFAULTCOMPONENT14</td><td>JQUERY~1.JS|jquery-ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\jquery-ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.js1</td><td>ISX_DEFAULTCOMPONENT19</td><td>JQUERY~1.JS|jquery-ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\jquery-ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.js2</td><td>ISX_DEFAULTCOMPONENT24</td><td>JQUERY~1.JS|jquery-ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\jquery-ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.js3</td><td>ISX_DEFAULTCOMPONENT29</td><td>JQUERY~1.JS|jquery-ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\jquery-ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.js4</td><td>ISX_DEFAULTCOMPONENT39</td><td>JQUERY~1.JS|jquery-ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\jquery-ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui.min.js5</td><td>ISX_DEFAULTCOMPONENT48</td><td>JQUERY~1.JS|jquery-ui.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\jquery-ui.min.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui_1.8.16.custom.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>JQUERY~1.CSS|jquery-ui-1.8.16.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\jquery-ui-1.8.16.custom.css</td><td>1</td><td/></row>
+		<row><td>jquery_ui_1.8.20.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery-ui-1.8.20.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery-ui-1.8.20.js</td><td>1</td><td/></row>
+		<row><td>jquery_ui_1.8.20.min.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>JQUERY~1.JS|jquery-ui-1.8.20.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\jquery-ui-1.8.20.min.js</td><td>1</td><td/></row>
+		<row><td>json2.js</td><td>ISX_DEFAULTCOMPONENT43</td><td>json2.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\json2.js</td><td>1</td><td/></row>
+		<row><td>json2.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>json2.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\json2.js</td><td>1</td><td/></row>
+		<row><td>kn.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>kn.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\kn.pak</td><td>1</td><td/></row>
+		<row><td>knockout.validation.min.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>KNOCKO~1.JS|knockout.validation.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\knockout.validation.min.js</td><td>1</td><td/></row>
+		<row><td>knockout_2.1.0.debug.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>KNOCKO~1.JS|knockout-2.1.0.debug.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\knockout-2.1.0.debug.js</td><td>1</td><td/></row>
+		<row><td>knockout_2.1.0.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>KNOCKO~1.JS|knockout-2.1.0.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\knockout-2.1.0.js</td><td>1</td><td/></row>
+		<row><td>knockout_2.2.1.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>KNOCKO~1.JS|knockout-2.2.1.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\knockout-2.2.1.js</td><td>1</td><td/></row>
+		<row><td>ko.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ko.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ko.pak</td><td>1</td><td/></row>
+		<row><td>label.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>LABELW~1.XML|Label.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Label.wiz.xml</td><td>1</td><td/></row>
+		<row><td>label.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Label.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Label.xml</td><td>1</td><td/></row>
+		<row><td>layout.htm</td><td>ISX_DEFAULTCOMPONENT56</td><td>Layout.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Layout.htm</td><td>1</td><td/></row>
 		<row><td>libcef.dll</td><td>libcef.dll</td><td>libcef.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\libcef.dll</td><td>1</td><td/></row>
 		<row><td>libegl.dll</td><td>libEGL.dll</td><td>libEGL.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\libEGL.dll</td><td>1</td><td/></row>
 		<row><td>libglesv2.dll</td><td>libGLESv2.dll</td><td>LIBGLE~1.DLL|libGLESv2.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\libGLESv2.dll</td><td>1</td><td/></row>
-		<row><td>lt.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>lt.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\lt.pak</td><td>1</td><td/></row>
-		<row><td>lv.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>lv.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\lv.pak</td><td>1</td><td/></row>
+		<row><td>lightness.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>LIGHTN~1.PNG|lightness.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\lightness.png</td><td>1</td><td/></row>
+		<row><td>link.gif</td><td>ISX_DEFAULTCOMPONENT51</td><td>link.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\link.gif</td><td>1</td><td/></row>
+		<row><td>link.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>LINKWI~1.XML|Link.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Link.wiz.xml</td><td>1</td><td/></row>
+		<row><td>link.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Link.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Link.xml</td><td>1</td><td/></row>
+		<row><td>link_16x16.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>LINK_1~1.PNG|Link_16x16.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\Link_16x16.png</td><td>1</td><td/></row>
+		<row><td>link_top.gif</td><td>ISX_DEFAULTCOMPONENT51</td><td>link_top.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\link_top.gif</td><td>1</td><td/></row>
+		<row><td>listservices.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>LISTSE~1.XML|ListServices.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ListServices.xml</td><td>1</td><td/></row>
+		<row><td>literalcontrol.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>LITERA~1.XML|LiteralControl.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\LiteralControl.wiz.xml</td><td>1</td><td/></row>
+		<row><td>loading.gif</td><td>ISX_DEFAULTCOMPONENT73</td><td>loading.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\loading.gif</td><td>1</td><td/></row>
+		<row><td>lt.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>lt.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\lt.pak</td><td>1</td><td/></row>
+		<row><td>lv.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>lv.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\lv.pak</td><td>1</td><td/></row>
+		<row><td>menuidgeneration.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>MENUID~1.XML|MenuIDGeneration.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\MenuIDGeneration.xml</td><td>1</td><td/></row>
 		<row><td>microsoft.expression.interac</td><td>Microsoft.Expression.Interactions.dll</td><td>MICROS~1.DLL|Microsoft.Expression.Interactions.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Microsoft.Expression.Interactions.dll</td><td>1</td><td/></row>
 		<row><td>microsoft.windows.shell.dll</td><td>Microsoft.Windows.Shell.dll</td><td>MICROS~1.DLL|Microsoft.Windows.Shell.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Microsoft.Windows.Shell.dll</td><td>1</td><td/></row>
-		<row><td>ml.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ml.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ml.pak</td><td>1</td><td/></row>
-		<row><td>mr.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>mr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\mr.pak</td><td>1</td><td/></row>
-		<row><td>ms.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ms.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ms.pak</td><td>1</td><td/></row>
-		<row><td>nb.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>nb.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\nb.pak</td><td>1</td><td/></row>
+		<row><td>ml.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ml.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ml.pak</td><td>1</td><td/></row>
+		<row><td>mode_css.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>mode-css.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\mode-css.js</td><td>1</td><td/></row>
+		<row><td>mode_css.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>mode-css.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\mode-css.js</td><td>1</td><td/></row>
+		<row><td>mode_html.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>MODE-H~1.JS|mode-html.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\mode-html.js</td><td>1</td><td/></row>
+		<row><td>mode_html.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>MODE-H~1.JS|mode-html.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\mode-html.js</td><td>1</td><td/></row>
+		<row><td>mode_javascript.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>MODE-J~1.JS|mode-javascript.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\mode-javascript.js</td><td>1</td><td/></row>
+		<row><td>mode_javascript.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>MODE-J~1.JS|mode-javascript.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\mode-javascript.js</td><td>1</td><td/></row>
+		<row><td>mode_sql.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>mode-sql.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\mode-sql.js</td><td>1</td><td/></row>
+		<row><td>mode_sql.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>mode-sql.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\mode-sql.js</td><td>1</td><td/></row>
+		<row><td>mode_xml.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>mode-xml.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\mode-xml.js</td><td>1</td><td/></row>
+		<row><td>mode_xml.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>mode-xml.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\mode-xml.js</td><td>1</td><td/></row>
+		<row><td>modernizr.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>MODERN~1.JS|modernizr.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\modernizr.js</td><td>1</td><td/></row>
+		<row><td>modernizr_2.5.3.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>MODERN~1.JS|modernizr-2.5.3.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\modernizr-2.5.3.js</td><td>1</td><td/></row>
+		<row><td>mr.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>mr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\mr.pak</td><td>1</td><td/></row>
+		<row><td>ms.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ms.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ms.pak</td><td>1</td><td/></row>
+		<row><td>nameregion.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>NAMERE~1.XML|NameRegion.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\NameRegion.wiz.xml</td><td>1</td><td/></row>
+		<row><td>nameregion.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>NAMERE~1.XML|NameRegion.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\NameRegion.xml</td><td>1</td><td/></row>
+		<row><td>nb.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>nb.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\nb.pak</td><td>1</td><td/></row>
 		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Newtonsoft.Json.dll</td><td>1</td><td/></row>
-		<row><td>nl.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>nl.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\nl.pak</td><td>1</td><td/></row>
-		<row><td>pl.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>pl.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\pl.pak</td><td>1</td><td/></row>
-		<row><td>pt_br.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>pt-BR.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\pt-BR.pak</td><td>1</td><td/></row>
-		<row><td>pt_pt.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>pt-PT.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\pt-PT.pak</td><td>1</td><td/></row>
+		<row><td>newtonsoft.json.dll1</td><td>Newtonsoft.Json.dll1</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Newtonsoft.Json.dll</td><td>1</td><td/></row>
+		<row><td>nl.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>nl.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\nl.pak</td><td>1</td><td/></row>
+		<row><td>objtree.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>ObjTree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\ObjTree.js</td><td>1</td><td/></row>
+		<row><td>objtree.js1</td><td>ISX_DEFAULTCOMPONENT43</td><td>ObjTree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\ObjTree.js</td><td>1</td><td/></row>
+		<row><td>objtree.js2</td><td>ISX_DEFAULTCOMPONENT53</td><td>ObjTree.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\ObjTree.js</td><td>1</td><td/></row>
+		<row><td>password.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>PASSWO~1.XML|Password.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Password.wiz.xml</td><td>1</td><td/></row>
+		<row><td>password.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Password.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Password.xml</td><td>1</td><td/></row>
+		<row><td>passwordwizardvalidationopti</td><td>ISX_DEFAULTCOMPONENT7</td><td>PASSWO~1.XML|PasswordWizardValidationOptions.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\PasswordWizardValidationOptions.xml</td><td>1</td><td/></row>
+		<row><td>pl.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>pl.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\pl.pak</td><td>1</td><td/></row>
+		<row><td>placeme_1.0.js</td><td>ISX_DEFAULTCOMPONENT66</td><td>PLACEM~1.JS|placeMe-1.0.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Scripts\placeMe-1.0.js</td><td>1</td><td/></row>
+		<row><td>plainwebsite.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>PLAINW~1.CSS|plainwebsite.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\plainwebsite.css</td><td>1</td><td/></row>
+		<row><td>plugin.source.management.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>PLUGIN~1.JS|plugin.source.management.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\plugin.source.management.js</td><td>1</td><td/></row>
+		<row><td>plugin.source.management.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>PLUGIN~1.JS|plugin.source.management.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\plugin.source.management.js</td><td>1</td><td/></row>
+		<row><td>plugin_step2.js</td><td>ISX_DEFAULTCOMPONENT53</td><td>PLUGIN~1.JS|plugin_step2.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\plugin_step2.js</td><td>1</td><td/></row>
+		<row><td>pluginsourcemanagement.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>PLUGIN~1.XML|PluginSourceManagement.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\PluginSourceManagement.xml</td><td>1</td><td/></row>
+		<row><td>popout.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>popout.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\popout.png</td><td>1</td><td/></row>
+		<row><td>prowebsite.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>PROWEB~1.CSS|prowebsite.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\prowebsite.css</td><td>1</td><td/></row>
+		<row><td>pt_br.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>pt-BR.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\pt-BR.pak</td><td>1</td><td/></row>
+		<row><td>pt_pt.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>pt-PT.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\pt-PT.pak</td><td>1</td><td/></row>
+		<row><td>radio_button.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>RADIOB~1.XML|Radio Button.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Radio Button.wiz.xml</td><td>1</td><td/></row>
+		<row><td>radio_button.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>RADIOB~1.XML|Radio Button.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Radio Button.xml</td><td>1</td><td/></row>
+		<row><td>radius.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>radius.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\radius.js</td><td>1</td><td/></row>
+		<row><td>redmond.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Redmond.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Redmond.xml</td><td>1</td><td/></row>
+		<row><td>replacepartwitherrormsg.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>REPLAC~1.XML|ReplacePartWithErrorMsg.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ReplacePartWithErrorMsg.xml</td><td>1</td><td/></row>
 		<row><td>ribboncontrolslibrary.dll</td><td>RibbonControlsLibrary.dll</td><td>RIBBON~1.DLL|RibbonControlsLibrary.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\RibbonControlsLibrary.dll</td><td>1</td><td/></row>
-		<row><td>ro.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ro.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ro.pak</td><td>1</td><td/></row>
-		<row><td>ru.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ru.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ru.pak</td><td>1</td><td/></row>
-		<row><td>sk.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>sk.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sk.pak</td><td>1</td><td/></row>
-		<row><td>sl.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>sl.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sl.pak</td><td>1</td><td/></row>
-		<row><td>sr.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>sr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sr.pak</td><td>1</td><td/></row>
-		<row><td>studiohomepage.htm</td><td>ISX_DEFAULTCOMPONENT1</td><td>STUDIO~1.HTM|StudioHomepage.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Help\StudioHomepage.htm</td><td>1</td><td/></row>
-		<row><td>studioshortcutkeys.htm</td><td>ISX_DEFAULTCOMPONENT1</td><td>STUDIO~1.HTM|StudioShortCutKeys.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Help\StudioShortCutKeys.htm</td><td>1</td><td/></row>
-		<row><td>sv.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>sv.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sv.pak</td><td>1</td><td/></row>
-		<row><td>sw.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>sw.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sw.pak</td><td>1</td><td/></row>
+		<row><td>ro.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ro.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ro.pak</td><td>1</td><td/></row>
+		<row><td>ru.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ru.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ru.pak</td><td>1</td><td/></row>
+		<row><td>savedialog.htm</td><td>ISX_DEFAULTCOMPONENT69</td><td>SAVEDI~1.HTM|SaveDialog.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Dialogs\SaveDialog.htm</td><td>1</td><td/></row>
+		<row><td>scriptarea.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>SCRIPT~1.XML|ScriptArea.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ScriptArea.wiz.xml</td><td>1</td><td/></row>
+		<row><td>scriptarea.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>SCRIPT~1.XML|ScriptArea.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ScriptArea.xml</td><td>1</td><td/></row>
+		<row><td>search.png</td><td>ISX_DEFAULTCOMPONENT64</td><td>search.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\search.png</td><td>1</td><td/></row>
+		<row><td>server.htm</td><td>ISX_DEFAULTCOMPONENT71</td><td>Server.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Sources\Server.htm</td><td>1</td><td/></row>
+		<row><td>service.details.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>SERVIC~1.JS|service.details.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\service.details.js</td><td>1</td><td/></row>
+		<row><td>service.details.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>SERVIC~1.JS|service.details.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\service.details.js</td><td>1</td><td/></row>
+		<row><td>service.input.output.descrip</td><td>ISX_DEFAULTCOMPONENT6</td><td>SERVIC~1.JS|service.input.output.description.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\service.input.output.description.js</td><td>1</td><td/></row>
+		<row><td>setreadonly.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>SETREA~1.XML|SetReadOnly.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\SetReadOnly.xml</td><td>1</td><td/></row>
+		<row><td>singlecol.css</td><td>ISX_DEFAULTCOMPONENT16</td><td>SINGLE~1.CSS|singleCol.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\singleCol.css</td><td>1</td><td/></row>
+		<row><td>singlecol.css1</td><td>ISX_DEFAULTCOMPONENT21</td><td>SINGLE~1.CSS|singleCol.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\singleCol.css</td><td>1</td><td/></row>
+		<row><td>singlecol.css2</td><td>ISX_DEFAULTCOMPONENT36</td><td>SINGLE~1.CSS|singleCol.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\singleCol.css</td><td>1</td><td/></row>
+		<row><td>site.css</td><td>ISX_DEFAULTCOMPONENT57</td><td>Site.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\Site.css</td><td>1</td><td/></row>
+		<row><td>sk.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>sk.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sk.pak</td><td>1</td><td/></row>
+		<row><td>sl.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>sl.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sl.pak</td><td>1</td><td/></row>
+		<row><td>smoothness.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>SMOOTH~1.XML|Smoothness.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Smoothness.xml</td><td>1</td><td/></row>
+		<row><td>snippet.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>snippet.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\snippet.js</td><td>1</td><td/></row>
+		<row><td>sr.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>sr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sr.pak</td><td>1</td><td/></row>
+		<row><td>studiohomepage.htm</td><td>ISX_DEFAULTCOMPONENT2</td><td>STUDIO~1.HTM|StudioHomepage.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Help\StudioHomepage.htm</td><td>1</td><td/></row>
+		<row><td>studioshortcutkeys.htm</td><td>ISX_DEFAULTCOMPONENT2</td><td>STUDIO~1.HTM|StudioShortCutKeys.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Help\StudioShortCutKeys.htm</td><td>1</td><td/></row>
+		<row><td>styleinject.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>STYLEI~1.XML|StyleInject.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\StyleInject.xml</td><td>1</td><td/></row>
+		<row><td>sv.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>sv.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sv.pak</td><td>1</td><td/></row>
+		<row><td>sw.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>sw.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\sw.pak</td><td>1</td><td/></row>
+		<row><td>system.css</td><td>ISX_DEFAULTCOMPONENT41</td><td>system.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\system.css</td><td>1</td><td/></row>
+		<row><td>system.css1</td><td>ISX_DEFAULTCOMPONENT50</td><td>system.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\system.css</td><td>1</td><td/></row>
+		<row><td>system.css2</td><td>ISX_DEFAULTCOMPONENT73</td><td>system.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\system.css</td><td>1</td><td/></row>
+		<row><td>system.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>system.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\system.js</td><td>1</td><td/></row>
+		<row><td>system.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>system.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\system.js</td><td>1</td><td/></row>
 		<row><td>system.reactive.dll</td><td>System.Reactive.dll</td><td>SYSTEM~1.DLL|System.Reactive.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\System.Reactive.dll</td><td>1</td><td/></row>
 		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
-		<row><td>ta.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>ta.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ta.pak</td><td>1</td><td/></row>
-		<row><td>te.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>te.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\te.pak</td><td>1</td><td/></row>
-		<row><td>th.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>th.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\th.pak</td><td>1</td><td/></row>
-		<row><td>tr.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>tr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\tr.pak</td><td>1</td><td/></row>
-		<row><td>uk.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>uk.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\uk.pak</td><td>1</td><td/></row>
-		<row><td>vi.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>vi.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\vi.pak</td><td>1</td><td/></row>
+		<row><td>system.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>System.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\System.xml</td><td>1</td><td/></row>
+		<row><td>ta.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>ta.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\ta.pak</td><td>1</td><td/></row>
+		<row><td>tabindexinject.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>TABIND~1.XML|TabIndexInject.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\TabIndexInject.xml</td><td>1</td><td/></row>
+		<row><td>tabindexinjected.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>TABIND~1.XML|TabIndexInjected.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\TabIndexInjected.xml</td><td>1</td><td/></row>
+		<row><td>table.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>table.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\table.png</td><td>1</td><td/></row>
+		<row><td>te.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>te.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\te.pak</td><td>1</td><td/></row>
+		<row><td>template.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>template.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\template.css</td><td>1</td><td/></row>
+		<row><td>test.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>test.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\test.css</td><td>1</td><td/></row>
+		<row><td>test.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>test.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\test.js</td><td>1</td><td/></row>
+		<row><td>textarea.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>TEXTAR~1.XML|Textarea.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Textarea.wiz.xml</td><td>1</td><td/></row>
+		<row><td>textarea.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Textarea.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Textarea.xml</td><td>1</td><td/></row>
+		<row><td>textbox.wiz.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>TEXTBO~1.XML|Textbox.wiz.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Textbox.wiz.xml</td><td>1</td><td/></row>
+		<row><td>textbox.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>Textbox.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Textbox.xml</td><td>1</td><td/></row>
+		<row><td>th.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>th.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\th.pak</td><td>1</td><td/></row>
+		<row><td>theme_apply.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js1</td><td>ISX_DEFAULTCOMPONENT14</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js2</td><td>ISX_DEFAULTCOMPONENT19</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js3</td><td>ISX_DEFAULTCOMPONENT24</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js4</td><td>ISX_DEFAULTCOMPONENT29</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js5</td><td>ISX_DEFAULTCOMPONENT39</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js6</td><td>ISX_DEFAULTCOMPONENT48</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_apply.js7</td><td>ISX_DEFAULTCOMPONENT53</td><td>THEME_~1.JS|theme_apply.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\theme_apply.js</td><td>1</td><td/></row>
+		<row><td>theme_chrome.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>THEME-~1.JS|theme-chrome.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\theme-chrome.js</td><td>1</td><td/></row>
+		<row><td>theme_chrome.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>THEME-~1.JS|theme-chrome.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\theme-chrome.js</td><td>1</td><td/></row>
+		<row><td>thememenuadd.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>THEMEM~1.XML|ThemeMenuAdd.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ThemeMenuAdd.xml</td><td>1</td><td/></row>
+		<row><td>themeresourcedelete.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>THEMER~1.XML|ThemeResourceDelete.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ThemeResourceDelete.xml</td><td>1</td><td/></row>
+		<row><td>themeresourcerename.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>THEMER~1.XML|ThemeResourceRename.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\ThemeResourceRename.xml</td><td>1</td><td/></row>
+		<row><td>threecol.css</td><td>ISX_DEFAULTCOMPONENT11</td><td>threeCol.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\threeCol.css</td><td>1</td><td/></row>
+		<row><td>threecol.css1</td><td>ISX_DEFAULTCOMPONENT26</td><td>threeCol.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\threeCol.css</td><td>1</td><td/></row>
+		<row><td>threecol.css2</td><td>ISX_DEFAULTCOMPONENT45</td><td>threeCol.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\threeCol.css</td><td>1</td><td/></row>
+		<row><td>tick.png</td><td>ISX_DEFAULTCOMPONENT52</td><td>tick.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\images\tick.png</td><td>1</td><td/></row>
+		<row><td>tick.png1</td><td>ISX_DEFAULTCOMPONENT64</td><td>tick.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\tick.png</td><td>1</td><td/></row>
+		<row><td>tooltipinject.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>TOOLTI~1.XML|TooltipInject.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\TooltipInject.xml</td><td>1</td><td/></row>
+		<row><td>tr.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>tr.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\tr.pak</td><td>1</td><td/></row>
+		<row><td>ui.button.css</td><td>ISX_DEFAULTCOMPONENT11</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css1</td><td>ISX_DEFAULTCOMPONENT16</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css2</td><td>ISX_DEFAULTCOMPONENT21</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css3</td><td>ISX_DEFAULTCOMPONENT26</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css4</td><td>ISX_DEFAULTCOMPONENT36</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css5</td><td>ISX_DEFAULTCOMPONENT41</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css6</td><td>ISX_DEFAULTCOMPONENT45</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.css7</td><td>ISX_DEFAULTCOMPONENT50</td><td>UIBUTT~1.CSS|ui.button.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\ui.button.css</td><td>1</td><td/></row>
+		<row><td>ui.button.js</td><td>ISX_DEFAULTCOMPONENT14</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js1</td><td>ISX_DEFAULTCOMPONENT19</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js2</td><td>ISX_DEFAULTCOMPONENT24</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js3</td><td>ISX_DEFAULTCOMPONENT29</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js4</td><td>ISX_DEFAULTCOMPONENT39</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js5</td><td>ISX_DEFAULTCOMPONENT43</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js6</td><td>ISX_DEFAULTCOMPONENT48</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.button.js7</td><td>ISX_DEFAULTCOMPONENT53</td><td>UIBUTT~1.JS|ui.button.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\ui.button.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css</td><td>ISX_DEFAULTCOMPONENT11</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css1</td><td>ISX_DEFAULTCOMPONENT16</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css2</td><td>ISX_DEFAULTCOMPONENT21</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css3</td><td>ISX_DEFAULTCOMPONENT26</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css4</td><td>ISX_DEFAULTCOMPONENT36</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css5</td><td>ISX_DEFAULTCOMPONENT41</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css6</td><td>ISX_DEFAULTCOMPONENT45</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.css7</td><td>ISX_DEFAULTCOMPONENT50</td><td>UICHEC~1.CSS|ui.checkbox.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\ui.checkbox.css</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js</td><td>ISX_DEFAULTCOMPONENT14</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js1</td><td>ISX_DEFAULTCOMPONENT19</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js2</td><td>ISX_DEFAULTCOMPONENT24</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js3</td><td>ISX_DEFAULTCOMPONENT29</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js4</td><td>ISX_DEFAULTCOMPONENT39</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js5</td><td>ISX_DEFAULTCOMPONENT43</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js6</td><td>ISX_DEFAULTCOMPONENT48</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.checkbox.js7</td><td>ISX_DEFAULTCOMPONENT53</td><td>UICHEC~1.JS|ui.checkbox.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\ui.checkbox.js</td><td>1</td><td/></row>
+		<row><td>ui.custom.css</td><td>ISX_DEFAULTCOMPONENT11</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css1</td><td>ISX_DEFAULTCOMPONENT16</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css2</td><td>ISX_DEFAULTCOMPONENT21</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css3</td><td>ISX_DEFAULTCOMPONENT26</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css4</td><td>ISX_DEFAULTCOMPONENT36</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css5</td><td>ISX_DEFAULTCOMPONENT41</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css6</td><td>ISX_DEFAULTCOMPONENT45</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.custom.css7</td><td>ISX_DEFAULTCOMPONENT50</td><td>UICUST~1.CSS|ui.custom.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\ui.custom.css</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js1</td><td>ISX_DEFAULTCOMPONENT14</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js2</td><td>ISX_DEFAULTCOMPONENT19</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js3</td><td>ISX_DEFAULTCOMPONENT24</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js4</td><td>ISX_DEFAULTCOMPONENT29</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js5</td><td>ISX_DEFAULTCOMPONENT39</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js6</td><td>ISX_DEFAULTCOMPONENT43</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js7</td><td>ISX_DEFAULTCOMPONENT48</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.datatables.min.js8</td><td>ISX_DEFAULTCOMPONENT53</td><td>UIDATA~1.JS|ui.dataTables.min.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\ui.dataTables.min.js</td><td>1</td><td/></row>
+		<row><td>ui.dynatree.css</td><td>ISX_DEFAULTCOMPONENT41</td><td>UIDYNA~1.CSS|ui.dynatree.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\ui.dynatree.css</td><td>1</td><td/></row>
+		<row><td>ui.dynatree.css1</td><td>ISX_DEFAULTCOMPONENT50</td><td>UIDYNA~1.CSS|ui.dynatree.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\ui.dynatree.css</td><td>1</td><td/></row>
+		<row><td>ui.dynatree.css2</td><td>ISX_DEFAULTCOMPONENT73</td><td>UIDYNA~1.CSS|ui.dynatree.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\ui.dynatree.css</td><td>1</td><td/></row>
+		<row><td>ui.grid.css</td><td>ISX_DEFAULTCOMPONENT11</td><td>UIGRID~1.CSS|ui.grid.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\ui.grid.css</td><td>1</td><td/></row>
+		<row><td>ui.grid.css1</td><td>ISX_DEFAULTCOMPONENT16</td><td>UIGRID~1.CSS|ui.grid.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\ui.grid.css</td><td>1</td><td/></row>
+		<row><td>ui.grid.css2</td><td>ISX_DEFAULTCOMPONENT21</td><td>UIGRID~1.CSS|ui.grid.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\ui.grid.css</td><td>1</td><td/></row>
+		<row><td>ui.grid.css3</td><td>ISX_DEFAULTCOMPONENT26</td><td>UIGRID~1.CSS|ui.grid.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\ui.grid.css</td><td>1</td><td/></row>
+		<row><td>ui.grid.css4</td><td>ISX_DEFAULTCOMPONENT36</td><td>UIGRID~1.CSS|ui.grid.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\ui.grid.css</td><td>1</td><td/></row>
+		<row><td>ui.grid.css5</td><td>ISX_DEFAULTCOMPONENT45</td><td>UIGRID~1.CSS|ui.grid.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\ui.grid.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css</td><td>ISX_DEFAULTCOMPONENT11</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css1</td><td>ISX_DEFAULTCOMPONENT16</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css2</td><td>ISX_DEFAULTCOMPONENT21</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css3</td><td>ISX_DEFAULTCOMPONENT26</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css4</td><td>ISX_DEFAULTCOMPONENT36</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css5</td><td>ISX_DEFAULTCOMPONENT41</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css6</td><td>ISX_DEFAULTCOMPONENT45</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.css7</td><td>ISX_DEFAULTCOMPONENT50</td><td>UISELE~1.CSS|ui.selectmenu.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\ui.selectmenu.css</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js</td><td>ISX_DEFAULTCOMPONENT14</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js1</td><td>ISX_DEFAULTCOMPONENT19</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js2</td><td>ISX_DEFAULTCOMPONENT24</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js3</td><td>ISX_DEFAULTCOMPONENT29</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js4</td><td>ISX_DEFAULTCOMPONENT39</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js5</td><td>ISX_DEFAULTCOMPONENT43</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\ReleaseEngineering\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js6</td><td>ISX_DEFAULTCOMPONENT48</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui.selectmenu.js7</td><td>ISX_DEFAULTCOMPONENT53</td><td>UISELE~1.JS|ui.selectmenu.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\ui.selectmenu.js</td><td>1</td><td/></row>
+		<row><td>ui_bg_diagonals_thick_8_3333</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_diagonals-thick_8_333333_40x40.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_diagonals-thick_8_333333_40x40.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_diagonals_thick_90_eee</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_diagonals-thick_90_eeeeee_40x40.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_aaaaaa_40x100.p</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_flat_0_aaaaaa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_flat_0_aaaaaa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_aaaaaa_40x100.p1</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_flat_0_aaaaaa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_flat_0_aaaaaa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_aaaaaa_40x100.p2</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_flat_0_aaaaaa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_flat_0_aaaaaa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_aaaaaa_40x100.p3</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_flat_0_aaaaaa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_flat_0_aaaaaa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_aaaaaa_40x100.p4</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_flat_0_aaaaaa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_aaaaaa_40x100.p5</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_flat_0_aaaaaa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_eeeeee_40x100.p</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_flat_0_eeeeee_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_flat_0_eeeeee_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_eeeeee_40x100.p1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_flat_0_eeeeee_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_flat_0_eeeeee_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_0_eeeeee_40x100.p2</td><td>ISX_DEFAULTCOMPONENT52</td><td>UI-BG_~1.PNG|ui-bg_flat_0_eeeeee_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\images\ui-bg_flat_0_eeeeee_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_15_cd0a0a_40x100.</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_flat_15_cd0a0a_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_flat_15_cd0a0a_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_30_cccccc_40x100.</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_flat_30_cccccc_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_flat_30_cccccc_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_50_5c5c5c_40x100.</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_flat_50_5c5c5c_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_flat_50_5c5c5c_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_55_994d53_40x100.</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_flat_55_994d53_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_flat_55_994d53_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_55_fafafa_40x100.</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_flat_55_fafafa_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_flat_55_fafafa_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_55_fbec88_40x100.</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_flat_55_fbec88_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_flat_55_fbec88_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_65_ffffff_40x100.</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_flat_65_ffffff_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_flat_65_ffffff_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_75_ffffff_40x100.</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_flat_75_ffffff_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_flat_75_ffffff_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_75_ffffff_40x100.1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_flat_75_ffffff_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_flat_75_ffffff_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_75_ffffff_40x100.2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_flat_75_ffffff_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_flat_75_ffffff_40x100.3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_flat_75_ffffff_40x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_100_e4f1fb_1x400</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_glass_100_e4f1fb_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_glass_100_e4f1fb_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_100_f8f8f8_1x400</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_100_f8f8f8_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_100_f8f8f8_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_35_dddddd_1x400.</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_35_dddddd_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_35_dddddd_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_40_111111_1x400.</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_glass_40_111111_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_glass_40_111111_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_40_ffc73d_1x400.</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_glass_40_ffc73d_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_glass_40_ffc73d_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_50_3baae3_1x400.</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_glass_50_3baae3_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_glass_50_3baae3_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_55_1c1c1c_1x400.</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_glass_55_1c1c1c_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_glass_55_1c1c1c_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_55_fbf9ee_1x400.</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_glass_55_fbf9ee_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_glass_55_fbf9ee_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_55_fbf9ee_1x400.1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_55_fbf9ee_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_55_fbf9ee_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_55_fbf9ee_1x400.2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_glass_55_fbf9ee_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_55_fbf9ee_1x400.3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_glass_55_fbf9ee_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_65_ffffff_1x400.</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_glass_65_ffffff_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_glass_65_ffffff_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_65_ffffff_1x400.1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_65_ffffff_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_65_ffffff_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_65_ffffff_1x400.2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_glass_65_ffffff_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_65_ffffff_1x400.3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_glass_65_ffffff_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_d0e5f5_1x400.</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_glass_75_d0e5f5_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_glass_75_d0e5f5_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_dadada_1x400.</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_glass_75_dadada_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_glass_75_dadada_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_dadada_1x400.1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_75_dadada_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_75_dadada_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_dadada_1x400.2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_glass_75_dadada_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_dadada_1x400.3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_glass_75_dadada_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_e6e6e6_1x400.</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_glass_75_e6e6e6_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_glass_75_e6e6e6_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_e6e6e6_1x400.1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_75_e6e6e6_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_75_e6e6e6_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_e6e6e6_1x400.2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_glass_75_e6e6e6_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_75_e6e6e6_1x400.3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_glass_75_e6e6e6_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_80_d7ebf9_1x400.</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_glass_80_d7ebf9_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_glass_80_d7ebf9_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_85_dfeffc_1x400.</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_glass_85_dfeffc_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_glass_85_dfeffc_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_95_fef1ec_1x400.</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_glass_95_fef1ec_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_glass_95_fef1ec_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_95_fef1ec_1x400.1</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_glass_95_fef1ec_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_glass_95_fef1ec_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_95_fef1ec_1x400.2</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_glass_95_fef1ec_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_glass_95_fef1ec_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_95_fef1ec_1x400.3</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_glass_95_fef1ec_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_glass_95_fef1ec_1x400.4</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_glass_95_fef1ec_1x400.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_gloss_wave_30_3d3644_5</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_gloss-wave_30_3d3644_500x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_gloss-wave_30_3d3644_500x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_gloss_wave_55_5c9ccc_5</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_gloss-wave_55_5c9ccc_500x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_hard_100_f2f</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_highlight-hard_100_f2f5f7_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_hard_100_f9f</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_highlight-hard_100_f9f9f9_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_highlight-hard_100_f9f9f9_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_hard_20_0972</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_highlight-hard_20_0972a5_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_highlight-hard_20_0972a5_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_hard_40_aaaa</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_highlight-hard_40_aaaaaa_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_highlight-hard_40_aaaaaa_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_hard_70_0000</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_highlight-hard_70_000000_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_highlight-hard_70_000000_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_100_dcd</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_100_dcd9de_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_highlight-soft_100_dcd9de_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_100_dee</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_100_deedf7_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_highlight-soft_100_deedf7_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_100_eae</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_100_eae6ea_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_highlight-soft_100_eae6ea_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_25_3027</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_25_30273a_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_highlight-soft_25_30273a_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_25_ffef</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_25_ffef8f_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-bg_highlight-soft_25_ffef8f_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_33_0031</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_33_003147_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_highlight-soft_33_003147_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_35_2222</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_35_222222_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_highlight-soft_35_222222_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_44_4444</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_44_444444_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_highlight-soft_44_444444_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_45_5f59</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_45_5f5964_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-bg_highlight-soft_45_5f5964_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_50_aaaa</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_50_aaaaaa_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_highlight-soft_50_aaaaaa_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_75_cccc</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_75_cccc1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_75_cccc2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_75_cccc3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_highlight_soft_80_eeee</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_highlight-soft_80_eeeeee_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_highlight-soft_80_eeeeee_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_hard_100_f5f8f9_</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_inset-hard_100_f5f8f9_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_inset-hard_100_f5f8f9_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_hard_100_fcfdfd_</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-BG_~1.PNG|ui-bg_inset-hard_100_fcfdfd_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_hard_45_cd0a0a_1</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_inset-hard_45_cd0a0a_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_inset-hard_45_cd0a0a_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_hard_55_ffeb80_1</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-BG_~1.PNG|ui-bg_inset-hard_55_ffeb80_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-bg_inset-hard_55_ffeb80_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_hard_75_999999_1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_inset-hard_75_999999_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_inset-hard_75_999999_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_soft_50_c9c9c9_1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-BG_~1.PNG|ui-bg_inset-soft_50_c9c9c9_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-bg_inset-soft_50_c9c9c9_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_inset_soft_50_c9c9c9_11</td><td>ISX_DEFAULTCOMPONENT52</td><td>UI-BG_~1.PNG|ui-bg_inset-soft_50_c9c9c9_1x100.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\images\ui-bg_inset-soft_50_c9c9c9_1x100.png</td><td>1</td><td/></row>
+		<row><td>ui_bg_loop_25_000000_21x21.p</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-BG_~1.PNG|ui-bg_loop_25_000000_21x21.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-bg_loop_25_000000_21x21.png</td><td>1</td><td/></row>
+		<row><td>ui_button.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-BUT~1.PNG|ui-button.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-button.png</td><td>1</td><td/></row>
+		<row><td>ui_check_box.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-CHE~1.PNG|ui-check-box.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-check-box.png</td><td>1</td><td/></row>
+		<row><td>ui_combo_box.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-COM~1.PNG|ui-combo-box.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-combo-box.png</td><td>1</td><td/></row>
+		<row><td>ui_help_icon.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-HEL~1.PNG|ui-help-icon.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-help-icon.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_217bc0_256x240.png</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_217bc0_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_217bc0_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_222222_256x240.png</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-ICO~1.PNG|ui-icons_222222_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-icons_222222_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_222222_256x240.png1</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-ICO~1.PNG|ui-icons_222222_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-icons_222222_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_222222_256x240.png2</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-ICO~1.PNG|ui-icons_222222_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-icons_222222_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_222222_256x240.png3</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-ICO~1.PNG|ui-icons_222222_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-icons_222222_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_222222_256x240.png4</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-ICO~1.PNG|ui-icons_222222_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_222222_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_222222_256x240.png5</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-ICO~1.PNG|ui-icons_222222_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_222222_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2694e8_256x240.png</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-ICO~1.PNG|ui-icons_2694e8_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-icons_2694e8_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2e83ff_256x240.png</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-ICO~1.PNG|ui-icons_2e83ff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-icons_2e83ff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2e83ff_256x240.png1</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_2e83ff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_2e83ff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2e83ff_256x240.png2</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-ICO~1.PNG|ui-icons_2e83ff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-icons_2e83ff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2e83ff_256x240.png3</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-ICO~1.PNG|ui-icons_2e83ff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-icons_2e83ff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2e83ff_256x240.png4</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-ICO~1.PNG|ui-icons_2e83ff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_2e83ff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_2e83ff_256x240.png5</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-ICO~1.PNG|ui-icons_2e83ff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_3d80b3_256x240.png</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-ICO~1.PNG|ui-icons_3d80b3_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-icons_3d80b3_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_454545_256x240.png</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-ICO~1.PNG|ui-icons_454545_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-icons_454545_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_454545_256x240.png1</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-ICO~1.PNG|ui-icons_454545_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-icons_454545_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_454545_256x240.png2</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-ICO~1.PNG|ui-icons_454545_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-icons_454545_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_454545_256x240.png3</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-ICO~1.PNG|ui-icons_454545_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_454545_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_454545_256x240.png4</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-ICO~1.PNG|ui-icons_454545_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_454545_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_469bdd_256x240.png</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_469bdd_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_469bdd_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_4b8e0b_256x240.png</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-ICO~1.PNG|ui-icons_4b8e0b_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-icons_4b8e0b_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_4ca300_256x240.png</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-ICO~1.PNG|ui-icons_4ca300_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-icons_4ca300_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_6da8d5_256x240.png</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_6da8d5_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_6da8d5_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_72a7cf_256x240.png</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-ICO~1.PNG|ui-icons_72a7cf_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-icons_72a7cf_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_734d99_256x240.png</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-ICO~1.PNG|ui-icons_734d99_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-icons_734d99_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_888888_256x240.png</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-ICO~1.PNG|ui-icons_888888_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-icons_888888_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_888888_256x240.png1</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-ICO~1.PNG|ui-icons_888888_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-icons_888888_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_888888_256x240.png2</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-ICO~1.PNG|ui-icons_888888_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_888888_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_888888_256x240.png3</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-ICO~1.PNG|ui-icons_888888_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_888888_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_8d78a5_256x240.png</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-ICO~1.PNG|ui-icons_8d78a5_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-icons_8d78a5_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_999999_256x240.png</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-ICO~1.PNG|ui-icons_999999_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-icons_999999_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_a83300_256x240.png</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-ICO~1.PNG|ui-icons_a83300_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-icons_a83300_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_a8a3ae_256x240.png</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-ICO~1.PNG|ui-icons_a8a3ae_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-icons_a8a3ae_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_bbbbbb_256x240.png</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-ICO~1.PNG|ui-icons_bbbbbb_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-icons_bbbbbb_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_cccccc_256x240.png</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-ICO~1.PNG|ui-icons_cccccc_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-icons_cccccc_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_cd0a0a_256x240.png</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_cd0a0a_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_cd0a0a_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_cd0a0a_256x240.png1</td><td>ISX_DEFAULTCOMPONENT46</td><td>UI-ICO~1.PNG|ui-icons_cd0a0a_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\smoothness\css\images\ui-icons_cd0a0a_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_cd0a0a_256x240.png2</td><td>ISX_DEFAULTCOMPONENT51</td><td>UI-ICO~1.PNG|ui-icons_cd0a0a_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\ui-icons_cd0a0a_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_cd0a0a_256x240.png3</td><td>ISX_DEFAULTCOMPONENT60</td><td>UI-ICO~1.PNG|ui-icons_cd0a0a_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_cd0a0a_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_cd0a0a_256x240.png4</td><td>ISX_DEFAULTCOMPONENT62</td><td>UI-ICO~1.PNG|ui-icons_cd0a0a_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_d8e7f3_256x240.png</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_d8e7f3_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_d8e7f3_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ebccce_256x240.png</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-ICO~1.PNG|ui-icons_ebccce_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-icons_ebccce_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ededed_256x240.png</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-ICO~1.PNG|ui-icons_ededed_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-icons_ededed_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_f9bd01_256x240.png</td><td>ISX_DEFAULTCOMPONENT37</td><td>UI-ICO~1.PNG|ui-icons_f9bd01_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\redmond\css\images\ui-icons_f9bd01_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ffcf29_256x240.png</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-ICO~1.PNG|ui-icons_ffcf29_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-icons_ffcf29_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ffffff_256x240.png</td><td>ISX_DEFAULTCOMPONENT12</td><td>UI-ICO~1.PNG|ui-icons_ffffff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\blacktie\css\images\ui-icons_ffffff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ffffff_256x240.png1</td><td>ISX_DEFAULTCOMPONENT17</td><td>UI-ICO~1.PNG|ui-icons_ffffff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\cupertino\css\images\ui-icons_ffffff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ffffff_256x240.png2</td><td>ISX_DEFAULTCOMPONENT22</td><td>UI-ICO~1.PNG|ui-icons_ffffff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\darkhive\css\images\ui-icons_ffffff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_icons_ffffff_256x240.png3</td><td>ISX_DEFAULTCOMPONENT27</td><td>UI-ICO~1.PNG|ui-icons_ffffff_256x240.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\eggplant\css\images\ui-icons_ffffff_256x240.png</td><td>1</td><td/></row>
+		<row><td>ui_label.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>ui-label.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-label.png</td><td>1</td><td/></row>
+		<row><td>ui_name_region.jpg</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-NAM~1.JPG|ui-name-region.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-name-region.jpg</td><td>1</td><td/></row>
+		<row><td>ui_name_region.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-NAM~1.PNG|ui-name-region.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-name-region.png</td><td>1</td><td/></row>
+		<row><td>ui_radio_button.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-RAD~1.PNG|ui-radio-button.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-radio-button.png</td><td>1</td><td/></row>
+		<row><td>ui_script.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-SCR~1.PNG|ui-script.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-script.png</td><td>1</td><td/></row>
+		<row><td>ui_text_area.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-TEX~1.PNG|ui-text-area.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-text-area.png</td><td>1</td><td/></row>
+		<row><td>ui_text_field.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-TEX~1.PNG|ui-text-field.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-text-field.png</td><td>1</td><td/></row>
+		<row><td>ui_text_field_password.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>UI-TEX~1.PNG|ui-text-field-password.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\icons\ui-text-field-password.png</td><td>1</td><td/></row>
+		<row><td>uk.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>uk.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\uk.pak</td><td>1</td><td/></row>
+		<row><td>validationengine.jquery.css</td><td>ISX_DEFAULTCOMPONENT73</td><td>VALIDA~1.CSS|validationEngine.jquery.css</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\validationEngine.jquery.css</td><td>1</td><td/></row>
+		<row><td>vi.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>vi.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\vi.pak</td><td>1</td><td/></row>
+		<row><td>vline.gif</td><td>ISX_DEFAULTCOMPONENT51</td><td>vline.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\images\vline.gif</td><td>1</td><td/></row>
+		<row><td>vline.gif1</td><td>ISX_DEFAULTCOMPONENT50</td><td>vline.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\css\vline.gif</td><td>1</td><td/></row>
+		<row><td>vline.gif2</td><td>ISX_DEFAULTCOMPONENT73</td><td>vline.gif</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\css\vline.gif</td><td>1</td><td/></row>
+		<row><td>warning.png</td><td>ISX_DEFAULTCOMPONENT64</td><td>warning.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Images\warning.png</td><td>1</td><td/></row>
 		<row><td>weave.dll</td><td>Weave.dll</td><td>Weave.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Weave.dll</td><td>1</td><td/></row>
+		<row><td>weave.dll1</td><td>Weave.dll1</td><td>Weave.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Weave.dll</td><td>1</td><td/></row>
+		<row><td>web_preview.xml</td><td>ISX_DEFAULTCOMPONENT7</td><td>WEBPRE~1.XML|Web Preview.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Services\Web Preview.xml</td><td>1</td><td/></row>
+		<row><td>wizard.htm</td><td>ISX_DEFAULTCOMPONENT68</td><td>Wizard.htm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Webs\wwwroot\Views\Decisions\Wizard.htm</td><td>1</td><td/></row>
+		<row><td>worker_css.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>WORKER~1.JS|worker-css.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\worker-css.js</td><td>1</td><td/></row>
+		<row><td>worker_css.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>WORKER~1.JS|worker-css.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\worker-css.js</td><td>1</td><td/></row>
+		<row><td>worker_javascript.js</td><td>ISX_DEFAULTCOMPONENT6</td><td>WORKER~1.JS|worker-javascript.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\scripts\worker-javascript.js</td><td>1</td><td/></row>
+		<row><td>worker_javascript.js1</td><td>ISX_DEFAULTCOMPONENT53</td><td>WORKER~1.JS|worker-javascript.js</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\themes\system\js\worker-javascript.js</td><td>1</td><td/></row>
 		<row><td>wpf.joshsmith.dll</td><td>WPF.JoshSmith.dll</td><td>WPFJOS~1.DLL|WPF.JoshSmith.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\WPF.JoshSmith.dll</td><td>1</td><td/></row>
-		<row><td>zh_cn.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>zh-CN.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\zh-CN.pak</td><td>1</td><td/></row>
-		<row><td>zh_tw.pak</td><td>ISX_DEFAULTCOMPONENT2</td><td>zh-TW.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\zh-TW.pak</td><td>1</td><td/></row>
+		<row><td>zh_cn.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>zh-CN.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\zh-CN.pak</td><td>1</td><td/></row>
+		<row><td>zh_tw.pak</td><td>ISX_DEFAULTCOMPONENT3</td><td>zh-TW.pak</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\locales\zh-TW.pak</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2303,46 +3109,134 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>AdornedControl.dll</td><td/><td/><td>_129E1CFD_D8D3_4976_9F1F_4A062E069CB0_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Caliburn.Micro.dll</td><td/><td/><td>_A691B3E5_168E_4BE9_BE5E_78F7E45063D9_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>CefSharp.Wpf.dll</td><td/><td/><td>_CE98987B_A1EE_4BE4_B0FC_8C26F595F0F1_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>CefSharp.dll</td><td/><td/><td>_AB1D45DA_E949_4D2D_845E_B16FBFBCDFE8_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Activities.dll</td><td/><td/><td>_5D654C80_CFA7_479C_932F_C96BA305D654_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Common.dll</td><td/><td/><td>_47CF9D60_F558_46DE_BF1C_97C0468A5F09_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Composition.dll</td><td/><td/><td>_7D91F652_208F_4205_AC64_14BF9A6C60F6_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Core.dll</td><td/><td/><td>_5A77F5D9_425B_4182_973C_6AEC37FC30D2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Data.dll</td><td/><td/><td>_8FEE158A_F316_41A7_B121_D84B341ECC3E_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Network.dll</td><td/><td/><td>_82D2A9EF_891C_490E_A4DE_710F9E366B0C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Studio.Core.dll</td><td/><td/><td>_E44FE076_1967_45AE_84BA_7C8403528A42_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.Studio.exe</td><td/><td/><td>_798DB0DF_28E2_4370_AABE_E9D58BE630DD_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Dev2.UndoFramework.dll</td><td/><td/><td>_1ECD6595_21D4_4D8D_B886_C847F0ED9159_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ICSharpCode.AvalonEdit.dll</td><td/><td/><td>_9D39127C_E980_4388_A03B_65752B8DE39C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_544A578C_3308_4708_AC9C_44DC04BD85B1_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_4B021C8A_9C8C_4F50_AE21_60B004D05C14_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_3C1BBB53_2BF3_4523_9D44_B9864BF2DCAF_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td/><td/><td>_4419148D_4271_408B_8368_F2E3CBF327A9_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td/><td/><td>_FF4A5413_2921_43CA_880E_D33B6E1985E2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td/><td/><td>_DD9D6060_06D2_44F8_8EA7_FC588B4AC59A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td/><td/><td>_CE3EDB90_A34B_4559_9ACD_BBA2629E8ECF_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>InfragisticsWPF4.v12.1.dll</td><td/><td/><td>_288C65B5_3490_47FD_A281_C1219711035F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Ionic.Zip.Reduced.dll</td><td/><td/><td>_5443CDF0_5FE5_4057_ACAE_B98241FB1F08_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Microsoft.Expression.Interactions.dll</td><td/><td/><td>_C8A865F4_C8EA_4591_859D_C66D059DDA6A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Microsoft.Windows.Shell.dll</td><td/><td/><td>_B1128270_4B36_4819_A50A_87B6475DD20A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_DD38EDE0_B288_4975_A23D_063EFF6B9DB4_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>RibbonControlsLibrary.dll</td><td/><td/><td>_D3519340_5FE1_46E8_88AD_0F4352A8AC8E_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Reactive.dll</td><td/><td/><td>_909C458E_2D00_41DA_B055_15748295430C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_58BDB610_0F2E_4DF2_A614_06E5167FC712_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>WPF.JoshSmith.dll</td><td/><td/><td>_3978362F_FF4D_454D_B919_E4F9D0D2B7B9_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Weave.dll</td><td/><td/><td>_DFF9039B_4FF9_4EB5_AADC_5946513B7679_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>avcodec_54.dll</td><td/><td/><td>_528797FC_28A5_49FF_A5AD_5B1090126294_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>avformat_54.dll</td><td/><td/><td>_BD787BD6_E974_43F1_9C31_12472A3B6D3E_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>avutil_51.dll</td><td/><td/><td>_2A6443C7_38A0_49F0_8424_7526D2665DB5_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>d3dcompiler_43.dll</td><td/><td/><td>_34C41AB2_1FFC_423D_81E6_C13A24F10B3C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>d3dx9_43.dll</td><td/><td/><td>_59FFD78E_2BAF_42F2_AA09_B8E5F3657A12_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>icudt.dll</td><td/><td/><td>_99DCF6ED_FFB8_4CF1_A7A8_00212ED6AB74_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>libEGL.dll</td><td/><td/><td>_07C3003F_10E1_40E9_B966_09118E17A520_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>libGLESv2.dll</td><td/><td/><td>_9F3888D4_DC06_4511_B356_ADA17897ED2E_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>libcef.dll</td><td/><td/><td>_30A5A4BC_D32B_42CB_BA62_EB8094964B3D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AdornedControl.dll</td><td/><td/><td>_08E091AA_12C9_4B4A_98B7_66B920CA31D3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Caliburn.Micro.dll</td><td/><td/><td>_7750DF2B_D525_4A42_9397_5A1F9B8F2D85_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>CefSharp.Wpf.dll</td><td/><td/><td>_4BCE7F3F_99D6_4672_BC10_7353BBD989AA_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>CefSharp.dll</td><td/><td/><td>_233ECB67_3F28_4457_8FAD_3D41F6FBF1FC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>CommandLine.dll</td><td/><td/><td>_310B3078_0F6A_4CE6_A378_CE1E1735184C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>DEV2.MultiPartFormPasser.dll</td><td/><td/><td>_70BF136D_3F18_4642_B1D2_37329B6CC00B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Activities.dll</td><td/><td/><td>_185925FC_CB41_41C4_941A_2BEB7E148DB8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Activities.dll1</td><td/><td/><td>_2AAABD97_4613_42BF_9A6A_BF8EC30F5B45_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Common.dll</td><td/><td/><td>_AD753323_4C4E_41C8_A27B_34B61C1DFE52_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Common.dll1</td><td/><td/><td>_D39148A4_A936_40BA_9992_6B9B61AEFC16_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Composition.dll</td><td/><td/><td>_24CA4C79_8F2B_47CD_8343_6C9D88B65486_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Core.dll</td><td/><td/><td>_19DE520B_74FA_4831_AD83_72223BF13FE0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Core.dll1</td><td/><td/><td>_1A32BCBB_D864_49DC_879F_599C5ACB9A07_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Data.dll</td><td/><td/><td>_7C62B00A_95EA_4300_AF3E_07F3AB000357_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Data.dll1</td><td/><td/><td>_84CC15AE_67C9_4E39_A12A_1341E25F02C0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Network.dll</td><td/><td/><td>_3C8263C9_F9D1_4FD4_A5CE_6A1537222CCC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Network.dll1</td><td/><td/><td>_C2926713_E523_4F2E_899A_7BF6AF1DCC54_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Runtime.Services.dll</td><td/><td/><td>_D803FCD6_2680_4E08_B98E_6BC0E9050D72_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Runtime.WebServer.dll</td><td/><td/><td>_F5BC3A2B_FB22_40EA_B76A_FEE78017025E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Runtime.dll</td><td/><td/><td>_2298CFCB_FCC8_45A7_97D7_757036341954_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Server.exe</td><td/><td/><td>_A55E3BA6_F226_4BBB_B307_37CE60DDE2F4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Studio.Core.dll</td><td/><td/><td>_C5160A68_9238_4A3B_AB33_C784ABCF89E7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.Studio.exe</td><td/><td/><td>_E7584D81_296E_4758_B373_66439D94445D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Dev2.UndoFramework.dll</td><td/><td/><td>_C288BAC5_5C2F_4175_A21A_3F9FDA4C60E2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>HttpFramework.dll</td><td/><td/><td>_23280D82_33A1_48CD_BBC8_DDAE543EC741_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ICSharpCode.AvalonEdit.dll</td><td/><td/><td>_29947E96_809C_4C9A_B8D8_7C88029CDF16_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_04FCC6C0_6906_47DF_B6E0_57DD053A5BEE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_01476F60_2561_4663_B69F_F098760CFEA2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_55010380_36D0_4FAF_AC99_D1B314C01AED_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT11</td><td/><td/><td>_722DA684_BFE2_48B6_9DA3_B6946F055C6B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT12</td><td/><td/><td>_D32562CE_1525_4A3E_A247_B48638D59C7F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT13</td><td/><td/><td>_B7405DAD_8039_42A0_88A9_B2BE5E9B81F9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT14</td><td/><td/><td>_DE4AE270_ED7D_4A5B_9CD6_E9FB7FA32D7D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT15</td><td/><td/><td>_B5863C87_1CA7_4F86_8404_D1F485A4B423_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT16</td><td/><td/><td>_04F41D6F_DE96_4C86_8EE1_221A737B0513_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT17</td><td/><td/><td>_344E53A0_76FE_47C5_815C_74B86B8BFA86_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT18</td><td/><td/><td>_A3C216DF_F8D9_452C_9FBA_6E9C034B8FBB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT19</td><td/><td/><td>_4BE27CC7_19D6_4D6A_A012_AB24CE07E0F3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_90EB2CB1_0B98_4504_B4A4_DD3159534DBF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT20</td><td/><td/><td>_7EDBE675_90D2_4AC3_BE7E_59C0932C8DE9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT21</td><td/><td/><td>_E9A995F9_B735_479C_92D4_4D1DCC6053BE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT22</td><td/><td/><td>_EF9B0730_FBE5_43F0_BC08_6A261470B991_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT23</td><td/><td/><td>_8A10F92B_55FC_41B3_8A1C_EF3DD2B0CCB9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT24</td><td/><td/><td>_B631FA11_989C_4181_9A91_A4B666B9EA18_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT25</td><td/><td/><td>_F4025B5D_CA56_4DFE_9774_2AE8733B9832_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT26</td><td/><td/><td>_1CB29558_1B58_4586_BDE2_A21425DDFDD3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT27</td><td/><td/><td>_53C7C12A_2F1B_456D_947C_A0D123F0B401_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT28</td><td/><td/><td>_AC18359B_6AD9_40A6_A13B_28F35629E366_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT29</td><td/><td/><td>_7960C075_BF41_4F87_824A_52389D1FEA7A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_6E2162C4_9B37_4064_8C51_39695E51F9CF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT30</td><td/><td/><td>_50079AF5_1351_46B4_BC2B_7E1ABAE7EA4B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT31</td><td/><td/><td>_74CC3FC7_5D17_4B6C_B67B_B7994C262B55_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT32</td><td/><td/><td>_AB5155FB_45AD_4D75_B5B0_7577EC6F0713_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT33</td><td/><td/><td>_DCB04A15_E593_4758_BB66_6B45642918F2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT34</td><td/><td/><td>_7CB174EB_D784_4C86_B724_FA793BA2D93F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT35</td><td/><td/><td>_2D8E85C4_7BB9_4699_8DA8_2C0F080147C5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT36</td><td/><td/><td>_AAF88FE1_6599_47C5_8536_FCD90A195548_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT37</td><td/><td/><td>_A9A1E0E9_8660_4C36_858B_B3BBD3F3B448_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT38</td><td/><td/><td>_A70A166E_0907_4E08_832C_BC10D4C57AAF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT39</td><td/><td/><td>_10F12BA7_69DF_4C26_A77D_C2AEAC81694D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_DAB268E8_3B21_4EC3_960F_EC67F3E89B53_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT40</td><td/><td/><td>_8FB31BE5_84EC_4F22_8407_A40187A6FCA7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT41</td><td/><td/><td>_8B712EC5_59DE_49E3_ADC2_F8078F5F3EB5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT42</td><td/><td/><td>_2C56E4BD_9AE8_49DD_875F_61A591532ABF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT43</td><td/><td/><td>_305924B3_4BF7_4C70_A9FB_2004EA9D8811_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT44</td><td/><td/><td>_182AC8EC_2467_4857_8085_CEE618FA6DFE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT45</td><td/><td/><td>_897CF6D4_7660_4ECF_9D71_67B6824FA0AA_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT46</td><td/><td/><td>_DB1FCE0B_4C87_40B4_8385_C092BA91E57F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT47</td><td/><td/><td>_FDBC6A61_7C58_4027_A27D_380994C0D628_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT48</td><td/><td/><td>_773DBF8A_05C3_4EB1_B777_5A20B1989ECF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT49</td><td/><td/><td>_3C53B778_6124_4C03_BE7F_DAB16E33F14E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_9E4DE91B_DB29_424A_BF3C_34293172FE15_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT50</td><td/><td/><td>_815E0F59_8066_4386_8A5C_580A53AF368C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT51</td><td/><td/><td>_FC3208A4_BCC1_460B_AB74_C499FC8B0A3D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT52</td><td/><td/><td>_BED297E5_69C2_4C91_89DD_CCB58418B318_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT53</td><td/><td/><td>_AAD78F8E_D436_4C9F_8F1C_3A7C090B8E6A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT54</td><td/><td/><td>_40B363B3_530C_4165_8A7F_8F9B25F07C50_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT55</td><td/><td/><td>_9F53D057_C502_4F1C_A30C_972239AD0A6C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT56</td><td/><td/><td>_F021C211_F882_4E8B_85A7_958D009149FE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT57</td><td/><td/><td>_E2BD17CF_6A01_4E76_B7EC_141A631A9FF3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT58</td><td/><td/><td>_B23C7828_59AA_49EA_A076_09F47556471A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT59</td><td/><td/><td>_B48190DB_F46E_424A_9FA7_3923DAE5802A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_49CDBC1D_45EA_4C47_8E04_C610D9B5C5BC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT60</td><td/><td/><td>_33A2FDFB_2081_43C5_B558_22292D418111_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT61</td><td/><td/><td>_47FF355B_D2AF_4EA4_9C8A_AA8DB14DA271_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT62</td><td/><td/><td>_6713C3E1_1E20_4F2A_8CC9_D038D0D52200_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT63</td><td/><td/><td>_F7FBFCC5_D8C2_42B5_A36C_9EF7EF1CFCEB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT64</td><td/><td/><td>_B0BF89BD_3809_481F_BB23_F9DAFE9EE169_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT65</td><td/><td/><td>_D5C6A72C_FD7A_4617_A275_45CB5C6959EA_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT66</td><td/><td/><td>_B4579375_EADA_4090_839B_0A732D4BCF0D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT67</td><td/><td/><td>_DAEDE1E7_545B_4DE8_9237_B1E324ED4C53_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT68</td><td/><td/><td>_35E1D3C5_0E27_425C_992F_B758C8EB2681_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT69</td><td/><td/><td>_AA1CC082_E49E_4C53_860F_3E607746E3FC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_87047723_2D45_4DD9_BA4F_4FB1A2027E3A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT70</td><td/><td/><td>_A13AF9B5_FA44_4D09_8E1D_97E49BFD1BD3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT71</td><td/><td/><td>_3D89ACC8_8F40_484D_9ECD_84C72E1253EE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT72</td><td/><td/><td>_D7F3FC36_D922_4304_B25C_5E8D7A17FD32_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT73</td><td/><td/><td>_5DCCBDA6_BE8B_46E0_99A1_888BD8741B7A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_74DBAFF3_691F_4039_9244_9236FFCB26DD_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_6CA68832_6506_4436_94AC_3CDA5D96C083_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td/><td/><td>_A25919EA_0BA2_4372_982D_3AC057737FC2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll1</td><td/><td/><td>_17853C5F_5C04_4945_B0F1_AB259F0F924D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.DockManager.v12.1.dll</td><td/><td/><td>_7554FB0D_A5BA_4F27_80BC_70AC7D99CB66_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Math.Calculators.v12.1.dll</td><td/><td/><td>_FA70B2EE_EAE2_4CA0_A9D3_E4920B4E2304_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.Math.v12.1.dll</td><td/><td/><td>_2BAC2FA9_43B0_4813_8E56_F3C10AD85DF8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.v12.1.dll</td><td/><td/><td>_4EABB141_F0DC_4B14_8597_5E9FE71A6D3D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>InfragisticsWPF4.v12.1.dll1</td><td/><td/><td>_9C9EC9AF_7FA8_4311_A47C_4A5FAC024E4C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Ionic.Zip.Reduced.dll</td><td/><td/><td>_697B6FA3_AB9C_4B4C_9593_77F769B931C2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Ionic.Zip.Reduced.dll1</td><td/><td/><td>_429E6887_DD78_4D03_9CDD_5ACA7FF98CED_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Microsoft.Expression.Interactions.dll</td><td/><td/><td>_72D36F60_AE9F_453C_AE31_15F0C7F6488B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Microsoft.Windows.Shell.dll</td><td/><td/><td>_EF4AE3BB_A68D_45C2_B5E8_8D14FA649E91_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_16832F19_D47D_4A18_BCA0_1841542A9B3C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll1</td><td/><td/><td>_402E39BB_CA0F_42CF_8A87_86E314CB74F0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>RibbonControlsLibrary.dll</td><td/><td/><td>_CE6A5D98_9EEF_4062_BD43_3BA05DB0AE71_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Reactive.dll</td><td/><td/><td>_C171319C_10C9_41D7_9C80_BA05822A5F11_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_BEA8F3A7_48E5_42EF_A5EF_D18DD1F1ECCD_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>WPF.JoshSmith.dll</td><td/><td/><td>_BB8E5685_52F4_4081_A375_18BB86F62308_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Weave.dll</td><td/><td/><td>_C5441305_406C_47D8_9028_FFAF12FE82DD_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Weave.dll1</td><td/><td/><td>_5CDF26A4_33EF_4E09_868A_9D3341260A7B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>avcodec_54.dll</td><td/><td/><td>_9ED9F375_C8D4_417B_B3EC_91AE7B36F91A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>avformat_54.dll</td><td/><td/><td>_E6017A18_37D5_47CC_9D46_ED58077DD3BA_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>avutil_51.dll</td><td/><td/><td>_0A3CA79F_B1E5_43DA_BA98_D7EB2E76AA2A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>d3dcompiler_43.dll</td><td/><td/><td>_FECFC303_CAFF_4AD4_B03E_626998DF7049_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>d3dx9_43.dll</td><td/><td/><td>_C749054B_D0A6_4ED3_A8A2_77BC5D78FE5F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>icudt.dll</td><td/><td/><td>_B1D1D7DE_B1F9_4A39_9C43_B6EDA2F305B8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>libEGL.dll</td><td/><td/><td>_ECFC357D_6221_4286_BCDE_453F362BDB88_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>libGLESv2.dll</td><td/><td/><td>_63AF1371_D965_47B0_BC3F_69B083B8CF96_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>libcef.dll</td><td/><td/><td>_3AECD777_0EAD_4D96_983F_F0B1E925DCEB_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2937,8 +3831,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
-		<row><td>_27586DB7_A683_4017_89B6_538B4ECA1D53_</td><td>microsoft visual c++ 2008 sp1 redistributable package (x86).prq</td><td>0</td><td>2</td><td/></row>
-		<row><td>_414B4997_D0FE_4883_A805_6147CE2221DA_</td><td>Microsoft .NET Framework 4.0 Full.prq</td><td>1</td><td>2</td><td/></row>
+		<row><td>_BD97098E_C601_4F0E_A07E_FCF51DB23381_</td><td>Microsoft .NET Framework 4.0 Full.prq</td><td>0</td><td>2</td><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -2972,1121 +3865,1138 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526270032</td></row>
-		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_SCREEN</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPACT</td><td>1033</td><td>Compact</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPACT_DESC</td><td>1033</td><td>Compact Description</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPLETE</td><td>1033</td><td>Complete</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPLETE_DESC</td><td>1033</td><td>Complete</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM_DESC</td><td>1033</td><td>Custom Description</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM_DESC_PRO</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_TYPICAL</td><td>1033</td><td>Typical</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDPROP_SETUPTYPE_TYPICAL_DESC</td><td>1033</td><td>Typical Description</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_1</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_1b</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_1c</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_1d</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Advertising</td><td>1033</td><td>Advertising application</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_AllocatingRegistry</td><td>1033</td><td>Allocating registry space</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_AppCommandLine</td><td>1033</td><td>Application: [1], Command line: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_AppId</td><td>1033</td><td>AppId: [1]{{, AppType: [2]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_AppIdAppTypeRSN</td><td>1033</td><td>AppId: [1]{{, AppType: [2], Users: [3], RSN: [4]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Application</td><td>1033</td><td>Application: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_BindingExes</td><td>1033</td><td>Binding executables</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ClassId</td><td>1033</td><td>Class ID: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ClsID</td><td>1033</td><td>Class ID: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ComponentIDQualifier</td><td>1033</td><td>Component ID: [1], Qualifier: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ComponentIdQualifier2</td><td>1033</td><td>Component ID: [1], Qualifier: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ComputingSpace</td><td>1033</td><td>Computing space requirements</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ComputingSpace2</td><td>1033</td><td>Computing space requirements</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ComputingSpace3</td><td>1033</td><td>Computing space requirements</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ContentTypeExtension</td><td>1033</td><td>MIME Content Type: [1], Extension: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ContentTypeExtension2</td><td>1033</td><td>MIME Content Type: [1], Extension: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_CopyingNetworkFiles</td><td>1033</td><td>Copying files to the network</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_CopyingNewFiles</td><td>1033</td><td>Copying new files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_CreatingDuplicate</td><td>1033</td><td>Creating duplicate files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_CreatingFolders</td><td>1033</td><td>Creating folders</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_CreatingIISRoots</td><td>1033</td><td>Creating IIS Virtual Roots...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_CreatingShortcuts</td><td>1033</td><td>Creating shortcuts</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_DeletingServices</td><td>1033</td><td>Deleting services</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_EnvironmentStrings</td><td>1033</td><td>Updating environment strings</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_EvaluateLaunchConditions</td><td>1033</td><td>Evaluating launch conditions</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Extension</td><td>1033</td><td>Extension: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Extension2</td><td>1033</td><td>Extension: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Feature</td><td>1033</td><td>Feature: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FeatureColon</td><td>1033</td><td>Feature: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_File</td><td>1033</td><td>File: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_File2</td><td>1033</td><td>File: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDependencies</td><td>1033</td><td>File: [1],  Dependencies: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDir</td><td>1033</td><td>File: [1], Directory: [9]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDir2</td><td>1033</td><td>File: [1], Directory: [9]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDir3</td><td>1033</td><td>File: [1], Directory: [9]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDirSize</td><td>1033</td><td>File: [1], Directory: [9], Size: [6]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDirSize2</td><td>1033</td><td>File: [1],  Directory: [9],  Size: [6]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDirSize3</td><td>1033</td><td>File: [1],  Directory: [9],  Size: [6]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDirSize4</td><td>1033</td><td>File: [1],  Directory: [2],  Size: [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileDirectorySize</td><td>1033</td><td>File: [1],  Directory: [9],  Size: [6]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileFolder</td><td>1033</td><td>File: [1], Folder: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileFolder2</td><td>1033</td><td>File: [1], Folder: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileSectionKeyValue</td><td>1033</td><td>File: [1],  Section: [2],  Key: [3], Value: [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FileSectionKeyValue2</td><td>1033</td><td>File: [1],  Section: [2],  Key: [3], Value: [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Folder</td><td>1033</td><td>Folder: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Folder1</td><td>1033</td><td>Folder: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Font</td><td>1033</td><td>Font: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Font2</td><td>1033</td><td>Font: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FoundApp</td><td>1033</td><td>Found application: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_FreeSpace</td><td>1033</td><td>Free space: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_GeneratingScript</td><td>1033</td><td>Generating script operations for action:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ISLockPermissionsCost</td><td>1033</td><td>Gathering permissions information for objects...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ISLockPermissionsInstall</td><td>1033</td><td>Applying permissions information for objects...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_InitializeODBCDirs</td><td>1033</td><td>Initializing ODBC directories</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_InstallODBC</td><td>1033</td><td>Installing ODBC components</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_InstallServices</td><td>1033</td><td>Installing new services</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_InstallingSystemCatalog</td><td>1033</td><td>Installing system catalog</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_KeyName</td><td>1033</td><td>Key: [1], Name: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_KeyNameValue</td><td>1033</td><td>Key: [1], Name: [2], Value: [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_LibId</td><td>1033</td><td>LibID: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Libid2</td><td>1033</td><td>LibID: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_MigratingFeatureStates</td><td>1033</td><td>Migrating feature states from related applications</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_MovingFiles</td><td>1033</td><td>Moving files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_NameValueAction</td><td>1033</td><td>Name: [1], Value: [2], Action [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_NameValueAction2</td><td>1033</td><td>Name: [1], Value: [2], Action [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_PatchingFiles</td><td>1033</td><td>Patching files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ProgID</td><td>1033</td><td>ProgID: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_ProgID2</td><td>1033</td><td>ProgID: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_PropertySignature</td><td>1033</td><td>Property: [1], Signature: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_PublishProductFeatures</td><td>1033</td><td>Publishing product features</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_PublishProductInfo</td><td>1033</td><td>Publishing product information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_PublishingQualifiedComponents</td><td>1033</td><td>Publishing qualified components</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegUser</td><td>1033</td><td>Registering user</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisterClassServer</td><td>1033</td><td>Registering class servers</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisterExtensionServers</td><td>1033</td><td>Registering extension servers</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisterFonts</td><td>1033</td><td>Registering fonts</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisterMimeInfo</td><td>1033</td><td>Registering MIME info</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisterTypeLibs</td><td>1033</td><td>Registering type libraries</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisteringComPlus</td><td>1033</td><td>Registering COM+ Applications and Components</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisteringModules</td><td>1033</td><td>Registering modules</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisteringProduct</td><td>1033</td><td>Registering product</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RegisteringProgIdentifiers</td><td>1033</td><td>Registering program identifiers</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemoveApps</td><td>1033</td><td>Removing applications</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingBackup</td><td>1033</td><td>Removing backup files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingDuplicates</td><td>1033</td><td>Removing duplicated files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingFiles</td><td>1033</td><td>Removing files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingFolders</td><td>1033</td><td>Removing folders</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingIISRoots</td><td>1033</td><td>Removing IIS Virtual Roots...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingIni</td><td>1033</td><td>Removing INI file entries</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingMoved</td><td>1033</td><td>Removing moved files</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingODBC</td><td>1033</td><td>Removing ODBC components</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingRegistry</td><td>1033</td><td>Removing system registry values</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RemovingShortcuts</td><td>1033</td><td>Removing shortcuts</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_RollingBack</td><td>1033</td><td>Rolling back action:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_SearchForRelated</td><td>1033</td><td>Searching for related applications</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_SearchInstalled</td><td>1033</td><td>Searching for installed applications</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_SearchingQualifyingProducts</td><td>1033</td><td>Searching for qualifying products</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_SearchingQualifyingProducts2</td><td>1033</td><td>Searching for qualifying products</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Service</td><td>1033</td><td>Service: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Service2</td><td>1033</td><td>Service: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Service3</td><td>1033</td><td>Service: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Service4</td><td>1033</td><td>Service: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Shortcut</td><td>1033</td><td>Shortcut: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Shortcut1</td><td>1033</td><td>Shortcut: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_StartingServices</td><td>1033</td><td>Starting services</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_StoppingServices</td><td>1033</td><td>Stopping services</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnpublishProductFeatures</td><td>1033</td><td>Unpublishing product features</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnpublishQualified</td><td>1033</td><td>Unpublishing Qualified Components</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnpublishingProductInfo</td><td>1033</td><td>Unpublishing product information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregTypeLibs</td><td>1033</td><td>Unregistering type libraries</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisterClassServers</td><td>1033</td><td>Unregister class servers</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisterExtensionServers</td><td>1033</td><td>Unregistering extension servers</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisterModules</td><td>1033</td><td>Unregistering modules</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisteringComPlus</td><td>1033</td><td>Unregistering COM+ Applications and Components</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisteringFonts</td><td>1033</td><td>Unregistering fonts</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisteringMimeInfo</td><td>1033</td><td>Unregistering MIME info</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UnregisteringProgramIds</td><td>1033</td><td>Unregistering program identifiers</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UpdateComponentRegistration</td><td>1033</td><td>Updating component registration</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_UpdateEnvironmentStrings</td><td>1033</td><td>Updating environment strings</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_Validating</td><td>1033</td><td>Validating install</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_WritingINI</td><td>1033</td><td>Writing INI file values</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ACTIONTEXT_WritingRegistry</td><td>1033</td><td>Writing system registry values</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_BACK</td><td>1033</td><td>&lt; &amp;Back</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_CANCEL</td><td>1033</td><td>Cancel</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_CANCEL2</td><td>1033</td><td>&amp;Cancel</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_CHANGE</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_COMPLUS_PROGRESSTEXT_COST</td><td>1033</td><td>Costing COM+ application: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_COMPLUS_PROGRESSTEXT_INSTALL</td><td>1033</td><td>Installing COM+ application: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_COMPLUS_PROGRESSTEXT_UNINSTALL</td><td>1033</td><td>Uninstalling COM+ application: [1]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DIALOG_TEXT2_DESCRIPTION</td><td>1033</td><td>Dialog Normal Description</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DIALOG_TEXT_DESCRIPTION_EXTERIOR</td><td>1033</td><td>{&amp;TahomaBold10}Dialog Bold Title</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DIALOG_TEXT_DESCRIPTION_INTERIOR</td><td>1033</td><td>{&amp;MSSansBold8}Dialog Bold Title</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DIFX_AMD64</td><td>1033</td><td>[ProductName] requires an X64 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DIFX_IA64</td><td>1033</td><td>[ProductName] requires an IA64 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DIFX_X86</td><td>1033</td><td>[ProductName] requires an X86 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_DatabaseFolder_InstallDatabaseTo</td><td>1033</td><td>Install [ProductName] database to:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_0</td><td>1033</td><td>{{Fatal error: }}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1</td><td>1033</td><td>Error [1]. </td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_10</td><td>1033</td><td>=== Logging started: [Date]  [Time] ===</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_100</td><td>1033</td><td>Could not remove shortcut [2]. Verify that the shortcut file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_101</td><td>1033</td><td>Could not register type library for file [2].  Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_102</td><td>1033</td><td>Could not unregister type library for file [2].  Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_103</td><td>1033</td><td>Could not update the INI file [2][3].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_104</td><td>1033</td><td>Could not schedule file [2] to replace file [3] on reboot.  Verify that you have write permissions to file [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_105</td><td>1033</td><td>Error removing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_106</td><td>1033</td><td>Error installing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_107</td><td>1033</td><td>Error removing ODBC driver [4], ODBC error [2]: [3]. Verify that you have sufficient privileges to remove ODBC drivers.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_108</td><td>1033</td><td>Error installing ODBC driver [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_109</td><td>1033</td><td>Error configuring ODBC data source [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_11</td><td>1033</td><td>=== Logging stopped: [Date]  [Time] ===</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_110</td><td>1033</td><td>Service [2] ([3]) failed to start.  Verify that you have sufficient privileges to start system services.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_111</td><td>1033</td><td>Service [2] ([3]) could not be stopped.  Verify that you have sufficient privileges to stop system services.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_112</td><td>1033</td><td>Service [2] ([3]) could not be deleted.  Verify that you have sufficient privileges to remove system services.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_113</td><td>1033</td><td>Service [2] ([3]) could not be installed.  Verify that you have sufficient privileges to install system services.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_114</td><td>1033</td><td>Could not update environment variable [2].  Verify that you have sufficient privileges to modify environment variables.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_115</td><td>1033</td><td>You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_116</td><td>1033</td><td>Could not set file security for file [3]. Error: [2].  Verify that you have sufficient privileges to modify the security permissions for this file.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_117</td><td>1033</td><td>Component Services (COM+ 1.0) are not installed on this computer.  This installation requires Component Services in order to complete successfully.  Component Services are available on Windows 2000.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_118</td><td>1033</td><td>Error registering COM+ application.  Contact your support personnel for more information.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_119</td><td>1033</td><td>Error unregistering COM+ application.  Contact your support personnel for more information.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_12</td><td>1033</td><td>Action start [Time]: [1].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_120</td><td>1033</td><td>Removing older versions of this application</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_121</td><td>1033</td><td>Preparing to remove older versions of this application</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_122</td><td>1033</td><td>Error applying patch to file [2].  It has probably been updated by other means, and can no longer be modified by this patch.  For more information contact your patch vendor.  {{System Error: [3]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_123</td><td>1033</td><td>[2] cannot install one of its required products. Contact your technical support group.  {{System Error: [3].}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_124</td><td>1033</td><td>The older version of [2] cannot be removed.  Contact your technical support group.  {{System Error [3].}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_125</td><td>1033</td><td>The description for service '[2]' ([3]) could not be changed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_126</td><td>1033</td><td>The Windows Installer service cannot update the system file [2] because the file is protected by Windows.  You may need to update your operating system for this program to work correctly. {{Package version: [3], OS Protected version: [4]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_127</td><td>1033</td><td>The Windows Installer service cannot update the protected Windows file [2]. {{Package version: [3], OS Protected version: [4], SFP Error: [5]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_128</td><td>1033</td><td>The Windows Installer service cannot update one or more protected Windows files. SFP Error: [2]. List of protected files: [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_129</td><td>1033</td><td>User installations are disabled via policy on the machine.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_13</td><td>1033</td><td>Action ended [Time]: [1]. Return value [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_130</td><td>1033</td><td>This setup requires Internet Information Server 4.0 or higher for configuring IIS Virtual Roots. Please make sure that you have IIS 4.0 or higher.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_131</td><td>1033</td><td>This setup requires Administrator privileges for configuring IIS Virtual Roots.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1329</td><td>1033</td><td>A file that is required cannot be installed because the cabinet file [2] is not digitally signed. This may indicate that the cabinet file is corrupt.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1330</td><td>1033</td><td>A file that is required cannot be installed because the cabinet file [2] has an invalid digital signature. This may indicate that the cabinet file is corrupt.{ Error [3] was returned by WinVerifyTrust.}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1331</td><td>1033</td><td>Failed to correctly copy [2] file: CRC error.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1332</td><td>1033</td><td>Failed to correctly patch [2] file: CRC error.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1333</td><td>1033</td><td>Failed to correctly patch [2] file: CRC error.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1334</td><td>1033</td><td>The file '[2]' cannot be installed because the file cannot be found in cabinet file '[3]'. This could indicate a network error, an error reading from the CD-ROM, or a problem with this package.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1335</td><td>1033</td><td>The cabinet file '[2]' required for this installation is corrupt and cannot be used. This could indicate a network error, an error reading from the CD-ROM, or a problem with this package.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1336</td><td>1033</td><td>There was an error creating a temporary file that is needed to complete this installation. Folder: [3]. System error code: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_14</td><td>1033</td><td>Time remaining: {[1] minutes }{[2] seconds}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_15</td><td>1033</td><td>Out of memory. Shut down other applications before retrying.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_16</td><td>1033</td><td>Installer is no longer responding.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1609</td><td>1033</td><td>An error occurred while applying security settings. [2] is not a valid user or group. This could be a problem with the package, or a problem connecting to a domain controller on the network. Check your network connection and click Retry, or Cancel to end the install. Unable to locate the user's SID, system error [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1651</td><td>1033</td><td>Admin user failed to apply patch for a per-user managed or a per-machine application which is in advertise state.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_17</td><td>1033</td><td>Installer terminated prematurely.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1715</td><td>1033</td><td>Installed [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1716</td><td>1033</td><td>Configured [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1717</td><td>1033</td><td>Removed [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1718</td><td>1033</td><td>File [2] was rejected by digital signature policy.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1719</td><td>1033</td><td>Windows Installer service could not be accessed. Contact your support personnel to verify that it is properly registered and enabled.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1720</td><td>1033</td><td>There is a problem with this Windows Installer package. A script required for this install to complete could not be run. Contact your support personnel or package vendor. Custom action [2] script error [3], [4]: [5] Line [6], Column [7], [8]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1721</td><td>1033</td><td>There is a problem with this Windows Installer package. A program required for this install to complete could not be run. Contact your support personnel or package vendor. Action: [2], location: [3], command: [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1722</td><td>1033</td><td>There is a problem with this Windows Installer package. A program run as part of the setup did not finish as expected. Contact your support personnel or package vendor. Action [2], location: [3], command: [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1723</td><td>1033</td><td>There is a problem with this Windows Installer package. A DLL required for this install to complete could not be run. Contact your support personnel or package vendor. Action [2], entry: [3], library: [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1724</td><td>1033</td><td>Removal completed successfully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1725</td><td>1033</td><td>Removal failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1726</td><td>1033</td><td>Advertisement completed successfully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1727</td><td>1033</td><td>Advertisement failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1728</td><td>1033</td><td>Configuration completed successfully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1729</td><td>1033</td><td>Configuration failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1730</td><td>1033</td><td>You must be an Administrator to remove this application. To remove this application, you can log on as an administrator, or contact your technical support group for assistance.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1731</td><td>1033</td><td>The source installation package for the product [2] is out of sync with the client package. Try the installation again using a valid copy of the installation package '[3]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1732</td><td>1033</td><td>In order to complete the installation of [2], you must restart the computer. Other users are currently logged on to this computer, and restarting may cause them to lose their work. Do you want to restart now?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_18</td><td>1033</td><td>Please wait while Windows configures [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_19</td><td>1033</td><td>Gathering required information...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1935</td><td>1033</td><td>An error occurred during the installation of assembly component [2]. HRESULT: [3]. {{assembly interface: [4], function: [5], assembly name: [6]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1936</td><td>1033</td><td>An error occurred during the installation of assembly '[6]'. The assembly is not strongly named or is not signed with the minimal key length. HRESULT: [3]. {{assembly interface: [4], function: [5], component: [2]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1937</td><td>1033</td><td>An error occurred during the installation of assembly '[6]'. The signature or catalog could not be verified or is not valid. HRESULT: [3]. {{assembly interface: [4], function: [5], component: [2]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_1938</td><td>1033</td><td>An error occurred during the installation of assembly '[6]'. One or more modules of the assembly could not be found. HRESULT: [3]. {{assembly interface: [4], function: [5], component: [2]}}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2</td><td>1033</td><td>Warning [1]. </td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_20</td><td>1033</td><td>{[ProductName] }Setup completed successfully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_21</td><td>1033</td><td>{[ProductName] }Setup failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2101</td><td>1033</td><td>Shortcuts not supported by the operating system.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2102</td><td>1033</td><td>Invalid .ini action: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2103</td><td>1033</td><td>Could not resolve path for shell folder [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2104</td><td>1033</td><td>Writing .ini file: [3]: System error: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2105</td><td>1033</td><td>Shortcut Creation [3] Failed. System error: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2106</td><td>1033</td><td>Shortcut Deletion [3] Failed. System error: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2107</td><td>1033</td><td>Error [3] registering type library [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2108</td><td>1033</td><td>Error [3] unregistering type library [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2109</td><td>1033</td><td>Section missing for .ini action.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2110</td><td>1033</td><td>Key missing for .ini action.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2111</td><td>1033</td><td>Detection of running applications failed, could not get performance data. Registered operation returned : [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2112</td><td>1033</td><td>Detection of running applications failed, could not get performance index. Registered operation returned : [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2113</td><td>1033</td><td>Detection of running applications failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_22</td><td>1033</td><td>Error reading from file: [2]. {{ System error [3].}}  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2200</td><td>1033</td><td>Database: [2]. Database object creation failed, mode = [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2201</td><td>1033</td><td>Database: [2]. Initialization failed, out of memory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2202</td><td>1033</td><td>Database: [2]. Data access failed, out of memory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2203</td><td>1033</td><td>Database: [2]. Cannot open database file. System error [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2204</td><td>1033</td><td>Database: [2]. Table already exists: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2205</td><td>1033</td><td>Database: [2]. Table does not exist: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2206</td><td>1033</td><td>Database: [2]. Table could not be dropped: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2207</td><td>1033</td><td>Database: [2]. Intent violation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2208</td><td>1033</td><td>Database: [2]. Insufficient parameters for Execute.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2209</td><td>1033</td><td>Database: [2]. Cursor in invalid state.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2210</td><td>1033</td><td>Database: [2]. Invalid update data type in column [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2211</td><td>1033</td><td>Database: [2]. Could not create database table [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2212</td><td>1033</td><td>Database: [2]. Database not in writable state.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2213</td><td>1033</td><td>Database: [2]. Error saving database tables.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2214</td><td>1033</td><td>Database: [2]. Error writing export file: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2215</td><td>1033</td><td>Database: [2]. Cannot open import file: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2216</td><td>1033</td><td>Database: [2]. Import file format error: [3], Line [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2217</td><td>1033</td><td>Database: [2]. Wrong state to CreateOutputDatabase [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2218</td><td>1033</td><td>Database: [2]. Table name not supplied.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2219</td><td>1033</td><td>Database: [2]. Invalid Installer database format.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2220</td><td>1033</td><td>Database: [2]. Invalid row/field data.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2221</td><td>1033</td><td>Database: [2]. Code page conflict in import file: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2222</td><td>1033</td><td>Database: [2]. Transform or merge code page [3] differs from database code page [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2223</td><td>1033</td><td>Database: [2]. Databases are the same. No transform generated.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2224</td><td>1033</td><td>Database: [2]. GenerateTransform: Database corrupt. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2225</td><td>1033</td><td>Database: [2]. Transform: Cannot transform a temporary table. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2226</td><td>1033</td><td>Database: [2]. Transform failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2227</td><td>1033</td><td>Database: [2]. Invalid identifier '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2228</td><td>1033</td><td>Database: [2]. Unknown table '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2229</td><td>1033</td><td>Database: [2]. Could not load table '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2230</td><td>1033</td><td>Database: [2]. Repeated table '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2231</td><td>1033</td><td>Database: [2]. Missing ')' in SQL query: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2232</td><td>1033</td><td>Database: [2]. Unexpected token '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2233</td><td>1033</td><td>Database: [2]. No columns in SELECT clause in SQL query: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2234</td><td>1033</td><td>Database: [2]. No columns in ORDER BY clause in SQL query: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2235</td><td>1033</td><td>Database: [2]. Column '[3]' not present or ambiguous in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2236</td><td>1033</td><td>Database: [2]. Invalid operator '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2237</td><td>1033</td><td>Database: [2]. Invalid or missing query string: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2238</td><td>1033</td><td>Database: [2]. Missing FROM clause in SQL query: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2239</td><td>1033</td><td>Database: [2]. Insufficient values in INSERT SQL statement.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2240</td><td>1033</td><td>Database: [2]. Missing update columns in UPDATE SQL statement.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2241</td><td>1033</td><td>Database: [2]. Missing insert columns in INSERT SQL statement.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2242</td><td>1033</td><td>Database: [2]. Column '[3]' repeated.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2243</td><td>1033</td><td>Database: [2]. No primary columns defined for table creation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2244</td><td>1033</td><td>Database: [2]. Invalid type specifier '[3]' in SQL query [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2245</td><td>1033</td><td>IStorage::Stat failed with error [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2246</td><td>1033</td><td>Database: [2]. Invalid Installer transform format.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2247</td><td>1033</td><td>Database: [2] Transform stream read/write failure.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2248</td><td>1033</td><td>Database: [2] GenerateTransform/Merge: Column type in base table does not match reference table. Table: [3] Col #: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2249</td><td>1033</td><td>Database: [2] GenerateTransform: More columns in base table than in reference table. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2250</td><td>1033</td><td>Database: [2] Transform: Cannot add existing row. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2251</td><td>1033</td><td>Database: [2] Transform: Cannot delete row that does not exist. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2252</td><td>1033</td><td>Database: [2] Transform: Cannot add existing table. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2253</td><td>1033</td><td>Database: [2] Transform: Cannot delete table that does not exist. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2254</td><td>1033</td><td>Database: [2] Transform: Cannot update row that does not exist. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2255</td><td>1033</td><td>Database: [2] Transform: Column with this name already exists. Table: [3] Col: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2256</td><td>1033</td><td>Database: [2] GenerateTransform/Merge: Number of primary keys in base table does not match reference table. Table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2257</td><td>1033</td><td>Database: [2]. Intent to modify read only table: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2258</td><td>1033</td><td>Database: [2]. Type mismatch in parameter: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2259</td><td>1033</td><td>Database: [2] Table(s) Update failed</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2260</td><td>1033</td><td>Storage CopyTo failed. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2261</td><td>1033</td><td>Could not remove stream [2]. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2262</td><td>1033</td><td>Stream does not exist: [2]. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2263</td><td>1033</td><td>Could not open stream [2]. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2264</td><td>1033</td><td>Could not remove stream [2]. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2265</td><td>1033</td><td>Could not commit storage. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2266</td><td>1033</td><td>Could not rollback storage. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2267</td><td>1033</td><td>Could not delete storage [2]. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2268</td><td>1033</td><td>Database: [2]. Merge: There were merge conflicts reported in [3] tables.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2269</td><td>1033</td><td>Database: [2]. Merge: The column count differed in the '[3]' table of the two databases.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2270</td><td>1033</td><td>Database: [2]. GenerateTransform/Merge: Column name in base table does not match reference table. Table: [3] Col #: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2271</td><td>1033</td><td>SummaryInformation write for transform failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2272</td><td>1033</td><td>Database: [2]. MergeDatabase will not write any changes because the database is open read-only.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2273</td><td>1033</td><td>Database: [2]. MergeDatabase: A reference to the base database was passed as the reference database.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2274</td><td>1033</td><td>Database: [2]. MergeDatabase: Unable to write errors to Error table. Could be due to a non-nullable column in a predefined Error table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2275</td><td>1033</td><td>Database: [2]. Specified Modify [3] operation invalid for table joins.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2276</td><td>1033</td><td>Database: [2]. Code page [3] not supported by the system.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2277</td><td>1033</td><td>Database: [2]. Failed to save table [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2278</td><td>1033</td><td>Database: [2]. Exceeded number of expressions limit of 32 in WHERE clause of SQL query: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2279</td><td>1033</td><td>Database: [2] Transform: Too many columns in base table [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2280</td><td>1033</td><td>Database: [2]. Could not create column [3] for table [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2281</td><td>1033</td><td>Could not rename stream [2]. System error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2282</td><td>1033</td><td>Stream name invalid [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_23</td><td>1033</td><td>Cannot create the file [3].  A directory with this name already exists.  Cancel the installation and try installing to a different location.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2302</td><td>1033</td><td>Patch notify: [2] bytes patched to far.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2303</td><td>1033</td><td>Error getting volume info. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2304</td><td>1033</td><td>Error getting disk free space. GetLastError: [2]. Volume: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2305</td><td>1033</td><td>Error waiting for patch thread. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2306</td><td>1033</td><td>Could not create thread for patch application. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2307</td><td>1033</td><td>Source file key name is null.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2308</td><td>1033</td><td>Destination file name is null.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2309</td><td>1033</td><td>Attempting to patch file [2] when patch already in progress.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2310</td><td>1033</td><td>Attempting to continue patch when no patch is in progress.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2315</td><td>1033</td><td>Missing path separator: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2318</td><td>1033</td><td>File does not exist: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2319</td><td>1033</td><td>Error setting file attribute: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2320</td><td>1033</td><td>File not writable: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2321</td><td>1033</td><td>Error creating file: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2322</td><td>1033</td><td>User canceled.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2323</td><td>1033</td><td>Invalid file attribute.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2324</td><td>1033</td><td>Could not open file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2325</td><td>1033</td><td>Could not get file time for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2326</td><td>1033</td><td>Error in FileToDosDateTime.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2327</td><td>1033</td><td>Could not remove directory: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2328</td><td>1033</td><td>Error getting file version info for file: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2329</td><td>1033</td><td>Error deleting file: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2330</td><td>1033</td><td>Error getting file attributes: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2331</td><td>1033</td><td>Error loading library [2] or finding entry point [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2332</td><td>1033</td><td>Error getting file attributes. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2333</td><td>1033</td><td>Error setting file attributes. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2334</td><td>1033</td><td>Error converting file time to local time for file: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2335</td><td>1033</td><td>Path: [2] is not a parent of [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2336</td><td>1033</td><td>Error creating temp file on path: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2337</td><td>1033</td><td>Could not close file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2338</td><td>1033</td><td>Could not update resource for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2339</td><td>1033</td><td>Could not set file time for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2340</td><td>1033</td><td>Could not update resource for file: [3], Missing resource.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2341</td><td>1033</td><td>Could not update resource for file: [3], Resource too large.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2342</td><td>1033</td><td>Could not update resource for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2343</td><td>1033</td><td>Specified path is empty.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2344</td><td>1033</td><td>Could not find required file IMAGEHLP.DLL to validate file:[2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2345</td><td>1033</td><td>[2]: File does not contain a valid checksum value.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2347</td><td>1033</td><td>User ignore.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2348</td><td>1033</td><td>Error attempting to read from cabinet stream.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2349</td><td>1033</td><td>Copy resumed with different info.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2350</td><td>1033</td><td>FDI server error</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2351</td><td>1033</td><td>File key '[2]' not found in cabinet '[3]'. The installation cannot continue.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2352</td><td>1033</td><td>Could not initialize cabinet file server. The required file 'CABINET.DLL' may be missing.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2353</td><td>1033</td><td>Not a cabinet.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2354</td><td>1033</td><td>Cannot handle cabinet.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2355</td><td>1033</td><td>Corrupt cabinet.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2356</td><td>1033</td><td>Could not locate cabinet in stream: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2357</td><td>1033</td><td>Cannot set attributes.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2358</td><td>1033</td><td>Error determining whether file is in-use: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2359</td><td>1033</td><td>Unable to create the target file - file may be in use.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2360</td><td>1033</td><td>Progress tick.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2361</td><td>1033</td><td>Need next cabinet.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2362</td><td>1033</td><td>Folder not found: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2363</td><td>1033</td><td>Could not enumerate subfolders for folder: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2364</td><td>1033</td><td>Bad enumeration constant in CreateCopier call.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2365</td><td>1033</td><td>Could not BindImage exe file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2366</td><td>1033</td><td>User failure.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2367</td><td>1033</td><td>User abort.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2368</td><td>1033</td><td>Failed to get network resource information. Error [2], network path [3]. Extended error: network provider [5], error code [4], error description [6].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2370</td><td>1033</td><td>Invalid CRC checksum value for [2] file.{ Its header says [3] for checksum, its computed value is [4].}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2371</td><td>1033</td><td>Could not apply patch to file [2]. GetLastError: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2372</td><td>1033</td><td>Patch file [2] is corrupt or of an invalid format. Attempting to patch file [3]. GetLastError: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2373</td><td>1033</td><td>File [2] is not a valid patch file.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2374</td><td>1033</td><td>File [2] is not a valid destination file for patch file [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2375</td><td>1033</td><td>Unknown patching error: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2376</td><td>1033</td><td>Cabinet not found.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2379</td><td>1033</td><td>Error opening file for read: [3] GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2380</td><td>1033</td><td>Error opening file for write: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2381</td><td>1033</td><td>Directory does not exist: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2382</td><td>1033</td><td>Drive not ready: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_24</td><td>1033</td><td>Please insert the disk: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2401</td><td>1033</td><td>64-bit registry operation attempted on 32-bit operating system for key [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2402</td><td>1033</td><td>Out of memory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_25</td><td>1033</td><td>The installer has insufficient privileges to access this directory: [2].  The installation cannot continue.  Log on as an administrator or contact your system administrator.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2501</td><td>1033</td><td>Could not create rollback script enumerator.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2502</td><td>1033</td><td>Called InstallFinalize when no install in progress.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2503</td><td>1033</td><td>Called RunScript when not marked in progress.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_26</td><td>1033</td><td>Error writing to file [2].  Verify that you have access to that directory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2601</td><td>1033</td><td>Invalid value for property [2]: '[3]'</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2602</td><td>1033</td><td>The [2] table entry '[3]' has no associated entry in the Media table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2603</td><td>1033</td><td>Duplicate table name [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2604</td><td>1033</td><td>[2] Property undefined.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2605</td><td>1033</td><td>Could not find server [2] in [3] or [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2606</td><td>1033</td><td>Value of property [2] is not a valid full path: '[3]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2607</td><td>1033</td><td>Media table not found or empty (required for installation of files).</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2608</td><td>1033</td><td>Could not create security descriptor for object. Error: '[2]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2609</td><td>1033</td><td>Attempt to migrate product settings before initialization.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2611</td><td>1033</td><td>The file [2] is marked as compressed, but the associated media entry does not specify a cabinet.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2612</td><td>1033</td><td>Stream not found in '[2]' column. Primary key: '[3]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2613</td><td>1033</td><td>RemoveExistingProducts action sequenced incorrectly.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2614</td><td>1033</td><td>Could not access IStorage object from installation package.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2615</td><td>1033</td><td>Skipped unregistration of Module [2] due to source resolution failure.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2616</td><td>1033</td><td>Companion file [2] parent missing.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2617</td><td>1033</td><td>Shared component [2] not found in Component table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2618</td><td>1033</td><td>Isolated application component [2] not found in Component table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2619</td><td>1033</td><td>Isolated components [2], [3] not part of same feature.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2620</td><td>1033</td><td>Key file of isolated application component [2] not in File table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2621</td><td>1033</td><td>Resource DLL or Resource ID information for shortcut [2] set incorrectly.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27</td><td>1033</td><td>Error reading from file [2].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2701</td><td>1033</td><td>The depth of a feature exceeds the acceptable tree depth of [2] levels.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2702</td><td>1033</td><td>A Feature table record ([2]) references a non-existent parent in the Attributes field.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2703</td><td>1033</td><td>Property name for root source path not defined: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2704</td><td>1033</td><td>Root directory property undefined: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2705</td><td>1033</td><td>Invalid table: [2]; Could not be linked as tree.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2706</td><td>1033</td><td>Source paths not created. No path exists for entry [2] in Directory table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2707</td><td>1033</td><td>Target paths not created. No path exists for entry [2] in Directory table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2708</td><td>1033</td><td>No entries found in the file table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2709</td><td>1033</td><td>The specified Component name ('[2]') not found in Component table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2710</td><td>1033</td><td>The requested 'Select' state is illegal for this Component.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2711</td><td>1033</td><td>The specified Feature name ('[2]') not found in Feature table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2712</td><td>1033</td><td>Invalid return from modeless dialog: [3], in action [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2713</td><td>1033</td><td>Null value in a non-nullable column ('[2]' in '[3]' column of the '[4]' table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2714</td><td>1033</td><td>Invalid value for default folder name: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2715</td><td>1033</td><td>The specified File key ('[2]') not found in the File table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2716</td><td>1033</td><td>Could not create a random subcomponent name for component '[2]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2717</td><td>1033</td><td>Bad action condition or error calling custom action '[2]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2718</td><td>1033</td><td>Missing package name for product code '[2]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2719</td><td>1033</td><td>Neither UNC nor drive letter path found in source '[2]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2720</td><td>1033</td><td>Error opening source list key. Error: '[2]'</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2721</td><td>1033</td><td>Custom action [2] not found in Binary table stream.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2722</td><td>1033</td><td>Custom action [2] not found in File table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2723</td><td>1033</td><td>Custom action [2] specifies unsupported type.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2724</td><td>1033</td><td>The volume label '[2]' on the media you're running from does not match the label '[3]' given in the Media table. This is allowed only if you have only 1 entry in your Media table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2725</td><td>1033</td><td>Invalid database tables</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2726</td><td>1033</td><td>Action not found: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2727</td><td>1033</td><td>The directory entry '[2]' does not exist in the Directory table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2728</td><td>1033</td><td>Table definition error: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2729</td><td>1033</td><td>Install engine not initialized.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2730</td><td>1033</td><td>Bad value in database. Table: '[2]'; Primary key: '[3]'; Column: '[4]'</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2731</td><td>1033</td><td>Selection Manager not initialized.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2732</td><td>1033</td><td>Directory Manager not initialized.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2733</td><td>1033</td><td>Bad foreign key ('[2]') in '[3]' column of the '[4]' table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2734</td><td>1033</td><td>Invalid reinstall mode character.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2735</td><td>1033</td><td>Custom action '[2]' has caused an unhandled exception and has been stopped. This may be the result of an internal error in the custom action, such as an access violation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2736</td><td>1033</td><td>Generation of custom action temp file failed: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2737</td><td>1033</td><td>Could not access custom action [2], entry [3], library [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2738</td><td>1033</td><td>Could not access VBScript run time for custom action [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2739</td><td>1033</td><td>Could not access JavaScript run time for custom action [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2740</td><td>1033</td><td>Custom action [2] script error [3], [4]: [5] Line [6], Column [7], [8].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2741</td><td>1033</td><td>Configuration information for product [2] is corrupt. Invalid info: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2742</td><td>1033</td><td>Marshaling to Server failed: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2743</td><td>1033</td><td>Could not execute custom action [2], location: [3], command: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2744</td><td>1033</td><td>EXE failed called by custom action [2], location: [3], command: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2745</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected language [4], found language [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2746</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product [4], found product [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2747</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &lt; [4], found product version [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2748</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &lt;= [4], found product version [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2749</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version == [4], found product version [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2750</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &gt;= [4], found product version [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27502</td><td>1033</td><td>Could not connect to [2] '[3]'. [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27503</td><td>1033</td><td>Error retrieving version string from [2] '[3]'. [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27504</td><td>1033</td><td>SQL version requirements not met: [3]. This installation requires [2] [4] or later.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27505</td><td>1033</td><td>Could not open SQL script file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27506</td><td>1033</td><td>Error executing SQL script [2]. Line [3]. [4]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27507</td><td>1033</td><td>Connection or browsing for database servers requires that MDAC be installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27508</td><td>1033</td><td>Error installing COM+ application [2]. [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27509</td><td>1033</td><td>Error uninstalling COM+ application [2]. [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2751</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &gt; [4], found product version [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27510</td><td>1033</td><td>Error installing COM+ application [2].  Could not load Microsoft(R) .NET class libraries. Registering .NET serviced components requires that Microsoft(R) .NET Framework be installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27511</td><td>1033</td><td>Could not execute SQL script file [2]. Connection not open: [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27512</td><td>1033</td><td>Error beginning transactions for [2] '[3]'. Database [4]. [5]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27513</td><td>1033</td><td>Error committing transactions for [2] '[3]'. Database [4]. [5]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27514</td><td>1033</td><td>This installation requires a Microsoft SQL Server. The specified server '[3]' is a Microsoft SQL Server Desktop Engine or SQL Server Express.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27515</td><td>1033</td><td>Error retrieving schema version from [2] '[3]'. Database: '[4]'. [5]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27516</td><td>1033</td><td>Error writing schema version to [2] '[3]'. Database: '[4]'. [5]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27517</td><td>1033</td><td>This installation requires Administrator privileges for installing COM+ applications. Log on as an administrator and then retry this installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27518</td><td>1033</td><td>The COM+ application "[2]" is configured to run as an NT service; this requires COM+ 1.5 or later on the system. Since your system has COM+ 1.0, this application will not be installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27519</td><td>1033</td><td>Error updating XML file [2]. [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2752</td><td>1033</td><td>Could not open transform [2] stored as child storage of package [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27520</td><td>1033</td><td>Error opening XML file [2]. [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27521</td><td>1033</td><td>This setup requires MSXML 3.0 or higher for configuring XML files. Please make sure that you have version 3.0 or higher.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27522</td><td>1033</td><td>Error creating XML file [2]. [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27523</td><td>1033</td><td>Error loading servers.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27524</td><td>1033</td><td>Error loading NetApi32.DLL. The ISNetApi.dll needs to have NetApi32.DLL properly loaded and requires an NT based operating system.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27525</td><td>1033</td><td>Server not found. Verify that the specified server exists. The server name can not be empty.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27526</td><td>1033</td><td>Unspecified error from ISNetApi.dll.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27527</td><td>1033</td><td>The buffer is too small.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27528</td><td>1033</td><td>Access denied. Check administrative rights.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27529</td><td>1033</td><td>Invalid computer.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2753</td><td>1033</td><td>The File '[2]' is not marked for installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27530</td><td>1033</td><td>Unknown error returned from NetAPI. System error: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27531</td><td>1033</td><td>Unhandled exception.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27532</td><td>1033</td><td>Invalid user name for this server or domain.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27533</td><td>1033</td><td>The case-sensitive passwords do not match.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27534</td><td>1033</td><td>The list is empty.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27535</td><td>1033</td><td>Access violation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27536</td><td>1033</td><td>Error getting group.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27537</td><td>1033</td><td>Error adding user to group. Verify that the group exists for this domain or server.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27538</td><td>1033</td><td>Error creating user.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27539</td><td>1033</td><td>ERROR_NETAPI_ERROR_NOT_PRIMARY returned from NetAPI.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2754</td><td>1033</td><td>The File '[2]' is not a valid patch file.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27540</td><td>1033</td><td>The specified user already exists.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27541</td><td>1033</td><td>The specified group already exists.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27542</td><td>1033</td><td>Invalid password. Verify that the password is in accordance with your network password policy.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27543</td><td>1033</td><td>Invalid name.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27544</td><td>1033</td><td>Invalid group.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27545</td><td>1033</td><td>The user name can not be empty and must be in the format DOMAIN\Username.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27546</td><td>1033</td><td>Error loading or creating INI file in the user TEMP directory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27547</td><td>1033</td><td>ISNetAPI.dll is not loaded or there was an error loading the dll. This dll needs to be loaded for this operation. Verify that the dll is in the SUPPORTDIR directory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27548</td><td>1033</td><td>Error deleting INI file containing new user information from the user's TEMP directory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27549</td><td>1033</td><td>Error getting the primary domain controller (PDC).</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2755</td><td>1033</td><td>Server returned unexpected error [2] attempting to install package [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27550</td><td>1033</td><td>Every field must have a value in order to create a user.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27551</td><td>1033</td><td>ODBC driver for [2] not found. This is required to connect to [2] database servers.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27552</td><td>1033</td><td>Error creating database [4]. Server: [2] [3]. [5]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27553</td><td>1033</td><td>Error connecting to database [4]. Server: [2] [3]. [5]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27554</td><td>1033</td><td>Error attempting to open connection [2]. No valid database metadata associated with this connection.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_27555</td><td>1033</td><td>Error attempting to apply permissions to object '[2]'. System error: [3] ([4])</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2756</td><td>1033</td><td>The property '[2]' was used as a directory property in one or more tables, but no value was ever assigned.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2757</td><td>1033</td><td>Could not create summary info for transform [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2758</td><td>1033</td><td>Transform [2] does not contain an MSI version.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2759</td><td>1033</td><td>Transform [2] version [3] incompatible with engine; Min: [4], Max: [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2760</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected upgrade code [4], found [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2761</td><td>1033</td><td>Cannot begin transaction. Global mutex not properly initialized.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2762</td><td>1033</td><td>Cannot write script record. Transaction not started.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2763</td><td>1033</td><td>Cannot run script. Transaction not started.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2765</td><td>1033</td><td>Assembly name missing from AssemblyName table : Component: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2766</td><td>1033</td><td>The file [2] is an invalid MSI storage file.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2767</td><td>1033</td><td>No more data{ while enumerating [2]}.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2768</td><td>1033</td><td>Transform in patch package is invalid.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2769</td><td>1033</td><td>Custom Action [2] did not close [3] MSIHANDLEs.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2770</td><td>1033</td><td>Cached folder [2] not defined in internal cache folder table.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2771</td><td>1033</td><td>Upgrade of feature [2] has a missing component.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2772</td><td>1033</td><td>New upgrade feature [2] must be a leaf feature.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_28</td><td>1033</td><td>Another application has exclusive access to the file [2].  Please shut down all other applications, then click Retry.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2801</td><td>1033</td><td>Unknown Message -- Type [2]. No action is taken.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2802</td><td>1033</td><td>No publisher is found for the event [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2803</td><td>1033</td><td>Dialog View did not find a record for the dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2804</td><td>1033</td><td>On activation of the control [3] on dialog [2] CMsiDialog failed to evaluate the condition [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2806</td><td>1033</td><td>The dialog [2] failed to evaluate the condition [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2807</td><td>1033</td><td>The action [2] is not recognized.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2808</td><td>1033</td><td>Default button is ill-defined on dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2809</td><td>1033</td><td>On the dialog [2] the next control pointers do not form a cycle. There is a pointer from [3] to [4], but there is no further pointer.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2810</td><td>1033</td><td>On the dialog [2] the next control pointers do not form a cycle. There is a pointer from both [3] and [5] to [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2811</td><td>1033</td><td>On dialog [2] control [3] has to take focus, but it is unable to do so.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2812</td><td>1033</td><td>The event [2] is not recognized.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2813</td><td>1033</td><td>The EndDialog event was called with the argument [2], but the dialog has a parent.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2814</td><td>1033</td><td>On the dialog [2] the control [3] names a nonexistent control [4] as the next control.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2815</td><td>1033</td><td>ControlCondition table has a row without condition for the dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2816</td><td>1033</td><td>The EventMapping table refers to an invalid control [4] on dialog [2] for the event [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2817</td><td>1033</td><td>The event [2] failed to set the attribute for the control [4] on dialog [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2818</td><td>1033</td><td>In the ControlEvent table EndDialog has an unrecognized argument [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2819</td><td>1033</td><td>Control [3] on dialog [2] needs a property linked to it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2820</td><td>1033</td><td>Attempted to initialize an already initialized handler.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2821</td><td>1033</td><td>Attempted to initialize an already initialized dialog: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2822</td><td>1033</td><td>No other method can be called on dialog [2] until all the controls are added.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2823</td><td>1033</td><td>Attempted to initialize an already initialized control: [3] on dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2824</td><td>1033</td><td>The dialog attribute [3] needs a record of at least [2] field(s).</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2825</td><td>1033</td><td>The control attribute [3] needs a record of at least [2] field(s).</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2826</td><td>1033</td><td>Control [3] on dialog [2] extends beyond the boundaries of the dialog [4] by [5] pixels.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2827</td><td>1033</td><td>The button [4] on the radio button group [3] on dialog [2] extends beyond the boundaries of the group [5] by [6] pixels.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2828</td><td>1033</td><td>Tried to remove control [3] from dialog [2], but the control is not part of the dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2829</td><td>1033</td><td>Attempt to use an uninitialized dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2830</td><td>1033</td><td>Attempt to use an uninitialized control on dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2831</td><td>1033</td><td>The control [3] on dialog [2] does not support [5] the attribute [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2832</td><td>1033</td><td>The dialog [2] does not support the attribute [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2833</td><td>1033</td><td>Control [4] on dialog [3] ignored the message [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2834</td><td>1033</td><td>The next pointers on the dialog [2] do not form a single loop.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2835</td><td>1033</td><td>The control [2] was not found on dialog [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2836</td><td>1033</td><td>The control [3] on the dialog [2] cannot take focus.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2837</td><td>1033</td><td>The control [3] on dialog [2] wants the winproc to return [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2838</td><td>1033</td><td>The item [2] in the selection table has itself as a parent.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2839</td><td>1033</td><td>Setting the property [2] failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2840</td><td>1033</td><td>Error dialog name mismatch.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2841</td><td>1033</td><td>No OK button was found on the error dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2842</td><td>1033</td><td>No text field was found on the error dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2843</td><td>1033</td><td>The ErrorString attribute is not supported for standard dialogs.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2844</td><td>1033</td><td>Cannot execute an error dialog if the Errorstring is not set.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2845</td><td>1033</td><td>The total width of the buttons exceeds the size of the error dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2846</td><td>1033</td><td>SetFocus did not find the required control on the error dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2847</td><td>1033</td><td>The control [3] on dialog [2] has both the icon and the bitmap style set.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2848</td><td>1033</td><td>Tried to set control [3] as the default button on dialog [2], but the control does not exist.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2849</td><td>1033</td><td>The control [3] on dialog [2] is of a type, that cannot be integer valued.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2850</td><td>1033</td><td>Unrecognized volume type.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2851</td><td>1033</td><td>The data for the icon [2] is not valid.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2852</td><td>1033</td><td>At least one control has to be added to dialog [2] before it is used.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2853</td><td>1033</td><td>Dialog [2] is a modeless dialog. The execute method should not be called on it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2854</td><td>1033</td><td>On the dialog [2] the control [3] is designated as first active control, but there is no such control.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2855</td><td>1033</td><td>The radio button group [3] on dialog [2] has fewer than 2 buttons.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2856</td><td>1033</td><td>Creating a second copy of the dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2857</td><td>1033</td><td>The directory [2] is mentioned in the selection table but not found.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2858</td><td>1033</td><td>The data for the bitmap [2] is not valid.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2859</td><td>1033</td><td>Test error message.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2860</td><td>1033</td><td>Cancel button is ill-defined on dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2861</td><td>1033</td><td>The next pointers for the radio buttons on dialog [2] control [3] do not form a cycle.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2862</td><td>1033</td><td>The attributes for the control [3] on dialog [2] do not define a valid icon size. Setting the size to 16.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2863</td><td>1033</td><td>The control [3] on dialog [2] needs the icon [4] in size [5]x[5], but that size is not available. Loading the first available size.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2864</td><td>1033</td><td>The control [3] on dialog [2] received a browse event, but there is no configurable directory for the present selection. Likely cause: browse button is not authored correctly.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2865</td><td>1033</td><td>Control [3] on billboard [2] extends beyond the boundaries of the billboard [4] by [5] pixels.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2866</td><td>1033</td><td>The dialog [2] is not allowed to return the argument [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2867</td><td>1033</td><td>The error dialog property is not set.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2868</td><td>1033</td><td>The error dialog [2] does not have the error style bit set.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2869</td><td>1033</td><td>The dialog [2] has the error style bit set, but is not an error dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2870</td><td>1033</td><td>The help string [4] for control [3] on dialog [2] does not contain the separator character.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2871</td><td>1033</td><td>The [2] table is out of date: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2872</td><td>1033</td><td>The argument of the CheckPath control event on dialog [2] is invalid.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2873</td><td>1033</td><td>On the dialog [2] the control [3] has an invalid string length limit: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2874</td><td>1033</td><td>Changing the text font to [2] failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2875</td><td>1033</td><td>Changing the text color to [2] failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2876</td><td>1033</td><td>The control [3] on dialog [2] had to truncate the string: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2877</td><td>1033</td><td>The binary data [2] was not found</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2878</td><td>1033</td><td>On the dialog [2] the control [3] has a possible value: [4]. This is an invalid or duplicate value.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2879</td><td>1033</td><td>The control [3] on dialog [2] cannot parse the mask string: [4].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2880</td><td>1033</td><td>Do not perform the remaining control events.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2881</td><td>1033</td><td>CMsiHandler initialization failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2882</td><td>1033</td><td>Dialog window class registration failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2883</td><td>1033</td><td>CreateNewDialog failed for the dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2884</td><td>1033</td><td>Failed to create a window for the dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2885</td><td>1033</td><td>Failed to create the control [3] on the dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2886</td><td>1033</td><td>Creating the [2] table failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2887</td><td>1033</td><td>Creating a cursor to the [2] table failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2888</td><td>1033</td><td>Executing the [2] view failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2889</td><td>1033</td><td>Creating the window for the control [3] on dialog [2] failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2890</td><td>1033</td><td>The handler failed in creating an initialized dialog.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2891</td><td>1033</td><td>Failed to destroy window for dialog [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2892</td><td>1033</td><td>[2] is an integer only control, [3] is not a valid integer value.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2893</td><td>1033</td><td>The control [3] on dialog [2] can accept property values that are at most [5] characters long. The value [4] exceeds this limit, and has been truncated.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2894</td><td>1033</td><td>Loading RICHED20.DLL failed. GetLastError() returned: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2895</td><td>1033</td><td>Freeing RICHED20.DLL failed. GetLastError() returned: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2896</td><td>1033</td><td>Executing action [2] failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2897</td><td>1033</td><td>Failed to create any [2] font on this system.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2898</td><td>1033</td><td>For [2] textstyle, the system created a '[3]' font, in [4] character set.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2899</td><td>1033</td><td>Failed to create [2] textstyle. GetLastError() returned: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_29</td><td>1033</td><td>There is not enough disk space to install the file [2].  Free some disk space and click Retry, or click Cancel to exit.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2901</td><td>1033</td><td>Invalid parameter to operation [2]: Parameter [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2902</td><td>1033</td><td>Operation [2] called out of sequence.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2903</td><td>1033</td><td>The file [2] is missing.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2904</td><td>1033</td><td>Could not BindImage file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2905</td><td>1033</td><td>Could not read record from script file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2906</td><td>1033</td><td>Missing header in script file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2907</td><td>1033</td><td>Could not create secure security descriptor. Error: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2908</td><td>1033</td><td>Could not register component [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2909</td><td>1033</td><td>Could not unregister component [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2910</td><td>1033</td><td>Could not determine user's security ID.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2911</td><td>1033</td><td>Could not remove the folder [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2912</td><td>1033</td><td>Could not schedule file [2] for removal on restart.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2919</td><td>1033</td><td>No cabinet specified for compressed file: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2920</td><td>1033</td><td>Source directory not specified for file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2924</td><td>1033</td><td>Script [2] version unsupported. Script version: [3], minimum version: [4], maximum version: [5].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2927</td><td>1033</td><td>ShellFolder id [2] is invalid.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2928</td><td>1033</td><td>Exceeded maximum number of sources. Skipping source '[2]'.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2929</td><td>1033</td><td>Could not determine publishing root. Error: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2932</td><td>1033</td><td>Could not create file [2] from script data. Error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2933</td><td>1033</td><td>Could not initialize rollback script [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2934</td><td>1033</td><td>Could not secure transform [2]. Error [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2935</td><td>1033</td><td>Could not unsecure transform [2]. Error [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2936</td><td>1033</td><td>Could not find transform [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2937</td><td>1033</td><td>Windows Installer cannot install a system file protection catalog. Catalog: [2], Error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2938</td><td>1033</td><td>Windows Installer cannot retrieve a system file protection catalog from the cache. Catalog: [2], Error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2939</td><td>1033</td><td>Windows Installer cannot delete a system file protection catalog from the cache. Catalog: [2], Error: [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2940</td><td>1033</td><td>Directory Manager not supplied for source resolution.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2941</td><td>1033</td><td>Unable to compute the CRC for file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2942</td><td>1033</td><td>BindImage action has not been executed on [2] file.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2943</td><td>1033</td><td>This version of Windows does not support deploying 64-bit packages. The script [2] is for a 64-bit package.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2944</td><td>1033</td><td>GetProductAssignmentType failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_2945</td><td>1033</td><td>Installation of ComPlus App [2] failed with error [3].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_3</td><td>1033</td><td>Info [1]. </td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_30</td><td>1033</td><td>Source file not found: [2].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_3001</td><td>1033</td><td>The patches in this list contain incorrect sequencing information: [2][3][4][5][6][7][8][9][10][11][12][13][14][15][16].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_3002</td><td>1033</td><td>Patch [2] contains invalid sequencing information. </td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_31</td><td>1033</td><td>Error reading from file: [3]. {{ System error [2].}}  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_32</td><td>1033</td><td>Error writing to file: [3]. {{ System error [2].}}  Verify that you have access to that directory.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_33</td><td>1033</td><td>Source file not found{{(cabinet)}}: [2].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_34</td><td>1033</td><td>Cannot create the directory [2].  A file with this name already exists.  Please rename or remove the file and click Retry, or click Cancel to exit.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_35</td><td>1033</td><td>The volume [2] is currently unavailable.  Please select another.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_36</td><td>1033</td><td>The specified path [2] is unavailable.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_37</td><td>1033</td><td>Unable to write to the specified folder [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_38</td><td>1033</td><td>A network error occurred while attempting to read from the file [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_39</td><td>1033</td><td>An error occurred while attempting to create the directory [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_4</td><td>1033</td><td>Internal Error [1]. [2]{, [3]}{, [4]}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_40</td><td>1033</td><td>A network error occurred while attempting to create the directory [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_41</td><td>1033</td><td>A network error occurred while attempting to open the source file cabinet [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_42</td><td>1033</td><td>The specified path is too long [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_43</td><td>1033</td><td>The Installer has insufficient privileges to modify the file [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_44</td><td>1033</td><td>A portion of the path [2] exceeds the length allowed by the system.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_45</td><td>1033</td><td>The path [2] contains words that are not valid in folders.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_46</td><td>1033</td><td>The path [2] contains an invalid character.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_47</td><td>1033</td><td>[2] is not a valid short file name.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_48</td><td>1033</td><td>Error getting file security: [3] GetLastError: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_49</td><td>1033</td><td>Invalid Drive: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_5</td><td>1033</td><td>{{Disk full: }}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_50</td><td>1033</td><td>Could not create key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_51</td><td>1033</td><td>Could not open key: [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_52</td><td>1033</td><td>Could not delete value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_53</td><td>1033</td><td>Could not delete key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_54</td><td>1033</td><td>Could not read value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_55</td><td>1033</td><td>Could not write value [2] to key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_56</td><td>1033</td><td>Could not get value names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_57</td><td>1033</td><td>Could not get sub key names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_58</td><td>1033</td><td>Could not read security information for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_59</td><td>1033</td><td>Could not increase the available registry space. [2] KB of free registry space is required for the installation of this application.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_6</td><td>1033</td><td>Action [Time]: [1]. [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_60</td><td>1033</td><td>Another installation is in progress. You must complete that installation before continuing this one.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_61</td><td>1033</td><td>Error accessing secured data. Please make sure the Windows Installer is configured properly and try the installation again.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_62</td><td>1033</td><td>User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.  Your current installation will now continue.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_63</td><td>1033</td><td>User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_64</td><td>1033</td><td>Out of disk space -- Volume: '[2]'; required space: [3] KB; available space: [4] KB.  Free some disk space and retry.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_65</td><td>1033</td><td>Are you sure you want to cancel?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_66</td><td>1033</td><td>The file [2][3] is being held in use{ by the following process: Name: [4], ID: [5], Window Title: [6]}.  Close that application and retry.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_67</td><td>1033</td><td>The product [2] is already installed, preventing the installation of this product.  The two products are incompatible.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_68</td><td>1033</td><td>Out of disk space -- Volume: [2]; required space: [3] KB; available space: [4] KB.  If rollback is disabled, enough space is available. Click Cancel to quit, Retry to check available disk space again, or Ignore to continue without rollback.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_69</td><td>1033</td><td>Could not access network location [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_7</td><td>1033</td><td>[ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_70</td><td>1033</td><td>The following applications should be closed before continuing the installation:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_71</td><td>1033</td><td>Could not find any previously installed compliant products on the machine for installing this product.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_72</td><td>1033</td><td>The key [2] is not valid.  Verify that you entered the correct key.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_73</td><td>1033</td><td>The installer must restart your system before configuration of [2] can continue.  Click Yes to restart now or No if you plan to restart later.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_74</td><td>1033</td><td>You must restart your system for the configuration changes made to [2] to take effect. Click Yes to restart now or No if you plan to restart later.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_75</td><td>1033</td><td>An installation for [2] is currently suspended.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_76</td><td>1033</td><td>A previous installation for this product is in progress.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_77</td><td>1033</td><td>No valid source could be found for product [2].  The Windows Installer cannot continue.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_78</td><td>1033</td><td>Installation operation completed successfully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_79</td><td>1033</td><td>Installation operation failed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_8</td><td>1033</td><td>{[2]}{, [3]}{, [4]}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_80</td><td>1033</td><td>Product: [2] -- [3]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_81</td><td>1033</td><td>You may either restore your computer to its previous state or continue the installation later. Would you like to restore?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_82</td><td>1033</td><td>An error occurred while writing installation information to disk.  Check to make sure enough disk space is available, and click Retry, or Cancel to end the installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_83</td><td>1033</td><td>One or more of the files required to restore your computer to its previous state could not be found.  Restoration will not be possible.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_84</td><td>1033</td><td>The path [2] is not valid.  Please specify a valid path.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_85</td><td>1033</td><td>Out of memory. Shut down other applications before retrying.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_86</td><td>1033</td><td>There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to go back to the previously selected volume.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_87</td><td>1033</td><td>There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to return to the browse dialog and select a different volume.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_88</td><td>1033</td><td>The folder [2] does not exist.  Please enter a path to an existing folder.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_89</td><td>1033</td><td>You have insufficient privileges to read this folder.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_9</td><td>1033</td><td>Message type: [1], Argument: [2]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_90</td><td>1033</td><td>A valid destination folder for the installation could not be determined.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_91</td><td>1033</td><td>Error attempting to read from the source installation database: [2].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_92</td><td>1033</td><td>Scheduling reboot operation: Renaming file [2] to [3]. Must reboot to complete operation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_93</td><td>1033</td><td>Scheduling reboot operation: Deleting file [2]. Must reboot to complete operation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_94</td><td>1033</td><td>Module [2] failed to register.  HRESULT [3].  Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_95</td><td>1033</td><td>Module [2] failed to unregister.  HRESULT [3].  Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_96</td><td>1033</td><td>Failed to cache package [2]. Error: [3]. Contact your support personnel.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_97</td><td>1033</td><td>Could not register font [2].  Verify that you have sufficient permissions to install fonts, and that the system supports this font.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_98</td><td>1033</td><td>Could not unregister font [2]. Verify that you have sufficient permissions to remove fonts.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ERROR_99</td><td>1033</td><td>Could not create shortcut [2]. Verify that the destination folder exists and that you can access it.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_INSTALLDIR</td><td>1033</td><td>[INSTALLDIR]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_INSTALLSHIELD</td><td>1033</td><td>InstallShield</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_INSTALLSHIELD_FORMATTED</td><td>1033</td><td>{&amp;MSSWhiteSerif8}InstallShield</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ISSCRIPT_VERSION_MISSING</td><td>1033</td><td>The InstallScript engine is missing from this machine.  If available, please run ISScript.msi, or contact your support personnel for further assistance.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_ISSCRIPT_VERSION_OLD</td><td>1033</td><td>The InstallScript engine on this machine is older than the version required to run this setup.  If available, please install the latest version of ISScript.msi, or contact your support personnel for further assistance.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_NEXT</td><td>1033</td><td>&amp;Next &gt;</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PREREQUISITE_SETUP_BROWSE</td><td>1033</td><td>Open [ProductName]'s original [SETUPEXENAME]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PREREQUISITE_SETUP_INVALID</td><td>1033</td><td>This executable file does not appear to be the original executable file for [ProductName]. Without using the original [SETUPEXENAME] to install additional dependencies, [ProductName] may not work correctly. Would you like to find the original [SETUPEXENAME]?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PREREQUISITE_SETUP_SEARCH</td><td>1033</td><td>This installation may require additional dependencies. Without its dependencies, [ProductName] may not work correctly. Would you like to find the original [SETUPEXENAME]?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PREVENT_DOWNGRADE_EXIT</td><td>1033</td><td>A newer version of this application is already installed on this computer. If you wish to install this version, please uninstall the newer version first. Click OK to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PRINT_BUTTON</td><td>1033</td><td>&amp;Print</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PRODUCTNAME_INSTALLSHIELD</td><td>1033</td><td>[ProductName] - InstallShield Wizard</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEAPPPOOL</td><td>1033</td><td>Creating application pool %s</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEAPPPOOLS</td><td>1033</td><td>Creating application Pools...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEVROOT</td><td>1033</td><td>Creating IIS virtual directory %s</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEVROOTS</td><td>1033</td><td>Creating IIS virtual directories...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEWEBSERVICEEXTENSION</td><td>1033</td><td>Creating web service extension</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEWEBSERVICEEXTENSIONS</td><td>1033</td><td>Creating web service extensions...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEWEBSITE</td><td>1033</td><td>Creating IIS website %s</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_CREATEWEBSITES</td><td>1033</td><td>Creating IIS websites...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_EXTRACT</td><td>1033</td><td>Extracting information for IIS virtual directories...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_EXTRACTDONE</td><td>1033</td><td>Extracted information for IIS virtual directories...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEAPPPOOL</td><td>1033</td><td>Removing application pool</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEAPPPOOLS</td><td>1033</td><td>Removing application pools...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVESITE</td><td>1033</td><td>Removing web site at port %d</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEVROOT</td><td>1033</td><td>Removing IIS virtual directory %s</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEVROOTS</td><td>1033</td><td>Removing IIS virtual directories...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEWEBSERVICEEXTENSION</td><td>1033</td><td>Removing web service extension</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEWEBSERVICEEXTENSIONS</td><td>1033</td><td>Removing web service extensions...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_REMOVEWEBSITES</td><td>1033</td><td>Removing IIS websites...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>1033</td><td>Rolling back application pools...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_ROLLBACKVROOTS</td><td>1033</td><td>Rolling back virtual directory and web site changes...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>1033</td><td>Rolling back web service extensions...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_TEXTFILECHANGS_REPLACE</td><td>1033</td><td>Replacing %s with %s in %s...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_XML_COSTING</td><td>1033</td><td>Costing XML files...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_XML_CREATE_FILE</td><td>1033</td><td>Creating XML file %s...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_XML_FILES</td><td>1033</td><td>Performing XML file changes...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_XML_REMOVE_FILE</td><td>1033</td><td>Removing XML file %s...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_XML_ROLLBACK_FILES</td><td>1033</td><td>Rolling back XML file changes...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>Dev2 Studio</td><td>0</td><td/><td>-526294933</td></row>
-		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_BROWSE</td><td>1033</td><td>B&amp;rowse...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_BROWSE_DB</td><td>1033</td><td>Br&amp;owse...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_CATALOG</td><td>1033</td><td>&amp;Name of database catalog:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_CONNECT</td><td>1033</td><td>Connect using:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_DESC</td><td>1033</td><td>Select database server and authentication method</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_ID</td><td>1033</td><td>&amp;Login ID:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_INTRO</td><td>1033</td><td>Select the database server to install to from the list below or click Browse to see a list of all database servers. You can also specify the way to authenticate your login using your current credentials or a SQL Login ID and Password.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_PSWD</td><td>1033</td><td>&amp;Password:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_SERVER</td><td>1033</td><td>&amp;Database Server:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_SERVER2</td><td>1033</td><td>&amp;Database server that you are installing to:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_SQL</td><td>1033</td><td>S&amp;erver authentication using the Login ID and password below</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_TITLE</td><td>1033</td><td>{&amp;MSSansBold8}Database Server</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLLOGIN_WIN</td><td>1033</td><td>&amp;Windows authentication credentials of current user</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLSCRIPT_INSTALLING</td><td>1033</td><td>Executing SQL Install Script...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SQLSCRIPT_UNINSTALLING</td><td>1033</td><td>Executing SQL Uninstall Script...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_STANDARD_USE_SETUPEXE</td><td>1033</td><td>This installation cannot be run by directly launching the MSI package. You must run setup.exe.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_Advertise</td><td>1033</td><td>Will be installed on first use. (Available only if the feature supports this option.)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_AllInstalledLocal</td><td>1033</td><td>Will be completely installed to the local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_CustomSetup</td><td>1033</td><td>{&amp;MSSansBold8}Custom Setup Tips</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_CustomSetupDescription</td><td>1033</td><td>Custom Setup allows you to selectively install program features.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_IconInstallState</td><td>1033</td><td>The icon next to the feature name indicates the install state of the feature. Click the icon to drop down the install state menu for each feature.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_InstallState</td><td>1033</td><td>This install state means the feature...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_Network</td><td>1033</td><td>Will be installed to run from the network. (Available only if the feature supports this option.)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_SubFeaturesInstalledLocal</td><td>1033</td><td>Will have some subfeatures installed to the local hard drive. (Available only if the feature has subfeatures.)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_SetupTips_WillNotBeInstalled</td><td>1033</td><td>Will not be installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_Available</td><td>1033</td><td>Available</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_Bytes</td><td>1033</td><td>bytes</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_CompilingFeaturesCost</td><td>1033</td><td>Compiling cost for this feature...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_Differences</td><td>1033</td><td>Differences</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_DiskSize</td><td>1033</td><td>Disk Size</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureCompletelyRemoved</td><td>1033</td><td>This feature will be completely removed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureContinueNetwork</td><td>1033</td><td>This feature will continue to be run from the network</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureFreeSpace</td><td>1033</td><td>This feature frees up [1] on your hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledCD</td><td>1033</td><td>This feature, and all subfeatures, will be installed to run from the CD.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledCD2</td><td>1033</td><td>This feature will be installed to run from CD.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledLocal</td><td>1033</td><td>This feature, and all subfeatures, will be installed on local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledLocal2</td><td>1033</td><td>This feature will be installed on local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledNetwork</td><td>1033</td><td>This feature, and all subfeatures, will be installed to run from the network.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledNetwork2</td><td>1033</td><td>This feature will be installed to run from network.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledRequired</td><td>1033</td><td>Will be installed when required.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledWhenRequired</td><td>1033</td><td>This feature will be set to be installed when required.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureInstalledWhenRequired2</td><td>1033</td><td>This feature will be installed when required.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureLocal</td><td>1033</td><td>This feature will be installed on the local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureLocal2</td><td>1033</td><td>This feature will be installed on your local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureNetwork</td><td>1033</td><td>This feature will be installed to run from the network.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureNetwork2</td><td>1033</td><td>This feature will be available to run from the network.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureNotAvailable</td><td>1033</td><td>This feature will not be available.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureOnCD</td><td>1033</td><td>This feature will be installed to run from CD.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureOnCD2</td><td>1033</td><td>This feature will be available to run from CD.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureRemainLocal</td><td>1033</td><td>This feature will remain on your local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureRemoveNetwork</td><td>1033</td><td>This feature will be removed from your local hard drive, but will be still available to run from the network.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureRemovedCD</td><td>1033</td><td>This feature will be removed from your local hard drive but will still be available to run from CD.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureRemovedUnlessRequired</td><td>1033</td><td>This feature will be removed from your local hard drive but will be set to be installed when required.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureRequiredSpace</td><td>1033</td><td>This feature requires [1] on your hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureRunFromCD</td><td>1033</td><td>This feature will continue to be run from the CD</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureSpaceFree</td><td>1033</td><td>This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureSpaceFree2</td><td>1033</td><td>This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureSpaceFree3</td><td>1033</td><td>This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureSpaceFree4</td><td>1033</td><td>This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureUnavailable</td><td>1033</td><td>This feature will become unavailable.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureUninstallNoNetwork</td><td>1033</td><td>This feature will be uninstalled completely, and you won't be able to run it from the network.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureWasCD</td><td>1033</td><td>This feature was run from the CD but will be set to be installed when required.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureWasCDLocal</td><td>1033</td><td>This feature was run from the CD but will be installed on the local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureWasOnNetworkInstalled</td><td>1033</td><td>This feature was run from the network but will be installed when required.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureWasOnNetworkLocal</td><td>1033</td><td>This feature was run from the network but will be installed on the local hard drive.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_FeatureWillBeUninstalled</td><td>1033</td><td>This feature will be uninstalled completely, and you won't be able to run it from CD.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_Folder</td><td>1033</td><td>Fldr|New Folder</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_GB</td><td>1033</td><td>GB</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_KB</td><td>1033</td><td>KB</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_MB</td><td>1033</td><td>MB</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_Required</td><td>1033</td><td>Required</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_TimeRemaining</td><td>1033</td><td>Time remaining: {[1] min }{[2] sec}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS_UITEXT_Volume</td><td>1033</td><td>Volume</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__AgreeToLicense_0</td><td>1033</td><td>I &amp;do not accept the terms in the license agreement</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__AgreeToLicense_1</td><td>1033</td><td>I &amp;accept the terms in the license agreement</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DatabaseFolder_ChangeFolder</td><td>1033</td><td>Click Next to install to this folder, or click Change to install to a different folder.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DatabaseFolder_DatabaseDir</td><td>1033</td><td>[DATABASEDIR]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DatabaseFolder_DatabaseFolder</td><td>1033</td><td>{&amp;MSSansBold8}Database Folder</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DestinationFolder_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DestinationFolder_ChangeFolder</td><td>1033</td><td>Click Next to install to this folder, or click Change to install to a different folder.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DestinationFolder_DestinationFolder</td><td>1033</td><td>{&amp;MSSansBold8}Destination Folder</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DestinationFolder_InstallTo</td><td>1033</td><td>Install [ProductName] to:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DisplayName_Custom</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DisplayName_Minimal</td><td>1033</td><td>Minimal</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__DisplayName_Typical</td><td>1033</td><td>Typical</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_11</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_4</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_8</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_BrowseDestination</td><td>1033</td><td>Browse to the destination folder.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_ChangeDestination</td><td>1033</td><td>{&amp;MSSansBold8}Change Current Destination Folder</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_CreateFolder</td><td>1033</td><td>Create new folder|</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_FolderName</td><td>1033</td><td>&amp;Folder name:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_LookIn</td><td>1033</td><td>&amp;Look in:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallBrowse_UpOneLevel</td><td>1033</td><td>Up one level|</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPointWelcome_ServerImage</td><td>1033</td><td>The InstallShield(R) Wizard will create a server image of [ProductName] at a specified network location. To continue, click Next.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPointWelcome_Wizard</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPoint_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPoint_EnterNetworkLocation</td><td>1033</td><td>Enter the network location or click Change to browse to a location.  Click Install to create a server image of [ProductName] at the specified network location or click Cancel to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPoint_Install</td><td>1033</td><td>&amp;Install</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPoint_NetworkLocation</td><td>1033</td><td>&amp;Network location:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPoint_NetworkLocationFormatted</td><td>1033</td><td>{&amp;MSSansBold8}Network Location</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsAdminInstallPoint_SpecifyNetworkLocation</td><td>1033</td><td>Specify a network location for the server image of the product.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseButton</td><td>1033</td><td>&amp;Browse...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_11</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_4</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_8</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_BrowseDestFolder</td><td>1033</td><td>Browse to the destination folder.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_ChangeCurrentFolder</td><td>1033</td><td>{&amp;MSSansBold8}Change Current Destination Folder</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_CreateFolder</td><td>1033</td><td>Create New Folder|</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_FolderName</td><td>1033</td><td>&amp;Folder name:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_LookIn</td><td>1033</td><td>&amp;Look in:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseFolderDlg_UpOneLevel</td><td>1033</td><td>Up One Level|</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseForAccount</td><td>1033</td><td>Browse for a User Account</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseGroup</td><td>1033</td><td>Select a Group</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsBrowseUsernameTitle</td><td>1033</td><td>Select a User Name</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCancelDlg_ConfirmCancel</td><td>1033</td><td>Are you sure you want to cancel [ProductName] installation?</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCancelDlg_No</td><td>1033</td><td>&amp;No</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCancelDlg_Yes</td><td>1033</td><td>&amp;Yes</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsConfirmPassword</td><td>1033</td><td>Con&amp;firm password:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCreateNewUserTitle</td><td>1033</td><td>New User Information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCreateUserBrowse</td><td>1033</td><td>N&amp;ew User Information...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_ClickFeatureIcon</td><td>1033</td><td>Click on an icon in the list below to change how a feature is installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_CustomSetup</td><td>1033</td><td>{&amp;MSSansBold8}Custom Setup</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_FeatureDescription</td><td>1033</td><td>Feature Description</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_FeaturePath</td><td>1033</td><td>&lt;selected feature path&gt;</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_FeatureSize</td><td>1033</td><td>Feature size</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_Help</td><td>1033</td><td>&amp;Help</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_InstallTo</td><td>1033</td><td>Install to:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_MultilineDescription</td><td>1033</td><td>Multiline description of the currently selected item</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_SelectFeatures</td><td>1033</td><td>Select the program features you want installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsCustomSelectionDlg_Space</td><td>1033</td><td>&amp;Space</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsDiskSpaceDlg_DiskSpace</td><td>1033</td><td>Disk space required for the installation exceeds available disk space.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsDiskSpaceDlg_HighlightedVolumes</td><td>1033</td><td>The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install fewer features onto local drives, or select different destination drives.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsDiskSpaceDlg_Numbers</td><td>1033</td><td>{120}{70}{70}{70}{70}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsDiskSpaceDlg_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsDiskSpaceDlg_OutOfDiskSpace</td><td>1033</td><td>{&amp;MSSansBold8}Out of Disk Space</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsDomainOrServer</td><td>1033</td><td>&amp;Domain or server:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_Abort</td><td>1033</td><td>&amp;Abort</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_ErrorText</td><td>1033</td><td>&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_Ignore</td><td>1033</td><td>&amp;Ignore</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_InstallerInfo</td><td>1033</td><td>[ProductName] Installer Information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_NO</td><td>1033</td><td>&amp;No</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_OK</td><td>1033</td><td>&amp;OK</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_Retry</td><td>1033</td><td>&amp;Retry</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsErrorDlg_Yes</td><td>1033</td><td>&amp;Yes</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_Finish</td><td>1033</td><td>&amp;Finish</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_InstallSuccess</td><td>1033</td><td>The InstallShield Wizard has successfully installed [ProductName]. Click Finish to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_LaunchProgram</td><td>1033</td><td>Launch the program</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_ShowReadMe</td><td>1033</td><td>Show the readme file</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_UninstallSuccess</td><td>1033</td><td>The InstallShield Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_Update_InternetConnection</td><td>1033</td><td>Your Internet connection can be used to make sure that you have the latest updates.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_Update_PossibleUpdates</td><td>1033</td><td>Some program files might have been updated since you purchased your copy of [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_Update_SetupFinished</td><td>1033</td><td>Setup has finished installing [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_Update_YesCheckForUpdates</td><td>1033</td><td>&amp;Yes, check for program updates (Recommended) after the setup completes.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsExitDialog_WizardCompleted</td><td>1033</td><td>{&amp;TahomaBold10}InstallShield Wizard Completed</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_ClickFinish</td><td>1033</td><td>Click Finish to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_Finish</td><td>1033</td><td>&amp;Finish</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_KeepOrRestore</td><td>1033</td><td>You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_NotModified</td><td>1033</td><td>Your system has not been modified. To complete installation at another time, please run setup again.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_RestoreOrContinueLater</td><td>1033</td><td>Click Restore or Continue Later to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_WizardCompleted</td><td>1033</td><td>{&amp;TahomaBold10}InstallShield Wizard Completed</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFatalError_WizardInterrupted</td><td>1033</td><td>The wizard was interrupted before [ProductName] could be completely installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFeatureDetailsDlg_DiskSpaceRequirements</td><td>1033</td><td>{&amp;MSSansBold8}Disk Space Requirements</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFeatureDetailsDlg_Numbers</td><td>1033</td><td>{120}{70}{70}{70}{70}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFeatureDetailsDlg_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFeatureDetailsDlg_SpaceRequired</td><td>1033</td><td>The disk space required for the installation of the selected features.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFeatureDetailsDlg_VolumesTooSmall</td><td>1033</td><td>The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install fewer features onto local drives, or select different destination drives.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFilesInUse_ApplicationsUsingFiles</td><td>1033</td><td>The following applications are using files that need to be updated by this setup. Close these applications and click Retry to continue.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFilesInUse_Exit</td><td>1033</td><td>&amp;Exit</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFilesInUse_FilesInUse</td><td>1033</td><td>{&amp;MSSansBold8}Files in Use</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFilesInUse_FilesInUseMessage</td><td>1033</td><td>Some files that need to be updated are currently in use.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFilesInUse_Ignore</td><td>1033</td><td>&amp;Ignore</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsFilesInUse_Retry</td><td>1033</td><td>&amp;Retry</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsGroup</td><td>1033</td><td>&amp;Group:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsGroupLabel</td><td>1033</td><td>Gr&amp;oup:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsInitDlg_1</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsInitDlg_2</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsInitDlg_PreparingWizard</td><td>1033</td><td>[ProductName] Setup is preparing the InstallShield Wizard which will guide you through the program setup process.  Please wait.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsInitDlg_WelcomeWizard</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsLicenseDlg_LicenseAgreement</td><td>1033</td><td>{&amp;MSSansBold8}License Agreement</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsLicenseDlg_ReadLicenseAgreement</td><td>1033</td><td>Please read the following license agreement carefully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsLogonInfoDescription</td><td>1033</td><td>Specify the user name and password of the user account that will logon to use this application. The user account must be in the form DOMAIN\Username.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsLogonInfoTitle</td><td>1033</td><td>{&amp;MSSansBold8}Logon Information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsLogonInfoTitleDescription</td><td>1033</td><td>Specify a user name and password</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsLogonNewUserDescription</td><td>1033</td><td>Select the button below to specify information about a new user that will be created during the installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_ChangeFeatures</td><td>1033</td><td>Change which program features are installed. This option displays the Custom Selection dialog in which you can change the way features are installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_MaitenanceOptions</td><td>1033</td><td>Modify, repair, or remove the program.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_Modify</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Modify</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_ProgramMaintenance</td><td>1033</td><td>{&amp;MSSansBold8}Program Maintenance</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_Remove</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Remove</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_RemoveProductName</td><td>1033</td><td>Remove [ProductName] from your computer.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_Repair</td><td>1033</td><td>{&amp;MSSansBold8}Re&amp;pair</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceDlg_RepairMessage</td><td>1033</td><td>Repair installation errors in the program. This option fixes missing or corrupt files, shortcuts, and registry entries.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceWelcome_MaintenanceOptionsDescription</td><td>1033</td><td>The InstallShield(R) Wizard will allow you to modify, repair, or remove [ProductName]. To continue, click Next.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMaintenanceWelcome_WizardWelcome</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMsiRMFilesInUse_ApplicationsUsingFiles</td><td>1033</td><td>The following applications are using files that need to be updated by this setup.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMsiRMFilesInUse_CloseRestart</td><td>1033</td><td>Automatically close and attempt to restart applications.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsMsiRMFilesInUse_RebootAfter</td><td>1033</td><td>Do not close applications. (A reboot will be required.)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsPatchDlg_PatchClickUpdate</td><td>1033</td><td>The InstallShield(R) Wizard will install the Patch for [ProductName] on your computer.  To continue, click Update.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsPatchDlg_PatchWizard</td><td>1033</td><td>[ProductName] Patch - InstallShield Wizard</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsPatchDlg_Update</td><td>1033</td><td>&amp;Update &gt;</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsPatchDlg_WelcomePatchWizard</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the Patch for [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_2</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_Hidden</td><td>1033</td><td>(Hidden for now)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_HiddenTimeRemaining</td><td>1033</td><td>)Hidden for now)Estimated time remaining:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_InstallingProductName</td><td>1033</td><td>{&amp;MSSansBold8}Installing [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_ProgressDone</td><td>1033</td><td>Progress done</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_SecHidden</td><td>1033</td><td>(Hidden for now)Sec.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_Status</td><td>1033</td><td>Status:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_Uninstalling</td><td>1033</td><td>{&amp;MSSansBold8}Uninstalling [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_UninstallingFeatures</td><td>1033</td><td>The program features you selected are being uninstalled.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_UninstallingFeatures2</td><td>1033</td><td>The program features you selected are being installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_WaitUninstall</td><td>1033</td><td>Please wait while the InstallShield Wizard uninstalls [ProductName]. This may take several minutes.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsProgressDlg_WaitUninstall2</td><td>1033</td><td>Please wait while the InstallShield Wizard installs [ProductName]. This may take several minutes.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsReadmeDlg_Cancel</td><td>1033</td><td>&amp;Cancel</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsReadmeDlg_PleaseReadInfo</td><td>1033</td><td>Please read the following readme information carefully.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsReadmeDlg_ReadMeInfo</td><td>1033</td><td>{&amp;MSSansBold8}Readme Information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_16</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_Anyone</td><td>1033</td><td>&amp;Anyone who uses this computer (all users)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_CustomerInformation</td><td>1033</td><td>{&amp;MSSansBold8}Customer Information</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_InstallFor</td><td>1033</td><td>Install this application for:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_OnlyMe</td><td>1033</td><td>Only for &amp;me ([USERNAME])</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_Organization</td><td>1033</td><td>&amp;Organization:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_PleaseEnterInfo</td><td>1033</td><td>Please enter your information.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_SerialNumber</td><td>1033</td><td>&amp;Serial Number:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_Tahoma50</td><td>1033</td><td>{\Tahoma8}{50}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_Tahoma80</td><td>1033</td><td>{\Tahoma8}{80}</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsRegisterUserDlg_UserName</td><td>1033</td><td>&amp;User Name:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsResumeDlg_ResumeSuspended</td><td>1033</td><td>The InstallShield(R) Wizard will complete the suspended installation of [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsResumeDlg_Resuming</td><td>1033</td><td>{&amp;TahomaBold10}Resuming the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsResumeDlg_WizardResume</td><td>1033</td><td>The InstallShield(R) Wizard will complete the installation of [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSelectDomainOrServer</td><td>1033</td><td>Select a Domain or Server</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSelectDomainUserInstructions</td><td>1033</td><td>Use the browse buttons to select a domain\server and a user name.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupComplete_ShowMsiLog</td><td>1033</td><td>Show the Windows Installer log</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_13</td><td>1033</td><td/><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_AllFeatures</td><td>1033</td><td>All program features will be installed. (Requires the most disk space.)</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_ChooseFeatures</td><td>1033</td><td>Choose which program features you want installed and where they will be installed. Recommended for advanced users.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_ChooseSetupType</td><td>1033</td><td>Choose the setup type that best suits your needs.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_Complete</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Complete</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_Custom</td><td>1033</td><td>{&amp;MSSansBold8}Cu&amp;stom</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_Minimal</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Minimal</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_MinimumFeatures</td><td>1033</td><td>Minimum required features will be installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_SelectSetupType</td><td>1033</td><td>Please select a setup type.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_SetupType</td><td>1033</td><td>{&amp;MSSansBold8}Setup Type</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsSetupTypeMinDlg_Typical</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Typical</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_ClickFinish</td><td>1033</td><td>Click Finish to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_Finish</td><td>1033</td><td>&amp;Finish</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_KeepOrRestore</td><td>1033</td><td>You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_NotModified</td><td>1033</td><td>Your system has not been modified. To install this program at a later time, please run the installation again.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_RestoreOrContinue</td><td>1033</td><td>Click Restore or Continue Later to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_WizardCompleted</td><td>1033</td><td>{&amp;TahomaBold10}InstallShield Wizard Completed</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserExit_WizardInterrupted</td><td>1033</td><td>The wizard was interrupted before [ProductName] could be completely installed.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsUserNameLabel</td><td>1033</td><td>&amp;User name:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_BackOrCancel</td><td>1033</td><td>If you want to review or change any of your installation settings, click Back. Click Cancel to exit the wizard.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_ClickInstall</td><td>1033</td><td>Click Install to begin the installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_Company</td><td>1033</td><td>Company: [COMPANYNAME]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_CurrentSettings</td><td>1033</td><td>Current Settings:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_DestFolder</td><td>1033</td><td>Destination Folder:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_Install</td><td>1033</td><td>&amp;Install</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_Installdir</td><td>1033</td><td>[INSTALLDIR]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_ModifyReady</td><td>1033</td><td>{&amp;MSSansBold8}Ready to Modify the Program</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_ReadyInstall</td><td>1033</td><td>{&amp;MSSansBold8}Ready to Install the Program</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_ReadyRepair</td><td>1033</td><td>{&amp;MSSansBold8}Ready to Repair the Program</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_SelectedSetupType</td><td>1033</td><td>[SelectedSetupType]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_Serial</td><td>1033</td><td>Serial: [ISX_SERIALNUM]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_SetupType</td><td>1033</td><td>Setup Type:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_UserInfo</td><td>1033</td><td>User Information:</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_UserName</td><td>1033</td><td>Name: [USERNAME]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyReadyDlg_WizardReady</td><td>1033</td><td>The wizard is ready to begin installation.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyRemoveAllDlg_ChoseRemoveProgram</td><td>1033</td><td>You have chosen to remove the program from your system.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyRemoveAllDlg_ClickBack</td><td>1033</td><td>If you want to review or change any settings, click Back.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyRemoveAllDlg_ClickRemove</td><td>1033</td><td>Click Remove to remove [ProductName] from your computer. After removal, this program will no longer be available for use.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyRemoveAllDlg_Remove</td><td>1033</td><td>&amp;Remove</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsVerifyRemoveAllDlg_RemoveProgram</td><td>1033</td><td>{&amp;MSSansBold8}Remove the Program</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsWelcomeDlg_InstallProductName</td><td>1033</td><td>The InstallShield(R) Wizard will install [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsWelcomeDlg_WarningCopyright</td><td>1033</td><td>WARNING: This program is protected by copyright law and international treaties.</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__IsWelcomeDlg_WelcomeProductName</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__TargetReq_DESC_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__TargetReq_DESC_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-526291638</td></row>
-		<row><td>ID_STRING1</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526261776</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526274128</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>Warewolf Installation</td><td>0</td><td/><td>-526278224</td></row>
-		<row><td>ID_STRING4</td><td>1033</td><td>Dev2 Studio</td><td>0</td><td/><td>-526292885</td></row>
-		<row><td>ID_STRING5</td><td>1033</td><td>Studio</td><td>0</td><td/><td>-526259380</td></row>
-		<row><td>ID_STRING6</td><td>1033</td><td>Studio</td><td>0</td><td/><td>-526308500</td></row>
-		<row><td>ID_STRING7</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526276176</td></row>
-		<row><td>ID_STRING8</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526259728</td></row>
-		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-526291638</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526294512</td></row>
+		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL</td><td>1033</td><td>Microsoft .NET Framework 4.0 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-526311830</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_SCREEN</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_COMPACT</td><td>1033</td><td>Compact</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_COMPACT_DESC</td><td>1033</td><td>Compact Description</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_COMPLETE</td><td>1033</td><td>Complete</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_COMPLETE_DESC</td><td>1033</td><td>Complete</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_CUSTOM</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_CUSTOM_DESC</td><td>1033</td><td>Custom Description</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_CUSTOM_DESC_PRO</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_TYPICAL</td><td>1033</td><td>Typical</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDPROP_SETUPTYPE_TYPICAL_DESC</td><td>1033</td><td>Typical Description</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_1</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_1b</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_1c</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_1d</td><td>1033</td><td>[1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Advertising</td><td>1033</td><td>Advertising application</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_AllocatingRegistry</td><td>1033</td><td>Allocating registry space</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_AppCommandLine</td><td>1033</td><td>Application: [1], Command line: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_AppId</td><td>1033</td><td>AppId: [1]{{, AppType: [2]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_AppIdAppTypeRSN</td><td>1033</td><td>AppId: [1]{{, AppType: [2], Users: [3], RSN: [4]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Application</td><td>1033</td><td>Application: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_BindingExes</td><td>1033</td><td>Binding executables</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ClassId</td><td>1033</td><td>Class ID: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ClsID</td><td>1033</td><td>Class ID: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ComponentIDQualifier</td><td>1033</td><td>Component ID: [1], Qualifier: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ComponentIdQualifier2</td><td>1033</td><td>Component ID: [1], Qualifier: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ComputingSpace</td><td>1033</td><td>Computing space requirements</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ComputingSpace2</td><td>1033</td><td>Computing space requirements</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ComputingSpace3</td><td>1033</td><td>Computing space requirements</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ContentTypeExtension</td><td>1033</td><td>MIME Content Type: [1], Extension: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ContentTypeExtension2</td><td>1033</td><td>MIME Content Type: [1], Extension: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_CopyingNetworkFiles</td><td>1033</td><td>Copying files to the network</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_CopyingNewFiles</td><td>1033</td><td>Copying new files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_CreatingDuplicate</td><td>1033</td><td>Creating duplicate files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_CreatingFolders</td><td>1033</td><td>Creating folders</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_CreatingIISRoots</td><td>1033</td><td>Creating IIS Virtual Roots...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_CreatingShortcuts</td><td>1033</td><td>Creating shortcuts</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_DeletingServices</td><td>1033</td><td>Deleting services</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_EnvironmentStrings</td><td>1033</td><td>Updating environment strings</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_EvaluateLaunchConditions</td><td>1033</td><td>Evaluating launch conditions</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Extension</td><td>1033</td><td>Extension: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Extension2</td><td>1033</td><td>Extension: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Feature</td><td>1033</td><td>Feature: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FeatureColon</td><td>1033</td><td>Feature: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_File</td><td>1033</td><td>File: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_File2</td><td>1033</td><td>File: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDependencies</td><td>1033</td><td>File: [1],  Dependencies: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDir</td><td>1033</td><td>File: [1], Directory: [9]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDir2</td><td>1033</td><td>File: [1], Directory: [9]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDir3</td><td>1033</td><td>File: [1], Directory: [9]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDirSize</td><td>1033</td><td>File: [1], Directory: [9], Size: [6]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDirSize2</td><td>1033</td><td>File: [1],  Directory: [9],  Size: [6]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDirSize3</td><td>1033</td><td>File: [1],  Directory: [9],  Size: [6]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDirSize4</td><td>1033</td><td>File: [1],  Directory: [2],  Size: [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileDirectorySize</td><td>1033</td><td>File: [1],  Directory: [9],  Size: [6]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileFolder</td><td>1033</td><td>File: [1], Folder: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileFolder2</td><td>1033</td><td>File: [1], Folder: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileSectionKeyValue</td><td>1033</td><td>File: [1],  Section: [2],  Key: [3], Value: [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FileSectionKeyValue2</td><td>1033</td><td>File: [1],  Section: [2],  Key: [3], Value: [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Folder</td><td>1033</td><td>Folder: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Folder1</td><td>1033</td><td>Folder: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Font</td><td>1033</td><td>Font: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Font2</td><td>1033</td><td>Font: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FoundApp</td><td>1033</td><td>Found application: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_FreeSpace</td><td>1033</td><td>Free space: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_GeneratingScript</td><td>1033</td><td>Generating script operations for action:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ISLockPermissionsCost</td><td>1033</td><td>Gathering permissions information for objects...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ISLockPermissionsInstall</td><td>1033</td><td>Applying permissions information for objects...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_InitializeODBCDirs</td><td>1033</td><td>Initializing ODBC directories</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_InstallODBC</td><td>1033</td><td>Installing ODBC components</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_InstallServices</td><td>1033</td><td>Installing new services</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_InstallingSystemCatalog</td><td>1033</td><td>Installing system catalog</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_KeyName</td><td>1033</td><td>Key: [1], Name: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_KeyNameValue</td><td>1033</td><td>Key: [1], Name: [2], Value: [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_LibId</td><td>1033</td><td>LibID: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Libid2</td><td>1033</td><td>LibID: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_MigratingFeatureStates</td><td>1033</td><td>Migrating feature states from related applications</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_MovingFiles</td><td>1033</td><td>Moving files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_NameValueAction</td><td>1033</td><td>Name: [1], Value: [2], Action [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_NameValueAction2</td><td>1033</td><td>Name: [1], Value: [2], Action [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_PatchingFiles</td><td>1033</td><td>Patching files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ProgID</td><td>1033</td><td>ProgID: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_ProgID2</td><td>1033</td><td>ProgID: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_PropertySignature</td><td>1033</td><td>Property: [1], Signature: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_PublishProductFeatures</td><td>1033</td><td>Publishing product features</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_PublishProductInfo</td><td>1033</td><td>Publishing product information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_PublishingQualifiedComponents</td><td>1033</td><td>Publishing qualified components</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegUser</td><td>1033</td><td>Registering user</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisterClassServer</td><td>1033</td><td>Registering class servers</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisterExtensionServers</td><td>1033</td><td>Registering extension servers</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisterFonts</td><td>1033</td><td>Registering fonts</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisterMimeInfo</td><td>1033</td><td>Registering MIME info</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisterTypeLibs</td><td>1033</td><td>Registering type libraries</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisteringComPlus</td><td>1033</td><td>Registering COM+ Applications and Components</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisteringModules</td><td>1033</td><td>Registering modules</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisteringProduct</td><td>1033</td><td>Registering product</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RegisteringProgIdentifiers</td><td>1033</td><td>Registering program identifiers</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemoveApps</td><td>1033</td><td>Removing applications</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingBackup</td><td>1033</td><td>Removing backup files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingDuplicates</td><td>1033</td><td>Removing duplicated files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingFiles</td><td>1033</td><td>Removing files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingFolders</td><td>1033</td><td>Removing folders</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingIISRoots</td><td>1033</td><td>Removing IIS Virtual Roots...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingIni</td><td>1033</td><td>Removing INI file entries</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingMoved</td><td>1033</td><td>Removing moved files</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingODBC</td><td>1033</td><td>Removing ODBC components</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingRegistry</td><td>1033</td><td>Removing system registry values</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RemovingShortcuts</td><td>1033</td><td>Removing shortcuts</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_RollingBack</td><td>1033</td><td>Rolling back action:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_SearchForRelated</td><td>1033</td><td>Searching for related applications</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_SearchInstalled</td><td>1033</td><td>Searching for installed applications</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_SearchingQualifyingProducts</td><td>1033</td><td>Searching for qualifying products</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_SearchingQualifyingProducts2</td><td>1033</td><td>Searching for qualifying products</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Service</td><td>1033</td><td>Service: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Service2</td><td>1033</td><td>Service: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Service3</td><td>1033</td><td>Service: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Service4</td><td>1033</td><td>Service: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Shortcut</td><td>1033</td><td>Shortcut: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Shortcut1</td><td>1033</td><td>Shortcut: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_StartingServices</td><td>1033</td><td>Starting services</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_StoppingServices</td><td>1033</td><td>Stopping services</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnpublishProductFeatures</td><td>1033</td><td>Unpublishing product features</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnpublishQualified</td><td>1033</td><td>Unpublishing Qualified Components</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnpublishingProductInfo</td><td>1033</td><td>Unpublishing product information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregTypeLibs</td><td>1033</td><td>Unregistering type libraries</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisterClassServers</td><td>1033</td><td>Unregister class servers</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisterExtensionServers</td><td>1033</td><td>Unregistering extension servers</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisterModules</td><td>1033</td><td>Unregistering modules</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisteringComPlus</td><td>1033</td><td>Unregistering COM+ Applications and Components</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisteringFonts</td><td>1033</td><td>Unregistering fonts</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisteringMimeInfo</td><td>1033</td><td>Unregistering MIME info</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UnregisteringProgramIds</td><td>1033</td><td>Unregistering program identifiers</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UpdateComponentRegistration</td><td>1033</td><td>Updating component registration</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_UpdateEnvironmentStrings</td><td>1033</td><td>Updating environment strings</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_Validating</td><td>1033</td><td>Validating install</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_WritingINI</td><td>1033</td><td>Writing INI file values</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ACTIONTEXT_WritingRegistry</td><td>1033</td><td>Writing system registry values</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_BACK</td><td>1033</td><td>&lt; &amp;Back</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_CANCEL</td><td>1033</td><td>Cancel</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_CANCEL2</td><td>1033</td><td>&amp;Cancel</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_CHANGE</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_COMPLUS_PROGRESSTEXT_COST</td><td>1033</td><td>Costing COM+ application: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_COMPLUS_PROGRESSTEXT_INSTALL</td><td>1033</td><td>Installing COM+ application: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_COMPLUS_PROGRESSTEXT_UNINSTALL</td><td>1033</td><td>Uninstalling COM+ application: [1]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DIALOG_TEXT2_DESCRIPTION</td><td>1033</td><td>Dialog Normal Description</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DIALOG_TEXT_DESCRIPTION_EXTERIOR</td><td>1033</td><td>{&amp;TahomaBold10}Dialog Bold Title</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DIALOG_TEXT_DESCRIPTION_INTERIOR</td><td>1033</td><td>{&amp;MSSansBold8}Dialog Bold Title</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DIFX_AMD64</td><td>1033</td><td>[ProductName] requires an X64 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DIFX_IA64</td><td>1033</td><td>[ProductName] requires an IA64 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DIFX_X86</td><td>1033</td><td>[ProductName] requires an X86 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_DatabaseFolder_InstallDatabaseTo</td><td>1033</td><td>Install [ProductName] database to:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_0</td><td>1033</td><td>{{Fatal error: }}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1</td><td>1033</td><td>Error [1]. </td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_10</td><td>1033</td><td>=== Logging started: [Date]  [Time] ===</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_100</td><td>1033</td><td>Could not remove shortcut [2]. Verify that the shortcut file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_101</td><td>1033</td><td>Could not register type library for file [2].  Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_102</td><td>1033</td><td>Could not unregister type library for file [2].  Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_103</td><td>1033</td><td>Could not update the INI file [2][3].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_104</td><td>1033</td><td>Could not schedule file [2] to replace file [3] on reboot.  Verify that you have write permissions to file [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_105</td><td>1033</td><td>Error removing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_106</td><td>1033</td><td>Error installing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_107</td><td>1033</td><td>Error removing ODBC driver [4], ODBC error [2]: [3]. Verify that you have sufficient privileges to remove ODBC drivers.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_108</td><td>1033</td><td>Error installing ODBC driver [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_109</td><td>1033</td><td>Error configuring ODBC data source [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_11</td><td>1033</td><td>=== Logging stopped: [Date]  [Time] ===</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_110</td><td>1033</td><td>Service [2] ([3]) failed to start.  Verify that you have sufficient privileges to start system services.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_111</td><td>1033</td><td>Service [2] ([3]) could not be stopped.  Verify that you have sufficient privileges to stop system services.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_112</td><td>1033</td><td>Service [2] ([3]) could not be deleted.  Verify that you have sufficient privileges to remove system services.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_113</td><td>1033</td><td>Service [2] ([3]) could not be installed.  Verify that you have sufficient privileges to install system services.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_114</td><td>1033</td><td>Could not update environment variable [2].  Verify that you have sufficient privileges to modify environment variables.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_115</td><td>1033</td><td>You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_116</td><td>1033</td><td>Could not set file security for file [3]. Error: [2].  Verify that you have sufficient privileges to modify the security permissions for this file.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_117</td><td>1033</td><td>Component Services (COM+ 1.0) are not installed on this computer.  This installation requires Component Services in order to complete successfully.  Component Services are available on Windows 2000.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_118</td><td>1033</td><td>Error registering COM+ application.  Contact your support personnel for more information.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_119</td><td>1033</td><td>Error unregistering COM+ application.  Contact your support personnel for more information.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_12</td><td>1033</td><td>Action start [Time]: [1].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_120</td><td>1033</td><td>Removing older versions of this application</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_121</td><td>1033</td><td>Preparing to remove older versions of this application</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_122</td><td>1033</td><td>Error applying patch to file [2].  It has probably been updated by other means, and can no longer be modified by this patch.  For more information contact your patch vendor.  {{System Error: [3]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_123</td><td>1033</td><td>[2] cannot install one of its required products. Contact your technical support group.  {{System Error: [3].}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_124</td><td>1033</td><td>The older version of [2] cannot be removed.  Contact your technical support group.  {{System Error [3].}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_125</td><td>1033</td><td>The description for service '[2]' ([3]) could not be changed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_126</td><td>1033</td><td>The Windows Installer service cannot update the system file [2] because the file is protected by Windows.  You may need to update your operating system for this program to work correctly. {{Package version: [3], OS Protected version: [4]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_127</td><td>1033</td><td>The Windows Installer service cannot update the protected Windows file [2]. {{Package version: [3], OS Protected version: [4], SFP Error: [5]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_128</td><td>1033</td><td>The Windows Installer service cannot update one or more protected Windows files. SFP Error: [2]. List of protected files: [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_129</td><td>1033</td><td>User installations are disabled via policy on the machine.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_13</td><td>1033</td><td>Action ended [Time]: [1]. Return value [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_130</td><td>1033</td><td>This setup requires Internet Information Server 4.0 or higher for configuring IIS Virtual Roots. Please make sure that you have IIS 4.0 or higher.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_131</td><td>1033</td><td>This setup requires Administrator privileges for configuring IIS Virtual Roots.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1329</td><td>1033</td><td>A file that is required cannot be installed because the cabinet file [2] is not digitally signed. This may indicate that the cabinet file is corrupt.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1330</td><td>1033</td><td>A file that is required cannot be installed because the cabinet file [2] has an invalid digital signature. This may indicate that the cabinet file is corrupt.{ Error [3] was returned by WinVerifyTrust.}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1331</td><td>1033</td><td>Failed to correctly copy [2] file: CRC error.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1332</td><td>1033</td><td>Failed to correctly patch [2] file: CRC error.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1333</td><td>1033</td><td>Failed to correctly patch [2] file: CRC error.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1334</td><td>1033</td><td>The file '[2]' cannot be installed because the file cannot be found in cabinet file '[3]'. This could indicate a network error, an error reading from the CD-ROM, or a problem with this package.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1335</td><td>1033</td><td>The cabinet file '[2]' required for this installation is corrupt and cannot be used. This could indicate a network error, an error reading from the CD-ROM, or a problem with this package.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1336</td><td>1033</td><td>There was an error creating a temporary file that is needed to complete this installation. Folder: [3]. System error code: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_14</td><td>1033</td><td>Time remaining: {[1] minutes }{[2] seconds}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_15</td><td>1033</td><td>Out of memory. Shut down other applications before retrying.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_16</td><td>1033</td><td>Installer is no longer responding.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1609</td><td>1033</td><td>An error occurred while applying security settings. [2] is not a valid user or group. This could be a problem with the package, or a problem connecting to a domain controller on the network. Check your network connection and click Retry, or Cancel to end the install. Unable to locate the user's SID, system error [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1651</td><td>1033</td><td>Admin user failed to apply patch for a per-user managed or a per-machine application which is in advertise state.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_17</td><td>1033</td><td>Installer terminated prematurely.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1715</td><td>1033</td><td>Installed [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1716</td><td>1033</td><td>Configured [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1717</td><td>1033</td><td>Removed [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1718</td><td>1033</td><td>File [2] was rejected by digital signature policy.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1719</td><td>1033</td><td>Windows Installer service could not be accessed. Contact your support personnel to verify that it is properly registered and enabled.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1720</td><td>1033</td><td>There is a problem with this Windows Installer package. A script required for this install to complete could not be run. Contact your support personnel or package vendor. Custom action [2] script error [3], [4]: [5] Line [6], Column [7], [8]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1721</td><td>1033</td><td>There is a problem with this Windows Installer package. A program required for this install to complete could not be run. Contact your support personnel or package vendor. Action: [2], location: [3], command: [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1722</td><td>1033</td><td>There is a problem with this Windows Installer package. A program run as part of the setup did not finish as expected. Contact your support personnel or package vendor. Action [2], location: [3], command: [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1723</td><td>1033</td><td>There is a problem with this Windows Installer package. A DLL required for this install to complete could not be run. Contact your support personnel or package vendor. Action [2], entry: [3], library: [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1724</td><td>1033</td><td>Removal completed successfully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1725</td><td>1033</td><td>Removal failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1726</td><td>1033</td><td>Advertisement completed successfully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1727</td><td>1033</td><td>Advertisement failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1728</td><td>1033</td><td>Configuration completed successfully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1729</td><td>1033</td><td>Configuration failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1730</td><td>1033</td><td>You must be an Administrator to remove this application. To remove this application, you can log on as an administrator, or contact your technical support group for assistance.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1731</td><td>1033</td><td>The source installation package for the product [2] is out of sync with the client package. Try the installation again using a valid copy of the installation package '[3]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1732</td><td>1033</td><td>In order to complete the installation of [2], you must restart the computer. Other users are currently logged on to this computer, and restarting may cause them to lose their work. Do you want to restart now?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_18</td><td>1033</td><td>Please wait while Windows configures [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_19</td><td>1033</td><td>Gathering required information...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1935</td><td>1033</td><td>An error occurred during the installation of assembly component [2]. HRESULT: [3]. {{assembly interface: [4], function: [5], assembly name: [6]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1936</td><td>1033</td><td>An error occurred during the installation of assembly '[6]'. The assembly is not strongly named or is not signed with the minimal key length. HRESULT: [3]. {{assembly interface: [4], function: [5], component: [2]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1937</td><td>1033</td><td>An error occurred during the installation of assembly '[6]'. The signature or catalog could not be verified or is not valid. HRESULT: [3]. {{assembly interface: [4], function: [5], component: [2]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_1938</td><td>1033</td><td>An error occurred during the installation of assembly '[6]'. One or more modules of the assembly could not be found. HRESULT: [3]. {{assembly interface: [4], function: [5], component: [2]}}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2</td><td>1033</td><td>Warning [1]. </td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_20</td><td>1033</td><td>{[ProductName] }Setup completed successfully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_21</td><td>1033</td><td>{[ProductName] }Setup failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2101</td><td>1033</td><td>Shortcuts not supported by the operating system.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2102</td><td>1033</td><td>Invalid .ini action: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2103</td><td>1033</td><td>Could not resolve path for shell folder [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2104</td><td>1033</td><td>Writing .ini file: [3]: System error: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2105</td><td>1033</td><td>Shortcut Creation [3] Failed. System error: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2106</td><td>1033</td><td>Shortcut Deletion [3] Failed. System error: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2107</td><td>1033</td><td>Error [3] registering type library [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2108</td><td>1033</td><td>Error [3] unregistering type library [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2109</td><td>1033</td><td>Section missing for .ini action.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2110</td><td>1033</td><td>Key missing for .ini action.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2111</td><td>1033</td><td>Detection of running applications failed, could not get performance data. Registered operation returned : [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2112</td><td>1033</td><td>Detection of running applications failed, could not get performance index. Registered operation returned : [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2113</td><td>1033</td><td>Detection of running applications failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_22</td><td>1033</td><td>Error reading from file: [2]. {{ System error [3].}}  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2200</td><td>1033</td><td>Database: [2]. Database object creation failed, mode = [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2201</td><td>1033</td><td>Database: [2]. Initialization failed, out of memory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2202</td><td>1033</td><td>Database: [2]. Data access failed, out of memory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2203</td><td>1033</td><td>Database: [2]. Cannot open database file. System error [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2204</td><td>1033</td><td>Database: [2]. Table already exists: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2205</td><td>1033</td><td>Database: [2]. Table does not exist: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2206</td><td>1033</td><td>Database: [2]. Table could not be dropped: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2207</td><td>1033</td><td>Database: [2]. Intent violation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2208</td><td>1033</td><td>Database: [2]. Insufficient parameters for Execute.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2209</td><td>1033</td><td>Database: [2]. Cursor in invalid state.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2210</td><td>1033</td><td>Database: [2]. Invalid update data type in column [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2211</td><td>1033</td><td>Database: [2]. Could not create database table [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2212</td><td>1033</td><td>Database: [2]. Database not in writable state.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2213</td><td>1033</td><td>Database: [2]. Error saving database tables.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2214</td><td>1033</td><td>Database: [2]. Error writing export file: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2215</td><td>1033</td><td>Database: [2]. Cannot open import file: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2216</td><td>1033</td><td>Database: [2]. Import file format error: [3], Line [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2217</td><td>1033</td><td>Database: [2]. Wrong state to CreateOutputDatabase [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2218</td><td>1033</td><td>Database: [2]. Table name not supplied.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2219</td><td>1033</td><td>Database: [2]. Invalid Installer database format.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2220</td><td>1033</td><td>Database: [2]. Invalid row/field data.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2221</td><td>1033</td><td>Database: [2]. Code page conflict in import file: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2222</td><td>1033</td><td>Database: [2]. Transform or merge code page [3] differs from database code page [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2223</td><td>1033</td><td>Database: [2]. Databases are the same. No transform generated.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2224</td><td>1033</td><td>Database: [2]. GenerateTransform: Database corrupt. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2225</td><td>1033</td><td>Database: [2]. Transform: Cannot transform a temporary table. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2226</td><td>1033</td><td>Database: [2]. Transform failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2227</td><td>1033</td><td>Database: [2]. Invalid identifier '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2228</td><td>1033</td><td>Database: [2]. Unknown table '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2229</td><td>1033</td><td>Database: [2]. Could not load table '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2230</td><td>1033</td><td>Database: [2]. Repeated table '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2231</td><td>1033</td><td>Database: [2]. Missing ')' in SQL query: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2232</td><td>1033</td><td>Database: [2]. Unexpected token '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2233</td><td>1033</td><td>Database: [2]. No columns in SELECT clause in SQL query: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2234</td><td>1033</td><td>Database: [2]. No columns in ORDER BY clause in SQL query: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2235</td><td>1033</td><td>Database: [2]. Column '[3]' not present or ambiguous in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2236</td><td>1033</td><td>Database: [2]. Invalid operator '[3]' in SQL query: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2237</td><td>1033</td><td>Database: [2]. Invalid or missing query string: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2238</td><td>1033</td><td>Database: [2]. Missing FROM clause in SQL query: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2239</td><td>1033</td><td>Database: [2]. Insufficient values in INSERT SQL statement.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2240</td><td>1033</td><td>Database: [2]. Missing update columns in UPDATE SQL statement.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2241</td><td>1033</td><td>Database: [2]. Missing insert columns in INSERT SQL statement.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2242</td><td>1033</td><td>Database: [2]. Column '[3]' repeated.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2243</td><td>1033</td><td>Database: [2]. No primary columns defined for table creation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2244</td><td>1033</td><td>Database: [2]. Invalid type specifier '[3]' in SQL query [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2245</td><td>1033</td><td>IStorage::Stat failed with error [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2246</td><td>1033</td><td>Database: [2]. Invalid Installer transform format.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2247</td><td>1033</td><td>Database: [2] Transform stream read/write failure.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2248</td><td>1033</td><td>Database: [2] GenerateTransform/Merge: Column type in base table does not match reference table. Table: [3] Col #: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2249</td><td>1033</td><td>Database: [2] GenerateTransform: More columns in base table than in reference table. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2250</td><td>1033</td><td>Database: [2] Transform: Cannot add existing row. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2251</td><td>1033</td><td>Database: [2] Transform: Cannot delete row that does not exist. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2252</td><td>1033</td><td>Database: [2] Transform: Cannot add existing table. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2253</td><td>1033</td><td>Database: [2] Transform: Cannot delete table that does not exist. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2254</td><td>1033</td><td>Database: [2] Transform: Cannot update row that does not exist. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2255</td><td>1033</td><td>Database: [2] Transform: Column with this name already exists. Table: [3] Col: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2256</td><td>1033</td><td>Database: [2] GenerateTransform/Merge: Number of primary keys in base table does not match reference table. Table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2257</td><td>1033</td><td>Database: [2]. Intent to modify read only table: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2258</td><td>1033</td><td>Database: [2]. Type mismatch in parameter: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2259</td><td>1033</td><td>Database: [2] Table(s) Update failed</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2260</td><td>1033</td><td>Storage CopyTo failed. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2261</td><td>1033</td><td>Could not remove stream [2]. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2262</td><td>1033</td><td>Stream does not exist: [2]. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2263</td><td>1033</td><td>Could not open stream [2]. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2264</td><td>1033</td><td>Could not remove stream [2]. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2265</td><td>1033</td><td>Could not commit storage. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2266</td><td>1033</td><td>Could not rollback storage. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2267</td><td>1033</td><td>Could not delete storage [2]. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2268</td><td>1033</td><td>Database: [2]. Merge: There were merge conflicts reported in [3] tables.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2269</td><td>1033</td><td>Database: [2]. Merge: The column count differed in the '[3]' table of the two databases.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2270</td><td>1033</td><td>Database: [2]. GenerateTransform/Merge: Column name in base table does not match reference table. Table: [3] Col #: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2271</td><td>1033</td><td>SummaryInformation write for transform failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2272</td><td>1033</td><td>Database: [2]. MergeDatabase will not write any changes because the database is open read-only.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2273</td><td>1033</td><td>Database: [2]. MergeDatabase: A reference to the base database was passed as the reference database.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2274</td><td>1033</td><td>Database: [2]. MergeDatabase: Unable to write errors to Error table. Could be due to a non-nullable column in a predefined Error table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2275</td><td>1033</td><td>Database: [2]. Specified Modify [3] operation invalid for table joins.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2276</td><td>1033</td><td>Database: [2]. Code page [3] not supported by the system.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2277</td><td>1033</td><td>Database: [2]. Failed to save table [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2278</td><td>1033</td><td>Database: [2]. Exceeded number of expressions limit of 32 in WHERE clause of SQL query: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2279</td><td>1033</td><td>Database: [2] Transform: Too many columns in base table [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2280</td><td>1033</td><td>Database: [2]. Could not create column [3] for table [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2281</td><td>1033</td><td>Could not rename stream [2]. System error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2282</td><td>1033</td><td>Stream name invalid [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_23</td><td>1033</td><td>Cannot create the file [3].  A directory with this name already exists.  Cancel the installation and try installing to a different location.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2302</td><td>1033</td><td>Patch notify: [2] bytes patched to far.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2303</td><td>1033</td><td>Error getting volume info. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2304</td><td>1033</td><td>Error getting disk free space. GetLastError: [2]. Volume: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2305</td><td>1033</td><td>Error waiting for patch thread. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2306</td><td>1033</td><td>Could not create thread for patch application. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2307</td><td>1033</td><td>Source file key name is null.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2308</td><td>1033</td><td>Destination file name is null.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2309</td><td>1033</td><td>Attempting to patch file [2] when patch already in progress.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2310</td><td>1033</td><td>Attempting to continue patch when no patch is in progress.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2315</td><td>1033</td><td>Missing path separator: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2318</td><td>1033</td><td>File does not exist: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2319</td><td>1033</td><td>Error setting file attribute: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2320</td><td>1033</td><td>File not writable: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2321</td><td>1033</td><td>Error creating file: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2322</td><td>1033</td><td>User canceled.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2323</td><td>1033</td><td>Invalid file attribute.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2324</td><td>1033</td><td>Could not open file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2325</td><td>1033</td><td>Could not get file time for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2326</td><td>1033</td><td>Error in FileToDosDateTime.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2327</td><td>1033</td><td>Could not remove directory: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2328</td><td>1033</td><td>Error getting file version info for file: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2329</td><td>1033</td><td>Error deleting file: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2330</td><td>1033</td><td>Error getting file attributes: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2331</td><td>1033</td><td>Error loading library [2] or finding entry point [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2332</td><td>1033</td><td>Error getting file attributes. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2333</td><td>1033</td><td>Error setting file attributes. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2334</td><td>1033</td><td>Error converting file time to local time for file: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2335</td><td>1033</td><td>Path: [2] is not a parent of [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2336</td><td>1033</td><td>Error creating temp file on path: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2337</td><td>1033</td><td>Could not close file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2338</td><td>1033</td><td>Could not update resource for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2339</td><td>1033</td><td>Could not set file time for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2340</td><td>1033</td><td>Could not update resource for file: [3], Missing resource.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2341</td><td>1033</td><td>Could not update resource for file: [3], Resource too large.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2342</td><td>1033</td><td>Could not update resource for file: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2343</td><td>1033</td><td>Specified path is empty.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2344</td><td>1033</td><td>Could not find required file IMAGEHLP.DLL to validate file:[2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2345</td><td>1033</td><td>[2]: File does not contain a valid checksum value.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2347</td><td>1033</td><td>User ignore.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2348</td><td>1033</td><td>Error attempting to read from cabinet stream.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2349</td><td>1033</td><td>Copy resumed with different info.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2350</td><td>1033</td><td>FDI server error</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2351</td><td>1033</td><td>File key '[2]' not found in cabinet '[3]'. The installation cannot continue.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2352</td><td>1033</td><td>Could not initialize cabinet file server. The required file 'CABINET.DLL' may be missing.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2353</td><td>1033</td><td>Not a cabinet.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2354</td><td>1033</td><td>Cannot handle cabinet.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2355</td><td>1033</td><td>Corrupt cabinet.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2356</td><td>1033</td><td>Could not locate cabinet in stream: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2357</td><td>1033</td><td>Cannot set attributes.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2358</td><td>1033</td><td>Error determining whether file is in-use: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2359</td><td>1033</td><td>Unable to create the target file - file may be in use.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2360</td><td>1033</td><td>Progress tick.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2361</td><td>1033</td><td>Need next cabinet.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2362</td><td>1033</td><td>Folder not found: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2363</td><td>1033</td><td>Could not enumerate subfolders for folder: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2364</td><td>1033</td><td>Bad enumeration constant in CreateCopier call.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2365</td><td>1033</td><td>Could not BindImage exe file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2366</td><td>1033</td><td>User failure.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2367</td><td>1033</td><td>User abort.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2368</td><td>1033</td><td>Failed to get network resource information. Error [2], network path [3]. Extended error: network provider [5], error code [4], error description [6].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2370</td><td>1033</td><td>Invalid CRC checksum value for [2] file.{ Its header says [3] for checksum, its computed value is [4].}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2371</td><td>1033</td><td>Could not apply patch to file [2]. GetLastError: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2372</td><td>1033</td><td>Patch file [2] is corrupt or of an invalid format. Attempting to patch file [3]. GetLastError: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2373</td><td>1033</td><td>File [2] is not a valid patch file.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2374</td><td>1033</td><td>File [2] is not a valid destination file for patch file [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2375</td><td>1033</td><td>Unknown patching error: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2376</td><td>1033</td><td>Cabinet not found.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2379</td><td>1033</td><td>Error opening file for read: [3] GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2380</td><td>1033</td><td>Error opening file for write: [3]. GetLastError: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2381</td><td>1033</td><td>Directory does not exist: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2382</td><td>1033</td><td>Drive not ready: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_24</td><td>1033</td><td>Please insert the disk: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2401</td><td>1033</td><td>64-bit registry operation attempted on 32-bit operating system for key [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2402</td><td>1033</td><td>Out of memory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_25</td><td>1033</td><td>The installer has insufficient privileges to access this directory: [2].  The installation cannot continue.  Log on as an administrator or contact your system administrator.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2501</td><td>1033</td><td>Could not create rollback script enumerator.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2502</td><td>1033</td><td>Called InstallFinalize when no install in progress.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2503</td><td>1033</td><td>Called RunScript when not marked in progress.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_26</td><td>1033</td><td>Error writing to file [2].  Verify that you have access to that directory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2601</td><td>1033</td><td>Invalid value for property [2]: '[3]'</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2602</td><td>1033</td><td>The [2] table entry '[3]' has no associated entry in the Media table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2603</td><td>1033</td><td>Duplicate table name [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2604</td><td>1033</td><td>[2] Property undefined.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2605</td><td>1033</td><td>Could not find server [2] in [3] or [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2606</td><td>1033</td><td>Value of property [2] is not a valid full path: '[3]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2607</td><td>1033</td><td>Media table not found or empty (required for installation of files).</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2608</td><td>1033</td><td>Could not create security descriptor for object. Error: '[2]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2609</td><td>1033</td><td>Attempt to migrate product settings before initialization.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2611</td><td>1033</td><td>The file [2] is marked as compressed, but the associated media entry does not specify a cabinet.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2612</td><td>1033</td><td>Stream not found in '[2]' column. Primary key: '[3]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2613</td><td>1033</td><td>RemoveExistingProducts action sequenced incorrectly.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2614</td><td>1033</td><td>Could not access IStorage object from installation package.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2615</td><td>1033</td><td>Skipped unregistration of Module [2] due to source resolution failure.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2616</td><td>1033</td><td>Companion file [2] parent missing.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2617</td><td>1033</td><td>Shared component [2] not found in Component table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2618</td><td>1033</td><td>Isolated application component [2] not found in Component table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2619</td><td>1033</td><td>Isolated components [2], [3] not part of same feature.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2620</td><td>1033</td><td>Key file of isolated application component [2] not in File table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2621</td><td>1033</td><td>Resource DLL or Resource ID information for shortcut [2] set incorrectly.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27</td><td>1033</td><td>Error reading from file [2].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2701</td><td>1033</td><td>The depth of a feature exceeds the acceptable tree depth of [2] levels.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2702</td><td>1033</td><td>A Feature table record ([2]) references a non-existent parent in the Attributes field.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2703</td><td>1033</td><td>Property name for root source path not defined: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2704</td><td>1033</td><td>Root directory property undefined: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2705</td><td>1033</td><td>Invalid table: [2]; Could not be linked as tree.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2706</td><td>1033</td><td>Source paths not created. No path exists for entry [2] in Directory table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2707</td><td>1033</td><td>Target paths not created. No path exists for entry [2] in Directory table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2708</td><td>1033</td><td>No entries found in the file table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2709</td><td>1033</td><td>The specified Component name ('[2]') not found in Component table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2710</td><td>1033</td><td>The requested 'Select' state is illegal for this Component.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2711</td><td>1033</td><td>The specified Feature name ('[2]') not found in Feature table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2712</td><td>1033</td><td>Invalid return from modeless dialog: [3], in action [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2713</td><td>1033</td><td>Null value in a non-nullable column ('[2]' in '[3]' column of the '[4]' table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2714</td><td>1033</td><td>Invalid value for default folder name: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2715</td><td>1033</td><td>The specified File key ('[2]') not found in the File table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2716</td><td>1033</td><td>Could not create a random subcomponent name for component '[2]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2717</td><td>1033</td><td>Bad action condition or error calling custom action '[2]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2718</td><td>1033</td><td>Missing package name for product code '[2]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2719</td><td>1033</td><td>Neither UNC nor drive letter path found in source '[2]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2720</td><td>1033</td><td>Error opening source list key. Error: '[2]'</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2721</td><td>1033</td><td>Custom action [2] not found in Binary table stream.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2722</td><td>1033</td><td>Custom action [2] not found in File table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2723</td><td>1033</td><td>Custom action [2] specifies unsupported type.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2724</td><td>1033</td><td>The volume label '[2]' on the media you're running from does not match the label '[3]' given in the Media table. This is allowed only if you have only 1 entry in your Media table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2725</td><td>1033</td><td>Invalid database tables</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2726</td><td>1033</td><td>Action not found: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2727</td><td>1033</td><td>The directory entry '[2]' does not exist in the Directory table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2728</td><td>1033</td><td>Table definition error: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2729</td><td>1033</td><td>Install engine not initialized.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2730</td><td>1033</td><td>Bad value in database. Table: '[2]'; Primary key: '[3]'; Column: '[4]'</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2731</td><td>1033</td><td>Selection Manager not initialized.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2732</td><td>1033</td><td>Directory Manager not initialized.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2733</td><td>1033</td><td>Bad foreign key ('[2]') in '[3]' column of the '[4]' table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2734</td><td>1033</td><td>Invalid reinstall mode character.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2735</td><td>1033</td><td>Custom action '[2]' has caused an unhandled exception and has been stopped. This may be the result of an internal error in the custom action, such as an access violation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2736</td><td>1033</td><td>Generation of custom action temp file failed: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2737</td><td>1033</td><td>Could not access custom action [2], entry [3], library [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2738</td><td>1033</td><td>Could not access VBScript run time for custom action [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2739</td><td>1033</td><td>Could not access JavaScript run time for custom action [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2740</td><td>1033</td><td>Custom action [2] script error [3], [4]: [5] Line [6], Column [7], [8].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2741</td><td>1033</td><td>Configuration information for product [2] is corrupt. Invalid info: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2742</td><td>1033</td><td>Marshaling to Server failed: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2743</td><td>1033</td><td>Could not execute custom action [2], location: [3], command: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2744</td><td>1033</td><td>EXE failed called by custom action [2], location: [3], command: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2745</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected language [4], found language [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2746</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product [4], found product [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2747</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &lt; [4], found product version [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2748</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &lt;= [4], found product version [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2749</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version == [4], found product version [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2750</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &gt;= [4], found product version [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27502</td><td>1033</td><td>Could not connect to [2] '[3]'. [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27503</td><td>1033</td><td>Error retrieving version string from [2] '[3]'. [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27504</td><td>1033</td><td>SQL version requirements not met: [3]. This installation requires [2] [4] or later.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27505</td><td>1033</td><td>Could not open SQL script file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27506</td><td>1033</td><td>Error executing SQL script [2]. Line [3]. [4]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27507</td><td>1033</td><td>Connection or browsing for database servers requires that MDAC be installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27508</td><td>1033</td><td>Error installing COM+ application [2]. [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27509</td><td>1033</td><td>Error uninstalling COM+ application [2]. [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2751</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected product version &gt; [4], found product version [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27510</td><td>1033</td><td>Error installing COM+ application [2].  Could not load Microsoft(R) .NET class libraries. Registering .NET serviced components requires that Microsoft(R) .NET Framework be installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27511</td><td>1033</td><td>Could not execute SQL script file [2]. Connection not open: [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27512</td><td>1033</td><td>Error beginning transactions for [2] '[3]'. Database [4]. [5]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27513</td><td>1033</td><td>Error committing transactions for [2] '[3]'. Database [4]. [5]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27514</td><td>1033</td><td>This installation requires a Microsoft SQL Server. The specified server '[3]' is a Microsoft SQL Server Desktop Engine or SQL Server Express.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27515</td><td>1033</td><td>Error retrieving schema version from [2] '[3]'. Database: '[4]'. [5]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27516</td><td>1033</td><td>Error writing schema version to [2] '[3]'. Database: '[4]'. [5]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27517</td><td>1033</td><td>This installation requires Administrator privileges for installing COM+ applications. Log on as an administrator and then retry this installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27518</td><td>1033</td><td>The COM+ application "[2]" is configured to run as an NT service; this requires COM+ 1.5 or later on the system. Since your system has COM+ 1.0, this application will not be installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27519</td><td>1033</td><td>Error updating XML file [2]. [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2752</td><td>1033</td><td>Could not open transform [2] stored as child storage of package [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27520</td><td>1033</td><td>Error opening XML file [2]. [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27521</td><td>1033</td><td>This setup requires MSXML 3.0 or higher for configuring XML files. Please make sure that you have version 3.0 or higher.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27522</td><td>1033</td><td>Error creating XML file [2]. [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27523</td><td>1033</td><td>Error loading servers.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27524</td><td>1033</td><td>Error loading NetApi32.DLL. The ISNetApi.dll needs to have NetApi32.DLL properly loaded and requires an NT based operating system.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27525</td><td>1033</td><td>Server not found. Verify that the specified server exists. The server name can not be empty.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27526</td><td>1033</td><td>Unspecified error from ISNetApi.dll.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27527</td><td>1033</td><td>The buffer is too small.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27528</td><td>1033</td><td>Access denied. Check administrative rights.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27529</td><td>1033</td><td>Invalid computer.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2753</td><td>1033</td><td>The File '[2]' is not marked for installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27530</td><td>1033</td><td>Unknown error returned from NetAPI. System error: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27531</td><td>1033</td><td>Unhandled exception.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27532</td><td>1033</td><td>Invalid user name for this server or domain.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27533</td><td>1033</td><td>The case-sensitive passwords do not match.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27534</td><td>1033</td><td>The list is empty.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27535</td><td>1033</td><td>Access violation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27536</td><td>1033</td><td>Error getting group.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27537</td><td>1033</td><td>Error adding user to group. Verify that the group exists for this domain or server.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27538</td><td>1033</td><td>Error creating user.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27539</td><td>1033</td><td>ERROR_NETAPI_ERROR_NOT_PRIMARY returned from NetAPI.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2754</td><td>1033</td><td>The File '[2]' is not a valid patch file.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27540</td><td>1033</td><td>The specified user already exists.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27541</td><td>1033</td><td>The specified group already exists.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27542</td><td>1033</td><td>Invalid password. Verify that the password is in accordance with your network password policy.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27543</td><td>1033</td><td>Invalid name.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27544</td><td>1033</td><td>Invalid group.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27545</td><td>1033</td><td>The user name can not be empty and must be in the format DOMAIN\Username.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27546</td><td>1033</td><td>Error loading or creating INI file in the user TEMP directory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27547</td><td>1033</td><td>ISNetAPI.dll is not loaded or there was an error loading the dll. This dll needs to be loaded for this operation. Verify that the dll is in the SUPPORTDIR directory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27548</td><td>1033</td><td>Error deleting INI file containing new user information from the user's TEMP directory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27549</td><td>1033</td><td>Error getting the primary domain controller (PDC).</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2755</td><td>1033</td><td>Server returned unexpected error [2] attempting to install package [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27550</td><td>1033</td><td>Every field must have a value in order to create a user.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27551</td><td>1033</td><td>ODBC driver for [2] not found. This is required to connect to [2] database servers.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27552</td><td>1033</td><td>Error creating database [4]. Server: [2] [3]. [5]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27553</td><td>1033</td><td>Error connecting to database [4]. Server: [2] [3]. [5]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27554</td><td>1033</td><td>Error attempting to open connection [2]. No valid database metadata associated with this connection.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_27555</td><td>1033</td><td>Error attempting to apply permissions to object '[2]'. System error: [3] ([4])</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2756</td><td>1033</td><td>The property '[2]' was used as a directory property in one or more tables, but no value was ever assigned.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2757</td><td>1033</td><td>Could not create summary info for transform [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2758</td><td>1033</td><td>Transform [2] does not contain an MSI version.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2759</td><td>1033</td><td>Transform [2] version [3] incompatible with engine; Min: [4], Max: [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2760</td><td>1033</td><td>Transform [2] invalid for package [3]. Expected upgrade code [4], found [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2761</td><td>1033</td><td>Cannot begin transaction. Global mutex not properly initialized.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2762</td><td>1033</td><td>Cannot write script record. Transaction not started.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2763</td><td>1033</td><td>Cannot run script. Transaction not started.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2765</td><td>1033</td><td>Assembly name missing from AssemblyName table : Component: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2766</td><td>1033</td><td>The file [2] is an invalid MSI storage file.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2767</td><td>1033</td><td>No more data{ while enumerating [2]}.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2768</td><td>1033</td><td>Transform in patch package is invalid.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2769</td><td>1033</td><td>Custom Action [2] did not close [3] MSIHANDLEs.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2770</td><td>1033</td><td>Cached folder [2] not defined in internal cache folder table.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2771</td><td>1033</td><td>Upgrade of feature [2] has a missing component.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2772</td><td>1033</td><td>New upgrade feature [2] must be a leaf feature.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_28</td><td>1033</td><td>Another application has exclusive access to the file [2].  Please shut down all other applications, then click Retry.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2801</td><td>1033</td><td>Unknown Message -- Type [2]. No action is taken.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2802</td><td>1033</td><td>No publisher is found for the event [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2803</td><td>1033</td><td>Dialog View did not find a record for the dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2804</td><td>1033</td><td>On activation of the control [3] on dialog [2] CMsiDialog failed to evaluate the condition [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2806</td><td>1033</td><td>The dialog [2] failed to evaluate the condition [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2807</td><td>1033</td><td>The action [2] is not recognized.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2808</td><td>1033</td><td>Default button is ill-defined on dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2809</td><td>1033</td><td>On the dialog [2] the next control pointers do not form a cycle. There is a pointer from [3] to [4], but there is no further pointer.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2810</td><td>1033</td><td>On the dialog [2] the next control pointers do not form a cycle. There is a pointer from both [3] and [5] to [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2811</td><td>1033</td><td>On dialog [2] control [3] has to take focus, but it is unable to do so.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2812</td><td>1033</td><td>The event [2] is not recognized.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2813</td><td>1033</td><td>The EndDialog event was called with the argument [2], but the dialog has a parent.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2814</td><td>1033</td><td>On the dialog [2] the control [3] names a nonexistent control [4] as the next control.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2815</td><td>1033</td><td>ControlCondition table has a row without condition for the dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2816</td><td>1033</td><td>The EventMapping table refers to an invalid control [4] on dialog [2] for the event [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2817</td><td>1033</td><td>The event [2] failed to set the attribute for the control [4] on dialog [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2818</td><td>1033</td><td>In the ControlEvent table EndDialog has an unrecognized argument [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2819</td><td>1033</td><td>Control [3] on dialog [2] needs a property linked to it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2820</td><td>1033</td><td>Attempted to initialize an already initialized handler.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2821</td><td>1033</td><td>Attempted to initialize an already initialized dialog: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2822</td><td>1033</td><td>No other method can be called on dialog [2] until all the controls are added.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2823</td><td>1033</td><td>Attempted to initialize an already initialized control: [3] on dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2824</td><td>1033</td><td>The dialog attribute [3] needs a record of at least [2] field(s).</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2825</td><td>1033</td><td>The control attribute [3] needs a record of at least [2] field(s).</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2826</td><td>1033</td><td>Control [3] on dialog [2] extends beyond the boundaries of the dialog [4] by [5] pixels.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2827</td><td>1033</td><td>The button [4] on the radio button group [3] on dialog [2] extends beyond the boundaries of the group [5] by [6] pixels.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2828</td><td>1033</td><td>Tried to remove control [3] from dialog [2], but the control is not part of the dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2829</td><td>1033</td><td>Attempt to use an uninitialized dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2830</td><td>1033</td><td>Attempt to use an uninitialized control on dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2831</td><td>1033</td><td>The control [3] on dialog [2] does not support [5] the attribute [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2832</td><td>1033</td><td>The dialog [2] does not support the attribute [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2833</td><td>1033</td><td>Control [4] on dialog [3] ignored the message [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2834</td><td>1033</td><td>The next pointers on the dialog [2] do not form a single loop.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2835</td><td>1033</td><td>The control [2] was not found on dialog [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2836</td><td>1033</td><td>The control [3] on the dialog [2] cannot take focus.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2837</td><td>1033</td><td>The control [3] on dialog [2] wants the winproc to return [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2838</td><td>1033</td><td>The item [2] in the selection table has itself as a parent.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2839</td><td>1033</td><td>Setting the property [2] failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2840</td><td>1033</td><td>Error dialog name mismatch.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2841</td><td>1033</td><td>No OK button was found on the error dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2842</td><td>1033</td><td>No text field was found on the error dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2843</td><td>1033</td><td>The ErrorString attribute is not supported for standard dialogs.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2844</td><td>1033</td><td>Cannot execute an error dialog if the Errorstring is not set.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2845</td><td>1033</td><td>The total width of the buttons exceeds the size of the error dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2846</td><td>1033</td><td>SetFocus did not find the required control on the error dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2847</td><td>1033</td><td>The control [3] on dialog [2] has both the icon and the bitmap style set.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2848</td><td>1033</td><td>Tried to set control [3] as the default button on dialog [2], but the control does not exist.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2849</td><td>1033</td><td>The control [3] on dialog [2] is of a type, that cannot be integer valued.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2850</td><td>1033</td><td>Unrecognized volume type.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2851</td><td>1033</td><td>The data for the icon [2] is not valid.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2852</td><td>1033</td><td>At least one control has to be added to dialog [2] before it is used.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2853</td><td>1033</td><td>Dialog [2] is a modeless dialog. The execute method should not be called on it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2854</td><td>1033</td><td>On the dialog [2] the control [3] is designated as first active control, but there is no such control.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2855</td><td>1033</td><td>The radio button group [3] on dialog [2] has fewer than 2 buttons.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2856</td><td>1033</td><td>Creating a second copy of the dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2857</td><td>1033</td><td>The directory [2] is mentioned in the selection table but not found.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2858</td><td>1033</td><td>The data for the bitmap [2] is not valid.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2859</td><td>1033</td><td>Test error message.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2860</td><td>1033</td><td>Cancel button is ill-defined on dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2861</td><td>1033</td><td>The next pointers for the radio buttons on dialog [2] control [3] do not form a cycle.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2862</td><td>1033</td><td>The attributes for the control [3] on dialog [2] do not define a valid icon size. Setting the size to 16.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2863</td><td>1033</td><td>The control [3] on dialog [2] needs the icon [4] in size [5]x[5], but that size is not available. Loading the first available size.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2864</td><td>1033</td><td>The control [3] on dialog [2] received a browse event, but there is no configurable directory for the present selection. Likely cause: browse button is not authored correctly.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2865</td><td>1033</td><td>Control [3] on billboard [2] extends beyond the boundaries of the billboard [4] by [5] pixels.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2866</td><td>1033</td><td>The dialog [2] is not allowed to return the argument [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2867</td><td>1033</td><td>The error dialog property is not set.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2868</td><td>1033</td><td>The error dialog [2] does not have the error style bit set.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2869</td><td>1033</td><td>The dialog [2] has the error style bit set, but is not an error dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2870</td><td>1033</td><td>The help string [4] for control [3] on dialog [2] does not contain the separator character.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2871</td><td>1033</td><td>The [2] table is out of date: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2872</td><td>1033</td><td>The argument of the CheckPath control event on dialog [2] is invalid.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2873</td><td>1033</td><td>On the dialog [2] the control [3] has an invalid string length limit: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2874</td><td>1033</td><td>Changing the text font to [2] failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2875</td><td>1033</td><td>Changing the text color to [2] failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2876</td><td>1033</td><td>The control [3] on dialog [2] had to truncate the string: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2877</td><td>1033</td><td>The binary data [2] was not found</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2878</td><td>1033</td><td>On the dialog [2] the control [3] has a possible value: [4]. This is an invalid or duplicate value.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2879</td><td>1033</td><td>The control [3] on dialog [2] cannot parse the mask string: [4].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2880</td><td>1033</td><td>Do not perform the remaining control events.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2881</td><td>1033</td><td>CMsiHandler initialization failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2882</td><td>1033</td><td>Dialog window class registration failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2883</td><td>1033</td><td>CreateNewDialog failed for the dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2884</td><td>1033</td><td>Failed to create a window for the dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2885</td><td>1033</td><td>Failed to create the control [3] on the dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2886</td><td>1033</td><td>Creating the [2] table failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2887</td><td>1033</td><td>Creating a cursor to the [2] table failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2888</td><td>1033</td><td>Executing the [2] view failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2889</td><td>1033</td><td>Creating the window for the control [3] on dialog [2] failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2890</td><td>1033</td><td>The handler failed in creating an initialized dialog.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2891</td><td>1033</td><td>Failed to destroy window for dialog [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2892</td><td>1033</td><td>[2] is an integer only control, [3] is not a valid integer value.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2893</td><td>1033</td><td>The control [3] on dialog [2] can accept property values that are at most [5] characters long. The value [4] exceeds this limit, and has been truncated.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2894</td><td>1033</td><td>Loading RICHED20.DLL failed. GetLastError() returned: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2895</td><td>1033</td><td>Freeing RICHED20.DLL failed. GetLastError() returned: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2896</td><td>1033</td><td>Executing action [2] failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2897</td><td>1033</td><td>Failed to create any [2] font on this system.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2898</td><td>1033</td><td>For [2] textstyle, the system created a '[3]' font, in [4] character set.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2899</td><td>1033</td><td>Failed to create [2] textstyle. GetLastError() returned: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_29</td><td>1033</td><td>There is not enough disk space to install the file [2].  Free some disk space and click Retry, or click Cancel to exit.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2901</td><td>1033</td><td>Invalid parameter to operation [2]: Parameter [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2902</td><td>1033</td><td>Operation [2] called out of sequence.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2903</td><td>1033</td><td>The file [2] is missing.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2904</td><td>1033</td><td>Could not BindImage file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2905</td><td>1033</td><td>Could not read record from script file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2906</td><td>1033</td><td>Missing header in script file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2907</td><td>1033</td><td>Could not create secure security descriptor. Error: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2908</td><td>1033</td><td>Could not register component [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2909</td><td>1033</td><td>Could not unregister component [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2910</td><td>1033</td><td>Could not determine user's security ID.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2911</td><td>1033</td><td>Could not remove the folder [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2912</td><td>1033</td><td>Could not schedule file [2] for removal on restart.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2919</td><td>1033</td><td>No cabinet specified for compressed file: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2920</td><td>1033</td><td>Source directory not specified for file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2924</td><td>1033</td><td>Script [2] version unsupported. Script version: [3], minimum version: [4], maximum version: [5].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2927</td><td>1033</td><td>ShellFolder id [2] is invalid.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2928</td><td>1033</td><td>Exceeded maximum number of sources. Skipping source '[2]'.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2929</td><td>1033</td><td>Could not determine publishing root. Error: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2932</td><td>1033</td><td>Could not create file [2] from script data. Error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2933</td><td>1033</td><td>Could not initialize rollback script [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2934</td><td>1033</td><td>Could not secure transform [2]. Error [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2935</td><td>1033</td><td>Could not unsecure transform [2]. Error [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2936</td><td>1033</td><td>Could not find transform [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2937</td><td>1033</td><td>Windows Installer cannot install a system file protection catalog. Catalog: [2], Error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2938</td><td>1033</td><td>Windows Installer cannot retrieve a system file protection catalog from the cache. Catalog: [2], Error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2939</td><td>1033</td><td>Windows Installer cannot delete a system file protection catalog from the cache. Catalog: [2], Error: [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2940</td><td>1033</td><td>Directory Manager not supplied for source resolution.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2941</td><td>1033</td><td>Unable to compute the CRC for file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2942</td><td>1033</td><td>BindImage action has not been executed on [2] file.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2943</td><td>1033</td><td>This version of Windows does not support deploying 64-bit packages. The script [2] is for a 64-bit package.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2944</td><td>1033</td><td>GetProductAssignmentType failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_2945</td><td>1033</td><td>Installation of ComPlus App [2] failed with error [3].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_3</td><td>1033</td><td>Info [1]. </td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_30</td><td>1033</td><td>Source file not found: [2].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_3001</td><td>1033</td><td>The patches in this list contain incorrect sequencing information: [2][3][4][5][6][7][8][9][10][11][12][13][14][15][16].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_3002</td><td>1033</td><td>Patch [2] contains invalid sequencing information. </td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_31</td><td>1033</td><td>Error reading from file: [3]. {{ System error [2].}}  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_32</td><td>1033</td><td>Error writing to file: [3]. {{ System error [2].}}  Verify that you have access to that directory.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_33</td><td>1033</td><td>Source file not found{{(cabinet)}}: [2].  Verify that the file exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_34</td><td>1033</td><td>Cannot create the directory [2].  A file with this name already exists.  Please rename or remove the file and click Retry, or click Cancel to exit.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_35</td><td>1033</td><td>The volume [2] is currently unavailable.  Please select another.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_36</td><td>1033</td><td>The specified path [2] is unavailable.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_37</td><td>1033</td><td>Unable to write to the specified folder [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_38</td><td>1033</td><td>A network error occurred while attempting to read from the file [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_39</td><td>1033</td><td>An error occurred while attempting to create the directory [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_4</td><td>1033</td><td>Internal Error [1]. [2]{, [3]}{, [4]}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_40</td><td>1033</td><td>A network error occurred while attempting to create the directory [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_41</td><td>1033</td><td>A network error occurred while attempting to open the source file cabinet [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_42</td><td>1033</td><td>The specified path is too long [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_43</td><td>1033</td><td>The Installer has insufficient privileges to modify the file [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_44</td><td>1033</td><td>A portion of the path [2] exceeds the length allowed by the system.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_45</td><td>1033</td><td>The path [2] contains words that are not valid in folders.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_46</td><td>1033</td><td>The path [2] contains an invalid character.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_47</td><td>1033</td><td>[2] is not a valid short file name.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_48</td><td>1033</td><td>Error getting file security: [3] GetLastError: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_49</td><td>1033</td><td>Invalid Drive: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_5</td><td>1033</td><td>{{Disk full: }}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_50</td><td>1033</td><td>Could not create key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_51</td><td>1033</td><td>Could not open key: [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_52</td><td>1033</td><td>Could not delete value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_53</td><td>1033</td><td>Could not delete key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_54</td><td>1033</td><td>Could not read value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_55</td><td>1033</td><td>Could not write value [2] to key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_56</td><td>1033</td><td>Could not get value names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_57</td><td>1033</td><td>Could not get sub key names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_58</td><td>1033</td><td>Could not read security information for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_59</td><td>1033</td><td>Could not increase the available registry space. [2] KB of free registry space is required for the installation of this application.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_6</td><td>1033</td><td>Action [Time]: [1]. [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_60</td><td>1033</td><td>Another installation is in progress. You must complete that installation before continuing this one.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_61</td><td>1033</td><td>Error accessing secured data. Please make sure the Windows Installer is configured properly and try the installation again.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_62</td><td>1033</td><td>User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.  Your current installation will now continue.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_63</td><td>1033</td><td>User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_64</td><td>1033</td><td>Out of disk space -- Volume: '[2]'; required space: [3] KB; available space: [4] KB.  Free some disk space and retry.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_65</td><td>1033</td><td>Are you sure you want to cancel?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_66</td><td>1033</td><td>The file [2][3] is being held in use{ by the following process: Name: [4], ID: [5], Window Title: [6]}.  Close that application and retry.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_67</td><td>1033</td><td>The product [2] is already installed, preventing the installation of this product.  The two products are incompatible.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_68</td><td>1033</td><td>Out of disk space -- Volume: [2]; required space: [3] KB; available space: [4] KB.  If rollback is disabled, enough space is available. Click Cancel to quit, Retry to check available disk space again, or Ignore to continue without rollback.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_69</td><td>1033</td><td>Could not access network location [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_7</td><td>1033</td><td>[ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_70</td><td>1033</td><td>The following applications should be closed before continuing the installation:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_71</td><td>1033</td><td>Could not find any previously installed compliant products on the machine for installing this product.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_72</td><td>1033</td><td>The key [2] is not valid.  Verify that you entered the correct key.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_73</td><td>1033</td><td>The installer must restart your system before configuration of [2] can continue.  Click Yes to restart now or No if you plan to restart later.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_74</td><td>1033</td><td>You must restart your system for the configuration changes made to [2] to take effect. Click Yes to restart now or No if you plan to restart later.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_75</td><td>1033</td><td>An installation for [2] is currently suspended.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_76</td><td>1033</td><td>A previous installation for this product is in progress.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_77</td><td>1033</td><td>No valid source could be found for product [2].  The Windows Installer cannot continue.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_78</td><td>1033</td><td>Installation operation completed successfully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_79</td><td>1033</td><td>Installation operation failed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_8</td><td>1033</td><td>{[2]}{, [3]}{, [4]}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_80</td><td>1033</td><td>Product: [2] -- [3]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_81</td><td>1033</td><td>You may either restore your computer to its previous state or continue the installation later. Would you like to restore?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_82</td><td>1033</td><td>An error occurred while writing installation information to disk.  Check to make sure enough disk space is available, and click Retry, or Cancel to end the installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_83</td><td>1033</td><td>One or more of the files required to restore your computer to its previous state could not be found.  Restoration will not be possible.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_84</td><td>1033</td><td>The path [2] is not valid.  Please specify a valid path.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_85</td><td>1033</td><td>Out of memory. Shut down other applications before retrying.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_86</td><td>1033</td><td>There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to go back to the previously selected volume.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_87</td><td>1033</td><td>There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to return to the browse dialog and select a different volume.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_88</td><td>1033</td><td>The folder [2] does not exist.  Please enter a path to an existing folder.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_89</td><td>1033</td><td>You have insufficient privileges to read this folder.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_9</td><td>1033</td><td>Message type: [1], Argument: [2]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_90</td><td>1033</td><td>A valid destination folder for the installation could not be determined.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_91</td><td>1033</td><td>Error attempting to read from the source installation database: [2].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_92</td><td>1033</td><td>Scheduling reboot operation: Renaming file [2] to [3]. Must reboot to complete operation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_93</td><td>1033</td><td>Scheduling reboot operation: Deleting file [2]. Must reboot to complete operation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_94</td><td>1033</td><td>Module [2] failed to register.  HRESULT [3].  Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_95</td><td>1033</td><td>Module [2] failed to unregister.  HRESULT [3].  Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_96</td><td>1033</td><td>Failed to cache package [2]. Error: [3]. Contact your support personnel.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_97</td><td>1033</td><td>Could not register font [2].  Verify that you have sufficient permissions to install fonts, and that the system supports this font.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_98</td><td>1033</td><td>Could not unregister font [2]. Verify that you have sufficient permissions to remove fonts.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ERROR_99</td><td>1033</td><td>Could not create shortcut [2]. Verify that the destination folder exists and that you can access it.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_INSTALLDIR</td><td>1033</td><td>[INSTALLDIR]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_INSTALLSHIELD</td><td>1033</td><td>InstallShield</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_INSTALLSHIELD_FORMATTED</td><td>1033</td><td>{&amp;MSSWhiteSerif8}InstallShield</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ISSCRIPT_VERSION_MISSING</td><td>1033</td><td>The InstallScript engine is missing from this machine.  If available, please run ISScript.msi, or contact your support personnel for further assistance.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_ISSCRIPT_VERSION_OLD</td><td>1033</td><td>The InstallScript engine on this machine is older than the version required to run this setup.  If available, please install the latest version of ISScript.msi, or contact your support personnel for further assistance.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_NEXT</td><td>1033</td><td>&amp;Next &gt;</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PREREQUISITE_SETUP_BROWSE</td><td>1033</td><td>Open [ProductName]'s original [SETUPEXENAME]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PREREQUISITE_SETUP_INVALID</td><td>1033</td><td>This executable file does not appear to be the original executable file for [ProductName]. Without using the original [SETUPEXENAME] to install additional dependencies, [ProductName] may not work correctly. Would you like to find the original [SETUPEXENAME]?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PREREQUISITE_SETUP_SEARCH</td><td>1033</td><td>This installation may require additional dependencies. Without its dependencies, [ProductName] may not work correctly. Would you like to find the original [SETUPEXENAME]?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PREVENT_DOWNGRADE_EXIT</td><td>1033</td><td>A newer version of this application is already installed on this computer. If you wish to install this version, please uninstall the newer version first. Click OK to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PRINT_BUTTON</td><td>1033</td><td>&amp;Print</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PRODUCTNAME_INSTALLSHIELD</td><td>1033</td><td>[ProductName] - InstallShield Wizard</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEAPPPOOL</td><td>1033</td><td>Creating application pool %s</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEAPPPOOLS</td><td>1033</td><td>Creating application Pools...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEVROOT</td><td>1033</td><td>Creating IIS virtual directory %s</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEVROOTS</td><td>1033</td><td>Creating IIS virtual directories...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEWEBSERVICEEXTENSION</td><td>1033</td><td>Creating web service extension</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEWEBSERVICEEXTENSIONS</td><td>1033</td><td>Creating web service extensions...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEWEBSITE</td><td>1033</td><td>Creating IIS website %s</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_CREATEWEBSITES</td><td>1033</td><td>Creating IIS websites...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_EXTRACT</td><td>1033</td><td>Extracting information for IIS virtual directories...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_EXTRACTDONE</td><td>1033</td><td>Extracted information for IIS virtual directories...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEAPPPOOL</td><td>1033</td><td>Removing application pool</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEAPPPOOLS</td><td>1033</td><td>Removing application pools...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVESITE</td><td>1033</td><td>Removing web site at port %d</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEVROOT</td><td>1033</td><td>Removing IIS virtual directory %s</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEVROOTS</td><td>1033</td><td>Removing IIS virtual directories...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEWEBSERVICEEXTENSION</td><td>1033</td><td>Removing web service extension</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEWEBSERVICEEXTENSIONS</td><td>1033</td><td>Removing web service extensions...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_REMOVEWEBSITES</td><td>1033</td><td>Removing IIS websites...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>1033</td><td>Rolling back application pools...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_ROLLBACKVROOTS</td><td>1033</td><td>Rolling back virtual directory and web site changes...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>1033</td><td>Rolling back web service extensions...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_TEXTFILECHANGS_REPLACE</td><td>1033</td><td>Replacing %s with %s in %s...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_XML_COSTING</td><td>1033</td><td>Costing XML files...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_XML_CREATE_FILE</td><td>1033</td><td>Creating XML file %s...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_XML_FILES</td><td>1033</td><td>Performing XML file changes...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_XML_REMOVE_FILE</td><td>1033</td><td>Removing XML file %s...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_XML_ROLLBACK_FILES</td><td>1033</td><td>Rolling back XML file changes...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>LAUNCH~1.EXE|Launch isetup-5.5.2.exe</td><td>0</td><td/><td>-526317942</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME10</td><td>1033</td><td>LAUNCH~1.EXE|Launch _IsIcoRes.Exe</td><td>0</td><td/><td>-526305654</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME11</td><td>1033</td><td>LAUNCH~1.EXE|Launch setup.exe</td><td>0</td><td/><td>-526303606</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch dotNetFx40_Full_x86_x64.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>LAUNCH~1.EXE|Launch Microsoft.Visual.C++.10.0.x86.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>LAUNCH~1.EXE|Launch dotNetInstaller.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME5</td><td>1033</td><td>LAUNCH~1.EXE|Launch htmlInstaller.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME6</td><td>1033</td><td>LAUNCH~1.EXE|Launch InstallerEditor.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME7</td><td>1033</td><td>LAUNCH~1.EXE|Launch InstallerLinker.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME8</td><td>1033</td><td>LAUNCH~1.EXE|Launch Dev2.Server.exe</td><td>0</td><td/><td>-526311798</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME9</td><td>1033</td><td>LAUNCH~1.EXE|Launch Dev2.Studio.exe</td><td>0</td><td/><td>-526305654</td></row>
+		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_BROWSE</td><td>1033</td><td>B&amp;rowse...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_BROWSE_DB</td><td>1033</td><td>Br&amp;owse...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_CATALOG</td><td>1033</td><td>&amp;Name of database catalog:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_CONNECT</td><td>1033</td><td>Connect using:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_DESC</td><td>1033</td><td>Select database server and authentication method</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_ID</td><td>1033</td><td>&amp;Login ID:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_INTRO</td><td>1033</td><td>Select the database server to install to from the list below or click Browse to see a list of all database servers. You can also specify the way to authenticate your login using your current credentials or a SQL Login ID and Password.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_PSWD</td><td>1033</td><td>&amp;Password:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_SERVER</td><td>1033</td><td>&amp;Database Server:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_SERVER2</td><td>1033</td><td>&amp;Database server that you are installing to:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_SQL</td><td>1033</td><td>S&amp;erver authentication using the Login ID and password below</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_TITLE</td><td>1033</td><td>{&amp;MSSansBold8}Database Server</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLLOGIN_WIN</td><td>1033</td><td>&amp;Windows authentication credentials of current user</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLSCRIPT_INSTALLING</td><td>1033</td><td>Executing SQL Install Script...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SQLSCRIPT_UNINSTALLING</td><td>1033</td><td>Executing SQL Uninstall Script...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_STANDARD_USE_SETUPEXE</td><td>1033</td><td>This installation cannot be run by directly launching the MSI package. You must run setup.exe.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_Advertise</td><td>1033</td><td>Will be installed on first use. (Available only if the feature supports this option.)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_AllInstalledLocal</td><td>1033</td><td>Will be completely installed to the local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_CustomSetup</td><td>1033</td><td>{&amp;MSSansBold8}Custom Setup Tips</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_CustomSetupDescription</td><td>1033</td><td>Custom Setup allows you to selectively install program features.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_IconInstallState</td><td>1033</td><td>The icon next to the feature name indicates the install state of the feature. Click the icon to drop down the install state menu for each feature.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_InstallState</td><td>1033</td><td>This install state means the feature...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_Network</td><td>1033</td><td>Will be installed to run from the network. (Available only if the feature supports this option.)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_SubFeaturesInstalledLocal</td><td>1033</td><td>Will have some subfeatures installed to the local hard drive. (Available only if the feature has subfeatures.)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_SetupTips_WillNotBeInstalled</td><td>1033</td><td>Will not be installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_Available</td><td>1033</td><td>Available</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_Bytes</td><td>1033</td><td>bytes</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_CompilingFeaturesCost</td><td>1033</td><td>Compiling cost for this feature...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_Differences</td><td>1033</td><td>Differences</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_DiskSize</td><td>1033</td><td>Disk Size</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureCompletelyRemoved</td><td>1033</td><td>This feature will be completely removed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureContinueNetwork</td><td>1033</td><td>This feature will continue to be run from the network</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureFreeSpace</td><td>1033</td><td>This feature frees up [1] on your hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledCD</td><td>1033</td><td>This feature, and all subfeatures, will be installed to run from the CD.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledCD2</td><td>1033</td><td>This feature will be installed to run from CD.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledLocal</td><td>1033</td><td>This feature, and all subfeatures, will be installed on local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledLocal2</td><td>1033</td><td>This feature will be installed on local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledNetwork</td><td>1033</td><td>This feature, and all subfeatures, will be installed to run from the network.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledNetwork2</td><td>1033</td><td>This feature will be installed to run from network.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledRequired</td><td>1033</td><td>Will be installed when required.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledWhenRequired</td><td>1033</td><td>This feature will be set to be installed when required.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureInstalledWhenRequired2</td><td>1033</td><td>This feature will be installed when required.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureLocal</td><td>1033</td><td>This feature will be installed on the local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureLocal2</td><td>1033</td><td>This feature will be installed on your local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureNetwork</td><td>1033</td><td>This feature will be installed to run from the network.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureNetwork2</td><td>1033</td><td>This feature will be available to run from the network.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureNotAvailable</td><td>1033</td><td>This feature will not be available.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureOnCD</td><td>1033</td><td>This feature will be installed to run from CD.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureOnCD2</td><td>1033</td><td>This feature will be available to run from CD.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureRemainLocal</td><td>1033</td><td>This feature will remain on your local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureRemoveNetwork</td><td>1033</td><td>This feature will be removed from your local hard drive, but will be still available to run from the network.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureRemovedCD</td><td>1033</td><td>This feature will be removed from your local hard drive but will still be available to run from CD.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureRemovedUnlessRequired</td><td>1033</td><td>This feature will be removed from your local hard drive but will be set to be installed when required.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureRequiredSpace</td><td>1033</td><td>This feature requires [1] on your hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureRunFromCD</td><td>1033</td><td>This feature will continue to be run from the CD</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureSpaceFree</td><td>1033</td><td>This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureSpaceFree2</td><td>1033</td><td>This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureSpaceFree3</td><td>1033</td><td>This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureSpaceFree4</td><td>1033</td><td>This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureUnavailable</td><td>1033</td><td>This feature will become unavailable.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureUninstallNoNetwork</td><td>1033</td><td>This feature will be uninstalled completely, and you won't be able to run it from the network.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureWasCD</td><td>1033</td><td>This feature was run from the CD but will be set to be installed when required.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureWasCDLocal</td><td>1033</td><td>This feature was run from the CD but will be installed on the local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureWasOnNetworkInstalled</td><td>1033</td><td>This feature was run from the network but will be installed when required.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureWasOnNetworkLocal</td><td>1033</td><td>This feature was run from the network but will be installed on the local hard drive.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_FeatureWillBeUninstalled</td><td>1033</td><td>This feature will be uninstalled completely, and you won't be able to run it from CD.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_Folder</td><td>1033</td><td>Fldr|New Folder</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_GB</td><td>1033</td><td>GB</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_KB</td><td>1033</td><td>KB</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_MB</td><td>1033</td><td>MB</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_Required</td><td>1033</td><td>Required</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_TimeRemaining</td><td>1033</td><td>Time remaining: {[1] min }{[2] sec}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS_UITEXT_Volume</td><td>1033</td><td>Volume</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__AgreeToLicense_0</td><td>1033</td><td>I &amp;do not accept the terms in the license agreement</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__AgreeToLicense_1</td><td>1033</td><td>I &amp;accept the terms in the license agreement</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DatabaseFolder_ChangeFolder</td><td>1033</td><td>Click Next to install to this folder, or click Change to install to a different folder.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DatabaseFolder_DatabaseDir</td><td>1033</td><td>[DATABASEDIR]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DatabaseFolder_DatabaseFolder</td><td>1033</td><td>{&amp;MSSansBold8}Database Folder</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DestinationFolder_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DestinationFolder_ChangeFolder</td><td>1033</td><td>Click Next to install to this folder, or click Change to install to a different folder.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DestinationFolder_DestinationFolder</td><td>1033</td><td>{&amp;MSSansBold8}Destination Folder</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DestinationFolder_InstallTo</td><td>1033</td><td>Install [ProductName] to:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DisplayName_Custom</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DisplayName_Minimal</td><td>1033</td><td>Minimal</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__DisplayName_Typical</td><td>1033</td><td>Typical</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_11</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_4</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_8</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_BrowseDestination</td><td>1033</td><td>Browse to the destination folder.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_ChangeDestination</td><td>1033</td><td>{&amp;MSSansBold8}Change Current Destination Folder</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_CreateFolder</td><td>1033</td><td>Create new folder|</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_FolderName</td><td>1033</td><td>&amp;Folder name:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_LookIn</td><td>1033</td><td>&amp;Look in:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallBrowse_UpOneLevel</td><td>1033</td><td>Up one level|</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPointWelcome_ServerImage</td><td>1033</td><td>The InstallShield(R) Wizard will create a server image of [ProductName] at a specified network location. To continue, click Next.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPointWelcome_Wizard</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPoint_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPoint_EnterNetworkLocation</td><td>1033</td><td>Enter the network location or click Change to browse to a location.  Click Install to create a server image of [ProductName] at the specified network location or click Cancel to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPoint_Install</td><td>1033</td><td>&amp;Install</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPoint_NetworkLocation</td><td>1033</td><td>&amp;Network location:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPoint_NetworkLocationFormatted</td><td>1033</td><td>{&amp;MSSansBold8}Network Location</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsAdminInstallPoint_SpecifyNetworkLocation</td><td>1033</td><td>Specify a network location for the server image of the product.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseButton</td><td>1033</td><td>&amp;Browse...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_11</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_4</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_8</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_BrowseDestFolder</td><td>1033</td><td>Browse to the destination folder.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_ChangeCurrentFolder</td><td>1033</td><td>{&amp;MSSansBold8}Change Current Destination Folder</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_CreateFolder</td><td>1033</td><td>Create New Folder|</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_FolderName</td><td>1033</td><td>&amp;Folder name:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_LookIn</td><td>1033</td><td>&amp;Look in:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseFolderDlg_UpOneLevel</td><td>1033</td><td>Up One Level|</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseForAccount</td><td>1033</td><td>Browse for a User Account</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseGroup</td><td>1033</td><td>Select a Group</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsBrowseUsernameTitle</td><td>1033</td><td>Select a User Name</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCancelDlg_ConfirmCancel</td><td>1033</td><td>Are you sure you want to cancel [ProductName] installation?</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCancelDlg_No</td><td>1033</td><td>&amp;No</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCancelDlg_Yes</td><td>1033</td><td>&amp;Yes</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsConfirmPassword</td><td>1033</td><td>Con&amp;firm password:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCreateNewUserTitle</td><td>1033</td><td>New User Information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCreateUserBrowse</td><td>1033</td><td>N&amp;ew User Information...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_ClickFeatureIcon</td><td>1033</td><td>Click on an icon in the list below to change how a feature is installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_CustomSetup</td><td>1033</td><td>{&amp;MSSansBold8}Custom Setup</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_FeatureDescription</td><td>1033</td><td>Feature Description</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_FeaturePath</td><td>1033</td><td>&lt;selected feature path&gt;</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_FeatureSize</td><td>1033</td><td>Feature size</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_Help</td><td>1033</td><td>&amp;Help</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_InstallTo</td><td>1033</td><td>Install to:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_MultilineDescription</td><td>1033</td><td>Multiline description of the currently selected item</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_SelectFeatures</td><td>1033</td><td>Select the program features you want installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsCustomSelectionDlg_Space</td><td>1033</td><td>&amp;Space</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsDiskSpaceDlg_DiskSpace</td><td>1033</td><td>Disk space required for the installation exceeds available disk space.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsDiskSpaceDlg_HighlightedVolumes</td><td>1033</td><td>The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install fewer features onto local drives, or select different destination drives.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsDiskSpaceDlg_Numbers</td><td>1033</td><td>{120}{70}{70}{70}{70}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsDiskSpaceDlg_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsDiskSpaceDlg_OutOfDiskSpace</td><td>1033</td><td>{&amp;MSSansBold8}Out of Disk Space</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsDomainOrServer</td><td>1033</td><td>&amp;Domain or server:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_Abort</td><td>1033</td><td>&amp;Abort</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_ErrorText</td><td>1033</td><td>&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_Ignore</td><td>1033</td><td>&amp;Ignore</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_InstallerInfo</td><td>1033</td><td>[ProductName] Installer Information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_NO</td><td>1033</td><td>&amp;No</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_OK</td><td>1033</td><td>&amp;OK</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_Retry</td><td>1033</td><td>&amp;Retry</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsErrorDlg_Yes</td><td>1033</td><td>&amp;Yes</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_Finish</td><td>1033</td><td>&amp;Finish</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_InstallSuccess</td><td>1033</td><td>The InstallShield Wizard has successfully installed [ProductName]. Click Finish to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_LaunchProgram</td><td>1033</td><td>Launch the program</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_ShowReadMe</td><td>1033</td><td>Show the readme file</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_UninstallSuccess</td><td>1033</td><td>The InstallShield Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_Update_InternetConnection</td><td>1033</td><td>Your Internet connection can be used to make sure that you have the latest updates.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_Update_PossibleUpdates</td><td>1033</td><td>Some program files might have been updated since you purchased your copy of [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_Update_SetupFinished</td><td>1033</td><td>Setup has finished installing [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_Update_YesCheckForUpdates</td><td>1033</td><td>&amp;Yes, check for program updates (Recommended) after the setup completes.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsExitDialog_WizardCompleted</td><td>1033</td><td>{&amp;TahomaBold10}InstallShield Wizard Completed</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_ClickFinish</td><td>1033</td><td>Click Finish to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_Finish</td><td>1033</td><td>&amp;Finish</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_KeepOrRestore</td><td>1033</td><td>You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_NotModified</td><td>1033</td><td>Your system has not been modified. To complete installation at another time, please run setup again.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_RestoreOrContinueLater</td><td>1033</td><td>Click Restore or Continue Later to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_WizardCompleted</td><td>1033</td><td>{&amp;TahomaBold10}InstallShield Wizard Completed</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFatalError_WizardInterrupted</td><td>1033</td><td>The wizard was interrupted before [ProductName] could be completely installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFeatureDetailsDlg_DiskSpaceRequirements</td><td>1033</td><td>{&amp;MSSansBold8}Disk Space Requirements</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFeatureDetailsDlg_Numbers</td><td>1033</td><td>{120}{70}{70}{70}{70}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFeatureDetailsDlg_OK</td><td>1033</td><td>OK</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFeatureDetailsDlg_SpaceRequired</td><td>1033</td><td>The disk space required for the installation of the selected features.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFeatureDetailsDlg_VolumesTooSmall</td><td>1033</td><td>The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install fewer features onto local drives, or select different destination drives.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFilesInUse_ApplicationsUsingFiles</td><td>1033</td><td>The following applications are using files that need to be updated by this setup. Close these applications and click Retry to continue.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFilesInUse_Exit</td><td>1033</td><td>&amp;Exit</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFilesInUse_FilesInUse</td><td>1033</td><td>{&amp;MSSansBold8}Files in Use</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFilesInUse_FilesInUseMessage</td><td>1033</td><td>Some files that need to be updated are currently in use.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFilesInUse_Ignore</td><td>1033</td><td>&amp;Ignore</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsFilesInUse_Retry</td><td>1033</td><td>&amp;Retry</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsGroup</td><td>1033</td><td>&amp;Group:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsGroupLabel</td><td>1033</td><td>Gr&amp;oup:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsInitDlg_1</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsInitDlg_2</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsInitDlg_PreparingWizard</td><td>1033</td><td>[ProductName] Setup is preparing the InstallShield Wizard which will guide you through the program setup process.  Please wait.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsInitDlg_WelcomeWizard</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsLicenseDlg_LicenseAgreement</td><td>1033</td><td>{&amp;MSSansBold8}License Agreement</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsLicenseDlg_ReadLicenseAgreement</td><td>1033</td><td>Please read the following license agreement carefully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsLogonInfoDescription</td><td>1033</td><td>Specify the user name and password of the user account that will logon to use this application. The user account must be in the form DOMAIN\Username.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsLogonInfoTitle</td><td>1033</td><td>{&amp;MSSansBold8}Logon Information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsLogonInfoTitleDescription</td><td>1033</td><td>Specify a user name and password</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsLogonNewUserDescription</td><td>1033</td><td>Select the button below to specify information about a new user that will be created during the installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_ChangeFeatures</td><td>1033</td><td>Change which program features are installed. This option displays the Custom Selection dialog in which you can change the way features are installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_MaitenanceOptions</td><td>1033</td><td>Modify, repair, or remove the program.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_Modify</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Modify</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_ProgramMaintenance</td><td>1033</td><td>{&amp;MSSansBold8}Program Maintenance</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_Remove</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Remove</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_RemoveProductName</td><td>1033</td><td>Remove [ProductName] from your computer.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_Repair</td><td>1033</td><td>{&amp;MSSansBold8}Re&amp;pair</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceDlg_RepairMessage</td><td>1033</td><td>Repair installation errors in the program. This option fixes missing or corrupt files, shortcuts, and registry entries.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceWelcome_MaintenanceOptionsDescription</td><td>1033</td><td>The InstallShield(R) Wizard will allow you to modify, repair, or remove [ProductName]. To continue, click Next.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMaintenanceWelcome_WizardWelcome</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMsiRMFilesInUse_ApplicationsUsingFiles</td><td>1033</td><td>The following applications are using files that need to be updated by this setup.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMsiRMFilesInUse_CloseRestart</td><td>1033</td><td>Automatically close and attempt to restart applications.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsMsiRMFilesInUse_RebootAfter</td><td>1033</td><td>Do not close applications. (A reboot will be required.)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsPatchDlg_PatchClickUpdate</td><td>1033</td><td>The InstallShield(R) Wizard will install the Patch for [ProductName] on your computer.  To continue, click Update.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsPatchDlg_PatchWizard</td><td>1033</td><td>[ProductName] Patch - InstallShield Wizard</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsPatchDlg_Update</td><td>1033</td><td>&amp;Update &gt;</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsPatchDlg_WelcomePatchWizard</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the Patch for [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_2</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_Hidden</td><td>1033</td><td>(Hidden for now)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_HiddenTimeRemaining</td><td>1033</td><td>)Hidden for now)Estimated time remaining:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_InstallingProductName</td><td>1033</td><td>{&amp;MSSansBold8}Installing [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_ProgressDone</td><td>1033</td><td>Progress done</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_SecHidden</td><td>1033</td><td>(Hidden for now)Sec.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_Status</td><td>1033</td><td>Status:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_Uninstalling</td><td>1033</td><td>{&amp;MSSansBold8}Uninstalling [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_UninstallingFeatures</td><td>1033</td><td>The program features you selected are being uninstalled.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_UninstallingFeatures2</td><td>1033</td><td>The program features you selected are being installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_WaitUninstall</td><td>1033</td><td>Please wait while the InstallShield Wizard uninstalls [ProductName]. This may take several minutes.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsProgressDlg_WaitUninstall2</td><td>1033</td><td>Please wait while the InstallShield Wizard installs [ProductName]. This may take several minutes.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsReadmeDlg_Cancel</td><td>1033</td><td>&amp;Cancel</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsReadmeDlg_PleaseReadInfo</td><td>1033</td><td>Please read the following readme information carefully.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsReadmeDlg_ReadMeInfo</td><td>1033</td><td>{&amp;MSSansBold8}Readme Information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_16</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_Anyone</td><td>1033</td><td>&amp;Anyone who uses this computer (all users)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_CustomerInformation</td><td>1033</td><td>{&amp;MSSansBold8}Customer Information</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_InstallFor</td><td>1033</td><td>Install this application for:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_OnlyMe</td><td>1033</td><td>Only for &amp;me ([USERNAME])</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_Organization</td><td>1033</td><td>&amp;Organization:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_PleaseEnterInfo</td><td>1033</td><td>Please enter your information.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_SerialNumber</td><td>1033</td><td>&amp;Serial Number:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_Tahoma50</td><td>1033</td><td>{\Tahoma8}{50}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_Tahoma80</td><td>1033</td><td>{\Tahoma8}{80}</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsRegisterUserDlg_UserName</td><td>1033</td><td>&amp;User Name:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsResumeDlg_ResumeSuspended</td><td>1033</td><td>The InstallShield(R) Wizard will complete the suspended installation of [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsResumeDlg_Resuming</td><td>1033</td><td>{&amp;TahomaBold10}Resuming the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsResumeDlg_WizardResume</td><td>1033</td><td>The InstallShield(R) Wizard will complete the installation of [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSelectDomainOrServer</td><td>1033</td><td>Select a Domain or Server</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSelectDomainUserInstructions</td><td>1033</td><td>Use the browse buttons to select a domain\server and a user name.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupComplete_ShowMsiLog</td><td>1033</td><td>Show the Windows Installer log</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_13</td><td>1033</td><td/><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_AllFeatures</td><td>1033</td><td>All program features will be installed. (Requires the most disk space.)</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_ChooseFeatures</td><td>1033</td><td>Choose which program features you want installed and where they will be installed. Recommended for advanced users.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_ChooseSetupType</td><td>1033</td><td>Choose the setup type that best suits your needs.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_Complete</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Complete</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_Custom</td><td>1033</td><td>{&amp;MSSansBold8}Cu&amp;stom</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_Minimal</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Minimal</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_MinimumFeatures</td><td>1033</td><td>Minimum required features will be installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_SelectSetupType</td><td>1033</td><td>Please select a setup type.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_SetupType</td><td>1033</td><td>{&amp;MSSansBold8}Setup Type</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsSetupTypeMinDlg_Typical</td><td>1033</td><td>{&amp;MSSansBold8}&amp;Typical</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_ClickFinish</td><td>1033</td><td>Click Finish to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_Finish</td><td>1033</td><td>&amp;Finish</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_KeepOrRestore</td><td>1033</td><td>You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_NotModified</td><td>1033</td><td>Your system has not been modified. To install this program at a later time, please run the installation again.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_RestoreOrContinue</td><td>1033</td><td>Click Restore or Continue Later to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_WizardCompleted</td><td>1033</td><td>{&amp;TahomaBold10}InstallShield Wizard Completed</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserExit_WizardInterrupted</td><td>1033</td><td>The wizard was interrupted before [ProductName] could be completely installed.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsUserNameLabel</td><td>1033</td><td>&amp;User name:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_BackOrCancel</td><td>1033</td><td>If you want to review or change any of your installation settings, click Back. Click Cancel to exit the wizard.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_ClickInstall</td><td>1033</td><td>Click Install to begin the installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_Company</td><td>1033</td><td>Company: [COMPANYNAME]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_CurrentSettings</td><td>1033</td><td>Current Settings:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_DestFolder</td><td>1033</td><td>Destination Folder:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_Install</td><td>1033</td><td>&amp;Install</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_Installdir</td><td>1033</td><td>[INSTALLDIR]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_ModifyReady</td><td>1033</td><td>{&amp;MSSansBold8}Ready to Modify the Program</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_ReadyInstall</td><td>1033</td><td>{&amp;MSSansBold8}Ready to Install the Program</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_ReadyRepair</td><td>1033</td><td>{&amp;MSSansBold8}Ready to Repair the Program</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_SelectedSetupType</td><td>1033</td><td>[SelectedSetupType]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_Serial</td><td>1033</td><td>Serial: [ISX_SERIALNUM]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_SetupType</td><td>1033</td><td>Setup Type:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_UserInfo</td><td>1033</td><td>User Information:</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_UserName</td><td>1033</td><td>Name: [USERNAME]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyReadyDlg_WizardReady</td><td>1033</td><td>The wizard is ready to begin installation.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyRemoveAllDlg_ChoseRemoveProgram</td><td>1033</td><td>You have chosen to remove the program from your system.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyRemoveAllDlg_ClickBack</td><td>1033</td><td>If you want to review or change any settings, click Back.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyRemoveAllDlg_ClickRemove</td><td>1033</td><td>Click Remove to remove [ProductName] from your computer. After removal, this program will no longer be available for use.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyRemoveAllDlg_Remove</td><td>1033</td><td>&amp;Remove</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsVerifyRemoveAllDlg_RemoveProgram</td><td>1033</td><td>{&amp;MSSansBold8}Remove the Program</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsWelcomeDlg_InstallProductName</td><td>1033</td><td>The InstallShield(R) Wizard will install [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsWelcomeDlg_WarningCopyright</td><td>1033</td><td>WARNING: This program is protected by copyright law and international treaties.</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__IsWelcomeDlg_WelcomeProductName</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__TargetReq_DESC_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__TargetReq_DESC_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-526269110</td></row>
+		<row><td>ID_STRING1</td><td>1033</td><td>STARTS~1|Start Server</td><td>0</td><td/><td>-526264817</td></row>
+		<row><td>ID_STRING10</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>824253864</td></row>
+		<row><td>ID_STRING11</td><td>1033</td><td>STARTS~1|Start Server</td><td>0</td><td/><td>-526267604</td></row>
+		<row><td>ID_STRING12</td><td>1033</td><td>STOPSE~1|Stop Server</td><td>0</td><td/><td>-526292148</td></row>
+		<row><td>ID_STRING13</td><td>1033</td><td>STOPSE~1|Stop Server</td><td>0</td><td/><td>-526311889</td></row>
+		<row><td>ID_STRING14</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>824264200</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526296560</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>Warewolf Installation</td><td>0</td><td/><td>824249768</td></row>
+		<row><td>ID_STRING4</td><td>1033</td><td>LAUNCH~1.EXE|Launch Dev2.Server.exe</td><td>0</td><td/><td>-526313814</td></row>
+		<row><td>ID_STRING5</td><td>1033</td><td>STOPSE~1|Stop Server</td><td>0</td><td/><td>-526276437</td></row>
+		<row><td>ID_STRING6</td><td>1033</td><td>STARTS~1|Start Server</td><td>0</td><td/><td>-526309173</td></row>
+		<row><td>ID_STRING7</td><td>1033</td><td>INSTAL~1|Install Server</td><td>0</td><td/><td>-526288693</td></row>
+		<row><td>ID_STRING8</td><td>1033</td><td>UNINST~1|UninstallServer</td><td>0</td><td/><td>-526268213</td></row>
+		<row><td>ID_STRING9</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>824253960</td></row>
+		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-526269110</td></row>
 	</table>
 
 	<table name="ISSwidtagProperty">
 		<col key="yes" def="s72">Name</col>
 		<col def="s0">Value</col>
-		<row><td>UniqueId</td><td>BB13B417-DFA2-4832-A0B6-5C3B6092026C</td></row>
+		<row><td>UniqueId</td><td>DB65A37D-12E3-4464-B69E-F4779DA0A6EF</td></row>
 	</table>
 
 	<table name="ISTargetImage">
@@ -4188,12 +5098,27 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
-		<row><td>Dev2.Studio.exe1_62482290B0CD4C918FF2900F9EB1E08D.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
-		<row><td>Dev2.Studio.exe_AA884DDA88BD4A91A0ECF42A5A50D1BE.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
-		<row><td>NewShortcut3_4EF9AD4E828F47B2839A995A143F0709.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
-		<row><td>NewShortcut3_E0B9F34084AC42B4B3D17FAEC7E054F6.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
-		<row><td>NewShortcut4_5594E8CD1BD7408DB6C465BC378BF19E.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
-		<row><td>NewShortcut4_A6CBB5B7C2AE433DA9FB3B2AAE8F2CAB.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
+		<row><td>Dev2.Server.exe_8A7994E81E654D619560DC711229562E.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server x64\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>Dev2.Studio.exe_680D9A2B5FF3460989512D434BC514A8.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
+		<row><td>InstallerEditor.ex_793D3EC56A584228BB87FD5CCCEBB940.exe</td><td/><td>C:\Users\brendon.page\Desktop\Release Engineering\Dev2.Installation.BootStrapper\InstallerEditor.exe</td><td>0</td></row>
+		<row><td>InstallerLinker.ex_8C449A611B294D61BF7BE5064724F266.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
+		<row><td>Microsoft.Visual.C_6C10290A8166433496520167D8740FA0.exe</td><td/><td>C:\Users\brendon.page\Desktop\Release Engineering\Dev2.Installation.BootStrapper\Dependencies\Microsoft.Visual.C++.10.0.x86.exe</td><td>0</td></row>
+		<row><td>NewShortcut1_5DB39CEBF8DB49C595DB609DCFCB734F.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server x64\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut1_BC56925AE8544C61A826807EACFBEC90.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut1_CAA3BE18BE7E4274B1EEF3D7C58B2E48.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut1_F65664FB2B0C4F4CB89FC3DCA79DEF62.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
+		<row><td>NewShortcut2_1EC305A518D54926AB45CCC71ED01584.exe</td><td/><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>0</td></row>
+		<row><td>NewShortcut2_A3C4FB1BBDAA486298F7F3044361E08F.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server x64\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut2_E3CC8FB2CD9D4C008976EF65288EDA91.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut2_EAC7771D4FB64E528AD3A042D34ADC3C.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut3_10755F592CAF48D9AD20D3F426645175.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server x64\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>NewShortcut4_38497F99B1534BF9B9DD619E01B24E7F.exe</td><td/><td>C:\Users\brendon.page\Desktop\Server x64\Dev2.Server.exe</td><td>0</td></row>
+		<row><td>_IsIcoRes.Exe_77D4AB3912284ECE960B524F5C34B8F0.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
+		<row><td>dotNetFx40_Full_x8_694E93686445422FAD1190C2D991B64A.exe</td><td/><td>C:\Users\brendon.page\Desktop\Release Engineering\Dev2.Installation.BootStrapper\Dependencies\dotNetFx40_Full_x86_x64.exe</td><td>0</td></row>
+		<row><td>dotNetInstaller.ex_99FEF8192AE54E42B1D460D77D39853B.exe</td><td/><td>C:\Users\brendon.page\Desktop\Release Engineering\Dev2.Installation.BootStrapper\dotNetInstaller.exe</td><td>0</td></row>
+		<row><td>htmlInstaller.exe_6F87023F8DE0415DB214DF93663B520D.exe</td><td/><td>C:\Users\brendon.page\Desktop\Release Engineering\Dev2.Installation.BootStrapper\htmlInstaller.exe</td><td>0</td></row>
+		<row><td>isetup_5.5.2.exe_D7B4BE85A02F4D868A8EC527662C5171.exe</td><td/><td>C:\Users\brendon.page\Desktop\isetup-5.5.2.exe</td><td>0</td></row>
+		<row><td>setup.exe_CF75EB8E260242E98D425489302257EC.exe</td><td/><td>C:\Users\brendon.page\Desktop\TestSetup\TestSetup\TestSetup\Express\SingleImage\DiskImages\DISK1\setup.exe</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4245,6 +5170,7 @@
 		<row><td>InstallFinalize</td><td/><td>6600</td><td>InstallFinalize</td><td/></row>
 		<row><td>InstallInitialize</td><td/><td>1501</td><td>InstallInitialize</td><td/></row>
 		<row><td>InstallODBC</td><td/><td>5400</td><td>InstallODBC</td><td/></row>
+		<row><td>InstallService</td><td>Not Installed</td><td>6405</td><td/><td/></row>
 		<row><td>InstallServices</td><td>VersionNT</td><td>5800</td><td>InstallServices</td><td/></row>
 		<row><td>InstallValidate</td><td/><td>1400</td><td>InstallValidate</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
@@ -4277,6 +5203,7 @@
 		<row><td>RemoveIniValues</td><td/><td>3100</td><td>RemoveIniValues</td><td/></row>
 		<row><td>RemoveODBC</td><td/><td>2400</td><td>RemoveODBC</td><td/></row>
 		<row><td>RemoveRegistryValues</td><td/><td>2600</td><td>RemoveRegistryValues</td><td/></row>
+		<row><td>RemoveServiceAfterUninstall</td><td>REMOVE="ALL"</td><td>6402</td><td/><td/></row>
 		<row><td>RemoveShortcuts</td><td/><td>3200</td><td>RemoveShortcuts</td><td/></row>
 		<row><td>ResolveSource</td><td>Not Installed</td><td>850</td><td>ResolveSource</td><td/></row>
 		<row><td>ScheduleReboot</td><td>ISSCHEDULEREBOOT</td><td>6410</td><td>ScheduleReboot</td><td/></row>
@@ -4286,6 +5213,7 @@
 		<row><td>SetAllUsersProfileNT</td><td>VersionNT = 400</td><td>970</td><td/><td/></row>
 		<row><td>SetODBCFolders</td><td/><td>1200</td><td>SetODBCFolders</td><td/></row>
 		<row><td>StartServices</td><td>VersionNT</td><td>5900</td><td>StartServices</td><td/></row>
+		<row><td>StopServiceBeforeInstall</td><td>Not Installed</td><td>3612</td><td/><td/></row>
 		<row><td>StopServices</td><td>VersionNT</td><td>1900</td><td>StopServices</td><td/></row>
 		<row><td>UnpublishComponents</td><td/><td>1700</td><td>UnpublishComponents</td><td/></row>
 		<row><td>UnpublishFeatures</td><td/><td>1800</td><td>UnpublishFeatures</td><td/></row>
@@ -4325,9 +5253,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISCompilerOption_WarningLevel</td><td>3</td></row>
 		<row><td>ISCompilerOption_WarningsAsErrors</td><td>1</td></row>
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
-		<row><td>ISUSLock</td><td>{204FE233-C76E-4B85-B882-483146C69A1A}</td></row>
-		<row><td>ISUSSignature</td><td>{C35FB5B2-FF1D-4C2E-A591-EBB092694A6A}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewUpgradePaths,viewObjects,viewAppFiles,viewDependencies,viewShortcuts,viewSystemSearch,viewRelease,viewUI,viewCustomActions</td></row>
+		<row><td>ISUSLock</td><td>{4160568D-3E61-49EE-B36B-06FBACBFA8DB}</td></row>
+		<row><td>ISUSSignature</td><td>{501ECF93-AD2A-4588-9512-6F49E9E80875}</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewAppFiles,viewObjects,viewUI,viewSystemSearch,viewCustomActions,viewRelease,viewShortcuts,viewFeatureFiles,viewUpgradePaths,viewDesignPatches,viewInstallScriptStd</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4338,9 +5266,12 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PatchSequence</td><td>1.0.0</td></row>
 		<row><td>SaveAsSchema</td><td/></row>
 		<row><td>SccEnabled</td><td>0</td></row>
-		<row><td>SccPath</td><td/></row>
+		<row><td>SccPath</td><td>SAK</td></row>
 		<row><td>SchemaVersion</td><td>773</td></row>
 		<row><td>Type</td><td>MSIE</td></row>
+		<row><td>VSSccAuxPath</td><td>SAK</td></row>
+		<row><td>VSSccLocalPath</td><td>SAK</td></row>
+		<row><td>VSSccProvider</td><td>SAK</td></row>
 	</table>
 
 	<table name="InstallUISequence">
@@ -4373,6 +5304,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SetupInterrupted</td><td/><td>-2</td><td>SetupInterrupted</td><td/></row>
 		<row><td>SetupProgress</td><td/><td>1240</td><td>SetupProgress</td><td/></row>
 		<row><td>SetupResume</td><td>Installed And (RESUME Or Preselected) And Not PATCH</td><td>1220</td><td>SetupResume</td><td/></row>
+		<row><td>StopServiceBeforeMaintenance</td><td>Installed</td><td>1206</td><td/><td/></row>
 		<row><td>ValidateProductID</td><td/><td>700</td><td>ValidateProductID</td><td/></row>
 		<row><td>setAllUsersProfile2K</td><td>VersionNT &gt;= 500</td><td>980</td><td/><td/></row>
 		<row><td>setUserProfileNT</td><td>VersionNT</td><td>960</td><td/><td/></row>
@@ -4387,6 +5319,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col key="yes" def="s255">Condition</col>
 		<col def="l255">Description</col>
 		<row><td>(Not Version9X) And (Not VersionNT=400) And (Not VersionNT=500) And (Not VersionNT=501)</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_OS##</td></row>
+		<row><td>DOTNETVERSION40FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL##</td></row>
 	</table>
 
 	<table name="ListBox">
@@ -4640,7 +5573,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>AgreeToLicense</td><td>No</td><td/></row>
 		<row><td>ApplicationUsers</td><td>AllUsers</td><td/></row>
 		<row><td>DWUSINTERVAL</td><td>30</td><td/></row>
-		<row><td>DWUSLINK</td><td>CEBBA79FCEDCE798DEACC798BEBC978FDE0C908FFE7C87BFCEBB3098DE7CD7D83E7C97FFCEAC</td><td/></row>
+		<row><td>DWUSLINK</td><td>CEBC87FF99CB909FB9ACB09F8EAB978F0E7B408F79CCE788CECC90A879EC30FF29BB97B8B9AC</td><td/></row>
 		<row><td>DefaultUIFont</td><td>ExpressDefault</td><td/></row>
 		<row><td>DialogCaption</td><td>InstallShield for Windows Installer</td><td/></row>
 		<row><td>DiskPrompt</td><td>[1]</td><td/></row>
@@ -4700,9 +5633,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
-		<row><td>ProductCode</td><td>{A573AF0A-86A1-4B05-91F5-174708B08C30}</td><td/></row>
+		<row><td>ProductCode</td><td>{10E19EDB-9EF2-42DB-89D4-FEEA1776BB1F}</td><td/></row>
 		<row><td>ProductName</td><td>Warewolf</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.0</td><td/></row>
+		<row><td>ProductVersion</td><td>0.2.7.1</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4714,10 +5647,10 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>RestartManagerOption</td><td>CloseRestart</td><td/></row>
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40FULL</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
-		<row><td>UpgradeCode</td><td>{47958E00-7799-4642-BB36-DC4A32E9907B}</td><td/></row>
+		<row><td>UpgradeCode</td><td>{8608F6FB-4B8A-4131-B341-E7BC658885CC}</td><td/></row>
 		<row><td>_IsMaintenance</td><td>Change</td><td/></row>
 		<row><td>_IsSetupTypeMin</td><td>Typical</td><td/></row>
 	</table>
@@ -4759,6 +5692,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s255">Key</col>
 		<col def="S255">Name</col>
 		<col def="I2">Type</col>
+		<row><td>DotNet40Full</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full</td><td>Install</td><td>2</td></row>
 	</table>
 
 	<table name="Registry">
@@ -4777,7 +5711,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="L255">FileName</col>
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
-		<row><td>NewShortcut3</td><td>Dev2.Studio.exe</td><td/><td>dev2</td><td>2</td></row>
+		<row><td>NewShortcut1</td><td>Dev2.Studio.exe</td><td/><td>dev2</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4863,8 +5797,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut3</td><td>dev2</td><td>##ID_STRING1##</td><td>Dev2.Studio.exe</td><td>[INSTALLDIR]Dev2.Studio.exe</td><td/><td/><td/><td>NewShortcut3_4EF9AD4E828F47B2839A995A143F0709.exe</td><td>1</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>NewShortcut4</td><td>DesktopFolder</td><td>##ID_STRING8##</td><td>Dev2.Studio.exe</td><td>[INSTALLDIR]Dev2.Studio.exe</td><td/><td/><td/><td>NewShortcut4_A6CBB5B7C2AE433DA9FB3B2AAE8F2CAB.exe</td><td>1</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut1</td><td>dev2</td><td>##ID_STRING9##</td><td>Dev2.Studio.exe</td><td>[INSTALLDIR]Studio\Dev2.Studio.exe</td><td/><td/><td/><td>NewShortcut1_F65664FB2B0C4F4CB89FC3DCA79DEF62.exe</td><td>1</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut2</td><td>DesktopFolder</td><td>##ID_STRING14##</td><td>Dev2.Studio.exe</td><td>[INSTALLDIR]Studio\Dev2.Studio.exe</td><td/><td/><td/><td>NewShortcut2_1EC305A518D54926AB45CCC71ED01584.exe</td><td>1</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
