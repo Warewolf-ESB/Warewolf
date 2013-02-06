@@ -36,6 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsUIStep { get; set; }
         public bool DatabindRecursive { get; set; }
         public string CurrentResult { get; set; }
+        public InOutArgument<string> ParentInstanceID { get; set; }
         public IRecordsetScopingObject ScopingObject { get { return null; } set { value = null; } }
         //public string OutputMapping { get; set; }             
 
@@ -53,7 +54,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : base(isAsync, displayName, debugDispatcher) 
         {
 
-                AmbientDataList = new InOutArgument<List<string>>();
+            AmbientDataList = new InOutArgument<List<string>>();
+            ParentInstanceID = new InOutArgument<string>();
 
             InstructionList = new VisualBasicReference<List<string>> {
                 ExpressionText = "InstructionList"

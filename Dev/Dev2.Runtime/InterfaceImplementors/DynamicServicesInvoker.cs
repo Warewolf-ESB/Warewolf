@@ -367,11 +367,7 @@ namespace Dev2.Runtime.InterfaceImplementors
                 return GlobalConstants.NullDataListID;
             }
 
-            string dataList = string.Empty;
-            if(dataList == string.Empty)
-            {
-                dataList = service.DataListSpecification;
-            }
+            string dataList = service.DataListSpecification;
 
 
             // PBI : 5376 Amendedment for DataList Server
@@ -633,9 +629,8 @@ namespace Dev2.Runtime.InterfaceImplementors
             //var dataObject = new DsfDataObject(xmlRequest.XmlString);
             ErrorResultTO errors;
             Guid instanceId = Guid.Empty;
-            // ReSharper disable TooWideLocalVariableScope
-            Guid parentInstanceId;
-            // ReSharper restore TooWideLocalVariableScope
+            Guid parentWorkflowInstanceId;
+            Guid parentInstanceId = Guid.Empty;
             string bookmark = string.Empty;
 
             // PBI : 5376 Refactored 
@@ -658,8 +653,15 @@ namespace Dev2.Runtime.InterfaceImplementors
                                         enSystemTag.ParentWorkflowInstanceId.ToString(), out errors);
             if(tmp != null)
             {
-                Guid.TryParse(tmp.FetchScalar().TheValue, out parentInstanceId);
+                Guid.TryParse(tmp.FetchScalar().TheValue, out parentWorkflowInstanceId);
             }
+
+            //tmp = SvrCompiler.Evaluate(null, dataObj.DataListID, DataList.Contract.enActionType.System,
+            //                            enSystemTag.ParentInstanceID.ToString(), out errors);
+            //if (tmp != null)
+            //{
+            //    Guid.TryParse(tmp.FetchScalar().TheValue, out parentInstanceId);
+            //}
 
             //bool isDebug = false;
 

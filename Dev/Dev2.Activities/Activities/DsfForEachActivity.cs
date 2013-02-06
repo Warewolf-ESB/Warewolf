@@ -19,7 +19,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
-        //string _previousParentID;
+        string _previousParentID;
         #region Variables
 
         private string _forEachElementName;
@@ -115,10 +115,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Execute
 
+        protected override void OnBeforeExecute(NativeActivityContext context)
+        {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            _previousParentID = dataObject.ParentInstanceID;
+        }
+
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+
+            dataObject.ParentInstanceID = InstanceID;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
@@ -147,6 +155,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     // schedule the func to execute ;)
                     // ReSharper disable RedundantTypeArgumentsOfMethod
+                    dataObject.ParentInstanceID = InstanceID;
                     context.ScheduleFunc<string, bool>(DataFunc, string.Empty, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
                 }
@@ -172,8 +181,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string err = DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
                 }
+
             }
         }
+
 
         /// <summary>
         /// Iterates the IO mapping.
@@ -518,8 +529,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     // Re-jigger the mapping ;)
                     IterateIOMapping((operationalData.IterationCount + 1), context);
+                    IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+                    dataObject.ParentInstanceID = InstanceID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
-                    context.ScheduleFunc<string, bool>(DataFunc, string.Empty, ActivityCompleted);
+                    context.ScheduleFunc<string, bool>(DataFunc, InstanceID, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
                 }
                 else
@@ -529,6 +542,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.IsDataListScoped = false;
                     // return it all to normal
                     RestoreHandlerFn(context);
+                    dataObject.ParentInstanceID = _previousParentID;
 
                 }
             }

@@ -46,10 +46,10 @@ namespace Dev2.DynamicServices
             //string modifiedData = dataTransferObject.XmlData;
 
             Dictionary<string, object> inputarguments = new Dictionary<string, object>();
-            Guid parentWorkflowInstanceId = Guid.Empty;
             WorkflowApplication wfApp = null;
 
             // Is this still needed????
+            Guid parentWorkflowInstanceId = Guid.Empty;
             if(Guid.TryParse(dataTransferObject.ParentWorkflowInstanceId, out parentWorkflowInstanceId))
             {
                 inputarguments.Add("ParentWorkflowInstanceId", parentWorkflowInstanceId);
@@ -323,7 +323,6 @@ namespace Dev2.DynamicServices
 
                         object parentServiceName;
                         outputs.TryGetValue("ParentServiceName", out parentServiceName);
-
                         parentServiceName = _result.ParentServiceName;
 
                         //object parentServiceName = outputs["ParentServiceName"];

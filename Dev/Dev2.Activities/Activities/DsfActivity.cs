@@ -18,6 +18,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Fields
         //private string uri = "http://localhost:786/dsf/";
         private string _iconPath = string.Empty;
+        string _previousParentID;
         #endregion
 
         #region Constructors
@@ -82,6 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The Name of Dynamic Service Framework Service that will be invoked
         /// </summary>
         public string ServiceName { get; set; }
+
         /// <summary>
         /// The Tags that are required to invoke the Dynamic Service Framework Service
         /// </summary>
@@ -136,11 +138,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         private bool _IsDebug = false;
-
-
-        protected override void OnBeforeExecute(NativeActivityContext context)
-        {
-        }
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -230,9 +227,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 // set the parent service
+                _previousParentID = dataObject.ParentInstanceID;
                 dataObject.ParentServiceName = executionServiceName;
-                dataObject.ParentInstanceID = executionServiceName;
-                var b = dataObject.ServiceName;
+                dataObject.ParentInstanceID = InstanceID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
                 string instruction = UnlimitedObject.GenerateServiceRequest(
@@ -289,6 +286,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         dataObject.ServiceName = ServiceName;
                         dataObject.ParentServiceName = ParentServiceName;
+                        dataObject.ParentInstanceID = ParentInstanceID.ToString();
                         dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
                         dataObject.WorkflowInstanceId = context.WorkflowInstanceId.ToString();
                         dataObject.WorkflowResumeable = true;
@@ -351,6 +349,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
                     }
                 }
+                dataObject.ParentInstanceID = _previousParentID;
             }
         }
         #endregion

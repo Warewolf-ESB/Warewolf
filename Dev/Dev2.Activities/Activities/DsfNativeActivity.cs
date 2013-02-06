@@ -36,6 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsWorkflow { get; set; }
         public string ParentServiceName { get; set; }
+        public string ParentServiceID { get; set; }
         public string ParentWorkflowInstanceId { get; set; }
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
@@ -47,7 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         readonly IDebugDispatcher _debugDispatcher;
         readonly bool _isExecuteAsync;
-        string _parentInstanceID;
+        string _previousParentInstanceID;
         IDebugState _debugState;
         bool _isDebug;
         bool _isOnDemandSimulation;
@@ -90,6 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // This will get overwritten when rehydrating
             UniqueID = Guid.NewGuid().ToString();
+            InstanceID = Guid.NewGuid().ToString();
         }
 
         #endregion
@@ -111,7 +113,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override sealed void Execute(NativeActivityContext context)
         {
             _isOnDemandSimulation = false;
-            InstanceID = Guid.NewGuid().ToString();
 
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = context.GetExtension<IDataListCompiler>();
@@ -131,14 +132,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            OnBeforeExecute(context);
-
             if (dataObject != null)
             {
-                _parentInstanceID = dataObject.ParentInstanceID;
+                _previousParentInstanceID = dataObject.ParentInstanceID;
                 _isDebug = dataObject.IsDebug;
                 _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
             }
+
+            OnBeforeExecute(context);
 
             if (!IsDebugByPassed) //Juries TODO && _isDebug
             {
@@ -266,6 +267,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
                     compiler.ForceDeleteDataListByID(dataListExecutionID);
                 }
+
+                if (dataObject != null && !dataObject.IsDataListScoped)
+                {
+                    dataObject.ParentInstanceID = _previousParentInstanceID;
+                }
+
             }
         }
 
@@ -319,7 +326,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState = new DebugState
                 {
                     ID = InstanceID,
-                    ParentName = dataObject.ServiceName,
+                    ParentID = dataObject.ParentInstanceID,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = DateTime.Now,

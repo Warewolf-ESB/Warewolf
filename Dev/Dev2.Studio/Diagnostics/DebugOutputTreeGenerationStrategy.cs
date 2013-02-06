@@ -154,7 +154,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel FindParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentName) || debugState.DisplayName == debugState.ParentName)
+            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
             {
                 return null;
             }
@@ -169,7 +169,7 @@ namespace Dev2.Studio.Diagnostics
                         return false;
                     }
 
-                    return debugStateTreeViewItemViewModel.Content.DisplayName == debugState.ParentName;
+                    return debugStateTreeViewItemViewModel.Content.ID == debugState.ParentID;
                 });
 
                 if(match != null)
@@ -189,12 +189,12 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel AddMissingParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentName) || debugState.ID == debugState.ParentName)
+            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
             {
                 return null;
             }
 
-            IDebugState parent = existingContent.FirstOrDefault(o => o is IDebugState && o != debugState && ((IDebugState)o).ID == debugState.ParentName) as IDebugState;
+            IDebugState parent = existingContent.FirstOrDefault(o => o is IDebugState && o != debugState && ((IDebugState)o).ID == debugState.ParentID) as IDebugState;
             if (parent == null)
             {
                 return null;
