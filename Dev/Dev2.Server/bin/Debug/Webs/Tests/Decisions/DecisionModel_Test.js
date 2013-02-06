@@ -1,11 +1,13 @@
-﻿/* 
+﻿/// <reference path="../../wwwroot/Scripts/Decisions/DecisionModel.js" />
+/// <reference path="../../wwwroot/Scripts/_references.js" />
+
+
+/* 
     Travis.Frisinger - 06.02.2013
     Test Decision Model Functionality
     REF : http://www.testdrivenjs.com/getting-started/introduction-to-tests-in-qunit/
     REF : http://tjvantoll.com/2012/08/22/logging-test-failures-in-a-phantomjs-qunit-runner/
 */
-
-//require("../wwwroot/Views/Decisions/DecisionModel.js");
 
 
 module("Core DecisionModel Test");
