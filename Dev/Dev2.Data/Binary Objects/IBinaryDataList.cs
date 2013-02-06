@@ -181,6 +181,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </returns>
         bool HasErrors();
 
+        /// <summary>
+        /// Fetches the errors.
+        /// </summary>
+        /// <returns></returns>
+        string FetchErrors();
+
         #endregion
     }
 }

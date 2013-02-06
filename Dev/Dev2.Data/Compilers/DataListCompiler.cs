@@ -520,6 +520,12 @@ namespace Dev2.DataList.Contract
             return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).HasErrors());
         }
 
+        public string FetchErrors(Guid curDLID)
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).FetchErrors());
+        }
+
         public bool SetParentID(Guid curDLID, Guid newParent)
         {
             bool result = true;

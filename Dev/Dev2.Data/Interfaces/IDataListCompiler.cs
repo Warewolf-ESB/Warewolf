@@ -426,6 +426,13 @@ namespace Dev2.DataList.Contract
         bool HasErrors(Guid curDLID);
 
         /// <summary>
+        /// Fetches the errors.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <returns></returns>
+        string FetchErrors(Guid curDLID);
+
+        /// <summary>
         /// Sets the parent ID.
         /// </summary>
         /// <param name="curDLID">The cur DLID.</param>

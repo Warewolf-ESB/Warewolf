@@ -406,6 +406,26 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
+
+        /// <summary>
+        /// Fetches the errors.
+        /// </summary>
+        /// <returns></returns>
+        public string FetchErrors()
+        {
+            string error = string.Empty;
+            IBinaryDataListEntry entry;
+            string result = string.Empty;
+
+            TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
+            if (entry != null)
+            {
+                result = entry.FetchScalar().TheValue;
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region Private Methods
