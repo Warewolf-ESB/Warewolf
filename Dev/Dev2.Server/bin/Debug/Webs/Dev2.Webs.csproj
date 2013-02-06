@@ -137,15 +137,15 @@
     <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
     <Content Include="wwwroot\Scripts\Sources\Service.js" />
-    <Content Include="wwwroot\Views\Decisions\DecisionModel.js" />
+    <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Sources\Service.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
-    <Content Include="wwwroot\Views\Switch\DragModel.js" />
+    <Content Include="wwwroot\Scripts\Switch\DragModel.js" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
-    <Content Include="wwwroot\Views\Switch\DropModel.js" />
+    <Content Include="wwwroot\Scripts\Switch\DropModel.js" />
     <None Include="wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-1.7.1.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-1.7.1.min.js" />
@@ -167,9 +167,7 @@
     <Content Include="wwwroot\Views\Dialogs\SaveDialog.htm" />
     <Content Include="wwwroot\Views\Sources\Server.htm" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Qunit_Test\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
