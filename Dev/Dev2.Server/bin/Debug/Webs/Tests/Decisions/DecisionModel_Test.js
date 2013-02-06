@@ -8,11 +8,7 @@
 //require("../wwwroot/Views/Decisions/DecisionModel.js");
 
 
-module("Core DecisionModel Test", {
-   setup: function() {
-       
-   } 
-});
+module("Core DecisionModel Test");
 
 
 test("Model Can Init Test", function() {
