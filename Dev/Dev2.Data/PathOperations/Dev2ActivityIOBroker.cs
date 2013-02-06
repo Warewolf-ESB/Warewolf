@@ -163,8 +163,10 @@ namespace Dev2.PathOperations
                 IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos]);
                 try
                 {
-                    dst.ListDirectory(tmpPath);
-                    deepestIndex = pos;
+                    if (dst.ListDirectory(tmpPath) != null)
+                    {
+                        deepestIndex = pos;
+                    }
                 }
                 catch (Exception)
                 {

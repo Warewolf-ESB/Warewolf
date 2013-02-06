@@ -181,6 +181,7 @@ namespace Dev2
                                 if(keyValue.Length > 1)
                                 {
                                     formFieldValue = HttpUtility.UrlDecode(keyValue[1]);
+                                    // 6th Feb 2013: Check with Travis if you want to alter this try / catch (Michael)
                                     try
                                     {
                                         formFieldValue = XElement.Parse(formFieldValue).ToString();

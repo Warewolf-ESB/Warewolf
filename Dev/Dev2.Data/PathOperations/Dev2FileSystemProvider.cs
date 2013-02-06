@@ -261,13 +261,23 @@ namespace Dev2.PathOperations {
                 path += "\\";
             }
 
-            if (!RequiresAuth(src)) {
-                try {
+            if (!RequiresAuth(src))
+            {
+                try
+                {
                     
                     IEnumerable<string> dirs = null;
 
-                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(path)) {
-                        dirs = Directory.EnumerateFileSystemEntries(path);
+                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(path)) 
+                    {
+                        if (Directory.Exists(path))
+                        {
+                            dirs = Directory.EnumerateFileSystemEntries(path);
+                        }
+                        else
+                        {
+                            return null;// throw new Exception("Directory not found [ " + src.Path + " ] ");
+                        }
                     }
                     else {
                         // we have a wildchar path ;)
