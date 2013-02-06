@@ -1,7 +1,18 @@
 ﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
 /// <reference path="../../wwwroot/Scripts/Sources/ServiceViewModel.js" />
 
-module("SerivceViewModelTests");
+module("SerivceViewModelTests", {
+    setup: function() {
+        $.mockjaxSettings = {
+            contentType: "text/json",
+            dataType: "json"
+        };
+    },
+    teardown: function () {
+        $.mockjaxClear();
+    }
+});
+
 
 test("Constructor_With_InvalidResourcedID_Expected_IsEditingIsFalse", function () {
 
@@ -30,53 +41,71 @@ test("Constructor_With_ValidResourcedID_Expected_TitleContainsEdit", function ()
 test("Constructor_With_InvalidResourcedID_Expected_DataResourceIDIsEmptyGuid", function () {
 
     var model = new SerivceViewModel("xxxx");
-    equal($.Guid.Empty(), model.data.resourceID());
+    equal(model.data.resourceID(), $.Guid.Empty());
 });
 
 test("Constructor_With_ValidResourcedID_Expected_DataResourceIDIsTheGivenResourceID", function () {
 
     var expectedID = "{97A9EFED-4127-4421-BCE8-1AC90CAFB7D4}";
     var model = new SerivceViewModel(expectedID);
-    equal(expectedID, model.data.resourceID());
+    equal(model.data.resourceID(), expectedID);
 });
 
 test("Constructor_With_ResourcedType_Expected_DataResourceTypeIsTheGivenResourceType", function () {
 
     var expectedType = "SqlDatabase";
     var model = new SerivceViewModel(null, expectedType);
-    equal(expectedType, model.data.resourceType());
+    equal(model.data.resourceType(), expectedType);
 });
 
 test("Constructor_With_ResourcedType_Expected_DataResourceTypeIsTheGivenResourceType", function () {
 
     var expectedType = "SqlDatabase";
     var model = new SerivceViewModel(null, expectedType);
-    equal(expectedType, model.data.resourceType());
+    equal(model.data.resourceType(), expectedType);
 });
 
-asyncTest("Load_Expected_AjaxPostToServicesGet", function () {
+asyncTest("Load_Expected_AjaxPostToServicesGetMethod", function () {
     expect(1);
 
     $.mockjax({
-        url: "Service/Services/Get" + window.location.search,
+        url: "Service/Services/Get",
         type: "POST",
-        responseTime: 750,
         response: function () {
-            this.responseText = {
-                ResourceID: "{8A49D826-0B3E-4DB5-8D01-490A75A1B698}",
-                ResourceType: "SqlDatabase",
-                ResourceName: "My Database",
-                ResourcePath: "My Category"
-            };
-            ok(true, "Invoked Service/Services/Get");
+            ok(true);
             start();
         }
     });
     
-    var expectedID = "{97A9EFED-4127-4421-BCE8-1AC90CAFB7D4}";
-    var model = new SerivceViewModel(expectedID);
+    var model = new SerivceViewModel();
     model.load();
 
 });
 
+asyncTest("Load_Expected_UpdatesData", 1, function () {
+    var expectedRepsonse = {
+        ResourceID: "{8A49D826-0B3E-4DB5-8D01-490A75A1B698}",
+        ResourceType: "SqlDatabase",
+        ResourceName: "My Database",
+        ResourcePath: "My Category"
+    };
+    
+    $.mockjax({
+        url: "Service/Services/Get",// + window.location.search,
+        type: "POST",
+        response: function () {
+            this.responseText = expectedRepsonse;
+        }
+    });
+
+    var model = new SerivceViewModel();
+    model.load(function() {
+        equal(model.data.resourceID(), expectedRepsonse.ResourceID, "model.data.resourceID set");
+        equal(model.data.resourceType(), expectedRepsonse.ResourceType, "model.data.resourceType set");
+        equal(model.data.resourceName(), expectedRepsonse.ResourceName, "model.data.resourceName set");
+        equal(model.data.resourcePath(), expectedRepsonse.ResourcePath, "model.data.resourcePath set");
+        start();
+    });
+
+});
 

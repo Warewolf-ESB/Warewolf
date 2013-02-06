@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Decisions\DecisionModel_Test.js" />
+    <Content Include="Tests\SourceTests.htm" />
     <Content Include="Tests\Switch\DragModel_Test.js" />
     <Content Include="Tests\Switch\DropModel_Test.js" />
     <Content Include="Tests\Sources\SerivceViewModelTests.js" />

@@ -20,7 +20,7 @@
     */
     };
 
-    self.load = function() {
+    self.load = function(callback) {
         $.post("Service/Services/Get" + window.location.search, self.data.resourceID(), function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
@@ -29,6 +29,9 @@
 
             if (self.isEditing) {
                 self.title("Edit Server - " + result.ResourceName);
+            }
+            if (callback) {
+                callback();
             }
         });
     };
