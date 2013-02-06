@@ -13,6 +13,8 @@ namespace Dev2.Data.Binary_Objects
             get { return _itrCnt;  }
         }
 
+        public bool IsEmpty { get { return _itrCnt > 0; } }
+
         internal LoopedIndexIterator(int val, int itrCnt)
         {
             _loopedIdx = val;

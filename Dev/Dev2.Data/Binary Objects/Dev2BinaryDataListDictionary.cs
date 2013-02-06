@@ -172,6 +172,11 @@ namespace Dev2.Data.Binary_Objects
             return true;
         }
 
+        public bool IsEmpty()
+        {
+            return (_masterData.Count == 0);
+        }
+
         #region Private Methods
         private int FetchMasterIndexKey(int idx)
         {

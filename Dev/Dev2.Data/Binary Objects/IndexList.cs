@@ -59,7 +59,8 @@ namespace Dev2.Data.Binary_Objects
 
             public int Count()
             {
-                return MaxValue - _gaps.Count;
+                // Travis.Frisinger - Count bug change
+                return (MaxValue - _gaps.Count);
             }
 
             public IIndexIterator FetchIterator()

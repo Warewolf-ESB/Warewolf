@@ -90,7 +90,6 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void CountOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
         {
-            var test = ActivityStrings.CountRecordsDataListShape;
 
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 

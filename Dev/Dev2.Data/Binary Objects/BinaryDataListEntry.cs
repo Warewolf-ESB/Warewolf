@@ -311,15 +311,23 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     {
                         int next = ii.FetchNextIndex();
                         // clone the data
-                        IList<IBinaryDataListItem> items = _internalObj[next];
-                        IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
-                        foreach (IBinaryDataListItem itm in items)
-                        {
-                            clone.Add(itm.Clone());
-                        }
 
-                        // now push back clone
-                        result._internalObj[next] = clone;
+                        // Travis.Frisinger - Only do this if there is data present, else leave it as it is
+
+                        // TODO : Internal Object will not have data, we just need to expose this fact!
+
+                        if(!_internalObj.IsEmtpy())
+                        {
+                            IList<IBinaryDataListItem> items = _internalObj[next];
+                            IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
+                            foreach(IBinaryDataListItem itm in items)
+                            {
+                                clone.Add(itm.Clone());
+                            }
+
+                            // now push back clone
+                            result._internalObj[next] = clone;
+                        }
                     }
                 }
                 else

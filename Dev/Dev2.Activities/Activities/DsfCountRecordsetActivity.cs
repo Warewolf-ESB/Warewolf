@@ -89,10 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
-            if(errors.HasErrors())
-            {
-                allErrors.MergeErrors(errors);
-            }
+            allErrors.MergeErrors(errors);
 
             // Process if no errors
             try
@@ -108,8 +105,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(recset != null && recset.Columns != null && CountNumber != string.Empty)
                     {
                         string error;
-                        if(recset.FetchRecordAt(1, out error).Count > 0) compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(), out errors);//2013.01.25: Ashley Lewis Bug 7853 - Added condition to avoid empty recsets counting 1 instead of 0
-                        else compiler.Upsert(executionId, CountNumber, "0", out errors);
+                        // Travis.Frisinger - Re-did work for bug 7853 
+                        if(recset.IsEmpty())
+                        {
+                            compiler.Upsert(executionId, CountNumber, "0", out errors);
+                        }
+                        else if(recset.FetchRecordAt(1, out error).Count > 0)
+                        {
+                            compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(), out errors);
+                        }
+
                         allErrors.MergeErrors(errors);
                     }
                     else if(recset == null || recset.Columns == null)

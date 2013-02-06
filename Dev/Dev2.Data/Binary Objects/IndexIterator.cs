@@ -15,6 +15,8 @@ namespace Dev2.Data.Binary_Objects
             get { return (_maxValue - _gaps.Count); }
         }
 
+        public bool IsEmpty { get { return (_curValue - Count == 0); } }
+
 
         public IndexIterator(HashSet<int> gaps, int maxValue)
         {

@@ -149,6 +149,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             return result;
         }
 
+        public bool IsEmtpy()
+        {
+            return _items.IsEmpty();
+        }
+
         #endregion
 
 
