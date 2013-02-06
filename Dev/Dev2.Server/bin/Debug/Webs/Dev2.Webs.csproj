@@ -133,6 +133,7 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\fx\jquery.mockjax.js" />
     <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.js" />
     <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
