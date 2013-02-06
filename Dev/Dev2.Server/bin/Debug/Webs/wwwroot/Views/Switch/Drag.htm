@@ -5,108 +5,46 @@
         </div>
         <div id="body">
             <form id="mainForm" 
-                <div class="mainFormError" style="display: none; text-align: right;">
-                    <img src="images/warning.gif" alt="Warning!" width="24" height="24" class="icon" />
-                    <span id="Dev2Msg">You missed some fields.The have been highlighted below.</span>
-                </div>
-                <div class="switch-form">
-                    <div>
-						<div style="width:100%;">							
-							<div>
-								<label style="float:left;"> Switch when the case is : </label>
-								<input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable" class="shortField required" placeholder="i.e. Processed" title="For the case of"/>	
-							</div>
-						</div>
+            <div class="mainFormError" style="display: none; text-align: right;">
+                <img src="images/warning.gif" alt="Warning!" width="24" height="24" class="icon" />
+                <span id="Dev2Msg">You missed some fields.The have been highlighted below.</span>
+            </div>
+            <div class="switch-form">
+                <div>
+                    <div style="width:100%;">							
+                        <div>
+                            <label style="float:left;"> Switch when the case is : </label>
+                            <input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable" class="shortField required" placeholder="i.e. Processed" title="For the case of"/>	
+                        </div>
+                    </div>
 
-						<div class="button-bar" style="margin: 20px 18px 10px 0;">
-							<span>
-								<button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
-								<button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
-							</span>
-						</div>
+                    <div class="button-bar" style="margin: 20px 18px 10px 0;">
+                        <span>
+                            <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+                            <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
+                        </span>
+                    </div>
 						
 						
-					</div>
-				</div>
-            </form>
+                </div>
+            </div>
+        </form>
         </div>
     </div>
 </div>
+
+<!-- Import Model  -->
+<script type="text/javascript" src="/wwwroot/Views/Switch/DragModel.js"></script>
+
 <script type="text/javascript">
 
-    function AppViewModel() {
-        var self = this;
-        var $mainForm = $("#mainForm");
-
-        // set title
-        document.title = "Switch Case";
-
-        self.data = {
-
-            SwitchVariable: ko.observable("")
-
-        };
-
-        self.save = function () {
-            if (!$mainForm.validate().form()) {
-                return;
-            }
-
-            var dlID = window.location.search;
-
-            // Bug 8603 - add brackets if they do not exist
-            if (!self.data.SwitchVariable().stringStartsWith("[[")) {
-                var tmp = self.data.SwitchVariable();
-                self.data.SwitchVariable("[[" + tmp + "]]");
-            }
-
-            var jsonData = ko.toJSON(self.data);
-
-            //alert(jsonData);
-
-            $.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
-
-                $("#Dev2Msg").html(result.message);
-
-                Dev2Awesomium.Close();
-                return true;
-
-            });
-        };
-
-        self.cancel = function () {
-            Dev2Awesomium.Cancel();
-            return true;
-        };
-
-        self.Load = function () {
-            var dlID = window.location.search; //.replace("postdlid", "dlid");
-
-            // FetchSwitchCase
-            var request = $.ajax({
-                url: "Service/WebModel/FetchSwitchExpression" + dlID,
-                type: "post"
-            });
-
-            request.done(function (response, textStatus, json) {
-                if (response.SwitchVariable != undefined) {
-                    self.data.SwitchVariable(response.SwitchVariable);
-                }
-            });
-
-            request.fail(function (response, textStatus, json) {
-                alert("An error occured : " + JSON.stringify(response));
-            });
-
-
-        }
-
-        self.Load();
-
-    }
-
+    // Build model
     var vm = new AppViewModel();
 
+    // Load the Model
+    vm.Load();
+    
+    // Apply the model
     ko.applyBindings(vm);
 
     $("input[type=submit], a, button").button();

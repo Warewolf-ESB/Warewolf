@@ -134,7 +134,9 @@
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
+    <Content Include="wwwroot\Views\Switch\DragModel.js" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
+    <Content Include="wwwroot\Views\Switch\DropModel.js" />
     <None Include="wwwroot\Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="wwwroot\Scripts\jquery-1.7.1.js" />
     <Content Include="wwwroot\Scripts\jquery-1.7.1.min.js" />
