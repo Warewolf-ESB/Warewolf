@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
-/// <reference path="../../wwwroot/Scripts/Sources/Service.js" />
+/// <reference path="../../wwwroot/Scripts/Sources/ServiceViewModel.js" />
 
 module("Source Tests");
 
