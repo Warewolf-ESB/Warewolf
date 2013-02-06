@@ -138,6 +138,8 @@
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
     <Content Include="wwwroot\Scripts\Sources\Service.js" />
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\ServiceViewModel.js" />
+    <Content Include="wwwroot\Views\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Sources\Service.htm" />
