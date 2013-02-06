@@ -11,9 +11,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     {
         public DsfCalculateActivityTest()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+
         }
 
         private string _webServerURI = ServerSettings.WebserverURI;
