@@ -1127,12 +1127,11 @@ namespace Dev2.DataList.Contract
             }
             else
             {
-                try
+                int convertIntTest = 0;
+                if (Int32.TryParse(idx, out convertIntTest))
                 {
-                    Convert.ToInt32(idx);
                     result = enRecordsetIndexType.Numeric;
                 }
-                catch (Exception) { }
             }
 
             return result;
