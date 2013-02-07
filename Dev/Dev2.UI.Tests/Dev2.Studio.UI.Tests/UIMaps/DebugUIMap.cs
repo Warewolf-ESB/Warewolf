@@ -52,6 +52,11 @@
             }
         }
 
+        public void ExecuteDebug()
+        {
+            SendKeys.SendWait("{F5}");
+        }
+
         public void ClickXMLTab()
         {
             WpfWindow uIDebugWindow = this.UIDebugWindow;

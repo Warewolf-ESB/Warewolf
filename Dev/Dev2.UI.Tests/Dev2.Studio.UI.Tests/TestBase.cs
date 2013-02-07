@@ -38,6 +38,7 @@ using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 
 
 namespace Dev2.CodedUI.Tests
@@ -94,7 +95,7 @@ namespace Dev2.CodedUI.Tests
             theWindow.WindowTitles.Add(GetStudioWindowName());
             theWindow.SetFocus();
 
-            bool toCheck = true;   // Disable this if you don't want the pre-test validation to occur.
+            bool toCheck = false;   // Disable this if you don't want the pre-test validation to occur.
             if (GetStudioWindowName().Contains("IntegrationTester"))
             {
                 toCheck = true;
@@ -3019,6 +3020,25 @@ namespace Dev2.CodedUI.Tests
         private WorkflowDesignerUIMap workflowDesignerUIMap;
 
         #endregion WorkflowDesigner UI Map
+
+        #region Output UI Map
+
+        public OutputUIMap OutputUIMap
+        {
+            get
+            {
+                if (_outputUIMap == null)
+                {
+                    _outputUIMap = new OutputUIMap();
+                }
+
+                return _outputUIMap;
+            }
+        }
+
+        private OutputUIMap _outputUIMap;
+
+        #endregion Output UI Map
 
         #endregion UI Maps
     }

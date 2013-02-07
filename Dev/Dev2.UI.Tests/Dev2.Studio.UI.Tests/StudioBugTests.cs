@@ -861,6 +861,27 @@ namespace Dev2.CodedUI.Tests
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8604");
         }
 
+        // Bug 8747
+        [TestMethod]
+        public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
+        {
+            // Open the broken workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Even though it's labelled 8372, it's related to 8747
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");
+            
+            // Run debug
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
+            System.Threading.Thread.Sleep(1500);
+            myTestBase.DebugUIMap.ExecuteDebug();
+
+            // Open the Output
+            DocManagerUIMap.ClickOpenTabPage("Output");
+
+            // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
+            Assert.IsTrue(myTestBase.OutputUIMap.DoesBug8747Pass());
+        }
         private int GetInstanceUnderParent(UITestControl control)
         {
             UITestControl parent = control.GetParent();

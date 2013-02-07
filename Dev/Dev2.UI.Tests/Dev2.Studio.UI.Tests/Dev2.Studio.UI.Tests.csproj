@@ -106,6 +106,12 @@
     <Compile Include="UIMaps\NewServerUIMap.Designer.cs">
       <DependentUpon>NewServerUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="UIMaps\OutputUIMap.cs">
+      <DependentUpon>OutputUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\OutputUIMap.Designer.cs">
+      <DependentUpon>OutputUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\PluginServiceUIMap.cs" />
     <Compile Include="UIMaps\PluginServiceUIMap.Designer.cs" />
     <Compile Include="UIMaps\RibbonUIMap.cs" />
@@ -141,6 +147,7 @@
     <None Include="UIMaps\ExplorerUIMap.uitest" />
     <None Include="UIMaps\ExternalUIMap.uitest" />
     <None Include="UIMaps\NewServerUIMap.uitest" />
+    <None Include="UIMaps\OutputUIMap.uitest" />
     <None Include="UIMaps\PluginServiceUIMap.uitest" />
     <None Include="UIMaps\RibbonUIMap.uitest" />
     <None Include="UIMaps\ServiceDetailsUIMap.uitest" />

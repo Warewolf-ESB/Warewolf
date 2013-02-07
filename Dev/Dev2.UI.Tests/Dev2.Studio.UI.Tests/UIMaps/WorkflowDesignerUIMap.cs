@@ -15,6 +15,7 @@
     using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System.Linq;
+    using System.Windows.Forms;
     
     public partial class WorkflowDesignerUIMap
     {
@@ -274,7 +275,26 @@
             return theControl.FriendlyName;
         }
 
+        //public void SetStartNode(
+
         #region Assign Control
+
+        /// <summary>
+        /// Enter data into an existing Assign control on the Workflow Designer
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <param name="assignControlTitle">The title of the Assign box on the workflow</param>
+        /// <param name="variable">The value to input into the left textbox</param>
+        /// <param name="value">The value to input into the right textbox</param>
+        public void AssignControl_EnterData(UITestControl theTab, string assignControlTitle, string variable, string value)
+        {
+            AssignControl_ClickFirstTextbox(theTab, assignControlTitle);
+            SendKeys.SendWait(variable);
+            System.Threading.Thread.Sleep(500);
+            SendKeys.SendWait("{TAB}");
+            System.Threading.Thread.Sleep(500);
+            SendKeys.SendWait(value);
+        }
 
         public void AssignControl_ClickFirstTextbox(UITestControl theTab, string controlAutomationID)
         {

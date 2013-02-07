@@ -70,6 +70,8 @@
 
         public void ClickRibbonMenuItem(string menuName, string itemName)
         {
+            // Wait awhile due to a rare bug
+            System.Threading.Thread.Sleep(1500);
             ClickRibbonMenu(menuName);
             UITestControl theControl = getControl(menuName, itemName);
             string autoID = theControl.GetProperty("AutomationID").ToString(); // Buttons have no automation ID's...
