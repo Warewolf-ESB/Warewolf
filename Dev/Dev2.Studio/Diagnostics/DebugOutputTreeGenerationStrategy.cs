@@ -104,6 +104,19 @@ namespace Dev2.Studio.Diagnostics
             return null;
         }
 
+        void SetError(object content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
+        {
+            if((content is IDebugState) && !addedAsParent)
+            {
+                if (((IDebugState)content).HasError)
+                {
+                    treeviewItem.HasError = true;
+                }
+            }
+            else treeviewItem.VerifyErrorState();
+
+        }
+
         /// <summary>
         /// Adds the or insert item.
         /// </summary>
@@ -145,6 +158,7 @@ namespace Dev2.Studio.Diagnostics
                     destinationCollection.Add(treeviewItem);
                 }
             }
+            SetError(content, treeviewItem, addedAsParent);
         }
 
         /// <summary>

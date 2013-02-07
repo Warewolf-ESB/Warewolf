@@ -33,5 +33,14 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 
             return null;
         }
+
+        public static DependencyObject GetParentByType(this DependencyObject source, Type type)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(source);
+
+            if(parent == null) return null;
+
+            return parent.GetType() == type ? parent : GetParentByType(source, type);
+        }
     }
 }

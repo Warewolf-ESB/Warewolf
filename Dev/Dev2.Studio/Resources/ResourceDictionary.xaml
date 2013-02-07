@@ -9,8 +9,14 @@
                     xmlns:Dev2Enums="clr-namespace:Dev2.Enums;assembly=Dev2.Common"
                     xmlns:devFeedbackActions="clr-namespace:Dev2.Studio.Feedback.Actions"
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
-                    xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data">
+                    xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
     <!--Fix For the annoying binding issue that would cause studio to hang in debug, it has to be here to apply to menu items globally-->
     <Style TargetType="MenuItem">
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -49,9 +55,10 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters:Dev2ErrorTypeToImageConverter x:Key="Dev2ErrorTypeToImageConverter"/>
+    <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="devFeedbackActions:RecorderFeedbackAction" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="devFeedbackActions:RecorderFeedbackAction" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
-
+    
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
             <converters:EnumCollection>
@@ -251,7 +258,11 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TreeViewItem">
                     <StackPanel x:Name="stackPanel">
-                    	<VisualStateManager.VisualStateGroups>
+                        <i:Interaction.Behaviors>
+                            <local:PreventHorizontalScrollWhenFocusedTreeViewItemBehavior/>
+                        </i:Interaction.Behaviors>
+
+                        <VisualStateManager.VisualStateGroups>
                     		<VisualStateGroup x:Name="CommonStates"/>
                     		<VisualStateGroup x:Name="FocusStates"/>
                     		<VisualStateGroup x:Name="SelectionStates"/>

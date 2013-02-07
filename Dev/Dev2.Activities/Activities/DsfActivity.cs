@@ -161,6 +161,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
             try
             {
+                compiler.ClearErrors(dataObject.DataListID);
 
                 if (dataObject.IsDataListScoped)
                 {
@@ -350,6 +351,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
                 dataObject.ParentInstanceID = _previousParentID;
+                compiler.ClearErrors(dataObject.DataListID);
             }
         }
         #endregion
@@ -376,7 +378,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-
+         
         #region Overridden ActivityAbstact Methods
 
         public override IBinaryDataList GetInputs()
@@ -455,7 +457,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 

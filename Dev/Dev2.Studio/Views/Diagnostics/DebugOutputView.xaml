@@ -191,12 +191,36 @@
                 <Style.Triggers>
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding DataContext.HighlighError, ElementName=DebugOutput}" Value="True" />
                             <Condition Binding="{Binding Content.HasError, Converter={StaticResource BoolToVisibilityConverterPositive}}" Value="Visible" />
                             <Condition Binding="{Binding AddedAsParent}" Value="False" />
                         </MultiDataTrigger.Conditions>
                         <MultiDataTrigger.Setters>
                             <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+            
+            <Style x:Key="ErrorBorderStyle" TargetType="Border">
+                <Style.Setters>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Width" Value="4" />
+                    <Setter Property="Margin" Value="0,3,10,0" />
+                    <Setter Property="CornerRadius" Value="2" />
+                </Style.Setters>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding HasError, Converter={StaticResource NullableBoolToBoolConverter}}"  Value="true" />
+                            <Condition Binding="{Binding Content.HasError}"  Value="false" />
+                            <Condition Binding="{Binding DataContext.HighlightError, ElementName=DebugOutput}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Background" Value="{StaticResource ErrorBrush}" />
+                            <Setter Property="Visibility" Value="Visible" />
                         </MultiDataTrigger.Setters>
                     </MultiDataTrigger>
                 </Style.Triggers>
@@ -221,7 +245,8 @@
                     <CheckBox IsChecked="{Binding ShowDuratrion}" Content="Duration" AutomationProperties.AutomationId="UI_DebugOutputShowDuration_AutoID" />
                     <CheckBox IsChecked="{Binding ShowInputs}" Content="Inputs" AutomationProperties.AutomationId="UI_DebugOutputShowInputsOption_AutoID" />
                     <CheckBox IsChecked="{Binding ShowOutputs}" Content="Outputs" AutomationProperties.AutomationId="UI_DebugOutputShowOutputsOption_AutoID" />
-                    <CheckBox IsChecked="{Binding HighlighSimulation}" Content="Hilight Simulation" AutomationProperties.AutomationId="UI_DebugOutputHilightSimulationOption_AutoID" />
+                    <CheckBox IsChecked="{Binding HighlightSimulation}" Content="Highlight Simulation" AutomationProperties.AutomationId="UI_DebugOutputHilightSimulationOption_AutoID" />
+                    <CheckBox IsChecked="{Binding HighlightError}" Content="Highlight Errors" AutomationProperties.AutomationId="UI_DebugOutputHilightSimulationOption_AutoID" />
                     <StackPanel Orientation="Horizontal">
                         <TextBox Width="20" Text="{Binding DepthLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Text="Nesting Levels" Margin="5,0,0,0" VerticalAlignment="Center" AutomationProperties.AutomationId="UI_DebugOutputNestingLevelTextBlock_AutoID" />
@@ -312,6 +337,7 @@
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -326,75 +352,77 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0" Grid.Column="0" >
+                        
+                        <Border Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}"/>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="1" >
                             <Run Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" />
                             <Run Text=": " />
                         </TextBlock>
-                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
                             <Button Content="{Binding Content.DisplayName}" Command="{Binding DataContext.OpenItemCommand, ElementName=DebugOutput}" 
                                 CommandParameter="{Binding Content}" Style="{StaticResource LinkButton}" HorizontalAlignment="Left" 
                                 IsEnabled="{Binding Content.ActivityType, Converter={StaticResource EnumToBoolConverterActivityTypeWorkflow}}" />
                             <TextBlock Text="(In Simulation Mode)" Style="{StaticResource SimulationModeVisibility}" Margin="5,0,0,0" />
                         </StackPanel>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource VersionVisibility}">
+                        <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource VersionVisibility}">
                             <Run Text="Version" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Content.Version}" Style="{StaticResource VersionVisibility}" AutomationProperties.AutomationId="UI_DebugOutputVersionTextBlock_AutoId" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Content.Version}" Style="{StaticResource VersionVisibility}" AutomationProperties.AutomationId="UI_DebugOutputVersionTextBlock_AutoId" />
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ServerVisibility}">
+                        <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ServerVisibility}">
                             <Run Text="Server" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Content.Server}" Style="{StaticResource ServerVisibility}" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Content.Server}" Style="{StaticResource ServerVisibility}" />
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource TypeVisibility}">
+                        <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource TypeVisibility}">
                             <Run Text="Type" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Content.Name}" Style="{StaticResource TypeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoId"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Content.Name}" Style="{StaticResource TypeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoId"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource StartTimeVisibility}">
+                        <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource StartTimeVisibility}">
                             <Run Text="Time" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId"/>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource EndTimeVisibility}">
+                        <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource EndTimeVisibility}">
                             <Run Text="Time" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource DurationVisibility}">
+                        <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource DurationVisibility}">
                             <Run Text="Duration" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}" Style="{StaticResource DurationVisibility}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}" Style="{StaticResource DurationVisibility}"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource InputsVisibility}">
+                        <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource InputsVisibility}">
                             <Run Text="Inputs" />
                             <Run Text=": " />
                         </TextBlock>
-                        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource InputsVisibility}">
+                        <StackPanel Grid.Row="6" Grid.Column="2" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource InputsVisibility}">
                             <ItemsControl ItemsSource="{Binding Inputs}" ItemTemplate="{StaticResource DebugLinesTemplate}" AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
                         </StackPanel>
 
-                        <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource OutputsVisibility}">
+                        <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource OutputsVisibility}">
                             <Run Text="Outputs" />
                             <Run Text=": " />
                         </TextBlock>
-                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource OutputsVisibility}">
+                        <StackPanel Grid.Row="7" Grid.Column="2" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource OutputsVisibility}">
                             <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplate="{StaticResource DebugLinesTemplate}" AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                         </StackPanel>
                         
-                        <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource ErrorsVisibility}">
+                        <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource ErrorsVisibility}">
                             <Run Text="Error" />
                             <Run Text=": " />
                         </TextBlock>
-                        <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}"/>
+                        <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}"/>
 
                     </Grid>
                 </HierarchicalDataTemplate>
@@ -415,7 +443,7 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding DataContext.HighlighSimulation, ElementName=DebugOutput}" Value="True" />
+                                <Condition Binding="{Binding DataContext.HighlightSimulation, ElementName=DebugOutput}" Value="True" />
                                 <Condition Binding="{Binding Content.IsSimulation}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
@@ -425,11 +453,11 @@
                         
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding DataContext.HighlighError, ElementName=DebugOutput}" Value="True" />
+                                <Condition Binding="{Binding DataContext.HighlightError, ElementName=DebugOutput}" Value="True" />
                                 <Condition Binding="{Binding Content.HasError}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
-                                <Setter Property="Border.Background" Value="#FFFFADB2" />
+                                <Setter Property="Border.Background" Value="{StaticResource ErrorBrush}"/>
                             </MultiDataTrigger.Setters>
                     </MultiDataTrigger>
                     </Style.Triggers>

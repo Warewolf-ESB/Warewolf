@@ -115,4 +115,6 @@
 
     <SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
 
+    <SolidColorBrush x:Key="ErrorBrush" Color="#7FFF0010"/>
+
 </ResourceDictionary>

@@ -41,8 +41,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _showDuratrion = false;
         private bool _showInputs = true;
         private bool _showOutputs = true;
-        private bool _highlighSimulation = true;
-        private bool _highlighError = true;
+        private bool _highlightSimulation = true;
+        private bool _highlightError = true;
 
         private bool _showOptions = false;
         private bool _skipOptionsCommandExecute = false;
@@ -301,16 +301,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///   <c>true</c> if [highligh simulation]; otherwise, <c>false</c>.
         /// </value>
-        public bool HighlighSimulation
+        public bool HighlightSimulation
         {
             get
             {
-                return _highlighSimulation;
+                return _highlightSimulation;
             }
             set
             {
-                _highlighSimulation = value;
-                OnPropertyChanged("HighlighSimulation");
+                _highlightSimulation = value;
+                OnPropertyChanged("HighlightSimulation");
             }
         }
 
@@ -320,16 +320,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///   <c>true</c> if [highligh error]; otherwise, <c>false</c>.
         /// </value>
-        public bool HighlighError
+        public bool HighlightError
         {
             get
             {
-                return _highlighError;
+                return _highlightError;
             }
             set
             {
-                _highlighError = value;
-                OnPropertyChanged("HighlighError");
+                _highlightError = value;
+                OnPropertyChanged("HighlightError");
             }
         }
 

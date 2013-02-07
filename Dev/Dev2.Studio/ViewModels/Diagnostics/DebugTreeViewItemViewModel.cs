@@ -158,6 +158,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _isExpanded;
         private bool _isSelected;
         private bool _addedAsParent;
+        private bool? _hasError = false;
 
         #endregion
 
@@ -176,6 +177,26 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public ObservableCollection<DebugTreeViewItemViewModel> Children
         {
             get { return _children; }
+        }
+
+
+        public bool? HasError
+        {
+            get { return _hasError; }
+            set
+            {
+                _hasError = value;
+                if (Parent != null) Parent.VerifyErrorState();
+                OnPropertyChanged("HasError");
+            }
+        }
+
+        public void VerifyErrorState()
+        {
+            if (this.HasError == true) return;
+            if(Children.Any(c => c.HasError == true || c.HasError == null))
+                this.HasError = null;
+            else this.HasError = false;
         }
 
         #endregion

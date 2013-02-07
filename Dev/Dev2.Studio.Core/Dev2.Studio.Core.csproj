@@ -115,6 +115,7 @@
     <Compile Include="Activities\Services\IDesignerManagementService.cs" />
     <Compile Include="Activities\Utils\ModelItemUtils.cs" />
     <Compile Include="AppResources\Administration\BDSAdminChannel.cs" />
+    <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\Browser.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Attributes\IconLocation.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="AppResources\Converters\EnumToStringConverter.cs" />
     <Compile Include="AppResources\Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\LayoutObjectViewModelToImageConverter.cs" />
+    <Compile Include="AppResources\Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\StringToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
