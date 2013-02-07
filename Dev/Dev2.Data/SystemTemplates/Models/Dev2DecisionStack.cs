@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Dev2.Data.Decisions.Operations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Text;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -115,6 +118,11 @@ namespace Dev2.Data.SystemTemplates.Models
 
         }
 
+        /// <summary>
+        /// Extracts the model from workflow persisted data.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        /// <returns></returns>
         public static string ExtractModelFromWorkflowPersistedData(string val)
         {
             int start = val.IndexOf("(", StringComparison.Ordinal);
@@ -133,6 +141,42 @@ namespace Dev2.Data.SystemTemplates.Models
             }
 
             return "";
+        }
+
+        /// <summary>
+        /// Removes the dummy options from model.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        /// <returns></returns>
+        public static string RemoveDummyOptionsFromModel(string val)
+        {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+            string tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
+
+            // Hydrate and remove Choose options ;)
+
+            try
+            {
+                Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(tmp);
+
+                if(dds.TheStack != null)
+                {
+                    IList<Dev2Decision> toKeep = dds.TheStack.Where(item => item.EvaluationFn != enDecisionType.Choose).ToList();
+
+                    dds.TheStack = toKeep;
+                }
+
+                tmp = compiler.ConvertModelToJson(dds);
+            }
+            catch
+            {
+                // Best effort ;)
+            }
+
+
+            return tmp;
+
         }
 
     }

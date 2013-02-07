@@ -42,6 +42,8 @@ namespace Dev2.Data.Decisions.Operations
     /// </summary>
     public enum enDecisionType
     {
+        [DecisionTypeDisplayValue("Not a Valid Decision Type")]
+        Choose,
         [DecisionTypeDisplayValue("There Is An Error")]
         IsError,
         [DecisionTypeDisplayValue("There Is Not An Error")]

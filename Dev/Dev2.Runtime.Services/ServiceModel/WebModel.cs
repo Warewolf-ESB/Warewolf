@@ -28,9 +28,11 @@ namespace Dev2.Runtime.ServiceModel
             if(dataListID != GlobalConstants.NullDataListID)
             {
                 var compiler = DataListFactory.CreateDataListCompiler();
-
                 ErrorResultTO errors;
 
+                // remove the silly Choose... from the string
+                args = Dev2DecisionStack.RemoveDummyOptionsFromModel(args);
+                
                 compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, args, out errors);
 
                 result = "{  \"message\" : \"Saved Model\"} ";

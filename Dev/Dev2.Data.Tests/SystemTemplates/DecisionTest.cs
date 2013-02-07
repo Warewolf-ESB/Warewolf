@@ -13,19 +13,6 @@ namespace Dev2.Data.Tests.SystemTemplates
     [TestClass]
     public class DecisionTest
     {
-        // Sashen : 31-01-2012 : Test Review
-        // No author comment for tests
-        // Missing tests:
-        // Converting to and from JSON
-        //      Conversion to JSON with a set of decisions - FIXED 
-        // Push Model To Datalist
-        //      Test to push the model with a null datalist -?? The DataList ID is returned by the push operation
-        // Invoke Decision Stack:
-        //      No test coverage for FetchSwitchData in the Dev2DataListDecisionHandler - FIXED
-        //      No tests for ExecuteDecisionStack for a Null DataList -- FIXED
-        //      No tests for Error decisionType - ? There is a workflow that test all the decision executions, I believe Barney sent an email ( 28/01/2013 ) to you asking for this to be included in the QA process. We need to convert it with Trevors Util and make a quick integration test.
-        //      No test for SystemModel to WebModel conversion with a null Dev2Decision - FIXED
-        // Some of the tests do not have expected outcomes in there method names - FIXED
 
         #region Model Test
         /// <summary>
@@ -81,6 +68,19 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(1, convertedResult.TotalDecisions);
             Assert.AreEqual(Dev2DecisionMode.OR, convertedResult.Mode);
 
+        }
+
+        // Bug 8605
+        [TestMethod]
+        public void CanConvertModelItemWithChooseToModelWithChoose_ExpectValidModel()
+        {
+            string data = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":"""",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":0,""EvaluationFn"":""Choose...""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            data = Dev2DecisionStack.RemoveDummyOptionsFromModel(data);
+            IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
+
+            Dev2DecisionStack dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(data);
+
+            Assert.AreEqual(1,dds.TotalDecisions);
         }
 
         #endregion
