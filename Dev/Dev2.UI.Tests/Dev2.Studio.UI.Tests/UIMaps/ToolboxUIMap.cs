@@ -29,6 +29,12 @@
             Mouse.StopDragging(p);
         }
 
+        public void DragControlToWorkflowDesigner(string controlID, Point p)
+        {
+            UITestControl theControl = FindToolboxItemByAutomationID(controlID);
+            DragControlToWorkflowDesigner(theControl, p);
+        }
+
         public UITestControl FindToolboxItemByAutomationID(string automationID)
         {
             UITestControl theControl = FindControl(automationID);

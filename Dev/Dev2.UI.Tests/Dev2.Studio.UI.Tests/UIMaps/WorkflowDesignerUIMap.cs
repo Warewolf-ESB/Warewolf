@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
         /// <param name="controlAutomationID">The automation ID of the control you are looking for</param>
-        /// <returns></returns>
+        /// <returns>Returns the control as a UITestControl object</returns>
         public UITestControl FindControlByAutomationID(UITestControl theTab, string controlAutomationID)
         {
             // Unless the UI drastically changes (In which case most Automation tests will fail),
@@ -59,6 +59,48 @@
                 }
             }
             return null;
+        }
+        /// <summary>
+        /// Finds the Start Node on a given tab
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <returns>Returns the Start Node as a UITestControl object</returns>
+        public UITestControl FindStartNode(UITestControl theTab)
+        {
+            return FindControlByAutomationID(theTab, "Start");
+        }
+
+        /// <summary>
+        /// Returns a point under a control
+        /// </summary>
+        /// <param name="control">A UITestControl from FindControlByAutomationID</param>
+        /// <param name="pixels">How many pixels under the control</param>
+        public Point GetPointUnderControl(UITestControl control, int pixels)
+        {
+            Point returnPoint = new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y + pixels);
+
+            return returnPoint;
+        }
+
+        /// <summary>
+        /// Returns a point 200 pixels under the Start Node
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <returns></returns>
+        public Point GetPointUnderStartNode(UITestControl theTab)
+        {
+            UITestControl startNode = FindStartNode(theTab);
+
+            return GetPointUnderControl(startNode);
+        }
+
+        /// <summary>
+        /// Returns a point 200 pixels under a control
+        /// </summary>
+        /// <param name="control">A UITestControl from FindControlByAutomationID</param>
+        public Point GetPointUnderControl(UITestControl control)
+        {
+            return GetPointUnderControl(control, 200);
         }
 
         /// <summary>
@@ -144,6 +186,8 @@
             Mouse.Click(collapseAll, p);
         }
 
+        #region Adorners
+
         public bool IsAdornerVisible(UITestControl theTab, string controlAutomationID)
         {
             UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
@@ -220,6 +264,8 @@
             return rowCounter;
         }
 
+        #endregion Adorners
+
         public string GetWizardTitle(UITestControl theTab)
         {
             UITestControlCollection theCollection = theTab.GetChildren();
@@ -228,7 +274,8 @@
             return theControl.FriendlyName;
         }
 
-        // Assign Control
+        #region Assign Control
+
         public void AssignControl_ClickFirstTextbox(UITestControl theTab, string controlAutomationID)
         {
             UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
@@ -243,6 +290,8 @@
             WpfEdit controlList = (WpfEdit)aControl.GetChildren()[2].GetChildren()[itemInList].GetChildren()[2].GetChildren()[0];
             return controlList.Text;
         }
+
+        #endregion Assign Control
 
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)

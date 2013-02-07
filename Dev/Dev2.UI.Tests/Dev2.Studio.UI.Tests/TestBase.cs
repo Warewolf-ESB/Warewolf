@@ -36,6 +36,7 @@ using System.Security.Principal;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 
 
 namespace Dev2.CodedUI.Tests
@@ -86,6 +87,11 @@ namespace Dev2.CodedUI.Tests
             {
                 throw new Exception("Error - Cannot close all instances of IE!");
             }
+
+            // Set focus to the Studio
+            WpfWindow theWindow = new WpfWindow();
+            theWindow.WindowTitles.Add(GetStudioWindowName());
+            theWindow.SetFocus();
 
             bool toCheck = false;   // Disable this if you don't want the pre-test validation to occur.
             if (GetStudioWindowName().Contains("IntegrationTester"))
@@ -168,7 +174,11 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ThisMethodIsForTestingRandomTestFragments()
         {
+
+            //VideoUIMapTest.doSomething();
+            //CreateCustomWorkflow("Test123");
             /*
+             * 
             RibbonUIMap.ClickRibbonMenu("Help");
             RibbonUIMap.ClickRibbonMenu("Home");
             RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
@@ -265,8 +275,6 @@ namespace Dev2.CodedUI.Tests
             //this.UIMap.WorkflowItemPresenterExists();
 
         }
-
-
         #region Bugs
 
         // All bugs have been moved to BugTests.cs
@@ -277,8 +285,6 @@ namespace Dev2.CodedUI.Tests
 
         [TestMethod]
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
-
-        
         {
             RibbonUIMap.ClickRibbonMenuItem("Help", "Feedback");
             if (!FeedbackUIMap.DoesRecordedFeedbackWindowExist())
@@ -861,6 +867,8 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ViewInBrowser_Expected_NewlyCreatedVariableAddedToDataList()
         {
+            // TODO: Recode this to use either the IE9 map or the IE8 map
+            // Currently coded to use the IE8 map
             /*
             // Create the workflow
             //CreateCustomWorkflow("5782Point1", "CodedUITestCategory");
@@ -2205,6 +2213,9 @@ namespace Dev2.CodedUI.Tests
 
         public void CreateCustomWorkflow(string workflowName, string workflowCategory)
         {
+            WpfWindow theWindow = new WpfWindow();
+            theWindow.WindowTitles.Add(GetStudioWindowName());
+            theWindow.SetFocus();
             #region Workflow Input Parameters
 
             #endregion Workflow Input Parameters
@@ -2707,7 +2718,7 @@ namespace Dev2.CodedUI.Tests
         private ConnectViewUIMap connectViewUIMap;
 
         #endregion Connect Window UI Map
-        
+
         #region Debug UI Map
 
         public DebugUIMap DebugUIMap
@@ -2821,7 +2832,7 @@ namespace Dev2.CodedUI.Tests
         private NewServerUIMap _newServerUIMap;
 
         #endregion Database Wizard UI Map
-        
+
         #region Plugin Wizard UI Map
 
         public PluginServiceWizardUIMap PluginServiceWizardUIMap
@@ -2937,7 +2948,7 @@ namespace Dev2.CodedUI.Tests
         private ExternalUIMap externalUIMap;
 
         #endregion External UI Map
-        
+
         #region Webpage Wizard UI Map
 
         public WebpageServiceWizardUIMap WebpageServiceWizardUIMap

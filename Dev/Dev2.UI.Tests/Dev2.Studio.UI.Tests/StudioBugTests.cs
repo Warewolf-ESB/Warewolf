@@ -26,6 +26,7 @@ using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 
 
 namespace Dev2.CodedUI.Tests
@@ -40,12 +41,12 @@ namespace Dev2.CodedUI.Tests
         {
         }
 
+        TestBase myTestBase = new TestBase();
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
         public void CheckStartIsValid()
         {
             // Use the base class for validity checks - Easier to control :D
-            var myTestBase = new TestBase();
             myTestBase.CheckStartIsValid();
         }
 
@@ -762,6 +763,72 @@ namespace Dev2.CodedUI.Tests
             // And do cleanup
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7842");
 
+        }
+
+        // Bug 8604
+        [TestMethod]
+        public void OpenDecisionWindowTwice_Expected_OpensInSamePosition()
+        {
+            // Create the Workflow
+            myTestBase.CreateCustomWorkflow("8604");
+
+            // Get a point to drag the control onto
+            UITestControl theTab = TabManagerUIMap.FindTabByName("8604");
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+            // Wait for it to load
+            System.Threading.Thread.Sleep(2500);
+
+            // Click Cancel
+            WpfWindow decisionWindow = new WpfWindow();
+            decisionWindow.SearchProperties[WpfWindow.PropertyNames.Name] = "Decision Flow";
+            decisionWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            decisionWindow.Find();
+
+            // Get the Co-ords
+            Point firstPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
+            Point cancelButton = new Point(decisionWindow.BoundingRectangle.X + 700, decisionWindow.BoundingRectangle.Y + 600);
+            Mouse.Click(cancelButton);
+
+            // Open the window for the first time
+            UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "FlowDecisionDesigner");
+            Mouse.DoubleClick(decisionControl, new Point(50, 50));
+            
+            // Wait for it to load
+            System.Threading.Thread.Sleep(500);
+
+            // Get the Co-ords
+            decisionWindow.Find();
+            Point secondPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
+
+            // Close it
+            cancelButton = new Point(decisionWindow.BoundingRectangle.X + 700, decisionWindow.BoundingRectangle.Y + 600);
+            Mouse.Click(cancelButton);
+
+            // Open the window for the second time
+            decisionControl = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "FlowDecisionDesigner");
+            Mouse.DoubleClick(decisionControl, new Point(50, 50));
+
+            // Wait for it to load
+            System.Threading.Thread.Sleep(500);
+
+            // Get the Co-ords
+            decisionWindow.Find();
+            Point thirdPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
+
+            // Close it
+            cancelButton = new Point(decisionWindow.BoundingRectangle.X + 700, decisionWindow.BoundingRectangle.Y + 600);
+            Mouse.Click(cancelButton);
+
+            if ((firstPoint != secondPoint) && (secondPoint != thirdPoint))
+            {
+                Assert.Inconclusive("The window opened in different locations!");
+            }
+
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8604");
         }
 
         private int GetInstanceUnderParent(UITestControl control)

@@ -145,6 +145,7 @@
     <None Include="UIMaps\RibbonUIMap.uitest" />
     <None Include="UIMaps\ServiceDetailsUIMap.uitest" />
     <None Include="UIMaps\TabManagerUIMap.uitest" />
+    <None Include="UIMaps\TestUIMap.uitest" />
     <None Include="UIMaps\ToolboxUIMap.uitest" />
     <None Include="UIMaps\VariablesUIMap.uitest" />
     <None Include="UIMaps\WebpageServiceWizardUIMap.uitest" />
