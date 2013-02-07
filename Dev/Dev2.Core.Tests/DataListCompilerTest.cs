@@ -101,6 +101,21 @@ namespace Unlimited.UnitTest.Framework {
 
         #endregion
 
+        // Created by Michael for Bug 8597
+         [TestMethod]
+         public void HasErrors_Passed_Empty_GUID_Expected_No_NullReferenceException()
+         {
+             Guid id = Guid.Empty;
+             try
+             {
+                 _compiler.HasErrors(id);
+             }
+             catch (NullReferenceException)
+             {
+                 Assert.Inconclusive("No NullReferenceException should be thrown.");
+             }
+         }
+
          [TestMethod]
          public void Iteration_Evaluation_Expect_Evaluation_For_1_Iteration()
          {
