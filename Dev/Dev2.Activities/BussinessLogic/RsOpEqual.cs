@@ -28,17 +28,23 @@ namespace Dev2.DataList
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
+                string toFind = to.SearchCriteria.Trim();
+                string toFindLower = toFind.ToLower();
+
+                foreach (RecordSetSearchPayload p in operationRange)
+                {
+                    string toMatch = p.Payload.Trim();
+
                     if (to.MatchCase)
                     {
-                        if (p.Payload.Equals(to.SearchCriteria, StringComparison.CurrentCulture))
+                        if (toMatch.Equals(toFind, StringComparison.CurrentCulture))
                         {
                             fnResult.Add(p.Index.ToString());
                         }
                     }
                     else
                     {
-                        if (p.Payload.ToLower().Equals(to.SearchCriteria.ToLower(), StringComparison.CurrentCulture))
+                        if (toMatch.ToLower().Equals(toFindLower, StringComparison.CurrentCulture))
                         {
                             fnResult.Add(p.Index.ToString());
                         }

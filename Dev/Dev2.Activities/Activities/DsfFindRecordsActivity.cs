@@ -88,13 +88,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
 
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
             IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
-            string error = string.Empty;
-            Guid executionID = DataListExecutionID.Get(context);
+            Guid executionID = dataObject.DataListID;
 
             try
             {
@@ -144,9 +142,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // now push the result to the server
                     compiler.Upsert(executionID, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
-
-                    compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                    allErrors.MergeErrors(errors);
                 }
             }
             finally
@@ -154,8 +149,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
 

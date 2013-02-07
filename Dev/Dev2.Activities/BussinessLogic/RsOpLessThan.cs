@@ -17,6 +17,7 @@ namespace Dev2.DataList
 
         }
 
+        // Bug 8725 - Fixed to be double rather than int
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
@@ -27,13 +28,14 @@ namespace Dev2.DataList
 
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
-                int search = -1;
+                double search = -1;
 
-                if (Int32.TryParse(to.SearchCriteria, out search)) {
+                if (double.TryParse(to.SearchCriteria, out search)) {
                     foreach (RecordSetSearchPayload p in operationRange) {
-                        int tmp;
+                        double tmp;
 
-                        if (Int32.TryParse(p.Payload, out tmp) && tmp < search) {
+                        if (double.TryParse(p.Payload, out tmp) && tmp < search)
+                        {
 
                             fnResult.Add(p.Index.ToString());
                         }
