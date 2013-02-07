@@ -113,8 +113,8 @@
                                 <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True" SelectOnClick="True" />
                                 <local:NavigationItemViewModelDragDropBehavior />
                             </i:Interaction.Behaviors>
-                        
-                            <Image Width="24" Height="24" Margin="3,0,0,0" Source="{Binding ., Converter={StaticResource NavigationViewModelToImageConverter}}" />
+                            <TextBlock Width="3"/>
+                            <Image Width="24" Height="24" Margin="0,0,0,0" Source="{Binding ., Converter={StaticResource NavigationViewModelToImageConverter}}" />
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
                                 <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
