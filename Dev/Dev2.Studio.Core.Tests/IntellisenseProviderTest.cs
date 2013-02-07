@@ -127,6 +127,22 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(0, getResults.Count);
         }
 
+        //BUG 8755
+        [TestMethod]
+        public void GetIntellisenseResultsWithOpenRegionAndOpenRegionStarIndexExpectedNoResults()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 10,
+                InputText = "[[City([[*",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(0, getResults.Count);
+        }
+
         [TestMethod]
 // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_OpenRegion_AndInRecSetIndex_AndNoParentRegion_Expected_AllVarsInResults()
