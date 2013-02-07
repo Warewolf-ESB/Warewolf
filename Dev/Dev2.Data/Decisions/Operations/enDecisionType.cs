@@ -42,9 +42,9 @@ namespace Dev2.Data.Decisions.Operations
     /// </summary>
     public enum enDecisionType
     {
-        [DecisionTypeDisplayValue("Is There Is An Error")]
+        [DecisionTypeDisplayValue("There Is An Error")]
         IsError,
-        [DecisionTypeDisplayValue("Is There Is Not An Error")]
+        [DecisionTypeDisplayValue("There Is Not An Error")]
         IsNotError,
         [DecisionTypeDisplayValue("Is Numeric")]
         IsNumeric,
