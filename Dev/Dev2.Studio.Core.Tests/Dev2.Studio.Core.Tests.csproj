@@ -73,6 +73,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
@@ -123,6 +124,7 @@
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="AutoMappingInputActionTest.cs" />
     <Compile Include="AutoMappingOutputActionTest.cs" />
+    <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="DataListClientChannelTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="ConfigureDecisionViewModelTest.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\MediatorMessageTrapper.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
+    <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="ViewModelTests\DsfActivityViewModelTests.cs" />
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
@@ -274,7 +277,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
-    <Folder Include="AppResources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

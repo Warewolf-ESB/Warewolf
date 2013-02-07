@@ -91,16 +91,6 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         #endregion // IDisposable Members
 
-        #region Protected Virtual Methods
-
-        protected virtual void SatisfyImports()
-        {
-            //For testing scenarios - ability to fail silently when everythings not imported
-            ImportService.TrySatisfyImports(this);
-        }
-
-        #endregion Protected Virtual Methods
-
         #region Methods
 
         /// <summary>

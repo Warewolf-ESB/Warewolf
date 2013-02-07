@@ -1167,7 +1167,7 @@ namespace Dev2.UI
             }
         }
 
-        private void InsertItem(object item)
+        public void InsertItem(object item, bool force)
         {
             bool isOpen = IsOpen;
             string appendText = null;
@@ -1176,9 +1176,14 @@ namespace Dev2.UI
             int index = CaretIndex;
             IIntellisenseProvider currentProvider = new DefaultIntellisenseProvider();//Bug 8437
 
-            if (isOpen)
+            if (isOpen || force)
             {
-                currentProvider = ((IntellisenseProviderResult)item).Provider;//Bug 8437
+                IntellisenseProviderResult intellisenseProviderResult = item as IntellisenseProviderResult;
+                if (intellisenseProviderResult != null)
+                {
+                    currentProvider = intellisenseProviderResult.Provider;//Bug 8437
+                }
+
                 object selectedItem = item;
 
                 if (_listBox != null)
@@ -1225,7 +1230,6 @@ namespace Dev2.UI
                     }
                     else
                     {
-
                         int minimum = Math.Max(0, index - appendText.Length);
                         int foundMinimum = -1;
                         int foundLength = 0;
@@ -1459,7 +1463,7 @@ namespace Dev2.UI
 
             if (context is IntellisenseProviderResult)
             {
-                InsertItem(context);
+                InsertItem(context, false);
                 isItemSelected = true;
             }
 
