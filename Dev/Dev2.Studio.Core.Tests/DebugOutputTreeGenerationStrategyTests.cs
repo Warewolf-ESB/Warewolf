@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Studio.Diagnostics;
@@ -231,6 +232,65 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(newNode);
         }
 
+        ///
+        /// Juries - Bug 8469
+        /// 
+        [TestMethod]
+        public void PlaceContentInTree_Where_ContentIsDebugStated_WithoutError_Expected_NoErrors()
+        {
+            DebugState content = new DebugState();
+            content.ID = "2_2_1";
+            content.ParentID = "2_2";
+            content.HasError = false;
+
+            _testExistingContent.Add(content);
+            DebugTreeViewItemViewModel newNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_testRootItems, _testExistingContent, content, "", false, 3);
+
+            Assert.IsTrue(newNode.HasError == false);
+            Assert.IsTrue(newNode.Parent.HasError == false);
+        }
+
+
+        ///
+        /// Juries - Bug 8469
+        /// 
+        [TestMethod]
+        public void PlaceContentInTree_Where_ContentIsDebugStated_WithError_Expected_ItemTrueError()
+        {
+            DebugState content = new DebugState();
+            content.ID = "2_2_1";
+            content.ParentID = "2_2";
+            content.HasError = true;
+
+            _testExistingContent.Add(content);
+
+            DebugTreeViewItemViewModel newNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_testRootItems, _testExistingContent, content, "", false, 3);
+
+            Assert.IsTrue(newNode.HasError == true);
+        }
+
+        ///
+        /// Juries - Bug 8469
+        /// 
+        [TestMethod]
+        public void PlaceContentInTree_Where_ContentIsDebugStated_WithError_Expected_PraentTreeNullError()
+        {
+            DebugState content = new DebugState();
+            content.ID = "2_2_1";
+            content.ParentID = "2_2";
+            DebugState content2 = new DebugState();
+            content2.ID = "2_3_1";
+            content2.ParentID = "2_2_1";
+            content2.HasError = true;
+
+            _testExistingContent.Add(content);
+
+            DebugTreeViewItemViewModel newNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_testRootItems, _testExistingContent, content, "", false, 3);
+            DebugTreeViewItemViewModel newestNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_testRootItems, _testExistingContent, content2, "", false, 3);
+
+            Assert.IsTrue(newestNode.Parent.HasError == null);
+            Assert.IsTrue(newestNode.Parent.Parent.HasError == null);
+        }
         #endregion Tests
     }
 }

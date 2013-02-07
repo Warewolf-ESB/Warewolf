@@ -48,7 +48,7 @@ namespace Dev2.Studio.Diagnostics
         /// Places the content in tree.
         /// </summary>
         /// <param name="content">The content.</param>
-        private DebugTreeViewItemViewModel PlaceContentInTree(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
+        private DebugTreeViewItemViewModel PlaceContentInTree(IList<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             object newContent, string filterText, bool addedAsParent, int depthLimit, ref int operationDepth)
         {
             //
@@ -125,7 +125,7 @@ namespace Dev2.Studio.Diagnostics
         /// <param name="treeviewItem">The treeview item.</param>
         /// <param name="addedAsParent">if set to <c>true</c> [added as parent].</param>
         /// <exception cref="System.Exception">Content not found in original list.</exception>
-        private void AddOrInsertItem(ObservableCollection<DebugTreeViewItemViewModel> destinationCollection, List<object> existingContent,
+        private void AddOrInsertItem(IList<DebugTreeViewItemViewModel> destinationCollection, List<object> existingContent,
             object content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
         {
             if(!addedAsParent)
@@ -165,7 +165,7 @@ namespace Dev2.Studio.Diagnostics
         /// Finds the parent.
         /// </summary>
         /// <param name="parentID">The parent ID.</param>
-        private DebugTreeViewItemViewModel FindParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
+        private DebugTreeViewItemViewModel FindParent(IEnumerable<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
             if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Diagnostics
         /// Finds the parent.
         /// </summary>
         /// <param name="parentID">The parent ID.</param>
-        private DebugTreeViewItemViewModel AddMissingParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
+        private DebugTreeViewItemViewModel AddMissingParent(IList<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
             if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)

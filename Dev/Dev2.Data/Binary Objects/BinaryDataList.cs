@@ -428,27 +428,37 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 var readerSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
                 TextReader txtreader = new StringReader(tag);
-                using (var reader = XmlReader.Create(txtreader, readerSettings))
+                try
                 {
-                    var count = 0;
 
-                    while (reader.Read())
+                    using(var reader = XmlReader.Create(txtreader, readerSettings))
                     {
-                        using (var fragmentReader = reader.ReadSubtree())
-                        {
-                            if (fragmentReader.Read())
-                            {
-                                var fragment = XNode.ReadFrom(fragmentReader) as XElement;
+                        var count = 0;
 
-                                if (fragment != null && fragment.Name.LocalName == GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
+                        while(reader.Read())
+                        {
+                            using(var fragmentReader = reader.ReadSubtree())
+                            {
+                                if(fragmentReader.Read())
                                 {
-                                    count++;
-                                    result.AppendFormat(" {0} ", count);
-                                    result.AppendLine(fragment.Value);
+                                    var fragment = XNode.ReadFrom(fragmentReader) as XElement;
+
+                                    if(fragment != null && fragment.Name.LocalName == GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
+                                    {
+                                        count++;
+                                        result.AppendFormat(" {0} ", count);
+                                        result.AppendLine(fragment.Value);
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                catch(Exception e)
+                {
+                    result.Clear();
+                    result.AppendLine("Error is not a valid XML fragment");
+                    result.AppendFormat("Inner error: {0}", e.Message);
                 }
             }
 
