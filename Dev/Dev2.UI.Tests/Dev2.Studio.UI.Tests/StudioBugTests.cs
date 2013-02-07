@@ -767,7 +767,7 @@ namespace Dev2.CodedUI.Tests
 
         // Bug 8604
         [TestMethod]
-        public void OpenDecisionWindowTwice_Expected_OpensInSamePosition()
+        public void OpenDecisionWindowMultipleTimes_Expected_OpensInSamePosition()
         {
             // Create the Workflow
             myTestBase.CreateCustomWorkflow("8604");
@@ -825,7 +825,7 @@ namespace Dev2.CodedUI.Tests
 
             if ((firstPoint != secondPoint) && (secondPoint != thirdPoint))
             {
-                Assert.Inconclusive("The window opened in different locations!");
+                Assert.Fail("The window opened in different locations!");
             }
 
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8604");

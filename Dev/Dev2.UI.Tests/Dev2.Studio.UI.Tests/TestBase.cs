@@ -93,7 +93,7 @@ namespace Dev2.CodedUI.Tests
             theWindow.WindowTitles.Add(GetStudioWindowName());
             theWindow.SetFocus();
 
-            bool toCheck = false;   // Disable this if you don't want the pre-test validation to occur.
+            bool toCheck = true;   // Disable this if you don't want the pre-test validation to occur.
             if (GetStudioWindowName().Contains("IntegrationTester"))
             {
                 toCheck = true;
