@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 
@@ -28,6 +29,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool IsSelected { get; set; }
         bool IsConnected { get; }
         string DisplayName { get; set; }
+        ICollectionView FilteredChildren { get; } 
 
         void Add(ITreeNode child);
         bool Remove(ITreeNode child);
@@ -38,9 +40,5 @@ namespace Dev2.Studio.ViewModels.Navigation
         void SetFilter(string value);
         IEnumerable<ITreeNode> GetChildren(Func<ITreeNode, bool> predicate);
 
-        //
-        //Juries 2013/01/21 Do not remove - to use in combination with filteredcollection when needed
-        //
-        //ICollectionView FilteredChildren { get; } 
     }
 }

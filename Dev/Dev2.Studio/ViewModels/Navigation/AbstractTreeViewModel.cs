@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -38,6 +39,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool _isFiltered;
         bool _isSelected;
         ITreeNode _treeParent;
+        ICollectionView _filteredChildren;
 
         #endregion
 
@@ -113,8 +115,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 //
                 //Juries 2013/01/21 Do not remove - to use in combination with filteredcollection when needed
                 //
-                //TreeParent.FilteredChildren.Refresh();
-
+                TreeParent.FilteredChildren.Refresh();
                 TreeParent.NotifyOfPropertyChange("ChildrenCount");
             }
         }
@@ -574,6 +575,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                 Children.ToList().ForEach(c => c.SetFilter(filterText));
                 IsFiltered = Children.All(c => c.IsFiltered);
             }
+
+            //Notify parent to update check status
+            if (TreeParent != null)
+                TreeParent.VerifyCheckState();
         }
 
         /// <summary>
@@ -602,7 +607,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(updateChildren && _isChecked.HasValue)
             {
-                Children.ToList().ForEach(c => c.SetIsChecked(_isChecked, true, false, false));
+                //Do not check filtered children
+                Children.Where(c => !c.IsFiltered).ToList()
+                    .ForEach(c => c.SetIsChecked(_isChecked, true, false, false));
             }
 
             if(updateParent && _treeParent != null)
@@ -613,6 +620,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             NotifyOfPropertyChange(() => IsChecked);
             if(sendMessage)
             {
+                //Message to update count totals
                 EventAggregator.Publish(new ResourceCheckedMessage());
             }
         }
@@ -625,9 +633,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void VerifyCheckState()
         {
             bool? state = null;
-            for(var i = 0; i < Children.Count; ++i)
+            for(var i = 0; i < FilteredChildren.OfType<ITreeNode>().Count(); ++i)
             {
-                var current = Children[i].IsChecked;
+                var current = FilteredChildren.OfType<ITreeNode>().ToArray()[i].IsChecked;
                 if(i == 0)
                 {
                     state = current;
@@ -823,31 +831,26 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #endregion
 
-        //
-        //Juries 2013/01/21 Do not remove - to use in combination with filteredcollection when needed
-        //
-        //public ICollectionView FilteredChildren
-        //{
-        //    get
-        //    {
-        //        if (_filteredChildren == null)
-        //        {
-        //            _filteredChildren = CollectionViewSource.GetDefaultView(Children);
-        //            _filteredChildren.Filter += Filter;
-        //        }
-        //        return _filteredChildren;
-        //    }
-        //}
 
-        //
-        //Juries 2013/01/21 Do not remove - to use in combination with filteredcollection when needed
-        //
-        //private bool Filter(object o)
-        //{
-        //    var vm = o as ITreeNode;
-        //    if (vm == null) return false;
-        //    if (!vm.IsFiltered) return true;
-        //    return false;
-        //}
+        public ICollectionView FilteredChildren
+        {
+            get
+            {
+                if (_filteredChildren == null)
+                {
+                    _filteredChildren = CollectionViewSource.GetDefaultView(Children);
+                    _filteredChildren.Filter += Filter;
+                }
+                return _filteredChildren;
+            }
+        }
+
+        private bool Filter(object o)
+        {
+            var vm = o as ITreeNode;
+            if (vm == null) return false;
+            if (!vm.IsFiltered) return true;
+            return false;
+        }
     }
 }

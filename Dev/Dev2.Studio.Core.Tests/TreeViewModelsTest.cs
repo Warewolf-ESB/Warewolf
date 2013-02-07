@@ -44,20 +44,8 @@ namespace Dev2.Core.Tests
         /// </summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional result attributes
+        #region Initialize
 
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first result in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each result 
         [TestInitialize]
         public void MyTestInitialize()
         {
@@ -88,14 +76,8 @@ namespace Dev2.Core.Tests
 
             resourceVM = TreeViewModelFactory.Create(mockResourceModel.Object, categoryVM, false) as ResourceTreeViewModel;
             resourceVM2 = TreeViewModelFactory.Create(mockResourceModel2.Object, categoryVM2, false) as ResourceTreeViewModel;
-
-            //nav.SecurityContext = mocksecurityContext.Object;
         }
 
-        // Use TestCleanup to run code after each result has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
 
         #endregion
 
@@ -667,6 +649,49 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(messageRecieved);
         }
 
+        //
+        //Juries - Bug 8427
+        //
+        [TestMethod]
+        public void ResourceParentCheckedDoesNotCheckFilteredChildren()
+        {
+            var mockResource3 = new Mock<IContextualResourceModel>();
+            mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            mockResource3.Setup(r => r.Category).Returns("Testing3");
+            mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
+            var toAdd = TreeViewModelFactory.Create(mockResource3.Object, categoryVM2, false);
+
+            categoryVM2.IsChecked = true;
+            Assert.IsTrue(categoryVM2.Children.Count(c => c.IsChecked == true) == 2);
+
+            categoryVM2.IsChecked = false;
+            rootVM.SetFilter("Mock3");
+            categoryVM2.IsChecked = true;
+
+            Assert.IsTrue(categoryVM2.Children.Count(c => c.IsChecked == true) == 1);
+        }
+
+        //
+        //Juries - Bug 8427
+        //
+        [TestMethod]
+        public void FilterChangedResultingInItemNotFilteredUpdatesParentState()
+        {
+            var mockResource3 = new Mock<IContextualResourceModel>();
+            mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            mockResource3.Setup(r => r.Category).Returns("Testing3");
+            mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
+            var toAdd = TreeViewModelFactory.Create(mockResource3.Object, categoryVM2, false);
+
+            toAdd.IsChecked = true;
+            rootVM.SetFilter("Mock3");
+
+            Assert.IsTrue(categoryVM2.IsChecked == true);
+
+            rootVM.SetFilter("");
+
+            Assert.IsTrue(categoryVM2.IsChecked == null);
+        }
         #endregion Resource
 
     }
