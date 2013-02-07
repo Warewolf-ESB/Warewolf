@@ -98,7 +98,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         }
 
-        public WpfTree GetExplorerTree()
+        private WpfTree GetExplorerTree()
         {
             return this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
         }
@@ -173,6 +173,84 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             return projectNameListItem;
 
+        }
+
+        private UITestControl GetCategory(string serverName, string serviceType, string categoryName)
+        {
+            Point p;
+            UITestControl returnControl = null;
+
+            Thread.Sleep(500);
+            SendKeys.SendWait("{HOME}");
+            SendKeys.SendWait("^{LEFT}");
+            SendKeys.SendWait("^{LEFT}");
+            SendKeys.SendWait("^{LEFT}");
+            SendKeys.SendWait("^{LEFT}");
+            SendKeys.SendWait("^{LEFT}");
+            Thread.Sleep(500);
+
+            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
+            // Uncomment these 3 lines if things start going slowly again (They help to locate the problem)
+
+            //UITestControl theStudioWindow = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom;
+            //theStudioWindow.Find();
+            //uITvExplorerTree.Find();
+
+            UITestControl serverListItem = new UITestControl(uITvExplorerTree);
+            serverListItem.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
+            serverListItem.SearchProperties.Add("ControlType", "TreeItem");
+
+            serverListItem.Find();
+
+            Point clickablePoint = new Point();
+            if (!serverListItem.TryGetClickablePoint(out clickablePoint))
+            {
+                // Click in it, and fix the alignment
+                Mouse.Click(serverListItem, new Point(100, 100));
+
+                // Re-allign the Explorer
+                SendKeys.SendWait("{PAGEUP}");
+                SendKeys.SendWait("{PAGEUP}");
+                SendKeys.SendWait("{PAGEUP}");
+
+                SendKeys.SendWait("^{LEFT}");
+                SendKeys.SendWait("^{LEFT}");
+                SendKeys.SendWait("^{LEFT}");
+                SendKeys.SendWait("^{LEFT}");
+                SendKeys.SendWait("^{LEFT}");
+            }
+
+            Thread.Sleep(500);
+            SendKeys.SendWait("{HOME}");
+            Thread.Sleep(500);
+
+            // Can we see the type list? (AKA: Is the server list maximized?)
+            UITestControl serviceTypeListItem = new UITestControl(serverListItem);
+            serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_" + serviceType + "_AutoID");
+            serviceTypeListItem.Find();
+
+            if (!serviceTypeListItem.TryGetClickablePoint(out p))
+            {
+                Mouse.DoubleClick(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
+            }
+            else
+            {
+                Mouse.Click(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
+            }
+
+            // Can we see the folder? (AKA: Is the type list maximised?)
+            UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
+            folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + categoryName + "_AutoID");
+            folderNameListItem.Find();
+            if (!folderNameListItem.TryGetClickablePoint(out p))
+            {
+                Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
+            }
+            else
+            {
+                Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
+            }
+            return folderNameListItem;
         }
 
 

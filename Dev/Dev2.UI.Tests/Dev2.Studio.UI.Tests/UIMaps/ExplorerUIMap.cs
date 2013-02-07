@@ -127,12 +127,6 @@
             System.Threading.Thread.Sleep(100);
         }
 
-        public void ClickMenuOption()
-        {
-            
-            
-        }
-
         public void Server_RightClick_Disconnect(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
@@ -242,6 +236,11 @@
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Mouse.StartDragging(theControl);
             Mouse.StopDragging(p);
+        }
+
+        public UITestControl ReturnCategory(string serverName, string serviceType, string categoryName)
+        {
+            return GetCategory(serverName, serviceType, categoryName);
         }
     }
 }

@@ -765,6 +765,36 @@ namespace Dev2.CodedUI.Tests
 
         }
 
+        // Bug 8596
+        [TestMethod]
+        public void RightClickCategory_Expected_ItemFocused()
+        {
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Get the folders we're testing
+            UITestControl barneyCategory = ExplorerUIMap.ReturnCategory("localhost", "WORKFLOWS", "BARNEY");
+            UITestControl moCategory = ExplorerUIMap.ReturnCategory("localhost", "WORKFLOWS", "MO");
+
+            // Do a selected click
+            Mouse.Click(barneyCategory, new Point(15, 10));
+            System.Threading.Thread.Sleep(1500);
+            Mouse.Click(moCategory, MouseButtons.Right, ModifierKeys.None, new Point(15, 10));
+            System.Threading.Thread.Sleep(1500);
+            if (moCategory.GetProperty("Selected").ToString() != "True")
+            {
+                Assert.Fail("The new category was not highlighted!");
+            }
+            
+            // Click in the perfect position for the menu to NOT appear (Between the icon, and the text)
+            Mouse.Click(barneyCategory, MouseButtons.Right, ModifierKeys.None, new Point(48, 10));
+            System.Threading.Thread.Sleep(1500);
+            if (barneyCategory.GetProperty("Selected").ToString() != "True")
+            {
+                Assert.Fail("The gap between the icon and the text is not clickable!");
+            }
+        }
+
         // Bug 8604
         [TestMethod]
         public void OpenDecisionWindowMultipleTimes_Expected_OpensInSamePosition()
