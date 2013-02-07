@@ -49,6 +49,12 @@ namespace Dev2.Server.DataList.Translators
                     if (entry.IsRecordset)
                     {
                         int cnt = entry.FetchLastRecordsetIndex();
+
+                        if(entry.IsEmpty())
+                        {
+                            cnt = 0; // avoid emiting a blank record if it is ment to be empty ;)
+                        }
+
                         for (int i = 1; i <= cnt; i++)
                         {
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
