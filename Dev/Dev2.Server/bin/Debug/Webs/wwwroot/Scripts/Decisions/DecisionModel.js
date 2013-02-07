@@ -19,6 +19,9 @@ function DecisionViewModel() {
 
         /* The data here must match the server's decision functions */
         decisionFunctions: ko.observableArray([
+			/* Not a valid type, here for user friendlyness */
+			{ displayValue: "Choose...", optionValue: "Choose...", columnCount: 0 },
+			/* Start valid types */
             { displayValue: "There Is An Error", optionValue: "IsError", columnCount: 0 },
             { displayValue: "There Is No Error", optionValue: "IsNotError", columnCount: 0 },
             { displayValue: "Is Numeric", optionValue: "IsNumeric", columnCount: 1 },
@@ -59,7 +62,8 @@ function DecisionViewModel() {
 
     self.addRow = function () {
         // Default Row ;)
-        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 0, EvaluationFn: 'IsNotError' });
+		// { displayValue: "Choose...", optionValue: "Choose...", columnCount: 0 },
+        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 0, EvaluationFn: 'Choose...' });
 
         // Find the element and select it. -- decisionRow
         var $span = $("#decisionRow:last-child");
@@ -157,7 +161,6 @@ function DecisionViewModel() {
                 // load decisions
                 for (var i = 0; i < response.TheStack.length; i++) {
                     vm.AddDecision({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2, Col3: response.TheStack[i].Col3, PopulatedColumnCnt: response.TheStack[i].PopulatedColumnCount, EvaluationFn: response.TheStack[i].EvaluationFn });
-
                 }
 
                 // set Stack data
@@ -177,7 +180,7 @@ function DecisionViewModel() {
             } else {
 
                 // Add a decision
-                vm.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 0, EvaluationFn: 'IsNotError' });
+                vm.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 0, EvaluationFn: 'Choose...' });
             }
         });
 

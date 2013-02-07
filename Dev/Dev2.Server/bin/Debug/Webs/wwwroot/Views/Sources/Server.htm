@@ -13,7 +13,7 @@
                     <div>
                         <div class="field">
                             <label for="address">Address:</label>
-                            <input class="required" tabindex="1" maxlength="50" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address, valueUpdate: 'afterkeydown'" />
+                            <input class="required" tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address" />
                         </div>				
                         <div class="field">
                             <label>Authentication Type:</label>
@@ -30,11 +30,11 @@
                         </div>
                         <div class="field">
                             <label for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
-                            <input tabindex="4" maxlength="50" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName, valueUpdate: 'afterkeydown'" />
+                            <input tabindex="4" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName" />
                         </div>
                         <div class="field">
                             <label for="password" data-bind="visible: isUserInputVisible">Password:</label>
-                            <input tabindex="5" maxlength="50" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
+                            <input tabindex="5" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password" />
                         </div>
                         <div style="text-align: right">
                             <span>
@@ -78,19 +78,15 @@
         var self = this;
 		var $mainForm = $("#mainForm");
 		var $testButton = $("#testButton");	
-		var $saveButton = $("#saveButton");
 		var $errDiv = $("#mainFormError");
 		var $errDivSpan = $("#mainFormError span");
-		var $header = $("#header h1");
-		var $address = $("#address");
-		var $userName = $("#userName");
-		var $password = $("#password");
-        
+		var $address = $("#address");	
+		
 		self.saveUri  = "Service/Connections/Save";
 		
         self.data = {
 			resourceID: ko.observable(""),
-            resourceType: ko.observable("Dev2Server"),
+            resourceType: ko.observable(""),
             resourceName: ko.observable(""),
             resourcePath: ko.observable(""),
 			
@@ -106,7 +102,7 @@
 		self.data.resourceID( self.isEditing ? resourceID : $.Guid.Empty() );
 
 		document.title = self.isEditing ? "Edit Server" : "New Server";
-		$header.text(document.title);
+		$("#header h1").text(document.title);
 
 		$.post("Service/Connections/Get" + window.location.search, self.data.resourceID(), function (result) {
 			self.data.resourceID(result.ResourceID);
@@ -122,21 +118,24 @@
 			
 			if(self.isEditing) {
 				document.title = "Edit Server - " + result.ResourceName;
-				$header.text(document.title);
+				$("#header h1").text(document.title);
 			}
+			console.log(ko.toJSON(self.data));
 		});
 		
 		self.data.authenticationType.subscribe(function(newValue) {
 			var isUser = newValue == "User";
 			if (isUser) {
-			    $userName.addClass("required");
-                $password.addClass("required");
+                $("#userName").addClass("required");
+                $("#password").addClass("required");
             }
             else {
-			    $userName.removeClass("required");
-			    $password.removeClass("required");
+                $("#userName").removeClass("required");
+                $("#password").removeClass("required");
             }
-		    self.clearErrors();
+			$("#userName").removeClass("error");
+			$("#password").removeClass("error");
+			$mainForm.validate().form();
 			self.isUserInputVisible(isUser);
 		});
 		
@@ -151,12 +150,6 @@
         self.testSucceeded = ko.observable(true);
         self.testError = ko.observable("");
 
-        self.clearErrors = function () {
-            $errDiv.hide();
-            $address.removeClass("error");
-            $userName.removeClass("error");
-            $password.removeClass("error");
-        };
         self.updateHelpText = function (id) {
             var text = self.helpDictionary[id];
             text = text ? text : self.helpDictionary.default;
@@ -167,14 +160,12 @@
 			Dev2Awesomium.Cancel();
             return true;
         };
-        self.test = function (successCallback) {			
+        self.test = function () {			
 			if(!$mainForm.validate().form()){
 				return;
 			}
 			
 			$testButton.button("option", "disabled", true);
-			$saveButton.button("option", "disabled", true);
-            
             self.showTestResults(false);
             self.isTestResultsLoading(true);
 			
@@ -182,9 +173,7 @@
             var jsonData = ko.toJSON(data);
             $.post("Service/Connections/Test" + window.location.search, jsonData, function (result) {
 				$testButton.button("option", "disabled", false);
-				$saveButton.button("option", "disabled", false);
-                
-				self.isTestResultsLoading(false);
+                self.isTestResultsLoading(false);
                 self.showTestResults(true);
                 self.testError(result.ErrorMessage);
                 self.testSucceeded(result.IsValid);
@@ -196,16 +185,12 @@
                         $("#" + field).addClass("input-validation-error");
                     }
                 });
-                
-                if (successCallback && result.IsValid) {
-                    successCallback();
-                }
             });
         };
         self.save = function () {
-            self.test(function() {
+            if ($mainForm.validate().form()) {
                 $("#saveForm").dialog("open");
-            });
+			}
         };
 
         $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
@@ -217,13 +202,14 @@
             self.updateHelpText(this.id);
         });
 
-        $address.autocomplete({
+        $("#address").autocomplete({
             source: function (request, response) {
                 $.post("Service/Connections/Search" + window.location.search, request.term, response);
             },
             minLength: 2,
             select: function (event, ui) {
                 var addr = "http://" + ui.item.value + ":77/dsf";
+                console.log(addr);
                 viewModel.data.address(addr);
 				return false;
             }
@@ -234,20 +220,8 @@
 				submitted = true;
 			},
 			showErrors: function(errorMap, errorList) {
-				//var errors = this.numberOfInvalids();
-			    var errors = 0;
-			    if (!self.data.address()) {
-			        errors++;
-			    }
-			    if (self.isUserInputVisible()) {
-			        if (!self.data.userName()) {
-			            errors++;
-			        }
-			        if (!self.data.password()) {
-			            errors++;
-			        }
-			    }
-			    if (errors == 0) {
+				var errors = this.numberOfInvalids();
+				if(errors == 0) {
 					$errDiv.hide();
 				}
 				else {

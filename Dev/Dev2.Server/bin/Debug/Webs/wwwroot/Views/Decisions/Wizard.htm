@@ -29,7 +29,7 @@
 									&nbsp; If :
 									<input type="text" name="Col1" id="Col1" data-bind="value: Col1, visible: PopulatedColumnCnt > 0" class="veryShortField required"/>
 									
-									<select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', optionsCaption: 'Choose...', event:{ change: $parent.rowChanged}" class="shortField required">
+									<select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required">
 									</select>
 									
 									<input type="text" name="Col2" id="Col2" data-bind="value : Col2, visible: PopulatedColumnCnt == 2" class="veryShortField required" /> 
