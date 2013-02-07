@@ -210,7 +210,7 @@ namespace Dev2.DynamicServices
 
         private void SaveResource(string directoryName, DynamicServiceObjectBase resource)
         {
-            Runtime.Services.Resources.Save(_workspacePath, directoryName, resource);
+            Runtime.ServiceModel.Resources.Save(_workspacePath, directoryName, resource);
         }
 
 

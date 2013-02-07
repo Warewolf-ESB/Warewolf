@@ -1,8 +1,8 @@
-﻿using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Services.Data;
-using System;
+﻿using System;
+using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.ServiceModel.Data;
 
-namespace Dev2.Runtime.Services
+namespace Dev2.Runtime.ServiceModel
 {
     public class Help : ExceptionManager
     {

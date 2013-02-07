@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Diagnostics;
 
-namespace Dev2.Runtime.Services
+namespace Dev2.Runtime.ServiceModel
 {
     /// <summary>
     /// A model class for pushing and pulling JSON serialized objects to and from Web into the Server
@@ -27,11 +25,11 @@ namespace Dev2.Runtime.Services
         {
             string result = "{ \"message\" : \"Error Saving Model\"} ";
 
-            if (dataListID != GlobalConstants.NullDataListID)
+            if(dataListID != GlobalConstants.NullDataListID)
             {
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                var compiler = DataListFactory.CreateDataListCompiler();
 
-                ErrorResultTO errors = new ErrorResultTO();
+                ErrorResultTO errors;
 
                 compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, args, out errors);
 
@@ -41,7 +39,7 @@ namespace Dev2.Runtime.Services
             return result;
         }
 
-        #endregion 
+        #endregion
 
 
         #region Model Fetch
@@ -55,11 +53,11 @@ namespace Dev2.Runtime.Services
         public string FetchDecisionModel(string args, Guid workspaceID, Guid dataListID)
         {
 
-            if (dataListID != GlobalConstants.NullDataListID)
+            if(dataListID != GlobalConstants.NullDataListID)
             {
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                var compiler = DataListFactory.CreateDataListCompiler();
 
-                ErrorResultTO errors = new ErrorResultTO();
+                ErrorResultTO errors;
 
                 // System.Activator.CreateInstance(Type.GetType(className))
 
@@ -78,9 +76,9 @@ namespace Dev2.Runtime.Services
 
                 errors = paremeters[1] as ErrorResultTO;*/
 
-                string result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListID, out errors);
+                var result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListID, out errors);
 
-                if (errors.HasErrors())
+                if(errors.HasErrors())
                 {
                     compiler.UpsertSystemTag(dataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
                 }
@@ -100,15 +98,15 @@ namespace Dev2.Runtime.Services
         /// <returns></returns>
         public string FetchSwitchExpression(string args, Guid workspaceID, Guid dataListID)
         {
-            if (dataListID != GlobalConstants.NullDataListID)
+            if(dataListID != GlobalConstants.NullDataListID)
             {
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-                ErrorResultTO errors = new ErrorResultTO();
+                ErrorResultTO errors;
 
-                string result = compiler.FetchSystemModelAsWebModel<Dev2Switch>(dataListID, out errors);
+                var result = compiler.FetchSystemModelAsWebModel<Dev2Switch>(dataListID, out errors);
 
-                if (errors.HasErrors())
+                if(errors.HasErrors())
                 {
                     compiler.UpsertSystemTag(dataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
                 }

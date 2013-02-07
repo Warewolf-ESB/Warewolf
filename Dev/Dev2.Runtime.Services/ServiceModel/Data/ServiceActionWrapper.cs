@@ -1,21 +1,19 @@
-﻿
+﻿using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
-using enActionType = Dev2.DynamicServices.enActionType;
 
-namespace Dev2.Runtime.Services.Data
+namespace Dev2.Runtime.ServiceModel.Data
 {
     public class ServiceActionWrapper
     {
         #region Fields
 
-        private ServiceAction _serviceAction;
-        private static IOutputDescriptionSerializationService outputDescriptionSerializationService = 
+        private readonly ServiceAction _serviceAction;
+        private static readonly IOutputDescriptionSerializationService OutputDescriptionSerializationService =
             OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
 
         #endregion Fields
@@ -40,7 +38,7 @@ namespace Dev2.Runtime.Services.Data
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enActionType ActionType 
+        public DynamicServices.enActionType ActionType
         {
             get
             {
@@ -80,11 +78,11 @@ namespace Dev2.Runtime.Services.Data
         {
             get
             {
-                return outputDescriptionSerializationService.Deserialize(_serviceAction.OutputDescription);
+                return OutputDescriptionSerializationService.Deserialize(_serviceAction.OutputDescription);
             }
             set
             {
-                _serviceAction.OutputDescription = outputDescriptionSerializationService.Serialize(value);
+                _serviceAction.OutputDescription = OutputDescriptionSerializationService.Serialize(value);
             }
         }
 

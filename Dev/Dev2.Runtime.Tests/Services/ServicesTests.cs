@@ -1,19 +1,18 @@
 ﻿using System;
-using Dev2.Runtime.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class ServiceActionsTests
+    public class ServicesTests
     {
         [TestMethod]
         public void TestMockOutput()
         {
-            ServiceActions serviceActions = new ServiceActions();
+            var services = new Dev2.Runtime.ServiceModel.Services();
 
             string expected = "[{\"Name\":\"Action1\",\"ActionType\":\"Unknown\",\"SourceName\":null,\"SourceMethod\":null,\"OutputDescription\":null,\"ServiceActionInputs\":[],\"ServiceActionOutputs\":[]},{\"Name\":\"Action2\",\"ActionType\":\"Unknown\",\"SourceName\":null,\"SourceMethod\":null,\"OutputDescription\":null,\"ServiceActionInputs\":[],\"ServiceActionOutputs\":[]},{\"Name\":\"Action3\",\"ActionType\":\"Unknown\",\"SourceName\":null,\"SourceMethod\":null,\"OutputDescription\":null,\"ServiceActionInputs\":[],\"ServiceActionOutputs\":[]}]";
-            string actual = serviceActions.List("", Guid.Empty, Guid.Empty); ;
+            string actual = services.Actions("", Guid.Empty, Guid.Empty); ;
 
             Assert.AreEqual(expected, actual);
         }

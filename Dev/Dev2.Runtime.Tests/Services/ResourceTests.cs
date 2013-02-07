@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
-using Dev2.DynamicServices.Test.XML;
-using Dev2.Runtime.Services.Data;
-using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resources = Dev2.Runtime.Services.Resources;
 using System.Xml;
+using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.DynamicServices.Test.XML;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Resources = Dev2.Runtime.ServiceModel.Resources;
 
-namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
+namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class ResourceTests
@@ -43,7 +35,7 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
                            "<?xml version=\"1.0\"?><Root>This is the text of the root element</Root>");
             Assert.IsTrue(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml").Contains("This is the text of the root element"));
             //Cleanup
-            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave)) DeleteDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
+            if(Directory.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave)) DeleteDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
         }
 
         [TestMethod]
@@ -51,7 +43,7 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
         {
             //Initialization
             var threadSave = Guid.NewGuid();
-            if (File.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml")) File.Delete(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml");
+            if(File.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml")) File.Delete(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml");
             //Test
             string directoryName = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\" + threadSave).Name;
             string workspacePath = Directory.GetParent(Directory.GetCurrentDirectory() + @"\" + threadSave).ToString();
@@ -59,7 +51,7 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
                    "<?xml version=\"1.0\"?><Root>This is the text of the root element</Root>");
             Assert.IsTrue(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml").Contains("This is the text of the root element"));
             //Cleanup
-            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave)) DeleteDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
+            if(Directory.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave)) DeleteDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
         }
 
         [TestMethod]
@@ -108,13 +100,13 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
             string[] files = Directory.GetFiles(target_dir);
             string[] dirs = Directory.GetDirectories(target_dir);
 
-            foreach (string file in files)
+            foreach(string file in files)
             {
                 File.SetAttributes(file, FileAttributes.Normal);
                 File.Delete(file);
             }
 
-            foreach (string dir in dirs)
+            foreach(string dir in dirs)
             {
                 DeleteDirectory(dir);
             }
@@ -127,10 +119,10 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
             var _compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
             Guid exID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), GetSimpleADL(), GetSimpleADLShape(), out errors);
-            if (errors.HasErrors())
+            if(errors.HasErrors())
             {
                 string errorString = string.Empty;
-                foreach (string item in errors.FetchErrors())
+                foreach(string item in errors.FetchErrors())
                 {
                     errorString += item;
                 }

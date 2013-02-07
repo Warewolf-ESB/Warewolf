@@ -1,12 +1,12 @@
 ﻿using System;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
+using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Runtime.Services;
 using System.Collections.Generic;
 using Dev2.Data.SystemTemplates;
 
-namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
+namespace Dev2.Tests.Runtime.Services
 {
 
     // Sashen : 31-01-2012 : Testing Feedback
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
             string actual = testWebModel.FetchDecisionModel("", Guid.Empty, generateGuid());
 
             Assert.AreEqual(expected, actual);
-        
+
         }
 
 
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Runtime.Dev2.Runtime.Services.Tests
             IDataListCompiler testCompiler = DataListFactory.CreateDataListCompiler();
 
             var stack = new Dev2Switch() { SwitchVariable = "" };
-            
+
             var error = new ErrorResultTO();
             Guid MyModel = testCompiler.PushSystemModelToDataList(stack, out error);
 

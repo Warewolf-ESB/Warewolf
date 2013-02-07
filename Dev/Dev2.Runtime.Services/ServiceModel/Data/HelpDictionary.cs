@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace Dev2.Runtime.Services.Data
+namespace Dev2.Runtime.ServiceModel.Data
 {
     public class HelpDictionary : Dictionary<string, object>
     {

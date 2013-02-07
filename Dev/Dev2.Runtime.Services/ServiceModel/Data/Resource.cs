@@ -1,12 +1,12 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Xml.Linq;
+using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Xml.Linq;
 
-namespace Dev2.Runtime.Services.Data
+namespace Dev2.Runtime.ServiceModel.Data
 {
-    public abstract class Resource
+    public class Resource
     {
         public Guid ResourceID { get; set; }
 
@@ -18,11 +18,11 @@ namespace Dev2.Runtime.Services.Data
 
         #region CTOR
 
-        protected Resource()
+        public Resource()
         {
         }
 
-        protected Resource(XElement xml)
+        public Resource(XElement xml)
         {
             ResourceID = Guid.Parse(xml.AttributeSafe("ID"));
             ResourceType = (enSourceType)Enum.Parse(typeof(enSourceType), xml.AttributeSafe("Type"));

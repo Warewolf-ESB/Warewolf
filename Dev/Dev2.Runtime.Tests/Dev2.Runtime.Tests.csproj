@@ -78,7 +78,7 @@
     <Compile Include="Services\ConnectionTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="Services\ResourceTests.cs" />
-    <Compile Include="Services\ServiceActionsTests.cs" />
+    <Compile Include="Services\ServicesTests.cs" />
     <Compile Include="Services\WebModelTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <Compile Include="DataListServerChannelTests.cs" />

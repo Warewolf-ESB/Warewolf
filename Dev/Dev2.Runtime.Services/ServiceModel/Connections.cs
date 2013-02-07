@@ -1,8 +1,4 @@
-﻿using Dev2.DynamicServices;
-using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Services.Data;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
 using System.DirectoryServices;
 using System.Globalization;
@@ -11,9 +7,13 @@ using System.Linq;
 using System.Network;
 using System.Threading;
 using System.Xml.Linq;
-using Connection = Dev2.Runtime.Services.Data.Connection;
+using Dev2.DynamicServices;
+using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
+using Connection = Dev2.Runtime.ServiceModel.Data.Connection;
 
-namespace Dev2.Runtime.Services
+namespace Dev2.Runtime.ServiceModel
 {
     public class Connections : ExceptionManager
     {
@@ -24,7 +24,7 @@ namespace Dev2.Runtime.Services
             var result = new Connection { ResourceID = Guid.Empty, ResourceType = enSourceType.Dev2Server, WebServerPort = Connection.DefaultWebServerPort };
             try
             {
-                var xmlStr = Resources.Read(workspaceID, enSourceType.Dev2Server, resourceID);
+                var xmlStr = Resources.ReadXml(workspaceID, enSourceType.Dev2Server, resourceID);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);

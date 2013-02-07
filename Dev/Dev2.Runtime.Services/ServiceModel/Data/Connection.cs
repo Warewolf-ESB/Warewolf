@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace Dev2.Runtime.Services.Data
+namespace Dev2.Runtime.ServiceModel.Data
 {
     public class Connection : Resource
     {

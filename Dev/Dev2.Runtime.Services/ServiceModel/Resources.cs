@@ -1,18 +1,18 @@
-﻿using Dev2.Common;
-using Dev2.DynamicServices;
-using Dev2.Runtime.Collections;
-using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Security;
-using Dev2.Runtime.Services.Data;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
+using Dev2.DynamicServices;
+using Dev2.Runtime.Collections;
+using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
 
-namespace Dev2.Runtime.Services
+namespace Dev2.Runtime.ServiceModel
 {
     public class Resources : ExceptionManager
     {
@@ -56,17 +56,10 @@ namespace Dev2.Runtime.Services
             {
                 names.Add("localhost"); // auto-added to studio on startup
             }
-            IterateFiles(new[] { RootFolders[sourceType] }, workspaceID, (delimiter, token, content) =>
+            ResourceIterator.Iterate(new[] { RootFolders[sourceType] }, workspaceID, iteratorResult =>
             {
-                switch(delimiter.ID)
-                {
-                    case 1:
-                        names.Add(token);
-                        break;
-                    case 2:
-                        paths.Add(token);
-                        break;
-                }
+                names.Add(iteratorResult.Values[1]);
+                paths.Add(iteratorResult.Values[2]);
                 return true;
             }, new Delimiter
             {
@@ -91,12 +84,13 @@ namespace Dev2.Runtime.Services
         {
             var result = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            IterateFiles(workspaceID, (delimiter, category, content) =>
+            ResourceIterator.Iterate(RootFolders.Values.Distinct(), workspaceID, iteratorResult =>
             {
-                result.Add(category);
+                result.Add(iteratorResult.Values[1]);
                 return true;
             }, new Delimiter
             {
+                ID = 1,
                 Start = "<Category>",
                 End = "</Category>"
             });
@@ -108,23 +102,66 @@ namespace Dev2.Runtime.Services
 
         #region Read
 
-        public static string Read(Guid workspaceID, enSourceType sourceType, string resourceID)
+        public static List<Resource> Read(Guid workspaceID, enSourceType resourceType)
         {
-            var result = string.Empty;
+            var resources = new List<Resource>();
+            var resourceTypeStr = resourceType.ToString();
 
-            IterateFiles(new[] { RootFolders[sourceType] }, workspaceID, (delimiter, id, content) =>
+            ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
             {
-                if(resourceID.Equals(id, StringComparison.InvariantCultureIgnoreCase))
+                if(iteratorResult.Values[1].Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    result = content;
-                    return false;
+                    // older resources may not have an ID yet!!
+                    string resourceIDStr;
+                    iteratorResult.Values.TryGetValue(2, out resourceIDStr);
+                    Guid resourceID;
+                    Guid.TryParse(resourceIDStr, out resourceID);
+
+                    resources.Add(new Resource
+                    {
+                        ResourceID = resourceID,
+                        ResourceName = iteratorResult.Values[3],
+                        ResourceType = resourceType
+                    });
                 }
                 return true;
             }, new Delimiter
             {
+                ID = 1,
+                Start = " Type=\"",
+                End = "\" "
+            }, new Delimiter
+            {
+                ID = 2,
                 Start = " ID=\"",
                 End = "\" "
+            }, new Delimiter
+            {
+                ID = 3,
+                Start = " Name=\"",
+                End = "\" "
             });
+            return resources;
+        }
+
+
+        #endregion
+
+        #region ReadXml
+
+        public static string ReadXml(Guid workspaceID, enSourceType resourceType, string resourceID)
+        {
+            var result = string.Empty;
+
+            ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+            {
+                if(resourceID.Equals(iteratorResult.Values[1], StringComparison.InvariantCultureIgnoreCase))
+                {
+                    result = iteratorResult.Content;
+                    return false;
+                }
+                return true;
+            }, new Delimiter { ID = 1, Start = " ID=\"", End = "\" " });
             return result;
         }
 
@@ -176,55 +213,5 @@ namespace Dev2.Runtime.Services
         }
 
         #endregion
-
-
-        #region IterateFiles
-
-        static void IterateFiles(Guid workspaceID, Func<Delimiter, string, string, bool> action, params Delimiter[] delimiters)
-        {
-            IterateFiles(RootFolders.Values.Distinct(), workspaceID, action, delimiters);
-        }
-
-        static void IterateFiles(IEnumerable<string> folders, Guid workspaceID, Func<Delimiter, string, string, bool> action, params Delimiter[] delimiters)
-        {
-            if(delimiters == null || delimiters.Length == 0 || action == null || folders == null)
-            {
-                return;
-            }
-
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
-            foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
-            {
-                var files = Directory.GetFiles(path, "*.xml");
-                foreach(var file in files)
-                {
-                    // XML parsing will add overhead - so just read file and use string ops instead
-                    var content = File.ReadAllText(file);
-                    foreach(var delimiter in delimiters)
-                    {
-                        var startTokenLength = delimiter.Start.Length;
-                        var startIdx = content.IndexOf(delimiter.Start, StringComparison.InvariantCultureIgnoreCase);
-                        if(startIdx == -1)
-                        {
-                            continue;
-                        }
-                        startIdx += startTokenLength;
-                        var endIdx = content.IndexOf(delimiter.End, startIdx, StringComparison.InvariantCultureIgnoreCase);
-                        var length = endIdx - startIdx;
-                        if(length > 0)
-                        {
-                            var tokenValue = content.Substring(startIdx, length);
-                            if(!action(delimiter, tokenValue, content))
-                            {
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion
-
     }
-} 
+}

@@ -1,6 +1,6 @@
 ﻿using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Services;
-using Dev2.Runtime.Services.Data;
+using Dev2.Runtime.ServiceModel;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Runtime.Services
 {

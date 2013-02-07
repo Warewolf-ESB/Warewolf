@@ -1,5 +1,5 @@
 ﻿
-namespace Dev2.Runtime.Services.Data
+namespace Dev2.Runtime.ServiceModel.Data
 {
     class Delimiter
     {

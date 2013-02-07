@@ -17,7 +17,7 @@ namespace Dev2.Runtime
         /// <seealso cref="ServiceInvoker(string, string)"/>
         /// </summary>
         public ServiceInvoker()
-            : this("Dev2.Runtime.Services", "Dev2.Runtime.Services")
+            : this("Dev2.Runtime.Services", "Dev2.Runtime.ServiceModel")
         {
         }
 

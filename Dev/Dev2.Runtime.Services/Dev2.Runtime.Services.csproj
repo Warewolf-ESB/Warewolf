@@ -66,17 +66,20 @@
     <Compile Include="Security\ISecureConfig.cs" />
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
-    <Compile Include="Services\Data\ServiceActionWrapper.cs" />
-    <Compile Include="Services\Data\Connection.cs" />
-    <Compile Include="Services\Connections.cs" />
-    <Compile Include="Services\Data\Delimiter.cs" />
-    <Compile Include="Services\Resources.cs" />
-    <Compile Include="Services\Data\Enums.cs" />
-    <Compile Include="Services\Help.cs" />
-    <Compile Include="Services\Data\HelpDictionary.cs" />
-    <Compile Include="Services\Data\Resource.cs" />
-    <Compile Include="Services\ServiceActions.cs" />
-    <Compile Include="Services\WebModel.cs" />
+    <Compile Include="ServiceModel\Data\Service.cs" />
+    <Compile Include="ServiceModel\Data\ServiceActionWrapper.cs" />
+    <Compile Include="ServiceModel\Data\Connection.cs" />
+    <Compile Include="ServiceModel\Connections.cs" />
+    <Compile Include="ServiceModel\Data\Delimiter.cs" />
+    <Compile Include="ServiceModel\Data\ResourceIteratorResult.cs" />
+    <Compile Include="ServiceModel\Data\ResourceIterator.cs" />
+    <Compile Include="ServiceModel\Resources.cs" />
+    <Compile Include="ServiceModel\Data\Enums.cs" />
+    <Compile Include="ServiceModel\Help.cs" />
+    <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
+    <Compile Include="ServiceModel\Data\Resource.cs" />
+    <Compile Include="ServiceModel\Services.cs" />
+    <Compile Include="ServiceModel\WebModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
