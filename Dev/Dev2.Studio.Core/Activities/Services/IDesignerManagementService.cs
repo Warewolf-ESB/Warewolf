@@ -7,6 +7,7 @@ namespace Dev2.Studio.Core.Activities.Services
     public interface IDesignerManagementService : IDisposable
     {
         IContextualResourceModel GetResourceModel(ModelItem modelItem);
+        IContextualResourceModel GetRootResourceModel(ModelItem modelItem);
         void RequestExpandAll();
         void RequestCollapseAll();
         void RequestRestoreAll();

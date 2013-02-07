@@ -160,6 +160,7 @@
     <Compile Include="MediatorTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
+    <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="TreeViewModelsTest.cs" />
     <Compile Include="NavigationViewModelTest.cs" />
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="ViewModelTests\DsfActivityViewModelTests.cs" />
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
+    <Compile Include="ViewModelTests\QuickVariableInputViewModelTests.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebCommunicationTest.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />

@@ -111,7 +111,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 IDev2Tokenizer tokenizer = CreateSplitPattern(c.TheValue, ResultsCollection, compiler, dlID);
                                 int opCnt = 0;
                                 int pos = 0;
-                                ActivityUpsertTO result = new ActivityUpsertTO();
                                 int end = (ResultsCollection.Count - 1);
 
                                 bool added = false;

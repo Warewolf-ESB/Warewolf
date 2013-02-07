@@ -307,6 +307,10 @@
     <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
+    <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
+      <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Webs\RootWebSite.cs" />
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Dev2DecisionCallbackHandler.cs" />
@@ -680,6 +684,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DataList\DataListView.xaml">
       <Generator>MSBuild:Compile</Generator>

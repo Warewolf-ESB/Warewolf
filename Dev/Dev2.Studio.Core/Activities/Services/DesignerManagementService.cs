@@ -94,6 +94,24 @@ namespace Dev2.Studio.Core.Activities.Services
             return resource;
         }
 
+        public IContextualResourceModel GetRootResourceModel(ModelItem modelItem)
+        {
+            if (modelItem == null)
+            {
+                return null;
+            }
+
+            IContextualResourceModel resource = null;
+            ModelProperty modelProperty = modelItem.Root.Properties.Where(mp => mp.Name == "Name").FirstOrDefault();
+
+            if (modelProperty != null)
+            {
+                resource = _resourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
+            }
+
+            return resource;
+        }
+
         public void RequestExpandAll()
         {
             OnExpandAllRequested();

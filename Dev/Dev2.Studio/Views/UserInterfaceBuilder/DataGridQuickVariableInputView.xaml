@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="Dev2.Studio.Views.UserInterfaceBuilder.DataGridQuickVariableInputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+             Height="Auto"
+             Width="350"
+             d:DesignHeight="320">
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding CancelCommand}" Key="Escape"  />
+        <KeyBinding Command="{Binding AddCommand}" Key="Enter" />
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />            
+            <RowDefinition Height="Auto" />            
+        </Grid.RowDefinitions>
+
+        
+        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1,1,1,0" >
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>                  
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="Split On :"></Label>
+                <Grid Grid.Column="1" Grid.Row="0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}"></ComboBox>
+                    <TextBox x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="0" Text="{Binding SplitToken}"></TextBox>
+                </Grid>
+
+                <Label Grid.Column="0" Grid.Row="1" Content="Prefix :"></Label>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Prefix}"></TextBox>
+
+                <Label Grid.Column="0" Grid.Row="2" Content="Suffix :"></Label>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Suffix}"></TextBox>
+
+                <Label Grid.Column="0" Grid.Row="3" Content="Variable List :"></Label>
+                <TextBox Grid.Column="1" Grid.Row="3" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" Height="26" VerticalAlignment="Top"></TextBox>
+
+
+                <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                    <RadioButton Content="Append" IsChecked="True" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5"></RadioButton>
+
+                    <RadioButton Content="Replace" IsChecked="{Binding Overwrite}" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5"></RadioButton>
+                </StackPanel>                
+
+                <StackPanel Grid.Column="0" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Button x:Name="PreviewBtn" Content="Preview" IsEnabled="False" Command="{Binding PreviewCommand}" Margin="2,0,2,0"></Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="2,0,2,0"></Button>
+                    <Button x:Name="AddBtn" Content="Add" IsEnabled="False" Command="{Binding AddCommand}" Margin="2,0,2,0"></Button>
+                </StackPanel>                
+            </Grid>
+
+        </Border>
+        <Canvas Margin="0,-1,0,0" Width="350" Grid.Row="1" HorizontalAlignment="Stretch" Visibility="{Binding ShowPreview, Converter={StaticResource BoolToVisConverter}}">
+            <Border Background="White">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Rectangle Grid.Row="0" Grid.ColumnSpan="2" Fill="LightGray" Width="340"></Rectangle>                    
+                    <TextBox IsEnabled="False" Grid.Row="1" Width="340" Text="{Binding PreviewText}"></TextBox>
+                </Grid>
+            </Border>
+        </Canvas>
+
+    </Grid>
+</UserControl>

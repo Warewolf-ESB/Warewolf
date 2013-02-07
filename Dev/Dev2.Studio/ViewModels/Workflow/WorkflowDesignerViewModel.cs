@@ -3,6 +3,7 @@ using Dev2.Composition;
 using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
+using Dev2.Interfaces;
 using Dev2.Studio.AppResources.AttachedProperties;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
@@ -13,13 +14,16 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.Views;
+using Dev2.Studio.Views.UserInterfaceBuilder;
 using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
@@ -45,7 +49,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>
+    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>, IHandle<ShowQuickVariableInputMessage>
     {
         #region Fields
 
@@ -594,7 +598,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(decisionValue, DataListSingleton.ActiveDataList.WriteToResourceModel(), true);
 
             // push them into the list
-            foreach(IIntellisenseResult p in parts)
+            foreach (IIntellisenseResult p in parts)
             {
                 DecisionFields.Add(DataListUtil.StripBracketsFromValue(p.Option.DisplayValue));
             }
@@ -1869,7 +1873,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         // Sashen: Must be a better way - using the exact element name does make it awful.
                         string sanitizedWebpageObject = activityDefinition.GetElement("XMLConfiguration").XmlString.Replace("&gt;", ">").Replace("&lt;", "<");
                         XElement element = XElement.Parse(sanitizedWebpageObject);
-                        string webpageData = DataListFactory.GenerateMappingFromWebpage(sanitizedWebpageObject,"", enDev2ArgumentType.Input);
+                        string webpageData = DataListFactory.GenerateMappingFromWebpage(sanitizedWebpageObject, "", enDev2ArgumentType.Input);
                         XElement webpageElements = XElement.Parse(webpageData);
                         webpageElements.Elements().ToList().ForEach(c => ActivityFields.Add(c.Attribute("Name").Value));
                     }
@@ -2155,7 +2159,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _modelService.ModelChanged += new EventHandler<ModelChangedEventArgs>(ModelServiceModelChanged);
 
             _viewstateService = _wd.Context.Services.GetService<ViewStateService>();
-            
+
             _wd.View.PreviewDrop += new DragEventHandler(ViewPreviewDrop);
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
             _wd.View.LayoutUpdated += ViewOnLayoutUpdated;
@@ -2349,6 +2353,35 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowModel.Update(message.ResourceModel);
         }
 
+        /// <summary>
+        /// Handles the Activity that is going to be updated with the QuickVariableInputs
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2013/02/06</date>
+        public void Handle(ShowQuickVariableInputMessage message)
+        {
+            IContextualResourceModel senderResource = _designerManagementService.GetRootResourceModel(message.ModelItem.Parent);
+            if (senderResource == ResourceModel)
+            {
+                DataGridQuickVariableInputView view = new DataGridQuickVariableInputView();
+                QuickVariableInputModel model = new QuickVariableInputModel(message.ModelItem, message.ModelItem.Source.Value as ICollectionActivity);
+
+                QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(model);
+                viewModel.Close += delegate
+                {
+                    view.Dispose();
+                    viewModel.Dispose();
+                    view.DataContext = null;
+                    PopupContent = null;
+                };
+                view.DataContext = viewModel;
+                PopupContent = view;
+            }
+
+
+        }
+
         #endregion
 
         #region Event Handlers
@@ -2501,7 +2534,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         //This line is necessary to fix the issue were decisions and switches didn't have the correct positioning when dragged on
                         SetLastDroppedModelItem(mi);
-                        
+
                         Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _workflowModel.Environment);
                         Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, wrapper);
 

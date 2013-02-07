@@ -273,7 +273,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     dataObject.ParentInstanceID = _previousParentInstanceID;
                 }
-
             }
         }
 
@@ -321,11 +320,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var compiler = context.GetExtension<IDataListCompiler>();
 
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-            
+
             bool hasError = compiler.HasErrors(dataObject.DataListID);
 
             string errorMessage = String.Empty;
-            if(hasError)
+            if (hasError)
             {
                 errorMessage = compiler.FetchErrors(dataObject.DataListID);
             }
@@ -355,7 +354,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var type = GetType();
                 var instance = Activator.CreateInstance(type);
                 var activity = instance as Activity;
-                if(activity != null)
+                if (activity != null)
                     _debugState.Name = activity.DisplayName;
                 //End Bug 8595
 

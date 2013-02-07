@@ -261,6 +261,7 @@
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
+    <Compile Include="Messages\ShowQuickVariableInputMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
@@ -282,6 +283,7 @@
     <Compile Include="Models\DecisionModels\StringDecisionType.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
     <Compile Include="Models\OperatorType.cs" />
+    <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
