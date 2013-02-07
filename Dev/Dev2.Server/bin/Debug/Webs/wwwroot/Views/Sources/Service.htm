@@ -1,5 +1,5 @@
 ﻿<div id="container" style="margin: 10px; width: 1000px">
-    <div id="body">
+    <div id="serviceForm">
         <div id="tabs" style="height: 500px">
             <ul>
                 <li><a href="#tabs-1">Database Connection</a></li>
@@ -12,7 +12,7 @@
                             <h2 style="display: inline-block; vertical-align: top; margin-top: 6px;">1.</h2>
                             <div style="display: inline-block">
                                 <label for="source" style="text-align: left;">Select source</label><br />
-                                <select id="source"></select>
+                                <select id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
                                 <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource">...</button>
                                 <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
                             </div>
@@ -24,15 +24,15 @@
                                     <label style="float: left; text-align: left;" for="source">Select action</label>
                                     <span style="float: right">
                                         <img src="images/search.png" alt="Search" width="16" height="16" class="icon" />
-                                        <input tabindex="1" maxlength="20" type="text" name="searchActionTerm" id="searchActionTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: searchActionTerm, valueUpdate: 'afterkeydown'" />
+                                        <input tabindex="1" maxlength="20" type="text" name="sourceActionSearchTerm" id="sourceActionSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceActionSearchTerm, valueUpdate: 'afterkeydown'" />
                                     </span>
                                 </div>
 
                                 <div id="sourceActionsScrollBox" class="scrollable" style="height: 275px; width: 420px">
-                                    <ol class="selectable" id="sourceActions" data-bind="foreach: searchSourceActions">
-                                        <li class="selectable">
-                                            <span style="margin-left: 0.5em" data-bind="html: $data"></span>
-                                        </li>
+                                    <ol class="selectable" id="sourceActions" data-bind="foreach: sourceActionSearchResults">
+                                        <li class="selectable" >
+                                            <span style="margin-left: 0.5em" data-bind="text: Name"></span>
+                                        </li><!--data-bind="click: $parent.selectAction($data)"-->
                                     </ol>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                         <div style="display: inline-block">
                             <label style="text-align: left;">Test</label><br />
                             <div class="button-bar" style="display: inline-block">
-                                <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: test">Test</button>
+                                <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction">Test</button>
                             </div>
                         </div>
                     </div>
@@ -55,19 +55,22 @@
             </div>
         </div>
         <div class="button-bar">
-            <button tabindex="7" type="submit" name="ok" id="okButton">Ok</button>
+            <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save">Ok</button>
             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
     </div>
-
 </div>
 
-
+<script src="Scripts/Sources/ServiceViewModel.js"></script>
 <script type="text/javascript">
     $(function () {
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
         $("#tabs").tabs();
+
+        var serviceViewModel = new SerivceViewModel("{8A49D826-0B3E-4DB5-8D01-490A75A1B698}", "SqlDatabase");
+
+        ko.applyBindings(serviceViewModel, document.getElementById("serviceForm"));
     });
 
 </script>

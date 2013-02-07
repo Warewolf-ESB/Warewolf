@@ -36,20 +36,20 @@
         var $errDiv = $("#saveFormError");
         var $errDivSpan = $("#saveFormError span");
         var $resourceFoldersScrollBox = $("#resourceFoldersScrollBox");
+        var $resourceFoldersScrollBoxHeight = 275;
+        var $resourceFolders = $("#resourceFolders");
         var $resourceName = $("#resourceName");
         var $newFolderDialog = $("#newFolderDialog");
         var $newFolderName = $("#newFolderName");
         
-        self.caseInsensitiveSort = function (left, right) { return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1); };
-
         self.data = viewModel.data;
         self.isEditing = viewModel.isEditing;
 
         $.post("Service/Resources/PathsAndNames" + window.location.search, self.data.resourceType(), function (result) {
             self.resourceFolders(result.Paths);
-            self.resourceFolders.sort(self.caseInsensitiveSort);
+            self.resourceFolders.sort(utils.caseInsensitiveSort);
             self.resourceNames(result.Names);
-            self.resourceNames.sort(self.caseInsensitiveSort);
+            self.resourceNames.sort(utils.caseInsensitiveSort);
         });
 
         self.resourceDescription = ko.computed(function () {
@@ -149,24 +149,9 @@
             }
         };
 
-        self.selectResourcePathElement = function ($li) {
-            $li.addClass("ui-selected").siblings().removeClass("ui-selected");
-        };
-
         self.selectFolder = function (folderName) {
-            // Find the element and select it.
-            var $span = $("li.selectable span:contains('" + folderName + "')");
-            var $li = $span.parent();
-            self.selectResourcePathElement($li);
-            $resourceFoldersScrollBox.scrollTo($li, 275);
+            utils.selectAndScrollToListItem(folderName, $resourceFoldersScrollBox, $resourceFoldersScrollBoxHeight);
         };
-
-        $("li.selectable").live("click", function () {
-            self.selectResourcePathElement($(this));
-            var path = ko.dataFor(this);
-            self.data.resourcePath(path);
-            self.validate();
-        });
 
         self.toggleValidationError = function ($elem, isValid) {
             if (isValid) {
@@ -259,6 +244,10 @@
             $saveButton.button("option", "disabled", !enabled);
         };
 
+        utils.registerSelectHandler($resourceFolders, function (selectedItem) {
+            self.data.resourcePath(selectedItem);
+            self.validate();
+        }); 
     };
 
     ko.applyBindings(new SaveViewModel(viewModel), document.getElementById("saveForm"));

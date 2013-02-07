@@ -3,10 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Layout</title>
-    <script src="Scripts/fx/jquery-1.7.1.min.js"></script>
-    <script src="Scripts/fx/jquery-1.7.1.intellisense.js"></script>
-    <script src="Scripts/fx/jquery-ui-1.8.20.min.js"></script>
+    <title>Home</title>
+    <script src="Scripts/fx/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/fx/jquery-ui-1.10.0.custom.min.js"></script>
     <script src="Scripts/fx/jquery.validate.min.js"></script>
     <script src="Scripts/fx/jquery.validate.unobtrusive.min.js"></script>
     <script src="Scripts/fx/jquery.Guid.js"></script>
@@ -14,49 +13,19 @@
     <script src="Scripts/fx/knockout-2.2.1.js"></script>
     <script src="Scripts/fx/modernizr-2.5.3.js"></script>
     <script src="Scripts/fx/placeMe-1.0.js"></script>
-    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    <script src="Scripts/dev2-globals.js"></script>
+    <script src="Scripts/dev2-jquery.js"></script>
+    <script src="Scripts/dev2-ko.js"></script>
+    <script src="Scripts/dev2-utils.js"></script>
+    <link href="Content/themes/redmond/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />  
+    <!--<link href="Content/themes/base/jquery-ui.css" rel="stylesheet" />-->
     <link href="Content/Site.css" rel="stylesheet" />
 	<style>
 		.ui-autocomplete-loading {
 			background: white url('Images/ajax-loader.gif') right center no-repeat;
 		}
 	</style>
-    <script>
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-            var regexS = "[\\?&]" + name + "=([^&#]*)";
-            var regex = new RegExp(regexS);
-            var results = regex.exec(window.location.search);
-            if (results == null) {
-                return "";
-            }
-            else {
-                return decodeURIComponent(results[1].replace(/\+/g, " "));
-            }
-        }       	
-        
-        function ShowValidationError(formID, errors, message) {
-            var errDiv = "#" + formID + " div.error";
-            var $errDiv = $(errDiv);
-
-            $errDiv.hide();
-            if (errors) {
-                if (!message) {
-                    message = errors == 1
-					    ? 'You missed 1 field. It has been highlighted below'
-					    : 'You missed ' + errors + ' fields. They have been highlighted below';
-                }
-                $(errDiv + " span").html(message);
-                $errDiv.show();
-            }
-        }
-        
-        function formValidator(form, validator) {
-            var errors = validator.numberOfInvalids();
-            ShowValidationError(form.target.id, errors);
-		}
-		
+    <script>		
         $(function () {
             // Remove default messages - we use a global validation handler
             jQuery.validator.messages.required = "";
@@ -71,23 +40,7 @@
                 if (e.keyCode == 27) {
                     window.close();
                 }
-            });
-            
-            // A filtered view of an observable array
-            //
-            // The filterByProperty function will become available 
-            // on all subsequently-created ko.observableArray instances
-            ko.observableArray.fn.filterByProperty = function(propName, matchValue) {
-                return ko.computed(function() {
-                    var allItems = this(), matchingItems = [];
-                    for (var i = 0; i < allItems.length; i++) {
-                        var current = allItems[i];
-                        if (ko.utils.unwrapObservable(current[propName]) === matchValue)
-                            matchingItems.push(current);
-                    }
-                    return matchingItems;
-                }, this);
-            };           
+            });            
         });
     </script>
 </head>

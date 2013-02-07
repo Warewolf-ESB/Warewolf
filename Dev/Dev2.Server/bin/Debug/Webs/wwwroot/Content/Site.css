@@ -163,6 +163,10 @@ h5, h6 {
 }
 
 
+.button-bar button {
+    min-width: 100px;
+}
+
 .field {
     margin-bottom: 7px;
 }

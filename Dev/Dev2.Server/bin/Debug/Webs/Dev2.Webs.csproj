@@ -152,6 +152,9 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\dev2-globals.js" />
+    <Content Include="wwwroot\Scripts\dev2-jquery.js" />
+    <Content Include="wwwroot\Scripts\dev2-ko.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.0.custom.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.mockjax.js" />
@@ -160,6 +163,7 @@
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServiceViewModel.js" />
+    <Content Include="wwwroot\Scripts\dev2-utils.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Sources\Service.htm" />
@@ -169,18 +173,10 @@
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
     <Content Include="wwwroot\Scripts\Switch\DropModel.js" />
     <None Include="wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery-1.7.1.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery-1.7.1.min.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery-ui-1.8.20.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery-ui-1.8.20.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.Guid.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.scrollTo-1.4.3.1.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery.unobtrusive-ajax.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.unobtrusive-ajax.min.js" />
-    <None Include="wwwroot\Scripts\fx\jquery.validate-vsdoc.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery.validate.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.validate.min.js" />
-    <Content Include="wwwroot\Scripts\fx\jquery.validate.unobtrusive.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.validate.unobtrusive.min.js" />
     <Content Include="wwwroot\Scripts\fx\modernizr-2.5.3.js" />
     <Content Include="wwwroot\Scripts\fx\placeMe-1.0.js" />
