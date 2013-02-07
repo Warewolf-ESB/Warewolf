@@ -39,6 +39,7 @@ using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 
 
 namespace Dev2.CodedUI.Tests
@@ -182,6 +183,25 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
+        // This test clicks the Explorer Tab.
+        [TestMethod]
+        public void ClickExplorerAndDoAFewThings()
+        {
+            UITestControl theTab = TabManagerUIMap.FindTabByName("someWorkflow");
+
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+
+            UITestControl theItem = ToolboxUIMap.FindToolboxItemByAutomationID("Calculate");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theItem, p);
+
+            UITestControl controlOnTheWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Calculate");
+            WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
+
+            WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(1,2)", "[[myResult]]");
+
+            RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
+        }
 
         // Comment
         [TestMethod]
@@ -3025,6 +3045,25 @@ namespace Dev2.CodedUI.Tests
         private OutputUIMap _outputUIMap;
 
         #endregion Output UI Map
+
+        #region VideoTest UI Map
+
+        public VideoTestUIMap VideoTestUIMap
+        {
+            get
+            {
+                if (_videoTestUIMap == null)
+                {
+                    _videoTestUIMap = new VideoTestUIMap();
+                }
+
+                return _videoTestUIMap;
+            }
+        }
+
+        private VideoTestUIMap _videoTestUIMap;
+
+        #endregion VideoTest UI Map
 
         #endregion UI Maps
     }

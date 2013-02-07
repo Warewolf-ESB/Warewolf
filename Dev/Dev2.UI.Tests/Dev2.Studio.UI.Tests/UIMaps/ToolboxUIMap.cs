@@ -23,12 +23,22 @@
             Mouse.Click(p);
         }
 
+        /// <summary>
+        /// Drags a control from the Toolbox to the Workflow
+        /// </summary>
+        /// <param name="theControl">The control to drag - UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationID("controlNameHere");</param>
+        /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
         public void DragControlToWorkflowDesigner(UITestControl theControl, Point p)
         {
             Mouse.StartDragging(theControl, MouseButtons.Left);
             Mouse.StopDragging(p);
         }
 
+        /// <summary>
+        /// Drags a control from the Toolbox to the Workflow
+        /// </summary>
+        /// <param name="controlID">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
+        /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
         public void DragControlToWorkflowDesigner(string controlID, Point p)
         {
             UITestControl theControl = FindToolboxItemByAutomationID(controlID);

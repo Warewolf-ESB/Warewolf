@@ -128,6 +128,12 @@
     <Compile Include="UIMaps\ToolboxUIMap.Designer.cs" />
     <Compile Include="UIMaps\VariablesUIMap.cs" />
     <Compile Include="UIMaps\VariablesUIMap.Designer.cs" />
+    <Compile Include="UIMaps\VideoTestUIMap.cs">
+      <DependentUpon>VideoTestUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\VideoTestUIMap.Designer.cs">
+      <DependentUpon>VideoTestUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\WebpageServiceWizardUIMap.cs" />
     <Compile Include="UIMaps\WebpageServiceWizardUIMap.Designer.cs" />
     <Compile Include="UIMaps\WorkflowDesignerUIMap.cs" />
@@ -155,6 +161,7 @@
     <None Include="UIMaps\TestUIMap.uitest" />
     <None Include="UIMaps\ToolboxUIMap.uitest" />
     <None Include="UIMaps\VariablesUIMap.uitest" />
+    <None Include="UIMaps\VideoTestUIMap.uitest" />
     <None Include="UIMaps\WebpageServiceWizardUIMap.uitest" />
     <None Include="UIMaps\WorkflowDesignerUIMap.uitest" />
     <None Include="UIMaps\WorkflowWizardUIMap.uitest" />

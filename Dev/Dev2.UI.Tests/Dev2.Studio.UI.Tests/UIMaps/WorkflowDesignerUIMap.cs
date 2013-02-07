@@ -16,6 +16,7 @@
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System.Linq;
     using System.Windows.Forms;
+    using System.Threading;
     
     public partial class WorkflowDesignerUIMap
     {
@@ -61,6 +62,7 @@
             }
             return null;
         }
+
         /// <summary>
         /// Finds the Start Node on a given tab
         /// </summary>
@@ -275,7 +277,25 @@
             return theControl.FriendlyName;
         }
 
-        //public void SetStartNode(
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <param name="controlAutomationID">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
+        public void SetStartNode(UITestControl theTab, string controlAutomationID)
+        {
+            UITestControl theControl = FindControlByAutomationID(theTab, controlAutomationID);
+            Point pointAtTopOfControl = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, pointAtTopOfControl);
+
+            System.Threading.Thread.Sleep(500);
+            SendKeys.SendWait("{UP}");
+            System.Threading.Thread.Sleep(500);
+            SendKeys.SendWait("{UP}");
+            System.Threading.Thread.Sleep(500);
+            SendKeys.SendWait("{ENTER}");
+            System.Threading.Thread.Sleep(500);
+        }
 
         #region Assign Control
 
@@ -312,6 +332,35 @@
         }
 
         #endregion Assign Control
+
+        #region Calculate Control
+
+        /// <summary>
+        /// Enter some data into a Calculate control
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <param name="calculateControlTitle">The title of the Calculate control on the workflow</param>
+        /// <param name="function">The value to input into the top (function / fx) textbox</param>
+        /// <param name="result">The value to enter into the bottom (Result) textbox</param>
+        public void CalculateControl_EnterData(UITestControl theTab, string calculateControlTitle, string function, string result)
+        {
+            UITestControl calculateControl = FindControlByAutomationID(theTab, calculateControlTitle);
+
+            // Click
+            Point controlPoint = new Point(calculateControl.BoundingRectangle.X + 100, calculateControl.BoundingRectangle.Y + 50);
+            Mouse.Click(controlPoint);
+
+            // Enter data
+            Thread.Sleep(500);
+            SendKeys.SendWait(function.Replace("(", "{(}").Replace(")", "{)}"));
+            Thread.Sleep(500);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(500);
+            SendKeys.SendWait(result.Replace("(", "{(}").Replace(")", "{)}"));
+            Thread.Sleep(500);
+        }
+
+        #endregion Calculate Control
 
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)
