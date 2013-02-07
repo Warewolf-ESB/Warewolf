@@ -314,18 +314,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         // Travis.Frisinger - Only do this if there is data present, else leave it as it is
 
-                        // TODO : Internal Object will not have data, we just need to expose this fact!
-
+                        // Internal Object will not have data, we just need to expose this fact!
+                        // Bug 8725
                         if(!_internalObj.IsEmtpy())
                         {
                             IList<IBinaryDataListItem> items = _internalObj[next];
                             IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
+                            // Bug 8725
                             if(items != null)
                             {
-                                foreach(IBinaryDataListItem itm in items)
-                                {
-                                    clone.Add(itm.Clone());
-                                }
+                            foreach(IBinaryDataListItem itm in items)
+                            {
+                                clone.Add(itm.Clone());
+                            }
                             }
 
                             // now push back clone
@@ -732,9 +733,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             int lastRowIndex = FetchLastRecordsetIndex();
 
+            // Bug 8725
             if(!_internalObj.IsEmtpy())
             {
-                _internalObj.Remove(lastRowIndex);
+            _internalObj.Remove(lastRowIndex);
             }
 
             return true;
