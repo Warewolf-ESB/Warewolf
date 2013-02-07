@@ -127,7 +127,10 @@ namespace Dev2.Data.Binary_Objects
 
         public bool Remove(int key)
         {
-            this[key] = null;
+            if(_populatedKeys.Contains(key))
+            {
+                this[key] = null;
+            }
 
             return true;
         }

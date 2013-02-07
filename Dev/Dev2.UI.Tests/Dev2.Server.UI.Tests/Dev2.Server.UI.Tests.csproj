@@ -66,10 +66,17 @@
     <Compile Include="UIMap.Designer.cs" />
     <Compile Include="UIMaps\DatePickerWizardUIMap.cs" />
     <Compile Include="UIMaps\DatePickerWizardUIMap.Designer.cs" />
+    <Compile Include="UIMaps\TestUIMapTrav.cs">
+      <DependentUpon>TestUIMapTrav.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\TestUIMapTrav.Designer.cs">
+      <DependentUpon>TestUIMapTrav.uitest</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="UIMap.uitest" />
     <None Include="UIMaps\DatePickerWizardUIMap.uitest" />
+    <None Include="UIMaps\TestUIMapTrav.uitest" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

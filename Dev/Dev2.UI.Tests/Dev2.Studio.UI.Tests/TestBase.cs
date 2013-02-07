@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
+using Dev2.Server.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -170,6 +171,13 @@ namespace Dev2.CodedUI.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void TravsRandomTestMethod()
+        {
+            TestUIMapTrav.RunMyTest(); 
+        }
+
         // Comment
         [TestMethod]
         public void ThisMethodIsForTestingRandomTestFragments()
@@ -2625,6 +2633,31 @@ namespace Dev2.CodedUI.Tests
         private TestContext testContextInstance;
 
         #region UI Maps
+
+        #region TravTEst
+
+        public TestUIMapTrav TestUIMapTrav 
+        {
+            
+            get
+            {
+                if(_travMap == null)
+                {
+                    _travMap = new TestUIMapTrav();
+                }
+
+                return _travMap;
+            }
+
+            set
+            {
+                _travMap = value;
+            }
+        }
+
+        private TestUIMapTrav _travMap;
+
+        #endregion
 
         #region Base UI Map
 

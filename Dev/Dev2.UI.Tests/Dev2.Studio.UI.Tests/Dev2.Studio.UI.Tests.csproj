@@ -155,6 +155,12 @@
   <ItemGroup>
     <Folder Include="Binaries\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Server.UI.Tests\Dev2.Server.UI.Tests.csproj">
+      <Project>{A29057CF-14FE-4E0D-A016-365CA5B85CC8}</Project>
+      <Name>Dev2.Server.UI.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

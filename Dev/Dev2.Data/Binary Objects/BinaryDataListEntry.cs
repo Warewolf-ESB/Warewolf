@@ -320,9 +320,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         {
                             IList<IBinaryDataListItem> items = _internalObj[next];
                             IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
-                            foreach(IBinaryDataListItem itm in items)
+                            if(items != null)
                             {
-                                clone.Add(itm.Clone());
+                                foreach(IBinaryDataListItem itm in items)
+                                {
+                                    clone.Add(itm.Clone());
+                                }
                             }
 
                             // now push back clone
@@ -670,26 +673,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public bool IsEmpty()
         {
-            //bool result = false;
-
-            //if (IsRecordset)
-            //{
-            //    if (FetchAppendRecordsetIndex() == 1)
-            //    {
-            //        result = true;
-            //    }
-            //}
-            //else
-            //{
-            //    // scalar processing
-            //    if (FetchScalar().TheValue == string.Empty)
-            //    {
-            //        result = true;
-            //    }
-            //}
-
-            //return result;
-
             return _internalObj.IsEmtpy();
         }
 
@@ -749,7 +732,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             int lastRowIndex = FetchLastRecordsetIndex();
 
-            _internalObj.Remove(lastRowIndex);
+            if(!_internalObj.IsEmtpy())
+            {
+                _internalObj.Remove(lastRowIndex);
+            }
 
             return true;
         }

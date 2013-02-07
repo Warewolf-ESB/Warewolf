@@ -65,27 +65,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
-            Guid executionId = DataListExecutionID.Get(context);
+            Guid executionID = dataObject.DataListID;
+            
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             try
             {
-                IBinaryDataListEntry entry = compiler.Evaluate(executionId, enActionType.Internal, RecordsetName, false, out errors);
+                IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, RecordsetName, false, out errors);
                 allErrors.MergeErrors(errors);
                 //Guid parentId = compiler.FetchParentID(executionId);
-                compiler.Upsert(executionId, Result, entry.FetchScalar().TheValue, out errors);
+                compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
                 allErrors.MergeErrors(errors);
-                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                allErrors.MergeErrors(errors);
+
             }
             finally
             {
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
+                    DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
