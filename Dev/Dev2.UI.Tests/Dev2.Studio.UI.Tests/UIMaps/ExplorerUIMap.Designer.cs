@@ -30,6 +30,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class ExplorerUIMap
     {
+        /// <summary>
+        /// Clicks the Refresh button on the Explorer Tab, and waits for it to complete. You will probably need to use DocManagerUIMap.ClickOpenTabPage("Explorer"); before doing this.
+        /// </summary>
         public void DoRefresh()
         {
             // Find the explorer main window

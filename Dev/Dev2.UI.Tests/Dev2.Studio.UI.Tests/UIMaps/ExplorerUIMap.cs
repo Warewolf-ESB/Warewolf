@@ -111,6 +111,13 @@
             System.Threading.Thread.Sleep(100);
         }
 
+        /// <summary>
+        /// Navigates to a Workflow Item in the Explorer, Right Clicks it, and clicks Properties
+        /// </summary>
+        /// <param name="serverName">The name of the server (EG: localhost)</param>
+        /// <param name="serviceType">The name of the service (EG: WORKFLOWS)</param>
+        /// <param name="folderName">The name of the folder (AKA: Category - EG: BARNEY (Or CODEDUITESTCATEGORY for the CodedUI Test Default))</param>
+        /// <param name="projectName">The name of the project (EG: MyWorkflow)</param>
         public void RightClickProperties(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
@@ -212,6 +219,14 @@
             Keyboard.SendKeys("{Enter}");
         }
 
+        /// <summary>
+        /// Gets the Service as a UITestControl object
+        /// </summary>
+        /// <param name="serverName">The name of the server (EG: localhost)</param>
+        /// <param name="serviceType">The name of the service (EG: WORKFLOWS)</param>
+        /// <param name="folderName">The name of the folder (AKA: Category - EG: BARNEY (Or CODEDUITESTCATEGORY for the CodedUI Test Default))</param>
+        /// <param name="projectName">The name of the project (EG: MyWorkflow)</param>
+        /// <returns>A UITestControl object</returns>
         public UITestControl GetService(string serverName, string serviceType, string folderName, string serviceName) {
             UITestControl service = GetServiceItem(serverName, serviceType, folderName, serviceName);
             return service;

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
-using Dev2.Server.UI.Tests.UIMaps;
+
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -80,29 +80,38 @@ namespace Dev2.CodedUI.Tests
                 // Some PC's don't have this value - We have to assume they only have IE :(
             }
 
-            try
-            {
-                // Make sure no instances of IE are running (For Bug Test crashes)
-                ExternalUIMap.CloseAllInstancesOfIE();
-            }
-            catch
-            {
-                throw new Exception("Error - Cannot close all instances of IE!");
-            }
-
-            // Set focus to the Studio
+            // Set focus to the Studio (So your Coded UI Test doesn't start doing stuff on your actual screen)
             WpfWindow theWindow = new WpfWindow();
             theWindow.WindowTitles.Add(GetStudioWindowName());
+            theWindow.Find();
             theWindow.SetFocus();
 
-            bool toCheck = false;   // Disable this if you don't want the pre-test validation to occur.
+
+            // Disable this if you don't want the pre-test validation to occur.
+            // If it's set to true it closes all open tabs, and all instances of IE before each test is run
+            // Whilst debugging a Coded UI Test, you might want to keep the Workflow Designer as is
+            // In this case, you should set it to false
+            bool toCheck = false;   
+
+            // On the test box, all test initialisations should always run
             if (GetStudioWindowName().Contains("IntegrationTester"))
             {
                 toCheck = true;
             }
+
             // Useful when creating / debugging tests
             if (toCheck)
             {
+                try
+                {
+                    // Make sure no instances of IE are running (For Bug Test crashes)
+                    ExternalUIMap.CloseAllInstancesOfIE();
+                }
+                catch
+                {
+                    throw new Exception("Error - Cannot close all instances of IE!");
+                }
+
                 // Make sure the Server has started
                 try
                 {
@@ -173,11 +182,6 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
-        [TestMethod]
-        public void TravsRandomTestMethod()
-        {
-            TestUIMapTrav.RunMyTest(); 
-        }
 
         // Comment
         [TestMethod]
@@ -2540,6 +2544,13 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
+        /// <summary>
+        /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="category"></param>
+        /// <param name="workflowName"></param>
         public void DoCleanup(string server, string serviceType, string category, string workflowName)
         {
             // Test complete - Delete itself
@@ -2634,31 +2645,6 @@ namespace Dev2.CodedUI.Tests
         private TestContext testContextInstance;
 
         #region UI Maps
-
-        #region TravTEst
-
-        public TestUIMapTrav TestUIMapTrav 
-        {
-            
-            get
-            {
-                if(_travMap == null)
-                {
-                    _travMap = new TestUIMapTrav();
-                }
-
-                return _travMap;
-            }
-
-            set
-            {
-                _travMap = value;
-            }
-        }
-
-        private TestUIMapTrav _travMap;
-
-        #endregion
 
         #region Base UI Map
 

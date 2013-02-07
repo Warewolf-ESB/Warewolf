@@ -14,6 +14,7 @@
     using MouseButtons = System.Windows.Forms.MouseButtons;
     using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Windows.Forms;
     
     
     public partial class WorkflowWizardUIMap
@@ -64,15 +65,20 @@
             // Click 'Service Details' window
             Mouse.Click(toClick);
 
+            // Clear any existing Category
+            Mouse.DoubleClick();
+            SendKeys.SendWait("{DELETE}");
+
             // Type 'CodedUITestCategory' in 'Service Details' window
             Keyboard.SendKeys(uIServiceDetailsWindow1, categoryName, ModifierKeys.None);
         }
 
 
         /// <summary>
-        /// DoneButtonClick
+        /// Click the "Done" button on the Workflow Service Details Wizard
         /// </summary>
-        public void DoneButtonClick() {
+        public void DoneButtonClick()
+        {
             #region Variable Declarations
             WinWindow uIServiceDetailsWindow1 = this.UIWorkflowServiceDetaiWindow1;
             #endregion

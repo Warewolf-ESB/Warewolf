@@ -17,6 +17,10 @@
     
     public partial class DocManagerUIMap
     {
+        /// <summary>
+        /// Clicks open one of the DocManager tabs
+        /// </summary>
+        /// <param name="tabName">The name of the tab (EG: Explorer, Toolbox, Variables, Output, etc)</param>
         public void ClickOpenTabPage(string tabName)
         {
             WpfTabPage theTab = FindTabPage(tabName);

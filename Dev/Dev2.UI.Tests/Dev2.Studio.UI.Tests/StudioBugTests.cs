@@ -765,6 +765,37 @@ namespace Dev2.CodedUI.Tests
 
         }
 
+        // Bug 8553
+        [TestMethod]
+        public void ChangeAWorkflowsCategory_Expected_CategoryRemainsChagned()
+        {
+            // Create a sample workflow
+            myTestBase.CreateCustomWorkflow("Bug8553");
+
+            // Open its properties
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.RightClickProperties("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8553");
+
+            // And change its category
+            WorkflowWizardUIMap.EnterWorkflowCategory("ABCCATEGORY");
+            WorkflowWizardUIMap.DoneButtonClick();
+
+            // Refresh the treeview
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.DoRefresh();
+
+            // See if the movement has persisted
+            try
+            {
+                UITestControl theService = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "ABCCATEGORY", "Bug8553");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("The workflow did not maintain its category move!");
+            }
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "ABCCATEGORY", "Bug8553");
+        }
+
         // Bug 8596
         [TestMethod]
         public void RightClickCategory_Expected_ItemFocused()
@@ -882,6 +913,7 @@ namespace Dev2.CodedUI.Tests
             // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
             Assert.IsTrue(myTestBase.OutputUIMap.DoesBug8747Pass());
         }
+
         private int GetInstanceUnderParent(UITestControl control)
         {
             UITestControl parent = control.GetParent();
