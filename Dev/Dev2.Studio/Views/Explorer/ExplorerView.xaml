@@ -62,6 +62,7 @@
                     <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="Background" Value="White" />
                     <Setter Property="FontWeight" Value="Normal" />
                     <Setter Property="AutomationProperties.AutomationId" Value="{Binding Path=DataContext.DisplayName,RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}"/>
                     <Style.Triggers>
@@ -76,13 +77,9 @@
             </NavigationViews:NavigationView.ItemContainerStyle>
             <NavigationViews:NavigationView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
-                    
-                    <StackPanel Orientation="Horizontal" AllowDrop="True">                       
-                        <i:Interaction.Behaviors>
-                            <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True" SelectOnClick="True" />
-                            <local:NavigationItemViewModelDragDropBehavior />
-                        </i:Interaction.Behaviors>
-                        <StackPanel.ContextMenu>
+
+                    <Border IsHitTestVisible="True" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Border.ContextMenu>
                             <ContextMenu Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}">
                                 <ContextMenu.Resources>
                                     <Style TargetType="{x:Type MenuItem}">
@@ -110,15 +107,22 @@
 
                                 <MenuItem Header="Properties" Command="{Binding ShowPropertiesCommand}" Visibility="{Binding CanShowProperties, Converter={StaticResource BoolToVisConverter}}" />
                             </ContextMenu>
-                        </StackPanel.ContextMenu>
-                        <Image Width="24" Height="24" Margin="3,0" Source="{Binding ., Converter={StaticResource NavigationViewModelToImageConverter}}" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding DisplayName}" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
-                            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                        </Border.ContextMenu>
+                        <StackPanel Orientation="Horizontal" AllowDrop="True">                       
+                            <i:Interaction.Behaviors>
+                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True" SelectOnClick="True" />
+                                <local:NavigationItemViewModelDragDropBehavior />
+                            </i:Interaction.Behaviors>
+                        
+                            <Image Width="24" Height="24" Margin="3,0,0,0" Source="{Binding ., Converter={StaticResource NavigationViewModelToImageConverter}}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
+                                <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </Border>
                 </HierarchicalDataTemplate>
 
             </NavigationViews:NavigationView.ItemTemplate>           
