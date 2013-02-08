@@ -47,6 +47,21 @@
             return true;
         }
 
+        public void ClickClose()
+        {
+            // Base control
+            UITestControl theControl = this.UIBusinessDesignStudioWindow.UIDebugOutputCustom;
+            theControl.Find();
+            
+            // Sub button
+            UITestControl closeBtn = new UITestControl(theControl);
+            closeBtn.SearchProperties.Add("AutomationId", "closeBtn");
+            closeBtn.Find();
+
+            // The clicking is a bit slow for some reason - Need to investigate
+            Mouse.Click(closeBtn);
+        }
+
         private UITestControlCollection GetWorkflowSteps(UITestControl theWorkflow)
         {
             UITestControl stepSearcher = new UITestControl(theWorkflow);

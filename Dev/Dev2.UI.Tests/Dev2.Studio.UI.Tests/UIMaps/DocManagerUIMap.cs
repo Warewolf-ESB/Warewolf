@@ -26,5 +26,12 @@
             WpfTabPage theTab = FindTabPage(tabName);
             Mouse.Click(theTab, new Point(5, 5));
         }
+
+        public bool DoesTabExist(string tabName)
+        {
+            WpfTabPage theTab = FindTabPage(tabName);
+            Point p = new Point();
+            return (theTab.TryGetClickablePoint(out p));
+        }
     }
 }

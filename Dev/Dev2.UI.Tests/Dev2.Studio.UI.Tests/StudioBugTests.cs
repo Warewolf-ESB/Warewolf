@@ -826,6 +826,20 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
+        // Bug 8598
+        [TestMethod]
+        public void ClickOutputTabClose_Expected_TabStaysOpen()
+        {
+            // Open the tab
+            DocManagerUIMap.ClickOpenTabPage("Output");
+
+            // Click the close button
+            myTestBase.OutputUIMap.ClickClose();
+
+            // Make sure the tab is still there
+            Assert.IsTrue(DocManagerUIMap.DoesTabExist("Output"));
+        }
+
         // Bug 8604
         [TestMethod]
         public void OpenDecisionWindowMultipleTimes_Expected_OpensInSamePosition()
@@ -913,6 +927,8 @@ namespace Dev2.CodedUI.Tests
             // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
             Assert.IsTrue(myTestBase.OutputUIMap.DoesBug8747Pass());
         }
+
+        
 
         private int GetInstanceUnderParent(UITestControl control)
         {
