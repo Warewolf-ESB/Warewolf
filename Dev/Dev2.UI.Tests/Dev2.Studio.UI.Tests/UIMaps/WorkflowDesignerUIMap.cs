@@ -311,6 +311,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         #endregion Assign Control
 
+        #region BaseConvert Control
+
+        public int BaseConvert_GetDDLHeight(UITestControl theTab, string baseConvertControlTitle)
+        {
+            UITestControl baseConvertControl = FindControlByAutomationId(theTab, baseConvertControlTitle);
+            WpfComboBox theComboBox = (WpfComboBox)baseConvertControl.GetChildren()[2].GetChildren()[0].GetChildren()[3].GetChildren()[0];
+            return theComboBox.Height;
+        }
+
+        #endregion BaseConvert Control
+
         #region Calculate Control
 
         /// <summary>
@@ -358,6 +369,20 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         }
 
         #endregion
+
+        #region Sort Control
+
+        public int Sort_GetDDLHeight(UITestControl theTab, string sortControlTitle)
+        {
+            UITestControl sortControl = FindControlByAutomationId(theTab, sortControlTitle);
+
+            // The specific layout for the Text combo box
+            WpfComboBox theComboBox = (WpfComboBox)sortControl.GetChildren()[5];
+            
+            return theComboBox.Height;
+        }
+
+        #endregion Sort Control
 
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)

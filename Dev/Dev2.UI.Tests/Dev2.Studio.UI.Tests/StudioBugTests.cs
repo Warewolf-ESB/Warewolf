@@ -240,8 +240,7 @@ namespace Dev2.Studio.UI.Tests
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
             // Create the Workflow
-            var testBase = new TestBase();
-            testBase.CreateCustomWorkflow("6501");
+            myTestBase.CreateCustomWorkflow("6501");
 
             // Set some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("6501");
@@ -262,15 +261,15 @@ namespace Dev2.Studio.UI.Tests
             // Click the index
             p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{UP}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{UP}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{RIGHT}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             // Try type some data
             p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
@@ -288,7 +287,7 @@ namespace Dev2.Studio.UI.Tests
             }
 
             // Cleanup! \o/
-            testBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6501");
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6501");
         }
 
         // Bug 6617
@@ -629,15 +628,15 @@ namespace Dev2.Studio.UI.Tests
 
             // Values :D
             WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("[[someVal]]");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("12345");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             // Map them
             DocManagerUIMap.ClickOpenTabPage("Variables");
@@ -646,11 +645,11 @@ namespace Dev2.Studio.UI.Tests
             // Actual test time :D
             WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("[[");
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             UITestControl theItem = WorkflowDesignerUIMap.GetIntellisenseItem(0);
             Mouse.Move(theItem, new Point(10, 10));
             Mouse.Click();
@@ -658,11 +657,11 @@ namespace Dev2.Studio.UI.Tests
             // Item should be populated - Time to check!
             WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{END}"); // Get to the end of the item
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
             // Just to make sure it wasn't already copied before the test
             Clipboard.SetText("someRandomText");
@@ -720,7 +719,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void DataSplit_WithCopyPastedTabs_Expected_SplitByTab()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7842", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("7842");
             UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -745,7 +743,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Create tabs in notepad for dataplit
             System.Diagnostics.Process.Start("notepad.exe");
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
             Keyboard.SendKeys("Ithoughtthiswas	allihad	tosplit");
             Keyboard.SendKeys("^A");
             Keyboard.SendKeys("^C");
@@ -757,7 +755,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Click "View in Browser"
             RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
 
             // Check if the IE Body contains the data list item
             string ieText = ExternalUIMap.GetIEBodyText();
@@ -771,6 +769,34 @@ namespace Dev2.Studio.UI.Tests
 
             // And do cleanup
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7842");
+
+        }
+
+        // Bug 8408
+        [TestMethod]
+        public void SortToolAndBaseConvertDropDownListsMatch()
+        {
+            // Create the Workflow
+            myTestBase.CreateCustomWorkflow("Bug8408");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8408");
+
+            // Get a reference point to start dragging
+            Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+
+            // Drag the controls on
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("SortRecords", thePoint);
+
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("BaseConvert", new Point(thePoint.X, thePoint.Y + 100));
+
+            int sortControlHeight = WorkflowDesignerUIMap.Sort_GetDDLHeight(theTab, "SortRecords");
+            int baseConvertHeight = WorkflowDesignerUIMap.BaseConvert_GetDDLHeight(theTab, "Base Conversion");
+
+            Assert.AreEqual(sortControlHeight, baseConvertHeight, "The height of the DDL's on the Sort Control and Base Convert control are different!");
+
+            // Cleanup
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8408");
 
         }
 
