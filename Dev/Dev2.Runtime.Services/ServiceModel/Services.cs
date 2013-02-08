@@ -13,14 +13,15 @@ namespace Dev2.Runtime.ServiceModel
     {
         #region Get
 
+        // POST: Service/Services/Get
         public Service Get(string args, Guid workspaceID, Guid dataListID)
         {
-            dynamic argsObj = JObject.Parse(args);
-            enSourceType resourceType = ParseResourceType(argsObj);
-
-            var result = new Service { ResourceID = Guid.Empty, ResourceType = resourceType };
+            var result = new Service { ResourceID = Guid.Empty, ResourceType = enSourceType.SqlDatabase };
             try
             {
+                dynamic argsObj = JObject.Parse(args);
+
+                var resourceType = Resources.ParseResourceType(argsObj.resourceType.Value);
                 var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
@@ -37,29 +38,10 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Sources
+        #region Methods
 
-        public string Sources(string args, Guid workspaceID, Guid dataListID)
-        {
-            dynamic argsObj = JObject.Parse(args);
-
-            try
-            {
-                var resources = Resources.Read(workspaceID, ParseResourceType(argsObj));
-                return JsonConvert.SerializeObject(resources);
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
-            }
-        }
-
-        #endregion
-
-        #region Actions
-
-        public string Actions(string args, Guid workspaceID, Guid dataListID)
+        // POST: Service/Services/Methods
+        public string Methods(string args, Guid workspaceID, Guid dataListID)
         {
             try
             {
@@ -90,6 +72,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Save
 
+        // POST: Service/Services/Save
         public string Save(string args, Guid workspaceID, Guid dataListID)
         {
             try
@@ -110,20 +93,5 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
-        #region ParseResourceType
-
-        static enSourceType ParseResourceType(dynamic jsonObj)
-        {
-            enSourceType resourceType;
-            if(!Enum.TryParse(jsonObj.resourceType.Value, out resourceType))
-            {
-                resourceType = enSourceType.SqlDatabase;
-            }
-            return resourceType;
-        }
-
-        #endregion
-
     }
 }

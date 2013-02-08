@@ -19,6 +19,7 @@ namespace Dev2.Runtime.ServiceModel
     {
         #region Get
 
+        // POST: Service/Connections/Get
         public Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
         {
             var result = new Connection { ResourceID = Guid.Empty, ResourceType = enSourceType.Dev2Server, WebServerPort = Connection.DefaultWebServerPort };
@@ -42,6 +43,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Save
 
+        // POST: Service/Connections/Save
         public string Save(string args, Guid workspaceID, Guid dataListID)
         {
             try
@@ -65,6 +67,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Search
 
+        // POST: Service/Connections/Search
         public string Search(string term, Guid workspaceID, Guid dataListID)
         {
             var root = new DirectoryEntry("WinNT:");
@@ -84,6 +87,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Test
 
+        // POST: Service/Connections/Test
         public ValidationResult Test(string args, Guid workspaceID, Guid dataListID)
         {
             var result = new ValidationResult

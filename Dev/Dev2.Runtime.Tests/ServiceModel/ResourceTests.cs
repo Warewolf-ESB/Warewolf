@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
-    public class ResourceTests
+    public class ResourcesTests
     {
 
         [ClassInitialize]
@@ -165,5 +165,27 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #endregion
+
+
+        #region Sources
+
+        [TestMethod]
+        public void SourcesWithNullArgsExpectedReturnsEmptyList()
+        {
+            var services = new Resources();
+            var result = services.Sources(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void SourcesWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var services = new Resources();
+            var result = services.Sources("xxxx", Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
     }
 }

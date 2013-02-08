@@ -8,6 +8,7 @@ namespace Dev2.Runtime.ServiceModel
     {
         #region GetDictionary
 
+        // POST: Service/Help/GetDictionary
         public HelpDictionary GetDictionary(string dictionaryID, Guid workspaceID, Guid dataListID)
         {
             var result = new HelpDictionary();

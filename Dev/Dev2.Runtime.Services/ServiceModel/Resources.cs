@@ -11,14 +11,15 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
     public class Resources : ExceptionManager
     {
-        #region RootFolders/Elements
+        #region Static RootFolders/Elements
 
-        internal static volatile Dictionary<enSourceType, string> RootFolders = new Dictionary<enSourceType, string>
+        public static volatile Dictionary<enSourceType, string> RootFolders = new Dictionary<enSourceType, string>
         {
             { enSourceType.SqlDatabase, "Sources" },
             { enSourceType.MySqlDatabase, "Sources" },
@@ -44,8 +45,29 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        #region Sources
+
+        // POST: Service/Resources/Sources
+        public ResourceList Sources(string args, Guid workspaceID, Guid dataListID)
+        {
+            var result = new ResourceList();
+            try
+            {
+                dynamic argsObj = JObject.Parse(args);
+                result = Read(workspaceID, ParseResourceType(argsObj.resourceType.Value));
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+            }
+            return result;
+        }
+
+        #endregion
+
         #region PathsAndNames
 
+        // POST: Service/Resources/PathsAndNames
         public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
         {
             var sourceType = (enSourceType)Enum.Parse(typeof(enSourceType), args);
@@ -80,6 +102,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Paths
 
+        // POST: Service/Resources/Paths
         public string Paths(string args, Guid workspaceID, Guid dataListID)
         {
             var result = new SortedSet<string>(new CaseInsensitiveStringComparer());
@@ -100,11 +123,16 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+
+        /////////////////////////////////////////////////////////////////
+        // Static Helper methods
+        /////////////////////////////////////////////////////////////////
+
         #region Read
 
-        public static List<Resource> Read(Guid workspaceID, enSourceType resourceType)
+        public static ResourceList Read(Guid workspaceID, enSourceType resourceType)
         {
-            var resources = new List<Resource>();
+            var resources = new ResourceList();
             var resourceTypeStr = resourceType.ToString();
 
             ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
@@ -151,7 +179,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string ReadXml(Guid workspaceID, enSourceType resourceType, string resourceID)
         {
-            var result = string.Empty;
+            var result = String.Empty;
 
             ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
             {
@@ -193,23 +221,37 @@ namespace Dev2.Runtime.ServiceModel
                 Directory.CreateDirectory(directoryName);
             }
 
-            var versionDirectory = string.Format("{0}\\{1}", directoryName, "VersionControl");
+            var versionDirectory = String.Format("{0}\\{1}", directoryName, "VersionControl");
             if(!Directory.Exists(versionDirectory))
             {
                 Directory.CreateDirectory(versionDirectory);
             }
 
-            var fileName = string.Format("{0}\\{1}.xml", directoryName, resourceName);
+            var fileName = String.Format("{0}\\{1}.xml", directoryName, resourceName);
 
             if(File.Exists(fileName))
             {
-                var count = Directory.GetFiles(versionDirectory, string.Format("{0}*.xml", resourceName)).Count();
+                var count = Directory.GetFiles(versionDirectory, String.Format("{0}*.xml", resourceName)).Count();
 
-                File.Copy(fileName, string.Format("{0}\\{1}.V{2}.xml", versionDirectory, resourceName, (count + 1).ToString(CultureInfo.InvariantCulture)), true);
+                File.Copy(fileName, String.Format("{0}\\{1}.V{2}.xml", versionDirectory, resourceName, (count + 1).ToString(CultureInfo.InvariantCulture)), true);
             }
 
             var signedXml = HostSecurityProvider.Instance.SignXml(resourceXml);
             File.WriteAllText(fileName, signedXml, Encoding.UTF8);
+        }
+
+        #endregion
+
+        #region ParseResourceType
+
+        internal static enSourceType ParseResourceType(string resourceTypeStr)
+        {
+            enSourceType resourceType;
+            if(!Enum.TryParse(resourceTypeStr, out resourceType))
+            {
+                resourceType = enSourceType.SqlDatabase;
+            }
+            return resourceType;
         }
 
         #endregion
