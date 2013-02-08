@@ -482,8 +482,8 @@ namespace Dev2.Studio.UI.Tests
         public void CopyTabIntoBaseConvert_Expected_TabIsCopied()
         {
             // Create the Workflow
-            //myTestBase.CreateCustomWorkflow("Bug7842");
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug7842");
+            myTestBase.CreateCustomWorkflow("Bug7842");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("c");
             Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 
             // Drag a DataSplit onto it
@@ -501,6 +501,8 @@ namespace Dev2.Studio.UI.Tests
             string inputText = WorkflowDesignerUIMap.DataSplit_GetTextFromStringToSplit(theTab, "Data Split");
 
             StringAssert.Contains(inputText, textWithTab);
+
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug7842");
 
         }
 

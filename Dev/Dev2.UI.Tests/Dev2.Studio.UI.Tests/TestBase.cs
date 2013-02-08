@@ -2552,10 +2552,10 @@ namespace Dev2.CodedUI.Tests
         /// <summary>
         /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
         /// </summary>
-        /// <param name="server"></param>
-        /// <param name="serviceType"></param>
-        /// <param name="category"></param>
-        /// <param name="workflowName"></param>
+        /// <param name="server">The servername (EG: localhost)</param>
+        /// <param name="serviceType">The Service Type (Eg: WORKFLOWS)</param>
+        /// <param name="category">The Category(EG: CODEDUITESTCATEGORY)</param>
+        /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
         public void DoCleanup(string server, string serviceType, string category, string workflowName)
         {
             // Test complete - Delete itself
