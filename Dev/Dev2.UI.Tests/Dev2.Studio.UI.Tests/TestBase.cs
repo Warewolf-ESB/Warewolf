@@ -489,7 +489,7 @@ namespace Dev2.CodedUI.Tests
         {
             CreateCustomWorkflow("5378Point1", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5378Point1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 150);
@@ -508,7 +508,7 @@ namespace Dev2.CodedUI.Tests
             int adornerInputsBefore = WorkflowDesignerUIMap.Adorner_CountInputMappings(theTab, "CalculateTaxReturns");
 
             // And delete it
-            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
             SendKeys.SendWait("{DELETE}");
 
@@ -518,7 +518,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
             // Change the name
-            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             Mouse.Click(new Point(controlOnWorkflow.BoundingRectangle.Left + 100, controlOnWorkflow.BoundingRectangle.Top + 5));
             SendKeys.SendWait("Test123");
 
@@ -711,7 +711,7 @@ namespace Dev2.CodedUI.Tests
 
             // For later
             UITestControl theTab = TabManagerUIMap.FindTabByName("5615Point1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Calculate control on
@@ -723,7 +723,7 @@ namespace Dev2.CodedUI.Tests
             SendKeys.SendWait("sum{(}");
 
             // Find the control
-            UITestControl calculateOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Calculate");
+            UITestControl calculateOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Calculate");
 
             // Find the fxBox - This seemed resilient to filter properties for some odd reason...
             WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
@@ -764,7 +764,7 @@ namespace Dev2.CodedUI.Tests
 
             // Get some data
             UITestControl theTab = TabManagerUIMap.FindTabByName("5679Point1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Multi Assign on
@@ -847,7 +847,7 @@ namespace Dev2.CodedUI.Tests
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("5772Point1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
@@ -935,7 +935,7 @@ namespace Dev2.CodedUI.Tests
 
             // Vars
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point1Mo");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag an Assign onto the workflow
@@ -990,7 +990,7 @@ namespace Dev2.CodedUI.Tests
             // 1. Create the workflow
             CreateCustomWorkflow("5782Point2TWR", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point2TWR");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
@@ -1060,7 +1060,7 @@ namespace Dev2.CodedUI.Tests
 
             // Vars
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point2Mo");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag an Assign onto the workflow
@@ -1133,7 +1133,7 @@ namespace Dev2.CodedUI.Tests
             // 1. Create the workflow
             CreateCustomWorkflow("5782Point3", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point3");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
@@ -1200,7 +1200,7 @@ namespace Dev2.CodedUI.Tests
             // 1. Create the workflow
             CreateCustomWorkflow("5782Point4", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point4");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
@@ -1335,7 +1335,7 @@ namespace Dev2.CodedUI.Tests
             // 1. Create the workflow
             CreateCustomWorkflow("5782Point5", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point5");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
@@ -1405,7 +1405,7 @@ namespace Dev2.CodedUI.Tests
             // 1. Create the workflow
             CreateCustomWorkflow("5782Point6", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point6");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
@@ -1477,7 +1477,7 @@ namespace Dev2.CodedUI.Tests
             // 1. Create the workflow
             CreateCustomWorkflow("5782Point7", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point7");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
@@ -1618,7 +1618,7 @@ namespace Dev2.CodedUI.Tests
 
             System.Threading.Thread.Sleep(1000);
             UITestControl theTab = TabManagerUIMap.FindTabByName("5792Point2");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for each workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
@@ -1645,7 +1645,7 @@ namespace Dev2.CodedUI.Tests
             // 5792.2
 
             // Get the location of the ForEach box
-            UITestControl forEachControl = workflowDesignerUIMap.FindControlByAutomationID(theTab, "ForEach");
+            UITestControl forEachControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
 
             // Move the mouse to the contained CalculateTaxReturns box
             Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 25, forEachControl.BoundingRectangle.Y + 75));
@@ -1658,7 +1658,7 @@ namespace Dev2.CodedUI.Tests
             Mouse.StopDragging(new Point(workflowPoint1.X, workflowPoint1.Y + 100));
 
             // Now get its position
-            UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             try
             {
                 calcTaxReturnsControl.GetClickablePoint();
@@ -1686,7 +1686,7 @@ namespace Dev2.CodedUI.Tests
         {
             CreateCustomWorkflow("CollapseTest", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("CollapseTest");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for each workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
@@ -1704,7 +1704,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testLogic, workflowPoint2);
 
             // Due to a unique technicality, we have to click the "Start" node
-            UITestControl startNode = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Mouse.Click(startNode, new Point(5, 5));
 
             // Click the expand all button
@@ -1808,7 +1808,7 @@ namespace Dev2.CodedUI.Tests
         {
             CreateCustomWorkflow("6664Point3", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("6664Point3");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
@@ -1824,7 +1824,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
             // Click it
-            UITestControl controlOnWorkflow = workflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            UITestControl controlOnWorkflow = workflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
 
             // Make sure the adorner is visible
@@ -1856,7 +1856,7 @@ namespace Dev2.CodedUI.Tests
 
             CreateCustomWorkflow("6664Point4", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("6664Point4");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
@@ -1871,10 +1871,10 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
             // Click it
-            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
             WorkflowDesignerUIMap.Adorner_ClickMapping(theTab, "CalculateTaxReturns");
-            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
 
             Point initialResizerPoint = new Point();
@@ -1924,7 +1924,7 @@ namespace Dev2.CodedUI.Tests
 
             // Get a point for later
             UITestControl theTab = TabManagerUIMap.FindTabByName("8074");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Open the explorer, and get another Workflo
@@ -1932,7 +1932,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns", workflowPoint1);
 
             // See if it's there
-            UITestControl theWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
+            UITestControl theWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
             Point p = new Point();
             if (!theWorkflow.TryGetClickablePoint(out p))
             {
@@ -2281,7 +2281,7 @@ namespace Dev2.CodedUI.Tests
             Thread.Sleep(500);
 
             // Get the location of the Start button
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // And click it for UI responsiveness :P
             WorkflowDesignerUIMap.ClickControl(theStartButton);

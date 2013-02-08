@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
@@ -47,9 +48,9 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             UITestControl theTab = TabManagerUIMap.FindTabByName("Base64ToString");
             TabManagerUIMap.Click("Base64ToString");
-            WorkflowDesignerUIMap.CopyWorkflowXAML(theTab);
+            WorkflowDesignerUIMap.CopyWorkflowXaml(theTab);
             System.Diagnostics.Process.Start("notepad.exe");
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
             Keyboard.SendKeys("^V");
             if (ExternalUIMap.NotepadTextContains("<?xml version=\"1.0\" encoding=\"utf-16\"?>"))
             {
@@ -70,7 +71,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             //this.UIMap.DeployOptionClick - To fix
             // Wait for it to open!
-            System.Threading.Thread.Sleep(5000);
+            Thread.Sleep(5000);
             UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
             TabManagerUIMap.Click(theTab);
             DeployViewUIMap.EnterTextInSourceServerFilterBox(theTab, "ldnslgnsdg"); // Random text
@@ -119,13 +120,13 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("6127", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("6127");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             // Drag a Datasplit control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("DataSplit"), new Point(p.X, p.Y + 200));
-            UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfDataSplitActivityDesigner");
+            UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfDataSplitActivityDesigner");
 
             //Create the first row
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 60));
@@ -151,13 +152,13 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("6127", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("6127");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             // Drag a MultiAssign control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("MultiAssign"), new Point(p.X, p.Y + 200));
-            UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfMultiAssignActivityDesigner");
+            UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfMultiAssignActivityDesigner");
 
             //Create the first row
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
@@ -184,7 +185,7 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("DragMultipleControls", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("DragMultipleControls");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
             Mouse.Click(p);
 
@@ -192,14 +193,14 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl foreachBox = ToolboxUIMap.FindControl("ForEach");
             ToolboxUIMap.DragControlToWorkflowDesigner(foreachBox, new Point(p.X, p.Y + 100));
-            UITestControl foreachBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "For Each");
+            UITestControl foreachBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "For Each");
             Point toolboxPoint = new Point(foreachBoxOnWorkflow.BoundingRectangle.X + 100, foreachBoxOnWorkflow.BoundingRectangle.Y + 100);
 
             // Drag a Comment control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl commentBox = ToolboxUIMap.FindControl("Comment");
             ToolboxUIMap.DragControlToWorkflowDesigner(commentBox, new Point(p.X, p.Y + 200));
-            UITestControl commentBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Comment");
+            UITestControl commentBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Comment");
             Point commentPoint = new Point(commentBoxOnWorkflow.BoundingRectangle.X + 100, commentBoxOnWorkflow.BoundingRectangle.Y + 10);
 
             // Drag another Comment control onto the Workflow
@@ -219,7 +220,7 @@ namespace Dev2.Studio.UI.Tests
             string exceptionMessage = String.Empty;
             try
             {
-                WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+                WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
                 // The ForEach component has not loaded, so one of the controls were not dragged!
                 Assert.Fail();
@@ -244,7 +245,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Set some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("6501");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag control onto the Workflow Designer
@@ -253,7 +254,7 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(theTool, workflowPoint1);
 
             // Enter some data
-            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "BaseConvert");
+            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
             Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
             Mouse.Click(p);
             SendKeys.SendWait("someText");
@@ -378,13 +379,13 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("7409", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("7409");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             // Drag a DataSplit control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("DataSplit"), new Point(p.X, p.Y + 200));
-            UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfDataSplitActivityDesigner");
+            UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfDataSplitActivityDesigner");
 
             // Scroll once
             Mouse.Move(new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 60));
@@ -403,13 +404,13 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("7409", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("7409");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             // Drag a DataSplit control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("MultiAssign"), new Point(p.X, p.Y + 200));
-            UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfMultiAssignActivityDesigner");
+            UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfMultiAssignActivityDesigner");
 
             //Create the first row
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
@@ -452,7 +453,7 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("7799", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("7799");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             // Refresh
@@ -466,7 +467,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DragControlToWorkflowDesigner(theControl, new Point(p.X, p.Y + 200));
 
-            UITestControl activityBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfActivityDesigner");
+            UITestControl activityBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfActivityDesigner");
 
             //Double click the dsfActivity
             Mouse.DoubleClick(MouseButtons.Left, ModifierKeys.None, new Point(activityBoxOnWorkflow.BoundingRectangle.X + 100, activityBoxOnWorkflow.BoundingRectangle.Y + 40));
@@ -474,6 +475,33 @@ namespace Dev2.Studio.UI.Tests
             // Delete the Workflows in the required order
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7799Activity");
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7799");
+        }
+
+        // Bug 7842
+        [TestMethod]
+        public void CopyTabIntoBaseConvert_Expected_TabIsCopied()
+        {
+            // Create the Workflow
+            //myTestBase.CreateCustomWorkflow("Bug7842");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug7842");
+            Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+
+            // Drag a DataSplit onto it
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("DataSplit", p);
+
+            // And enter some data
+            string textWithTab = "test\ttest2";
+            Clipboard.SetText(textWithTab);
+            
+            WorkflowDesignerUIMap.DataSplit_ClickFirstTextbox(theTab, "Data Split");
+            Thread.Sleep(500);
+            SendKeys.SendWait("^v");
+
+            string inputText = WorkflowDesignerUIMap.DataSplit_GetTextFromStringToSplit(theTab, "Data Split");
+
+            StringAssert.Contains(inputText, textWithTab);
+
         }
 
         // Bug 7802
@@ -519,7 +547,7 @@ namespace Dev2.Studio.UI.Tests
 
             while (!studioWindow.TryGetClickablePoint(out p) && tries < 30)
             {
-                System.Threading.Thread.Sleep(1000);
+                Thread.Sleep(1000);
                 tries++;
             }
 
@@ -589,7 +617,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Get a point for later
             UITestControl theTab = TabManagerUIMap.FindTabByName("7854");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the control onto the Workflow
@@ -661,13 +689,13 @@ namespace Dev2.Studio.UI.Tests
             myTestBase.CreateCustomWorkflow("6413", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("6413");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             // Drag a MultiAssign control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("MultiAssign"), new Point(p.X, p.Y + 200));
-            UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfMultiAssignActivityDesigner");
+            UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfMultiAssignActivityDesigner");
 
             //Create a regular region
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
@@ -693,13 +721,13 @@ namespace Dev2.Studio.UI.Tests
             var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7842", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("7842");
-            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
 
             //Drag a DataSplit control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("DataSplit"), new Point(p.X, p.Y + 200));
-            UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "DsfDataSplitActivityDesigner");
+            UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfDataSplitActivityDesigner");
 
             //Setup datasplit vars
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 65));
@@ -834,7 +862,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
             // Wait for it to load
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
 
             // Click Cancel
             WpfWindow decisionWindow = new WpfWindow();
@@ -848,11 +876,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(cancelButton);
 
             // Open the window for the first time
-            UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "FlowDecisionDesigner");
+            UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             Mouse.DoubleClick(decisionControl, new Point(50, 50));
             
             // Wait for it to load
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
 
             // Get the Co-ords
             decisionWindow.Find();
@@ -863,11 +891,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(cancelButton);
 
             // Open the window for the second time
-            decisionControl = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "FlowDecisionDesigner");
+            decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             Mouse.DoubleClick(decisionControl, new Point(50, 50));
 
             // Wait for it to load
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
 
             // Get the Co-ords
             decisionWindow.Find();
@@ -897,7 +925,7 @@ namespace Dev2.Studio.UI.Tests
             
             // Run debug
             RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
-            System.Threading.Thread.Sleep(1500);
+            Thread.Sleep(1500);
             myTestBase.DebugUIMap.ExecuteDebug();
 
             // Open the Output

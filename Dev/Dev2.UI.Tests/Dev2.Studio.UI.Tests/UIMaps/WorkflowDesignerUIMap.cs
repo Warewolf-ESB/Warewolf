@@ -1,32 +1,25 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System.Linq;
-    using System.Windows.Forms;
-    using System.Threading;
-    
+﻿using System.Drawing;
+using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Windows.Forms;
+using System.Threading;
+
+namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
+{   
     public partial class WorkflowDesignerUIMap
     {
         /// <summary>
         /// Finds a control on the Workflow Designer
         /// </summary>
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
-        /// <param name="controlAutomationID">The automation ID of the control you are looking for</param>
+        /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
         /// <returns>Returns the control as a UITestControl object</returns>
-        public UITestControl FindControlByAutomationID(UITestControl theTab, string controlAutomationID)
+        public UITestControl FindControlByAutomationId(UITestControl theTab, string controlAutomationId)
         {
             // Unless the UI drastically changes (In which case most Automation tests will fail),
             // the order will remain constant
@@ -39,7 +32,7 @@
             }
             catch
             {
-                Assert.Fail("Error - Could not find '" + controlAutomationID + "' on the workflow designer!");
+                Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
             }
             UITestControl splurtControl = theCollection[4];
             UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
@@ -54,8 +47,8 @@
             UITestControlCollection flowchartDesignerChildren = flowchartDesigner.GetChildren();
             foreach (UITestControl theControl in flowchartDesignerChildren)
             {
-                string automationID = theControl.GetProperty("AutomationId").ToString();
-                if (automationID.Contains(controlAutomationID))
+                string automationId = theControl.GetProperty("AutomationId").ToString();
+                if (automationId.Contains(controlAutomationId))
                 {
                     return theControl;
                 }
@@ -70,7 +63,7 @@
         /// <returns>Returns the Start Node as a UITestControl object</returns>
         public UITestControl FindStartNode(UITestControl theTab)
         {
-            return FindControlByAutomationID(theTab, "Start");
+            return FindControlByAutomationId(theTab, "Start");
         }
 
         /// <summary>
@@ -130,21 +123,14 @@
         /// Checks if a control exists on the Workflow Designer
         /// </summary>
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
-        /// <param name="controlAutomationID">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
+        /// <param name="controlAutomationId">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
         /// <returns></returns>
-        public bool DoesControlExistOnWorkflowDesigner(UITestControl theTab, string controlAutomationID)
+        public bool DoesControlExistOnWorkflowDesigner(UITestControl theTab, string controlAutomationId)
         {
             try
             {
-                UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
-                if (aControl != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
+                return aControl != null;
             }
             catch
             {
@@ -152,9 +138,9 @@
             }
         }
 
-        public void CopyWorkflowXAML(UITestControl theTab)
+        public void CopyWorkflowXaml(UITestControl theTab)
         {
-            UITestControl startButton = FindControlByAutomationID(theTab, "Start");
+            UITestControl startButton = FindControlByAutomationId(theTab, "Start");
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
             Keyboard.SendKeys("c");
         }
@@ -191,31 +177,24 @@
 
         #region Adorners
 
-        public bool IsAdornerVisible(UITestControl theTab, string controlAutomationID)
+        public bool IsAdornerVisible(UITestControl theTab, string controlAutomationId)
         {
-            UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
             foreach (UITestControl theControl in testFlowChildCollection)
             {
                 if (theControl.FriendlyName == "Service Working Normaly")
                 {
                     Point newPoint = new Point();
-                    if (theControl.TryGetClickablePoint(out newPoint))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return theControl.TryGetClickablePoint(out newPoint);
                 }
             }
             return false;
         }
 
-        public void Adorner_ClickMapping(UITestControl theTab, string controlAutomationID)
+        public void Adorner_ClickMapping(UITestControl theTab, string controlAutomationId)
         {
-            UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
             foreach (UITestControl theControl in testFlowChildCollection)
             {
@@ -227,32 +206,32 @@
             }
         }
 
-        public void Adorner_ClickWizard(UITestControl theTab, string controlAutomationID)
+        public void Adorner_ClickWizard(UITestControl theTab, string controlAutomationId)
         {
-            UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
             foreach (UITestControl theControl in testFlowChildCollection)
             {
                 if (theControl.FriendlyName == "Open Wizard")
                 {
                     // Auto ID not set for some reason... ?
-                    string automationID = theControl.GetProperty("AutomationID").ToString();
+                    // string automationID = theControl.GetProperty("AutomationID").ToString();
                     Mouse.Click(theControl, new Point(5, 5));
                     break;
                 }
             }
         }
 
-        public int Adorner_CountInputMappings(UITestControl theTab, string controlAutomationID)
+        public int Adorner_CountInputMappings(UITestControl theTab, string controlAutomationId)
         {
             int rowCounter = 0;
-            UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
             foreach (UITestControl theControl in testFlowChildCollection)
             {
                 // inputMappings
-                string automationID = theControl.GetProperty("AutomationID").ToString();
-                if (automationID == "inputMappings")
+                string automationId = theControl.GetProperty("AutomationID").ToString();
+                if (automationId == "inputMappings")
                 {
                     UITestControlCollection inputChildren = theControl.GetChildren();
                     foreach (UITestControl potentialRow in inputChildren)
@@ -281,20 +260,20 @@
         /// 
         /// </summary>
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
-        /// <param name="controlAutomationID">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
-        public void SetStartNode(UITestControl theTab, string controlAutomationID)
+        /// <param name="controlAutomationId">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
+        public void SetStartNode(UITestControl theTab, string controlAutomationId)
         {
-            UITestControl theControl = FindControlByAutomationID(theTab, controlAutomationID);
+            UITestControl theControl = FindControlByAutomationId(theTab, controlAutomationId);
             Point pointAtTopOfControl = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, pointAtTopOfControl);
 
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             SendKeys.SendWait("{UP}");
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             SendKeys.SendWait("{UP}");
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
         }
 
         #region Assign Control
@@ -310,23 +289,22 @@
         {
             AssignControl_ClickFirstTextbox(theTab, assignControlTitle);
             SendKeys.SendWait(variable);
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             SendKeys.SendWait("{TAB}");
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             SendKeys.SendWait(value);
         }
 
-        public void AssignControl_ClickFirstTextbox(UITestControl theTab, string controlAutomationID)
+        public void AssignControl_ClickFirstTextbox(UITestControl theTab, string controlAutomationId)
         {
-            UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             Point locationOfVariableTextbox = new Point(aControl.BoundingRectangle.Left + 50, aControl.BoundingRectangle.Top + 50);
             Mouse.Click(locationOfVariableTextbox);
         }
 
-        public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationID, int itemInList)
+        public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationId, int itemInList)
         {
-            UITestControl aControl = FindControlByAutomationID(theTab, controlAutomationID);
-            List<WpfEdit> editList = new List<WpfEdit>();
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             WpfEdit controlList = (WpfEdit)aControl.GetChildren()[2].GetChildren()[itemInList].GetChildren()[2].GetChildren()[0];
             return controlList.Text;
         }
@@ -344,7 +322,7 @@
         /// <param name="result">The value to enter into the bottom (Result) textbox</param>
         public void CalculateControl_EnterData(UITestControl theTab, string calculateControlTitle, string function, string result)
         {
-            UITestControl calculateControl = FindControlByAutomationID(theTab, calculateControlTitle);
+            UITestControl calculateControl = FindControlByAutomationId(theTab, calculateControlTitle);
 
             // Click
             Point controlPoint = new Point(calculateControl.BoundingRectangle.X + 100, calculateControl.BoundingRectangle.Y + 50);
@@ -361,6 +339,25 @@
         }
 
         #endregion Calculate Control
+
+        #region DataSplit Control
+
+        public void DataSplit_ClickFirstTextbox(UITestControl theTab, string dataSplitControlTitle)
+        {
+            UITestControl dataSplitControl = FindControlByAutomationId(theTab, dataSplitControlTitle);
+            WpfEdit theTextBox = (WpfEdit)dataSplitControl.GetChildren()[3];
+            Point textBox = new Point(theTextBox.BoundingRectangle.X + 5, theTextBox.BoundingRectangle.Y + 5);
+            Mouse.Click(textBox);
+        }
+
+        public string DataSplit_GetTextFromStringToSplit(UITestControl theTab, string dataSplitControlTitle)
+        {
+            UITestControl dataSplitControl = FindControlByAutomationId(theTab, dataSplitControlTitle);
+            WpfEdit theTextBox = (WpfEdit)dataSplitControl.GetChildren()[3];
+            return theTextBox.Text;
+        }
+
+        #endregion
 
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)
