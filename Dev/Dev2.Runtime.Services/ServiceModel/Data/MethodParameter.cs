@@ -3,10 +3,11 @@ using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public abstract class MethodParameter
+    public class MethodParameter
     {
         #region Properties
 
+        public string Name { get; set; }
         public bool EmptyToNull { get; set; }
         public object Value { get; set; }
         public bool IsRequired { get; set; }

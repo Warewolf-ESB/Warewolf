@@ -1,11 +1,10 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Xml.Linq;
+using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -41,8 +40,9 @@ namespace Dev2.Runtime.ServiceModel
         #region Methods
 
         // POST: Service/Services/Methods
-        public string Methods(string args, Guid workspaceID, Guid dataListID)
+        public ServiceMethodList Methods(string args, Guid workspaceID, Guid dataListID)
         {
+            var result = new ServiceMethodList();
             try
             {
                 //TODO
@@ -52,20 +52,21 @@ namespace Dev2.Runtime.ServiceModel
                 //4. Return the JSON representation of the service actions
 
                 var service = JsonConvert.DeserializeObject<Service>(args);
-                var actions = new List<ServiceMethod>
+                for(var i = 0; i < 50; i++)
                 {
-                    //new ServiceMethod { Name = "Action1" },
-                    //new ServiceMethod { Name = "Action2" },
-                    //new ServiceMethod { Name = "Action3" }
-                };
-
-                return JsonConvert.SerializeObject(actions);
+                    var method = new ServiceMethod { Name = string.Format("dbo.Pr_GetCake_{0:00}", i) };
+                    for(var j = 0; j < 10; j++)
+                    {
+                        method.Parameters.Add(new MethodParameter { Name = string.Format("Param_{0:00}", j) });
+                    }
+                    result.Add(method);
+                }
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
             }
+            return result;
         }
 
         #endregion

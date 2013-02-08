@@ -21,18 +21,39 @@ namespace Dev2.Tests.Runtime.ServiceModel
         const string JsonSource = "{{\"ResourceID\":\"{0}\",\"ResourceType\":\"SqlDatabase\",\"ResourceName\":\"" + SourceName + "\",\"ResourcePath\":\"Bob\"}}";
         const string JsonService = "{{\"resourceID\":\"{0}\",\"resourceType\":\"" + ServiceResourceType + "\",\"resourceName\":\"" + ServiceName + "\",\"resourcePath\":\"Bob\",\"source\":{1}}}";
 
+        #region Methods
+
         [TestMethod]
-        public void TestMockOutput()
+        public void MethodsWithNullArgsExpectedReturnsEmptyList()
         {
-            //var services = new Dev2.Runtime.ServiceModel.Services();
-            //string s  = services.ExtractCodedEntities("server=RSAKLFSVRGENDEV;database=Dev2TestingDB;integrated security=false;User Id=testuser;Password=test123");
-            //Assert.AreEqual(s,s);
-
-            //string expected = "[{\"Name\":\"Action1\",\"ActionType\":\"Unknown\",\"SourceName\":null,\"SourceMethod\":null,\"OutputDescription\":null,\"ServiceActionInputs\":[],\"ServiceActionOutputs\":[]},{\"Name\":\"Action2\",\"ActionType\":\"Unknown\",\"SourceName\":null,\"SourceMethod\":null,\"OutputDescription\":null,\"ServiceActionInputs\":[],\"ServiceActionOutputs\":[]},{\"Name\":\"Action3\",\"ActionType\":\"Unknown\",\"SourceName\":null,\"SourceMethod\":null,\"OutputDescription\":null,\"ServiceActionInputs\":[],\"ServiceActionOutputs\":[]}]";
-            //string actual = services.Actions("", Guid.Empty, Guid.Empty); ;
-
-            //Assert.AreEqual(expected, actual);
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.Methods(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
         }
+
+        [TestMethod]
+        public void MethodsWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.Methods("xxxx", Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void MethodsWithValidArgsExpectedReturnsList()
+        {
+            var jsonSource = string.Format(JsonSource, Guid.NewGuid());
+            var jsonService = string.Format(JsonService, Guid.Empty, jsonSource);
+
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.Methods(jsonService, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(50, result.Count);
+        }
+        #endregion
 
         #region Save
 
@@ -125,7 +146,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             finally
             {
                 if(Directory.Exists(workspacePath))
-        {
+                {
                     Directory.Delete(workspacePath, true);
                 }
             }
@@ -164,8 +185,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var workspaceID = Guid.NewGuid();
             var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             try
-        {
-            var services = new Dev2.Runtime.ServiceModel.Services();
+            {
+                var services = new Dev2.Runtime.ServiceModel.Services();
                 var saveResult = services.Save(jsonService, workspaceID, Guid.Empty);
                 var saveService = JsonConvert.DeserializeObject<Service>(saveResult);
                 var getResult = services.Get(args, workspaceID, Guid.Empty);

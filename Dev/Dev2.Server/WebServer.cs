@@ -1,11 +1,4 @@
-﻿using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DynamicServices;
-using Dev2.Runtime;
-using Dev2.Runtime.Diagnostics;
-using DEV2.MultiPartFormPasser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -14,8 +7,14 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
-using System.Xml;
 using System.Xml.Linq;
+using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DynamicServices;
+using Dev2.Runtime;
+using Dev2.Runtime.Diagnostics;
+using DEV2.MultiPartFormPasser;
 using Unlimited.Applications.DynamicServicesHost;
 using Unlimited.Applications.WebServer;
 using Unlimited.Applications.WebServer.Responses;
@@ -64,7 +63,7 @@ namespace Dev2
             var formData = new UnlimitedObject();
 
             bool isXmlData = false;
-             
+
             // Commented out by Michael by instruction of Travis pending the refactor
             /*
             try
@@ -421,7 +420,17 @@ namespace Dev2
             {
                 result = new ValidationResult
                 {
+                    IsValid = false,
                     ErrorMessage = ex.Message
+                };
+            }
+
+            if(result == null)
+            {
+                result = new ValidationResult
+                {
+                    IsValid = false,
+                    ErrorMessage = "Method not found"
                 };
             }
             ctx.Send(new StringCommunicationResponseWriter(result.ToString(), "application/json"));
@@ -439,7 +448,7 @@ namespace Dev2
             string postdlid = string.Empty;
             string wid = string.Empty;
 
-            if (ctx.Request.QueryString[GlobalConstants.DLID] != null)
+            if(ctx.Request.QueryString[GlobalConstants.DLID] != null)
             {
                 postdlid = ctx.Request.QueryString[GlobalConstants.DLID].Value;
             }
@@ -449,13 +458,13 @@ namespace Dev2
                 wid = ctx.Request.QueryString["wid"].Value;
             }
 
-            if (postdlid != null)
+            if(postdlid != null)
             {
                 ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"], string.Empty, string.Empty, wid, postdlid));
             }
             else
             {
-                ctx.Send(Get(ctx, ctx.Request.BoundVariables["servicename"], wid));    
+                ctx.Send(Get(ctx, ctx.Request.BoundVariables["servicename"], wid));
             }
         }
 
@@ -531,7 +540,7 @@ namespace Dev2
         {
             _dsf = _network.Channel;
 
-            if (endpointAddresses == null || endpointAddresses.Count == 0)
+            if(endpointAddresses == null || endpointAddresses.Count == 0)
             {
                 throw new ArgumentException("No TCP Addresses configured for application server");
             }
@@ -554,7 +563,7 @@ namespace Dev2
                         entry = null;
                     }
 
-                    if (entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
+                    if(entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
                     {
                         ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
                         return null;
@@ -564,8 +573,8 @@ namespace Dev2
 
                 }).Where(e => e != null).ToList();
 
-            
-            if (!entries.Any())
+
+            if(!entries.Any())
             {
                 throw new ArgumentException("No vailid TCP Addresses configured for application server");
             }
@@ -573,22 +582,22 @@ namespace Dev2
             List<IPAddress> startedIPAddresses = new List<IPAddress>();
             foreach(var entry in entries)
             {
-                for (int i = 0; i < entry.Item1.AddressList.Length; i++)
+                for(int i = 0; i < entry.Item1.AddressList.Length; i++)
                 {
                     IPAddress current = entry.Item1.AddressList[i];
 
-                    if (current.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !startedIPAddresses.Contains(current))
+                    if(current.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !startedIPAddresses.Contains(current))
                     {
-                        if (_network.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
+                        if(_network.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
                         {
                             ServerLifecycleManager.WriteLine(string.Format("{0} listening on {1}", _network, current + ":" + entry.Item2.ToString()));
                             startedIPAddresses.Add(current);
                         }
                     }
-                }                
+                }
             }
 
-            if (startedIPAddresses.Count == 0)
+            if(startedIPAddresses.Count == 0)
             {
                 ServerLifecycleManager.WriteLine(string.Format("{0} failed to start on {1}", _network, _endpointAddress));
             }
@@ -625,8 +634,8 @@ namespace Dev2
             {
 
                 string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                
-                return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, "<center><h1>404</h1>\r\n"+WebServerResources.ERROR_404_Message+"</center>"));
+
+                return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, "<center><h1>404</h1>\r\n" + WebServerResources.ERROR_404_Message + "</center>"));
             }
 
             // TODO : Allow return type to be specified as a parameter... Default to XML

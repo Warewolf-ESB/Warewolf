@@ -76,6 +76,7 @@
     <Compile Include="ServiceModel\Data\Delimiter.cs" />
     <Compile Include="ServiceModel\Data\ResourceIteratorResult.cs" />
     <Compile Include="ServiceModel\Data\ResourceIterator.cs" />
+    <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Resources.cs" />
     <Compile Include="ServiceModel\Data\Enums.cs" />
     <Compile Include="ServiceModel\Help.cs" />
