@@ -150,11 +150,16 @@ h5, h6 {
     margin-left: 20px;
     margin-top: 30px;
 }
+
 .help-text {
     width: 200px;
     margin-top: 15px;
     background-color: #E9F4F7;
     padding: 10px 20px;
+}
+.help-text-min {
+    background-color: #E9F4F7;
+    padding: 2px;
 }
 
 .button-bar {

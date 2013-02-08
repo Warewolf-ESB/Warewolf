@@ -16,7 +16,8 @@
         resourcePath: ko.observable(""),
 
         source: ko.observable(),
-        action: ko.observable()
+        methodName: ko.observable(""),
+        methodParameters: ko.observableArray()
     };
 
     self.sources = ko.observableArray();
@@ -31,7 +32,11 @@
             return serviceAction.Name.toLowerCase().indexOf(term) !== -1;
         });
     });
+    
     self.data.source.subscribe(function (newValue) {
+        self.data.methodName("");
+        self.data.methodParameters([]);
+        
         $.post("Service/Services/Methods" + window.location.search, ko.toJSON(newValue), function (result) {
             self.sourceMethods(result);
             self.sourceMethods.sort(utils.nameCaseInsensitiveSort);
@@ -42,9 +47,14 @@
     self.title.subscribe(function (newValue) {
         document.title = newValue;
     });
+    self.helpDictionaryID = "Service";
+    self.helpDictionary = {};
+    self.helpText = ko.observable("");
     
     utils.registerSelectHandler($sourceMethods, function (selectedItem) {
-        self.data.action(selectedItem);
+        self.data.methodName(selectedItem.Name);
+        self.data.methodParameters(selectedItem.Parameters);
+        console.log(selectedItem);
     });
     
     self.load = function () {
@@ -64,7 +74,22 @@
             self.sources(result);
             self.sources.sort(utils.resourceNameCaseInsensitiveSort);
         });
+        $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
+            self.helpDictionary = result;
+            self.updateHelpText("default");
+        });
     };
+    
+    self.updateHelpText = function (id) {
+        var text = self.helpDictionary[id];
+        text = text ? text : self.helpDictionary.default;
+        text = text ? text : "";
+        self.helpText(text);
+    };
+
+    $(":input").focus(function () {
+        self.updateHelpText(this.id);
+    });
     
     self.editSource = function () {
     };

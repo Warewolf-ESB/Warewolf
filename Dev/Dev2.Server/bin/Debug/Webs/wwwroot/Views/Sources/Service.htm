@@ -1,76 +1,77 @@
 ﻿<div id="container" style="margin: 10px; width: 1000px">
     <div id="serviceForm">
-        <div id="tabs" style="height: 500px">
+        <div id="tabs" style="height: 510px">
             <ul>
                 <li><a href="#tabs-1" data-bind="text: title"></a></li>
                 <li><a href="#tabs-2">Defaults and Mapping</a></li>
             </ul>
-            <div id="tabs-1" style="padding: 0.5em;">
-                <div style="display: table; width: 100%;">
-                    <div style="display: table-row">
-                        <div style="display: table-cell; width: 50%;">
-                            <div>
-                                <h2 style="display: inline-block; vertical-align: top; margin-top: 6px;">1.</h2>
-                                <div style="display: inline-block">
-                                    <label for="source" style="text-align: left;">Select source</label><br />
-                                    <select id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
-                                    <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource">...</button>
-                                    <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
-                                </div>
-                            </div>
-                            <div style="margin-top: 5px;">
-                                <h2 style="display: inline-block; vertical-align: top; margin-top: 6px;">2.</h2>
-                                <div style="display: inline-block">
-                                    <div class="ui-helper-clearfix">
-                                        <label style="float: left; text-align: left;" for="source">Select action</label>
-                                        <span style="float: right">
-                                            <img src="images/search.png" alt="Search" width="16" height="16" class="icon" />
-                                            <input tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
-                                        </span>
-                                    </div>
-
-                                    <div id="sourceMethodsScrollBox" class="scrollable" style="height: 275px; width: 420px">
-                                        <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
-                                            <li class="selectable">
-                                                <span style="margin-left: 0.5em" data-bind="text: Name"></span>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display: table-cell; width: 1px; border-right: #E2E2E2 solid 1px;"></div>
-
-                        <div style="display: table-cell; width: 50%; padding-left: 10px;">
-                            <div>
-                                <h2 style="display: inline-block; vertical-align: top; margin-top: 6px;">3.</h2>
-                                <div style="display: inline-block">
-                                    <label style="text-align: left;">Test</label><br />
-                                   <!-- <div id="sourceInputsScrollBox" class="scrollable" style="height: 275px; width: 420px">
-                                        <ol id="sourceInputs" data-bind="foreach: data.action.Parameters">
-                                            <li>
-                                                <span style="margin-left: 0.5em" data-bind="text: Name"></span>
-                                            </li>
-                                        </ol>
-                                    </div>-->
-                                    <div class="button-bar" style="display: inline-block">
-                                        <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction">Test</button>
-                                    </div>
-                                </div>
-                            </div>
+            <div id="tabs-1" style="padding: 1em; margin: 0 auto;">
+                <div style="float: left; width: auto; padding-right: 10px; border-right: #E2E2E2 solid 1px;">
+                    <div style="font-weight: bold;">1. Select source</div>
+                    <div>
+                        <select id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
+                        <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource">...</button>
+                        <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
+                    </div>
+                    <div style="margin-top: 1em;">
+                        <div style="float: left; margin-top: 1em; font-weight: bold">2. Select action</div>
+                        <div style="float: right">
+                            <img src="images/search.png" alt="Search" width="16" height="16" class="icon" />
+                            <input tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
                         </div>
                     </div>
+
+                    <div id="sourceMethodsScrollBox" class="scrollable" style="height: 295px; width: auto; clear: both;">
+                        <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
+                            <li class="selectable">
+                                <span style="margin-left: 0.5em" data-bind="text: Name"></span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div style="float: left; width: auto; padding-left: 10px;">
+                    <div class="help-text-min" style="height: 100px;width: 510px; overflow-y: scroll"  data-bind="html: helpText">
+                    </div>
+                    <div style="font-weight: bold;">3. Test <span data-bind="text: data.methodName"></span></div>
+                    <div style="margin-top: 0.5em; font-size: 0.85em;">
+                        <div>
+                            <table style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%">Input</th>
+                                        <th style="width: 50%">Test Data</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div style="height: 200px; width: 510px; overflow-y: scroll">
+                            <table style="width: 100%">
+                                <tbody data-bind="foreach: data.methodParameters">
+                                    <tr>
+                                        <td style="width: 50%" data-bind="text: Name"></td>
+                                        <td style="width: 50%">
+                                            <input type="text" maxlength="50" data-bind="val: Value" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="button-bar" >
+                        <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction">Test</button>
+                    </div>                  
                 </div>
             </div>
-            <div id="tabs-2">
-            </div>
         </div>
-        <div class="button-bar">
-            <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save">Ok</button>
-            <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+        <div id="tabs-2">
         </div>
     </div>
+    <div class="button-bar">
+        <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save">Ok</button>
+        <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+    </div>
 </div>
+
 
 <script src="Scripts/Sources/ServiceViewModel.js"></script>
 <script type="text/javascript">
