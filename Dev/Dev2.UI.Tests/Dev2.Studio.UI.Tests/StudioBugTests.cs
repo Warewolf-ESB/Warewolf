@@ -500,7 +500,7 @@ namespace Dev2.Studio.UI.Tests
 
             string inputText = WorkflowDesignerUIMap.DataSplit_GetTextFromStringToSplit(theTab, "Data Split");
 
-            StringAssert.Contains(inputText, textWithTab);
+            StringAssert.Contains(inputText, textWithTab, "The textbox does not retain the pasted tab!");
 
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug7842");
 
