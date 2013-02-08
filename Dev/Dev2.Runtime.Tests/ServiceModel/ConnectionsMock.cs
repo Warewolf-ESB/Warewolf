@@ -2,7 +2,7 @@
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 
-namespace Dev2.Tests.Runtime.Services
+namespace Dev2.Tests.Runtime.ServiceModel
 {
     public class ConnectionsMock : Connections
     {

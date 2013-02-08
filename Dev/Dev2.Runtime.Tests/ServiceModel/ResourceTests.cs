@@ -4,10 +4,10 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resources = Dev2.Runtime.ServiceModel.Resources;
 
-namespace Dev2.Tests.Runtime.Services
+namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
     public class ResourceTests

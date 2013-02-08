@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.Runtime.Services
+namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
     public class ServicesTests
@@ -16,5 +16,24 @@ namespace Dev2.Tests.Runtime.Services
 
             Assert.AreEqual(expected, actual);
         }
+
+        #region Sources
+
+        [TestMethod]
+        public void SourcesWith()
+        {
+        }
+
+        #endregion
+
+        #region Save
+
+        [TestMethod]
+        public void SaveWith()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+        }
+
+        #endregion
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Dev2.Data.SystemTemplates;
 
-namespace Dev2.Tests.Runtime.Services
+namespace Dev2.Tests.Runtime.ServiceModel
 {
 
     // Sashen : 31-01-2012 : Testing Feedback

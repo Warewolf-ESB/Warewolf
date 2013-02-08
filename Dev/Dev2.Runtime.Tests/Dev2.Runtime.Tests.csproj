@@ -74,12 +74,12 @@
     <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
-    <Compile Include="Services\ConnectionsMock.cs" />
-    <Compile Include="Services\ConnectionTests.cs" />
+    <Compile Include="ServiceModel\ConnectionsMock.cs" />
+    <Compile Include="ServiceModel\ConnectionTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
-    <Compile Include="Services\ResourceTests.cs" />
-    <Compile Include="Services\ServicesTests.cs" />
-    <Compile Include="Services\WebModelTests.cs" />
+    <Compile Include="ServiceModel\ResourceTests.cs" />
+    <Compile Include="ServiceModel\ServicesTests.cs" />
+    <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <Compile Include="DataListServerChannelTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />

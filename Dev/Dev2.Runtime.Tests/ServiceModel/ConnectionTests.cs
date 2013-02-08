@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Dev2.Tests.Runtime.Services
+namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
     public class ConnectionTests
