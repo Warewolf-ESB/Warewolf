@@ -482,7 +482,7 @@ namespace Dev2.Studio.UI.Tests
         public void CopyTabIntoBaseConvert_Expected_TabIsCopied()
         {
             // Create the Workflow
-            myTestBase.CreateCustomWorkflow("Bug7842");
+            // myTestBase.CreateCustomWorkflow("Bug7842");
             UITestControl theTab = TabManagerUIMap.FindTabByName("Bug7842");
             Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 
@@ -502,7 +502,7 @@ namespace Dev2.Studio.UI.Tests
 
             StringAssert.Contains(inputText, textWithTab);
 
-            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "c");
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug7842");
 
         }
 
