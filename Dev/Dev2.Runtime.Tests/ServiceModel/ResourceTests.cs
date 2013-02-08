@@ -3,8 +3,9 @@ using System.IO;
 using System.Xml;
 using Dev2.Common;
 using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
-using Dev2.Runtime.ServiceModel;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -31,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //Test
             string directoryName = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\" + threadSave).Name;
             string workspacePath = Directory.GetParent(Directory.GetCurrentDirectory() + @"\" + threadSave).ToString();
-            Resources.Save(workspacePath, directoryName, "testResource",
+            Dev2.Runtime.ServiceModel.Resources.Save(workspacePath, directoryName, "testResource",
                            "<?xml version=\"1.0\"?><Root>This is the text of the root element</Root>");
             Assert.IsTrue(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml").Contains("This is the text of the root element"));
             //Cleanup
@@ -47,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //Test
             string directoryName = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\" + threadSave).Name;
             string workspacePath = Directory.GetParent(Directory.GetCurrentDirectory() + @"\" + threadSave).ToString();
-            Resources.Save(workspacePath, directoryName, "testResource",
+            Dev2.Runtime.ServiceModel.Resources.Save(workspacePath, directoryName, "testResource",
                    "<?xml version=\"1.0\"?><Root>This is the text of the root element</Root>");
             Assert.IsTrue(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml").Contains("This is the text of the root element"));
             //Cleanup
@@ -61,7 +62,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var threadSave = Guid.NewGuid();
             string directoryName = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\" + threadSave).Name;
             string workspacePath = Directory.GetParent(Directory.GetCurrentDirectory() + @"\" + threadSave).ToString();
-            Resources.Save(workspacePath, directoryName, "testResource",
+            Dev2.Runtime.ServiceModel.Resources.Save(workspacePath, directoryName, "testResource",
                    "<?xml version=\"1.0\"?>This is the text of the root element");
         }
 
@@ -72,7 +73,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var threadSave = Guid.NewGuid();
             string directoryName = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\" + threadSave).Name;
             string workspacePath = Directory.GetParent(Directory.GetCurrentDirectory() + @"\" + threadSave).ToString();
-            Resources.Save(workspacePath, directoryName, "test/Resource",
+            Dev2.Runtime.ServiceModel.Resources.Save(workspacePath, directoryName, "test/Resource",
                    "<?xml version=\"1.0\"?><Root>This is the text of the root element</Root>");
         }
 
@@ -88,7 +89,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             xml = XmlResource.Fetch("HostSecurityProviderServerSigned");
             xml.Save(Path.Combine(Path.Combine(Directory.GetCurrentDirectory() + @"/Workspaces/" + threadSave, "Sources"), "HostSecurityProviderServerSigned.xml"));
 
-            var testResources = new Resources();
+            var testResources = new Dev2.Runtime.ServiceModel.Resources();
             string actual = testResources.Paths("", threadSave, generateADLGuid());
             Assert.AreEqual("[\"Integration Test Services\"]", actual);
         }
@@ -172,19 +173,52 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void SourcesWithNullArgsExpectedReturnsEmptyList()
         {
-            var services = new Resources();
-            var result = services.Sources(null, Guid.Empty, Guid.Empty);
+            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var result = resources.Sources(null, Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod]
         public void SourcesWithInvalidArgsExpectedReturnsEmptyList()
         {
-            var services = new Resources();
-            var result = services.Sources("xxxx", Guid.Empty, Guid.Empty);
+            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var result = resources.Sources("xxxx", Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
+        [TestMethod]
+        public void SourcesWithValidArgsExpectedReturnsList()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            try
+            {
+                const int Modulo = 2;
+                const int ExpectedCount = 6;
+                for(var i = 0; i < ExpectedCount; i++)
+                {
+                    var svc = new Service
+                    {
+                        ResourceID = Guid.NewGuid(),
+                        ResourceName = string.Format("My Name {0}", i),
+                        ResourcePath = string.Format("My Path {0}", i),
+                        ResourceType = (i % Modulo == 0) ? enSourceType.SqlDatabase : enSourceType.Unknown
+                    };
+                    svc.Save(workspaceID, Guid.Empty);
+                }
+                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var result = resources.Sources("{\"resourceType\":\"SqlDatabase\"}", workspaceID, Guid.Empty);
+
+                Assert.AreEqual(ExpectedCount / Modulo, result.Count);
+            }
+            finally
+            {
+                if(Directory.Exists(workspacePath))
+                {
+                    Directory.Delete(workspacePath, true);
+                }
+            }
+        }
         #endregion
 
     }
