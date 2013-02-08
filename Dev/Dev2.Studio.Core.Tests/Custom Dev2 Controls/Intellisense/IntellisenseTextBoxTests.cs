@@ -17,47 +17,44 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
     [TestClass]
     public class IntellisenseTextBoxTests
     {
-        private IResourceModel _resourceModel;
-        private static readonly object TestGuard = new object();
-
         #region Test Initialization
 
         [TestInitialize]
         public void Init()
         {
-            Monitor.Enter(TestGuard);
+            Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+//            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
-            var testEnvironmentModel = new Mock<IEnvironmentModel>();
-            testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+//            var testEnvironmentModel = new Mock<IEnvironmentModel>();
+//            testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
-            _resourceModel = new ResourceModel(testEnvironmentModel.Object)
-            {
-                ResourceName = "test",
-                ResourceType = ResourceType.Service,
-                DataList = @"
-            <DataList>
-                    <Scalar/>
-                    <Country/>
-                    <State />
-                    <City>
-                        <Name/>
-                        <GeoLocation />
-                    </City>
-             </DataList>
-            "
-            };
+//            IResourceModel _resourceModel = new ResourceModel(testEnvironmentModel.Object)
+//            {
+//                ResourceName = "test",
+//                ResourceType = ResourceType.Service,
+//                DataList = @"
+//            <DataList>
+//                    <Scalar/>
+//                    <Country/>
+//                    <State />
+//                    <City>
+//                        <Name/>
+//                        <GeoLocation />
+//                    </City>
+//             </DataList>
+//            "
+//            };
 
-            IDataListViewModel setupDatalist = new DataListViewModel();
-            DataListSingleton.SetDataList(setupDatalist);
-            DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
+//            IDataListViewModel setupDatalist = new DataListViewModel();
+//            DataListSingleton.SetDataList(setupDatalist);
+            //DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            Monitor.Exit(TestGuard);
+            Monitor.Exit(DataListSingletonTest.DataListSingletonTestGuard);
         }
 
         //BUG 8761

@@ -17,14 +17,13 @@ namespace Dev2.Core.Tests
     public class IntellisenseProviderTest
     {
         private IResourceModel _resourceModel;
-        private static readonly object TestGuard = new object();
 
         #region Test Initialization
 
         [TestInitialize]
         public void Init()
         {
-            Monitor.Enter(TestGuard);
+            Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
@@ -51,7 +50,7 @@ namespace Dev2.Core.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            Monitor.Exit(TestGuard);
+            Monitor.Exit(DataListSingletonTest.DataListSingletonTestGuard);
         }
 
         #endregion Test Initialization

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using Dev2.DynamicServices;
+﻿using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -52,11 +52,11 @@ namespace Dev2.Runtime.ServiceModel
                 //4. Return the JSON representation of the service actions
 
                 var service = JsonConvert.DeserializeObject<Service>(args);
-                var actions = new List<ServiceActionWrapper>
+                var actions = new List<ServiceMethod>
                 {
-                    new ServiceActionWrapper { Name = "Action1" },
-                    new ServiceActionWrapper { Name = "Action2" },
-                    new ServiceActionWrapper { Name = "Action3" }
+                    //new ServiceMethod { Name = "Action1" },
+                    //new ServiceMethod { Name = "Action2" },
+                    //new ServiceMethod { Name = "Action3" }
                 };
 
                 return JsonConvert.SerializeObject(actions);

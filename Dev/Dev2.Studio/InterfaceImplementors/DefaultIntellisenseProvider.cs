@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -7,6 +6,7 @@ using Dev2.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Parsing.Intellisense;
 using System.Text;
@@ -117,7 +117,11 @@ namespace Dev2.Studio.InterfaceImplementors
             if (wasRebuilt)
             {
                 //   _cachedDataList = result.ToString();
-                _cachedDataList = DataListSingleton.ActiveDataList.Resource.DataList;
+                if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.Resource != null &&
+                    DataListSingleton.ActiveDataList.Resource.DataList != null)
+                {
+                    _cachedDataList = DataListSingleton.ActiveDataList.Resource.DataList;
+                }
             }
         }
         #endregion
