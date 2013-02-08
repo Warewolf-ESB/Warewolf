@@ -398,7 +398,6 @@ ol.selectable li {
 div.scrollable {
     border:1px solid #E2E2E2; 
     overflow-y: scroll;
-    height: 280px;
 }
 
 /* To hide the close button on all dialogs */

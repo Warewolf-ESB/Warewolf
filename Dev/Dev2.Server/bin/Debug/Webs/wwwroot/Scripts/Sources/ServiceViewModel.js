@@ -1,14 +1,13 @@
 ﻿function SerivceViewModel(resourceID, resourceType) {
     var self = this;
 
-    var $sourceActionsScrollBox = $("#sourceActionsScrollBox");
-    var $sourceActionsScrollBoxHeight = 275;
-    var $sourceActions = $("#sourceActions");
+    var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
+    var $sourceMethodsScrollBoxHeight = 275;
+    var $sourceMethods = $("#sourceMethods");
 
     self.saveUri = "Service/Services/Save";
     
     self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
-    self.title = ko.observable(self.isEditing ? "Edit Service" : "New Service");
 
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
@@ -21,25 +20,30 @@
     };
 
     self.sources = ko.observableArray();
-    self.sourceActions = ko.observableArray();
-    self.sourceActionSearchTerm = ko.observable("");
-    self.sourceActionSearchResults = ko.computed(function () {
-        var term = self.sourceActionSearchTerm().toLowerCase();
+    self.sourceMethods = ko.observableArray();
+    self.sourceMethodSearchTerm = ko.observable("");
+    self.sourceMethodSearchResults = ko.computed(function () {
+        var term = self.sourceMethodSearchTerm().toLowerCase();
         if (term == "") {
-            return self.sourceActions();
+            return self.sourceMethods();
         }
-        return ko.utils.arrayFilter(self.sourceActions(), function (serviceAction) {
+        return ko.utils.arrayFilter(self.sourceMethods(), function (serviceAction) {
             return serviceAction.Name.toLowerCase().indexOf(term) !== -1;
         });
     });
     self.data.source.subscribe(function (newValue) {
-        $.post("Service/Services/Actions" + window.location.search, ko.toJSON(newValue), function (result) {
-            self.sourceActions(result);
-            self.sourceActions.sort(utils.nameCaseInsensitiveSort);
+        $.post("Service/Services/Methods" + window.location.search, ko.toJSON(newValue), function (result) {
+            self.sourceMethods(result);
+            self.sourceMethods.sort(utils.nameCaseInsensitiveSort);
         });
+    });   
+
+    self.title = ko.observable("New Service");
+    self.title.subscribe(function (newValue) {
+        document.title = newValue;
     });
     
-    utils.registerSelectHandler($sourceActions, function (selectedItem) {
+    utils.registerSelectHandler($sourceMethods, function (selectedItem) {
         self.data.action(selectedItem);
     });
     
@@ -54,11 +58,9 @@
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
 
-            if (self.isEditing) {
-                self.title("Edit Server - " + result.ResourceName);
-            }  
+            self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
         });
-        $.post("Service/Services/Sources" + window.location.search, args, function (result) {
+        $.post("Service/Resources/Sources" + window.location.search, args, function (result) {
             self.sources(result);
             self.sources.sort(utils.resourceNameCaseInsensitiveSort);
         });
@@ -77,6 +79,17 @@
     };
 
     self.save = function () {
+        //if (!self.validate()) {
+        //    return;
+        //}
+        
+        var args = ko.toJSON(self.data);
+        $.post("Service/Services/Save" + window.location.search, args, function (result) {
+            if (!result.IsValid) {
+                Dev2Awesomium.Dev2SetValue(JSON.stringify(result));
+            }
+            // TODO: ShowError
+        });
     };
 
     self.initialize = function () {
