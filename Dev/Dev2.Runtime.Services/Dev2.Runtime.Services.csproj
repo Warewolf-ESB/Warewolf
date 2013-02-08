@@ -66,6 +66,7 @@
     <Compile Include="Security\ISecureConfig.cs" />
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
+    <Compile Include="ServiceModel\Data\DataBroker.cs" />
     <Compile Include="ServiceModel\Data\MethodOutput.cs" />
     <Compile Include="ServiceModel\Data\MethodParameter.cs" />
     <Compile Include="ServiceModel\Data\ResourceList.cs" />

@@ -53,6 +53,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
@@ -76,6 +77,8 @@
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\ConnectionsMock.cs" />
     <Compile Include="ServiceModel\ConnectionTests.cs" />
+    <Compile Include="ServiceModel\Data\DataBrokerMock.cs" />
+    <Compile Include="ServiceModel\Data\DataBrokerTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ResourceTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
@@ -173,6 +176,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\InternallySigned.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
