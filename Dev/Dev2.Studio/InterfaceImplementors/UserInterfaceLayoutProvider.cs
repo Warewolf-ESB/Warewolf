@@ -779,8 +779,9 @@ namespace Dev2.Studio
                         //var resourceViewModel = new ResourceWizardViewModel(decisionActivity);
 
                         var callBackHandler = new Dev2DecisionCallbackHandler();
-                        callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
-                        callBackHandler.Owner.ShowDialog();
+                        //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
+                        //callBackHandler.Owner.ShowDialog();
+                        WebSites.ShowWebPageDialog(uriString, callBackHandler, 840, 630);
 
                         // Wizard finished...
                         // Now Fetch from DL and push the model into the activityExpression.SetValue();
@@ -936,9 +937,9 @@ namespace Dev2.Studio
                         var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                         var callBackHandler = new Dev2DecisionCallbackHandler();
-                        callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
-
-                        callBackHandler.Owner.ShowDialog();
+                        //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
+                        //callBackHandler.Owner.ShowDialog();
+                        WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
 
 
                         // Wizard finished...
@@ -1004,9 +1005,9 @@ namespace Dev2.Studio
                 var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                 var callBackHandler = new Dev2DecisionCallbackHandler();
-                callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
-
-                callBackHandler.Owner.ShowDialog();
+                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
+                //callBackHandler.Owner.ShowDialog();
+                WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
 
 
                 // Wizard finished...
@@ -1075,9 +1076,9 @@ namespace Dev2.Studio
                 var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                 var callBackHandler = new Dev2DecisionCallbackHandler();
-                callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
-
-                callBackHandler.Owner.ShowDialog();
+                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
+                //callBackHandler.Owner.ShowDialog();
+                WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
 
 
                 // Wizard finished...
@@ -1280,7 +1281,7 @@ namespace Dev2.Studio
 
                 try
                 {
-                    _win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri);
+                    _win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri) { Width = 850, Height = 600 };
                     _win.ShowDialog();
                 }
                 catch { }
@@ -1328,7 +1329,7 @@ namespace Dev2.Studio
                     var dataListID = resourceModelToEdit.Environment.UploadToDataList(args);
                     var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
-                    _win = new WebPropertyEditorWindow(resourceViewModel, uriString);
+                    _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
                     _win.ShowDialog();
                 }
                 catch { }
@@ -1379,7 +1380,7 @@ namespace Dev2.Studio
                     var xmlOutput = ResourceHelper.MergeXmlConfig(layoutObjectToOpenWizardFor.SelectedLayoutObject.XmlConfiguration, elementNames);
                     var dataListID = environment.UploadToDataList(xmlOutput);
                     var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-                    _win = new WebPropertyEditorWindow(layoutObjectToOpenWizardFor, uriString);
+                    _win = new WebPropertyEditorWindow(layoutObjectToOpenWizardFor, uriString) { Width = 850, Height = 600 };
                     _win.ShowDialog();
                 }
                 catch { }
@@ -1789,7 +1790,11 @@ namespace Dev2.Studio
             ImportService.SatisfyImports(dialogueViewModel);
             var packUri = StringResources.Dev2_Logo;
             dialogueViewModel.SetupDialogue(StringResources.About_Header_Text, String.Format(StringResources.About_Content, StringResources.CurrentVersion, StringResources.CurrentVersion), packUri, StringResources.About_Description_Header);
-            var dev2Dialog = new Dev2Dialogue { Owner = Application.Current.MainWindow, DataContext = dialogueViewModel };
+            var dev2Dialog = new Dev2Dialogue 
+            { 
+                Owner = Application.Current.MainWindow, 
+                DataContext = dialogueViewModel 
+            };
             dialogueViewModel.OnOkClick += (e, f) =>
             {
                 dev2Dialog.Close();

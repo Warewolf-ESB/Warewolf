@@ -6,7 +6,7 @@
     xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     ShowInTaskbar="True"
     Name="WebPropertyEditor"
-    >
+    WindowStartupLocation="CenterOwner">
     <cs:WebView x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <cs:WebView.ContextMenu>
             <ContextMenu />

@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
+﻿using Dev2.DataList.Contract;
+using Dev2.Studio;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.UI;
-using System.Windows.Controls.Primitives;
-using System.Data;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
@@ -33,6 +24,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
         {
             InitializeComponent();
             SetUpTextEditor();
+            Owner = App.Current.MainWindow;
         }
 
         private TextEditor _editor;

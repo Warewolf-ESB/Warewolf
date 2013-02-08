@@ -20,6 +20,7 @@ namespace Dev2.Studio.Webs
             callbackHandler.Owner = window;
 
             window.Browser.LoadSafe(uriString);
+
             return window;
         }
 
@@ -30,6 +31,19 @@ namespace Dev2.Studio.Webs
         public static void ShowWebPageDialog(this IEnvironmentModel environment, string website, string relativeUriString, IPropertyEditorWizard callbackHandler, double width, double height)
         {
             var window = CreateWebPageDialog(environment, website, relativeUriString, callbackHandler, width, height);
+            window.ShowDialog();
+        }
+
+        public static void ShowWebPageDialog(string absoluteUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600)
+        {
+            Browser.CallbackHandler.PropertyEditorViewModel = callbackHandler;
+
+            var window = new WebPropertyEditorWindow { Width = width, Height = height };
+
+            callbackHandler.NavigateRequested += uri => window.Browser.LoadSafe(uri);
+            callbackHandler.Owner = window;
+
+            window.Browser.LoadSafe(absoluteUriString);
             window.ShowDialog();
         }
 

@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Unlimited.Applications.BusinessDesignStudio.Views.SearchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SearchWindow" Height="480" Width="640" WindowStartupLocation="CenterScreen">
+        Title="SearchWindow" Height="480" Width="640" 
+        WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition  />

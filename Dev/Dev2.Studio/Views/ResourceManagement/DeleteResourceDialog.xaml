@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Dev2.Studio.Views.ResourceManagement.DeleteResourceDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Confirm Resource Deletion" Height="157" Width="362" WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" MinHeight="100" MinWidth="350" ResizeMode="NoResize">
+        Title="Confirm Resource Deletion" Height="157" Width="362" 
+        WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" MinHeight="100" MinWidth="350" ResizeMode="NoResize">
     <Grid>
         <Label Name="lblMessage" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Stretch" Height="69" Margin="0,0,0,50">
             <TextBlock Name="tbDisplay" TextWrapping="WrapWithOverflow" AutomationProperties.AutomationId="UI_DeleteResourceText_AutoID">

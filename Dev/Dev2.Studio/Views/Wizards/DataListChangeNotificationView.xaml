@@ -4,7 +4,7 @@
         Title="DataListChangeNotificationView"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"                
-        Height="300" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Height="300" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
     </i:Interaction.Behaviors>

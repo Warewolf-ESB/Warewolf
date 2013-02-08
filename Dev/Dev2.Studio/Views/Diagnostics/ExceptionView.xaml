@@ -7,7 +7,7 @@
         Title="An unhandled exception has been encountered" 
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         Height="420"
         Width="680"
         Icon="{Binding ErrorIcon}"

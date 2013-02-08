@@ -21,6 +21,7 @@ namespace Dev2.Studio.InterfaceImplementors
             if (window == null) return;
 
             window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.DataContext = viewModel;
             window.Show();
         }
@@ -28,6 +29,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public void Show(Window window, SimpleBaseViewModel viewModel)
         {
             window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.DataContext = viewModel;
             window.Show();
         }
@@ -35,6 +37,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public void ShowDialog(Window window, SimpleBaseViewModel viewModel)
         {
             window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.DataContext = viewModel;
             window.ShowDialog();
         }
@@ -45,6 +48,7 @@ namespace Dev2.Studio.InterfaceImplementors
             if (window == null) return;
 
             window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.DataContext = viewModel;
             window.ShowDialog();
         }

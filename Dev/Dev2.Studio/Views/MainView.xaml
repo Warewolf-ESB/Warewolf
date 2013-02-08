@@ -422,7 +422,7 @@
                 <igDock:XamDockManager.Panes>
                     <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
                         <igDock:TabGroupPane>
-                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False" IsPinned="False">
+                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False" IsPinned="False" AllowClose="False">
                             </igDock:ContentPane>
                         </igDock:TabGroupPane>
                     </igDock:SplitPane>

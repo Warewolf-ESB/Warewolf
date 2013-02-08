@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Core.AppResources.Browsers;
+﻿using Dev2.Studio;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using System;
 
@@ -19,6 +20,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
         public WebPropertyEditorWindow()
         {
             InitializeComponent();
+            Owner = App.Current.MainWindow;
         }
 
         [Obsolete("use WebSites.ShowWebPageDialog() or WebSites.CreateWebPageDialog() instead")]
@@ -32,6 +34,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             _layoutObjectModel.NavigateRequested += NavigateRequested;
 
             Closed += OnClosed;
+
+            Owner = App.Current.MainWindow;
         }
 
         #endregion

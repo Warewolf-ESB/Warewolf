@@ -4,7 +4,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"   
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"                
         Title="AutomationIdCreaterView" Height="163" Width="288"
-        >
+        WindowStartupLocation="CenterOwner">
 
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />

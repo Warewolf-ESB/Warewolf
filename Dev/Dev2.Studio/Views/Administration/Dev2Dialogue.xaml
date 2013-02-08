@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{Binding Title}"  Height="250" Width="500" 
         Icon="/Images/Network.png"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
 
     <Grid>        
         <Grid.ColumnDefinitions>

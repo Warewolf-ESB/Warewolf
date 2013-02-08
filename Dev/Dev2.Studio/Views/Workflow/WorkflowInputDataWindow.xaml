@@ -10,7 +10,7 @@
         Width="450"        
         Height="400"       
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}">
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/debugplay.png" ></BitmapImage>
