@@ -483,7 +483,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create the Workflow
             myTestBase.CreateCustomWorkflow("Bug7842");
-            UITestControl theTab = TabManagerUIMap.FindTabByName("CopyTabIntoBaseConvert_Expected_TabIsCopied");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug7842");
             Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 
             // Drag a DataSplit onto it
