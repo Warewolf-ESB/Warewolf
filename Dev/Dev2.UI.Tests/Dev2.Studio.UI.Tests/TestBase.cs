@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
-
+using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,8 +40,8 @@ using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 
 
 namespace Dev2.CodedUI.Tests
@@ -57,29 +59,21 @@ namespace Dev2.CodedUI.Tests
         // To bring up the generator utility, click in a method, and press
         // Cntrl+\, Cntrl+C
 
-        public TestBase()
-        {
-
-        }
-
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
         public void CheckStartIsValid()
         {
-            try
+            // Set default browser to IE for tests
+            RegistryKey regkey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\shell\\Associations\\UrlAssociations\\http\\UserChoice", true);
+            if (regkey != null)
             {
-                // Set default browser to IE for tests
-                RegistryKey regkey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\shell\\Associations\\UrlAssociations\\http\\UserChoice", true);
                 string browser = regkey.GetValue("Progid").ToString();
                 if (browser != "IE.HTTP")
                 {
                     regkey.SetValue("Progid", "IE.HTTP");
                 }
             }
-            catch (Exception ex)
-            {
-                // Some PC's don't have this value - We have to assume they only have IE :(
-            }
+
 
             // Set focus to the Studio (So your Coded UI Test doesn't start doing stuff on your actual screen)
             WpfWindow theWindow = new WpfWindow();
@@ -92,13 +86,15 @@ namespace Dev2.CodedUI.Tests
             // If it's set to true it closes all open tabs, and all instances of IE before each test is run
             // Whilst debugging a Coded UI Test, you might want to keep the Workflow Designer as is
             // In this case, you should set it to false
-            bool toCheck = false;   
+// ReSharper disable ReplaceWithSingleAssignment.False
+            bool toCheck = false;
 
             // On the test box, all test initialisations should always run
             if (GetStudioWindowName().Contains("IntegrationTester"))
             {
                 toCheck = true;
             }
+// ReSharper restore ReplaceWithSingleAssignment.False
 
             // Useful when creating / debugging tests
             if (toCheck)
@@ -117,7 +113,7 @@ namespace Dev2.CodedUI.Tests
                 try
                 {
                     //Process[] processList = System.Diagnostics.Process.GetProcesses();
-                    List<Process> findDev2Servers = System.Diagnostics.Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server")).ToList();
+                    List<Process> findDev2Servers = Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server")).ToList();
                     int serverCounter = findDev2Servers.Count();
                     if (serverCounter != 1)
                     {
@@ -132,14 +128,14 @@ namespace Dev2.CodedUI.Tests
                     }
                     else
                     {
-                        throw new Exception("Error - Unable to check if the Server has started!", ex.InnerException);
+                        throw new Exception("Error - Unable to check if the Server has started - " + ex.InnerException);
                     }
                 }
 
                 try
                 {
                     // Make sure the Studio has started
-                    var findDev2Studios = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Studio"));
+                    var findDev2Studios =  Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Studio"));
                     int studioCounter = findDev2Studios.Count();
                     if (studioCounter != 1)
                     {
@@ -162,9 +158,9 @@ namespace Dev2.CodedUI.Tests
                             // Click in the middle of the screen and wait, incase a side menu is open (Which covers the tabs "X")
                             UITestControl zeTab = TabManagerUIMap.FindTabByName(theTab);
                             Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
-                            System.Threading.Thread.Sleep(2500);
+                            Thread.Sleep(2500);
                             Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
-                            System.Threading.Thread.Sleep(2500);
+                            Thread.Sleep(2500);
                         }
                         TabManagerUIMap.CloseTab(theTab);
                         SendKeys.SendWait("n");
@@ -192,10 +188,9 @@ namespace Dev2.CodedUI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 
-            UITestControl theItem = ToolboxUIMap.FindToolboxItemByAutomationID("Calculate");
+            UITestControl theItem = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
             ToolboxUIMap.DragControlToWorkflowDesigner(theItem, p);
 
-            UITestControl controlOnTheWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Calculate");
             WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
 
             WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(1,2)", "[[myResult]]");
@@ -263,7 +258,7 @@ namespace Dev2.CodedUI.Tests
             //this.DocManagerUIMap.ClickOpenTabPage("Explorer");
             //this.ExplorerUIMap.DoRefresh();
 
-            //UITestControl commentControl = ToolboxUIMap.FindToolboxItemByAutomationID("Comment");
+            //UITestControl commentControl = ToolboxUIMap.FindToolboxItemByAutomationId("Comment");
             //DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //this.UIMap.TabManagerIsNotNull();
             //TabManagerUIMap.CloseTab("Deploy Resources");
@@ -551,8 +546,6 @@ namespace Dev2.CodedUI.Tests
 
             // Create the workflow
             CreateCustomWorkflow("5385Point1", "CodedUITestCategory");
-            UITestControl theTab = TabManagerUIMap.FindTabByName("5385Point1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
 
             // Open the Variables tab, and enter the invalid value
             DocManagerUIMap.ClickOpenTabPage("Variables");
@@ -658,7 +651,7 @@ namespace Dev2.CodedUI.Tests
 
             // Click in the middle of the screen to hide the "Explorer" Tab
             Mouse.Click(new Point(Screen.PrimaryScreen.WorkingArea.Width / 2, Screen.PrimaryScreen.WorkingArea.Height / 2));
-            System.Threading.Thread.Sleep(500); // Give it time to close
+            Thread.Sleep(500); // Give it time to close
             TabManagerUIMap.CloseTab(tabName);
 
             // 5559.6 - ShowDependencies
@@ -672,7 +665,7 @@ namespace Dev2.CodedUI.Tests
 
             // Click in the middle of the screen to hide the "Explorer" Tab
             Mouse.Click(new Point(Screen.PrimaryScreen.WorkingArea.Width / 2, Screen.PrimaryScreen.WorkingArea.Height / 2));
-            System.Threading.Thread.Sleep(500); // Give it time to close
+            Thread.Sleep(500); // Give it time to close
             TabManagerUIMap.CloseTab(tabName);
 
             // 5559.7 - Connect_ConnectCommand_ExpectAdd - Removed until new UI bit is mapped!
@@ -723,7 +716,7 @@ namespace Dev2.CodedUI.Tests
 
             // Drag a Calculate control on
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationID("Calculate");
+            UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
             ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, workflowPoint1);
 
             Mouse.Click();
@@ -738,12 +731,11 @@ namespace Dev2.CodedUI.Tests
             //fxBox.Find();
 
             UITestControlCollection boxCollection = fxBox.FindMatchingControls();
-            int boxCounter = boxCollection.Count;
             WpfEdit realfxBox = new WpfEdit();
             foreach (WpfEdit theBox in boxCollection)
             {
-                string autoID = theBox.AutomationId;
-                if (autoID == "UI__fxtxt_AutoID")
+                string autoId = theBox.AutomationId;
+                if (autoId == "UI__fxtxt_AutoID")
                 {
                     realfxBox = theBox;
                 }
@@ -777,11 +769,10 @@ namespace Dev2.CodedUI.Tests
 
             // Drag a Multi Assign on
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationID("Assign");
+            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
 
             // Add some text
-            UITestControl assignControlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Assign");
             WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
             SendKeys.SendWait("someVal");
 
@@ -828,7 +819,6 @@ namespace Dev2.CodedUI.Tests
 
             // Got the bottom right corner for some dragging fun!
             Point p = new Point(theWindow.BoundingRectangle.Left + theWindow.BoundingRectangle.Width - 5, theWindow.BoundingRectangle.Top + theWindow.BoundingRectangle.Height - 5);
-            Point toDragTo = new Point(p.X - 100, p.Y - 100);
             Mouse.Click(p);
             for (int j = 0; j < 25; j++)
             {
@@ -836,11 +826,10 @@ namespace Dev2.CodedUI.Tests
                 Mouse.StopDragging(-50, -50);
                 Mouse.StartDragging();
                 Mouse.StopDragging(p);
-                Point clickPoint = new Point();
+                Point clickPoint;
                 if (!theWindow.TryGetClickablePoint(out clickPoint))
                 {
                     Assert.Inconclusive("It died");
-                    break;
                 }
             }
         }
@@ -863,7 +852,7 @@ namespace Dev2.CodedUI.Tests
 
             // Drag the tool onto the workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationID("Assign");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
             // Add the data!
@@ -871,11 +860,11 @@ namespace Dev2.CodedUI.Tests
             for (int j = 0; j < 100; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
-                SendKeys.SendWait("[[theVar" + j.ToString() + "]]");
+                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
                 Thread.Sleep(50);
                 SendKeys.SendWait("{TAB}");
                 Thread.Sleep(50);
-                SendKeys.SendWait(j.ToString());
+                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
                 Thread.Sleep(50);
                 SendKeys.SendWait("{TAB}");
                 Thread.Sleep(50);
@@ -1008,12 +997,12 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             // Get the data for later comparison
             string folder = GetServerEXEFolder();
-            string workspaceID = GetWorkspaceID();
-            string path1 = folder + @"Workspaces\" + workspaceID + @"\Services\5782Point2TWR.xml";
+            string workspaceId = GetWorkspaceID();
+            string path1 = folder + @"Workspaces\" + workspaceId + @"\Services\5782Point2TWR.xml";
             string path2 = folder + @"Services\5782Point2TWR.xml";
             StreamReader sr1 = new StreamReader(path1);
             StreamReader sr2 = new StreamReader(path2);
@@ -1151,12 +1140,12 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             // Get the data for later comparison
             string folder = GetServerEXEFolder();
-            string workspaceID = GetWorkspaceID();
-            string path1 = folder + @"Workspaces\" + workspaceID + @"\Services\5782Point3.xml";
+            string workspaceId = GetWorkspaceID();
+            string path1 = folder + @"Workspaces\" + workspaceId + @"\Services\5782Point3.xml";
             string path2 = folder + @"Services\5782Point3.xml";
             StreamReader sr1 = new StreamReader(path1);
             StreamReader sr2 = new StreamReader(path2);
@@ -1179,7 +1168,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             // Re-read the data
             sr1 = new StreamReader(path1);
@@ -1218,7 +1207,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             // 2. Make a change
             // Open the Toolbox
@@ -1246,7 +1235,7 @@ namespace Dev2.CodedUI.Tests
             Enter data into all the fields and click on the XML tab then enter more data into the XML and switch back to the inputs tab and notice that it has updated.
          */
         [TestMethod]
-        public void DebugTabUpdatesWhenXMLIsModified()
+        public void DebugTabUpdatesWhenXmlIsModified()
         {
             /*
             // Create the workflow
@@ -1353,12 +1342,12 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             // Get the data for later comparison
             string folder = GetServerEXEFolder();
-            string workspaceID = GetWorkspaceID();
-            string path1 = folder + @"Workspaces\" + workspaceID + @"\Services\5782Point5.xml";
+            string workspaceId = GetWorkspaceID();
+            string path1 = folder + @"Workspaces\" + workspaceId + @"\Services\5782Point5.xml";
             string path2 = folder + @"Services\5782Point5.xml";
             StreamReader sr1 = new StreamReader(path1);
             StreamReader sr2 = new StreamReader(path2);
@@ -1377,7 +1366,6 @@ namespace Dev2.CodedUI.Tests
             // Drag it on
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
-            string tabName = TabManagerUIMap.GetTabNameAtPosition(0);
             // 3. Close the tab, and click Yes
             TabManagerUIMap.CloseTab_Click_Yes("5782Point5");
 
@@ -1424,12 +1412,12 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             // Get the data for later comparison
             string folder = GetServerEXEFolder();
-            string workspaceID = GetWorkspaceID();
-            string path1 = folder + @"Workspaces\" + workspaceID + @"\Services\5782Point6.xml";
+            string workspaceId = GetWorkspaceID();
+            string path1 = folder + @"Workspaces\" + workspaceId + @"\Services\5782Point6.xml";
             string path2 = folder + @"Services\5782Point6.xml";
             StreamReader sr1 = new StreamReader(path1);
             StreamReader sr2 = new StreamReader(path2);
@@ -1448,7 +1436,6 @@ namespace Dev2.CodedUI.Tests
             // Drag it on
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
-            string tabName = TabManagerUIMap.GetTabNameAtPosition(0);
             // 3. Close the tab, and click No
             TabManagerUIMap.CloseTab_Click_No("5782Point6");
 
@@ -1497,12 +1484,12 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
 
             // Get the data for later comparison
             string folder = GetServerEXEFolder();
-            string workspaceID = GetWorkspaceID();
-            string path1 = folder + @"Workspaces\" + workspaceID + @"\";
+            string workspaceId = GetWorkspaceID();
+            string path1 = folder + @"Workspaces\" + workspaceId + @"\";
             string path2 = folder + @"Services\5782Point7.xml";
 
             // Pre 
@@ -1588,16 +1575,16 @@ namespace Dev2.CodedUI.Tests
 
             // Close the Studio (Don't kill it)
             WpfWindow theStudio = new WpfWindow();
-            theStudio.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+            theStudio.SearchProperties[WpfWindow.PropertyNames.Name] = GetStudioWindowName();
             theStudio.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            theStudio.WindowTitles.Add(TestBase.GetStudioWindowName());
+            theStudio.WindowTitles.Add(GetStudioWindowName());
             theStudio.Find();
             Point closeButtonPoint = new Point(theStudio.BoundingRectangle.Left + theStudio.BoundingRectangle.Width - 10, theStudio.BoundingRectangle.Top + 10);
             Mouse.Click(closeButtonPoint);
-            System.Threading.Thread.Sleep(2000); // Give it time to die
+            Thread.Sleep(2000); // Give it time to die
 
             // Restart the studio!
-            System.Diagnostics.Process.Start(fileName);
+            Process.Start(fileName);
 
             // Get the tab names
             string tab1 = TabManagerUIMap.GetTabNameAtPosition(0);
@@ -1638,7 +1625,7 @@ namespace Dev2.CodedUI.Tests
 
             // Drag a ForEach onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationID("ForEach");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
             ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
 
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
@@ -1647,7 +1634,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
             // Wait for the ForEach thing to do its init-y thing
-            System.Threading.Thread.Sleep(1500);
+            Thread.Sleep(1500);
 
             // And click below the tab to get us back to the normal screen
             Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
@@ -1674,7 +1661,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationID(theTab, "CalculateTaxReturns");
             try
             {
-                Point p = calcTaxReturnsControl.GetClickablePoint();
+                calcTaxReturnsControl.GetClickablePoint();
             }
             catch
             {
@@ -1978,12 +1965,12 @@ namespace Dev2.CodedUI.Tests
             string studioPath = GetStudioEXELocation();
             CloseTheStudio();
             File.Delete(defaultFile);
-            System.Threading.Thread.Sleep(100); // Time to delete
+            Thread.Sleep(100); // Time to delete
             if (File.Exists(defaultFile))
             {
                 Assert.Fail("The file could not be deleted!");
             }
-            System.Diagnostics.Process.Start(studioPath);
+            Process.Start(studioPath);
 
             // Wait for it to open
             Thread.Sleep(5000);
@@ -1997,7 +1984,7 @@ namespace Dev2.CodedUI.Tests
             }
 
             // Test over - Re-open the Studio D:
-            System.Diagnostics.Process.Start(studioPath);
+            Process.Start(studioPath);
 
             // Wait for it to open
             Thread.Sleep(5000);
@@ -2225,16 +2212,14 @@ namespace Dev2.CodedUI.Tests
             string workflowName = "CodedUITestWorkflow";
 
             #endregion Workflow Input Parameters
-            this.RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
 
             CreateCustomWorkflow("CodedUITestWorkflow");
 
             // Sashen - 29-11-2012 - Please swap this out to check the WorkflowDesigner for the Workflow name
-            UITestControl createdTab = this.TabManagerUIMap.FindTabByName(workflowName);
+            UITestControl createdTab = TabManagerUIMap.FindTabByName(workflowName);
 
             Assert.IsNotNull(createdTab);
-
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(createdTab, "Start");
 
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "CodedUITestWorkflow");
         }
@@ -2258,18 +2243,18 @@ namespace Dev2.CodedUI.Tests
             // position to the window
             while (!WorkflowWizardUIMap.IsWindowOpen())
             {
-                System.Threading.Thread.Sleep(1000);
+                Thread.Sleep(1000);
             }
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(2000);
             //this.UIMap.DoesThisExist();
-            this.WorkflowWizardUIMap.EnterWorkflowName(workflowName);
-            this.WorkflowWizardUIMap.EnterWorkflowCategory(workflowCategory);
+            WorkflowWizardUIMap.EnterWorkflowName(workflowName);
+            WorkflowWizardUIMap.EnterWorkflowCategory(workflowCategory);
 
 
-            this.WorkflowWizardUIMap.DoneButtonClick();
+            WorkflowWizardUIMap.DoneButtonClick();
 
             // Sashen - 29-11-2012 - Please swap this out to check the WorkflowDesigner for the Workflow name
-            UITestControl createdTab = this.TabManagerUIMap.FindTabByName(workflowName);
+            UITestControl createdTab = TabManagerUIMap.FindTabByName(workflowName);
 
             Assert.IsNotNull(createdTab);
             //this.UIMap.Environment_Workflow_StartButtonExists();
@@ -2293,7 +2278,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.Click(theTab);
 
             // Wait a bit for user noticability
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
 
             // Get the location of the Start button
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
@@ -2314,7 +2299,7 @@ namespace Dev2.CodedUI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
 
             // Get the comment box
-            UITestControl commentControl = ToolboxUIMap.FindToolboxItemByAutomationID("Comment");
+            UITestControl commentControl = ToolboxUIMap.FindToolboxItemByAutomationId("Comment");
 
             // And drag it onto the point
             ToolboxUIMap.DragControlToWorkflowDesigner(commentControl, p);
@@ -2371,7 +2356,7 @@ namespace Dev2.CodedUI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
 
             // Get the comment box
-            UITestControl commentControl = ToolboxUIMap.FindToolboxItemByAutomationID("Comment");
+            UITestControl commentControl = ToolboxUIMap.FindToolboxItemByAutomationId("Comment");
 
             // And drag it onto the point
             ToolboxUIMap.DragControlToWorkflowDesigner(commentControl, p);
@@ -2413,7 +2398,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
             // Wait for the Deploy tab to load!
-            System.Threading.Thread.Sleep(5000);
+            Thread.Sleep(5000);
 
             // Make sure the correct tab is highlighted
             UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
@@ -2498,14 +2483,14 @@ namespace Dev2.CodedUI.Tests
             StreamReader sr1 = new StreamReader(workspaceFile);
             string fileData = sr1.ReadToEnd();
             sr1.Close();
-            string workspaceID = fileData.Remove(0, fileData.IndexOf("WorkspaceID=") + 13);
-            workspaceID = workspaceID.Substring(0, workspaceID.IndexOf("\""));
-            return workspaceID;
+            string workspaceId = fileData.Remove(0, fileData.IndexOf("WorkspaceID=", StringComparison.Ordinal) + 13);
+            workspaceId = workspaceId.Substring(0, workspaceId.IndexOf("\"", StringComparison.Ordinal));
+            return workspaceId;
         }
 
         private string GetServerEXEFolder()
         {
-            var findDev2Studios = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Server"));
+            var findDev2Studios = Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Server"));
             if (findDev2Studios.Count() != 1)
             {
                 throw new Exception("Error - Cannot find location if more than 1 studio is open :(");
@@ -2557,7 +2542,7 @@ namespace Dev2.CodedUI.Tests
 
         public void KillAllInstancesOf(string instanceName)
         {
-            List<Process> processInstances = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith(instanceName)).ToList();
+            List<Process> processInstances = Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith(instanceName)).ToList();
             foreach (Process p in processInstances)
             {
                 p.Kill();
@@ -2587,61 +2572,22 @@ namespace Dev2.CodedUI.Tests
             //ExplorerUIMap.DoRefresh();
         }
 
-        private bool IsLocalServerConnected()
-        {
-            try
-            {
-                this.ExplorerUIMap.GetServer("localhost");
-                Point p = this.ExplorerUIMap.GetServiceType("localhost", "WORKFLOWS").GetClickablePoint();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private bool IsAnotherServerConnected()
-        {
-            try
-            {
-
-                //this.UIMap.Environment_Explorer_AnotherServer_IsConnected();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public static string GetStudioWindowName()
         {
             return "Business Design Studio (DEV2\\" + Environment.UserName + ")";
-        }
-
-        private void ConnectToServer(string serverName, string address)
-        {
-            this.DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //this.ExplorerUIMap.ConnectBtnClick();
-            this.ConnectViewUIMap.InputServerName(serverName);
-            this.ConnectViewUIMap.InputServerAddress(address);
-            this.ConnectViewUIMap.ClickConnectButton();
         }
 
         private void CloseTheStudio()
         {
             // Close the Studio (Don't kill it)
             WpfWindow theStudio = new WpfWindow();
-            theStudio.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+            theStudio.SearchProperties[WpfWindow.PropertyNames.Name] = GetStudioWindowName();
             theStudio.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             theStudio.WindowTitles.Add(TestBase.GetStudioWindowName());
             theStudio.Find();
             Point closeButtonPoint = new Point(theStudio.BoundingRectangle.Left + theStudio.BoundingRectangle.Width - 10, theStudio.BoundingRectangle.Top + 10);
             Mouse.Click(closeButtonPoint);
-            System.Threading.Thread.Sleep(2000); // Give it time to die
+            Thread.Sleep(2000); // Give it time to die
         }
 
         #endregion
@@ -2655,42 +2601,27 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                return testContextInstance;
+                return _testContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                _testContextInstance = value;
             }
         }
-        private TestContext testContextInstance;
+        private TestContext _testContextInstance;
 
         #region UI Maps
-
-        #region Base UI Map
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if ((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
 
         public DocManagerUIMap DocManagerUIMap
         {
             get
             {
-                if ((this.docManagerMap == null))
+                if ((_docManagerMap == null))
                 {
-                    this.docManagerMap = new DocManagerUIMap();
+                    _docManagerMap = new DocManagerUIMap();
                 }
 
-                return this.docManagerMap;
+                return _docManagerMap;
             }
         }
 
@@ -2698,12 +2629,12 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.toolboxUIMap == null))
+                if ((_toolboxUiMap == null))
                 {
-                    this.toolboxUIMap = new ToolboxUIMap();
+                    _toolboxUiMap = new ToolboxUIMap();
                 }
 
-                return this.toolboxUIMap;
+                return _toolboxUiMap;
             }
         }
 
@@ -2711,12 +2642,12 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.explorerUIMap == null))
+                if ((_explorerUiMap == null))
                 {
-                    this.explorerUIMap = new ExplorerUIMap();
+                    _explorerUiMap = new ExplorerUIMap();
                 }
 
-                return this.explorerUIMap;
+                return _explorerUiMap;
             }
         }
 
@@ -2724,22 +2655,20 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.deployViewUIMap == null))
+                if ((_deployViewUiMap == null))
                 {
-                    this.deployViewUIMap = new DeployViewUIMap();
+                    _deployViewUiMap = new DeployViewUIMap();
                 }
 
-                return this.deployViewUIMap;
+                return _deployViewUiMap;
             }
         }
 
-        private ExplorerUIMap explorerUIMap;
-        private ToolboxUIMap toolboxUIMap;
-        private DocManagerUIMap docManagerMap;
-        private UIMap map;
-        private DeployViewUIMap deployViewUIMap;
+        private ExplorerUIMap _explorerUiMap;
+        private ToolboxUIMap _toolboxUiMap;
+        private DocManagerUIMap _docManagerMap;
+        private DeployViewUIMap _deployViewUiMap;
 
-        #endregion Base UI Map
 
         #region Connect Window UI Map
 
@@ -2747,15 +2676,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (connectViewUIMap == null)
+                if (_connectViewUIMap == null)
                 {
-                    connectViewUIMap = new ConnectViewUIMap();
+                    _connectViewUIMap = new ConnectViewUIMap();
                 }
-                return connectViewUIMap;
+                return _connectViewUIMap;
             }
         }
 
-        private ConnectViewUIMap connectViewUIMap;
+        private ConnectViewUIMap _connectViewUIMap;
 
         #endregion Connect Window UI Map
 
@@ -2765,15 +2694,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (debugUIMap == null)
+                if (_debugUIMap == null)
                 {
-                    debugUIMap = new DebugUIMap();
+                    _debugUIMap = new DebugUIMap();
                 }
-                return debugUIMap;
+                return _debugUIMap;
             }
         }
 
-        private DebugUIMap debugUIMap;
+        private DebugUIMap _debugUIMap;
 
         #endregion External UI Map
 
@@ -2822,16 +2751,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (databaseServiceWizardUIMap == null)
+                if (_databaseServiceWizardUIMap == null)
                 {
-                    databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
+                    _databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
                 }
 
-                return databaseServiceWizardUIMap;
+                return _databaseServiceWizardUIMap;
             }
         }
 
-        private DatabaseServiceWizardUIMap databaseServiceWizardUIMap;
+        private DatabaseServiceWizardUIMap _databaseServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
 
@@ -2918,12 +2847,12 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (tabManagerUIMap == null)
+                if (_tabManagerUIMap == null)
                 {
-                    tabManagerUIMap = new TabManagerUIMap();
+                    _tabManagerUIMap = new TabManagerUIMap();
                 }
 
-                return tabManagerUIMap;
+                return _tabManagerUIMap;
             }
         }
 
@@ -2931,7 +2860,7 @@ namespace Dev2.CodedUI.Tests
 
 
 
-        private TabManagerUIMap tabManagerUIMap;
+        private TabManagerUIMap _tabManagerUIMap;
 
         #endregion TabManager UI Map
 
@@ -2941,15 +2870,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (variablesUIMap == null)
+                if (_variablesUIMap == null)
                 {
-                    variablesUIMap = new VariablesUIMap();
+                    _variablesUIMap = new VariablesUIMap();
                 }
-                return variablesUIMap;
+                return _variablesUIMap;
             }
         }
 
-        private VariablesUIMap variablesUIMap;
+        private VariablesUIMap _variablesUIMap;
 
         #endregion Connect Window UI Map
 
@@ -2959,15 +2888,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (serviceDetailsUIMap == null)
+                if (_serviceDetailsUIMap == null)
                 {
-                    serviceDetailsUIMap = new ServiceDetailsUIMap();
+                    _serviceDetailsUIMap = new ServiceDetailsUIMap();
                 }
-                return serviceDetailsUIMap;
+                return _serviceDetailsUIMap;
             }
         }
 
-        private ServiceDetailsUIMap serviceDetailsUIMap;
+        private ServiceDetailsUIMap _serviceDetailsUIMap;
 
         #endregion
 
@@ -2977,15 +2906,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (externalUIMap == null)
+                if (_externalUIMap == null)
                 {
-                    externalUIMap = new ExternalUIMap();
+                    _externalUIMap = new ExternalUIMap();
                 }
-                return externalUIMap;
+                return _externalUIMap;
             }
         }
 
-        private ExternalUIMap externalUIMap;
+        private ExternalUIMap _externalUIMap;
 
         #endregion External UI Map
 

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
+using Dev2.CodedUI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
@@ -23,13 +19,10 @@ using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
-using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 
-
-namespace Dev2.CodedUI.Tests
+namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
     /// Summary description for CodedUITest1
@@ -37,10 +30,6 @@ namespace Dev2.CodedUI.Tests
     [CodedUITest]
     public class StudioBugTests
     {
-        public StudioBugTests()
-        {
-        }
-
         TestBase myTestBase = new TestBase();
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
@@ -127,7 +116,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void DataSplit_DeletingARow_Expected_UpdateTitle()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("6127", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("6127");
@@ -160,7 +148,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void MultiAssign_DeletingARow_Expected_UpdateTitle()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("6127", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("6127");
@@ -194,7 +181,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void DragMultipleControls()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("DragMultipleControls", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("DragMultipleControls");
@@ -233,14 +219,14 @@ namespace Dev2.CodedUI.Tests
             string exceptionMessage = String.Empty;
             try
             {
-                startButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
+                WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
 
                 // The ForEach component has not loaded, so one of the controls were not dragged!
                 Assert.Fail();
             }
             catch (Exception ex)
             {
-                exceptionMessage = ex.Message.ToString();
+                exceptionMessage = ex.Message;
             }
             if (exceptionMessage.StartsWith("Assert.Fail failed."))
             {
@@ -263,7 +249,7 @@ namespace Dev2.CodedUI.Tests
 
             // Drag control onto the Workflow Designer
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theTool = ToolboxUIMap.FindToolboxItemByAutomationID("BaseConvert");
+            UITestControl theTool = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
             ToolboxUIMap.DragControlToWorkflowDesigner(theTool, workflowPoint1);
 
             // Enter some data
@@ -333,10 +319,9 @@ namespace Dev2.CodedUI.Tests
         {
             try
             {
-                var myTestBase = new TestBase();
                 myTestBase.CreateCustomWorkflow("6672", "CodedUITestCategory");
-                explorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CodedUITestCategory", "6672");
-                explorerUIMap.DoRefresh();
+                _explorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CodedUITestCategory", "6672");
+                _explorerUIMap.DoRefresh();
                 myTestBase.CreateCustomWorkflow("6672", "CodedUITestCategory");
                 myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6672");
             }
@@ -390,7 +375,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void DataSplitActivity_OnMouseScroll_Expected_NoUnHandledExceptions()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7409", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("7409");
@@ -416,7 +400,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void MultiAssignActivity_OnMouseScroll_Expected_NoUnHandledExceptions()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7409", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("7409");
@@ -463,7 +446,6 @@ namespace Dev2.CodedUI.Tests
         public void dsfActivity_OnDblClick_Expected_NoUnhandledExceptions()
         {
             // Create new dsfActivity
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7799Activity", "CodedUITestCategory");
 
             // Initialize work flow
@@ -498,7 +480,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void MiddleClickCloseHomePageUnderSpecialCircumstances_Expected_StartPageCloses()
         {
-            var myTestBase = new TestBase();
             TabManagerUIMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
@@ -564,7 +545,6 @@ namespace Dev2.CodedUI.Tests
         public void DeletingResourceAndRefreshingDeletesResource_Expected_ResourceStaysDeleted()
         {
             // Create a workflow
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7841", "CodedUITestCategory");
 
             // Refresh
@@ -592,6 +572,7 @@ namespace Dev2.CodedUI.Tests
             catch
             {
                 // Silent fail - The open is meant to fail
+                Assert.IsTrue(true);
             }
         }
 
@@ -600,7 +581,6 @@ namespace Dev2.CodedUI.Tests
         public void ClickingIntellisenseItemFillsField_Expected_IntellisenseItemAppearsInField()
         {
             // Create the Workflow for the bug
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("7854", "CodedUITestCategory");
 
             // Refresh
@@ -678,7 +658,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void FindMissing_WithDoubleRegion_Expected_BothAdded()
         {
-            var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("6413", "CodedUITestCategory");
 
             UITestControl theTab = TabManagerUIMap.FindTabByName("6413");
@@ -751,8 +730,8 @@ namespace Dev2.CodedUI.Tests
             System.Threading.Thread.Sleep(2500);
 
             // Check if the IE Body contains the data list item
-            string IEText = ExternalUIMap.GetIEBodyText();
-            if (!IEText.Contains("<field>Ithoughtthiswas</field>") && !IEText.Contains("<field>allihad</field>") && !IEText.Contains("<field>tosplit</field>"))
+            string ieText = ExternalUIMap.GetIEBodyText();
+            if (!ieText.Contains("<field>Ithoughtthiswas</field>") && !ieText.Contains("<field>allihad</field>") && !ieText.Contains("<field>tosplit</field>"))
             {
                 Assert.Fail("Data split not splitting by tab");
             }
@@ -787,9 +766,9 @@ namespace Dev2.CodedUI.Tests
             // See if the movement has persisted
             try
             {
-                UITestControl theService = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "ABCCATEGORY", "Bug8553");
+                ExplorerUIMap.GetService("localhost", "WORKFLOWS", "ABCCATEGORY", "Bug8553");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Fail("The workflow did not maintain its category move!");
             }
@@ -981,35 +960,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                return testContextInstance;
+                return _testContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                _testContextInstance = value;
             }
         }
-        private TestContext testContextInstance;
+        private TestContext _testContextInstance;
 
         #region UI Maps
-
-        #region Base UI Map
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if ((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
-
-        #endregion Base UI Map
 
         #region Ribbon UI Map
 
@@ -1017,16 +977,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.ribbonMap == null))
+                if (_ribbonMap == null)
                 {
-                    this.ribbonMap = new RibbonUIMap();
+                    _ribbonMap = new RibbonUIMap();
                 }
 
-                return this.ribbonMap;
+                return _ribbonMap;
             }
         }
 
-        private RibbonUIMap ribbonMap;
+        private RibbonUIMap _ribbonMap;
 
         #endregion
 
@@ -1036,16 +996,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.docManagerMap == null))
+                if ((_docManagerMap == null))
                 {
-                    this.docManagerMap = new DocManagerUIMap();
+                    _docManagerMap = new DocManagerUIMap();
                 }
 
-                return this.docManagerMap;
+                return _docManagerMap;
             }
         }
 
-        private DocManagerUIMap docManagerMap;
+        private DocManagerUIMap _docManagerMap;
 
         #endregion
 
@@ -1055,16 +1015,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.toolboxUIMap == null))
+                if ((_toolboxUIMap == null))
                 {
-                    this.toolboxUIMap = new ToolboxUIMap();
+                    _toolboxUIMap = new ToolboxUIMap();
                 }
 
-                return this.toolboxUIMap;
+                return _toolboxUIMap;
             }
         }
 
-        private ToolboxUIMap toolboxUIMap;
+        private ToolboxUIMap _toolboxUIMap;
 
         #endregion
 
@@ -1074,16 +1034,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.explorerUIMap == null))
+                if ((_explorerUIMap == null))
                 {
-                    this.explorerUIMap = new ExplorerUIMap();
+                    _explorerUIMap = new ExplorerUIMap();
                 }
 
-                return this.explorerUIMap;
+                return _explorerUIMap;
             }
         }
 
-        private ExplorerUIMap explorerUIMap;
+        private ExplorerUIMap _explorerUIMap;
 
         #endregion
 
@@ -1093,17 +1053,17 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.DependencyGraphUIMap == null))
+                if ((DependencyGraphUIMap == null))
                 {
-                    this.DependencyGraphUIMap = new DependencyGraph();
+                    DependencyGraphUIMap = new DependencyGraph();
                 }
 
-                return this.DependencyGraphUIMap;
+                return DependencyGraphUIMap;
             }
             set { throw new NotImplementedException(); }
         }
 
-        private DependencyGraph dependencyGraphUIMap;
+        private DependencyGraph _dependencyGraphUIMap;
 
         #endregion
 
@@ -1113,16 +1073,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.deployViewUIMap == null))
+                if ((_deployViewUIMap == null))
                 {
-                    this.deployViewUIMap = new DeployViewUIMap();
+                    _deployViewUIMap = new DeployViewUIMap();
                 }
 
-                return this.deployViewUIMap;
+                return _deployViewUIMap;
             }
         }
 
-        private DeployViewUIMap deployViewUIMap;
+        private DeployViewUIMap _deployViewUIMap;
 
         #endregion
 
@@ -1132,16 +1092,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (tabManagerUIMap == null)
+                if (_tabManagerUIMap == null)
                 {
-                    tabManagerUIMap = new TabManagerUIMap();
+                    _tabManagerUIMap = new TabManagerUIMap();
                 }
 
-                return tabManagerUIMap;
+                return _tabManagerUIMap;
             }
         }
 
-        private TabManagerUIMap tabManagerUIMap;
+        private TabManagerUIMap _tabManagerUIMap;
 
         #endregion TabManager UI Map
 
@@ -1151,16 +1111,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (workflowDesignerUIMap == null)
+                if (_workflowDesignerUIMap == null)
                 {
-                    workflowDesignerUIMap = new WorkflowDesignerUIMap();
+                    _workflowDesignerUIMap = new WorkflowDesignerUIMap();
                 }
 
-                return workflowDesignerUIMap;
+                return _workflowDesignerUIMap;
             }
         }
 
-        private WorkflowDesignerUIMap workflowDesignerUIMap;
+        private WorkflowDesignerUIMap _workflowDesignerUIMap;
 
         #endregion WorkflowDesigner UI Map
 
@@ -1170,16 +1130,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (workflowWizardUIMap == null)
+                if (_workflowWizardUIMap == null)
                 {
-                    workflowWizardUIMap = new WorkflowWizardUIMap();
+                    _workflowWizardUIMap = new WorkflowWizardUIMap();
                 }
 
-                return workflowWizardUIMap;
+                return _workflowWizardUIMap;
             }
         }
 
-        private WorkflowWizardUIMap workflowWizardUIMap;
+        private WorkflowWizardUIMap _workflowWizardUIMap;
 
         #endregion WorkflowWizard UI Map
 
@@ -1189,16 +1149,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (databaseServiceWizardUIMap == null)
+                if (_databaseServiceWizardUIMap == null)
                 {
-                    databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
+                    _databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
                 }
 
-                return databaseServiceWizardUIMap;
+                return _databaseServiceWizardUIMap;
             }
         }
 
-        private DatabaseServiceWizardUIMap databaseServiceWizardUIMap;
+        private DatabaseServiceWizardUIMap _databaseServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
 
@@ -1208,16 +1168,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (pluginServiceWizardUIMap == null)
+                if (_pluginServiceWizardUIMap == null)
                 {
-                    pluginServiceWizardUIMap = new PluginServiceWizardUIMap();
+                    _pluginServiceWizardUIMap = new PluginServiceWizardUIMap();
                 }
 
-                return pluginServiceWizardUIMap;
+                return _pluginServiceWizardUIMap;
             }
         }
 
-        private PluginServiceWizardUIMap pluginServiceWizardUIMap;
+        private PluginServiceWizardUIMap _pluginServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
 
@@ -1227,16 +1187,16 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (webpageServiceWizardUIMap == null)
+                if (_webpageServiceWizardUIMap == null)
                 {
-                    webpageServiceWizardUIMap = new WebpageServiceWizardUIMap();
+                    _webpageServiceWizardUIMap = new WebpageServiceWizardUIMap();
                 }
 
-                return webpageServiceWizardUIMap;
+                return _webpageServiceWizardUIMap;
             }
         }
 
-        private WebpageServiceWizardUIMap webpageServiceWizardUIMap;
+        private WebpageServiceWizardUIMap _webpageServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
 
@@ -1246,15 +1206,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (connectViewUIMap == null)
+                if (_connectViewUIMap == null)
                 {
-                    connectViewUIMap = new ConnectViewUIMap();
+                    _connectViewUIMap = new ConnectViewUIMap();
                 }
-                return connectViewUIMap;
+                return _connectViewUIMap;
             }
         }
 
-        private ConnectViewUIMap connectViewUIMap;
+        private ConnectViewUIMap _connectViewUIMap;
 
         #endregion Connect Window UI Map
 
@@ -1264,15 +1224,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (externalUIMap == null)
+                if (_externalUIMap == null)
                 {
-                    externalUIMap = new ExternalUIMap();
+                    _externalUIMap = new ExternalUIMap();
                 }
-                return externalUIMap;
+                return _externalUIMap;
             }
         }
 
-        private ExternalUIMap externalUIMap;
+        private ExternalUIMap _externalUIMap;
 
         #endregion External Window UI Map
 
@@ -1282,15 +1242,15 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (variablesUIMap == null)
+                if (_variablesUIMap == null)
                 {
-                    variablesUIMap = new VariablesUIMap();
+                    _variablesUIMap = new VariablesUIMap();
                 }
-                return variablesUIMap;
+                return _variablesUIMap;
             }
         }
 
-        private VariablesUIMap variablesUIMap;
+        private VariablesUIMap _variablesUIMap;
 
         #endregion Connect Window UI Map
 

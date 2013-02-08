@@ -1,20 +1,8 @@
-﻿namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+
+namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    
-    
     public partial class OutputUIMap
     {
         public bool DoesBug8747Pass()
@@ -50,7 +38,7 @@
         public void ClickClose()
         {
             // Base control
-            UITestControl theControl = this.UIBusinessDesignStudioWindow.UIDebugOutputCustom;
+            UITestControl theControl = UIBusinessDesignStudioWindow.UIDebugOutputCustom;
             theControl.Find();
             
             // Sub button
@@ -78,14 +66,7 @@
             UITestControlCollection errorResults = errorSearcher.FindMatchingControls();
             // Steps that aren't in errors still have the error text
             // Due to this, we can use the visibility (AKA: If height is -1, it's hidden (And not just 1 pixel above 0...))
-            if (errorResults[0].Height != -1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return errorResults[0].Height != -1;
         }
     }
 }

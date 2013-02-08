@@ -26,7 +26,7 @@
         /// <summary>
         /// Drags a control from the Toolbox to the Workflow
         /// </summary>
-        /// <param name="theControl">The control to drag - UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationID("controlNameHere");</param>
+        /// <param name="theControl">The control to drag - UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("controlNameHere");</param>
         /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
         public void DragControlToWorkflowDesigner(UITestControl theControl, Point p)
         {
@@ -37,17 +37,17 @@
         /// <summary>
         /// Drags a control from the Toolbox to the Workflow
         /// </summary>
-        /// <param name="controlID">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
+        /// <param name="controlId">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
         /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
-        public void DragControlToWorkflowDesigner(string controlID, Point p)
+        public void DragControlToWorkflowDesigner(string controlId, Point p)
         {
-            UITestControl theControl = FindToolboxItemByAutomationID(controlID);
+            UITestControl theControl = FindToolboxItemByAutomationId(controlId);
             DragControlToWorkflowDesigner(theControl, p);
         }
 
-        public UITestControl FindToolboxItemByAutomationID(string automationID)
+        public UITestControl FindToolboxItemByAutomationId(string automationId)
         {
-            UITestControl theControl = FindControl(automationID);
+            UITestControl theControl = FindControl(automationId);
             return theControl;
         }
     }
