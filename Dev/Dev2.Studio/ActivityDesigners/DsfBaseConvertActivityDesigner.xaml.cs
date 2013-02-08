@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2;
+using Dev2.Common;
+using Dev2.Composition;
+using Dev2.Converters;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
+using Dev2.UI;
+using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Activities.Presentation.Model;
-using Dev2;
-using Dev2.Converters;
-using Dev2.Studio.Core;
-using Dev2.UI;
-using Dev2.Common;
-using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -188,6 +189,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 ShowRightClickOptions = false;
+            }
+        }
+
+        void QuickVariableAdd_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (ModelItem != null)
+            {
+                eventAggregator.Publish(new ShowQuickVariableInputMessage(ModelItem));
             }
         }
     }

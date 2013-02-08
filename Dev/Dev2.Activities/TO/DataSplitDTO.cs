@@ -135,16 +135,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            bool result = false;
             if (SplitType == "Index" || SplitType == "Chars")
             {
                 if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
                     return true;
                 }
-                result = true;
             }
-            return result;
+            return false;
         }
 
         public bool CanAdd()

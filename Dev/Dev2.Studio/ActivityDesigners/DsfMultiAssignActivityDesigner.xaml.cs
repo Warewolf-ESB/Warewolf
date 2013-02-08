@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.Core;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Messages;
 using Dev2.UI;
 using System;
 using System.Activities.Presentation.Model;
@@ -251,6 +254,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             object theItem = theGrid.Items[theGrid.SelectedIndex];
             theGrid.ScrollIntoView(theItem);
+        }
+
+        void QuickVariableAdd_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (ModelItem != null)
+            {
+                eventAggregator.Publish(new ShowQuickVariableInputMessage(ModelItem));
+            }
         }
     }
 }

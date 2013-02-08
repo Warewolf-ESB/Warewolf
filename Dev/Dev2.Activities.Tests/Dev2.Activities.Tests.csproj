@@ -118,7 +118,6 @@
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\WebpageActivity.cs" />
-    <Compile Include="ActivityTests\WorkflowDesignerViewModel.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="IBaseActivityUnitTest.cs" />

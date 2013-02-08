@@ -253,6 +253,7 @@
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AbstractTabMessage.cs" />
+    <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\ResourceCheckedMessage.cs" />
     <Compile Include="Messages\EnvironmentConnectedMessage.cs" />

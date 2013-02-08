@@ -8,8 +8,10 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Interfaces;
 using System;
 using System.Activities;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +20,7 @@ using System.Linq;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    public class DsfBaseConvertActivity : DsfActivityAbstract<string>
+    public class DsfBaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
 
         #region Fields
@@ -181,10 +183,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        // HACK: It appears that this activity overwrites the ConvertTO.FromExpression 
-        //       during the course of its execution, so we store it for use on outputs
-        string[] _debugItems = new string[0];
-
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> results = new List<IDebugItem>();
@@ -230,6 +228,71 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return results;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
+                foreach (string s in listToAdd)
+                {
+                    mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = 0;
+                mic.Clear();
+                foreach (string s in listToAdd)
+                {
+                    mic.Add(new BaseConvertTO(s, "Text", "Base 64", string.Empty, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        {
+            if (startIndex < mic.Count)
+            {
+                mic.RemoveAt(startIndex);
+            }
+            mic.Add(new BaseConvertTO(string.Empty, "Text", "Base 64", string.Empty, startIndex + 1));
+            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+        }
+
+        private string CreateDisplayName(ModelItem modelItem, int count)
+        {
+            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
+            if (currentName.Contains("(") && currentName.Contains(")"))
+            {
+                if (currentName.Contains(" ("))
+                {
+                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                }
+                else
+                {
+                    currentName = currentName.Remove(currentName.IndexOf("("));
+                }
+            }
+            currentName = currentName + " (" + (count - 1) + ")";
+            return currentName;
         }
 
         #endregion
@@ -289,5 +352,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        #region Implementation of ICollectionActivity
+
+        public int GetCollectionCount()
+        {
+            return ConvertCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+        }
+
+        public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
+        {
+            if (!overwrite)
+            {
+                InsertToCollection(listToAdd, modelItem);
+            }
+            else
+            {
+                AddToCollection(listToAdd, modelItem);
+            }
+        }
+
+        #endregion
     }
 }

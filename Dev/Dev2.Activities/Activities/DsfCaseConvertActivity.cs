@@ -147,6 +147,67 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
+                foreach (string s in listToAdd)
+                {
+                    mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = 0;
+                mic.Clear();
+                foreach (string s in listToAdd)
+                {
+                    mic.Add(new CaseConvertTO(s, "UPPER", s, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        {
+            if (startIndex < mic.Count)
+            {
+                mic.RemoveAt(startIndex);
+            }
+            mic.Add(new CaseConvertTO(string.Empty, "UPPER", string.Empty, startIndex + 1));
+            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+        }
+
+        private string CreateDisplayName(ModelItem modelItem, int count)
+        {
+            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
+            if (currentName.Contains("(") && currentName.Contains(")"))
+            {
+                if (currentName.Contains(" ("))
+                {
+                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                }
+                else
+                {
+                    currentName = currentName.Remove(currentName.IndexOf("("));
+                }
+            }
+            currentName = currentName + " (" + (count - 1) + ")";
+            return currentName;
+        }
+
         #endregion Private Methods
 
         #region Overridden ActivityAbstact Methods
@@ -289,68 +350,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 AddToCollection(listToAdd, modelItem);
             }
-        }
-
-        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
-        {
-            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
-
-            if (mic != null)
-            {
-                int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
-                foreach (string s in listToAdd)
-                {
-                    mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
-                    startIndex++;
-                }
-                CleanUpCollection(mic, modelItem, startIndex);
-            }
-        }
-
-        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
-        {
-            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
-
-            if (mic != null)
-            {
-                int startIndex = 0;
-                mic.Clear();
-                foreach (string s in listToAdd)
-                {
-                    mic.Add(new CaseConvertTO(s, "UPPER", s, startIndex + 1));
-                    startIndex++;
-                }
-                CleanUpCollection(mic, modelItem, startIndex);
-            }
-        }
-
-        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
-        {
-            if (startIndex < mic.Count)
-            {
-                mic.RemoveAt(startIndex);
-            }
-            mic.Add(new CaseConvertTO(string.Empty, "UPPER", string.Empty, startIndex + 1));
-            modelItem.Properties["DisplayName"].SetValue(createDisplayName(modelItem, startIndex + 1));
-        }
-
-
-        private string createDisplayName(ModelItem modelItem, int count)
-        {
-            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if (currentName.Contains("(") && currentName.Contains(")"))
-            {
-                if (currentName.Contains(" ("))
-                {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
-                }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
-            }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
         }
 
         #endregion

@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.Core.Activities.Utils;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Messages;
 using Dev2.UI;
 using System;
 using System.Activities.Presentation.Model;
@@ -191,6 +194,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 ShowOtherRightClickOptions = false;
+            }
+        }
+
+        void QuickVariableAdd_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (_activity != null)
+            {
+                eventAggregator.Publish(new ShowQuickVariableInputMessage(_activity));
             }
         }
     }

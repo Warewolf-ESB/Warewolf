@@ -20,6 +20,7 @@
         <ContextMenu>
             <MenuItem Header="Grid Actions" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
                 <MenuItem Header="Delete Row" Click="MenuItem_Click"/>
+                <MenuItem Header="Quick Variable Input" Click="QuickVariableAdd_MenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="Create AutomationID">
                 <i:Interaction.Behaviors>

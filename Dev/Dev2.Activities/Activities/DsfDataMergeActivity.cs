@@ -7,15 +7,17 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Interfaces;
 using System;
 using System.Activities;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DsfDataMergeActivity : DsfActivityAbstract<string>
+    public class DsfDataMergeActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
         #region Class Members
 
@@ -179,6 +181,67 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["MergeCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = MergeCollection.Last(c => !c.CanRemove()).IndexNumber;
+                foreach (string s in listToAdd)
+                {
+                    mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["MergeCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = 0;
+                mic.Clear();
+                foreach (string s in listToAdd)
+                {
+                    mic.Add(new DataMergeDTO(s, "None", string.Empty, startIndex + 1, " ", "Left To Right"));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        {
+            if (startIndex < mic.Count)
+            {
+                mic.RemoveAt(startIndex);
+            }
+            mic.Add(new DataMergeDTO(string.Empty, "None", string.Empty, startIndex + 1, " ", "Left To Right"));
+            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+        }
+
+        private string CreateDisplayName(ModelItem modelItem, int count)
+        {
+            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
+            if (currentName.Contains("(") && currentName.Contains(")"))
+            {
+                if (currentName.Contains(" ("))
+                {
+                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                }
+                else
+                {
+                    currentName = currentName.Remove(currentName.IndexOf("("));
+                }
+            }
+            currentName = currentName + " (" + (count - 1) + ")";
+            return currentName;
+        }
+
         #endregion Private Methods
 
         #region Overridden ActivityAbstact Methods
@@ -298,5 +361,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        #region Implementation of ICollectionActivity
+
+        public int GetCollectionCount()
+        {
+            return MergeCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+        }
+
+        public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
+        {
+            if (!overwrite)
+            {
+                InsertToCollection(listToAdd, modelItem);
+            }
+            else
+            {
+                AddToCollection(listToAdd, modelItem);
+            }
+        }
+
+        #endregion
     }
 }

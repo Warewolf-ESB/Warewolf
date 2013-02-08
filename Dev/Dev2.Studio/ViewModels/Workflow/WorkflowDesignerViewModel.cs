@@ -49,7 +49,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>, IHandle<ShowQuickVariableInputMessage>
+    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>, IHandle<ShowQuickVariableInputMessage>, IHandle<AddStringListToDataListMessage>
     {
         #region Fields
 
@@ -612,7 +612,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void BuildDataPart(string DataPartFieldData)
         {
-
+            DataPartFieldData = DataListUtil.StripBracketsFromValue(DataPartFieldData);
             IDataListVerifyPart verifyPart;
             string fullyFormattedStringValue;
             string[] fieldList = DataPartFieldData.Split('.');
@@ -2365,7 +2365,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (senderResource == ResourceModel)
             {
                 DataGridQuickVariableInputView view = new DataGridQuickVariableInputView();
-                QuickVariableInputModel model = new QuickVariableInputModel(message.ModelItem, message.ModelItem.Source.Value as ICollectionActivity);
+                ICollectionActivity activity = message.ModelItem.GetCurrentValue() as ICollectionActivity;
+
+                QuickVariableInputModel model = new QuickVariableInputModel(message.ModelItem, activity);
 
                 QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(model);
                 viewModel.Close += delegate
@@ -2378,8 +2380,28 @@ namespace Dev2.Studio.ViewModels.Workflow
                 view.DataContext = viewModel;
                 PopupContent = view;
             }
+        }
 
-
+        /// <summary>
+        /// Handels the list of strings to be added to the data list without a pop up message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2013/02/06</date>
+        public void Handle(AddStringListToDataListMessage message)
+        {
+            IDataListViewModel dlvm = DataListSingleton.ActiveDataList;
+            if (dlvm != null)
+            {
+                DataListVerifyPartDuplicationParser dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
+                _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>(dataPartVerifyDuplicates);
+                foreach (string s in message.ListToAdd)
+                {
+                    BuildDataPart(s);
+                }
+                IList<IDataListVerifyPart> partsToAdd = _uniqueWorkflowParts.Keys.ToList();
+                dlvm.AddMissingDataListItems(partsToAdd);
+            }
         }
 
         #endregion

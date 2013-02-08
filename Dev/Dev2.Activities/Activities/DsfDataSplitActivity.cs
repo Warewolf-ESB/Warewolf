@@ -7,15 +7,18 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Interfaces;
 using System;
 using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DsfDataSplitActivity : DsfActivityAbstract<string>
+    public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
         //private readonly static int _EndOfData = int.MaxValue;
         //IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
@@ -119,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                     string tmp = tokenizer.NextToken();
 
-                                    if(!string.IsNullOrEmpty(ResultsCollection[pos].OutputVariable))
+                                    if (!string.IsNullOrEmpty(ResultsCollection[pos].OutputVariable))
                                     {
                                         toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);
                                     }
@@ -276,6 +279,67 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Overridden ActivityAbstact Methods
 
+        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["ResultsCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                foreach (string s in listToAdd)
+                {
+                    mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        {
+            ModelItemCollection mic = modelItem.Properties["ResultsCollection"].Collection;
+
+            if (mic != null)
+            {
+                int startIndex = 0;
+                mic.Clear();
+                foreach (string s in listToAdd)
+                {
+                    mic.Add(new DataSplitDTO(s, "Chars", string.Empty, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+        }
+
+        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        {
+            if (startIndex < mic.Count)
+            {
+                mic.RemoveAt(startIndex);
+            }
+            mic.Add(new DataSplitDTO(string.Empty, "Chars", string.Empty, startIndex + 1));
+            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+        }
+
+        private string CreateDisplayName(ModelItem modelItem, int count)
+        {
+            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
+            if (currentName.Contains("(") && currentName.Contains(")"))
+            {
+                if (currentName.Contains(" ("))
+                {
+                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                }
+                else
+                {
+                    currentName = currentName.Remove(currentName.IndexOf("("));
+                }
+            }
+            currentName = currentName + " (" + (count - 1) + ")";
+            return currentName;
+        }
+
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
@@ -396,6 +460,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable)).Select(c => c.OutputVariable).ToArray();
             return GetForEachItems(context, StateType.After, items);
+        }
+
+        #endregion
+
+        #region Implementation of ICollectionActivity
+
+        public int GetCollectionCount()
+        {
+            return ResultsCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+        }
+
+        public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
+        {
+            if (!overwrite)
+            {
+                InsertToCollection(listToAdd, modelItem);
+            }
+            else
+            {
+                AddToCollection(listToAdd, modelItem);
+            }
         }
 
         #endregion
