@@ -179,6 +179,6 @@ namespace Dev2.Data.Operations
             return number.ToString(format);
         }
 
-        #endregion Private Methods
+        #endregion Private Methods 
     }
 }
