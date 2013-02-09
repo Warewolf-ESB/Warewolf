@@ -97,9 +97,9 @@
       </If>
       <If Condition="[(Not String.IsNullOrEmpty(PrivateDropLocation)) AndAlso BuildDetail.Reason = Microsoft.TeamFoundation.Build.Client.BuildReason.ValidateShelveset]" DisplayName="If Build Reason is ValidateShelveset" sap2010:WorkflowViewState.IdRef="If_2" mtbwt:BuildTrackingParticipant.Importance="Low">
         <If.Then>
-          <Sequence mtbwt:BuildTrackingParticipant.Importance="None">
-            <Assign x:TypeArguments="x:String" mtbwt:BuildTrackingParticipant.Importance="None" To="[DropLocation]" Value="[BuildDropProvider.CombinePaths(PrivateDropLocation, BuildDetail.BuildDefinition.Name, BuildDetail.BuildNumber)]" />
-            <mtbwa:SetBuildProperties DisplayName="Set Drop Location for Private Build" DropLocation="[DropLocation]" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="DropLocation" />
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4" mtbwt:BuildTrackingParticipant.Importance="None">
+            <Assign x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="Assign`1_2" mtbwt:BuildTrackingParticipant.Importance="None" To="[DropLocation]" Value="[BuildDropProvider.CombinePaths(PrivateDropLocation, BuildDetail.BuildDefinition.Name, BuildDetail.BuildNumber)]" />
+            <mtbwa:SetBuildProperties DisplayName="Set Drop Location for Private Build" DropLocation="[DropLocation]" sap2010:WorkflowViewState.IdRef="SetBuildProperties_2" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="DropLocation" />
           </Sequence>
         </If.Then>
       </If>
@@ -115,64 +115,64 @@
         <Variable x:TypeArguments="x:String" Name="BinariesDirectory" />
         <Variable x:TypeArguments="x:String" Name="TestResultsDirectory" />
       </mtbwa:AgentScope.Variables>
-      <Sequence DisplayName="Initialize Variables" mtbwt:BuildTrackingParticipant.Importance="Low">
-        <mtbwa:GetBuildAgent DisplayName="Get the Agent" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildAgent]" />
-        <mtbwa:GetBuildDirectory DisplayName="Get the Build Directory" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildDirectory]" />
-        <Assign x:TypeArguments="x:String" DisplayName="Initialize Workspace Name" mtbwt:BuildTrackingParticipant.Importance="Low" To="[WorkspaceName]" Value="[String.Format(&quot;{0}_{1}_{2}&quot;, BuildDetail.BuildDefinition.Id, Microsoft.TeamFoundation.LinkingUtilities.DecodeUri(BuildAgent.Uri.AbsoluteUri).ToolSpecificId, BuildAgent.ServiceHost.Name)]" />
-        <Assign x:TypeArguments="x:String" DisplayName="Initialize Sources Directory" mtbwt:BuildTrackingParticipant.Importance="Low" To="[SourcesDirectory]" Value="[String.Format(&quot;{0}\Sources&quot;, BuildDirectory)]" />
-        <Assign x:TypeArguments="x:String" DisplayName="Initialize Binaries Directory" mtbwt:BuildTrackingParticipant.Importance="Low" To="[BinariesDirectory]" Value="[String.Format(&quot;{0}\Binaries&quot;, BuildDirectory)]" />
-        <Assign x:TypeArguments="x:String" DisplayName="Initialize TestResults Directory" mtbwt:BuildTrackingParticipant.Importance="Low" To="[TestResultsDirectory]" Value="[String.Format(&quot;{0}\TestResults&quot;, BuildDirectory)]" />
-        <If Condition="[Not BuildSettings.HasPlatformConfigurations]" DisplayName="If Not BuildSettings.HasPlatformConfigurations" mtbwt:BuildTrackingParticipant.Importance="Low">
+      <Sequence DisplayName="Initialize Variables" sap2010:WorkflowViewState.IdRef="Sequence_6" mtbwt:BuildTrackingParticipant.Importance="Low">
+        <mtbwa:GetBuildAgent DisplayName="Get the Agent" sap2010:WorkflowViewState.IdRef="GetBuildAgent_1" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildAgent]" />
+        <mtbwa:GetBuildDirectory DisplayName="Get the Build Directory" sap2010:WorkflowViewState.IdRef="GetBuildDirectory_1" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildDirectory]" />
+        <Assign x:TypeArguments="x:String" DisplayName="Initialize Workspace Name" sap2010:WorkflowViewState.IdRef="Assign`1_3" mtbwt:BuildTrackingParticipant.Importance="Low" To="[WorkspaceName]" Value="[String.Format(&quot;{0}_{1}_{2}&quot;, BuildDetail.BuildDefinition.Id, Microsoft.TeamFoundation.LinkingUtilities.DecodeUri(BuildAgent.Uri.AbsoluteUri).ToolSpecificId, BuildAgent.ServiceHost.Name)]" />
+        <Assign x:TypeArguments="x:String" DisplayName="Initialize Sources Directory" sap2010:WorkflowViewState.IdRef="Assign`1_4" mtbwt:BuildTrackingParticipant.Importance="Low" To="[SourcesDirectory]" Value="[String.Format(&quot;{0}\Sources&quot;, BuildDirectory)]" />
+        <Assign x:TypeArguments="x:String" DisplayName="Initialize Binaries Directory" sap2010:WorkflowViewState.IdRef="Assign`1_5" mtbwt:BuildTrackingParticipant.Importance="Low" To="[BinariesDirectory]" Value="[String.Format(&quot;{0}\Binaries&quot;, BuildDirectory)]" />
+        <Assign x:TypeArguments="x:String" DisplayName="Initialize TestResults Directory" sap2010:WorkflowViewState.IdRef="Assign`1_6" mtbwt:BuildTrackingParticipant.Importance="Low" To="[TestResultsDirectory]" Value="[String.Format(&quot;{0}\TestResults&quot;, BuildDirectory)]" />
+        <If Condition="[Not BuildSettings.HasPlatformConfigurations]" DisplayName="If Not BuildSettings.HasPlatformConfigurations" sap2010:WorkflowViewState.IdRef="If_3" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
-            <AddToCollection x:TypeArguments="mtbwa:PlatformConfiguration" Collection="[BuildSettings.PlatformConfigurations]" DisplayName="Use Default Platform Configuration" mtbwt:BuildTrackingParticipant.Importance="Low" Item="[Microsoft.TeamFoundation.Build.Workflow.Activities.PlatformConfiguration.Default]" />
+            <AddToCollection x:TypeArguments="mtbwa:PlatformConfiguration" Collection="[BuildSettings.PlatformConfigurations]" DisplayName="Use Default Platform Configuration" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" mtbwt:BuildTrackingParticipant.Importance="Low" Item="[Microsoft.TeamFoundation.Build.Workflow.Activities.PlatformConfiguration.Default]" />
           </If.Then>
         </If>
-        <If Condition="[WorkspaceName.Length &gt; Microsoft.TeamFoundation.VersionControl.Common.RepositoryConstants.MaxWorkspaceNameSize]" DisplayName="If WorkspaceName &gt; MaxSize" mtbwt:BuildTrackingParticipant.Importance="Low">
+        <If Condition="[WorkspaceName.Length &gt; Microsoft.TeamFoundation.VersionControl.Common.RepositoryConstants.MaxWorkspaceNameSize]" DisplayName="If WorkspaceName &gt; MaxSize" sap2010:WorkflowViewState.IdRef="If_4" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
-            <Sequence mtbwt:BuildTrackingParticipant.Importance="None">
-              <mtbwa:WriteBuildWarning DisplayName="Write Workspace Size Warning" Message="[String.Format(&quot;The workspace name '{0}' exceeds the maximum allowed limit of '{1}' characters. Truncating it to match the maximum limit.&quot;, WorkspaceName, Microsoft.TeamFoundation.VersionControl.Common.RepositoryConstants.MaxWorkspaceNameSize)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5" mtbwt:BuildTrackingParticipant.Importance="None">
+              <mtbwa:WriteBuildWarning DisplayName="Write Workspace Size Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_1" Message="[String.Format(&quot;The workspace name '{0}' exceeds the maximum allowed limit of '{1}' characters. Truncating it to match the maximum limit.&quot;, WorkspaceName, Microsoft.TeamFoundation.VersionControl.Common.RepositoryConstants.MaxWorkspaceNameSize)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
               <Assign x:TypeArguments="x:String" DisplayName="Truncate WorkspaceName to MaxSize" mtbwt:BuildTrackingParticipant.Importance="Low" To="[WorkspaceName]" Value="[WorkspaceName.Substring(0, Microsoft.TeamFoundation.VersionControl.Common.RepositoryConstants.MaxWorkspaceNameSize).TrimEnd()]" />
             </Sequence>
           </If.Then>
         </If>
       </Sequence>
-      <Sequence DisplayName="Initialize Workspace" mtbwt:BuildTrackingParticipant.Importance="Low">
-        <mtbwa:DeleteDirectory Directory="[TestResultsDirectory]" DisplayName="Delete Test Results Directory" mtbwt:BuildTrackingParticipant.Importance="Low" Recursive="[True]" />
-        <If Condition="[Not CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.None]" DisplayName="If Not CleanWorkspace = CleanWorkspaceOption.None" mtbwt:BuildTrackingParticipant.Importance="Low">
+      <Sequence DisplayName="Initialize Workspace" sap2010:WorkflowViewState.IdRef="Sequence_10" mtbwt:BuildTrackingParticipant.Importance="Low">
+        <mtbwa:DeleteDirectory Directory="[TestResultsDirectory]" DisplayName="Delete Test Results Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_1" mtbwt:BuildTrackingParticipant.Importance="Low" Recursive="[True]" />
+        <If Condition="[Not CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.None]" DisplayName="If Not CleanWorkspace = CleanWorkspaceOption.None" sap2010:WorkflowViewState.IdRef="If_5" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
-            <mtbwa:DeleteDirectory Directory="[BinariesDirectory]" DisplayName="Delete Binaries Directory" mtbwt:BuildTrackingParticipant.Importance="Low" />
+            <mtbwa:DeleteDirectory Directory="[BinariesDirectory]" DisplayName="Delete Binaries Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_2" mtbwt:BuildTrackingParticipant.Importance="Low" />
           </If.Then>
         </If>
-        <If Condition="[CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" DisplayName="If CleanWorkspace = CleanWorkspaceOption.All" mtbwt:BuildTrackingParticipant.Importance="Low">
+        <If Condition="[CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" DisplayName="If CleanWorkspace = CleanWorkspaceOption.All" sap2010:WorkflowViewState.IdRef="If_6" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
-            <Sequence DisplayName="Delete Workspace and Sources Directory" mtbwt:BuildTrackingParticipant.Importance="Low">
-              <mtbwa:DeleteWorkspace DeleteLocalItems="[True]" DisplayName="Delete Workspace" mtbwt:BuildTrackingParticipant.Importance="Low" Name="[WorkspaceName]" />
-              <mtbwa:DeleteDirectory Directory="[SourcesDirectory]" DisplayName="Delete Sources Directory" mtbwt:BuildTrackingParticipant.Importance="Low" />
+            <Sequence DisplayName="Delete Workspace and Sources Directory" sap2010:WorkflowViewState.IdRef="Sequence_7" mtbwt:BuildTrackingParticipant.Importance="Low">
+              <mtbwa:DeleteWorkspace DeleteLocalItems="[True]" DisplayName="Delete Workspace" sap2010:WorkflowViewState.IdRef="DeleteWorkspace_1" mtbwt:BuildTrackingParticipant.Importance="Low" Name="[WorkspaceName]" />
+              <mtbwa:DeleteDirectory Directory="[SourcesDirectory]" DisplayName="Delete Sources Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_3" mtbwt:BuildTrackingParticipant.Importance="Low" />
             </Sequence>
           </If.Then>
         </If>
-        <mtbwa:CreateWorkspace BuildDirectory="[BuildDirectory]" Comment="[&quot;Workspace Created by Team Build&quot;]" DisplayName="Create Workspace" Name="[WorkspaceName]" Result="[Workspace]" SourcesDirectory="[SourcesDirectory]" />
-        <If Condition="[CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.Outputs]" DisplayName="If CleanWorkspace = CleanWorkspaceOption.Outputs" mtbwt:BuildTrackingParticipant.Importance="Low">
+        <mtbwa:CreateWorkspace BuildDirectory="[BuildDirectory]" Comment="[&quot;Workspace Created by Team Build&quot;]" DisplayName="Create Workspace" sap2010:WorkflowViewState.IdRef="CreateWorkspace_1" Name="[WorkspaceName]" Result="[Workspace]" SourcesDirectory="[SourcesDirectory]" />
+        <If Condition="[CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.Outputs]" DisplayName="If CleanWorkspace = CleanWorkspaceOption.Outputs" sap2010:WorkflowViewState.IdRef="If_9" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
-            <ForEach x:TypeArguments="mtbwa:PlatformConfiguration" DisplayName="For Each Configuration in BuildSettings.PlatformConfigurations" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.PlatformConfigurations]">
+            <ForEach x:TypeArguments="mtbwa:PlatformConfiguration" DisplayName="For Each Configuration in BuildSettings.PlatformConfigurations" sap2010:WorkflowViewState.IdRef="ForEach`1_2" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.PlatformConfigurations]">
               <ActivityAction x:TypeArguments="mtbwa:PlatformConfiguration">
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="mtbwa:PlatformConfiguration" Name="platformConfiguration" />
                 </ActivityAction.Argument>
-                <Sequence DisplayName="Clean Configuration">
-                  <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" mtbwt:BuildTrackingParticipant.Importance="Low">
+                <Sequence DisplayName="Clean Configuration" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                  <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" sap2010:WorkflowViewState.IdRef="If_8" mtbwt:BuildTrackingParticipant.Importance="Low">
                     <If.Then>
-                      <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
+                      <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" sap2010:WorkflowViewState.IdRef="ForEach`1_1" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
                         <ActivityAction x:TypeArguments="x:String">
                           <ActivityAction.Argument>
                             <DelegateInArgument x:TypeArguments="x:String" Name="serverBuildProjectItem" />
                           </ActivityAction.Argument>
-                          <Sequence DisplayName="Clean Project" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <Sequence DisplayName="Clean Project" sap2010:WorkflowViewState.IdRef="Sequence_8" mtbwt:BuildTrackingParticipant.Importance="Low">
                             <Sequence.Variables>
                               <Variable x:TypeArguments="x:String" Name="localBuildProjectItem" />
                             </Sequence.Variables>
-                            <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Paths to Local Paths" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[serverBuildProjectItem]" Result="[localBuildProjectItem]" Workspace="[Workspace]" />
-                            <If Condition="[System.IO.File.Exists(localBuildProjectItem)]" DisplayName="If File.Exists(Project)" mtbwt:BuildTrackingParticipant.Importance="Low">
+                            <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Paths to Local Paths" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_1" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[serverBuildProjectItem]" Result="[localBuildProjectItem]" Workspace="[Workspace]" />
+                            <If Condition="[System.IO.File.Exists(localBuildProjectItem)]" DisplayName="If File.Exists(Project)" sap2010:WorkflowViewState.IdRef="If_7" mtbwt:BuildTrackingParticipant.Importance="Low">
                               <If.Then>
                                 <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:SkipInvalidConfigurations=true {0}&quot;, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="Run MSBuild for Project" GenerateVSPropsFile="[True]" MaxProcesses="[If (MSBuildMultiProc, 0, 1)]" OutDir="[BinariesDirectory]" Platform="[platformConfiguration.Platform]" Project="[localBuildProjectItem]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() { &quot;Clean&quot; }]" TargetsNotLogged="[New String() {&quot;GetNativeManifest&quot;, &quot;GetCopyToOutputDirectoryItems&quot;, &quot;GetTargetPath&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
                               </If.Then>
@@ -187,29 +187,29 @@
             </ForEach>
           </If.Then>
         </If>
-        <mtbwa:SyncWorkspace DisplayName="Get Workspace" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" VersionOverride="[GetVersion]" Workspace="[Workspace]">
+        <mtbwa:SyncWorkspace DisplayName="Get Workspace" sap2010:WorkflowViewState.IdRef="SyncWorkspace_1" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" VersionOverride="[GetVersion]" Workspace="[Workspace]">
           <mtbwa:SyncWorkspace.RequestsFailed>
             <ActivityAction x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)" Name="failedRequests" />
               </ActivityAction.Argument>
-              <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
+              <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" sap2010:WorkflowViewState.IdRef="RetryRequests_1" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
             </ActivityAction>
           </mtbwa:SyncWorkspace.RequestsFailed>
         </mtbwa:SyncWorkspace>
       </Sequence>
-      <If Condition="[CreateLabel]" DisplayName="If CreateLabel" mtbwt:BuildTrackingParticipant.Importance="Low">
+      <If Condition="[CreateLabel]" DisplayName="If CreateLabel" sap2010:WorkflowViewState.IdRef="If_10" mtbwt:BuildTrackingParticipant.Importance="Low">
         <If.Then>
-          <mtbwa:InvokeForReason DisplayName="Create and Set Label for non-Shelveset Builds" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
-            <mtbwa:LabelWorkspace Comment="[&quot;Label Created by Team Build&quot;]" DisplayName="Create Label" Name="[LabelName]" Scope="[String.Format(&quot;$/{0}&quot;, BuildDetail.BuildDefinition.TeamProject)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Workspace="[Workspace]" />
-            <mtbwa:SetBuildProperties DisplayName="Set Label on BuildDetail" mtbwt:BuildTrackingParticipant.Importance="Low" LabelName="[String.Format(&quot;{0}@$/{1}&quot;, LabelName, BuildDetail.BuildDefinition.TeamProject)]" PropertiesToSet="LabelName" />
+          <mtbwa:InvokeForReason DisplayName="Create and Set Label for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_3" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
+            <mtbwa:LabelWorkspace Comment="[&quot;Label Created by Team Build&quot;]" DisplayName="Create Label" sap2010:WorkflowViewState.IdRef="LabelWorkspace_1" Name="[LabelName]" Scope="[String.Format(&quot;$/{0}&quot;, BuildDetail.BuildDefinition.TeamProject)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Workspace="[Workspace]" />
+            <mtbwa:SetBuildProperties DisplayName="Set Label on BuildDetail" sap2010:WorkflowViewState.IdRef="SetBuildProperties_3" mtbwt:BuildTrackingParticipant.Importance="Low" LabelName="[String.Format(&quot;{0}@$/{1}&quot;, LabelName, BuildDetail.BuildDefinition.TeamProject)]" PropertiesToSet="LabelName" />
           </mtbwa:InvokeForReason>
         </If.Then>
         <If.Else>
-          <mtbwa:WriteBuildMessage DisplayName="Write Message" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="Not Labeling sources" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_2" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="Not Labeling sources" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
         </If.Else>
       </If>
-      <TryCatch DisplayName="Try Compile, Test, and Associate Changesets and Work Items" mtbwt:BuildTrackingParticipant.Importance="Low">
+      <TryCatch DisplayName="Try Compile, Test, and Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="TryCatch_4" mtbwt:BuildTrackingParticipant.Importance="Low">
         <TryCatch.Finally>
           <Sequence DisplayName="Revert Workspace and Copy Files to Drop Location" mtbwt:BuildTrackingParticipant.Importance="Low">
             <mtbwa:InvokeForReason DisplayName="Revert Workspace for Shelveset Builds" Reason="ValidateShelveset, CheckInShelveset">
@@ -223,37 +223,37 @@
           </Sequence>
         </TryCatch.Finally>
         <TryCatch.Try>
-          <Sequence mtbwt:BuildTrackingParticipant.Importance="None">
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_15" mtbwt:BuildTrackingParticipant.Importance="None">
             <Sequence.Variables>
               <Variable x:TypeArguments="s:Exception" Name="compilationException" />
               <Variable x:TypeArguments="scg:IList(mtvc:Changeset)" Name="associatedChangesets" />
               <Variable x:TypeArguments="x:Boolean" Name="treatTestFailureAsBuildFailure" />
             </Sequence.Variables>
-            <Parallel DisplayName="Compile, Test, and Associate Changesets and Work Items">
-              <TryCatch DisplayName="Try Compile and Test" mtbwt:BuildTrackingParticipant.Importance="Low">
+            <Parallel DisplayName="Compile, Test, and Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="Parallel_1">
+              <TryCatch DisplayName="Try Compile and Test" sap2010:WorkflowViewState.IdRef="TryCatch_1" mtbwt:BuildTrackingParticipant.Importance="Low">
                 <TryCatch.Try>
-                  <Sequence DisplayName="Compile and Test">
-                    <ForEach x:TypeArguments="mtbwa:PlatformConfiguration" DisplayName="For Each Configuration in BuildSettings.PlatformConfigurations" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.PlatformConfigurations]">
+                  <Sequence DisplayName="Compile and Test" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                    <ForEach x:TypeArguments="mtbwa:PlatformConfiguration" DisplayName="For Each Configuration in BuildSettings.PlatformConfigurations" sap2010:WorkflowViewState.IdRef="ForEach`1_4" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.PlatformConfigurations]">
                       <ActivityAction x:TypeArguments="mtbwa:PlatformConfiguration">
                         <ActivityAction.Argument>
                           <DelegateInArgument x:TypeArguments="mtbwa:PlatformConfiguration" Name="platformConfiguration" />
                         </ActivityAction.Argument>
-                        <Sequence DisplayName="Compile and Test for Configuration" mtbwt:BuildTrackingParticipant.Importance="Low">
+                        <Sequence DisplayName="Compile and Test for Configuration" sap2010:WorkflowViewState.IdRef="Sequence_12" mtbwt:BuildTrackingParticipant.Importance="Low">
                           <Sequence.Variables>
                             <Variable x:TypeArguments="x:String" Name="outputDirectory" />
                             <Variable x:TypeArguments="x:String" Name="logFileDropLocation" />
                           </Sequence.Variables>
-                          <Sequence DisplayName="Initialize Variables" mtbwt:BuildTrackingParticipant.Importance="Low">
-                            <Assign x:TypeArguments="x:String" DisplayName="Create OutputDirectory Per Platform and Configuration" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectory]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BinariesDirectory, If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BinariesDirectory + &quot;\&quot; + platformConfiguration.Configuration, BinariesDirectory + &quot;\&quot; + platformConfiguration.Platform + &quot;\&quot; + platformConfiguration.Configuration))]" />
-                            <If Condition="[Not String.IsNullOrEmpty(DropLocation)]" DisplayName="If DropLocation is Set" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <Sequence DisplayName="Initialize Variables" sap2010:WorkflowViewState.IdRef="Sequence_11" mtbwt:BuildTrackingParticipant.Importance="Low">
+                            <Assign x:TypeArguments="x:String" DisplayName="Create OutputDirectory Per Platform and Configuration" sap2010:WorkflowViewState.IdRef="Assign`1_7" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectory]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BinariesDirectory, If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BinariesDirectory + &quot;\&quot; + platformConfiguration.Configuration, BinariesDirectory + &quot;\&quot; + platformConfiguration.Platform + &quot;\&quot; + platformConfiguration.Configuration))]" />
+                            <If Condition="[Not String.IsNullOrEmpty(DropLocation)]" DisplayName="If DropLocation is Set" sap2010:WorkflowViewState.IdRef="If_11" mtbwt:BuildTrackingParticipant.Importance="Low">
                               <If.Then>
-                                <Assign x:TypeArguments="x:String" DisplayName="Initialize LogFile Drop Location" mtbwt:BuildTrackingParticipant.Importance="Low" To="[logFileDropLocation]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;), If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Configuration), BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Platform, platformConfiguration.Configuration)))]" />
+                                <Assign x:TypeArguments="x:String" DisplayName="Initialize LogFile Drop Location" sap2010:WorkflowViewState.IdRef="Assign`1_8" mtbwt:BuildTrackingParticipant.Importance="Low" To="[logFileDropLocation]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;), If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Configuration), BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Platform, platformConfiguration.Configuration)))]" />
                               </If.Then>
                             </If>
                           </Sequence>
-                          <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" sap2010:WorkflowViewState.IdRef="If_12" mtbwt:BuildTrackingParticipant.Importance="Low">
                             <If.Then>
-                              <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
+                              <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" sap2010:WorkflowViewState.IdRef="ForEach`1_3" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
                                 <ActivityAction x:TypeArguments="x:String">
                                   <ActivityAction.Argument>
                                     <DelegateInArgument x:TypeArguments="x:String" Name="serverBuildProjectItem" />
@@ -311,7 +311,7 @@
                               </ForEach>
                             </If.Then>
                           </If>
-                          <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" sap2010:WorkflowViewState.IdRef="If_13" mtbwt:BuildTrackingParticipant.Importance="Low">
                             <If.Then>
                               <Sequence DisplayName="Run Tests" mtbwt:BuildTrackingParticipant.Importance="Low">
                                 <If Condition="[Not TestSpecs Is Nothing]" DisplayName="If Not TestSpecs Is Nothing" mtbwt:BuildTrackingParticipant.Importance="Low">
@@ -450,107 +450,107 @@
                         </Sequence>
                       </ActivityAction>
                     </ForEach>
-                    <If Condition="[BuildDetail.CompilationStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If CompilationStatus = Unknown" mtbwt:BuildTrackingParticipant.Importance="Low">
+                    <If Condition="[BuildDetail.CompilationStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If CompilationStatus = Unknown" sap2010:WorkflowViewState.IdRef="If_14" mtbwt:BuildTrackingParticipant.Importance="Low">
                       <If.Then>
-                        <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" DisplayName="Set CompilationStatus to Succeeded" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
+                        <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" DisplayName="Set CompilationStatus to Succeeded" sap2010:WorkflowViewState.IdRef="SetBuildProperties_4" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
                       </If.Then>
                     </If>
-                    <If Condition="[BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If TestStatus = Unknown" mtbwt:BuildTrackingParticipant.Importance="Low">
+                    <If Condition="[BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If TestStatus = Unknown" sap2010:WorkflowViewState.IdRef="If_15" mtbwt:BuildTrackingParticipant.Importance="Low">
                       <If.Then>
-                        <mtbwa:SetBuildProperties DisplayName="Set TestStatus to Succeeded" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="TestStatus" TestStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" />
+                        <mtbwa:SetBuildProperties DisplayName="Set TestStatus to Succeeded" sap2010:WorkflowViewState.IdRef="SetBuildProperties_5" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="TestStatus" TestStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" />
                       </If.Then>
                     </If>
-                    <If Condition="[treatTestFailureAsBuildFailure And (BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed)]" DisplayName="If TreatTestFailureAsBuildFailure And (TestStatus = Failed)" mtbwt:BuildTrackingParticipant.Importance="Low">
+                    <If Condition="[treatTestFailureAsBuildFailure And (BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed)]" DisplayName="If TreatTestFailureAsBuildFailure And (TestStatus = Failed)" sap2010:WorkflowViewState.IdRef="If_16" mtbwt:BuildTrackingParticipant.Importance="Low">
                       <If.Then>
-                        <mtbwa:SetBuildProperties DisplayName="Set Status to Failed" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="Status" Status="[Microsoft.TeamFoundation.Build.Client.BuildStatus.Failed]" />
+                        <mtbwa:SetBuildProperties DisplayName="Set Status to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_6" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="Status" Status="[Microsoft.TeamFoundation.Build.Client.BuildStatus.Failed]" />
                       </If.Then>
                     </If>
                   </Sequence>
                 </TryCatch.Try>
                 <TryCatch.Catches>
-                  <Catch x:TypeArguments="s:Exception">
+                  <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
                     <ActivityAction x:TypeArguments="s:Exception">
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="s:Exception" Name="compilationExceptionArgument" />
                       </ActivityAction.Argument>
-                      <Assign x:TypeArguments="s:Exception" DisplayName="Save the Compilation Exception" mtbwt:BuildTrackingParticipant.Importance="None" To="[compilationException]" Value="[compilationExceptionArgument]" />
+                      <Assign x:TypeArguments="s:Exception" DisplayName="Save the Compilation Exception" sap2010:WorkflowViewState.IdRef="Assign`1_9" mtbwt:BuildTrackingParticipant.Importance="None" To="[compilationException]" Value="[compilationExceptionArgument]" />
                     </ActivityAction>
                   </Catch>
                 </TryCatch.Catches>
               </TryCatch>
-              <If Condition="[AssociateChangesetsAndWorkItems]" DisplayName="If AssociateChangesetsAndWorkItems" mtbwt:BuildTrackingParticipant.Importance="Low">
+              <If Condition="[AssociateChangesetsAndWorkItems]" DisplayName="If AssociateChangesetsAndWorkItems" sap2010:WorkflowViewState.IdRef="If_18" mtbwt:BuildTrackingParticipant.Importance="Low">
                 <If.Then>
-                  <If Condition="[CreateLabel]" DisplayName="If CreateLabel and AssociateChangesetsAndWorkItems" mtbwt:BuildTrackingParticipant.Importance="Low">
+                  <If Condition="[CreateLabel]" DisplayName="If CreateLabel and AssociateChangesetsAndWorkItems" sap2010:WorkflowViewState.IdRef="If_17" mtbwt:BuildTrackingParticipant.Importance="Low">
                     <If.Then>
-                      <mtbwa:InvokeForReason DisplayName="Associate Changesets and Work Items for non-Shelveset Builds" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
-                        <mtbwa:AssociateChangesetsAndWorkItems DisplayName="Associate Changesets and Work Items" Result="[associatedChangesets]" />
+                      <mtbwa:InvokeForReason DisplayName="Associate Changesets and Work Items for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_4" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
+                        <mtbwa:AssociateChangesetsAndWorkItems DisplayName="Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="AssociateChangesetsAndWorkItems_1" Result="[associatedChangesets]" />
                       </mtbwa:InvokeForReason>
                     </If.Then>
                     <If.Else>
-                      <mtbwa:WriteBuildWarning DisplayName="Write Associate Changesets and Work Items Warning" Message="Cannot Associate Changesets and Work Items because the Label Sources option is set to False." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                      <mtbwa:WriteBuildWarning DisplayName="Write Associate Changesets and Work Items Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_2" Message="Cannot Associate Changesets and Work Items because the Label Sources option is set to False." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                     </If.Else>
                   </If>
                 </If.Then>
               </If>
             </Parallel>
-            <If Condition="[Not compilationException Is Nothing]" DisplayName="If a Compilation Exception Occurred" mtbwt:BuildTrackingParticipant.Importance="Low">
+            <If Condition="[Not compilationException Is Nothing]" DisplayName="If a Compilation Exception Occurred" sap2010:WorkflowViewState.IdRef="If_19" mtbwt:BuildTrackingParticipant.Importance="Low">
               <If.Then>
-                <Throw DisplayName="Rethrow Compilation Exception" Exception="[compilationException]" mtbwt:BuildTrackingParticipant.Importance="Low" />
+                <Throw DisplayName="Rethrow Compilation Exception" Exception="[compilationException]" sap2010:WorkflowViewState.IdRef="Throw_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
               </If.Then>
             </If>
-            <Parallel DisplayName="Get Impacted Tests, Index Sources and Publish Symbols">
-              <If Condition="[PerformTestImpactAnalysis]" DisplayName="If PerformTestImpactAnalysis" mtbwt:BuildTrackingParticipant.Importance="Low">
+            <Parallel DisplayName="Get Impacted Tests, Index Sources and Publish Symbols" sap2010:WorkflowViewState.IdRef="Parallel_2">
+              <If Condition="[PerformTestImpactAnalysis]" DisplayName="If PerformTestImpactAnalysis" sap2010:WorkflowViewState.IdRef="If_20" mtbwt:BuildTrackingParticipant.Importance="Low">
                 <If.Then>
-                  <Sequence DisplayName="Get Impacted Tests" mtbwt:BuildTrackingParticipant.Importance="Low">
+                  <Sequence DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="Sequence_14" mtbwt:BuildTrackingParticipant.Importance="Low">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="assemblies" />
                     </Sequence.Variables>
-                    <mtbwa:FindMatchingFiles DisplayName="Find Build Outputs" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.dll;{0}\**\*.exe&quot;, BinariesDirectory)]" Result="[assemblies]" />
-                    <mttbb:GetImpactedTests BaselineBuildDropLocation="{x:Null}" CodeChanges="{x:Null}" ImpactedTests="{x:Null}" Assemblies="[assemblies]" AssociatedChangesets="[associatedChangesets]" BinariesRoot="[BinariesDirectory]" Build="[BuildDetail]" DisplayName="Get Impacted Tests" Workspace="[Workspace]" />
+                    <mtbwa:FindMatchingFiles DisplayName="Find Build Outputs" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_1" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.dll;{0}\**\*.exe&quot;, BinariesDirectory)]" Result="[assemblies]" />
+                    <mttbb:GetImpactedTests BaselineBuildDropLocation="{x:Null}" CodeChanges="{x:Null}" ImpactedTests="{x:Null}" Assemblies="[assemblies]" AssociatedChangesets="[associatedChangesets]" BinariesRoot="[BinariesDirectory]" Build="[BuildDetail]" DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="GetImpactedTests_1" Workspace="[Workspace]" />
                   </Sequence>
                 </If.Then>
               </If>
-              <If Condition="[SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath" mtbwt:BuildTrackingParticipant.Importance="Low">
+              <If Condition="[SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_23" mtbwt:BuildTrackingParticipant.Importance="Low">
                 <If.Then>
-                  <mtbwa:InvokeForReason DisplayName="Index Sources and Publish Symbols for Triggered Builds" Reason="Triggered">
+                  <mtbwa:InvokeForReason DisplayName="Index Sources and Publish Symbols for Triggered Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_5" Reason="Triggered">
                     <mtbwa:InvokeForReason.Variables>
                       <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="symbolFiles" />
                     </mtbwa:InvokeForReason.Variables>
-                    <mtbwa:FindMatchingFiles DisplayName="Find Symbol Files" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.pdb&quot;, BinariesDirectory)]" Result="[symbolFiles]" />
-                    <If Condition="[SourceAndSymbolServerSettings.IndexSources]" DisplayName="If SourceAndSymbolServerSettings.IndexSources" mtbwt:BuildTrackingParticipant.Importance="Low">
+                    <mtbwa:FindMatchingFiles DisplayName="Find Symbol Files" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_2" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.pdb&quot;, BinariesDirectory)]" Result="[symbolFiles]" />
+                    <If Condition="[SourceAndSymbolServerSettings.IndexSources]" DisplayName="If SourceAndSymbolServerSettings.IndexSources" sap2010:WorkflowViewState.IdRef="If_21" mtbwt:BuildTrackingParticipant.Importance="Low">
                       <If.Then>
-                        <TryCatch DisplayName="Try Index Sources" mtbwt:BuildTrackingParticipant.Importance="Low">
+                        <TryCatch DisplayName="Try Index Sources" sap2010:WorkflowViewState.IdRef="TryCatch_2" mtbwt:BuildTrackingParticipant.Importance="Low">
                           <TryCatch.Try>
-                            <mtbwa:IndexSources DisplayName="Index Sources" FileList="[symbolFiles]" />
+                            <mtbwa:IndexSources DisplayName="Index Sources" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="IndexSources_1" />
                           </TryCatch.Try>
                           <TryCatch.Catches>
-                            <Catch x:TypeArguments="s:Exception">
+                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
                               <ActivityAction x:TypeArguments="s:Exception">
                                 <ActivityAction.Argument>
                                   <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
                                 </ActivityAction.Argument>
-                                <mtbwa:WriteBuildError DisplayName="Write Indexing Sources Error" Message="[exception.Message]" />
+                                <mtbwa:WriteBuildError DisplayName="Write Indexing Sources Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_1" Message="[exception.Message]" />
                               </ActivityAction>
                             </Catch>
                           </TryCatch.Catches>
                         </TryCatch>
                       </If.Then>
                     </If>
-                    <If Condition="[SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.HasSymbolStorePath" mtbwt:BuildTrackingParticipant.Importance="Low">
+                    <If Condition="[SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_22" mtbwt:BuildTrackingParticipant.Importance="Low">
                       <If.Then>
-                        <TryCatch DisplayName="Try Publish Symbols" mtbwt:BuildTrackingParticipant.Importance="Low">
+                        <TryCatch DisplayName="Try Publish Symbols" sap2010:WorkflowViewState.IdRef="TryCatch_3" mtbwt:BuildTrackingParticipant.Importance="Low">
                           <TryCatch.Try>
-                            <mtbwa:SharedResourceScope DisplayName="Synchronize Access to Symbol Store" mtbwt:BuildTrackingParticipant.Importance="Low" MaxExecutionTime="[TimeSpan.Zero]" MaxWaitTime="[New TimeSpan(1, 0, 0)]" ResourceName="[SourceAndSymbolServerSettings.SymbolStorePath]">
-                              <mtbwa:PublishSymbols DisplayName="Publish Symbols" FileList="[symbolFiles]" ProductName="[BuildDetail.BuildDefinition.Name]" StorePath="[SourceAndSymbolServerSettings.SymbolStorePath]" Version="[BuildDetail.BuildNumber]" />
+                            <mtbwa:SharedResourceScope DisplayName="Synchronize Access to Symbol Store" sap2010:WorkflowViewState.IdRef="SharedResourceScope_1" mtbwt:BuildTrackingParticipant.Importance="Low" MaxExecutionTime="[TimeSpan.Zero]" MaxWaitTime="[New TimeSpan(1, 0, 0)]" ResourceName="[SourceAndSymbolServerSettings.SymbolStorePath]">
+                              <mtbwa:PublishSymbols DisplayName="Publish Symbols" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="PublishSymbols_1" ProductName="[BuildDetail.BuildDefinition.Name]" StorePath="[SourceAndSymbolServerSettings.SymbolStorePath]" Version="[BuildDetail.BuildNumber]" />
                             </mtbwa:SharedResourceScope>
                           </TryCatch.Try>
                           <TryCatch.Catches>
-                            <Catch x:TypeArguments="s:Exception">
+                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_3">
                               <ActivityAction x:TypeArguments="s:Exception">
                                 <ActivityAction.Argument>
                                   <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
                                 </ActivityAction.Argument>
-                                <mtbwa:WriteBuildError DisplayName="Write Publishing Symbols Error" Message="[exception.Message]" />
+                                <mtbwa:WriteBuildError DisplayName="Write Publishing Symbols Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_2" Message="[exception.Message]" />
                               </ActivityAction>
                             </Catch>
                           </TryCatch.Catches>
@@ -565,16 +565,28 @@
         </TryCatch.Try>
       </TryCatch>
     </mtbwa:AgentScope>
+    <If Condition="[BuildChain IsNot Nothing AndAlso BuildChain.Length &gt; 0]" sap2010:WorkflowViewState.IdRef="If_24">
+      <If.Then>
+        <ForEach x:TypeArguments="x:String" DisplayName="ForEach&lt;String&gt;" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[BuildChain]">
+          <ActivityAction x:TypeArguments="x:String">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="x:String" Name="item" />
+            </ActivityAction.Argument>
+            <mtbwa:MSBuild Project="[item]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="MSBuild_1" />
+          </ActivityAction>
+        </ForEach>
+      </If.Then>
+    </If>
     <mtbwa:InvokeForReason DisplayName="Check In Gated Changes for CheckInShelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_2" Reason="CheckInShelveset">
-      <mtbwa:CheckInGatedChanges DisplayName="Check In Gated Changes" />
+      <mtbwa:CheckInGatedChanges DisplayName="Check In Gated Changes" sap2010:WorkflowViewState.IdRef="CheckInGatedChanges_1" />
     </mtbwa:InvokeForReason>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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AwH6As4CswLOAtICAwH4As8CQc8CbwMBvwLRAjfkAjwDAcEC8QI38QLIAgMBuALyAjfyApYCAwGxAvMCN/MC/wQDAZcC+wJm+wJ2AwHMAfwCZvwCdgMBywH+Ajf+ArgCAwGRAv8CN/8CowIDAYsCgAM3kQM8AwHNAaQDf6QDmAEDAcIBqgPwAaoD+AEDAbsBqgPHAaoD6QEDAbkB0QJF0QJ1AwHCAtMCO9kCRgMB2QLcAjviAkwDAcQC8QLoAfECxQIDAbsC8QLNAfEC4QEDAbkC8gK5AfIC3gEDAbYC8gLmAfIC+wEDAbQC8gKGAvICkwIDAbIC8wKdBPMCuwQDAa8C8wLJAvMC7QIDAa0C8wLsBPMC/AQDAawC8wKHAfMCsQEDAaoC8wL/A/MCkgQDAagC8wKnA/MCyQMDAaYC8wKYAvMCvAIDAaQC8wJO8wJxAwGiAvMC0wPzAu8DAwGgAvMChQPzAp0DAwGeAvMCyQTzAt4EAwGcAvMC5AHzAosCAwGaAv4C3AH+ArUCAwGUAv4CxQH+AtUBAwGSAv8CsAH/AoYCAwGOAv8CjgL/AqACAwGMAoADRYADZgMBzgGCAzuPA0ADAdAB1wI91wKxAgMB8ALYAj3YAvQEAwHaAtwCxQTcAs4EAwHYAt8CQd8CcAMB1gLcAusC3AKNAwMB1ALcAoQE3AKjBAMB0gLcAssD3AL3AwMBzgLcApYD3AK7AwMBywLcAroC3ALhAgMByQLcAq0C3AKyAgMByALcAuwB3AKbAgMBxgLcApUB3AKcAQMBxQKCA0mCA20DAdEBhAM/igNKAwHqAY0DP40DrQQDAdMB1wK4AdcCzAEDAfUC1wLjAdcClgIDAfMC1wKhAtcCrgIDAfEC2ALoBNgC8QQDAe8C2ALKA9gC3gMDAewC2ALtAtgCjwMDAeoC2AKnBNgCxgQDAegC2ALuA9gCmgQDAeQC2AKYA9gCvQMDAeEC2AK8AtgC4wIDAd8C2AKvAtgCtAIDAd4C2ALuAdgCnQIDAdwC2AKXAdgCngEDAdsCiANBiAOgAgMBhAKJA0GJA9IEAwHrAY0DxwKNA+cCAwHoAY0DiwGNA7EBAwHmAY0D9QONA4gEAwHkAY0DoQONA8MDAwHiAY0DmgKNA7oCAwHgAY0DVo0DdQMB3gGNA80DjQPlAwMB3AGNA/8CjQOXAwMB2gGNA5gEjQOqBAMB2AGNA+YBjQONAgMB1gGIA8MBiAPoAQMBiQKIA/ABiAOFAgMBhwKIA5ACiAOdAgMBhQKJA8kCiQPpAgMBggKJA7oEiQPPBAMBgAKJA40BiQOzAQMB/gGJA/cDiQOKBAMB/AGJA6MDiQPFAwMB+gGJA5wCiQO8AgMB+AGJA1iJA3cDAfYBiQPPA4kD5wMDAfQBiQOBA4kDmQMDAfIBiQOaBIkDrAQDAfABiQPoAYkDjwIDAe4B</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="486,22" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="486,22" />
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="486,60" />
+      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="1383,22" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="1383,22" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="1383,60" />
       <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_1" sap:VirtualizedContainerService.HintSize="464,146" />
       <sap2010:ViewStateData Id="Assign`1_1" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -587,24 +599,205 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,356" />
-      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,208" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,914">
+      <sap2010:ViewStateData Id="Assign`1_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SetBuildProperties_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="222,208">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="486,324" />
-      <sap2010:ViewStateData Id="InvokeForReason_2" sap:VirtualizedContainerService.HintSize="486,144" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="508,1810">
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,356" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="1383,1062">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="548,1890" />
+      <sap2010:ViewStateData Id="GetBuildAgent_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="GetBuildDirectory_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign`1_3" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign`1_4" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign`1_5" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign`1_6" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="222,206">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,354" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="1361,1098">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="DeleteDirectory_1" sap:VirtualizedContainerService.HintSize="818,22" />
+      <sap2010:ViewStateData Id="DeleteDirectory_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="818,208" />
+      <sap2010:ViewStateData Id="DeleteWorkspace_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="DeleteDirectory_3" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="222,208">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="818,356" />
+      <sap2010:ViewStateData Id="CreateWorkspace_1" sap:VirtualizedContainerService.HintSize="818,22" />
+      <sap2010:ViewStateData Id="ConvertWorkspaceItem_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="486,394">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="516,542" />
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="641,690" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="663,814">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="693,962" />
+      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="818,1110" />
+      <sap2010:ViewStateData Id="RetryRequests_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SyncWorkspace_1" sap:VirtualizedContainerService.HintSize="818,157" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="1361,2199">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LabelWorkspace_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SetBuildProperties_3" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="InvokeForReason_3" sap:VirtualizedContainerService.HintSize="222,208" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="1361,356" />
+      <sap2010:ViewStateData Id="Assign`1_7" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign`1_8" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="486,394">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="287,208" />
+      <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="486,356" />
+      <sap2010:ViewStateData Id="If_13" sap:VirtualizedContainerService.HintSize="486,208" />
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="508,1162">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_4" sap:VirtualizedContainerService.HintSize="538,1310" />
+      <sap2010:ViewStateData Id="SetBuildProperties_4" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_14" sap:VirtualizedContainerService.HintSize="538,208" />
+      <sap2010:ViewStateData Id="SetBuildProperties_5" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_15" sap:VirtualizedContainerService.HintSize="538,208" />
+      <sap2010:ViewStateData Id="SetBuildProperties_6" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_16" sap:VirtualizedContainerService.HintSize="538,208" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="560,2178">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign`1_9" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="564,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="578,2405" />
+      <sap2010:ViewStateData Id="AssociateChangesetsAndWorkItems_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="InvokeForReason_4" sap:VirtualizedContainerService.HintSize="222,146" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_17" sap:VirtualizedContainerService.HintSize="464,294" />
+      <sap2010:ViewStateData Id="If_18" sap:VirtualizedContainerService.HintSize="589,2405" />
+      <sap2010:ViewStateData Id="Parallel_1" sap:VirtualizedContainerService.HintSize="1321,2451" />
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_19" sap:VirtualizedContainerService.HintSize="1321,208" />
+      <sap2010:ViewStateData Id="FindMatchingFiles_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="GetImpactedTests_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="222,208">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_20" sap:VirtualizedContainerService.HintSize="464,1330" />
+      <sap2010:ViewStateData Id="FindMatchingFiles_2" sap:VirtualizedContainerService.HintSize="543,22" />
+      <sap2010:ViewStateData Id="IndexSources_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="WriteBuildError_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_2" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="418,287" />
+      <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="543,435" />
+      <sap2010:ViewStateData Id="PublishSymbols_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SharedResourceScope_1" sap:VirtualizedContainerService.HintSize="222,146" />
+      <sap2010:ViewStateData Id="WriteBuildError_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_3" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_3" sap:VirtualizedContainerService.HintSize="418,373" />
+      <sap2010:ViewStateData Id="If_22" sap:VirtualizedContainerService.HintSize="543,521" />
+      <sap2010:ViewStateData Id="InvokeForReason_5" sap:VirtualizedContainerService.HintSize="565,1182" />
+      <sap2010:ViewStateData Id="If_23" sap:VirtualizedContainerService.HintSize="690,1330" />
+      <sap2010:ViewStateData Id="Parallel_2" sap:VirtualizedContainerService.HintSize="1321,1376" />
+      <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="1343,4239">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="1361,4444" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1383,8341" />
+      <sap2010:ViewStateData Id="MSBuild_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="ForEach`1_5" sap:VirtualizedContainerService.HintSize="287,208" />
+      <sap2010:ViewStateData Id="If_24" sap:VirtualizedContainerService.HintSize="1383,356" />
+      <sap2010:ViewStateData Id="CheckInGatedChanges_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="InvokeForReason_2" sap:VirtualizedContainerService.HintSize="1383,146" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1405,10373">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1445,10453" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
