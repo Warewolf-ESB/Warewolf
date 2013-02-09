@@ -1,9 +1,7 @@
 ﻿using System;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-//using Dev2.Runtime.Services.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Dev2.Runtime.Services;
 using Dev2.Runtime.Diagnostics;
 
 
