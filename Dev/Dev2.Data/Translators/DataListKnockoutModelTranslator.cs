@@ -6,7 +6,7 @@ using Dev2.DataList.Contract.TO;
 namespace Dev2.Data.Translators
 {
     public class DataListKnockoutModelTranslator : IDataListTranslator
-    {
+    { 
         public DataListFormat Format
         {
             get { throw new System.NotImplementedException(); }
