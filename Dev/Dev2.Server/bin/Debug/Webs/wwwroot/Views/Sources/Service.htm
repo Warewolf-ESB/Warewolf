@@ -35,8 +35,8 @@
                     <div class="help-text help-text-min" style="width: 515px; height: 73px" data-bind="html: helpText">
                     </div>
                     <h4 style="margin-top: 1em;">3. Test <span data-bind="text: data.methodName"></span></h4>
-                    <div style="margin-top: 0.5em; font-size: 0.85em;" class="box-background">
-                        <div class="box-border" style="border-bottom: 0 none">
+                    <div style="margin-top: 0.5em;">
+                        <div class="box-border box-background" style="border-bottom: 0 none">
                             <table class="input-param">
                                 <thead>
                                     <tr>
@@ -46,46 +46,71 @@
                                 </thead>
                             </table>
                         </div>
-                        <div class="box-border" style="height: 255px; width: 520px; overflow-y: scroll; overflow-x: hidden">
-                            <table class="input-param">
-                                <tbody data-bind="foreach: data.methodParameters">
-                                    <tr>
-                                        <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
-                                        <td class="input-param-value">
-                                            <textarea data-bind="val: Value"></textarea>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div id="inputsTable">
+                            <div class="box-border box-background" style="height: 255px; width: 520px; overflow-y: scroll; overflow-x: hidden">
+                                <table class="input-param">
+                                    <tbody data-bind="foreach: data.methodParameters">
+                                        <tr>
+                                            <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
+                                            <td class="input-param-value">
+                                                <textarea data-bind="val: Value"></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="button-bar" style="margin: 3px 0 0 0;">
+                                <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isFormValid">Test</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="button-bar" style="margin: 3px 0 0 0;">
-                        <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction">Test</button>
                     </div>
                 </div>
             </div>
+            <div id="tabs-2">
+            </div>
         </div>
-        <div id="tabs-2">
+        <div class="button-bar">
+            <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save, jEnable: isFormValid">Ok</button>
+            <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
     </div>
-    <div class="button-bar">
-        <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save">Ok</button>
-        <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+</div>
+<div id="saveDialogContainer">
+</div>
+<div id="testDialogContainer" title="Test Data">
+    <div id="testData" class="scrollable" style="height: 400px;" data-bind="html: data.testData">
+        
     </div>
 </div>
 
-
 <script src="Scripts/Sources/ServiceViewModel.js"></script>
 <script type="text/javascript">
+    //var serviceViewModel = new SerivceViewModel("{8A49D826-0B3E-4DB5-8D01-490A75A1B698}", "SqlDatabase");        
+    var viewModel = new SerivceViewModel(null, "SqlDatabase");
+
+    $("#testDialogContainer").dialog({
+        resizable: false,
+        autoOpen: false,
+        modal: true,
+        width: 600,
+        buttons: {
+            "Close": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    
+    // inject SaveDialog
+    $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
+        $("button").button();
+    });
+
     $(function () {
         // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
+        $("button").button();
         $("#tabs").tabs();
 
-        //var serviceViewModel = new SerivceViewModel("{8A49D826-0B3E-4DB5-8D01-490A75A1B698}", "SqlDatabase");        
-        var serviceViewModel = new SerivceViewModel(null, "SqlDatabase");
-
-        ko.applyBindings(serviceViewModel, document.getElementById("serviceForm"));
+        ko.applyBindings(viewModel, document.getElementById("serviceForm"));
     });
 
 </script>

@@ -4,11 +4,12 @@
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
     var $sourceMethodsScrollBoxHeight = 275;
     var $sourceMethods = $("#sourceMethods");
-
+    var $inputsTable = $("#inputsTable");
+    
     self.saveUri = "Service/Services/Save";
     
     self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
-
+    
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable(resourceType),
@@ -17,7 +18,8 @@
 
         source: ko.observable(),
         methodName: ko.observable(""),
-        methodParameters: ko.observableArray()
+        methodParameters: ko.observableArray(),
+        testData: ko.observable(""),
     };
 
     self.sources = ko.observableArray();
@@ -36,7 +38,7 @@
     self.data.source.subscribe(function (newValue) {
         self.data.methodName("");
         self.data.methodParameters([]);
-        
+        $inputsTable.hide();
         $.post("Service/Services/Methods" + window.location.search, ko.toJSON(newValue), function (result) {
             self.sourceMethods(result);
             self.sourceMethods.sort(utils.nameCaseInsensitiveSort);
@@ -47,14 +49,23 @@
     self.title.subscribe(function (newValue) {
         document.title = newValue;
     });
+    self.saveTitle = ko.computed(function () {
+        return "<b>" + self.title() + "</b>";
+    });
     self.helpDictionaryID = "Service";
     self.helpDictionary = {};
     self.helpText = ko.observable("");
     
+    self.isFormValid = ko.computed(function () {
+        var isEnabled = self.data.source() !== ""
+            && self.data.methodName() !== "";
+        return isEnabled;
+    });
+
     utils.registerSelectHandler($sourceMethods, function (selectedItem) {
         self.data.methodName(selectedItem.Name);
         self.data.methodParameters(selectedItem.Parameters);
-        console.log(selectedItem);
+        $inputsTable.show();
     });
     
     self.load = function () {
@@ -98,26 +109,24 @@
     };
 
     self.testAction = function () {
+        var args = ko.toJSON(self.data);
+        $.post("Service/Services/Test" + window.location.search, args, function (result) {
+            self.data.testData(result);
+        });
+        $("#testDialogContainer").dialog("open");
     };
 
     self.cancel = function () {
+        Dev2Awesomium.Cancel();
+        return true;
     };
 
-    self.save = function () {
-        //if (!self.validate()) {
-        //    return;
-        //}
-        
-        var args = ko.toJSON(self.data);
-        $.post("Service/Services/Save" + window.location.search, args, function (result) {
-            if (!result.IsValid) {
-                Dev2Awesomium.Dev2SetValue(JSON.stringify(result));
-            }
-            // TODO: ShowError
-        });
+    self.save = function () {        
+        $("#saveForm").dialog("open");
     };
 
     self.initialize = function () {
+        $inputsTable.hide();
     };
     
     self.initialize();

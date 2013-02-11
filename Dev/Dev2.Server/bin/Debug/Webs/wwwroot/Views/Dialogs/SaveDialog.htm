@@ -5,7 +5,7 @@
     </div>
     <div id="dialog-save">
         <div class="field ui-helper-clearfix">
-            <span style="float: left; margin-top: 0.75em" data-bind="html: resourceDescription"></span>
+            <span style="float: left; margin-top: 0.75em" data-bind="html: viewModel.saveTitle"></span>
             <span style="float: right">
                 <button tabindex="0" type="button" name="newFolderButton" id="newFolderButton" data-bind="click: newFolder">New Folder</button>
                 <img src="images/search.png" alt="Search" width="16" height="16" class="icon" />
@@ -41,7 +41,8 @@
         var $resourceName = $("#resourceName");
         var $newFolderDialog = $("#newFolderDialog");
         var $newFolderName = $("#newFolderName");
-        
+
+        self.viewModel = viewModel;
         self.data = viewModel.data;
         self.isEditing = viewModel.isEditing;
 
@@ -52,9 +53,6 @@
             self.resourceNames.sort(utils.caseInsensitiveSort);
         });
 
-        self.resourceDescription = ko.computed(function () {
-            return self.data ? "<b>Server:</b> " + self.data.address() : "";
-        });
         self.resourceNames = ko.observableArray();
         self.resourceFolders = ko.observableArray();
         self.searchFolderTerm = ko.observable("");

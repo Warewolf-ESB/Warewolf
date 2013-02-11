@@ -1,7 +1,7 @@
 ﻿<div id="container" style="margin-left: 10px">
     <div class="float-left">
         <div id="header">
-            <h1>New Server</h1>
+            <h1 data-bind="text: title"></h1>
         </div>
         <div id="body">
             <form id="mainForm" data-bind="submit: save">
@@ -101,9 +101,15 @@
 		self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
 		self.data.resourceID( self.isEditing ? resourceID : $.Guid.Empty() );
 
-		document.title = self.isEditing ? "Edit Server" : "New Server";
-		$("#header h1").text(document.title);
-
+		self.title = ko.observable("New Server");
+		self.title.subscribe(function (newValue) {
+		    document.title = newValue;
+		});
+        
+		self.saveTitle = ko.computed(function () {
+		    return self.data ? "<b>Server:</b> " + self.data.address() : "";
+		});
+        
 		$.post("Service/Connections/Get" + window.location.search, self.data.resourceID(), function (result) {
 			self.data.resourceID(result.ResourceID);
 			self.data.resourceType(result.ResourceType);
@@ -116,11 +122,7 @@
 			self.data.password(result.Password);
 			self.data.webServerPort(result.WebServerPort);
 			
-			if(self.isEditing) {
-				document.title = "Edit Server - " + result.ResourceName;
-				$("#header h1").text(document.title);
-			}
-			console.log(ko.toJSON(self.data));
+			self.title(self.isEditing ? "Edit Server - " + result.ResourceName : "New Server");
 		});
 		
 		self.data.authenticationType.subscribe(function(newValue) {
@@ -209,7 +211,6 @@
             minLength: 2,
             select: function (event, ui) {
                 var addr = "http://" + ui.item.value + ":77/dsf";
-                console.log(addr);
                 viewModel.data.address(addr);
 				return false;
             }

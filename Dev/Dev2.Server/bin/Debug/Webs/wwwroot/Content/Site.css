@@ -386,6 +386,7 @@ td {
 table.input-param {
     table-layout: fixed;
     margin: 0;
+    font-size: 0.85em;
 }
 
 td.input-param-name, th.input-param-name {
@@ -445,9 +446,9 @@ div.scrollable {
 }
 
 /* To hide the close button on all dialogs */
-.ui-dialog-titlebar-close {
+/*.ui-dialog-titlebar-close {
   visibility: hidden;
-}
+}*/
 
 .box-border {
     border: 1px solid #E2E2E2;
