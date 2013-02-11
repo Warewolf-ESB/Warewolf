@@ -13,10 +13,12 @@ using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -58,43 +60,51 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 return 80;
             }
-            else
+
+            if(options.Install)
             {
-                if(options.Install)
+                if (!EnsureRunningAsAdministrator(arguments))
                 {
-                    if(!WindowsServiceManager.Install())
-                    {
-                        result = 81;
-                    }
                     return result;
                 }
 
-                if(options.Uninstall)
+                if(!WindowsServiceManager.Install())
                 {
-                    if(!WindowsServiceManager.Uninstall())
-                    {
-                        result = 82;
-                    }
+                    result = 81;
+                }
+                return result;
+            }
+
+            if(options.Uninstall)
+            {
+                if (!EnsureRunningAsAdministrator(arguments))
+                {
                     return result;
                 }
 
-                if(options.StartService)
+                if(!WindowsServiceManager.Uninstall())
                 {
-                    if(!WindowsServiceManager.StartService())
-                    {
-                        result = 83;
-                    }
-                    return result;
+                    result = 82;
                 }
+                return result;
+            }
 
-                if(options.StopService)
+            if(options.StartService)
+            {
+                if(!WindowsServiceManager.StartService())
                 {
-                    if(!WindowsServiceManager.StopService())
-                    {
-                        result = 84;
-                    }
-                    return result;
+                    result = 83;
                 }
+                return result;
+            }
+
+            if(options.StopService)
+            {
+                if(!WindowsServiceManager.StopService())
+                {
+                    result = 84;
+                }
+                return result;
             }
 
             //Type type = null;
@@ -253,28 +263,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         }
         #endregion
 
-        private bool SetWorkingDirectory()
-        {
-            bool result = true;
-
-            try
-            {
-                // Brendon.Page - The following line is has had it warning supressed because if the working dirctory can't be set
-                //                then it can't be garunteed that the server will operate correctly, and in this case the desired
-                //                behaviour is a fail with an exception.
-                // ReSharper disable AssignNullToNotNullAttribute
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                // ReSharper restore AssignNullToNotNullAttribute
-            }
-            catch(Exception e)
-            {
-                Fail("Unable to set working directory.", e);
-                result = false;
-            }
-
-            return result;
-        }
-
         #region Run Handling
         /// <summary>
         /// Runs the application server, and handles all initialization, execution and cleanup logic required.
@@ -403,6 +391,62 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             return 0;
+        }
+
+        private bool SetWorkingDirectory()
+        {
+            bool result = true;
+
+            try
+            {
+                // Brendon.Page - The following line is has had it warning supressed because if the working dirctory can't be set
+                //                then it can't be garunteed that the server will operate correctly, and in this case the desired
+                //                behaviour is a fail with an exception.
+                // ReSharper disable AssignNullToNotNullAttribute
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                // ReSharper restore AssignNullToNotNullAttribute
+            }
+            catch (Exception e)
+            {
+                Fail("Unable to set working directory.", e);
+                result = false;
+            }
+
+            return result;
+        }
+
+        private static bool EnsureRunningAsAdministrator(string[] arguments)
+        {
+            if (!IsElevated())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location);
+                startInfo.Verb = "runas";
+                startInfo.Arguments = string.Join(" ", arguments);
+
+                Process process = new Process();
+                process.StartInfo = startInfo;
+
+                try
+                {
+                    process.Start();
+                }
+                catch(Exception)
+                {
+                    //Intentionally left blank incase the user denies the app admin
+                    //privilidges.
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsElevated()
+        {
+            WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(currentIdentity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         #endregion
