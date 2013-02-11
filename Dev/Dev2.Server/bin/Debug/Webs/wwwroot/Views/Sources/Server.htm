@@ -66,7 +66,7 @@
             <input type="checkbox" name="showHelp" id="showHelp" data-bind="checked: isHelpTextVisible" />
             <label class="checkbox" for="showHelp">Show Descriptions</label>
         </div>
-        <div class="help-text" data-bind="html: helpText, visible: isHelpTextVisible">
+        <div class="help-text help-text-max" data-bind="html: helpText, visible: isHelpTextVisible">
         </div>
     </div>
 </div>
@@ -86,7 +86,7 @@
 		
         self.data = {
 			resourceID: ko.observable(""),
-            resourceType: ko.observable(""),
+            resourceType: ko.observable("Dev2Server"),
             resourceName: ko.observable(""),
             resourcePath: ko.observable(""),
 			

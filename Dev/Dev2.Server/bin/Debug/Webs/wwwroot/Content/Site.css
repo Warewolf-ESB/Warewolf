@@ -69,8 +69,8 @@ img.icon {
 h1, h2, h3,
 h4, h5, h6 {
     color: #000;
-    margin-bottom: 0;
-    padding-bottom: 0;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -152,14 +152,22 @@ h5, h6 {
 }
 
 .help-text {
+    background-color: #E9F4F7;
+}
+
+.help-text p {
+    font-size: 0.85em;
+}
+
+.help-text-max {
     width: 200px;
     margin-top: 15px;
-    background-color: #E9F4F7;
     padding: 10px 20px;
 }
+
 .help-text-min {
-    background-color: #E9F4F7;
-    padding: 2px;
+    margin: 0;
+    padding: 3px;
 }
 
 .button-bar {
@@ -322,7 +330,7 @@ input[type="checkbox"].input-validation-error {
 ----------------------------------------------------------*/
 table {
     border-collapse: collapse;
-    border-spacing: 0;
+    border-spacing: 0 !important;
     margin-top: 0.75em;
     border: 0 none;
 }
@@ -371,8 +379,39 @@ th {
     }
 
 td {
-    padding: 0.25em 2em 0.25em 0em;
+    padding: 0;
     border: 0 none;
+}
+
+table.input-param {
+    table-layout: fixed;
+    margin: 0;
+}
+
+td.input-param-name, th.input-param-name {
+    width: 150px;        
+    word-break: break-all;
+    word-wrap: break-word;    
+	overflow: hidden;
+	text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+    padding: 3px 5px 0 5px;
+    vertical-align: top;
+    height: 1em;
+
+}
+table.input-param th {
+    padding: 3px 5px;
+}
+
+.input-param-value textarea {
+    width: 330px;
+    max-width: 330px;
+}
+
+
+td input, textarea {
+    margin: 1px;    
 }
 
 tr.pager td {
@@ -408,4 +447,12 @@ div.scrollable {
 /* To hide the close button on all dialogs */
 .ui-dialog-titlebar-close {
   visibility: hidden;
+}
+
+.box-border {
+    border: 1px solid #E2E2E2;
+}
+
+.box-background {
+    background: #E2E2E2;
 }
