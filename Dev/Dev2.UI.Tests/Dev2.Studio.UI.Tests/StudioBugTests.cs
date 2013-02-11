@@ -880,7 +880,7 @@ namespace Dev2.Studio.UI.Tests
         public void OpenDecisionWindowMultipleTimes_Expected_OpensInSamePosition()
         {
             // Create the Workflow
-            //myTestBase.CreateCustomWorkflow("Bug8604");
+            myTestBase.CreateCustomWorkflow("Bug8604");
 
             // Get a point to drag the control onto
             UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8604");
@@ -890,7 +890,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
             // Wait for it to load
-            Thread.Sleep(2500);
+            //Thread.Sleep(2500);
 
             // Click Cancel
             WpfWindow decisionWindow = new WpfWindow();

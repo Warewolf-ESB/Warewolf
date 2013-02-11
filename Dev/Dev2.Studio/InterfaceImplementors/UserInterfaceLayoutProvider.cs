@@ -711,8 +711,7 @@ namespace Dev2.Studio
 
         /// <summary>
         /// Configures the decision expression.
-        /// Travis.Frisinger - Developed for new Decision Wizard
-        /// </summary>
+        /// Travis.Frisinger - Developed for new Decision Wizard </summary>
         /// <param name="wrapper">The wrapper.</param>
         internal void ConfigureDecisionExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
         {
