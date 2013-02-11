@@ -98,6 +98,37 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        #region Service
+
+        // POST: Service/Services/Test
+        public string Test(string args, Guid workspaceID, Guid dataListID)
+        {
+            try
+            {
+                var service = JsonConvert.DeserializeObject<Service>(args);
+                switch(service.ResourceType)
+                {
+                    case enSourceType.SqlDatabase:
+                    case enSourceType.MySqlDatabase:
+                        service = JsonConvert.DeserializeObject<DbService>(args);
+                        break;
+                    case enSourceType.Plugin:
+                        break;
+                }
+
+                // TODO: Implement real stuff
+
+                return service.ToString();
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+            }
+        }
+
+        #endregion
+
         #region Save
 
         // POST: Service/Services/Save
