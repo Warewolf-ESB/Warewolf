@@ -70,32 +70,44 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Resources/PathsAndNames
         public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
         {
-            var sourceType = (enSourceType)Enum.Parse(typeof(enSourceType), args);
-
-            var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
-            var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
-            if(sourceType == enSourceType.Dev2Server)
+            if(!String.IsNullOrEmpty(args))
             {
-                names.Add("localhost"); // auto-added to studio on startup
+                var sourceType = (enSourceType)Enum.Parse(typeof(enSourceType), args);
+
+                var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
+                var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
+                if(sourceType == enSourceType.Dev2Server)
+                {
+                    names.Add("localhost"); // auto-added to studio on startup
+                }
+                ResourceIterator.Iterate(new[] { RootFolders[sourceType] }, workspaceID, iteratorResult =>
+                {
+                    if(iteratorResult.Values.Count < 2)
+                    {
+                        return false;
+                    }
+                    names.Add(iteratorResult.Values[1]);
+                    if(iteratorResult.Values.Count < 3)
+                    {
+                        return false;
+                    }
+                    paths.Add(iteratorResult.Values[2]);
+                    return true;
+                }, new Delimiter
+                {
+                    ID = 1,
+                    Start = " Name=\"",
+                    End = "\" "
+                }, new Delimiter
+                {
+                    ID = 2,
+                    Start = "<Category>",
+                    End = "</Category>"
+                });
+
+                return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
             }
-            ResourceIterator.Iterate(new[] { RootFolders[sourceType] }, workspaceID, iteratorResult =>
-            {
-                names.Add(iteratorResult.Values[1]);
-                paths.Add(iteratorResult.Values[2]);
-                return true;
-            }, new Delimiter
-            {
-                ID = 1,
-                Start = " Name=\"",
-                End = "\" "
-            }, new Delimiter
-            {
-                ID = 2,
-                Start = "<Category>",
-                End = "</Category>"
-            });
-
-            return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
+            return null;
         }
 
         #endregion
