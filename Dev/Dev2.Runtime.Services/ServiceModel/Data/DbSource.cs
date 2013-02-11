@@ -8,15 +8,46 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class DbSource : Resource
     {
+        #region CTOR
+
+        public DbSource()
+        {
+        }
+
+        public DbSource(XElement xml)
+            : base(xml)
+        {
+            Server = xml.AttributeSafe("Server");
+            Database = xml.AttributeSafe("Database");
+
+            int port;
+            Port = Int32.TryParse(xml.AttributeSafe("Port"), out port) ? port : 0;
+
+            AuthenticationType authType;
+            AuthenticationType = Enum.TryParse(xml.AttributeSafe("AuthenticationType"), true, out authType) ? authType : AuthenticationType.User;
+
+            UserID = xml.AttributeSafe("UserID");
+            Password = xml.AttributeSafe("Password");
+        }
+
+        #endregion
+
+        #region Properties
+
         public string Server { get; set; }
+
         public string Database { get; set; }
+
         public int Port { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
         public string UserID { get; set; }
+
         public string Password { get; set; }
+
+        #endregion
 
         #region ConnectionString - calculated
 
@@ -44,42 +75,18 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
-        #region CTOR
-
-        public DbSource()
-        {
-        }
-
-        public DbSource(XElement xml)
-            : base(xml)
-        {
-            Server = xml.AttributeSafe("Server");
-            Database = xml.AttributeSafe("Database");
-
-            int port;
-            Port = Int32.TryParse(xml.AttributeSafe("Port"), out port) ? port : 0;
-
-            AuthenticationType authType;
-            AuthenticationType = Enum.TryParse(xml.AttributeSafe("AuthenticationType"), true, out authType) ? authType : AuthenticationType.User;
-
-            UserID = xml.AttributeSafe("UserID");
-            Password = xml.AttributeSafe("Password");
-        }
-
-        #endregion
-
         #region ToXml
 
         public override XElement ToXml()
         {
             var result = base.ToXml();
             result.Add(new XAttribute("ConnectionString", ConnectionString));
-            result.Add(new XAttribute("Server", Server));
-            result.Add(new XAttribute("Database", Database));
+            result.Add(new XAttribute("Server", Server ?? string.Empty));
+            result.Add(new XAttribute("Database", Database ?? string.Empty));
             result.Add(new XAttribute("Port", Port));
             result.Add(new XAttribute("AuthenticationType", AuthenticationType));
-            result.Add(new XAttribute("UserID", UserID));
-            result.Add(new XAttribute("Password", Password));
+            result.Add(new XAttribute("UserID", UserID ?? string.Empty));
+            result.Add(new XAttribute("Password", Password ?? string.Empty));
 
             return result;
         }

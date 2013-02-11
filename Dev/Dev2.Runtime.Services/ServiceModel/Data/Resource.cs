@@ -24,6 +24,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Resource(XElement xml)
         {
+            if(xml == null)
+            {
+                throw new ArgumentNullException("xml");
+            }
+
             ResourceID = Guid.Parse(xml.AttributeSafe("ID"));
             ResourceType = (enSourceType)Enum.Parse(typeof(enSourceType), xml.AttributeSafe("Type"));
             ResourceName = xml.AttributeSafe("Name");

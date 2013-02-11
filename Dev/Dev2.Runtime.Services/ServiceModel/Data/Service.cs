@@ -16,23 +16,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        #region Properties
-
-        public Resource Source { get; set; }
-
-        #endregion
-
-        #region ToXml
-
-        public override XElement ToXml()
-        {
-            var result = base.ToXml();
-
-            return result;
-        }
-
-        #endregion
-
     }
 }

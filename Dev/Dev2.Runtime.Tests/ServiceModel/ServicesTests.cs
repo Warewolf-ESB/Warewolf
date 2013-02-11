@@ -18,7 +18,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         const string SourceName = "BobsDB";
         const string ServiceName = "BobsCustomers";
         const string ServiceResourceType = "SqlDatabase";
-        const string JsonSource = "{{\"ResourceID\":\"{0}\",\"ResourceType\":\"SqlDatabase\",\"ResourceName\":\"" + SourceName + "\",\"ResourcePath\":\"Bob\"}}";
+        const string JsonSource = "{{\"resourceID\":\"{0}\",\"resourceType\":\"SqlDatabase\",\"resourceName\":\"" + SourceName + "\",\"resourcePath\":\"Bob\"}}";
         const string JsonService = "{{\"resourceID\":\"{0}\",\"resourceType\":\"" + ServiceResourceType + "\",\"resourceName\":\"" + ServiceName + "\",\"resourcePath\":\"Bob\",\"source\":{1}}}";
 
         #region Methods

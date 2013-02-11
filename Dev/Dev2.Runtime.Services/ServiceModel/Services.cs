@@ -16,24 +16,32 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Services/Get
         public Service Get(string args, Guid workspaceID, Guid dataListID)
         {
-            var result = new Service { ResourceID = Guid.Empty, ResourceType = enSourceType.SqlDatabase };
             try
             {
                 dynamic argsObj = JObject.Parse(args);
 
-                var resourceType = Resources.ParseResourceType(argsObj.resourceType.Value);
+                var resourceType = (enSourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
                 var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
-                    result = new Service(xml);
+                    switch(resourceType)
+                    {
+                        case enSourceType.SqlDatabase:
+                        case enSourceType.MySqlDatabase:
+                            return new DbService(xml);
+
+                        case enSourceType.Plugin:
+                            break;
+                    }
                 }
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
             }
-            return result;
+
+            return DbService.Create();
         }
 
         #endregion
@@ -53,6 +61,16 @@ namespace Dev2.Runtime.ServiceModel
                 //4. Return the JSON representation of the service actions
 
                 var service = JsonConvert.DeserializeObject<Service>(args);
+                switch(service.ResourceType)
+                {
+                    case enSourceType.SqlDatabase:
+                    case enSourceType.MySqlDatabase:
+                        service = JsonConvert.DeserializeObject<DbService>(args);
+                        break;
+                    case enSourceType.Plugin:
+                        break;
+                }
+
                 var random = new Random();
                 for(var i = 0; i < 50; i++)
                 {
@@ -88,6 +106,16 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = JsonConvert.DeserializeObject<Service>(args);
+                switch(service.ResourceType)
+                {
+                    case enSourceType.SqlDatabase:
+                    case enSourceType.MySqlDatabase:
+                        service = JsonConvert.DeserializeObject<DbService>(args);
+                        break;
+                    case enSourceType.Plugin:
+                        break;
+                }
+
                 if(service.ResourceID == Guid.Empty)
                 {
                     service.ResourceID = Guid.NewGuid();
