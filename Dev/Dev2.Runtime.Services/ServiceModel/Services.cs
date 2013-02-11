@@ -22,10 +22,10 @@ namespace Dev2.Runtime.ServiceModel
 
                 var resourceType = (enSourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
                 var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
-                if(!string.IsNullOrEmpty(xmlStr))
+                if (!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
-                    switch(resourceType)
+                    switch (resourceType)
                     {
                         case enSourceType.SqlDatabase:
                         case enSourceType.MySqlDatabase:
@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ServiceModel
                 //4. Return the JSON representation of the service actions
 
                 var service = JsonConvert.DeserializeObject<Service>(args);
-                switch(service.ResourceType)
+                switch (service.ResourceType)
                 {
                     case enSourceType.SqlDatabase:
                     case enSourceType.MySqlDatabase:
@@ -72,14 +72,14 @@ namespace Dev2.Runtime.ServiceModel
                 }
 
                 var random = new Random();
-                for(var i = 0; i < 50; i++)
+                for (var i = 0; i < 50; i++)
                 {
                     var method = new ServiceMethod { Name = string.Format("dbo.Pr_GetCake_{0:00}", i) };
-                    for(var j = 0; j < 10; j++)
+                    for (var j = 0; j < 10; j++)
                     {
                         var builder = new StringBuilder("Parm_");
                         char ch;
-                        for(int k = 0; k < 15; k++)
+                        for (int k = 0; k < 15; k++)
                         {
                             ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
                             builder.Append(ch);
@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ServiceModel
                     result.Add(method);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -137,7 +137,7 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = JsonConvert.DeserializeObject<Service>(args);
-                switch(service.ResourceType)
+                switch (service.ResourceType)
                 {
                     case enSourceType.SqlDatabase:
                     case enSourceType.MySqlDatabase:
@@ -147,14 +147,14 @@ namespace Dev2.Runtime.ServiceModel
                         break;
                 }
 
-                if(service.ResourceID == Guid.Empty)
+                if (service.ResourceID == Guid.Empty)
                 {
                     service.ResourceID = Guid.NewGuid();
                 }
                 service.Save(workspaceID, dataListID);
                 return service.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();

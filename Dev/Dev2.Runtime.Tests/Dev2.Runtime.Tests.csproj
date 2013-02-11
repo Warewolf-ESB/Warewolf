@@ -77,8 +77,8 @@
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\ConnectionsMock.cs" />
     <Compile Include="ServiceModel\ConnectionTests.cs" />
-    <Compile Include="ServiceModel\Data\DataBrokerMock.cs" />
-    <Compile Include="ServiceModel\Data\DataBrokerTests.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerMock.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ResourceTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
@@ -176,7 +176,10 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\InternallySigned.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ServiceModel\Data\" />
+    <Folder Include="ServiceModel\Esb\Controllers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

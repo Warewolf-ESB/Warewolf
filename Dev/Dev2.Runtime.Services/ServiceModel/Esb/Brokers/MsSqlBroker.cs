@@ -4,13 +4,24 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace Dev2.Runtime.ServiceModel.Data
+namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
-    public class MsSqlDataBroker : DataBroker
+    /// <summary>
+    /// A Microsoft SQL specific database broker implementation
+    /// </summary>
+    public class MsSqlBroker : AbstractDatabaseBroker
     {
         #region Override Methods
 
-        public override void GetStoredProcedures(IDbConnection connection, Func<IDbCommand, IList<IDataParameter>, string, bool> procedureProcessor, 
+        /// <summary>
+        /// Returns all stored procedures.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="procedureProcessor">The procedure processor.</param>
+        /// <param name="functionProcessor">The function processor.</param>
+        /// <param name="continueOnProcessorException">if set to <c>true</c> [continue on processor exception].</param>
+        /// <exception cref="System.ArgumentException">Expected type SqlConnection.;connection</exception>
+        protected override void GetStoredProcedures(IDbConnection connection, Func<IDbCommand, IList<IDataParameter>, string, bool> procedureProcessor, 
             Func<IDbCommand, IList<IDataParameter>, string, bool> functionProcessor, bool continueOnProcessorException = false)
         {
             var sqlConnection = connection as SqlConnection;
@@ -56,7 +67,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        public override DataSet ExecuteSelect(IDbCommand command)
+        /// <summary>
+        /// Executes a select command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <exception cref="System.ArgumentException">command</exception>
+        protected override DataSet ExecuteSelect(IDbCommand command)
         {
             var sqlCommand = command as SqlCommand;
             if (command == null)
@@ -72,10 +88,27 @@ namespace Dev2.Runtime.ServiceModel.Data
             return dataset;
         }
 
+        /// <summary>
+        /// Creates a connection.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        protected override IDbConnection CreateConnection(string connectionString)
+        {
+            return new SqlConnection(connectionString);
+        }
+
         #endregion
 
         #region Private Methods
 
+        /// <summary>
+        /// Determines whether the specified row represents a stored procedure.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="procedureTypeColumn">The procedure type column.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified row is a stored procedure; otherwise, <c>false</c>.
+        /// </returns>
         private bool IsStoredProcedure(DataRow row, DataColumn procedureTypeColumn)
         {
             if (row == null || procedureTypeColumn == null)
@@ -86,6 +119,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             return row[procedureTypeColumn].ToString().Equals("PROCEDURE");
         }
 
+        /// <summary>
+        /// Determines whether the specified row represents a stored function.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="procedureTypeColumn">The procedure type column.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified row is a stored function; otherwise, <c>false</c>.
+        /// </returns>
         private bool IsFunction(DataRow row, DataColumn procedureTypeColumn)
         {
             if (row == null || procedureTypeColumn == null)
@@ -96,6 +137,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             return !row[procedureTypeColumn].ToString().Equals("PROCEDURE");
         }
 
+        /// <summary>
+        /// Gets the help text for a procedure/function.
+        /// </summary>
+        /// <param name="sqlConnection">The SQL connection.</param>
+        /// <param name="fullProcedureName">Full name of the procedure.</param>
         private string GetProcedureHelpText(SqlConnection sqlConnection, string fullProcedureName)
         {
             StringBuilder sb = new StringBuilder();
@@ -122,6 +168,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the parameters for a procedure/function.
+        /// </summary>
+        /// <param name="procedureCommand">The procedure command.</param>
         private List<IDataParameter> GetProcedureParameters(SqlCommand procedureCommand)
         {
             List<IDataParameter> parameters = new List<IDataParameter>();
@@ -140,6 +190,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             return parameters;
         }
 
+        /// <summary>
+        /// Gets the data column from a data table.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="columnName">Name of the column.</param>
+        /// <exception cref="System.Exception"></exception>
         private DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
             DataColumn dataColumn = dataTable.Columns[columnName];
@@ -150,6 +206,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             return dataColumn;
         }
 
+        /// <summary>
+        /// Gets the schema from a data table.
+        /// </summary>
+        /// <param name="sqlConnection">The SQL connection.</param>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <exception cref="System.Exception"></exception>
         private DataTable GetSchema(SqlConnection sqlConnection, string collectionName)
         {
             DataTable proceduresDataTable = sqlConnection.GetSchema(collectionName);
@@ -160,9 +222,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             return proceduresDataTable;
         }
 
-        private SqlCommand CreateProcedureCommand(SqlConnection sqlConnection, string fullCallName)
+        /// <summary>
+        /// Creates a command for retrieving the help text of a procedure/function.
+        /// </summary>
+        /// <param name="sqlConnection">The SQL connection.</param>
+        /// <param name="fullProcedureName">Full name of the procedure.</param>
+        private SqlCommand CreateHelpTextCommand(SqlConnection sqlConnection, string fullProcedureName)    
         {
-            SqlCommand cmd = new SqlCommand("sp_helptext '" + fullCallName + "'", sqlConnection) 
+            SqlCommand cmd = new SqlCommand("sp_helptext '" + fullProcedureName + "'", sqlConnection) 
             { 
                 CommandType = CommandType.Text 
             };
@@ -170,7 +237,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             return cmd;
         }
 
-        private SqlCommand CreateHelpTextCommand(SqlConnection sqlConnection, string fullCallName)
+        /// <summary>
+        /// Creates a command for executing a procedure/function.
+        /// </summary>
+        /// <param name="sqlConnection">The SQL connection.</param>
+        /// <param name="fullCallName">Full name of the call.</param>
+        private SqlCommand CreateProcedureCommand(SqlConnection sqlConnection, string fullCallName)    
         {
             SqlCommand cmd = new SqlCommand(fullCallName, sqlConnection) 
             { 
@@ -180,6 +252,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             return cmd;
         }
 
+        /// <summary>
+        /// Gets the full name of the procedure/function.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="procedureDataColumn">The procedure data column.</param>
+        /// <param name="procedureSchemaColumn">The procedure schema column.</param>
         private string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn, DataColumn procedureSchemaColumn)
         {
             string procedureName = row[procedureDataColumn].ToString();
@@ -187,6 +265,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             return schemaName + "." + procedureName;
         }
 
+        /// <summary>
+        /// Load parameters of a command.
+        /// </summary>
+        /// <param name="command">The command.</param>
         private bool TryLoadCommandParameters(SqlCommand command)
         {
             try
@@ -201,6 +283,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }
