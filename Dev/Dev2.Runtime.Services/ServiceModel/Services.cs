@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
@@ -52,12 +53,20 @@ namespace Dev2.Runtime.ServiceModel
                 //4. Return the JSON representation of the service actions
 
                 var service = JsonConvert.DeserializeObject<Service>(args);
+                var random = new Random();
                 for(var i = 0; i < 50; i++)
                 {
                     var method = new ServiceMethod { Name = string.Format("dbo.Pr_GetCake_{0:00}", i) };
                     for(var j = 0; j < 10; j++)
                     {
-                        method.Parameters.Add(new MethodParameter { Name = string.Format("Param_{0:00}", j) });
+                        var builder = new StringBuilder("Parm_");
+                        char ch;
+                        for(int k = 0; k < 15; k++)
+                        {
+                            ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                            builder.Append(ch);
+                        }
+                        method.Parameters.Add(new MethodParameter { Name = builder.ToString() });
                     }
                     result.Add(method);
                 }
