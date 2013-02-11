@@ -900,7 +900,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Get the Co-ords
             Point firstPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
-            Point cancelButton = new Point(decisionWindow.BoundingRectangle.X + 700, decisionWindow.BoundingRectangle.Y + 600);
+            Point cancelButton = new Point(decisionWindow.BoundingRectangle.X + 650, decisionWindow.BoundingRectangle.Y + 575);
             Mouse.Click(cancelButton);
 
             // Open the window for the first time
@@ -915,7 +915,7 @@ namespace Dev2.Studio.UI.Tests
             Point secondPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
 
             // Close it
-            cancelButton = new Point(decisionWindow.BoundingRectangle.X + 700, decisionWindow.BoundingRectangle.Y + 600);
+            cancelButton = new Point(decisionWindow.BoundingRectangle.X + 650, decisionWindow.BoundingRectangle.Y + 575);
             Mouse.Click(cancelButton);
 
             // Open the window for the second time
@@ -930,7 +930,7 @@ namespace Dev2.Studio.UI.Tests
             Point thirdPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
 
             // Close it
-            cancelButton = new Point(decisionWindow.BoundingRectangle.X + 700, decisionWindow.BoundingRectangle.Y + 600);
+            cancelButton = new Point(decisionWindow.BoundingRectangle.X + 650, decisionWindow.BoundingRectangle.Y + 575);
             Mouse.Click(cancelButton);
 
             if ((firstPoint != secondPoint) && (secondPoint != thirdPoint))
