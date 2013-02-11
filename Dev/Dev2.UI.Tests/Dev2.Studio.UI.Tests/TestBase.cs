@@ -202,9 +202,9 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ThisMethodIsForTestingRandomTestFragments()
         {
-
-            //VideoUIMapTest.doSomething();
-            //CreateCustomWorkflow("Test123");
+            // RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+            //  VideoUIMapTest.doSomething();
+            //  CreateCustomWorkflow("Test123");
             /*
              * 
             RibbonUIMap.ClickRibbonMenu("Help");
