@@ -42,8 +42,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                 {
                     theControl = tabPage;
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
-                    Mouse.Click(p);
-                    break;
+                    if(p.X > 5)
+                    {
+
+                        Mouse.Click(p);
+                        break;
+                    }
                 }
             }
             
