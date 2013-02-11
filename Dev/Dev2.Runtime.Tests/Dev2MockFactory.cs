@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Network;
-using System.Text;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Network;
 
 namespace Dev2.DynamicServices.Test
 {
@@ -107,6 +106,54 @@ namespace Dev2.DynamicServices.Test
             mockSetupServerNetworkChannelContext.Setup(s => s.NetworkContext).Returns(new StudioNetworkSession());
 
             return mockSetupServerNetworkChannelContext;
+        }
+
+        public static Mock<IDataReader> SetupDataReader(List<object[]> results)
+        {
+            int readCount = 0;
+            var reader = new Mock<IDataReader>();
+            reader.Setup(r => r.Read()).Returns(() => readCount < results.Count).Callback(() =>
+            {
+                readCount++;
+            });
+            reader.Setup(r => r.GetValues(It.IsAny<object[]>())).Returns(results[readCount].Length);
+
+            return reader;
+        }
+
+        public static Mock<IDbConnection> SetupDbConnection()
+        {
+            var connection = new Mock<IDbConnection>();
+            connection.Setup(c => c.Close()).Verifiable();
+            connection.Setup(c => c.Dispose()).Verifiable();
+
+            return connection;
+        }
+
+        public static Mock<IDbCommand> SetupDbCommand(Mock<IDataReader> dataReader, Mock<IDbConnection> connection)
+        {
+            var command = new Mock<IDbCommand>();
+            command.Setup(c => c.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(dataReader.Object);
+            command.Setup(c => c.Connection).Returns(connection.Object);
+
+            return command;
+        }
+
+        public static List<object[]> FakeDataBrokerTestsResults(int rows, int columns)
+        {
+            List<object[]> results = new List<object[]>();
+
+            for (int j = 0; j < rows; j++)
+            {
+                object[] row = new object[columns];
+                for (int i = 0; i < columns; i++)
+                {
+                    row[i] = i;
+                }
+                results.Add(row);
+            }
+
+            return results;
         }
     }
 }

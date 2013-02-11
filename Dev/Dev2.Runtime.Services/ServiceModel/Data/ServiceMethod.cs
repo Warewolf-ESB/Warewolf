@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -9,10 +9,26 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         #region CTOR
 
-        public ServiceMethod()
+        public ServiceMethod() : this("", null, null, null)
         {
+        }
+
+        public ServiceMethod(string name, IOutputDescription outputDescription, IEnumerable<MethodParameter> parameters, IEnumerable<MethodOutput> outputs)
+        {
+            Name = name;
+            OutputDescription = outputDescription;
             Parameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
+
+            if (parameters != null)
+            {
+                Parameters.AddRange(parameters);
+            }
+
+            if (outputs != null)
+            {
+                Outputs.AddRange(outputs);
+            }
         }
 
         #endregion
@@ -21,9 +37,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string Name { get; set; }
 
-        public IList<MethodParameter> Parameters { get; private set; }
+        public List<MethodParameter> Parameters { get; private set; }
 
-        public IList<MethodOutput> Outputs { get; private set; }
+        public List<MethodOutput> Outputs { get; private set; }
 
         public IOutputDescription OutputDescription { get; set; }
 
