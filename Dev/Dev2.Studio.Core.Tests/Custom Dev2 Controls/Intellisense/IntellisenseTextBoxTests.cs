@@ -69,7 +69,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.IntellisenseProvider = intellisenseProvider.Object;
             textBox.Text = "[[City([[Scalar]]).Na";
 
-            //There is no assert in this test because the desired result is that an exception isn't thrown
+            // When exepctions are thrown, no results are to be displayed
+            Assert.AreEqual(0, textBox.Items.Count);
+            //The desired result is that an exception isn't thrown
+
+
+            // GetIntellisenseResults -> OnIntellisenseProviderChanged
         }
 
         //BUG 8761
@@ -85,8 +90,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             IntellisenseTextBox textBox = new IntellisenseTextBox();
             textBox.CreateVisualTree();
             textBox.InsertItem(intellisenseProviderResult, true);
-            
-            //There is no assert in this test because the desired result is that an exception isn't thrown
+
+            // When exepctions are thrown, no results are to be displayed
+            Assert.AreEqual(0,textBox.Items.Count);
+            //The desired result is that an exception isn't thrown
         }
         
         #endregion Test Initialization
