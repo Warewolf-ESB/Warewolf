@@ -153,13 +153,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (mic != null)
             {
-                int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
-                foreach (string s in listToAdd)
+                List<ICaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+                if (listOfValidRows.Count > 0)
                 {
-                    mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
-                    startIndex++;
+                    int startIndex = listOfValidRows.Last().IndexNumber;
+                    foreach (string s in listToAdd)
+                    {
+                        mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
+                else
+                {
+                    AddToCollection(listToAdd, modelItem);
+                }
             }
         }
 
@@ -170,10 +178,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (mic != null)
             {
                 int startIndex = 0;
+                string firstRowConvertType = ConvertCollection[0].ConvertType;
                 mic.Clear();
                 foreach (string s in listToAdd)
                 {
-                    mic.Add(new CaseConvertTO(s, "UPPER", s, startIndex + 1));
+                    mic.Add(new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
                     startIndex++;
                 }
                 CleanUpCollection(mic, modelItem, startIndex);

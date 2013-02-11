@@ -240,13 +240,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (mic != null)
             {
-                int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
-                foreach (string s in listToAdd)
+                List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+                if (listOfValidRows.Count > 0)
                 {
-                    mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
-                    startIndex++;
+                    int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
+                    foreach (string s in listToAdd)
+                    {
+                        mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
+                else
+                {
+                    AddToCollection(listToAdd, modelItem);
+                }
             }
         }
 
@@ -257,10 +265,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (mic != null)
             {
                 int startIndex = 0;
+                string firstRowConvertFromType = ConvertCollection[0].FromType;
+                string firstRowConvertToType = ConvertCollection[0].ToType;
                 mic.Clear();
                 foreach (string s in listToAdd)
                 {
-                    mic.Add(new BaseConvertTO(s, "Text", "Base 64", string.Empty, startIndex + 1));
+                    mic.Add(new BaseConvertTO(s, firstRowConvertFromType, firstRowConvertToType, string.Empty, startIndex + 1));
                     startIndex++;
                 }
                 CleanUpCollection(mic, modelItem, startIndex);

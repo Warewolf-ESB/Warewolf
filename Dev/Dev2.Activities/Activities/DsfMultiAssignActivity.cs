@@ -264,13 +264,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (mic != null)
             {
-                int startIndex = FieldsCollection.Last(c => !c.CanRemove()).IndexNumber;
-                foreach (string s in listToAdd)
+                List<ActivityDTO> listOfValidRows = FieldsCollection.Where(c => !c.CanRemove()).ToList();
+                if (listOfValidRows.Count > 0)
                 {
-                    mic.Insert(startIndex, new ActivityDTO(s, string.Empty, startIndex + 1));
-                    startIndex++;
+                    int startIndex = FieldsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                    foreach (string s in listToAdd)
+                    {
+                        mic.Insert(startIndex, new ActivityDTO(s, string.Empty, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
+                else
+                {
+                    AddToCollection(listToAdd, modelItem);
+                }
             }
         }
 

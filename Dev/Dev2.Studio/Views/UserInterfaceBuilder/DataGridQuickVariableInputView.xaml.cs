@@ -85,6 +85,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
                 }
                 else
                 {
+                    SplitTokenTxt.Text = string.Empty;
                     SplitTokenTxt.IsEnabled = false;
                 }
             }

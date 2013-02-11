@@ -29,7 +29,7 @@
                     <RowDefinition Height="26"></RowDefinition>
                     <RowDefinition Height="26"></RowDefinition>
                     <RowDefinition Height="26"></RowDefinition>
-                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="26"></RowDefinition>
                     <RowDefinition Height="26"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>                  
@@ -40,24 +40,24 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}"></ComboBox>
-                    <TextBox x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="0" Text="{Binding SplitToken}"></TextBox>
+                    <ComboBox x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?"></ComboBox>
+                    <TextBox x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="0" Text="{Binding SplitToken}" ToolTip="What separates the items in your variable list?"></TextBox>
                 </Grid>
 
                 <Label Grid.Column="0" Grid.Row="1" Content="Prefix :"></Label>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Prefix}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Prefix}" ToolTip="If you want to add these variable to a record-set you&#x0a;can prefix the variable name with the record-set like&#x0a;this &quot;Recrodsetname().&quot; - don't forget the dot &quot;.&quot; &#x0a;after the brackets &quot;()&quot;&#x0a;&#x0a;Or you could simply add an identifier to the beginning&#x0a;of the variable names like &quot;From_File_&quot;."></TextBox>
 
                 <Label Grid.Column="0" Grid.Row="2" Content="Suffix :"></Label>
-                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Suffix}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Suffix}" ToolTip="Just like Prefix, but appended after the variable name.&#x0a;Use it or lose it."></TextBox>
 
                 <Label Grid.Column="0" Grid.Row="3" Content="Variable List :"></Label>
-                <TextBox Grid.Column="1" Grid.Row="3" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" Height="26" VerticalAlignment="Top"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="3" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" Height="26" VerticalAlignment="Top" ToolTip="Copy and paste or type in a list of Variable names&#x0a;that you would like to use. They will be added to &#x0a;the grid in the order that they appear. Any spaces &#x0a;in the variable name will be removed automatically. &#x0a;You do not need to worry about putting the Variable &#x0a;identifiers, &quot;[[&quot; and &quot;]]&quot; in."></TextBox>
 
 
                 <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
-                    <RadioButton Content="Append" IsChecked="True" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5"></RadioButton>
+                    <RadioButton Content="Append" IsChecked="True" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
 
-                    <RadioButton Content="Replace" IsChecked="{Binding Overwrite}" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5"></RadioButton>
+                    <RadioButton Content="Replace" IsChecked="{Binding Overwrite}" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
                 </StackPanel>                
 
                 <StackPanel Grid.Column="0" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">

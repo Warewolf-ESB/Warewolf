@@ -285,13 +285,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (mic != null)
             {
-                int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
-                foreach (string s in listToAdd)
+                List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+                if (listOfValidRows.Count > 0)
                 {
-                    mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
-                    startIndex++;
+                    int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                    foreach (string s in listToAdd)
+                    {
+                        mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
+                else
+                {
+                    AddToCollection(listToAdd, modelItem);
+                }
             }
         }
 
@@ -302,10 +310,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (mic != null)
             {
                 int startIndex = 0;
+                string firstRowSplitType = ResultsCollection[0].SplitType;
+                string firstRowAt = ResultsCollection[0].At;
                 mic.Clear();
                 foreach (string s in listToAdd)
                 {
-                    mic.Add(new DataSplitDTO(s, "Chars", string.Empty, startIndex + 1));
+                    mic.Add(new DataSplitDTO(s, firstRowSplitType, firstRowAt, startIndex + 1));
                     startIndex++;
                 }
                 CleanUpCollection(mic, modelItem, startIndex);

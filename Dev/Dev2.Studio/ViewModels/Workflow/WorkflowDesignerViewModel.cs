@@ -2400,7 +2400,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     BuildDataPart(s);
                 }
                 IList<IDataListVerifyPart> partsToAdd = _uniqueWorkflowParts.Keys.ToList();
-                dlvm.AddMissingDataListItems(partsToAdd);
+                List<IDataListVerifyPart> uniqueDataListPartsToAdd = MissingDataListParts(partsToAdd);
+                dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
         }
 

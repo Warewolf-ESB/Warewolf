@@ -86,7 +86,7 @@ namespace Dev2.Studio.Core.Activities.Services
             IContextualResourceModel resource = null;
             ModelProperty modelProperty = modelItem.Properties.Where(mp => mp.Name == "ServiceName").FirstOrDefault();
 
-            if (modelProperty != null)
+            if (modelProperty != null && _resourceRepository != null)
             {
                 resource = _resourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
             }
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core.Activities.Services
             IContextualResourceModel resource = null;
             ModelProperty modelProperty = modelItem.Root.Properties.Where(mp => mp.Name == "Name").FirstOrDefault();
 
-            if (modelProperty != null)
+            if (modelProperty != null && _resourceRepository != null)
             {
                 resource = _resourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
             }

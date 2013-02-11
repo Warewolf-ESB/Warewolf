@@ -187,13 +187,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (mic != null)
             {
-                int startIndex = MergeCollection.Last(c => !c.CanRemove()).IndexNumber;
-                foreach (string s in listToAdd)
+                List<DataMergeDTO> listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
+                if (listOfValidRows.Count > 0)
                 {
-                    mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
-                    startIndex++;
+                    int startIndex = MergeCollection.Last(c => !c.CanRemove()).IndexNumber;
+                    foreach (string s in listToAdd)
+                    {
+                        mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
+                else
+                {
+                    AddToCollection(listToAdd, modelItem);
+                }
             }
         }
 
@@ -204,10 +212,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (mic != null)
             {
                 int startIndex = 0;
+                string firstRowMergeType = MergeCollection[0].MergeType;
+                string firstRowPadding = MergeCollection[0].Padding;
+                string firstRowAlignment = MergeCollection[0].Alignment;
                 mic.Clear();
                 foreach (string s in listToAdd)
                 {
-                    mic.Add(new DataMergeDTO(s, "None", string.Empty, startIndex + 1, " ", "Left To Right"));
+                    mic.Add(new DataMergeDTO(s, firstRowMergeType, string.Empty, startIndex + 1, firstRowPadding, firstRowAlignment));
                     startIndex++;
                 }
                 CleanUpCollection(mic, modelItem, startIndex);
