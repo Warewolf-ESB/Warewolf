@@ -1,4 +1,5 @@
-﻿using Dev2.Diagnostics;
+﻿using System.Text;
+using Dev2.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using System;
@@ -40,6 +41,21 @@ namespace Dev2.Studio.Diagnostics
             return PlaceContentInTree(rootItems, existingContent, newContent, filterText, addedAsParent, depthLimit, ref depthCount);
         }
 
+        //
+        //Juries - This is a dirty hack, naughty naughty.
+        //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
+        //
+        public void AppendErrorToTreeParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
+            IDebugState debugState)
+        {
+            int operationDepth = 0;
+            var parentItem = FindParent(rootItems, debugState, ref operationDepth);
+            if(parentItem is DebugStateTreeViewItemViewModel)
+            {
+                var debugStateParent = (DebugStateTreeViewItemViewModel)parentItem;
+                debugStateParent.AppendError(debugState.ErrorMessage);
+            }
+        }
         #endregion Methods
 
         #region Private Methods
@@ -67,7 +83,7 @@ namespace Dev2.Studio.Diagnostics
                 DebugTreeViewItemViewModel parentItem = null;
                 if(!addedAsParent)
                 {
-                    parentItem = FindParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
+                    parentItem = FindParent(rootItems, debugState, ref operationDepth);
                 }
                     
                 if(parentItem == null)
@@ -165,8 +181,8 @@ namespace Dev2.Studio.Diagnostics
         /// Finds the parent.
         /// </summary>
         /// <param name="parentID">The parent ID.</param>
-        private DebugTreeViewItemViewModel FindParent(IEnumerable<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
-            IDebugState debugState, int depthLimit, ref int operationDepth)
+        private DebugTreeViewItemViewModel FindParent(IEnumerable<DebugTreeViewItemViewModel> rootItems,
+            IDebugState debugState, ref int operationDepth)
         {
             if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
             {

@@ -540,6 +540,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // that is all she wrote ;)
                     IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
                     dataObject.IsDataListScoped = false;
+                    var compiler = context.GetExtension<IDataListCompiler>();
+                    ErrorResultTO errors;
+                    var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
                     // return it all to normal
                     RestoreHandlerFn(context);
                     dataObject.ParentInstanceID = _previousParentID;

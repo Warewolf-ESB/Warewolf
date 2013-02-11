@@ -8,7 +8,8 @@ namespace Dev2.Enums {
         None = 0,
         Before = 1,
         After = 2,
-        All = 3
+        All = 3,
+        Append = 4
     }
 
     [EnumDisplayString("Workflow", "Step")]

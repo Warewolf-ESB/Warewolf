@@ -15,7 +15,9 @@ using Dev2.DataList.Contract.TO;
 using Dev2.DB_Helper;
 using Dev2.DB_Sanity;
 using Dev2.DB_Support;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.Enums;
 using Dev2.PathOperations;
 using Dev2.Reflection;
 using Dev2.Runtime.Security;
@@ -401,14 +403,13 @@ namespace Dev2.Runtime.InterfaceImplementors
             else
             {
                 serviceDataId = SvrCompiler.CloneDataList(dataListId, out errors);
-                if(errors.HasErrors())
-                {
-                    allErrors.MergeErrors(errors);
-                }
-
                 performDataListInMerge = true;
             }
 
+            if (errors.HasErrors())
+            {
+                allErrors.MergeErrors(errors);
+            }
             IDSFDataObject dataObject = new DsfDataObject(xmlRequest.XmlString, serviceDataId);
             dataObject.DataList = dataList;
 
@@ -522,6 +523,30 @@ namespace Dev2.Runtime.InterfaceImplementors
                 }
 
 
+                //
+                //Juries - This is a dirty hack, naughty naughty.
+                //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
+                //
+                if(allErrors.HasErrors())
+                {
+                    DebugDispatcher.Instance.Write(new DebugState()
+                    {
+                        ParentID = dataObject.ParentInstanceID,
+                        WorkspaceID = dataObject.WorkspaceID,
+                        StartTime = DateTime.Now,
+                        EndTime = DateTime.Now,
+                        IsSimulation = false,
+                        ServerID = dataObject.ServerID,
+                        Server = string.Empty,
+                        Version = string.Empty,
+                        Name = GetType().Name,
+                        HasError = true,
+                        ErrorMessage = allErrors.MakeDisplayReady(),
+                        ActivityType = ActivityType.Workflow,
+                        StateType = StateType.Append
+                    });
+                }
+                
                 // TODO : properly build up DataList prior to this....
                 result = Invoke(serviceAction, dataObject, dataList);
 

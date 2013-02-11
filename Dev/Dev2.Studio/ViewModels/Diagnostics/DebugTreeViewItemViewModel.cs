@@ -1,12 +1,13 @@
-﻿using Dev2.Diagnostics;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using Dev2.Diagnostics;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
@@ -14,7 +15,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     {
         #region Class Members
 
-        private readonly string _content;
+        readonly string _content;
 
         #endregion Class Members
 
@@ -35,7 +36,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string Content
         {
-            get { return _content; }
+            get
+            {
+                return _content;
+            }
         }
 
         #endregion Properties
@@ -80,7 +84,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public IDebugState Content
         {
-            get { return _content; }
+            get
+            {
+                return _content;
+            }
         }
 
         public List<object> Inputs { get; set; }
@@ -88,15 +95,34 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion Properties
 
+        #region Public Methods
+
+        public void AppendError(string errorMessage)
+        {
+            if(Content.HasError)
+            {
+                var currentError = new StringBuilder(Content.ErrorMessage);
+                currentError.Append(errorMessage);
+                Content.ErrorMessage = currentError.ToString();
+            }
+            else Content.ErrorMessage = errorMessage;
+            Content.HasError = true;
+            OnPropertyChanged("Content.ErrorMessage");
+            OnPropertyChanged("Content.HasError");
+            OnPropertyChanged("Content");
+            HasError = true;
+        }
+
+        #endregion Public Methods
+
         #region Private Methods
 
-
         /// <summary>
-        /// Builds the bindable list from debug items.
+        ///     Builds the bindable list from debug items.
         /// </summary>
         /// <param name="debugItems">The debug items.</param>
         /// <param name="destinationList">The destination list.</param>
-        private void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
+        void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
         {
             //
             // Build destinationList
@@ -152,13 +178,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     {
         #region Fields
 
-        private readonly ObservableCollection<DebugTreeViewItemViewModel> _children;
-        private readonly DebugTreeViewItemViewModel _parent;
+        readonly ObservableCollection<DebugTreeViewItemViewModel> _children;
+        readonly DebugTreeViewItemViewModel _parent;
 
-        private bool _isExpanded;
-        private bool _isSelected;
-        private bool _addedAsParent;
-        private bool? _hasError = false;
+        bool _addedAsParent;
+        bool? _hasError = false;
+        bool _isExpanded;
+        bool _isSelected;
 
         #endregion
 
@@ -176,27 +202,43 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public ObservableCollection<DebugTreeViewItemViewModel> Children
         {
-            get { return _children; }
+            get
+            {
+                return _children;
+            }
         }
-
 
         public bool? HasError
         {
-            get { return _hasError; }
+            get
+            {
+                return _hasError;
+            }
             set
             {
                 _hasError = value;
-                if (Parent != null) Parent.VerifyErrorState();
+                if(Parent != null)
+                {
+                    Parent.VerifyErrorState();
+                }
                 OnPropertyChanged("HasError");
             }
         }
 
         public void VerifyErrorState()
         {
-            if (this.HasError == true) return;
+            if(HasError == true)
+            {
+                return;
+            }
             if(Children.Any(c => c.HasError == true || c.HasError == null))
-                this.HasError = null;
-            else this.HasError = false;
+            {
+                HasError = null;
+            }
+            else
+            {
+                HasError = false;
+            }
         }
 
         #endregion
@@ -204,12 +246,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Properties
 
         /// <summary>
-        /// Gets/sets whether the TreeViewItem 
-        /// associated with this object is expanded.
+        ///     Gets/sets whether the TreeViewItem
+        ///     associated with this object is expanded.
         /// </summary>
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get
+            {
+                return _isExpanded;
+            }
             set
             {
                 if(value != _isExpanded)
@@ -227,12 +272,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         /// <summary>
-        /// Gets/sets whether the TreeViewItem 
-        /// associated with this object is selected.
+        ///     Gets/sets whether the TreeViewItem
+        ///     associated with this object is selected.
         /// </summary>
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get
+            {
+                return _isSelected;
+            }
             set
             {
                 if(value != _isSelected)
@@ -244,14 +292,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the item was added as a parent.
+        ///     Gets or sets a value indicating whether the item was added as a parent.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if the item was added as a parent; otherwise, <c>false</c>.
+        ///     <c>true</c> if the item was added as a parent; otherwise, <c>false</c>.
         /// </value>
         public bool AddedAsParent
         {
-            get { return _addedAsParent; }
+            get
+            {
+                return _addedAsParent;
+            }
             set
             {
                 _addedAsParent = value;
@@ -261,7 +312,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public DebugTreeViewItemViewModel Parent
         {
-            get { return _parent; }
+            get
+            {
+                return _parent;
+            }
         }
 
         #endregion Properties
@@ -269,7 +323,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Methods
 
         /// <summary>
-        /// Returns the first item which matches a predicate form the node it's self and all it's children recursively.
+        ///     Returns the first item which matches a predicate form the node it's self and all it's children recursively.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         public DebugTreeViewItemViewModel FindSelfOrChild(Func<DebugTreeViewItemViewModel, bool> predicate)
@@ -303,7 +357,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         /// <summary>
-        /// Gets the depth.
+        ///     Gets the depth.
         /// </summary>
         /// <returns></returns>
         public int GetDepth()

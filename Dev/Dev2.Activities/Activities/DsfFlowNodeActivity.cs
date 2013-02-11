@@ -253,19 +253,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             string val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText);
 
-
-            Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-
-            if (_theResult.ToString() == "True")
+            try
             {
-                resultString = dds.TrueArmText;
+                Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+
+                if (_theResult.ToString() == "True")
+                {
+                    resultString = dds.TrueArmText;
+                }
+                else if (_theResult.ToString() == "False")
+                {
+                    resultString = dds.FalseArmText;
+                }
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
+                result.Add(itemToAdd);
             }
-            else if (_theResult.ToString() == "False")
+            catch(Exception)
             {
-                resultString = dds.FalseArmText;
+                //This means it is a swith, not a decision
+
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
+                result.Add(itemToAdd);
             }
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
-            result.Add(itemToAdd);
 
             return result;
 

@@ -82,7 +82,18 @@ namespace Dev2.Diagnostics
         /// <summary>
         /// Gets or sets a value indicating whether this instance has an error.
         /// </summary>
-        public bool HasError { get; set; }
+        bool _hasError;
+        public bool HasError
+        {
+            get
+            {
+                return _hasError;
+            }
+            set
+            {
+                _hasError = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the error message

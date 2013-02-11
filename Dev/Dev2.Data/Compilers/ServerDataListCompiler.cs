@@ -468,13 +468,13 @@ namespace Dev2.Server.Datalist
                 }
                 else
                 {
-                    returnVal = result.UID;
                     // Push back into the server now ;)
                     if (!TryPushDataList(result, out error))
                     {
                         allErrors.AddError(error);
                     }
                 }
+                returnVal = result.UID;
             }
             else
             {

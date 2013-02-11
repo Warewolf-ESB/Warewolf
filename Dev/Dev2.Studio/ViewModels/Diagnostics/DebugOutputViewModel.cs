@@ -556,11 +556,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         private void AppendUI(object content)
         {
+            //
+            //Juries - This is a dirty hack, naughty naughty.
+            //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
+            //
+            if (content is IDebugState)
+            {
+                var state = (IDebugState)content;
+                if (state.StateType == StateType.Append)
+                {
+                    _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, state);
+                    return;
+                }
+            }
+
             _contentItems.Add(content);
 
-            lock(_syncContext)
+            lock (_syncContext)
             {
-                if(_isRebuildingTree)
+                if (_isRebuildingTree)
                 {
                     return;
                 }

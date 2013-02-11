@@ -611,6 +611,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if (typeOf == enDataListMergeTypes.Union)
             {
                 string error;
+                //toClone._templateDict.Keys
                 foreach (string k in (toClone._templateDict.Keys.ToArray().Except(unionKeyHits)))
                 {
                     IBinaryDataListEntry cloned = toClone._templateDict[k].Clone(depth, out error);

@@ -151,7 +151,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     }
                     else
                     {
-                        error = "Column not Found " + item.FieldName;
+                        error = "Mapping error: Column not Found" + item.FieldName;
                     }
 
                 }
@@ -186,7 +186,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     }
                     else
                     {
-                        error = "Column not found " + item.FieldName;
+                        error = "Mapping error: Column not found " + item.FieldName;
                     }
                 }
            }
@@ -208,7 +208,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 }
                 else
                 {
-                    error = "Column not found " + item.FieldName;
+                    error = "Mapping error: Column not found " + item.FieldName;
                 }
             }
         }

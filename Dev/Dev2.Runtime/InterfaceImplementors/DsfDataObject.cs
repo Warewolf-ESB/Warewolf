@@ -68,6 +68,10 @@ namespace Dev2.DynamicServices
                 ParentInstanceID = dataObject.GetValue("ParentInstanceID");
                 ParentServiceName = dataObject.GetValue("ParentServiceName");
 
+                Guid workspaceID;
+                Guid.TryParse(dataObject.GetValue("WorkspaceID"), out workspaceID);
+                WorkspaceID = workspaceID;
+
                 if(dataObject.Bookmark is string)
                 {
                     Bookmark = dataObject.Bookmark;

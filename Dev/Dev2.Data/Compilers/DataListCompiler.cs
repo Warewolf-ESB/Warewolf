@@ -517,13 +517,32 @@ namespace Dev2.DataList.Contract
         public bool HasErrors(Guid curDLID)
         {
             ErrorResultTO errors = new ErrorResultTO();
-            return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).HasErrors());
+            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            if(binaryDatalist != null) return (binaryDatalist.HasErrors());
+            else
+            {
+                errors.AddError("No binary datalist found");
+                return true;
+            }
         }
 
         public string FetchErrors(Guid curDLID)
         {
             ErrorResultTO errors = new ErrorResultTO();
-            return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).FetchErrors());
+            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            if (binaryDatalist != null) return (binaryDatalist.FetchErrors());
+            else
+            {
+                var sb = new StringBuilder();
+                var count = 1;
+                var errorList =  errors.FetchErrors();
+                foreach(var error in errorList)
+                {
+                    sb.AppendFormat("{0} {1}", count, error);
+                    count++;
+                }
+                return sb.ToString();
+            }
         }
 
         /// <summary>

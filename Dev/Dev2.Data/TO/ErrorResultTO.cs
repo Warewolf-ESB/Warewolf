@@ -93,7 +93,9 @@ namespace Dev2.DataList.Contract
 
             foreach(string e in _errorList)
             {
-                result.AppendLine(e);
+                result.Append(e);
+                if(_errorList.IndexOf(e) + 1 < _errorList.Count)
+                    result.AppendLine();
             }
 
             return result.ToString();

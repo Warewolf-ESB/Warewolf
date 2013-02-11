@@ -403,7 +403,7 @@ namespace Dev2.Studio.Core.ViewModels
             {
                 int sizeOfCollection = dataListEntry.ItemCollectionSize();
                 if (sizeOfCollection == 0) { sizeOfCollection++; }
-                int count = 0;
+                int count = 1;
                 string error = string.Empty;
 
                 while (count < sizeOfCollection)
