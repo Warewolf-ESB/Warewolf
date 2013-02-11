@@ -17,10 +17,19 @@
                     </div>
                     <div>
                         <h4 style="float: left; margin-top: 1em">2. Select action</h4>
-                        <div style="float: right">
+                        <div style="float: right; margin-top: 10px">
                             <img src="images/search.png" alt="Search" width="16" height="16" class="icon" />
                             <input tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
                         </div>
+                    </div>
+                    <div style="clear:left; padding-top: 4px">
+                        <table class="input-param">
+                            <thead>
+                                <tr>
+                                    <th style="width: 155px; vertical-align: middle">Name</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                     <div id="sourceMethodsScrollBox" class="scrollable" style="height: 310px; width: auto; clear: both;">
                         <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
@@ -34,9 +43,14 @@
                 <div style="float: left; width: auto; padding-left: 10px;">
                     <div class="help-text help-text-min" style="width: 515px; height: 73px" data-bind="html: helpText">
                     </div>
-                    <h4 style="margin-top: 1em;">3. Test <span data-bind="text: data.methodName"></span></h4>
-                    <div style="margin-top: 0.5em;">
-                        <div class="box-border box-background" style="border-bottom: 0 none">
+                    <div>
+                        <h4 style="float: left; margin-top: 1em;">3. Test <span data-bind="text: data.methodName"></span></h4>
+                        <div class="button-bar" style="float: right; margin: 5px 0 0 0;">
+                            <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isFormValid">Test</button>
+                        </div>
+                    </div>
+                    <div id="inputsTable" style="margin-top: 0px; clear: both;">
+                        <div>
                             <table class="input-param">
                                 <thead>
                                     <tr>
@@ -46,8 +60,8 @@
                                 </thead>
                             </table>
                         </div>
-                        <div id="inputsTable">
-                            <div class="box-border box-background" style="height: 255px; width: 520px; overflow-y: scroll; overflow-x: hidden">
+                        <div>
+                            <div class="box-border" style="height: 310px; width: 520px; overflow-y: scroll; overflow-x: hidden">
                                 <table class="input-param">
                                     <tbody data-bind="foreach: data.methodParameters">
                                         <tr>
@@ -59,14 +73,67 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="button-bar" style="margin: 3px 0 0 0;">
-                                <button tabindex="8" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isFormValid">Test</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="tabs-2">
+            <div id="tabs-2" style="padding: 10px; margin: 0 auto;">
+                <div style="float: left; width: auto; padding-right: 10px; border-right: #E2E2E2 solid 1px;">
+                    <h4>Inputs</h4>
+                    <div>
+                        <table class="input-param">
+                            <thead>
+                                <tr>
+                                    <th style="width: 155px; vertical-align: middle">Input</th>
+                                    <th style="width: 150px;">Default Value</th>
+                                    <th style="width: 80px; text-align: center;">Required Field</th>
+                                    <th style="width: 55px; text-align: center;">Empty is Null</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="box-border" style="height: 375px; overflow-y: scroll; overflow-x: hidden">
+                        <table class="input-param">
+                            <tbody data-bind="foreach: data.methodParameters">
+                                <tr>
+                                    <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
+                                    <td>
+                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="val: DefaultValue" /></td>
+                                    <td style="width: 70px; text-align: center;">
+                                        <input type="checkbox" data-bind="checked: IsRequired" /></td>
+                                    <td style="width: 55px; text-align: center;">
+                                        <input type="checkbox" data-bind="checked: EmptyToNull" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="float: left; width: auto; padding-left: 10px;">
+                    <h4>Outputs</h4>
+                    <div style="border-bottom: 0 none">
+                        <table class="input-param" style="margin-top: 15px">
+                            <thead>
+                                <tr>
+                                    <th style="width: 155px; vertical-align: middle">Output</th>
+                                    <th style="width: 150px;">Output Alias</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="box-border" style="height: 375px; width: 480px; overflow-y: scroll; overflow-x: hidden">
+                        <table class="input-param">
+                            <tbody data-bind="foreach: data.methodOutputs">
+                                <tr>
+                                    <td class="input-param-name" data-bind="text: DisplayPath, attr: { title: DisplayPath}"></td>
+                                    <td>
+                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="val: OutputExpression" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="button-bar">
@@ -79,7 +146,6 @@
 </div>
 <div id="testDialogContainer" title="Test Data">
     <div id="testData" class="scrollable" style="height: 400px;" data-bind="html: data.testData">
-        
     </div>
 </div>
 
@@ -99,7 +165,7 @@
             }
         }
     });
-    
+
     // inject SaveDialog
     $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
         $("button").button();

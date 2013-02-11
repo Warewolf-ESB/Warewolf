@@ -19,6 +19,7 @@
         source: ko.observable(),
         methodName: ko.observable(""),
         methodParameters: ko.observableArray(),
+        methodOutputs: ko.observableArray(),
         testData: ko.observable(""),
     };
 

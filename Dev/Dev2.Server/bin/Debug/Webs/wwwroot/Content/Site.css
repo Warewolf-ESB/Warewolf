@@ -386,7 +386,9 @@ td {
 table.input-param {
     table-layout: fixed;
     margin: 0;
-    font-size: 0.85em;
+}
+table.input-param th, table.input-param td {
+    font-size: 0.85em;    
 }
 
 td.input-param-name, th.input-param-name {
@@ -402,7 +404,7 @@ td.input-param-name, th.input-param-name {
 
 }
 table.input-param th {
-    padding: 3px 5px;
+    padding: 3px 0 3px 5px;
 }
 
 .input-param-value textarea {
