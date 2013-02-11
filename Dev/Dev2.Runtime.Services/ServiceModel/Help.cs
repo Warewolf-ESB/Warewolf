@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("password", "Enter the <b>password</b> for the server.");
                         break;
                     case "Service":
-                        result.Add("default", "<h4>Test Stored Action</h4><p>The selected action has the above variables as inputs." +
+                        result.Add("default", "<h4>Test Stored Action</h4><p>The selected action has the following variables as inputs." +
                             " Input dummy data into the variables to test the action and see what the outputs will be.</p>");
                         break;
                 }
