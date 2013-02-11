@@ -228,8 +228,6 @@
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLFromComplexType.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLFromJson.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLfromXML.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\ResourceUploadTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\WizardTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Channel Tests\DataListChannel.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Channel Tests\ExecutionChannelTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\DeleteResourceTest.cs" />
@@ -245,7 +243,6 @@
     <Compile Include="Dev2.Application.Server.Tests\ServerLifecycleManagerTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Runtime.Services.Tests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\WebSeverTests\BasicWebServerTests.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Wizard tests\WizardModeTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Workspace\WorkspaceRepositoryTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Feedback\FeedbackRecorderTests.cs" />
@@ -262,24 +259,6 @@
     <Compile Include="Mocks\MockConfigurationReader.cs" />
     <Compile Include="Mocks\MockDSFObject.cs" />
     <Compile Include="Activities\UtilTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\ButtonTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\CheckBoxTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DataBindingTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DataGridTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DatePickerTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DropDownListTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\FileUpLoadTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\HelpRegionTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\HtmlWidgetTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\ImageTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\LabelTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\LinkTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\ListOfServices.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\NewServiceWizardsTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\PasswordTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\RadioButtonTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\TextAreaTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\TextBoxTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Build.Test\Build.Test.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnvironmentConnectionTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\WebCommunicationTest.cs" />
@@ -324,7 +303,6 @@
     <Compile Include="Test utils\WebTester\Workers\LoadTestWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\PostWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\WebserverGetWorker.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Workflow Driven Test\Ghost_Service_DataList.cs" />
     <Compile Include="AppTests.cs" />
     <Compile Include="wizard_test_strings.Designer.cs">
       <AutoGen>True</AutoGen>

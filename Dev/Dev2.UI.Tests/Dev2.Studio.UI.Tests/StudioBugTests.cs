@@ -880,10 +880,10 @@ namespace Dev2.Studio.UI.Tests
         public void OpenDecisionWindowMultipleTimes_Expected_OpensInSamePosition()
         {
             // Create the Workflow
-            myTestBase.CreateCustomWorkflow("8604");
+            //myTestBase.CreateCustomWorkflow("Bug8604");
 
             // Get a point to drag the control onto
-            UITestControl theTab = TabManagerUIMap.FindTabByName("8604");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8604");
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             
             // Open the toolbox, and drag the control onto the Workflow
