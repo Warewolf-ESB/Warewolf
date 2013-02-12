@@ -21,9 +21,11 @@
         source: ko.observable(),
         methodName: ko.observable(""),
         methodParameters: ko.observableArray(),
-        methodOutputs: ko.observableArray(),
-        methodSource: ko.observable(""),
-        testResults: ko.observable(""),
+        methodRecordset: {
+            Name: ko.observable(""),
+            Fields: ko.observableArray(),
+            Records: ko.observableArray()
+        }
     };
 
     self.sources = ko.observableArray();
@@ -42,14 +44,20 @@
     self.hasMethodName = ko.computed(function () {
         return self.data.methodName() !== "";
     });
-
-    self.hasTestResults = ko.computed(function () {
-        return self.data.testResults() !== "";
+    self.hasMethodResults = ko.observable(false);
+    self.isFormValid = ko.computed(function () {
+        return self.hasMethodName() && self.hasMethodResults();
     });
     
     self.data.source.subscribe(function (newValue) {
         self.data.methodName("");
         self.data.methodParameters([]);
+        self.sourceMethodSearchTerm("");
+        self.hasMethodResults(false);
+        self.data.methodRecordset.Name("");
+        self.data.methodRecordset.Fields([]);
+        self.data.methodRecordset.Records([]);
+
         $inputsTable.hide();
         $.post("Service/Services/Methods" + window.location.search, ko.toJSON(newValue), function (result) {
             self.sourceMethods(result);
@@ -63,12 +71,6 @@
     });
     self.saveTitle = ko.computed(function () {
         return "<b>" + self.title() + "</b>";
-    });
-
-    self.isFormValid = ko.computed(function () {
-        var isEnabled = self.data.source() !== ""
-            && self.data.methodName() !== "";
-        return isEnabled;
     });
 
     utils.registerSelectHandler($sourceMethods, function (selectedItem) {
@@ -112,8 +114,11 @@
     
     self.testAction = function () {
         var args = ko.toJSON(self.data);
-        $.post("Service/Services/Test" + window.location.search, args, function (result) {
-            self.data.testData(result);
+        $.post("Service/Services/Test" + window.location.search, args, function(result) {
+            self.hasMethodResults(true);          
+            self.data.methodRecordset.Name(result.Name);
+            self.data.methodRecordset.Fields(result.Fields);
+            self.data.methodRecordset.Records(result.Records);
         });        
     };
 

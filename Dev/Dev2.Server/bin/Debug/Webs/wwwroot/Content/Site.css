@@ -389,6 +389,28 @@ td {
     padding: 0;
     border: 0 none;
 }
+table.data-table {
+    border-collapse: collapse;
+    border-spacing: 0 !important;
+    margin: 0;
+    border: 0 none;
+}
+
+table.data-table th {
+    font-size: 0.95em;
+    text-align: left;
+    padding: 2px;
+    border-right: 1px solid #E2E2E2;
+    border-bottom: 1px solid #E2E2E2;
+}
+
+table.data-table td {
+    font-size: 0.85em;
+    text-align: left;
+    padding: 2px;
+    border-right: 1px solid #E2E2E2;
+    border-bottom: 1px solid #E2E2E2;
+}
 
 table.input-param {
     table-layout: fixed;

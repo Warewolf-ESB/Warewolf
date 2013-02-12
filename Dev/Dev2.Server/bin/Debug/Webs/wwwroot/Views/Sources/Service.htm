@@ -40,7 +40,7 @@
                             <h4 style="margin-bottom: 13px">3. Provide Test Values</h4>
                             <a class="selectable" style="margin-left: 20px;" href="#" title="Inspect source" data-bind="text: data.methodName, click: showAction"></a>
                         </div>
-                        <button style="float: right; margin-top: 25px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isFormValid">Test</button>
+                        <button style="float: right; margin-top: 25px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: hasMethodName">Test</button>
                     </div>
                     <div style="clear: both;">
                         <div class="box-border" style="height: 175px; width: 520px; overflow-y: scroll; overflow-x: hidden">
@@ -49,7 +49,7 @@
                                     <tr>
                                         <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
                                         <td class="input-param-value">
-                                            <textarea placeholder="Test Value" data-bind="val: Value"></textarea>
+                                            <textarea placeholder="Test Value" data-bind="value: Value"></textarea>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -57,7 +57,23 @@
                         </div>
                     </div>
                     <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
-                    <div id="testResults" class="scrollable" style="height: 171px; width: 520px; overflow-y: scroll;" data-bind="html: data.testResults">
+                    <div class="scrollable" style="height: 171px; width: 520px; overflow-y: scroll; overflow-x: scroll;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <!-- ko foreach: data.methodRecordset.Fields -->
+                                    <th class="box-border" data-bind="text: $data.Alias"></th>
+                                    <!-- /ko -->
+                                </tr>
+                            </thead>
+                                <tbody data-bind="foreach: data.methodRecordset.Records">
+                                    <tr>
+                                        <!-- ko foreach: $data -->
+                                        <td class="box-border" data-bind="text: Value, attr: { title: Name }"></td>
+                                        <!-- /ko -->
+                                    </tr>
+                                </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -88,7 +104,7 @@
                                 <tr>
                                     <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
                                     <td>
-                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="val: DefaultValue" /></td>
+                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="value: DefaultValue" /></td>
                                     <td style="width: 70px; text-align: center;">
                                         <input type="checkbox" data-bind="checked: IsRequired" /></td>
                                     <td style="width: 55px; text-align: center;">
@@ -113,22 +129,21 @@
                         </table>
                     </div>
                     <div class="box-border" style="height: 320px; width: 480px; overflow-y: scroll; overflow-x: hidden">
-                        <div style="margin: 10px;" data-bind="visible: !hasTestResults()">
-                        <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
-                        </div>
+                        <div style="margin: 10px;" data-bind="visible: !hasMethodResults()">
+                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
+                        </div>                                
                         <table class="input-param">
-                            <tbody data-bind="foreach: data.methodOutputs">
+                            <tbody data-bind="foreach: data.methodRecordset.Fields">
                                 <tr>
-                                    <td class="input-param-name" data-bind="text: DisplayPath, attr: { title: DisplayPath}"></td>
-                                    <td>
-                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="val: OutputExpression" /></td>
+                                    <td style="width: 155px;" data-bind="text: Name"></td>
+                                    <td><input style="width: 250px;" type="text" maxlength="50" data-bind="value: Alias" /></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div style="width: 480px; margin-top: 10px;">
                         <label class="inline" for="recordsetName">Recordset Name:</label>
-                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="val: data.recordsetName" />
+                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.methodRecordset.Name" />
                         <br />
                         <span style="font-size: 0.95em;"><b>Note:</b> Recordset name is optional if only returning 1 record.</span>
                     </div>
