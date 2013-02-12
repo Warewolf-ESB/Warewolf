@@ -219,40 +219,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void doCustomScroll(object sender, MouseWheelEventArgs e)
-        {
-            Dev2DataGrid theGrid = FieldsDataGrid;
-            if (e.Delta > 0)
-            {
-                if (theGrid.SelectedIndex > 1)
-                {
-                    theGrid.SelectedIndex -= 2;
-                }
-                else if (theGrid.SelectedIndex > 0)
-                {
-                    theGrid.SelectedIndex -= 1;
-                }
-            }
-            else if (e.Delta < 0)
-            {
-                if (theGrid.SelectedIndex == theGrid.Items.Count - 2)
-                {
-                    theGrid.SelectedIndex++;
-                }
-                else
-                {
-                    theGrid.SelectedIndex += 2;
-                }
-            }
-            else
-            {
-                // Mouse was not scrolled
-                return;
-            }
-            object theItem = theGrid.Items[theGrid.SelectedIndex];
-            theGrid.ScrollIntoView(theItem);
-        }
-
         void QuickVariableInputControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             DataGridQuickVariableInputView view = sender as DataGridQuickVariableInputView;
@@ -262,6 +228,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(model);
             view.DataContext = viewModel;
+
+            viewModel.CloseAdornersRequested += delegate
+            {
+                ShowQuickVariableInput = false;
+            };
         }
 
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)

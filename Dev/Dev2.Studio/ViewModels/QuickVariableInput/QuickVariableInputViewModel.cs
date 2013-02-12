@@ -228,6 +228,23 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         #endregion
 
+        #region Event Handlers
+
+        /// <summary>
+        /// Occurs when a close request is recieved
+        /// </summary>
+        public event EventHandler CloseAdornersRequested;
+
+        protected void OnClose()
+        {
+            if (CloseAdornersRequested != null)
+            {
+                CloseAdornersRequested(this, new EventArgs());
+            }
+        }
+
+        #endregion
+
         #region Clear
 
         protected void ClearData()
@@ -238,6 +255,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             Suffix = string.Empty;
             VariableListString = string.Empty;
             ShowPreview = false;
+            OnClose();
         }
 
         #endregion

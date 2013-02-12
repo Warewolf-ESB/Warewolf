@@ -243,7 +243,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             QuickVariableInputModel model = new QuickVariableInputModel(ModelItem, activity);
 
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(model);
+
             view.DataContext = viewModel;
+
+            viewModel.CloseAdornersRequested += delegate
+            {
+                ShowQuickVariableInput = false;
+            };
         }
 
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)
