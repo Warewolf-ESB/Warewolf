@@ -112,7 +112,7 @@ namespace Dev2.Server.Datalist
                     }
                     result = newDlEntry;
                 }
-                else if(typeOf == enActionType.CalculateSubstitution)
+                else if (typeOf == enActionType.CalculateSubstitution)
                 {
                     // Travis.Frisinger : 31.01.2013 - Added to properly levage the internal language   
 
@@ -123,32 +123,32 @@ namespace Dev2.Server.Datalist
 
                     // Fetch each DL expression in the master expression and evalaute
                     // Then build up the correct string to sub in ;)
-                    foreach(IIntellisenseResult p in myParts)
+                    foreach (IIntellisenseResult p in myParts)
                     {
 
                         // Ensure the expression exist and it is not a range operation
-                        if(p.Type == enIntellisenseResultType.Selectable 
+                        if (p.Type == enIntellisenseResultType.Selectable
                             && expression.IndexOf(p.Option.DisplayValue, StringComparison.Ordinal) >= 0
-                            && expression.IndexOf((p.Option.DisplayValue+":"), StringComparison.Ordinal)< 0
-                            && expression.IndexOf((":"+p.Option.DisplayValue), StringComparison.Ordinal) < 0)
+                            && expression.IndexOf((p.Option.DisplayValue + ":"), StringComparison.Ordinal) < 0
+                            && expression.IndexOf((":" + p.Option.DisplayValue), StringComparison.Ordinal) < 0)
                         {
                             IBinaryDataListEntry bde = InternalEvaluate(p.Option.DisplayValue, theDL, returnExpressionIfNoMatch, out errors);
-                            if(bde.IsRecordset)
+                            if (bde.IsRecordset)
                             {
                                 // recordset op - build up the correct string to inject
                                 IIndexIterator idxItr = bde.FetchRecordsetIndexes();
                                 StringBuilder sb = new StringBuilder();
 
-                                while(idxItr.HasMore())
+                                while (idxItr.HasMore())
                                 {
                                     IList<IBinaryDataListItem> items = bde.FetchRecordAt(idxItr.FetchNextIndex(), out error);
                                     allErrors.AddError(error);
-                                    foreach(IBinaryDataListItem itm in items)
+                                    foreach (IBinaryDataListItem itm in items)
                                     {
                                         //enRecordsetIndexType rType = DataListUtil.GetRecordsetIndexType(p.Option.RecordsetIndex);
 
                                         // && (rType == enRecordsetIndexType.Blank || rType == enRecordsetIndexType.Numeric) 
-                                        if(itm.TheValue != string.Empty )
+                                        if (itm.TheValue != string.Empty)
                                         {
                                             // if numeric leave it, else append ""
                                             string eVal = CalcPrepValue(itm.TheValue);
@@ -160,7 +160,9 @@ namespace Dev2.Server.Datalist
 
                                 // Remove trailing ,
                                 string toInject = sb.ToString();
-                                toInject = toInject.Substring(0, (toInject.Length - 1));
+
+                                //2013.02.08: Ashley Lewis - Bug 8725, Task 8797: Avoid index out of range exception on blank record set
+                                toInject = toInject.Length > 0 ? toInject.Substring(0, (toInject.Length - 1)) : "\"\"";
 
                                 expression = expression.Replace(p.Option.DisplayValue, toInject);
 
@@ -1194,7 +1196,7 @@ namespace Dev2.Server.Datalist
             errors = allErrors;
 
             // Avoid nulls ;)
-            if(result == null)
+            if (result == null)
             {
                 result = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty);
             }
@@ -1497,7 +1499,12 @@ namespace Dev2.Server.Datalist
                                         if (p.Option.Field != null && p.Option.Field != string.Empty)
                                         {
                                             // we want an entry at a set location
-                                            IBinaryDataListItem col = val.TryFetchRecordsetColumnAtIndex(p.Option.Field, myIdx, out error);
+
+                                            //2013.02.11: Ashley Lewis - Bug 8725, Task 8794+Task 8835+Task 8830 - TryFetchRecordsetColumnAtIndex effects the datalist item its called on
+                                            IBinaryDataListItem col=Dev2BinaryDataListFactory.CreateBinaryItem("", p.Option.Field);
+                                            if (!val.IsEmpty())
+                                                col = val.TryFetchRecordsetColumnAtIndex(p.Option.Field, myIdx, out error);
+
                                             if (error != string.Empty)
                                             {
                                                 hasError = true;
@@ -1536,8 +1543,8 @@ namespace Dev2.Server.Datalist
                                         else
                                         {
                                             // they want the entire recordset? -- blank expression
-                                            
-                                            
+
+
                                             //IBinaryDataListItem valT = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
 
                                             //string subVal = string.Empty;
@@ -1865,14 +1872,14 @@ namespace Dev2.Server.Datalist
 
                                 //if(IsEvaluated(frameItem.Value.ToString()))
                                 //{
-                                    evaluatedValue = InternalEvaluate(itemVal, bdl, false, out errors);
-                                    allErrors.AddError(error);
+                                evaluatedValue = InternalEvaluate(itemVal, bdl, false, out errors);
+                                allErrors.MergeErrors(errors);
                                 //}
                                 //else
                                 //{
-                                   // evaluatedValue = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, out error); // set to a default value to enter evaluation
-                                    //evaluatedValue.FetchScalar().UpdateValue(itemVal);
-                                    allErrors.AddError(error);
+                                // evaluatedValue = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, out error); // set to a default value to enter evaluation
+                                //evaluatedValue.FetchScalar().UpdateValue(itemVal);
+                                allErrors.AddError(error);
                                 //}
 
                                 //evaluatedValue = Evaluate(ctx, curDLID, enActionType.User, frameItem.Value.ToString(),

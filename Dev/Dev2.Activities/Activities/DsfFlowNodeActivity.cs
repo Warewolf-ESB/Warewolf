@@ -255,22 +255,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+            Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-                if (_theResult.ToString() == "True")
-                {
-                    resultString = dds.TrueArmText;
-                }
-                else if (_theResult.ToString() == "False")
-                {
-                    resultString = dds.FalseArmText;
-                }
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
-                result.Add(itemToAdd);
+            if (_theResult.ToString() == "True")
+            {
+                resultString = dds.TrueArmText;
+            }
+            else if (_theResult.ToString() == "False")
+            {
+                resultString = dds.FalseArmText;
+            }
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
+            result.Add(itemToAdd);
             }
             catch(Exception)
             {
-                //This means it is a swith, not a decision
+                //2013.02.11: Ashley lewis - Bug 8725: Task 8730 - This means it is a swith, not a decision
 
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
                 result.Add(itemToAdd);

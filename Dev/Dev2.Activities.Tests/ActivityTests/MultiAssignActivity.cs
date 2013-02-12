@@ -708,13 +708,12 @@ namespace ActivityUnitTests.ActivityTest
             string actual;
             GetScalarValueFromDataList(result.DataListID, "scalar", out actual, out error);
 
-            //Assert.AreEqual(expected, actual);
-            Assert.Inconclusive();
+            Assert.AreEqual(expected, actual);
         }
 
-        //2013.02.11: Ashley Lewis - Bug 8725, Task 8794
+        //2013.02.11: Ashley Lewis - Bug 8725, Task 8794+Task 8835+Task 8830
         [TestMethod]
-        public void MultiAssignWithAppendCalculationToSameBlankRecordSetAndBlankIndexExpectedRecordSetAppended()
+        public void MultiAssignWithAppendCalculationToSameBlankRecordSetAndBlankIndexExpectedValueInFirst()
         {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec().opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, _fieldCollection.Count));
@@ -723,7 +722,6 @@ namespace ActivityUnitTests.ActivityTest
                                         @"<root>
   <cRec>
     <opt />
-    <display />
   </cRec>
 </root>"
                                       , @"<root></root>"
@@ -735,11 +733,10 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
 
-            //CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-            Assert.Inconclusive();
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
         [TestMethod]
-        public void MutiAssignWithAppendCalculationToSameBlankRecordSetAndStaredIndexExpectedRecordSetAppended()
+        public void MutiAssignWithAppendCalculationToSameBlankRecordSetAndStaredIndexExpectedValueInFirst()
         {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec(*).opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, _fieldCollection.Count));
@@ -760,8 +757,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
 
-            //CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-            Assert.Inconclusive();
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
         #endregion MultiAssign Functionality Tests
