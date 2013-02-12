@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Dev2.Studio.Core.AppResources.Browsers;
+﻿using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Factory;
 using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -14,13 +14,20 @@ namespace Dev2.Studio
     /// </summary>
     public partial class App
     {
+        private static Mutex _processGuard;
         public App()
         {
             //CheckForDuplicateProcess();//Bug 8403
-            bool isNotRunning;
-            new System.Threading.Mutex(true, "Dev2.Studio", out isNotRunning);
-            if (!isNotRunning)
+            bool createdNew;
+            Mutex localprocessGuard = new Mutex(true, "Dev2.Studio", out createdNew);
+            if (createdNew)
+            {
+                _processGuard = localprocessGuard;
+            }
+            else
+            {
                 Environment.Exit(Environment.ExitCode);
+            }
             InitializeComponent();
         }
 

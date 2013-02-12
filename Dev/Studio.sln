@@ -39,9 +39,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Tests", "Dev2.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.OutputLibraries", "Dev2.OutputLibraries\Dev2.OutputLibraries.csproj", "{38650E4E-90E2-44DE-A32F-30F3C4D1438B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime", "Dev2.Runtime\Dev2.Runtime.csproj", "{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services", "Dev2.Runtime.Services\Dev2.Runtime.Services.csproj", "{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 18
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -90,6 +94,12 @@ Global
 		SccProjectUniqueName15 = Dev2.OutputLibraries\\Dev2.OutputLibraries.csproj
 		SccProjectName15 = Dev2.OutputLibraries
 		SccLocalPath15 = Dev2.OutputLibraries
+		SccProjectUniqueName16 = Dev2.Runtime\\Dev2.Runtime.csproj
+		SccProjectName16 = Dev2.Runtime
+		SccLocalPath16 = Dev2.Runtime
+		SccProjectUniqueName17 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
+		SccProjectName17 = Dev2.Runtime.Services
+		SccLocalPath17 = Dev2.Runtime.Services
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -303,6 +313,32 @@ Global
 		{38650E4E-90E2-44DE-A32F-30F3C4D1438B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{38650E4E-90E2-44DE-A32F-30F3C4D1438B}.Release|x64.ActiveCfg = Release|Any CPU
 		{38650E4E-90E2-44DE-A32F-30F3C4D1438B}.Release|x86.ActiveCfg = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|x64.ActiveCfg = Debug|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|x64.Build.0 = Debug|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x64.ActiveCfg = Release|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x64.Build.0 = Release|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x86.ActiveCfg = Release|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|x64.ActiveCfg = Release|Any CPU
+		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
