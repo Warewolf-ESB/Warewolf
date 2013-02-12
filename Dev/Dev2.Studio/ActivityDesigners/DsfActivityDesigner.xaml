@@ -30,7 +30,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <ToggleButton IsChecked="{Binding Path=ShowMapping, Mode=OneWay}" Command="{Binding OpenMappingCommand}" ToolTip="Open Mapping"
+                                <ToggleButton IsChecked="{Binding Path=ShowMapping, Mode=OneWay}" Command="{Binding OpenMappingCommand}" ToolTip="Mapping"
                                           PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                           Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
                                 <Grid>
@@ -43,7 +43,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </ToggleButton>
-                                <Button Command="{Binding OpenWizardCommand}" Visibility="{Binding Path=HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Open Wizard"
+                                <Button Command="{Binding OpenWizardCommand}" Visibility="{Binding Path=HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/wizardIcon.png" Width="15" Height="15"/>
@@ -53,7 +53,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <Button Command="{Binding OpenSettingsCommand}" ToolTip="Open Settings"
+                                <Button Command="{Binding OpenSettingsCommand}" ToolTip="Settings"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/settingsIcon.png" Width="15" Height="15"/>

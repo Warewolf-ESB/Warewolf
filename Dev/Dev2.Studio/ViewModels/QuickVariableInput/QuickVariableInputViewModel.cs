@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
+using Dev2.Studio.Core.ErrorHandling;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
+using System.Xml;
 
 namespace Dev2.Studio.ViewModels.QuickVariableInput
 {
@@ -31,12 +33,25 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         private RelayCommand _previewCommand;
         private RelayCommand _addCommand;
         private List<string> _splitTypeList;
+        private List<KeyValuePair<enErrorType, string>> _errorColletion;
 
         private QuickVariableInputModel _model;
 
         #endregion
 
         #region Properties
+
+        public enErrorType Status
+        {
+            get
+            {
+                if (_errorColletion.Count > 0)
+                {
+                    return _errorColletion[0].Key;
+                }
+                return enErrorType.Correct;
+            }
+        }
 
         public List<string> SplitTypeList
         {
@@ -175,6 +190,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             SplitTypeList.Add("Space");
             SplitTypeList.Add("Tab");
             SplitTypeList.Add("End");
+            _errorColletion = new List<KeyValuePair<enErrorType, string>>();
         }
 
         #endregion
@@ -255,6 +271,9 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             Suffix = string.Empty;
             VariableListString = string.Empty;
             ShowPreview = false;
+            _errorColletion.Clear();
+            OnPropertyChanged("Status");
+            Overwrite = false;
             OnClose();
         }
 
@@ -264,24 +283,44 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         public void AddToActivity()
         {
-            List<string> listToAdd = MakeDataListReady(Split());
-            _model.AddListToCollection(listToAdd, Overwrite);
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-
-            if (listToAdd != null && eventAggregator != null)
+            if (!ValidateFields())
             {
-                eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
+                OnPropertyChanged("Status");
+                PreviewText = _errorColletion[0].Value;
+                ShowPreview = true;
+                return;
+            }
+            List<string> listToAdd = MakeDataListReady(Split());
+            if (_errorColletion.Count > 0)
+            {
+                OnPropertyChanged("Status");
+                PreviewText = _errorColletion[0].Value;
+                ShowPreview = true;
+                return;
+            }
+            if (listToAdd != null && listToAdd.Count > 0)
+            {
+                _model.AddListToCollection(listToAdd, Overwrite);
+                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+                if (eventAggregator != null)
+                {
+                    eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
+                }
             }
             ClearData();
         }
 
         public void Preview()
         {
-            if (!ShowPreview)
+            if (!ValidateFields())
             {
-
+                OnPropertyChanged("Status");
+                PreviewText = _errorColletion[0].Value;
                 ShowPreview = true;
+                return;
             }
+
             PreviewText = string.Empty;
             int count = 1;
             if (!Overwrite)
@@ -309,6 +348,19 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                     count++;
                 }
             }
+            if (_errorColletion.Count > 0)
+            {
+                OnPropertyChanged("Status");
+                PreviewText = _errorColletion[0].Value;
+                ShowPreview = true;
+            }
+            else
+            {
+                if (!ShowPreview)
+                {
+                    ShowPreview = true;
+                }
+            }
         }
 
         public List<string> Split()
@@ -323,7 +375,14 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                 string tmp = tokenizer.NextToken();
                 if (!string.IsNullOrEmpty(tmp))
                 {
-                    results.Add(tmp);
+                    if (ValidateName(tmp))
+                    {
+                        results.Add(tmp);
+                    }
+                    else
+                    {
+                        _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Some of your variables contains invalid characters"));
+                    }
                 }
             }
 
@@ -410,6 +469,97 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
 
             return dtb.Generate();
+        }
+
+        private bool ValidateFields()
+        {
+            _errorColletion.Clear();
+
+            if (SplitType == "Index")
+            {
+                int indexToSplitOn;
+                if (!int.TryParse(SplitToken, out indexToSplitOn))
+                {
+                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply numeric value for a Index split"));
+                    return false;
+                }
+
+                if (indexToSplitOn < 1)
+                {
+                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply positive value for a Index split"));
+                    return false;
+                }
+
+            }
+            else if (SplitType == "Chars")
+            {
+                if (string.IsNullOrEmpty(SplitToken))
+                {
+                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply value for a Character split"));
+                    return false;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(VariableListString))
+            {
+                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Variable List String can not be blank/empty"));
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(Prefix) && !ValidateRecordsetPrefix(Prefix))
+            {
+
+                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Prefix contains invalid characters"));
+                return false;
+
+            }
+            if (!string.IsNullOrEmpty(Suffix) && !ValidateName(Suffix))
+            {
+                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Suffix contains invalid characters"));
+                return false;
+            }
+
+            OnPropertyChanged("Status");
+            return true;
+        }
+
+        private bool ValidateRecordsetPrefix(string value)
+        {
+            if (value.Contains("(") && value.Contains(")."))
+            {
+                int startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
+                int endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
+
+                string tmp = value.Substring(startIndex, endIndex - startIndex);
+                int idxNum = 1;
+                if (tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
+                {
+                    return false;
+                }
+                if (idxNum < 1)
+                {
+                    return false;
+                }
+                value = value.Remove(value.IndexOf("(", StringComparison.Ordinal));
+            }
+            return ValidateName(value);
+        }
+
+        private bool ValidateName(string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                try
+                {
+                    XmlConvert.VerifyName(value);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return false;
         }
 
         #endregion
