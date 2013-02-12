@@ -32,6 +32,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{700CECB5-6964-47D6-95BC-C73EB882066A}"
 	ProjectSection(SolutionItems) = preProject
 		Blank.testsettings = Blank.testsettings
+		IntegrationTests11.vsmdi = IntegrationTests11.vsmdi
 		LoadTest.testsettings = LoadTest.testsettings
 	EndProjectSection
 EndProject
@@ -103,6 +104,9 @@ Global
 		SccProjectUniqueName18 = Dev2.OuputConfigFiles\\Dev2.OuputConfigFiles.csproj
 		SccProjectName18 = Dev2.OuputConfigFiles
 		SccLocalPath18 = Dev2.OuputConfigFiles
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = IntegrationTests11.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
