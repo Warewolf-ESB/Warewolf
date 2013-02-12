@@ -87,7 +87,7 @@ namespace Dev2.CodedUI.Tests
             // Whilst debugging a Coded UI Test, you might want to keep the Workflow Designer as is
             // In this case, you should set it to false
 // ReSharper disable ReplaceWithSingleAssignment.False
-            bool toCheck = false;
+            bool toCheck = true;
 
             // On the test box, all test initialisations should always run
             if (GetStudioWindowName().Contains("IntegrationTester"))

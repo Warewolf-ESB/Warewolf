@@ -837,7 +837,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // This bug happens due to a series of very specific clicks
             // Note: All the Thread.Sleep's are due to minor delays caused by the Studio when typing really quickly in some instances
-            //myTestBase.CreateCustomWorkflow("Bug8556");
+            myTestBase.CreateCustomWorkflow("Bug8556");
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickRecordSetName(0);
             Thread.Sleep(500);
