@@ -91,7 +91,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             //
             conn.Disconnect();
 
-            Assert.IsTrue(callbackRecieved);
+            Assert.IsTrue(callbackRecieved, "Error - No callback was received.");
         }
     }
 }
