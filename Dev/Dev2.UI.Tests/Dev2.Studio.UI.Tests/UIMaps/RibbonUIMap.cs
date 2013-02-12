@@ -26,13 +26,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                 {
                     theControl = tabPage;
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
-                    if(p.X < 5)
+                    if (p.X < 5 || theControl.BoundingRectangle.Width > 500)
                     {
                         UITestControlCollection myCollection = theControl.GetChildren();
                         UITestControl testControl = myCollection[0].Container;
                         p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 5, theControl.GetChildren()[0].BoundingRectangle.Y + 5);
                     }
-                    if(p.X > 5)
+                    if (p.X > 5 && theControl.BoundingRectangle.Width < 500)
                     {
                         Mouse.Click(p);
                         return;

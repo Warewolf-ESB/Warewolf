@@ -33,6 +33,15 @@
             return rowList.Count;
         }
 
+        public void CloseDebugWindow_ByCancel()
+        {
+            WpfWindow debugWindow = GetDebugWindow();
+            UITestControl theControl = new UITestControl(debugWindow);
+            theControl.SearchProperties.Add("AutomationId", "UI_Cancelbtn_AutoID");
+            theControl.Find();
+            Mouse.Click(theControl, new Point(5, 5));
+        }
+
         public void CloseDebugWindow()
         {
             SendKeys.SendWait("{ESCAPE}");

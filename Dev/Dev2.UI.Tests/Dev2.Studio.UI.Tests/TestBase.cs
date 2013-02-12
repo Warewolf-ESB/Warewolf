@@ -303,6 +303,45 @@ namespace Dev2.CodedUI.Tests
             //this.UIMap.WorkflowItemPresenterExists();
 
         }
+
+        [TestMethod]
+        public void ThisIsAVideoTestMethod()
+        {
+            /*
+            // Create a Workflow
+            CreateCustomWorkflow("MyTestWorkflow");
+
+            // Open the Toolbox tab
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            // Get the Calculate control
+            UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
+
+            // Get a tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("MyTestWorkflow");
+
+            // And drag it onto the Workflow Designer
+            Point pointOnWorkflowDesigner = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, pointOnWorkflowDesigner);
+
+            // Input some data into the Calculate Control
+            WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(10, 5)", "[[calcResult]]");
+
+            // Set it as the start node
+            WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
+
+            // And run it, by clicking the appropriate button on the Ribbon
+            RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
+            */
+
+            // Close the browser
+            ExternalUIMap.CloseAllInstancesOfIE();
+
+            // And delete the Workflow
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "MyTestWorkflow");
+
+        }
+
         #region Bugs
 
         // All bugs have been moved to BugTests.cs
@@ -2224,6 +2263,10 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "CodedUITestWorkflow");
         }
 
+        /// <summary>
+        /// This method will create a Custom Workflow
+        /// </summary>
+        /// <param name="workflowName">The name of the Worfklow you wish to create</param>
         public void CreateCustomWorkflow(string workflowName)
         {
             CreateCustomWorkflow(workflowName, "CodedUITestCategory");
@@ -2234,6 +2277,9 @@ namespace Dev2.CodedUI.Tests
             WpfWindow theWindow = new WpfWindow();
             theWindow.WindowTitles.Add(GetStudioWindowName());
             theWindow.SetFocus();
+            Thread.Sleep(500);
+            theWindow.SetFocus();
+            Thread.Sleep(500);
             #region Workflow Input Parameters
 
             #endregion Workflow Input Parameters

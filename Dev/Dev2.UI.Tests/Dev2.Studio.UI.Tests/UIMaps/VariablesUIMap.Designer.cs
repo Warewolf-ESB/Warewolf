@@ -50,6 +50,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             return theControl.GetChildren()[0];
         }
 
+        private UITestControl GetRecordSetList()
+        {
+            UITestControl theControl = getScalarExplorer();
+            return theControl.GetChildren()[1];
+        }
+
         public UITestControlCollection getVariableList()
         {
             UITestControl variableMenu = getVariables();

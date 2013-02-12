@@ -1,21 +1,11 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using System.Windows.Forms;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+
+namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System.Windows.Forms;
-    
-    
     public partial class VariablesUIMap
     {
         public void ClickVariableName(int position)
@@ -58,6 +48,44 @@
             Mouse.Click(refreshButton, new Point(5, 5));
             System.Threading.Thread.Sleep(500);
             SendKeys.SendWait("{ENTER}");
+        }
+
+        public void ClickRecordSetName(int recSetIndex)
+        {
+            UITestControl recordSetList = GetRecordSetList();
+            UITestControl recList = new UITestControl(recordSetList);
+            recList.SearchProperties.Add("ControlType", "TreeItem");
+            UITestControlCollection recordsetTreeList = recList.FindMatchingControls();
+            Point p = new Point(recordsetTreeList[recSetIndex].BoundingRectangle.X, recordsetTreeList[recSetIndex].BoundingRectangle.Y);
+            Mouse.Click(new Point(p.X + 25, p.Y + 5));
+        }
+
+        public void ClickRecordSetSubItem(int recSetIndex, int valIndex)
+        {
+            UITestControl recordSetList = GetRecordSetList();
+            UITestControl recList = new UITestControl(recordSetList);
+            recList.SearchProperties.Add("ControlType", "TreeItem");
+            UITestControlCollection recordsetTreeList = recList.FindMatchingControls();
+            UITestControl recSetVals = new UITestControl(recordsetTreeList[recSetIndex]);
+            recSetVals.SearchProperties.Add("ControlType", "TreeItem");
+            UITestControlCollection subsetCollection = recSetVals.FindMatchingControls();
+            Point p = new Point(subsetCollection[valIndex].BoundingRectangle.X, subsetCollection[valIndex].BoundingRectangle.Y);
+            Mouse.Click(new Point(p.X + 25, p.Y + 5));
+        }
+
+        public string GetRecordSetSubItemHelptext(int recSetIndex, int valIndex)
+        {
+
+            UITestControl recordSetList = GetRecordSetList();
+            UITestControl recList = new UITestControl(recordSetList);
+            recList.SearchProperties.Add("ControlType", "TreeItem");
+            UITestControlCollection recordsetTreeList = recList.FindMatchingControls();
+            UITestControl recSetVals = new UITestControl(recordsetTreeList[recSetIndex]);
+            recSetVals.SearchProperties.Add("ControlType", "TreeItem");
+            UITestControlCollection subsetCollection = recSetVals.FindMatchingControls();
+            WpfEdit theEdit = (WpfEdit)subsetCollection[valIndex].GetChildren()[1];
+            string helpText = theEdit.HelpText;
+            return helpText;
         }
     }
 }
