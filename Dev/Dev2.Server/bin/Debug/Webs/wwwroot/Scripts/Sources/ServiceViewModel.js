@@ -5,7 +5,9 @@
     var $sourceMethodsScrollBoxHeight = 275;
     var $sourceMethods = $("#sourceMethods");
     var $inputsTable = $("#inputsTable");
-    
+    var $actionInspectorDialog = $("#actionInspectorDialog");
+    var $tabs = $("#tabs");
+
     self.saveUri = "Service/Services/Save";
     
     self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
@@ -20,7 +22,8 @@
         methodName: ko.observable(""),
         methodParameters: ko.observableArray(),
         methodOutputs: ko.observableArray(),
-        testData: ko.observable(""),
+        methodSource: ko.observable(""),
+        testResults: ko.observable(""),
     };
 
     self.sources = ko.observableArray();
@@ -34,6 +37,14 @@
         return ko.utils.arrayFilter(self.sourceMethods(), function (serviceAction) {
             return serviceAction.Name.toLowerCase().indexOf(term) !== -1;
         });
+    });
+    
+    self.hasMethodName = ko.computed(function () {
+        return self.data.methodName() !== "";
+    });
+
+    self.hasTestResults = ko.computed(function () {
+        return self.data.testResults() !== "";
     });
     
     self.data.source.subscribe(function (newValue) {
@@ -53,10 +64,7 @@
     self.saveTitle = ko.computed(function () {
         return "<b>" + self.title() + "</b>";
     });
-    self.helpDictionaryID = "Service";
-    self.helpDictionary = {};
-    self.helpText = ko.observable("");
-    
+
     self.isFormValid = ko.computed(function () {
         var isEnabled = self.data.source() !== ""
             && self.data.methodName() !== "";
@@ -85,36 +93,28 @@
         $.post("Service/Resources/Sources" + window.location.search, args, function (result) {
             self.sources(result);
             self.sources.sort(utils.resourceNameCaseInsensitiveSort);
-        });
-        $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
-            self.helpDictionary = result;
-            self.updateHelpText("default");
-        });
-    };
-    
-    self.updateHelpText = function (id) {
-        var text = self.helpDictionary[id];
-        text = text ? text : self.helpDictionary.default;
-        text = text ? text : "";
-        self.helpText(text);
+        }); 
     };
 
-    $(":input").focus(function () {
-        self.updateHelpText(this.id);
-    });
+    self.showTab = function (tabIndex) {
+        $tabs.tabs("option", "active", tabIndex);
+    };
     
     self.editSource = function () {
     };
 
     self.newSource = function () {
     };
-
+    
+    self.showAction = function () {
+        $actionInspectorDialog.dialog("open");
+    };
+    
     self.testAction = function () {
         var args = ko.toJSON(self.data);
         $.post("Service/Services/Test" + window.location.search, args, function (result) {
             self.data.testData(result);
-        });
-        $("#testDialogContainer").dialog("open");
+        });        
     };
 
     self.cancel = function () {

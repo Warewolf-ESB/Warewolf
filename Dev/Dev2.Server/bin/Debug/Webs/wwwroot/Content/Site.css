@@ -14,7 +14,7 @@ body {
 }
 
 a {
-    color: #333;
+    color: #e17009;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -23,11 +23,11 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #333;
+        color: #e17009;
     }
 
     a:hover {
-        background-color: #c7d1d6;
+        background-color: white;
     }
 
 
@@ -90,7 +90,7 @@ h4 {
 }
 
 h5, h6 {
-    font-size: 1em;
+    font-size: 0.95em;
 }
 
     h5 a:link, h5 a:visited, h5 a:active {
@@ -152,7 +152,8 @@ h5, h6 {
 }
 
 .help-text {
-    background-color: #E9F4F7;
+    /*background-color: #E9F4F7;*/
+    background-color: #dfeffc;
 }
 
 .help-text p {
@@ -214,11 +215,17 @@ label {
 label.save {
     width: 100px;
 }
-label.checkbox, label.radio {
+
+label.checkbox, label.radio, label.inline  {
     display: inline;
     width: auto;
     float: none;
     border: 0;
+}
+
+label.inline {
+    vertical-align: middle;
+    line-height: 1em;
 }
 
 
@@ -427,11 +434,12 @@ ol.selectable {
     padding: 0;
 }
     ol.selectable .ui-selecting {
-        background: #FECA40;
+        background: #e17009;
     }
 
-    ol.selectable .ui-selected {
-        background: #F39814;
+    ol.selectable .ui-selected,
+    select option:hover {
+        background: #e17009;
         color: white;
     }
 
@@ -441,6 +449,29 @@ ol.selectable li {
     font-size: 1em;
     cursor:default;
 }
+
+.text-selectable {
+    color: #e17009;
+}
+
+
+a.selectable {
+    color: #e17009;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+    a.selectable:link, a.selectable:visited,
+    a.selectable:active, a.selectable:hover {
+        color: #e17009;
+    }
+
+    a.selectable:hover {
+        background-color: white;
+    }
+
 
 div.scrollable {
     border:1px solid #E2E2E2; 
@@ -458,4 +489,9 @@ div.scrollable {
 
 .box-background {
     background: #E2E2E2;
+}
+
+.box-separator {
+    padding-right: 10px;
+    border-right: #a6c9e2 solid 1px;
 }
