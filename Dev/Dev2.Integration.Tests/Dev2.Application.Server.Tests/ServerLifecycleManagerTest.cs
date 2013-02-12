@@ -224,8 +224,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
         #endregion
 
-        /*
-        Matthews Legacy Tests
+
         [TestMethod]
         public void ExternalDependencies_Test()
         {
@@ -255,10 +254,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             int errorCode = ExecuteServer(input);
             Assert.AreEqual(2, errorCode);
         }
-        */
+        
 
-        /*
-        Matthews Legacy Tests
         [TestMethod]
         public void MalformedXML_Test()
         {
@@ -284,10 +281,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             int errorCode = ExecuteServer(input);
             Assert.AreEqual(1, errorCode);
         }
-         */
+         
 
-        /*
-        Matthews Legacy Tests
         [TestMethod]
         public void InvalidWorkflow_Test()
         {
@@ -307,7 +302,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             int errorCode = ExecuteServer(input);
             Assert.AreEqual(5, errorCode);
         }
-        */
+        
 
         [ClassCleanup]
         public static void Cleanup()

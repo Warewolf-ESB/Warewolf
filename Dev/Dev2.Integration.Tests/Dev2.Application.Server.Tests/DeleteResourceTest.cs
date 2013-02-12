@@ -54,7 +54,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
                         //string versionDirectory = Path.Combine(, "VersionControl");
                         string actualResult = TestHelper.PostDataToWebserver(postData);
-                        Assert.AreEqual(true, actualResult.Contains("<Result>Success</Result>"));
+                        StringAssert.Contains(actualResult, "<Result>Success</Result>");
 
                         //Assert that it cant be found
                         actualResult = TestHelper.PostDataToWebserver(postData);
