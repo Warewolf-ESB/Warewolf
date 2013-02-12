@@ -11,6 +11,10 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             List<DependencyObject> descendents = new List<DependencyObject>();
 
+            if (dependencyObject == null)
+            {
+                return descendents;
+            }
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(dependencyObject); i++)
             {
                 descendents.Add(VisualTreeHelper.GetChild(dependencyObject, i));

@@ -204,7 +204,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                 {
                     _cancelCommand = new RelayCommand(param =>
                     {
-                        OnClose();
+                        ClearData();
                     }, param => true);
                 }
                 return _cancelCommand;
@@ -228,22 +228,19 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         #endregion
 
-        #region Close
+        #region Clear
 
-        /// <summary>
-        /// Occurs when a close request is recieved
-        /// </summary>
-        public event EventHandler Close;
-
-        protected void OnClose()
+        protected void ClearData()
         {
-            if (Close != null)
-            {
-                Close(this, new EventArgs());
-            }
+            SplitType = "Chars";
+            SplitToken = string.Empty;
+            Prefix = string.Empty;
+            Suffix = string.Empty;
+            VariableListString = string.Empty;
+            ShowPreview = false;
         }
 
-        #endregion Close
+        #endregion
 
         #region Methods
 
@@ -257,7 +254,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             {
                 eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
             }
-            OnClose();
+            ClearData();
         }
 
         public void Preview()

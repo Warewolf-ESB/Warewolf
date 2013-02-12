@@ -80,7 +80,7 @@
                 </MultiBinding>
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>
-        <ComboBox x:Name="cbxTimeModifers" SelectedValue="{Binding Path=ModelItem.TimeModifierType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="2" Width="Auto" Margin="0,2,1,2"
+        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" x:Name="cbxTimeModifers" SelectedValue="{Binding Path=ModelItem.TimeModifierType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="2" Width="Auto"
                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_AddTimeTypecbx_AutoID">

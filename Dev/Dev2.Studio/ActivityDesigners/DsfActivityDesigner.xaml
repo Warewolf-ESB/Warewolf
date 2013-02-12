@@ -30,7 +30,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <ToggleButton IsChecked="{Binding Path=ShowMapping, Mode=OneWay}" Command="{Binding OpenMappingCommand}" ToolTip="Open Mapping" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                <ToggleButton IsChecked="{Binding Path=ShowMapping, Mode=OneWay}" Command="{Binding OpenMappingCommand}" ToolTip="Open Mapping"
                                           PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                           Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
                                 <Grid>
@@ -43,7 +43,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </ToggleButton>
-                                <Button Command="{Binding OpenWizardCommand}" Visibility="{Binding Path=HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Open Wizard" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                <Button Command="{Binding OpenWizardCommand}" Visibility="{Binding Path=HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Open Wizard"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/wizardIcon.png" Width="15" Height="15"/>
@@ -53,7 +53,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <Button Command="{Binding OpenSettingsCommand}" ToolTip="Open Settings" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                <Button Command="{Binding OpenSettingsCommand}" ToolTip="Open Settings"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/settingsIcon.png" Width="15" Height="15"/>
@@ -63,7 +63,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <Button Command="{Binding OpenHelpCommand}" Visibility="{Binding Path=HasHelpLink,Converter={StaticResource BoolToVisConverter}}" ToolTip="Help" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                <Button Command="{Binding OpenHelpCommand}" Visibility="{Binding Path=HasHelpLink,Converter={StaticResource BoolToVisConverter}}" ToolTip="Help"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/helpIcon.png" Width="15" Height="15"/>
@@ -98,7 +98,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Label Grid.Row="0" Content="Inputs" FontStretch="Medium" FontWeight="Bold" FontSize="14" Foreground="Gray"></Label>
+                                        <Label Grid.Row="0" Content="Inputs" Style="{StaticResource Dev2HeadingLabelStyle}"></Label>
                                         <DataGrid x:Name="inputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataMappingViewModel.Inputs}">
                                             <DataGrid.Columns>
@@ -129,8 +129,8 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        
-                                        <Label Grid.Row="0" Content="Outputs" FontStretch="Medium" FontWeight="Bold" FontSize="14" Foreground="Gray"></Label>
+
+                                        <Label Grid.Row="0" Content="Outputs" Style="{StaticResource Dev2HeadingLabelStyle}"></Label>
                                         <DataGrid x:Name="outputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataMappingViewModel.Outputs}">
                                             <DataGrid.Columns>

@@ -1,24 +1,37 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
+﻿using Dev2.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.ViewModels.QuickVariableInput;
+using Dev2.Studio.Views.UserInterfaceBuilder;
 using Dev2.UI;
 using System;
+using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Activities.Presentation.View;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public partial class DsfMultiAssignActivityDesigner : IDisposable
     {
 
-        private bool _isRegistered = false;
-        private string mediatorKey = string.Empty;
-        private dynamic _fieldsCollection;
-        private double _initialFieldHeight;
-        private double _initialHeight;
+        #region Fields
+
+        bool _isRegistered = false;
+        string mediatorKey = string.Empty;
+        dynamic _fieldsCollection;
+        double _initialHeight;
+        Point _mousedownPoint = new Point(0, 0);
+        bool _startManualDrag;
+        Selection _workflowDesignerSelection;
+
+        #endregion
+
+        #region Ctor
 
         public DsfMultiAssignActivityDesigner()
         {
@@ -26,7 +39,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeComponent();
         }
 
+        #endregion
+
         #region Dependancy Properties
+
+        public bool ShowAdorners
+        {
+            get { return (bool)GetValue(ShowAdornersProperty); }
+            set { SetValue(ShowAdornersProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowAdorners.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowAdornersProperty =
+            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfMultiAssignActivityDesigner), new PropertyMetadata(false));
+
+        public bool ShowQuickVariableInput
+        {
+            get { return (bool)GetValue(ShowQuickVariableInputProperty); }
+            set { SetValue(ShowQuickVariableInputProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowQuickVariableInput.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowQuickVariableInputProperty =
+            DependencyProperty.Register("ShowQuickVariableInput", typeof(bool), typeof(DsfMultiAssignActivityDesigner), new PropertyMetadata(false));
 
         public bool ShowRightClickOptions
         {
@@ -43,6 +78,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnModelItemChanged(object newItem)
         {
             base.OnModelItemChanged(newItem);
+            Context.Items.Subscribe<Selection>(SelectionChanged);
             if (!_isRegistered)
             {
                 //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemViewModel));
@@ -104,61 +140,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         */
 
+        #region Dispose
+
         public void Dispose()
         {
+            CleanUp();
             Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
-        private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
-        {
+        #endregion
 
-            if (_initialHeight == 0.0)
-            {
-                _initialFieldHeight = FieldsDataGrid.ActualHeight;
-                _initialHeight = ActualHeight;
-            }
+        #region Private Methods
 
-            FieldsDataGrid.AddRow();
-
-            setName();
-
-        }
-
-        //private string createDisplayName(string currentName)
-        //{
-        //    currentName = ModelItem.Properties["DisplayName"].ComputedValue as string;
-
-        //    string actualName = string.Empty;
-        //    if (currentName.Contains('(') && currentName.Contains(')'))
-        //    {
-        //        actualName = currentName.Substring(0, currentName.IndexOf('('));
-        //    }
-        //    else
-        //    {
-        //        actualName = currentName;
-        //    }
-        //    actualName = actualName.Trim();
-
-        //    int rows = FieldsDataGrid.CountRows();
-        //    if (rows == -1)
-        //    {
-        //        if (currentName.Split(' ').Count() == 1)
-        //        {
-        //            currentName = actualName + " (0)";
-        //        }
-        //        else
-        //        {
-        //            currentName = ModelItem.Properties["DisplayName"].ComputedValue as string;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        currentName = actualName + " (" + (rows) + ")";
-        //    }
-        //    return currentName;
-        //}
-
-        private string createDisplayName(string currentName)
+        string createDisplayName(string currentName)
         {
             currentName = ModelItem.Properties["DisplayName"].ComputedValue as string;
             if (currentName.Contains("(") && currentName.Contains(")"))
@@ -176,41 +170,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return currentName;
         }
 
-        private void setName()
+        void setName()
         {
             string disName = createDisplayName(ModelItem.Properties["DisplayName"].ComputedValue as string);
             ModelItem.Properties["DisplayName"].SetValue(disName);
         }
 
+        #endregion
+
+        #region Event Handlers
+
         private void FieldsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FieldsDataGrid.RemoveRow();
 
-            EnsureHeight();
-
             setName();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
-            var test = FieldsDataGrid.SelectedIndex;
+
+            if (_initialHeight == 0.0)
+            {
+                _initialHeight = ActualHeight;
+            }
+
+            FieldsDataGrid.AddRow();
+
+            setName();
+
+        }
+
+        void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
             FieldsDataGrid.RemoveRow(FieldsDataGrid.SelectedIndex);
             setName();
-            EnsureHeight();
         }
 
-        private void EnsureHeight()
-        {
-            //InvalidateMeasure();
-            //InvalidateArrange();
-            //FieldsDataGrid.InvalidateMeasure();
-            //FieldsDataGrid.InvalidateArrange();
-            //FieldsDataGrid.InvalidateVisual();
-            //FieldsDataGrid.UpdateLayout();
-            //UpdateLayout();
-        }
-
-        private void ActivityDesigner_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        void ActivityDesigner_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             if (e.Source.GetType() == typeof(Dev2DataGrid))
             {
@@ -222,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void doCustomScroll(object sender, MouseWheelEventArgs e)
+        void doCustomScroll(object sender, MouseWheelEventArgs e)
         {
             Dev2DataGrid theGrid = FieldsDataGrid;
             if (e.Delta > 0)
@@ -256,15 +253,156 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             theGrid.ScrollIntoView(theItem);
         }
 
-        void QuickVariableAdd_MenuItem_Click(object sender, RoutedEventArgs e)
+        void QuickVariableInputControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            DataGridQuickVariableInputView view = sender as DataGridQuickVariableInputView;
+            ICollectionActivity activity = ModelItem.GetCurrentValue() as ICollectionActivity;
 
-            if (ModelItem != null)
+            QuickVariableInputModel model = new QuickVariableInputModel(ModelItem, activity);
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(model);
+            view.DataContext = viewModel;
+        }
+
+        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            ShowQuickVariableInput = !ShowQuickVariableInput;
+        }
+
+        void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            IInputElement inputElement = sender as IInputElement;
+            if (inputElement == null)
             {
-                eventAggregator.Publish(new ShowQuickVariableInputMessage(ModelItem));
+                return;
+            }
+
+            Mouse.Capture(sender as IInputElement, CaptureMode.SubTree);
+
+            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
+            {
+                Selection.SelectOnly(Context, ModelItem);
+            }
+
+            _mousedownPoint = e.GetPosition(sender as IInputElement);
+            _startManualDrag = true;
+            e.Handled = true;
+        }
+
+        void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            IInputElement inputElement = sender as IInputElement;
+            if (inputElement == null)
+            {
+                return;
+            }
+
+            inputElement.ReleaseMouseCapture();
+            Focus();
+        }
+
+        void UIElement_OnPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            IInputElement inputElement = sender as IInputElement;
+            if (inputElement == null)
+            {
+                return;
+            }
+
+            Point tempPoint = e.GetPosition(sender as IInputElement);
+            double xDelta = Math.Abs(tempPoint.X - _mousedownPoint.X);
+            double yDelta = Math.Abs(tempPoint.Y - _mousedownPoint.Y);
+
+            if (e.LeftButton == MouseButtonState.Pressed && _startManualDrag && Math.Max(xDelta, yDelta) >= 5)
+            {
+                DragDropHelper.DoDragMove(this, e.GetPosition(this));
+                _startManualDrag = false;
+                inputElement.ReleaseMouseCapture();
+                Focus();
             }
         }
+
+        void UIElement_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _mousedownPoint = e.GetPosition(sender as IInputElement);
+            _startManualDrag = true;
+        }
+
+        void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _startManualDrag = false;
+        }
+
+        void ShowAllAdorners()
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+
+            ShowAdorners = true;
+        }
+
+        void HideAdorners()
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+
+            ShowAdorners = false;
+        }
+
+        void DsfMultiAssignActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowAllAdorners();
+        }
+
+        void DsfMultiAssignActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            {
+                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+                if (uiElement != null)
+                {
+                    Panel.SetZIndex(uiElement, int.MaxValue - 1);
+                }
+
+                return;
+            }
+
+            HideAdorners();
+        }
+
+        void SelectionChanged(Selection item)
+        {
+            _workflowDesignerSelection = item;
+
+            if (_workflowDesignerSelection != null)
+            {
+                if (_workflowDesignerSelection.PrimarySelection == ModelItem)
+                {
+                    ShowAllAdorners();
+                }
+                else
+                {
+                    HideAdorners();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Clean Up
+
+        void CleanUp()
+        {
+            Context.Items.Unsubscribe<Selection>(SelectionChanged);
+        }
+
+        #endregion
     }
 }
 

@@ -53,8 +53,8 @@
         </dev2:IntellisenseTextBox>
 
         <Label Content="Rounding" Name="LblAddTime" Grid.Column="0" Grid.Row="1"/>
-        <ComboBox x:Name="CboRounding" ItemsSource="{Binding RoundingTypes, ElementName=NumberFormatActivityDesigner}"
-                  Grid.Column="1" Grid.Row="1" Width="Auto" Margin="0,2,1,2" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" x:Name="CboRounding" ItemsSource="{Binding RoundingTypes, ElementName=NumberFormatActivityDesigner}"
+                  Grid.Column="1" Grid.Row="1" Width="Auto" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                   SelectedValue="{Binding Path=ModelItem.RoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_AddTimeTypecbx_AutoID" Path="ModelItem.AutomationID"/>

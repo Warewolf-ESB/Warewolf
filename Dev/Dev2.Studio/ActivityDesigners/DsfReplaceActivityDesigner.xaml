@@ -43,28 +43,28 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" x:Name="lblInputFields" Content="In Field(s)"/>
-        <Dev2:IntellisenseTextBox x:Name="txtInputFields" DefaultText="[[Recordset().Field]]" Text="{Binding ModelItem.FieldsToSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0"
+        <Dev2:IntellisenseTextBox x:Name="txtInputFields" DefaultText="[[Recordset().Field]]" Text="{Binding ModelItem.FieldsToSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" Margin="0,2,1,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_InFiledstxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </Dev2:IntellisenseTextBox>
         <Label Grid.Column="0" Grid.Row="1" x:Name="lblFind" Content="Find"/>
-        <Dev2:IntellisenseTextBox x:Name="txtFind" DefaultText="Some Text" Grid.Row="1" Grid.Column="1" Text="{Binding ModelItem.Find, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <Dev2:IntellisenseTextBox x:Name="txtFind" DefaultText="Some Text" Grid.Row="1" Grid.Column="1" Text="{Binding ModelItem.Find, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Findtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </Dev2:IntellisenseTextBox>
         <Label x:Name="lblReplace" Grid.Row="2" Grid.Column="0" Content="Replace With"/>
-        <Dev2:IntellisenseTextBox x:Name="txtReplace" DefaultText="New Text" Grid.Row="2" Grid.Column="1" Text="{Binding ModelItem.ReplaceWith,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <Dev2:IntellisenseTextBox x:Name="txtReplace" DefaultText="New Text" Grid.Row="2" Grid.Column="1" Text="{Binding ModelItem.ReplaceWith,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Replacetxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </Dev2:IntellisenseTextBox>
         <Label x:Name="lblResult" Grid.Row="3" Grid.Column="0" Content="Result"/>
-        <Dev2:IntellisenseTextBox x:Name="txtResult" DefaultText="[[ReplacementCount]]" WrapInBrackets="True" Grid.Row="3" Grid.Column="1" Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <Dev2:IntellisenseTextBox x:Name="txtResult" DefaultText="[[ReplacementCount]]" WrapInBrackets="True" Grid.Row="3" Grid.Column="1" Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Resulttxt_AutoID" Path="ModelItem.AutomationID"/>

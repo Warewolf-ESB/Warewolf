@@ -62,6 +62,26 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion SupressConnectorNodes
 
+        #region DataContext
+
+        public object DataContext
+        {
+            get
+            {
+                return (object)GetValue(DataContextProperty);
+            }
+            set
+            {
+                SetValue(DataContextProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for DataContext.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DataContextProperty =
+            DependencyProperty.Register("DataContext", typeof(object), typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
+
+        #endregion
+
         #endregion Dependency Properties
 
         #region Override Methods
@@ -129,7 +149,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
-            
+
             AssociatedObject.LayoutUpdated += AssociatedObjectLayoutUpdated;
             AssociatedObject.Loaded += AssociatedObject_Loaded;
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
@@ -144,12 +164,12 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 _rootAdornerLayer.LayoutUpdated -= AdornerLayerOnLayoutUpdated;
                 _rootAdornerLayer = null;
-            }  
+            }
         }
 
         private Border GetColoursBorder(DependencyObject parent)
         {
-            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(parent, i);
 
@@ -183,6 +203,16 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             FrameworkElement topVisuals = TopTemplate.LoadContent() as FrameworkElement;
             FrameworkElement bottomVisuals = BottomTemplate.LoadContent() as FrameworkElement;
+
+            if (topVisuals != null && DataContext != null)
+            {
+                topVisuals.DataContext = DataContext;
+            }
+
+            if (bottomVisuals != null && DataContext != null)
+            {
+                bottomVisuals.DataContext = DataContext;
+            }
 
             //
             // Setup intercept for supressing the connector nodes

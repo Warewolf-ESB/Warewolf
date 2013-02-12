@@ -82,7 +82,7 @@
             </Dev2:IntellisenseTextBox.IntellisenseProvider>
         </Dev2:IntellisenseTextBox>
         <Label Content="Output In" Name="lblAddTime" Grid.Column="0" Grid.Row="3"/>
-        <ComboBox x:Name="cbxOutputTypes" SelectedValue="{Binding Path=ModelItem.OutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Width="Auto" Margin="0,2,1,2"
+        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" x:Name="cbxOutputTypes" SelectedValue="{Binding Path=ModelItem.OutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Width="Auto"
                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_OutputIncbx_AutoID">
