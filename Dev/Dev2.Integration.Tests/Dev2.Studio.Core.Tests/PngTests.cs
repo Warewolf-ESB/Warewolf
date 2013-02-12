@@ -5,12 +5,15 @@ using Microsoft.Windows.Controls.Ribbon;
 using System.Activities.Presentation.Toolbox;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Views;
+using Dev2.Studio;
+using System.Windows;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 {
@@ -72,6 +75,16 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         public void MyTestInitialize()
         {
             Monitor.Enter(_testLock);
+            // Sashen.Naidoo - 12:02:2012 - In order to facilitate the resource dictionary on the Studio
+            //                              We have to instantiate the Studio, but not start it up
+            //                              once this has occured, we have the Studio's context and the designer icons
+            //                              work.
+            if (System.Windows.Application.Current == null)
+            {
+                App myApp = new App();
+                myApp = null;
+            }
+
             ImportService.CurrentContext = CompositionInitializer.InitializeMockedWindowNavigationBehavior();
 
             if (toolbox == null)
@@ -90,6 +103,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         [TestCleanup()]
         public void MyTestCleanup()
         {
+
             Monitor.Exit(_testLock);
         }
         
@@ -100,6 +114,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         [TestMethod]
         public void Comment_Designer_Icon_Expected_Pass_NoException()
         {
+
             DsfCommentActivityDesigner designer = new DsfCommentActivityDesigner();
             ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
             BitmapSource image = icon.ImageSource as BitmapSource;
