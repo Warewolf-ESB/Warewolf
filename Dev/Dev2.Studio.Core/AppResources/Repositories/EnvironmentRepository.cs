@@ -1,6 +1,4 @@
-﻿using Dev2;
-using Dev2.DynamicServices;
-using Dev2.Studio.Core;
+﻿using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;

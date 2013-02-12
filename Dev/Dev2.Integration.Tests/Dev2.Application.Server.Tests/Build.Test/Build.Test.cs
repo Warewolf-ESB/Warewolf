@@ -21,8 +21,6 @@ namespace Dev2.Integration.Tests.Build.Tests
             //
         }
 
-        private static ImportServiceContext _importServiceContext;
-
         IEnvironmentConnection _connection;
         IFrameworkDataChannel _dataChannel;
         MockSecurityProvider _mockSecurityProvider;
@@ -45,13 +43,6 @@ namespace Dev2.Integration.Tests.Build.Tests
             {
                 testContextInstance = value;
             }
-        }
-
-
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            _importServiceContext = CompositionInitializer.DefaultInitialize();
         }
 
         #region Server Listening Tests
@@ -91,7 +82,7 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestInitialize()]
         public void EnvironmentTestsInitialize()
         {
-
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             //MefImportSatisfier mefImportSatisfier = new MefImportSatisfier();
             _connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
 
@@ -170,7 +161,6 @@ namespace Dev2.Integration.Tests.Build.Tests
             }
 
         }
-
 
         // Sashen :25-01-2013 : This test checks that a service returns the correct message
         // Fails due to bug 8593

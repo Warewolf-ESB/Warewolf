@@ -1055,6 +1055,11 @@
       <Project>{B91813C8-499C-4D65-A0D4-57C7FA5F5413}</Project>
       <Name>Dev2.Composition</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.OutputLibraries\Dev2.OutputLibraries.csproj">
+      <Project>{38650e4e-90e2-44de-a32f-30f3c4d1438b}</Project>
+      <Name>Dev2.OutputLibraries</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
@@ -1078,6 +1083,9 @@ REM Visual Studio expects 0 when successful
 set rce=%25errorlevel%25
 if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent />
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

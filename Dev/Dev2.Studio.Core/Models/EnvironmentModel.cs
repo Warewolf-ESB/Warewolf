@@ -274,11 +274,20 @@ namespace Dev2.Studio.Core.Models
 
         private void EnvironmentConnection_LoginStateChanged(object sender, LoginStateEventArgs e)
         {
+            //
+            // If application in shutdown do nothing
+            //
             if(Application.Current == null)
             {
-                //
-                // If application in shutdown do nothing
-                //
+                return;
+            }
+
+            //
+            // If auxilliry connection then do nothing
+            //
+            WrappedEnvironmentConnection connection = EnvironmentConnection as WrappedEnvironmentConnection;
+            if (connection != null && connection.IsAuxiliry)
+            {
                 return;
             }
 

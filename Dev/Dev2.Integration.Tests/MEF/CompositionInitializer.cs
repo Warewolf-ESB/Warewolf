@@ -42,7 +42,6 @@ namespace Dev2.Integration.Tests.MEF
             return importServiceContext;
         }
 
-
         internal static ImportServiceContext InitializeForResourceRepository()
         {
 
@@ -56,6 +55,21 @@ namespace Dev2.Integration.Tests.MEF
 
             IFrameworkSecurityContext securityProvider = new MockSecurityProvider("IntegrationTestSecurity");
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(securityProvider);
+            return importServiceContext;
+        }
+
+        internal static ImportServiceContext DefaultInitialize11()
+        {
+            ImportServiceContext importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog> 
+            { 
+                new TestAggregateCatalog()
+            });
+
+            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+
             return importServiceContext;
         }
     }
