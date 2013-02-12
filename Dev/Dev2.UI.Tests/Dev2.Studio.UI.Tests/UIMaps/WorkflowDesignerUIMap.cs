@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
-{   
+{
     public partial class WorkflowDesignerUIMap
     {
         /// <summary>
@@ -287,7 +287,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         /// <param name="value">The value to input into the right textbox</param>
         public void AssignControl_EnterData(UITestControl theTab, string assignControlTitle, string variable, string value)
         {
-            AssignControl_ClickFirstTextbox(theTab, assignControlTitle);
+            AssignControl_ClickLeftTextboxInRow(theTab, assignControlTitle, 0);
             SendKeys.SendWait(variable);
             Thread.Sleep(500);
             SendKeys.SendWait("{TAB}");
@@ -295,11 +295,54 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             SendKeys.SendWait(value);
         }
 
-        public void AssignControl_ClickFirstTextbox(UITestControl theTab, string controlAutomationId)
+        public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
         {
-            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
-            Point locationOfVariableTextbox = new Point(aControl.BoundingRectangle.Left + 50, aControl.BoundingRectangle.Top + 50);
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2];
+            // Get the textbox
+            UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
+            Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25, leftTextboxInRow.BoundingRectangle.Y + 5);
             Mouse.Click(locationOfVariableTextbox);
+        }
+
+        public void AssignControl_ClickScrollUp(UITestControl theTab, string controlAutomationId, int timesToClick)
+        {
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControl middleBox = assignControl.GetChildren()[2];
+            Point upArrow = new Point(middleBox.BoundingRectangle.X + middleBox.Width - 5, middleBox.BoundingRectangle.Y + 5);
+            for (int j = 0; j < timesToClick; j++)
+            {
+                Mouse.Click(upArrow);
+                Thread.Sleep(250);
+            }
+        }
+
+        public void AssignControl_ClickScrollDown(UITestControl theTab, string controlAutomationId, int timesToClick)
+        {
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControl middleBox = assignControl.GetChildren()[2];
+            Point upArrow = new Point(middleBox.BoundingRectangle.X + middleBox.Width - 5, middleBox.BoundingRectangle.Y + 40);
+            for (int j = 0; j < timesToClick; j++)
+            {
+                Mouse.Click(upArrow);
+                Thread.Sleep(250);
+            }
+        }
+
+        public bool AssignControl_LeftTextBoxInRowIsClickable(UITestControl theTab, string controlAutomationId, int row)
+        {
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2];
+            //UITestControl rowSearcher = new UITestControl(middleBox);
+            Point p = new Point();
+            if (middleBox.Rows[row].GetChildren()[2].GetChildren()[0].TryGetClickablePoint(out p))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationId, int itemInList)
@@ -378,7 +421,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             // The specific layout for the Text combo box
             WpfComboBox theComboBox = (WpfComboBox)sortControl.GetChildren()[5];
-            
+
             return theComboBox.Height;
         }
 

@@ -627,7 +627,7 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(theCalculate, workflowPoint1);
 
             // Values :D
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             Thread.Sleep(100);
             SendKeys.SendWait("[[someVal]]");
             Thread.Sleep(100);
@@ -643,7 +643,7 @@ namespace Dev2.Studio.UI.Tests
             VariablesUIMap.UpdateDataList();
 
             // Actual test time :D
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             SendKeys.SendWait("{TAB}");
             Thread.Sleep(100);
             SendKeys.SendWait("{TAB}");
@@ -655,7 +655,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click();
 
             // Item should be populated - Time to check!
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             SendKeys.SendWait("{TAB}");
             Thread.Sleep(100);
             SendKeys.SendWait("{TAB}");
@@ -902,6 +902,89 @@ namespace Dev2.Studio.UI.Tests
             // Else clean up the workflow for the next test
             Thread.Sleep(500);
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8556");
+        }
+
+        // Bug 8565 (Task 8848)
+        [TestMethod]
+        public void VariousScrollVariationsInMultiAssign_Expected_MultiAssignScrollsProperly()
+        {
+            // Create the Workflows
+            myTestBase.CreateCustomWorkflow("Bug8565");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8565");
+
+            // Drag an Assign control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+
+            // Enter some data
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
+            SendKeys.SendWait("someDataOne");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("someDataTwo");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("someDataThree");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("someDataFour");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("someDataFive");
+            Thread.Sleep(100);
+
+            // Check the bottom one is visible
+            Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after the items were entered!");
+
+            // Click it, scroll up, and check if the top one is visible
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 4);
+            Mouse.MoveScrollWheel(10);
+            Thread.Sleep(250);
+            Mouse.MoveScrollWheel(10);
+            Thread.Sleep(250);
+            Mouse.MoveScrollWheel(10);
+            Thread.Sleep(250);
+            Mouse.MoveScrollWheel(10);
+            Thread.Sleep(500);
+            Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 0), "The top item was not visible after a mouse scroll up!");
+
+            // Click it, scroll back down, and check if the bottom one is visible
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
+            Mouse.MoveScrollWheel(-10);
+            Thread.Sleep(250);
+            Mouse.MoveScrollWheel(-10);
+            Thread.Sleep(250);
+            Mouse.MoveScrollWheel(-10);
+            Thread.Sleep(250);
+            Mouse.MoveScrollWheel(-10);
+            Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after a mouse scroll down!");
+
+            // Now, manually click scroll up and check if the top one is visible
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 4);
+            Thread.Sleep(50);
+            WorkflowDesignerUIMap.AssignControl_ClickScrollUp(theTab, "Assign", 4);
+            Thread.Sleep(500);
+            Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 0), "The top item was not visible after clicking scroll up!");
+
+            // Now, manually click scroll down and check if the bottom one is visible
+            WorkflowDesignerUIMap.AssignControl_ClickScrollDown(theTab, "Assign", 5);
+            Thread.Sleep(500);
+            Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after clicking scroll down!");
+            
+            // If we're here, the test passed!
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8565");
         }
 
         // Bug 8596

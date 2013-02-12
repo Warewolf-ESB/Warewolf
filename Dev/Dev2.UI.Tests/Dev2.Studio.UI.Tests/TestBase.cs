@@ -812,7 +812,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
 
             // Add some text
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             SendKeys.SendWait("someVal");
 
             // Click away
@@ -895,7 +895,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
             // Add the data!
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             for (int j = 0; j < 100; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
@@ -983,7 +983,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(theItem, workflowPoint1);
 
             // Fill some data
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             SendKeys.SendWait("[[recSet{(}{)}.Name]]");
             Thread.Sleep(100); // Wait bug if you type too fast
             SendKeys.SendWait("{TAB}");
@@ -1108,7 +1108,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(theItem, workflowPoint1);
 
             // Fill some data
-            WorkflowDesignerUIMap.AssignControl_ClickFirstTextbox(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             SendKeys.SendWait("[[recSet{(}{)}.Name]]");
             Thread.Sleep(100); // Wait bug if you type too fast
             SendKeys.SendWait("{TAB}");

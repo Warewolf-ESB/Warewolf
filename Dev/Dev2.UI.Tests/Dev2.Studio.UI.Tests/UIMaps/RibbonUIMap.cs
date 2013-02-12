@@ -7,6 +7,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 {
     public partial class RibbonUIMap
     {
+        int loopCount = 0;
         public void ClickRibbonMenu(string menuAutomationId)
         {
             // This needs some explaining :)
@@ -52,8 +53,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             }
             
             // Somethign has gone wrong - Retry!
-
-            ClickRibbonMenu(menuAutomationId);
+            
+            loopCount++; // This was added due to the infinite loop happening if the ribbon was totally unclickable due to a crash
+            if(loopCount < 10)
+            {
+                ClickRibbonMenu(menuAutomationId);
+            }
 
             /*
             for (int j = 0; j < uIRibbonTabList.Tabs.Count; j++)
