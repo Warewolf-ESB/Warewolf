@@ -76,7 +76,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             StringAssert.Contains(result, exp);
             // Travis.Frisinger - Bug 8579
             // Was 10.0 Moved to 2.5
-            Assert.IsTrue(duration <= 2.5, "The test did not finish in the required time - It finished in: " + duration + " seconds."); 
+            Assert.IsTrue(duration <= 3, "The test did not finish in the required time - It finished in: " + duration + " seconds."); 
         }
 
         // Travis.Frisinger - Bug 8579
