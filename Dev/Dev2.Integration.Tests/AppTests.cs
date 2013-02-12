@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 
@@ -12,59 +12,54 @@ namespace Dev2.Integration.Tests
     public class AppTests
     {
         // Fixed by Michael RE Broken Integration Tests (12th Feb 2013)
+        // Fixed by Brendon.Page, the test now uses a mutex check to decide if a first process needs to be started.
         [TestMethod]
         public void PrepareApplication_With_ExistingApplication_Expect_OnlyOneApplication()
         {
+            List<Process> processesToTryKill = new List<Process>();
             string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Dev2.Studio.exe");
-            Process alreadyRunningProcess = Process.GetProcesses().FirstOrDefault(c => c.ProcessName.Equals("Dev2.Studio", StringComparison.InvariantCultureIgnoreCase));
 
-            if (alreadyRunningProcess == null)
+            // Check if there is already a studio running, in debug or otherwise
+            bool studioAlreadyRunning = false;
+            try
             {
-                Process.Start(studioPath);
+                Mutex.OpenExisting("Dev2.Studio");
+                studioAlreadyRunning = true;
+            }
+            catch(Exception)
+            {
             }
 
-            Process.Start(studioPath);
-            // Wait for Process to start, else it works in debug, not run
+            // If there isn't a studio running start one
+            if (!studioAlreadyRunning)
+            {
+                Process firstProcess = Process.Start(studioPath);
+                processesToTryKill.Add(firstProcess);
+
+                // Wait for Process to start, and get past the check for a duplicate process
+                Thread.Sleep(2000);
+            }
+
+            // Start a second studio, this should hit the logic that checks for a duplicate and exit
+            Process secondProcess = Process.Start(studioPath);
+            processesToTryKill.Add(secondProcess);
+
+            // Wait for Process to start, check for a duplicate process and exit
             Thread.Sleep(2000);
 
-            var processes = Process.GetProcesses().Where(c => c.ProcessName == "Dev2.Studio").ToList();
-            int actual = processes.Count;
-            int expected = 1;
+            // Gather actual
+            bool actual = secondProcess.HasExited;
 
-            foreach (Process p in processes)
+            // Clean up and processes that were started for this test
+            foreach (Process p in processesToTryKill)
             {
-                p.Kill();
+                if (!p.HasExited)
+                {
+                    p.Kill();
+                }
             }
-            
-            //int actual;
-            //int expected;
-            //if (process != null && !process.ProcessName.Contains("vshost"))
-            //{
-            //    // A Studio had been started before the test had run - We're probably running it on the Build Server
-            //    Process.Start(process.MainModule.FileName);
-            //    // Wait for Process to start, else it works in debug, not run
-            //    System.Threading.Thread.Sleep(2000);
-            //    actual = Process.GetProcesses().Count(c => c.ProcessName.Contains("Dev2.Studio"));
-            //    expected = 1;
-            //}
-            //else
-            //{
-            //    string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Dev2.Studio.exe");
-            //    // We're running local integration tests, so all Studios need to be killed after they've been opened
-            //    Process.Start(studioPath);
-            //    Process.Start(studioPath);
-            //    // Wait for Process to start, else it works in debug, not run
-            //    System.Threading.Thread.Sleep(2000);
-            //    Process[] processes = Process.GetProcesses().Where(c => c.ProcessName == "Dev2.Studio").ToArray();
-            //    expected = 1;
-            //    actual = processes.Count(c => !c.ProcessName.Contains("vshost"));
-            //    foreach (Process p in processes)
-            //    {
-            //        p.Kill();
-            //    }
-            //}
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
     }
 }
