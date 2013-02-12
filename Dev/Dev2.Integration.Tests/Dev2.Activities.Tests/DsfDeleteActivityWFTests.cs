@@ -63,7 +63,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DeleteRecordUsingRecordsetWithStarIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DeleteRecordUsingRecordsetWithStarIndex");
-            string expected = @"<DeleteResult>Success</DeleteResult><Customers></Customers>";
+            string expected = @"<DeleteResult>Success</DeleteResult>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

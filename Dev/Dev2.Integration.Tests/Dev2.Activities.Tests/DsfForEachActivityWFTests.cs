@@ -65,12 +65,12 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
 
         [TestMethod]
         public void ForEachMappingBackToRecset() {
-            string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachMappingBackToRecSetTest");
-            string expected = @"<recset><rec>hello</rec><rec2>test1</rec2></recset><recset><rec>hello</rec><rec2>test2</rec2></recset><recset><rec>hello</rec><rec2>test3</rec2></recset><recset><rec>hello</rec><rec2>test4</rec2></recset><recset><rec>hello</rec><rec2>test5</rec2></recset><test>hello</test><testrecset></testrecset>";
+            string postData = String.Format("{0}{1}", WebserverURI, "NewForEachMappingBackToRecSetTest");
+            string expected = @"<recset><rec>hello</rec><rec2>test1</rec2></recset><recset><rec>hello</rec><rec2>test2</rec2></recset><recset><rec>hello</rec><rec2>test3</rec2></recset><recset><rec>hello</rec><rec2>test4</rec2></recset><recset><rec>hello</rec><rec2>test5</rec2></recset><test>hello</test>";
 
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+            StringAssert.Contains(responseData, expected);
         }
 
         #endregion RecordSet Tests
