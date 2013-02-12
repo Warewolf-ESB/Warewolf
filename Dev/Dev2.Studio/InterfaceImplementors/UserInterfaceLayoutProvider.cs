@@ -6,6 +6,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.Session;
 using Dev2.Studio.AppResources.AttachedProperties;
+using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -731,8 +732,16 @@ namespace Dev2.Studio
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
                     var activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
 
-                    var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString); // fake it to get the ID
                     ErrorResultTO errors;
+                    var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
+
+                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    {
+                        // Bad things happened... Tell the user
+                        PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
+                        // Stop configuring!!!
+                        return;
+                    }
 
                     // Push the correct data to the server ;)
                     if(activityExpression != null && activityExpression.Value == null)
@@ -832,6 +841,7 @@ namespace Dev2.Studio
                         catch
                         {
                             // Bad things happened... Tell the user
+                            //PopupProvider.Show("", "")
                             PopupProvider.Buttons = MessageBoxButton.OK;
                             PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
                             PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
@@ -866,9 +876,16 @@ namespace Dev2.Studio
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
                     var activityExpression = activity.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
 
-                    var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString); // fake it to get the ID
                     ErrorResultTO errors;
+                    var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
 
+                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    {
+                        // Bad things happened... Tell the user
+                        PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
+                        // Stop configuring!!!
+                        return;
+                    }
 
                     if(activityExpression != null && activityExpression.Value == null)
                     {
@@ -962,11 +979,7 @@ namespace Dev2.Studio
                         catch
                         {
                             // Bad things happened... Tell the user
-                            PopupProvider.Buttons = MessageBoxButton.OK;
-                            PopupProvider.Description = GlobalConstants.SwitchWizardErrorString;
-                            PopupProvider.Header = GlobalConstants.SwitchWizardErrorHeading;
-                            PopupProvider.ImageType = MessageBoxImage.Error;
-                            PopupProvider.Show();
+                            PopupProvider.Show(GlobalConstants.SwitchWizardErrorString, GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         finally
                         {
@@ -987,10 +1000,17 @@ namespace Dev2.Studio
             IEnvironmentModel environment = payload.Item2;
             ModelItem switchCase = payload.Item1;
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
-            var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString); // fake it to get the ID
             ErrorResultTO errors;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
+            var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
 
+            if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+            {
+                // Bad things happened... Tell the user
+                PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
+                // Stop configuring!!!
+                return;
+            }
 
             // Always a new Switch, push empty model ;)
             compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultCase, out errors);
@@ -1049,9 +1069,17 @@ namespace Dev2.Studio
             IEnvironmentModel environment = payload.Item2;
             ModelProperty switchCaseValue = payload.Item1;
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
-            var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString); // fake it to get the ID
             ErrorResultTO errors;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
+            var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
+
+            if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+            {
+                // Bad things happened... Tell the user
+                PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
+                // Stop configuring!!!
+                return;
+            }
 
             // Extract existing value ;)
             string val = string.Empty;
@@ -1324,8 +1352,18 @@ namespace Dev2.Studio
 
                 try
                 {
+                    ErrorResultTO errors;
                     var args = StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(), resourceModelToEdit);
-                    var dataListID = resourceModelToEdit.Environment.UploadToDataList(args);
+                    var dataListID = resourceModelToEdit.Environment.UploadToDataList(args, out errors);
+
+                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    {
+                        // Bad things happened... Tell the user
+                        PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        // Stop configuring!!!
+                        return;
+                    }
+
                     var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                     _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
@@ -1377,7 +1415,17 @@ namespace Dev2.Studio
                     var elementNames = ResourceHelper.GetWebPageElementNames(xmlConfig);
                     // Travis.Frisinger : 06-07-2012 - Remove junk in the config
                     var xmlOutput = ResourceHelper.MergeXmlConfig(layoutObjectToOpenWizardFor.SelectedLayoutObject.XmlConfiguration, elementNames);
-                    var dataListID = environment.UploadToDataList(xmlOutput);
+                    ErrorResultTO errors;
+                    var dataListID = environment.UploadToDataList(xmlOutput, out errors);
+
+                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    {
+                        // Bad things happened... Tell the user
+                        PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        // Stop configuring!!!
+                        return;
+                    }
+
                     var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
                     _win = new WebPropertyEditorWindow(layoutObjectToOpenWizardFor, uriString) { Width = 850, Height = 600 };
                     _win.ShowDialog();

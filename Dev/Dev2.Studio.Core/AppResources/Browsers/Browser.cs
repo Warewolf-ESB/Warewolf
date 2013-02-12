@@ -107,12 +107,16 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #region Post
 
-        public static void Post(this WebView browser, string uriString, IEnvironmentModel environmentModel, string postData)
+        public static void Post(this WebView browser, string uriString, IEnvironmentModel environmentModel, string postData, out ErrorResultTO errors) //BUG 8796, added errors parameter
         {
-            if(!string.IsNullOrWhiteSpace(postData))
+            if (!string.IsNullOrWhiteSpace(postData))
             {
-                var dataListID = environmentModel.UploadToDataList(postData);
+                var dataListID = environmentModel.UploadToDataList(postData, out errors);
                 uriString = FormatUrl(uriString, dataListID);
+            }
+            else
+            {
+                errors = new ErrorResultTO();
             }
             browser.LoadSafe(uriString);
         }
@@ -136,7 +140,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #region UploadToDataList
 
-        public static Guid UploadToDataList(this IEnvironmentModel environmentModel, string postData)
+        public static Guid UploadToDataList(this IEnvironmentModel environmentModel, string postData, out ErrorResultTO errors) //Bug 8796, Added errors parameter
         {
             if(environmentModel == null)
             {
@@ -145,7 +149,6 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
             if(!string.IsNullOrEmpty(postData))
             {
-                ErrorResultTO errors;
                 string error;
                 var dataList = Dev2BinaryDataListFactory.CreateDataList();
                 dataList.TryCreateScalarTemplate(string.Empty, GlobalConstants.PostData, string.Empty, true, out error);
@@ -156,6 +159,8 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
                 return dataList.UID;
             }
+
+            errors = new ErrorResultTO();
             return Guid.Empty;
         }
 

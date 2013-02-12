@@ -1,5 +1,6 @@
 ﻿
 using CefSharp.Wpf;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using System;
@@ -94,7 +95,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void EventHandler(object sender, BrowseRequestedEventArgs e)
         {
-            AssociatedObject.Post(e.Url, e.EnvironmentModel, e.Payload);
+            ErrorResultTO errors;
+            AssociatedObject.Post(e.Url, e.EnvironmentModel, e.Payload, out errors);
         }
 
         private void AssociatedObject_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

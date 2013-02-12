@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -153,7 +154,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
                             }
                         }
                         string payLoad = postData.XmlString;
-                        webBrowser.Post(uri, viewModel.ResourceEnvironment, payLoad);
+                        ErrorResultTO errors;
+                        webBrowser.Post(uri, viewModel.ResourceEnvironment, payLoad, out errors);
                     }
                 }
             }

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Dev2.Common;
+using Dev2.Diagnostics;
+using Dev2.Network;
+using Dev2.Network.Messages;
+using Dev2.Network.Messaging.Messages;
+using Dev2.Studio.Core.Network;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Network;
 using System.Threading;
 using System.Windows.Threading;
-using Dev2.Diagnostics;
-using Dev2.Network;
-using Dev2.Network.Messages;
-using Dev2.Network.Messaging.Messages;
-using Dev2.Studio.Core.Network;
 
 namespace Dev2.Studio.Core
 {
@@ -35,6 +36,11 @@ namespace Dev2.Studio.Core
         private volatile bool _loggedIn;
         private volatile NetworkState _networkState;
         private volatile Connection _primaryConnection;
+
+        private DispatcherFrame _clientDetailsReceivedFrame;
+        private object _clientDetailsReceivedLock;
+        private bool _clientDetailsReveived;
+        private ManualResetEventSlim _clientDetailsReceivedResetEvent;
 
         private DispatcherFrame _frame;
         private NetworkStateEventArgs _connectFrameArgs;
@@ -75,6 +81,10 @@ namespace Dev2.Studio.Core
         private TCPDispatchedClient(string name, bool isAuxiliary)
             : base(name)
         {
+            _clientDetailsReceivedLock = new object();
+            _clientDetailsReveived = false;
+            _clientDetailsReceivedResetEvent = new ManualResetEventSlim();
+
             _frameLock = new object();
             _commandLock = new object();
             _channels = new AsyncPacketHandlerCollection[16];
@@ -321,10 +331,83 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region Event Handling
+
+        //Bug 8796, Added this method because client details are sent asynchronously after a successfull login and there wasn't a reliable way to wait for them
+        /// <summary>
+        /// Waits for client details to be recieved from the server for up to 30 seconds.
+        /// </summary>
+        /// <returns>True if details are recieved within 30 seconds, otherwise false.</returns>
+        public bool WaitForClientDetails()
+        {
+            if (_clientDetailsReveived)
+            {
+                return _clientDetailsReveived;
+            }
+
+            try
+            {
+                lock (_clientDetailsReceivedLock)
+                {
+                    _clientDetailsReceivedFrame = new DispatcherFrame();
+                }
+
+                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => 
+                {
+                    _clientDetailsReceivedResetEvent.Reset();
+                    _clientDetailsReceivedResetEvent.Wait(GlobalConstants.NetworkTimeOut);
+
+                    DispatcherFrame frame;
+                    lock (_clientDetailsReceivedLock)
+                    {
+                        frame = _clientDetailsReceivedFrame;
+                    }
+
+                    if (frame != null)
+                    {
+                        frame.Continue = false;
+                    }
+                }), null);
+                Dispatcher.PushFrame(_clientDetailsReceivedFrame);
+            }
+            finally
+            {
+                DispatcherFrame frame;
+
+                lock (_clientDetailsReceivedLock)
+                {
+                    frame = _clientDetailsReceivedFrame;
+                    _clientDetailsReceivedFrame = null;
+                }
+
+                if (frame != null)
+                {
+                    frame.Continue = false;
+                }
+            }
+
+            return _clientDetailsReveived;
+        }
+
         private void OnClientDetailsReceived(INetworkOperator op, ByteBuffer reader)
         {
             _serverID = reader.ReadGuid();
             _accountID = reader.ReadGuid();
+
+            DispatcherFrame frame;
+
+            lock (_clientDetailsReceivedLock)
+            {
+                frame = _clientDetailsReceivedFrame;
+                _clientDetailsReceivedFrame = null;
+            }
+
+            _clientDetailsReveived = true;
+            _clientDetailsReceivedResetEvent.Set();
+
+            if (frame != null)
+            {
+                frame.Continue = false;
+            }
         }
 
         private void RaiseNetworkStateChanged(NetworkStateEventArgs args)
@@ -1097,6 +1180,7 @@ namespace Dev2.Studio.Core
 
                 try
                 {
+                    //TODO Put network timeout limit & deal with propogating the error
                     _handle.Wait(_source.Token);
                 }
                 catch(OperationCanceledException)

@@ -1101,6 +1101,7 @@ namespace Dev2.Server.Datalist
             if (!_dlServer.WriteDataList(payload.UID, payload, out errors))
             {
                 error = "Failed to write DataList";
+                r = false; //Bug 8796, r was never being set to false >.<
             }
 
             return r;

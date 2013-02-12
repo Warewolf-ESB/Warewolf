@@ -5,6 +5,9 @@ namespace Dev2.Common
 {
     public static class GlobalConstants
     {
+        //Network
+        public const int NetworkTimeOut = 10000; //Bug 8796
+
         //Resource Constants
         public const string ResourceFileExtension = ".xml";
 

@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
@@ -66,7 +67,8 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
                 var layoutGridViewModel = DataContext as ILayoutGridViewModel;
                 if(layoutGridViewModel != null && layoutGridViewModel.ResourceModel != null)
                 {
-                    webBrowser.Post(webBrowserNavigateRequestTO.Uri, layoutGridViewModel.ResourceModel.Environment, webBrowserNavigateRequestTO.Payload);
+                    ErrorResultTO errors;
+                    webBrowser.Post(webBrowserNavigateRequestTO.Uri, layoutGridViewModel.ResourceModel.Environment, webBrowserNavigateRequestTO.Payload, out errors);
                 }
             }
         }

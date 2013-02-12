@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
+﻿using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Network;
@@ -12,6 +6,11 @@ using Dev2.Network;
 using Dev2.Network.Messages;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Dev2.Studio.Core.Network.DataList
 {
@@ -139,14 +138,25 @@ namespace Dev2.Studio.Core.Network.DataList
                 Errors = errors,
             };
 
-            WriteDataListResultMessage resultMessage = SendSynchronousMessage(message) as WriteDataListResultMessage;
+            INetworkMessage rawResultMessage = SendSynchronousMessage(message);
+            WriteDataListResultMessage resultMessage = rawResultMessage as WriteDataListResultMessage;
 
             bool result = false;
-            
+
             if (resultMessage != null)
             {
                 result = resultMessage.Result;
                 UpdateErrorResultTO(errors, resultMessage.Errors);
+            }
+            else
+            {
+                ErrorMessage errorMessage = rawResultMessage as ErrorMessage;
+                if (errorMessage != null)
+                {
+                    ErrorResultTO errorTO = new ErrorResultTO();
+                    errorTO.AddError(errorMessage.Message);
+                    UpdateErrorResultTO(errors, errorTO);
+                }
             }
 
             return result;
@@ -173,7 +183,18 @@ namespace Dev2.Studio.Core.Network.DataList
                 Errors = errors,
             };
 
-            ReadDataListResultMessage resultMessage = SendSynchronousMessage(message) as ReadDataListResultMessage;
+            //ReadDataListResultMessage resultMessage = SendSynchronousMessage(message) as ReadDataListResultMessage;
+
+            //IBinaryDataList result = null;
+
+            //if (resultMessage != null)
+            //{
+            //    result = resultMessage.Datalist;
+            //    UpdateErrorResultTO(errors, resultMessage.Errors);
+            //}
+
+            INetworkMessage rawResultMessage = SendSynchronousMessage(message);
+            ReadDataListResultMessage resultMessage = rawResultMessage as ReadDataListResultMessage;
 
             IBinaryDataList result = null;
 
@@ -181,6 +202,16 @@ namespace Dev2.Studio.Core.Network.DataList
             {
                 result = resultMessage.Datalist;
                 UpdateErrorResultTO(errors, resultMessage.Errors);
+            }
+            else
+            {
+                ErrorMessage errorMessage = rawResultMessage as ErrorMessage;
+                if (errorMessage != null)
+                {
+                    ErrorResultTO errorTO = new ErrorResultTO();
+                    errorTO.AddError(errorMessage.Message);
+                    UpdateErrorResultTO(errors, errorTO);
+                }
             }
 
             return result;
@@ -229,7 +260,8 @@ namespace Dev2.Studio.Core.Network.DataList
                 ID = id,
             };
 
-            PersistChildChainResultMessage resultMessage = SendSynchronousMessage(message) as PersistChildChainResultMessage;
+            INetworkMessage rawResultMessage = SendSynchronousMessage(message);
+            PersistChildChainResultMessage resultMessage = rawResultMessage as PersistChildChainResultMessage;
 
             bool result = false;
 
@@ -368,7 +400,7 @@ namespace Dev2.Studio.Core.Network.DataList
                     tmpToken.SetResponse(null);
                 }
             }
-            return messageToken.WaitForResponse();
+            return messageToken.WaitForResponse(GlobalConstants.NetworkTimeOut);
         }
 
         /// <summary>

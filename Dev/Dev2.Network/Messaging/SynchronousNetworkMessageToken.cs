@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows.Threading;
-using Dev2.Network.Messages;
+﻿using Dev2.Network.Messages;
 using Dev2.Network.Messaging.Messages;
+using System;
+using System.Threading;
 
 namespace Dev2.Network.Messaging
 {
@@ -13,7 +9,6 @@ namespace Dev2.Network.Messaging
     {
         #region Class Members
 
-        private DispatcherTimer _timeoutTimer;
         private long _handle;
         private INetworkMessage _result;
         private ManualResetEventSlim _waitToken;
@@ -25,43 +20,31 @@ namespace Dev2.Network.Messaging
 
         public SynchronousNetworkMessageToken(long handle)
         {
-            _timeoutTimer = new DispatcherTimer();
-            _timeoutTimer.Tick += _timeoutTimer_Tick;
-            _timeoutTimer.Interval = new TimeSpan(0, 0, 10);
-
             _handle = handle;
             _waitToken = new ManualResetEventSlim();
             _cancelTokenSource = new CancellationTokenSource();
-        }
-
-        private void _timeoutTimer_Tick(object sender, EventArgs e)
-        {
-            _timeoutTimer.Stop();
-            if (!_waitToken.IsSet)
-            {
-                SetResponse(new ErrorMessage(_handle, "Send message timeout."));
-            }
         }
 
         #endregion Constructor
 
         #region Methods
 
-        public INetworkMessage WaitForResponse()
+        public INetworkMessage WaitForResponse(int timeOut)
         {
             bool cancelled = false;
 
             try
             {
-                _timeoutTimer.Start();
-                _waitToken.Wait(_cancelTokenSource.Token);
+                _waitToken.Wait(TimeSpan.FromMilliseconds(timeOut), _cancelTokenSource.Token); //Bug 8796, added timeout on wait
+                if (!_waitToken.IsSet)
+                {
+                    SetResponse(new ErrorMessage(_handle, "Send message timeout."));
+                }
             }
             catch (OperationCanceledException)
             {
                 cancelled = true;
             }
-
-            _timeoutTimer.Stop();
 
             if (cancelled)
             {

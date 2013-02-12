@@ -1,5 +1,4 @@
-﻿using Dev2.Common;
-using Dev2.DataList.Contract.Network;
+﻿using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Account;
 using Dev2.Studio.Core.Interfaces;
@@ -166,20 +165,19 @@ namespace Dev2.Studio.Core
             if (args.ToState == NetworkState.Online)
              {
                  LoginStateEventArgs lArgs = _client.Login(_username, _password);
+                 if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+                 {
+                     throw new Exception("Retrieving client details from the server timed out.");
+                 }
 
                  if (lArgs.LoggedIn)
                  {
                      DataChannel = new FrameworkDataChannelWrapper(this, _client, dns, port);
-
-                     // Commented out by Michael as it was a legacy test (Informed by Brendon)
-                     // DataChannel.ExecuteCommand(string.Format("<x><Service>{0}</Service></x>", Guid.NewGuid().ToString()), _client.AccountID, GlobalConstants.NullDataListID);
                      ExecutionChannel = new ExecutionClientChannel(_client);
                      DataListChannel = new DataListClientChannel(_client);
                  }
                  else
                  {
-                     //System.Windows.MessageBox.Show(lArgs.Message, "Login Failed", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-
                      if (!string.IsNullOrEmpty(Alias))
                      {
                          DisplayName = string.Format("{0} - (Unavailable) ", Alias);
@@ -253,8 +251,21 @@ namespace Dev2.Studio.Core
             private string _hostNameOrAddress;
             private int _port;
 
-            public Guid AccountID { get { return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.AccountID; } }
-            public Guid ServerID { get { return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.ServerID; } }
+            public Guid AccountID 
+            { 
+                get 
+                { 
+                    return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.AccountID; 
+                } 
+            }
+            
+            public Guid ServerID 
+            { 
+                get 
+                { 
+                    return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.ServerID; 
+                } 
+            }
 
             public FrameworkDataChannelWrapper(EnvironmentConnection environment, TCPDispatchedClient client, string hostNameOrAddress, int port)
             {
@@ -304,6 +315,10 @@ namespace Dev2.Studio.Core
                         if (args.ToState == NetworkState.Online)
                         {
                             LoginStateEventArgs lArgs = _client.Login(_username, _password);
+                            if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+                            {
+                                throw new Exception("Retrieving client details from the server timed out.");
+                            }
 
                             if (!lArgs.LoggedIn)
                             {
