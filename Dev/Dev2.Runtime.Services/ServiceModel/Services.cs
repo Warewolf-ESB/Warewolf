@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
@@ -78,19 +77,7 @@ namespace Dev2.Runtime.ServiceModel
                     for(var j = 0; j < 10; j++)
                     {
                         var varLength = j % 4 == 0 ? 30 : 15;
-
-                        var builder = new StringBuilder("@");
-                        char ch;
-                        for(int k = 0; k < varLength; k++)
-                        {
-                            ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                            if(k % 8 != 0)
-                            {
-                                ch = char.ToLower(ch);
-                            }
-                            builder.Append(ch);
-                        }
-                        method.Parameters.Add(new MethodParameter { Name = builder.ToString() });
+                        method.Parameters.Add(new MethodParameter { Name = random.GenerateString(varLength, "@") });
                     }
                     result.Add(method);
                 }
@@ -104,11 +91,12 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Service
+        #region Test
 
         // POST: Service/Services/Test
-        public string Test(string args, Guid workspaceID, Guid dataListID)
+        public Recordset Test(string args, Guid workspaceID, Guid dataListID)
         {
+            var recordset = new Recordset();
             try
             {
                 var service = JsonConvert.DeserializeObject<Service>(args);
@@ -123,14 +111,33 @@ namespace Dev2.Runtime.ServiceModel
                 }
 
                 // TODO: Implement real stuff
+                const int ColCount = 30;
+                if(string.IsNullOrEmpty(service.MethodRecordset.Name))
+                {
+                    recordset.Name = service.MethodName;
+                }
 
-                return service.ToString();
+                if(service.MethodRecordset.Fields.Count == 0)
+                {
+                    for(var j = 0; j < ColCount; j++)
+                    {
+                        recordset.Fields.Add("Column" + (j + 1));
+                    }
+                }
+                var random = new Random();
+                for(var i = 0; i < 15; i++)
+                {
+                    recordset.Records.Add(recordset, fieldIndex => random.GenerateString(30, string.Empty, true));
+                }
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+                recordset.HasErrors = true;
+                recordset.ErrorMessage = ex.Message;
             }
+
+            return recordset;
         }
 
         #endregion
@@ -168,5 +175,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+
     }
 }

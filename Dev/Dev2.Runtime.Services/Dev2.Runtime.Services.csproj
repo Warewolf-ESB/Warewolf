@@ -67,6 +67,12 @@
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
     <Compile Include="ServiceModel\Data\MethodParameterList.cs" />
+    <Compile Include="ServiceModel\Data\Recordset.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetCell.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetRecord.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetRecordList.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetField.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetFieldList.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Data\DbService.cs" />
     <Compile Include="ServiceModel\Data\DbSource.cs" />
@@ -93,6 +99,7 @@
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Data\Resource.cs" />
     <Compile Include="ServiceModel\Services.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="ServiceModel\WebModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string MethodName { get; set; }
         public MethodParameterList MethodParameters { get; set; }
-        public MethodOutputList MethodOutputs { get; set; }
+        public Recordset MethodRecordset { get; set; }
     }
 }
