@@ -352,6 +352,76 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return controlList.Text;
         }
 
+        public void AssignControl_ClickQuickVariableInputButton(UITestControl theTab, string controlAutomationId)
+        {
+            WpfButton quickVarButton = GetQuickVariableInputButton(theTab, controlAutomationId);
+            Mouse.Move(new Point (quickVarButton.BoundingRectangle.X + 5, quickVarButton.BoundingRectangle.Y + 5));
+            Mouse.Click();
+        }
+
+        public void AssignControl_QuickVariableInputControl_EnterData(UITestControl theTab, string controlAutomationId, string splitOn, string prefix, string suffix, string variableList)
+        {
+            // Find the control
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControlCollection assignControlCollection = assignControl.GetChildren();
+            UITestControl qviControl = new UITestControl();
+            foreach(UITestControl theControl in assignControlCollection)
+            {
+                if(theControl.FriendlyName == "quickVariableInputControl")
+                {
+                    qviControl = theControl;
+                    break;
+                }
+            }
+
+            UITestControlCollection qviChildren = qviControl.GetChildren();
+            UITestControl splitTxt = new UITestControl();
+            foreach (UITestControl theControl in qviChildren)
+            {
+                if (theControl.FriendlyName == "SplitTokenTxt")
+                {
+                    splitTxt = theControl;
+                    break;
+                }
+            }
+
+            Mouse.Click(splitTxt, new Point(15, 5));
+            Thread.Sleep(250);
+            // And enter all the data
+            SendKeys.SendWait(splitOn);
+            Thread.Sleep(250);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(250);
+            SendKeys.SendWait(prefix);
+            Thread.Sleep(250);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(250);
+            SendKeys.SendWait(suffix);
+            Thread.Sleep(250);
+            SendKeys.SendWait("{TAB}");
+            Thread.Sleep(250);
+            SendKeys.SendWait(variableList);
+            Thread.Sleep(1000);
+        }
+
+        public void AssignControl_QuickVariableInputControl_ClickAdd(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControlCollection assignControlCollection = assignControl.GetChildren();
+            UITestControl qviControl = new UITestControl();
+            foreach (UITestControl theControl in assignControlCollection)
+            {
+                if (theControl.FriendlyName == "quickVariableInputControl")
+                {
+                    qviControl = theControl;
+                    break;
+                }
+            }
+
+            UITestControlCollection qviChildren = qviControl.GetChildren();
+            Mouse.Click(qviChildren[14], new Point(5, 5));
+        }
+
         #endregion Assign Control
 
         #region BaseConvert Control

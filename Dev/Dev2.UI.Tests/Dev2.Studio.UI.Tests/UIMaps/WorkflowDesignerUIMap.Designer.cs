@@ -41,6 +41,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             Mouse.Click(designer, new Point(297, 78));
         }
 
+        private WpfButton GetQuickVariableInputButton(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
+            WpfButton controlButtons = new WpfButton(aControl);
+            UITestControlCollection buttonCollection = controlButtons.FindMatchingControls();
+            foreach(WpfButton theButton in buttonCollection)
+            {
+                if(theButton.FriendlyName == "Quick Variable Input")
+                {
+                    return theButton;
+                }
+            }
+            throw new Exception("Error - The Quick Variable Input button could not be located!");
+        }
+
         /// <summary>
         /// TestMethodForWF
         /// </summary>

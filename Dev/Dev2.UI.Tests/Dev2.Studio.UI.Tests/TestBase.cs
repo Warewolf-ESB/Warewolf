@@ -87,7 +87,7 @@ namespace Dev2.CodedUI.Tests
             // Whilst debugging a Coded UI Test, you might want to keep the Workflow Designer as is
             // In this case, you should set it to false
 // ReSharper disable ReplaceWithSingleAssignment.False
-            bool toCheck = true;
+            bool toCheck = false;
 
             // On the test box, all test initialisations should always run
             if (GetStudioWindowName().Contains("IntegrationTester"))
@@ -342,6 +342,38 @@ namespace Dev2.CodedUI.Tests
 
         }
 
+        #region New PBI Tests
+
+        // PBI 8601 (Task 8855)
+        [TestMethod]
+        public void QuickVariableInputFromListTest()
+        {
+            // Create the workflow
+            CreateCustomWorkflow("PBI8601Test");
+            Thread.Sleep(2500);
+            UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601Test");
+
+            // Add an assign control
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+
+            // Click the Adorner button
+            WorkflowDesignerUIMap.AssignControl_ClickQuickVariableInputButton(theTab, "Assign");
+
+            // Enter soem data
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
+
+            // Click done
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
+
+            // Check the data
+            string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
+            StringAssert.Contains(varName, "[[pre_varOne_suf]]");
+
+            // All good - Clean up!
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "PBI8601Test");
+        }
+
+        #endregion New PBI Tests
         #region Bugs
 
         // All bugs have been moved to BugTests.cs
