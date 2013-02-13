@@ -1119,7 +1119,34 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(myTestBase.OutputUIMap.DoesBug8747Pass());
         }
 
-        
+        // Bug 8803
+        [TestMethod]
+        public void DeployNonSavedItem_Expected_ItemIsDeployed()
+        {
+            // Create a Workflow
+            myTestBase.CreateCustomWorkflow("Bug8803");
+            
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8803");
+
+            // Drag a calculate control, set it as the start node, and enter some data
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Calculate", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
+            WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(5,10)", "[[myResult]]");
+
+            // And deploy it (Without saving)
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
+
+            // Wait for the deploy tab to open, and make sure something has been chosen to deploy
+            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
+            Assert.IsTrue(DeployViewUIMap.DoesSourceServerHaveDeployItems(deployTab), "No workflow was set to deploy!");
+
+            // Clean up
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
+        }
+
 
         private int GetInstanceUnderParent(UITestControl control)
         {

@@ -1,4 +1,6 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
+﻿using System.Threading;
+
+namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
     using System;
     using System.Collections.Generic;
@@ -40,16 +42,19 @@
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             SendKeys.SendWait("{ENTER}");
-            //workflowDesignerUIMap.FindControlByAutomationID(null, "
-            //workflowDesignerUIMap.ClickControl(
+
+            // Add some focus, and dleay to make sure everything is fine
+            Thread.Sleep(2500);
+            Mouse.Click(new Point(Screen.PrimaryScreen.WorkingArea.Width - 10, Screen.PrimaryScreen.WorkingArea.Height / 2));
+            Thread.Sleep(2500);
         }
 
         public void ClickServerInServerDDL(string serverName)
