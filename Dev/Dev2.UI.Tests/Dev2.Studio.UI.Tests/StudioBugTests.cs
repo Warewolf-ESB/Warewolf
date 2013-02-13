@@ -1213,7 +1213,30 @@ namespace Dev2.Studio.UI.Tests
             // Clean up
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
         }
-        
+
+        // Bug 8819
+        [TestMethod]
+        public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
+        {
+            // Choose to deploy one of our own items
+            ExplorerUIMap.DoRefresh();
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+
+            // Set ourself as the destination server
+            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
+            DeployViewUIMap.ChooseDestinationServer(deployTab, "localhost");
+
+            // Make sure the Destination server has items
+            Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab));
+
+            // Enter a filter in the destination server
+            DeployViewUIMap.EnterTextInDestinationServerFilterBox(deployTab, "zzzzzzzzz");
+
+            // And make sure it still has items
+            Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
+        }
+
 
         private int GetInstanceUnderParent(UITestControl control)
         {

@@ -30,7 +30,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
     public partial class DeployViewUIMap
     {
 
-        public void DeployTabSomeStuffItDoes()
+        private void DeployTabSomeStuffItDoes()
         {
             //#region Variable Declarations
             //WpfComboBox uIUI_SourceServercbx_AComboBox = this.UIBusinessDesignStudioWindow.UIDeployResourcesCustom.UIDeployUserControlCustom.UIUI_SourceServercbx_AComboBox;
@@ -56,6 +56,27 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             //Mouse.Click(uIDev2StudioCoreViewMoTreeItem1, new Point(45, 7));
         }
 
+        private UITestControl DestinationServerTreeviewExplorer(UITestControl theTab)
+        {
+            UITestControlCollection allChildren = DeployTabsChildren(theTab);
+            UITestControl targetNavigationView = new UITestControl();
+            foreach(UITestControl theControl in allChildren)
+            {
+                if (theControl.GetProperty("AutomationId").ToString() == "TargetNavigationView")
+                {
+                    targetNavigationView = theControl;
+                    break;
+                }
+            }
+
+            return targetNavigationView.GetChildren()[0];
+        }
+
+        private UITestControlCollection DeployTabsChildren(UITestControl theTab)
+        {
+            return GetDeployUserControlChildren(theTab);
+        }
+
         private UITestControl GetSourceServerList(UITestControl theTab)
         {
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
@@ -77,6 +98,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             foreach (UITestControl theControl in requiredChildren)
             {
                 if (theControl.GetProperty("AutomationId").ToString() == "UI_SourceServerSearchtxt_AutoID")
+                {
+                    return (WpfEdit)theControl;
+                }
+            }
+
+            return null;
+        }
+
+        private WpfEdit GetDestinationServerFilterBox(UITestControl theTab)
+        {
+
+            WpfEdit editControl = new WpfEdit();
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            foreach (UITestControl theControl in requiredChildren)
+            {
+                if (theControl.GetProperty("AutomationId").ToString() == "UI_DestinationServerSearchtxt_AutoID")
                 {
                     return (WpfEdit)theControl;
                 }

@@ -1,18 +1,8 @@
 ﻿namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
-    using System;
-    using System.Collections.Generic;
     using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Windows.Forms;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 
@@ -28,7 +18,7 @@
             ChooseDestinationServer(theTab, destinationServer);
         }
 
-        private void ChooseSourceServer(UITestControl theTab, string serverName)
+        public void ChooseSourceServer(UITestControl theTab, string serverName)
         {
             UITestControl sourceServerList = GetSourceServerList(theTab);
             WpfComboBox wpfComboList = (WpfComboBox)sourceServerList;
@@ -43,7 +33,7 @@
             }
         }
 
-        private void ChooseDestinationServer(UITestControl theTab, string serverName)
+        public void ChooseDestinationServer(UITestControl theTab, string serverName)
         {
             UITestControl destinationServerList = GetDestinationServerList(theTab);
             WpfComboBox wpfComboList = (WpfComboBox)destinationServerList;
@@ -124,6 +114,19 @@
             return (sourceCount > 0);
         }
 
+        public bool DoesDestinationServerHaveItems(UITestControl theTab)
+        {
+            UITestControl destinationExplorer = DestinationServerTreeviewExplorer(theTab);
+            if(destinationExplorer.GetChildren().Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public void ClickDeploy(UITestControl theTab)
         {
             WpfButton deployButton = GetDeployButton(theTab);
@@ -133,6 +136,12 @@
         public void EnterTextInSourceServerFilterBox(UITestControl theTab, string text)
         {
             WpfEdit theBox = GetSourceServerFilterBox(theTab);
+            theBox.Text = text;
+        }
+
+        public void EnterTextInDestinationServerFilterBox(UITestControl theTab, string text)
+        {
+            WpfEdit theBox = GetDestinationServerFilterBox(theTab);
             theBox.Text = text;
         }
 
