@@ -1121,7 +1121,7 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 8803
         [TestMethod]
-        public void DeployNonSavedItem_Expected_ItemIsDeployed()
+        public void DeployNonSavedItem_Expected_ItemIsDeployable()
         {
             // Create a Workflow
             myTestBase.CreateCustomWorkflow("Bug8803");
