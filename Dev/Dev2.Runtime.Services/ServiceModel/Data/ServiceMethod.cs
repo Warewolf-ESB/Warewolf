@@ -1,15 +1,18 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
+    [DataContract]
     public class ServiceMethod
     {
         #region CTOR
 
-        public ServiceMethod() : this("", null, null, null)
+        public ServiceMethod()
+            : this("", null, null, null)
         {
         }
 
@@ -20,12 +23,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             Parameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
 
-            if (parameters != null)
+            if(parameters != null)
             {
                 Parameters.AddRange(parameters);
             }
 
-            if (outputs != null)
+            if(outputs != null)
             {
                 Outputs.AddRange(outputs);
             }
@@ -35,9 +38,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Properties
 
+        [DataMember]
         public string Name { get; set; }
 
-        public List<MethodParameter> Parameters { get; private set; }
+        [DataMember]
+        public List<MethodParameter> Parameters { get; set; }
+
+        [DataMember]
+        public string SourceCode { get; set; }
 
         public List<MethodOutput> Outputs { get; private set; }
 

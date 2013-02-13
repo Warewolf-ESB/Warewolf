@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -23,15 +22,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override XElement ToXml()
         {
             var result = base.ToXml();
-            result.Add(new XAttribute("MethodName", MethodName ?? string.Empty));
+            if(Method != null)
+            {
+                result.Add(Method.ToXml());
+            }
 
             return result;
         }
 
         #endregion
 
-        public string MethodName { get; set; }
-        public List<MethodParameter> MethodParameters { get; set; }
-        public Recordset MethodRecordset { get; set; }
+        public ServiceMethod Method { get; set; }
+        public Recordset Recordset { get; set; }
     }
 }

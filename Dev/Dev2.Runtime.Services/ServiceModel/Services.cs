@@ -59,16 +59,7 @@ namespace Dev2.Runtime.ServiceModel
                 //3. Create instances for ServiceAction for each action
                 //4. Return the JSON representation of the service actions
 
-                var service = JsonConvert.DeserializeObject<Service>(args);
-                switch(service.ResourceType)
-                {
-                    case enSourceType.SqlDatabase:
-                    case enSourceType.MySqlDatabase:
-                        service = JsonConvert.DeserializeObject<DbService>(args);
-                        break;
-                    case enSourceType.Plugin:
-                        break;
-                }
+                var service = DeserializeService(args);
 
                 var random = new Random();
                 for(var i = 0; i < 50; i++)
@@ -79,6 +70,8 @@ namespace Dev2.Runtime.ServiceModel
                         var varLength = j % 4 == 0 ? 30 : 15;
                         method.Parameters.Add(new MethodParameter { Name = random.GenerateString(varLength, "@") });
                     }
+                    method.SourceCode = "ALTER procedure " + method.Name + "\n(\n\t@CakeName varchar(50)\n)\nas\n\nselect * from Country \nwhere [Description] like @Prefix + '%'\norder by Description asc";
+
                     result.Add(method);
                 }
             }
@@ -98,27 +91,20 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = JsonConvert.DeserializeObject<Service>(args);
-                switch(service.ResourceType)
+                var service = DeserializeService(args);
+
+                if(string.IsNullOrEmpty(service.Recordset.Name))
                 {
-                    case enSourceType.SqlDatabase:
-                    case enSourceType.MySqlDatabase:
-                        service = JsonConvert.DeserializeObject<DbService>(args);
-                        break;
-                    case enSourceType.Plugin:
-                        break;
+                    service.Recordset.Name = service.Method.Name;
                 }
 
-                if(string.IsNullOrEmpty(service.MethodRecordset.Name))
-                {
-                    service.MethodRecordset.Name = service.MethodName;
-                }
-
-                var addFields = service.MethodRecordset.Fields.Count == 0;
+                var addFields = service.Recordset.Fields.Count == 0;
                 if(addFields)
                 {
-                    service.MethodRecordset.Fields.Clear();
+                    service.Recordset.Fields.Clear();
                 }
+                service.Recordset.Records.Clear();
+
                 return FetchRecordset(service, addFields);
             }
             catch(Exception ex)
@@ -137,16 +123,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = JsonConvert.DeserializeObject<Service>(args);
-                switch(service.ResourceType)
-                {
-                    case enSourceType.SqlDatabase:
-                    case enSourceType.MySqlDatabase:
-                        service = JsonConvert.DeserializeObject<DbService>(args);
-                        break;
-                    case enSourceType.Plugin:
-                        break;
-                }
+                var service = DeserializeService(args);
 
                 if(service.ResourceID == Guid.Empty)
                 {
@@ -168,18 +145,13 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual Recordset FetchRecordset(Service service, bool addFields)
         {
-            if(string.IsNullOrEmpty(service.MethodRecordset.Name))
-            {
-                service.MethodRecordset.Name = service.MethodName;
-            }
-
             if(addFields)
             {
                 // TODO: Implement real stuff
                 for(var j = 0; j < 30; j++)
                 {
                     var colName = "Column" + (j + 1);
-                    service.MethodRecordset.Fields.Add(new RecordsetField { Name = colName, Alias = colName });
+                    service.Recordset.Fields.Add(new RecordsetField { Name = colName, Alias = colName });
                 }
             }
 
@@ -187,13 +159,33 @@ namespace Dev2.Runtime.ServiceModel
             var random = new Random();
             for(var i = 0; i < 15; i++)
             {
-                service.MethodRecordset.AddRecord(fieldIndex => random.GenerateString(30, string.Empty, true));
+                service.Recordset.AddRecord(fieldIndex => random.GenerateString(30, string.Empty, true));
             }
 
-            return service.MethodRecordset;
+            return service.Recordset;
         }
 
         #endregion
+
+        #region DeserializeService
+
+        static Service DeserializeService(string args)
+        {
+            var service = JsonConvert.DeserializeObject<Service>(args);
+            switch(service.ResourceType)
+            {
+                case enSourceType.SqlDatabase:
+                case enSourceType.MySqlDatabase:
+                    return JsonConvert.DeserializeObject<DbService>(args);
+
+                case enSourceType.Plugin:
+                    break;
+            }
+            return service;
+        }
+
+        #endregion
+
 
     }
 }

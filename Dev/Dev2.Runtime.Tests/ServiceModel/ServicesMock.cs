@@ -5,13 +5,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
     public class ServicesMock : Dev2.Runtime.ServiceModel.Services
     {
         public int FetchRecordsetHitCount { get; set; }
-        public bool FetchRecordsetUpdateFields { get; set; }
+        public bool FetchRecordsetAddFields { get; set; }
 
-        public override Recordset FetchRecordset(Service service, bool updateFields)
+        public override Recordset FetchRecordset(Service service, bool addFields)
         {
             FetchRecordsetHitCount++;
-            FetchRecordsetUpdateFields = updateFields;
-            return service.MethodRecordset;
+            FetchRecordsetAddFields = addFields;
+            return service.Recordset;
         }
     }
 }
