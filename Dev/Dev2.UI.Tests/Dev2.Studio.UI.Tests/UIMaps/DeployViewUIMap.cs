@@ -133,6 +133,12 @@
             Mouse.Move(deployButton, new Point(10, 10));
         }
 
+        public bool IsDeployButtonEnabled(UITestControl theTab)
+        {
+            WpfButton deployButton = GetDeployButton(theTab);
+            return deployButton.Enabled;
+        }
+
         public void EnterTextInSourceServerFilterBox(UITestControl theTab, string text)
         {
             WpfEdit theBox = GetSourceServerFilterBox(theTab);
