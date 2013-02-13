@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -30,7 +31,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #endregion
 
         public string MethodName { get; set; }
-        public MethodParameterList MethodParameters { get; set; }
+        public List<MethodParameter> MethodParameters { get; set; }
         public Recordset MethodRecordset { get; set; }
     }
 }

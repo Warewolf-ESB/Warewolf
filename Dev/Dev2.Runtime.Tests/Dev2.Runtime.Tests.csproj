@@ -76,11 +76,14 @@
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\ConnectionsMock.cs" />
-    <Compile Include="ServiceModel\ConnectionTests.cs" />
+    <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerMock.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerTests.cs" />
+    <Compile Include="ServiceModel\ServicesMock.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
-    <Compile Include="ServiceModel\ResourceTests.cs" />
+    <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
@@ -177,7 +180,6 @@
     <EmbeddedResource Include="XML\InternallySigned.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ServiceModel\Data\" />
     <Folder Include="ServiceModel\Esb\Controllers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

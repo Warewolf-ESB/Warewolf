@@ -96,7 +96,6 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Services/Test
         public Recordset Test(string args, Guid workspaceID, Guid dataListID)
         {
-            var recordset = new Recordset();
             try
             {
                 var service = JsonConvert.DeserializeObject<Service>(args);
@@ -110,34 +109,23 @@ namespace Dev2.Runtime.ServiceModel
                         break;
                 }
 
-                // TODO: Implement real stuff
-                const int ColCount = 30;
                 if(string.IsNullOrEmpty(service.MethodRecordset.Name))
                 {
-                    recordset.Name = service.MethodName;
+                    service.MethodRecordset.Name = service.MethodName;
                 }
 
-                if(service.MethodRecordset.Fields.Count == 0)
+                var addFields = service.MethodRecordset.Fields.Count == 0;
+                if(addFields)
                 {
-                    for(var j = 0; j < ColCount; j++)
-                    {
-                        recordset.Fields.Add("Column" + (j + 1));
-                    }
+                    service.MethodRecordset.Fields.Clear();
                 }
-                var random = new Random();
-                for(var i = 0; i < 15; i++)
-                {
-                    recordset.Records.Add(recordset, fieldIndex => random.GenerateString(30, string.Empty, true));
-                }
+                return FetchRecordset(service, addFields);
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
-                recordset.HasErrors = true;
-                recordset.ErrorMessage = ex.Message;
+                return new Recordset { HasErrors = true, ErrorMessage = ex.Message };
             }
-
-            return recordset;
         }
 
         #endregion
@@ -176,6 +164,36 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        #region FetchRecordset
+
+        public virtual Recordset FetchRecordset(Service service, bool addFields)
+        {
+            if(string.IsNullOrEmpty(service.MethodRecordset.Name))
+            {
+                service.MethodRecordset.Name = service.MethodName;
+            }
+
+            if(addFields)
+            {
+                // TODO: Implement real stuff
+                for(var j = 0; j < 30; j++)
+                {
+                    var colName = "Column" + (j + 1);
+                    service.MethodRecordset.Fields.Add(new RecordsetField { Name = colName, Alias = colName });
+                }
+            }
+
+            // TODO: Implement real stuff
+            var random = new Random();
+            for(var i = 0; i < 15; i++)
+            {
+                service.MethodRecordset.AddRecord(fieldIndex => random.GenerateString(30, string.Empty, true));
+            }
+
+            return service.MethodRecordset;
+        }
+
+        #endregion
 
     }
 }

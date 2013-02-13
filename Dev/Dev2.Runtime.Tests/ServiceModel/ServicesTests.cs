@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Dev2.Common;
 using Dev2.DynamicServices;
@@ -18,8 +19,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         const string SourceName = "BobsDB";
         const string ServiceName = "BobsCustomers";
         const string ServiceResourceType = "SqlDatabase";
+        const string MethodName = "dbo.Pr_GetCake_05";
+
+        const string JsonMethod = "\"methodName\":\"" + MethodName + "\",\"methodParameters\":[{{\"Name\":\"@Param1\",\"EmptyToNull\":false,\"IsRequired\":false,\"Value\":\"\",\"DefaultValue\":\"\"}}],\"methodRecordset\":{{\"Name\":\"\",\"Fields\":[],\"Records\":[]}}";
         const string JsonSource = "{{\"resourceID\":\"{0}\",\"resourceType\":\"SqlDatabase\",\"resourceName\":\"" + SourceName + "\",\"resourcePath\":\"Bob\"}}";
-        const string JsonService = "{{\"resourceID\":\"{0}\",\"resourceType\":\"" + ServiceResourceType + "\",\"resourceName\":\"" + ServiceName + "\",\"resourcePath\":\"Bob\",\"source\":{1}}}";
+        const string JsonService = "{{\"resourceID\":\"{0}\",\"resourceType\":\"" + ServiceResourceType + "\",\"resourceName\":\"" + ServiceName + "\",\"resourcePath\":\"Bob\",\"source\":{1}," + JsonMethod + "}}";
 
         #region Methods
 
@@ -46,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var jsonService = string.Format(JsonService, Guid.Empty, jsonSource);
 
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            GlobalConstants.GetWorkspacePath(workspaceID);
 
             var services = new Dev2.Runtime.ServiceModel.Services();
             var result = services.Methods(jsonService, workspaceID, Guid.Empty);
@@ -205,5 +209,137 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #endregion
+
+        #region Test
+
+        [TestMethod]
+        public void TestWithNullArgsExpectedReturnsRecordsetWithError()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.Test(null, Guid.Empty, Guid.Empty);
+            Assert.IsTrue(result.HasErrors);
+        }
+
+        [TestMethod]
+        public void TestWithInvalidArgsExpectedReturnsRecordsetWithError()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.Test("xxx", Guid.Empty, Guid.Empty);
+            Assert.IsTrue(result.HasErrors);
+        }
+
+        [TestMethod]
+        public void TestWithValidArgsAndNoRecordsetNameExpectedUpdatesRecordsetNameToServiceMethodName()
+        {
+            var service = CreateCountriesDbService();
+            service.MethodRecordset.Name = null;
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            var services = new ServicesMock();
+            var result = services.Test(args, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(result.Name, service.MethodName);
+        }
+
+        [TestMethod]
+        public void TestWithValidArgsAndRecordsetNameExpectedDoesNotUpdateRecordsetNameToServiceMethodName()
+        {
+            var service = CreateCountriesDbService();
+            service.MethodRecordset.Name = "MyCities";
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            var services = new ServicesMock();
+            var result = services.Test(args, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(result.Name, service.MethodRecordset.Name);
+        }
+
+        [TestMethod]
+        public void TestWithValidArgsAndRecordsetFieldsExpectedDoesNotAddRecordsetFields()
+        {
+            var service = CreateCountriesDbService();
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            var services = new ServicesMock();
+            var result = services.Test(args, workspaceID, Guid.Empty);
+            Assert.IsFalse(services.FetchRecordsetUpdateFields);
+            Assert.AreEqual(service.MethodRecordset.Fields.Count, result.Fields.Count);
+        }
+
+        [TestMethod]
+        public void TestWithValidArgsAndNoRecordsetFieldsExpectedAddsRecordsetFields()
+        {
+            var service = CreateCountriesDbService();
+            service.MethodRecordset.Fields.Clear();
+
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            var services = new ServicesMock();
+            services.Test(args, workspaceID, Guid.Empty);
+            Assert.IsTrue(services.FetchRecordsetUpdateFields);
+        }
+
+        [TestMethod]
+        public void TestWithValidArgsExpectedFetchesRecordset()
+        {
+            var service = CreateCountriesDbService();
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            var services = new ServicesMock();
+            var result = services.Test(args, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(1, services.FetchRecordsetHitCount);
+            Assert.AreEqual(result.Name, service.MethodRecordset.Name);
+            Assert.AreEqual(result.Fields.Count, service.MethodRecordset.Fields.Count);
+        }
+
+        #endregion
+
+        #region CreateDbService
+
+        static Service CreateCountriesDbService()
+        {
+            var service = new DbService
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "CountriesService",
+                ResourceType = enSourceType.SqlDatabase,
+                ResourcePath = "Test",
+                MethodName = "dbo.spGetCountries",
+                MethodParameters = new List<MethodParameter>(new[]
+                {
+                    new MethodParameter("@Prefix", false, true, null, "b")
+                }),
+                MethodRecordset = new Recordset
+                {
+                    Name = "Countries",
+                },
+                Source = new DbSource
+                {
+
+                    ResourceID = Guid.NewGuid(),
+                    ResourceName = "CitiesDB",
+                    ResourceType = enSourceType.SqlDatabase,
+                    ResourcePath = "Test",
+                    Server = "RSAKLFSVRGENDEV",
+                    Database = "Cities",
+                    AuthenticationType = AuthenticationType.Windows,
+                }
+            };
+            service.MethodRecordset.Fields.AddRange(new[]
+            {
+                new RecordsetField{Name = "CountryID", Alias = "CountryID"}, 
+                new RecordsetField{Name = "Description", Alias = "Name"}
+            });
+            return service;
+        }
+
+        #endregion
+
     }
 }
