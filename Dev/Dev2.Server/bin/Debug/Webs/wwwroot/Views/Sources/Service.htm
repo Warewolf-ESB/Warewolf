@@ -146,7 +146,7 @@
                     </div>
                     <div style="width: 480px; margin-top: 10px;">
                         <label class="inline" for="recordsetName">Recordset Name:</label>
-                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.recordset.Name" />
+                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.recordset.Name, valueUpdate: 'afterkeydown'" />
                         <br />
                         <span style="font-size: 0.95em;"><b>Note:</b> Recordset name is optional if only returning 1 record.</span>
                     </div>

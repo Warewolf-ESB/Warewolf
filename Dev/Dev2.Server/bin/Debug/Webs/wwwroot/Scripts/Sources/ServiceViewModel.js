@@ -49,7 +49,9 @@
     });
     self.hasTestResults = ko.observable(false);
     self.isFormValid = ko.computed(function () {
-        return self.hasMethod() && self.hasTestResults();
+        var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
+        console.log("isRecordsetNameOptional: " + isRecordsetNameOptional);
+        return isRecordsetNameOptional ? true : self.data.recordset.Name !== "";
     });
     
     self.data.source.subscribe(function (newValue) {
