@@ -82,16 +82,15 @@ namespace Dev2.Runtime.ServiceModel
                 }
                 ResourceIterator.Iterate(new[] { RootFolders[sourceType] }, workspaceID, iteratorResult =>
                 {
-                    if(iteratorResult.Values.Count < 2)
+                    string value;
+                    if(iteratorResult.Values.TryGetValue(1, out value))
                     {
-                        return false;
+                        names.Add(value);
                     }
-                    names.Add(iteratorResult.Values[1]);
-                    if(iteratorResult.Values.Count < 3)
+                    if(iteratorResult.Values.TryGetValue(2, out value))
                     {
-                        return false;
+                        paths.Add(value);
                     }
-                    paths.Add(iteratorResult.Values[2]);
                     return true;
                 }, new Delimiter
                 {
@@ -121,7 +120,11 @@ namespace Dev2.Runtime.ServiceModel
 
             ResourceIterator.Iterate(RootFolders.Values.Distinct(), workspaceID, iteratorResult =>
             {
-                result.Add(iteratorResult.Values[1]);
+                string value;
+                if(iteratorResult.Values.TryGetValue(1, out value))
+                {
+                    result.Add(value);
+                }
                 return true;
             }, new Delimiter
             {
@@ -149,13 +152,13 @@ namespace Dev2.Runtime.ServiceModel
 
             ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
             {
-                if(iteratorResult.Values[1].Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase))
+                string value;
+                if(iteratorResult.Values.TryGetValue(1, out value) && value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // older resources may not have an ID yet!!
-                    string resourceIDStr;
-                    iteratorResult.Values.TryGetValue(2, out resourceIDStr);
+                    iteratorResult.Values.TryGetValue(2, out value);
                     Guid resourceID;
-                    Guid.TryParse(resourceIDStr, out resourceID);
+                    Guid.TryParse(value, out resourceID);
 
                     resources.Add(new Resource
                     {
@@ -195,7 +198,8 @@ namespace Dev2.Runtime.ServiceModel
 
             ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
             {
-                if(resourceID.Equals(iteratorResult.Values[1], StringComparison.InvariantCultureIgnoreCase))
+                string value;
+                if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = iteratorResult.Content;
                     return false;
