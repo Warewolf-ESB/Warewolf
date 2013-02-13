@@ -248,6 +248,7 @@
     <Compile Include="Dev2.Studio.Core.Tests\Feedback\FeedbackRecorderTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\PngTests.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\StudioServerCommsTests.cs" />
     <Compile Include="Enums\Activities.cs" />
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
