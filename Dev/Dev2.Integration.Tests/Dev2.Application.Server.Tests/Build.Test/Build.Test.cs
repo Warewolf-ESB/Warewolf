@@ -1,5 +1,4 @@
-﻿using Dev2.Common.ExtMethods;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
@@ -8,8 +7,6 @@ using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Build.Tests
@@ -79,19 +76,6 @@ namespace Dev2.Integration.Tests.Build.Tests
         #endregion Server Listening Tests
 
         #region Additional test attributes
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext TestContext)
-        {
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory))
-            {
-                throw new Exception(string.Format("'{0}' doesn't exit. Failed to copy the necessary files into the test deployment directory", AppDomain.CurrentDomain.BaseDirectory));
-            }
-
-            DirectoryInfo id = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-            id.Copy(TestContext.DeploymentDirectory, true, false);
-            //id.Copy(Assembly.GetExecutingAssembly().Location, true, false);
-        }
 
         /// <summary>
         /// We are setting MEF up here to retrieve all exports and use them for dependency injection

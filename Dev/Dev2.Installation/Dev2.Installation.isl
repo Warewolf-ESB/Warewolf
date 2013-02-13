@@ -253,6 +253,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<row><td>ISExpHlp.dll</td><td/><td>&lt;ISProductFolder&gt;\redist\language independent\i386\ISExpHlp.dll</td></row>
 		<row><td>ISSELFREG.DLL</td><td/><td>&lt;ISProductFolder&gt;\redist\language independent\i386\isregsvr.dll</td></row>
+		<row><td>ISSetupFilesHelper</td><td/><td>&lt;ISProductFolder&gt;\redist\language independent\i386\SFHelper.dll</td></row>
 		<row><td>NewBinary1</td><td/><td>&lt;ISProductFolder&gt;\Support\Themes\InstallShield Blue Theme\banner.jpg</td></row>
 		<row><td>NewBinary10</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CompleteSetupIco.ibd</td></row>
 		<row><td>NewBinary11</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CustomSetupIco.ibd</td></row>
@@ -360,7 +361,7 @@
 		<row><td>Dev2.Runtime.Services.dll</td><td>{70654BB6-3450-4F50-8331-E751206D87FA}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.services.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Dev2.Runtime.WebServer.dll</td><td>{C6733085-F078-49DC-BF34-C91B4A36ADFB}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.webserver.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Dev2.Runtime.dll</td><td>{F9B2AC57-66A1-4AF1-B985-C9BB237F0D26}</td><td>SERVER</td><td>2</td><td/><td>dev2.runtime.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Dev2.Server.exe</td><td>{8B79257F-56BB-44CA-B587-19FAD6545C6A}</td><td>SERVER</td><td>2</td><td/><td>dev2.server.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Dev2.Server.exe</td><td>{8B79257F-56BB-44CA-B587-19FAD6545C6A}</td><td>SERVER</td><td>2</td><td/><td>dev2.server.exe</td><td>81</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Dev2.Studio.Core.dll</td><td>{EF95CCB5-575B-4CA1-9722-E483F7F92DD5}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Dev2.Studio.exe</td><td>{F781AFA2-2F32-4A3A-A362-21C0812CAD83}</td><td>STUDIO</td><td>2</td><td/><td>dev2.studio.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Dev2.UndoFramework.dll</td><td>{4E7050F7-4348-43DB-B250-354D82FCC67D}</td><td>STUDIO</td><td>2</td><td/><td>dev2.undoframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -438,6 +439,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT71</td><td>{38EE03EF-C3B0-4320-BB6E-1E6ABBFB7FF3}</td><td>SOURCES1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT72</td><td>{A925B5EF-5D03-4784-9C21-FB87508E976F}</td><td>SWITCH</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT73</td><td>{3237EDB2-5CC4-4AA2-9119-795ED6B4E219}</td><td>CSS9</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT74</td><td>{95DAC2F8-2F83-4740-B3B3-50CDA2805361}</td><td>TempFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{E3EE158F-4B67-43EE-956A-2415ABE50BB5}</td><td>SOURCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{17874C38-7D39-451D-BF1B-E5EF0F891BF9}</td><td>THEMES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td>{170E9E5E-422E-4909-B4FC-B544B2CB8C66}</td><td>STUDIO</td><td>2</td><td/><td>infragisticswpf4.calculation</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1025,6 +1027,7 @@
 		<row><td>AdminWelcome</td><td>Next</td><td>NewDialog</td><td>AdminNetworkLocation</td><td>1</td><td>0</td></row>
 		<row><td>CancelSetup</td><td>No</td><td>EndDialog</td><td>Return</td><td>1</td><td>0</td></row>
 		<row><td>CancelSetup</td><td>Yes</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>CancelSetup</td><td>Yes</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>CancelSetup</td><td>Yes</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>CustomSetup</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>CustomSetup</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed</td><td>0</td></row>
@@ -1134,11 +1137,13 @@
 		<row><td>SetupCompleteError</td><td>Cancel</td><td>EndDialog</td><td>Return</td><td>1</td><td>2</td></row>
 		<row><td>SetupCompleteError</td><td>Cancel</td><td>[Suspend]</td><td>1</td><td>1</td><td>1</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>5</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>10</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>StartServiceAfterMaintenance</td><td>Installed</td><td>3</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>StartServiceAfterMaintenance</td><td>Installed And (((VersionNT=501)))</td><td>3</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>6</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>[StartServiceAfterMaintenance]</td><td>StartServiceAfterMaintenance</td><td>Installed</td><td>4</td></row>
 		<row><td>SetupError</td><td>A</td><td>EndDialog</td><td>ErrorAbort</td><td>1</td><td>0</td></row>
@@ -1154,6 +1159,7 @@
 		<row><td>SetupInterrupted</td><td>Cancel</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupInterrupted</td><td>Cancel</td><td>[Suspend]</td><td>1</td><td>1</td><td>1</td></row>
 		<row><td>SetupInterrupted</td><td>Finish</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>SetupInterrupted</td><td>Finish</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>SetupInterrupted</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupInterrupted</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupProgress</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
@@ -1197,6 +1203,7 @@
 		<row><td>SYSTEM</td><td>ISX_DEFAULTCOMPONENT49</td></row>
 		<row><td>THEMES</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>THEMES1</td><td>ISX_DEFAULTCOMPONENT58</td></row>
+		<row><td>TempFolder</td><td>ISX_DEFAULTCOMPONENT74</td></row>
 		<row><td>VIEWS</td><td>ISX_DEFAULTCOMPONENT67</td></row>
 		<row><td>WEBS</td><td>ISX_DEFAULTCOMPONENT55</td></row>
 	</table>
@@ -1215,13 +1222,15 @@
 		<row><td>ISSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFiles</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFinalize</td><td/><td/></row>
 		<row><td>ISSetAllUsers</td><td>257</td><td>SetAllUsers.dll</td><td>SetAllUsers</td><td/><td/></row>
+		<row><td>ISSetupFilesCleanup</td><td>257</td><td>ISSetupFilesHelper</td><td>SFCleanupEx</td><td/><td/></row>
+		<row><td>ISSetupFilesExtract</td><td>257</td><td>ISSetupFilesHelper</td><td>SFStartupEx</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISUnSelfRegisterFiles</td><td/><td/></row>
-		<row><td>InstallService</td><td>1106</td><td>dev2.server.exe</td><td>-i</td><td/><td/></row>
+		<row><td>InstallService</td><td>1106</td><td>dev2.server.exe</td><td>-i -s</td><td/><td/></row>
 		<row><td>RemoveServiceAfterUninstall</td><td>1122</td><td>SystemFolder</td><td>[SystemFolder]sc.exe delete "Warewolf Server"</td><td/><td/></row>
 		<row><td>SetARPINSTALLLOCATION</td><td>51</td><td>ARPINSTALLLOCATION</td><td>[INSTALLDIR]</td><td/><td/></row>
 		<row><td>SetAllUsersProfileNT</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%SystemRoot]\Profiles\All Users</td><td/><td/></row>
 		<row><td>ShowMsiLog</td><td>226</td><td>SystemFolder</td><td>[SystemFolder]notepad.exe "[MsiLogFileLocation]"</td><td/><td>Shows Property-driven MSI Log</td></row>
-		<row><td>StartServiceAfterMaintenance</td><td>82</td><td>dev2.server.exe</td><td>-s</td><td/><td/></row>
+		<row><td>StartServiceAfterMaintenance</td><td>82</td><td>dev2.server.exe</td><td>-i -s</td><td/><td/></row>
 		<row><td>StopServiceBeforeInstall</td><td>98</td><td>SystemFolder</td><td>[SystemFolder]sc.exe stop "Warewolf Server"</td><td/><td/></row>
 		<row><td>StopServiceBeforeMaintenance</td><td>98</td><td>SystemFolder</td><td>[SystemFolder]sc.exe stop "Warewolf Server"</td><td/><td/></row>
 		<row><td>setAllUsersProfile2K</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%ALLUSERSPROFILE]</td><td/><td/></row>
@@ -2195,6 +2204,7 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT71</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT72</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT73</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT74</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>AlwaysInstall</td><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td></row>
@@ -2320,7 +2330,7 @@
 		<row><td>dev2.runtime.dll</td><td>Dev2.Runtime.dll</td><td>DEV2RU~1.DLL|Dev2.Runtime.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Runtime.dll</td><td>1</td><td/></row>
 		<row><td>dev2.runtime.services.dll</td><td>Dev2.Runtime.Services.dll</td><td>DEV2RU~1.DLL|Dev2.Runtime.Services.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Runtime.Services.dll</td><td>1</td><td/></row>
 		<row><td>dev2.runtime.webserver.dll</td><td>Dev2.Runtime.WebServer.dll</td><td>DEV2RU~1.DLL|Dev2.Runtime.WebServer.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Runtime.WebServer.dll</td><td>1</td><td/></row>
-		<row><td>dev2.server.exe</td><td>Dev2.Server.exe</td><td>DEV2SE~1.EXE|Dev2.Server.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>1</td><td/></row>
+		<row><td>dev2.server.exe</td><td>Dev2.Server.exe</td><td>DEV2SE~1.EXE|Dev2.Server.exe</td><td>0</td><td/><td/><td>0</td><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe</td><td>1</td><td/></row>
 		<row><td>dev2.server.exe.config</td><td>ISX_DEFAULTCOMPONENT1</td><td>DEV2SE~1.CON|Dev2.Server.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Server\Dev2.Server.exe.config</td><td>1</td><td/></row>
 		<row><td>dev2.studio.core.dll</td><td>Dev2.Studio.Core.dll</td><td>DEV2ST~1.DLL|Dev2.Studio.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.Core.dll</td><td>1</td><td/></row>
 		<row><td>dev2.studio.exe</td><td>Dev2.Studio.exe</td><td>DEV2ST~1.EXE|Dev2.Studio.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\brendon.page\Desktop\Studio\Dev2.Studio.exe</td><td>1</td><td/></row>
@@ -3208,6 +3218,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT71</td><td/><td/><td>_3D89ACC8_8F40_484D_9ECD_84C72E1253EE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT72</td><td/><td/><td>_D7F3FC36_D922_4304_B25C_5E8D7A17FD32_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT73</td><td/><td/><td>_5DCCBDA6_BE8B_46E0_99A1_888BD8741B7A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT74</td><td/><td/><td>_E456B531_BD60_4408_B302_A046ECB952A4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_74DBAFF3_691F_4039_9244_9236FFCB26DD_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_6CA68832_6506_4436_94AC_3CDA5D96C083_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</td><td/><td/><td>_98A36030_16DC_4628_8707_8FD65A4FB997_FILTER</td><td/><td/><td/><td/></row>
@@ -3824,6 +3835,7 @@
 		<col def="S50">Language</col>
 		<col def="I2">Splash</col>
 		<col def="S0">Path</col>
+		<row><td>_isconfig.xml</td><td>_isconfig.xml</td><td/><td>0</td><td>0</td><td>&lt;ISProjectDataFolder&gt;\_isconfig.xml</td></row>
 	</table>
 
 	<table name="ISSetupPrerequisites">
@@ -3832,11 +3844,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
-		<row><td>_910D9F14_03B2_4E72_8AB1_C8DD097BB5DB_</td><td>Windows Installer 4.5 for Windows Server 2008 (x86).prq</td><td/><td>2</td><td/></row>
-		<row><td>_BD1A4AB9_24AD_497B_82FB_1CA082DB77D5_</td><td>Windows Installer 4.5 Update for Windows Server 2003 SP2 and later (x86).prq</td><td/><td>2</td><td/></row>
 		<row><td>_BD97098E_C601_4F0E_A07E_FCF51DB23381_</td><td>Microsoft .NET Framework 4.0 Full.prq</td><td>0</td><td>2</td><td/></row>
-		<row><td>_C38B6E9C_93EA_419B_BFC9_5BA1E83D3DE9_</td><td>Windows Installer 4.5 for Windows Vista (x86).prq</td><td/><td>2</td><td/></row>
-		<row><td>_EFCF0542_6FF0_4E60_8A8F_C1E780ED3FF5_</td><td>Windows Installer 4.5 for Windows Server 2003 SP1 and later (x86).prq</td><td/><td>2</td><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -4987,6 +4995,7 @@
 		<row><td>ID_STRING12</td><td>1033</td><td>STOPSE~1|Stop Server</td><td>0</td><td/><td>-526292148</td></row>
 		<row><td>ID_STRING13</td><td>1033</td><td>STOPSE~1|Stop Server</td><td>0</td><td/><td>-526311889</td></row>
 		<row><td>ID_STRING14</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>824264200</td></row>
+		<row><td>ID_STRING15</td><td>1033</td><td>http://warewolf.com</td><td>0</td><td/><td>1763789231</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>Warewolf</td><td>0</td><td/><td>-526296560</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Warewolf Installation</td><td>0</td><td/><td>824249768</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>LAUNCH~1.EXE|Launch Dev2.Server.exe</td><td>0</td><td/><td>-526313814</td></row>
@@ -5170,12 +5179,14 @@
 		<row><td>ISSelfRegisterFiles</td><td/><td>5601</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td/><td>6601</td><td/><td/></row>
 		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
+		<row><td>ISSetupFilesCleanup</td><td>UILevel &lt; 5</td><td>6602</td><td/><td/></row>
+		<row><td>ISSetupFilesExtract</td><td/><td>3</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td/><td>2202</td><td/><td/></row>
 		<row><td>InstallFiles</td><td/><td>4000</td><td>InstallFiles</td><td/></row>
 		<row><td>InstallFinalize</td><td/><td>6600</td><td>InstallFinalize</td><td/></row>
 		<row><td>InstallInitialize</td><td/><td>1501</td><td>InstallInitialize</td><td/></row>
 		<row><td>InstallODBC</td><td/><td>5400</td><td>InstallODBC</td><td/></row>
-		<row><td>InstallService</td><td>Not Installed</td><td>6405</td><td/><td/></row>
+		<row><td>InstallService</td><td>Not Installed And (((VersionNT=501)))</td><td>6405</td><td/><td/></row>
 		<row><td>InstallServices</td><td>VersionNT</td><td>5800</td><td>InstallServices</td><td/></row>
 		<row><td>InstallValidate</td><td/><td>1400</td><td>InstallValidate</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
@@ -5208,7 +5219,7 @@
 		<row><td>RemoveIniValues</td><td/><td>3100</td><td>RemoveIniValues</td><td/></row>
 		<row><td>RemoveODBC</td><td/><td>2400</td><td>RemoveODBC</td><td/></row>
 		<row><td>RemoveRegistryValues</td><td/><td>2600</td><td>RemoveRegistryValues</td><td/></row>
-		<row><td>RemoveServiceAfterUninstall</td><td>REMOVE="ALL"</td><td>6402</td><td/><td/></row>
+		<row><td>RemoveServiceAfterUninstall</td><td>REMOVE="ALL" And (((VersionNT=501)))</td><td>6402</td><td/><td/></row>
 		<row><td>RemoveShortcuts</td><td/><td>3200</td><td>RemoveShortcuts</td><td/></row>
 		<row><td>ResolveSource</td><td>Not Installed</td><td>850</td><td>ResolveSource</td><td/></row>
 		<row><td>ScheduleReboot</td><td>ISSCHEDULEREBOOT</td><td>6410</td><td>ScheduleReboot</td><td/></row>
@@ -5218,7 +5229,7 @@
 		<row><td>SetAllUsersProfileNT</td><td>VersionNT = 400</td><td>970</td><td/><td/></row>
 		<row><td>SetODBCFolders</td><td/><td>1200</td><td>SetODBCFolders</td><td/></row>
 		<row><td>StartServices</td><td>VersionNT</td><td>5900</td><td>StartServices</td><td/></row>
-		<row><td>StopServiceBeforeInstall</td><td>Not Installed</td><td>3612</td><td/><td/></row>
+		<row><td>StopServiceBeforeInstall</td><td>Not Installed And (((VersionNT=501)))</td><td>3612</td><td/><td/></row>
 		<row><td>StopServices</td><td>VersionNT</td><td>1900</td><td>StopServices</td><td/></row>
 		<row><td>UnpublishComponents</td><td/><td>1700</td><td>UnpublishComponents</td><td/></row>
 		<row><td>UnpublishFeatures</td><td/><td>1800</td><td>UnpublishFeatures</td><td/></row>
@@ -5294,6 +5305,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>FindRelatedProducts</td><td/><td>430</td><td>FindRelatedProducts</td><td/></row>
 		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
 		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
+		<row><td>ISSetupFilesCleanup</td><td>UILevel &lt; 5</td><td>1301</td><td/><td/></row>
+		<row><td>ISSetupFilesExtract</td><td/><td>3</td><td/><td/></row>
 		<row><td>InstallWelcome</td><td>Not Installed</td><td>1210</td><td>InstallWelcome</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
 		<row><td>LaunchConditions</td><td>Not Installed</td><td>410</td><td>LaunchConditions</td><td/></row>
@@ -5309,7 +5322,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SetupInterrupted</td><td/><td>-2</td><td>SetupInterrupted</td><td/></row>
 		<row><td>SetupProgress</td><td/><td>1240</td><td>SetupProgress</td><td/></row>
 		<row><td>SetupResume</td><td>Installed And (RESUME Or Preselected) And Not PATCH</td><td>1220</td><td>SetupResume</td><td/></row>
-		<row><td>StopServiceBeforeMaintenance</td><td>Installed</td><td>1206</td><td/><td/></row>
+		<row><td>StopServiceBeforeMaintenance</td><td>Installed And (((VersionNT=501)))</td><td>1206</td><td/><td/></row>
 		<row><td>ValidateProductID</td><td/><td>700</td><td>ValidateProductID</td><td/></row>
 		<row><td>setAllUsersProfile2K</td><td>VersionNT &gt;= 500</td><td>980</td><td/><td/></row>
 		<row><td>setUserProfileNT</td><td>VersionNT</td><td>960</td><td/><td/></row>
@@ -5575,6 +5588,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ARPINSTALLLOCATION</td><td/><td/></row>
 		<row><td>ARPPRODUCTICON</td><td>ARPPRODUCTICON.exe</td><td/></row>
 		<row><td>ARPSIZE</td><td/><td/></row>
+		<row><td>ARPURLINFOABOUT</td><td>##ID_STRING15##</td><td/></row>
 		<row><td>AgreeToLicense</td><td>No</td><td/></row>
 		<row><td>ApplicationUsers</td><td>AllUsers</td><td/></row>
 		<row><td>DWUSINTERVAL</td><td>30</td><td/></row>
