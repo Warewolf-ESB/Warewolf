@@ -521,3 +521,12 @@ a.selectable {
     padding-right: 10px;
     border-right: #a6c9e2 solid 1px;
 }
+
+::-webkit-input-placeholder {
+    font-style: italic;
+}
+
+/*::selection {
+     background: #e17009; 
+     color: white;
+}*/
