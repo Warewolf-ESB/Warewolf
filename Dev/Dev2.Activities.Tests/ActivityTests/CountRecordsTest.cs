@@ -133,6 +133,38 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
+        //2013.02.12: Ashley Lewis - Bug 8725, Task 8831
+        [TestMethod]
+        public void CountTwiceWithEmptyRecsetExpectedOutputToRecsetsSelf()
+        {
+            SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
+            IDSFDataObject result = ExecuteProcess();
+
+            string expected = "0";
+            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
+            string error = string.Empty;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
+            string actualSet = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 1).TheValue;
+
+            SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
+            result = ExecuteProcess();
+
+
+            string expected2 = "1";
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
+            string actualSet2 = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex==2).TheValue;
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actualSet);
+                Assert.AreEqual(expected2, actualSet2);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
         #endregion Store To RecordSet Tests
 
         #region Error Test Cases

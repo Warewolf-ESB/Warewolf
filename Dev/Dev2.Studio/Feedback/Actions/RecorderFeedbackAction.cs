@@ -105,6 +105,17 @@ namespace Dev2.Studio.Feedback.Actions
                     completedResult = feedbackRecordingInprogressException;
                 }
             }
+            //2013.02.06: Ashley Lewis - Bug 8611
+            catch (FeedbackRecordingProcessFailedToStartException feedbackRecordingProcessFailedToStartException)
+            {
+                MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+                if (result == MessageBoxResult.Yes)
+                {
+                    new FeedbackInvoker().InvokeFeedback(Dev2.Studio.Factory.FeedbackFactory.CreateEmailFeedbackAction(""));
+                    TryCancelFeedback();
+                }
+                else completedResult = feedbackRecordingProcessFailedToStartException;
+            }
             catch (Exception e)
             {
                 if (onOncompleted != null)

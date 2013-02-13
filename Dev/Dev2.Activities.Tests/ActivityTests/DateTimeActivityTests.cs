@@ -117,7 +117,6 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DateTime_RecordSetWithStar_Expected_DateTimeReturnedCorrectly()
         {
-
             SetupArguments(ActivityStrings.DateTimeDifferenceDataListShape
                          , ActivityStrings.DateTimeDifferenceDataListWithData
                          , "[[recset1(*).f1]]"
@@ -139,7 +138,53 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("14/10/1990", resultsList[0].TheValue);
             Assert.AreEqual("10/01/1990", resultsList[1].TheValue);
             Assert.AreEqual("05/05/1990", resultsList[2].TheValue);
+        }
 
+        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840
+        [TestMethod]
+        public void DateTimeComplexDateTimeInputsWithTrailingSpacesExpectedDateTimeReturnedCorrectly()
+        {
+            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. "
+                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
+                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
+                         , "Years"
+                         , 327
+                         , "[[MyTestResult]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = "Year 71 week 42 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 289 | Saturday | Sat | 6 |16 | 22 | 2371/10/16 10:25:36.953 PM A.D. ";
+
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
+        {
+            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , "2013/02/07 08:38:56.953 PM"
+                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
+                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
+                         , "Split Secs"
+                         , 327
+                         , "[[MyTestResult]]");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string actual = string.Empty;
+            string error = string.Empty;
+
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+            string expected = "2013/02/07 08:38:57.280 PM";
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion DateTime Tests

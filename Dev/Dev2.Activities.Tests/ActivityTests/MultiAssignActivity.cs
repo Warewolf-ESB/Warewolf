@@ -760,6 +760,55 @@ namespace ActivityUnitTests.ActivityTest
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
+        //2013.02.08: Ashley Lewis - Bug 8725, Task 8833
+        [TestMethod]
+        public void MutiAssignWithImpliedConcatenationExpectedCorrectSetsScalarValue()
+        {
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[var]]", "var", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("[[var]]", "[[var]]iable", _fieldCollection.Count));
+
+            SetupArguments(
+                                        @"<root>
+  <var />
+</root>"
+                                      , @"<root></root>"
+                                     , _fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string expected = "variable";
+            string error = string.Empty;
+            string actual;
+            GetScalarValueFromDataList(result.DataListID, "var", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        //2013.02.08: Ashley Lewis - Bug 8725, Task 8834
+        [TestMethod]
+        public void MutiAssignWithExplicitConcatenationExpectedCorrectSetsScalarValue()
+        {
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[var]]", GlobalConstants.CalculateTextConvertPrefix + "concatenate(\"variable\", \"variable\")" + GlobalConstants.CalculateTextConvertSuffix, _fieldCollection.Count));
+
+            SetupArguments(
+                                        @"<root>
+  <var />
+</root>"
+                                      , @"<root></root>"
+                                     , _fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string expected = "variablevariable";
+            string error = string.Empty;
+            string actual;
+            GetScalarValueFromDataList(result.DataListID, "var", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+        }
+
         #endregion MultiAssign Functionality Tests
 
         #region Language Tests

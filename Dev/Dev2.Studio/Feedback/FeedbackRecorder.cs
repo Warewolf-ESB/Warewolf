@@ -121,6 +121,11 @@ namespace Dev2.Studio.Feedback
             OutputPath = outputpath;
             EnsurePathIsvalid();
             StartProcess();
+
+            if (!CheckIfProcessIsRunning()) //2013.02.06: Ashley Lewis - Bug 8611
+            {
+                throw new FeedbackRecordingProcessFailedToStartException("Feedback recorder is unable to start at this time.");
+        }
         }
 
         /// <summary>
@@ -180,7 +185,6 @@ namespace Dev2.Studio.Feedback
         private void StartProcess()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(Executable, string.Format(StartParameters, OutputPath));
-            startInfo.UseShellExecute = false;
             startInfo.ErrorDialog = false;
 
             Process process = new Process();

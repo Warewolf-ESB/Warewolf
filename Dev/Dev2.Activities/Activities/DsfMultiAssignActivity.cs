@@ -113,8 +113,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errors);
 
                     // Merge Back into list
-                    compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                    allErrors.MergeErrors(errors);
+
+                        compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
+                        allErrors.MergeErrors(errors);
                 }
 
             }
@@ -244,6 +245,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains("[[")).Select(c => c.FieldValue).ToArray();
             return GetForEachItems(context, StateType.Before, items);
         }

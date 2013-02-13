@@ -2338,12 +2338,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        /// <summary>
-        /// Handles the specified UpdateResourcemessage by updating the resource
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
+        //2013.02.11: Ashley Lewis - Bug 8553
         public void Handle(UpdateResourceMessage message)
         {
             _workflowModel.Update(message.ResourceModel);
@@ -2371,7 +2366,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
         }
-
         #endregion
 
         #region Event Handlers

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,6 +180,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         /// Tests that null datetime values are correctly handled by the Formatter
         /// </summary>
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
         public void FormatDateTimeNULLorEmpty_Expected_ErrorMessageReturnedByFormatter()
         {
             bool isFormatCorrect;
@@ -226,6 +228,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         /// Tests that if the input format is null, the formatter returns an error regarding this
         /// </summary>
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
         public void FormatInputFormatNULLorEmpty_Expected_ErrorMessageReturnedByDateTimeTool()
         {
             bool isFormatCorrect;

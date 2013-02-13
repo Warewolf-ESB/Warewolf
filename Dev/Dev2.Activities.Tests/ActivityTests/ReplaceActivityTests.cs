@@ -263,6 +263,33 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
+        //2013.02.12: Ashley Lewis - Bug 8800
+        [TestMethod]
+        public void ReplaceInAllRecordsetFieldsExpectedTwoReplacesSuccess()
+        {
+            SetupArguments(ActivityStrings.ReplaceDataListWithData.Replace("f2r2","barney"), ActivityStrings.ReplaceDataListShape, "[[recset1(*)]]", "Barney", "Wallis", "[[res]]", false);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"2";
+            string actual = string.Empty;
+            List<string> recsetData = new List<string>();
+            string error = string.Empty;
+            IList<IBinaryDataListItem> dataListItems = new List<IBinaryDataListItem>();
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
+                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field2", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[1].TheValue);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
         #endregion Replace Positive Tests
 
         #region Replace Negative Tests

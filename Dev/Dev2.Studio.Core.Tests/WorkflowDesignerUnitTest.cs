@@ -266,6 +266,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(wf.NotifyItemSelected(page) == false);
         }
 
+        //2013.02.11: Ashley Lewis - Bug 6413
         [TestMethod]
         public void ParserCorrectlyIdentifyingDatalistRegions()
         {
@@ -486,8 +487,7 @@ namespace Dev2.Core.Tests
 
         #endregion Internal Test Methods
 
-
-
+        //2013.02.11: Ashley Lewis - Bug 8553
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
         {

@@ -58,7 +58,8 @@ namespace Dev2.Converters.DateAndTime
 
             bool nothingDied = true;
             IDateTimeResultTO dateTimeResultTO;
-            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime, dateTimeTO.InputFormat, out dateTimeResultTO, out error))
+            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Trim data and format
+            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat.Trim(), out dateTimeResultTO, out error))
             {                               
                 //
                 // Parse time, if present
@@ -281,7 +282,8 @@ namespace Dev2.Converters.DateAndTime
 
         private static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
-            return dateTime.ToString("FFF");
+            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - The "FFF" format has a tendancy to shave off trailing zeros off milliseconds
+            return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);//.ToString("FFF");//
         }
 
         private static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)

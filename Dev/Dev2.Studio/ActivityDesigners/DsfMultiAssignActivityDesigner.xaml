@@ -98,7 +98,8 @@
                     <sys:Int32>1</sys:Int32>
                 </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
             </behaviors:DataGridWatermarkModifier>
-            <behaviors:DataGridMouseScrollBehavior/>
+            <!--2013.02.11: Ashley Lewis - Bug 8565
+            <behaviors:DataGridMouseScrollBehavior/>-->
         </i:Interaction.Behaviors>
         <DataGrid.ItemsPanel>
             <ItemsPanelTemplate>

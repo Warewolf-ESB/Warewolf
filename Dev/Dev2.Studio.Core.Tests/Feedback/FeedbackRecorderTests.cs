@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Feedback
         [TestMethod]
         public void StartRecording_Where_PsrIsntRunningAndOutputPathValid_Expected_ProcessStarts()
         {
-            FeedbackRecorder recorder = new FeedbackRecorder();
+            var recorder = new FeedbackRecorder();
             string outputPath = GetUniqueOutputPath();
 
             recorder.StartRecording(outputPath);
