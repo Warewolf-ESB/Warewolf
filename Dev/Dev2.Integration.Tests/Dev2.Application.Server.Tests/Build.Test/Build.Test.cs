@@ -82,6 +82,7 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestInitialize()]
         public void EnvironmentTestsInitialize()
         {
+            Environment.CurrentDirectory = TestContext.DeploymentDirectory;
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             //MefImportSatisfier mefImportSatisfier = new MefImportSatisfier();
             _connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
