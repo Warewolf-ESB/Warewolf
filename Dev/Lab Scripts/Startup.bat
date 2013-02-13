@@ -15,6 +15,9 @@ REM ****************************************************************************
 REM ** Start The Server & Studio **
 
 c:\deploy\Dev2.Server.exe -s
-ping 17.0.0.1 -w 1000 -n 30
+
+REM  Wait 2 mintues ;)
+sleep 120
 start "" "c:\deploy\Dev2.Studio.exe
-ping 17.0.0.1 -w 1000 -n 30
+REM wait 1.5 minutes ;)
+sleep 90
