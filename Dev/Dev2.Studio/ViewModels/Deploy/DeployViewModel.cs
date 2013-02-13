@@ -55,6 +55,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         private string _mediatorKeyUpdateDeploy;
         private string _mediatorKeySelectItemInDeploy;
 
+        private int _sourceDeployItemCount;
+        private int _destinationDeployItemCount;
+
         #endregion Class Members
 
         #region Constructor
@@ -115,7 +118,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                return SelectedDestinationServer != null;
+                return SelectedDestinationServer != null && _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0;
             }
         }
 
@@ -284,8 +287,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void CalculateStats()
         {
             var items = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
-            _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats);
-            _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats);
+            _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
+            _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
+            NotifyOfPropertyChange(() => CanDeploy);
         }
 
 
@@ -583,6 +587,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         }
 
         #endregion Private Methods
+
         #region Dispose Handling
 
         protected override void OnDispose()

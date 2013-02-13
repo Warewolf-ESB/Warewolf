@@ -299,9 +299,20 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Grid>
-            <Button Grid.Row="1" Grid.Column="1" AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
                     Content="Deploy" HorizontalAlignment="Left" Background="Transparent" 
                     BorderBrush="Transparent" Command="{Binding DeployCommand}" MaxWidth="50" MinWidth="50" />
+                <TextBlock Text="Please select a destination server." AutomationProperties.AutomationId="UI_DeployDestinationTB_AutoID"
+                           VerticalAlignment="Center" Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverterNullIsVisible}}"
+                           Margin="3,0,0,0"/>
+                <ContentControl Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="Please select something to deploy." AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                               VerticalAlignment="Center" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                               Margin="3,0,0,0"/>
+                </ContentControl>
+            </StackPanel>
+
         </Grid>                
     </Grid>
 </UserControl>

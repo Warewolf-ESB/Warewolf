@@ -1,15 +1,15 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 
 #endregion
 
@@ -22,8 +22,9 @@ namespace Dev2.Studio.Deploy
         /// </summary>
         public void CalculateStats(IEnumerable<ITreeNode> items,
                                    Dictionary<string, Func<ITreeNode, bool>> predicates,
-                                   ObservableCollection<DeployStatsTO> stats)
+                                   ObservableCollection<DeployStatsTO> stats, out int deployItemCount)
         {
+            deployItemCount = 0;
             var predicateCounts = new Dictionary<string, int>();
 
             foreach (var predicate in predicates)
@@ -54,7 +55,10 @@ namespace Dev2.Studio.Deploy
             {
                 var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicateCount.Key);
                 if (deployStatsTO != null)
+                {
                     deployStatsTO.Description = predicateCount.Value.ToString(CultureInfo.InvariantCulture);
+                    deployItemCount += predicateCount.Value;
+                }
             }
         }
 

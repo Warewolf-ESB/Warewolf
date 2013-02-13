@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Deploy;
@@ -12,7 +8,9 @@ using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Dev2.Core.Tests
 {
@@ -106,11 +104,14 @@ namespace Dev2.Core.Tests
             expected.Add(new DeployStatsTO("Websites", "0"));
             expected.Add(new DeployStatsTO("Unknown", "0"));
 
+            int expectedDeployItemCount = 2;
+            int actualDeployItemCount;
             ObservableCollection<DeployStatsTO> actual = new ObservableCollection<DeployStatsTO>();
 
-            _deployStatsCalculator.CalculateStats(items, predicates, actual);
+            _deployStatsCalculator.CalculateStats(items, predicates, actual, out actualDeployItemCount);
 
             CollectionAssert.AreEqual(expected, actual, new DeployStatsTOComparer());
+            Assert.AreEqual(expectedDeployItemCount, actualDeployItemCount); //BUG 8816, Added an extra assert to ensure the deploy item count is correct
         }
 
         #endregion CalculateStats
