@@ -1,9 +1,9 @@
 ﻿using Dev2.Network.Execution;
 using Dev2.Network.Messages;
+using Dev2.Studio;
 using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using Bootstrapper = Dev2.Studio.Bootstrapper;
 
 namespace Dev2.Integration.Tests.MEF
 {

@@ -62,7 +62,7 @@
 		<lastprinted/>
 		<createdtm>06/21/1999 15:00</createdtm>
 		<lastsavedtm>07/14/2000 18:50</lastsavedtm>
-		<pagecount>200</pagecount>
+		<pagecount>405</pagecount>
 		<wordcount>0</wordcount>
 		<charcount/>
 		<appname>InstallShield Express</appname>
@@ -3832,7 +3832,11 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
+		<row><td>_910D9F14_03B2_4E72_8AB1_C8DD097BB5DB_</td><td>Windows Installer 4.5 for Windows Server 2008 (x86).prq</td><td/><td>2</td><td/></row>
+		<row><td>_BD1A4AB9_24AD_497B_82FB_1CA082DB77D5_</td><td>Windows Installer 4.5 Update for Windows Server 2003 SP2 and later (x86).prq</td><td/><td>2</td><td/></row>
 		<row><td>_BD97098E_C601_4F0E_A07E_FCF51DB23381_</td><td>Microsoft .NET Framework 4.0 Full.prq</td><td>0</td><td>2</td><td/></row>
+		<row><td>_C38B6E9C_93EA_419B_BFC9_5BA1E83D3DE9_</td><td>Windows Installer 4.5 for Windows Vista (x86).prq</td><td/><td>2</td><td/></row>
+		<row><td>_EFCF0542_6FF0_4E60_8A8F_C1E780ED3FF5_</td><td>Windows Installer 4.5 for Windows Server 2003 SP1 and later (x86).prq</td><td/><td>2</td><td/></row>
 	</table>
 
 	<table name="ISSetupType">

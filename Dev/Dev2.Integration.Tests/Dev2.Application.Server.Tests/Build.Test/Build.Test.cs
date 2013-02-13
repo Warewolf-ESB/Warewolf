@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using Dev2.Common.ExtMethods;
+using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
@@ -7,6 +8,8 @@ using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Build.Tests
@@ -76,13 +79,26 @@ namespace Dev2.Integration.Tests.Build.Tests
         #endregion Server Listening Tests
 
         #region Additional test attributes
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext TestContext)
+        {
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory))
+            {
+                throw new Exception(string.Format("'{0}' doesn't exit. Failed to copy the necessary files into the test deployment directory", AppDomain.CurrentDomain.BaseDirectory));
+            }
+
+            DirectoryInfo id = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            id.Copy(TestContext.DeploymentDirectory, true, false);
+            //id.Copy(Assembly.GetExecutingAssembly().Location, true, false);
+        }
+
         /// <summary>
         /// We are setting MEF up here to retrieve all exports and use them for dependency injection
         /// </summary>
-        [TestInitialize()]
+        [TestInitialize]
         public void EnvironmentTestsInitialize()
         {
-            Environment.CurrentDirectory = TestContext.DeploymentDirectory;
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             //MefImportSatisfier mefImportSatisfier = new MefImportSatisfier();
             _connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
@@ -140,7 +156,6 @@ namespace Dev2.Integration.Tests.Build.Tests
             {
                 Assert.IsTrue(item.XmlString.Contains("<Action"));
             }
-
         }
 
         [TestMethod()]
@@ -160,7 +175,6 @@ namespace Dev2.Integration.Tests.Build.Tests
             {
                 Assert.IsTrue(item.XmlString.Contains("<Source"));
             }
-
         }
 
         // Sashen :25-01-2013 : This test checks that a service returns the correct message
