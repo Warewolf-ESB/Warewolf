@@ -61,8 +61,11 @@ namespace Unlimited.Applications.DynamicServicesHost
                 return 80;
             }
 
+            bool commandLineParameterProcessed = false;
             if(options.Install)
             {
+                commandLineParameterProcessed = true;
+
                 if (!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
@@ -72,11 +75,42 @@ namespace Unlimited.Applications.DynamicServicesHost
                 {
                     result = 81;
                 }
-                return result;
+            }
+
+            if (options.StartService)
+            {
+                commandLineParameterProcessed = true;
+
+                if (!EnsureRunningAsAdministrator(arguments))
+                {
+                    return result;
+                }
+
+                if (!WindowsServiceManager.StartService(null))
+                {
+                    result = 83;
+                }
+            }
+
+            if (options.StopService)
+            {
+                commandLineParameterProcessed = true;
+
+                if (!EnsureRunningAsAdministrator(arguments))
+                {
+                    return result;
+                }
+
+                if (!WindowsServiceManager.StopService(null))
+                {
+                    result = 84;
+                }
             }
 
             if(options.Uninstall)
             {
+                commandLineParameterProcessed = true;
+
                 if (!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
@@ -86,24 +120,10 @@ namespace Unlimited.Applications.DynamicServicesHost
                 {
                     result = 82;
                 }
-                return result;
             }
 
-            if(options.StartService)
+            if (commandLineParameterProcessed)
             {
-                if(!WindowsServiceManager.StartService())
-                {
-                    result = 83;
-                }
-                return result;
-            }
-
-            if(options.StopService)
-            {
-                if(!WindowsServiceManager.StopService())
-                {
-                    result = 84;
-                }
                 return result;
             }
 
