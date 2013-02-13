@@ -33,3 +33,7 @@ utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeig
     utils.selectListItem($li);
     $scrollBox.scrollTo($li, $scrollBoxHeight);
 };
+
+utils.toHtml = function (str) {
+    return str.replace(/\n/g, '<br />').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+};

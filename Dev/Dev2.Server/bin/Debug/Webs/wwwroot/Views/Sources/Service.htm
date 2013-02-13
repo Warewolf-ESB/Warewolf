@@ -24,7 +24,7 @@
                             <input tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
                         </div>
                     </div>
-                    <div id="sourceMethodsScrollBox" class="scrollable" style="height: 340px; width: auto; clear: both;">
+                    <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 340px; width: auto; clear: both; ">
                         <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
                             <li class="selectable">
                                 <span style="margin-left: 0.5em" data-bind="text: Name"></span>
@@ -38,14 +38,14 @@
                     <div style="height: 70px">
                         <div style="float: left;">
                             <h4 style="margin-bottom: 13px">3. Provide Test Values</h4>
-                            <a class="selectable" style="margin-left: 20px;" href="#" title="Inspect source" data-bind="text: data.methodName, click: showAction"></a>
+                            <a class="selectable" style="margin-left: 20px;" href="#" title="Inspect source" data-bind="text: data.method.Name, click: showAction"></a>
                         </div>
-                        <button style="float: right; margin-top: 25px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: hasMethodName">Test</button>
+                        <button style="float: right; margin-top: 25px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: hasMethod">Test</button>
                     </div>
                     <div style="clear: both;">
-                        <div class="box-border" style="height: 175px; width: 520px; overflow-y: scroll; overflow-x: hidden">
+                        <div class="scrollable-y box-border" style="height: 175px; width: 520px;">
                             <table id="inputsTable" class="input-param">
-                                <tbody data-bind="foreach: data.methodParameters">
+                                <tbody data-bind="foreach: data.method.Parameters">
                                     <tr>
                                         <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
                                         <td class="input-param-value">
@@ -57,22 +57,24 @@
                         </div>
                     </div>
                     <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
-                    <div class="scrollable" style="height: 171px; width: 520px; overflow-y: scroll; overflow-x: scroll;">
-                        <table class="data-table">
+                    <div class="scrollable-xy box-border" style="height: 171px; width: 520px;">
+                        <table class="data-table" data-bind="visible: hasTestResults()">
                             <thead>
                                 <tr>
-                                    <!-- ko foreach: data.methodRecordset.Fields -->
-                                    <th class="box-border" data-bind="text: $data.Alias"></th>
+                                    <th>Record Name</th>
+                                    <!-- ko foreach: data.recordset.Fields -->
+                                    <th data-bind="text: Alias"></th>
                                     <!-- /ko -->
                                 </tr>
                             </thead>
-                                <tbody data-bind="foreach: data.methodRecordset.Records">
-                                    <tr>
-                                        <!-- ko foreach: $data -->
-                                        <td class="box-border" data-bind="text: Value, attr: { title: Name }"></td>
-                                        <!-- /ko -->
-                                    </tr>
-                                </tbody>
+                            <tbody data-bind="foreach: data.recordset.Records">
+                                <tr>
+                                    <td data-bind="text: Label"></td>
+                                    <!-- ko foreach: Cells -->
+                                    <td data-bind="text: Value, attr: { title: Name }"></td>
+                                    <!-- /ko -->
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -95,12 +97,12 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="box-border" style="height: 389px; overflow-y: scroll; overflow-x: hidden">
-                        <div style="margin: 10px;" data-bind="visible: !hasMethodName()">
+                    <div class="scrollable-y box-border" style="height: 389px;">
+                        <div style="margin: 10px;" data-bind="visible: !hasMethod()">
                             <a href="#" data-bind="click: showTab.bind($data, 0)">Please select an action first (Step 2)</a>
                         </div>
                         <table class="input-param">
-                            <tbody data-bind="foreach: data.methodParameters">
+                            <tbody data-bind="foreach: data.method.Parameters">
                                 <tr>
                                     <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
                                     <td>
@@ -128,22 +130,23 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="box-border" style="height: 320px; width: 480px; overflow-y: scroll; overflow-x: hidden">
-                        <div style="margin: 10px;" data-bind="visible: !hasMethodResults()">
+                    <div class="scrollable-y box-border" style="height: 320px; width: 480px;">
+                        <div style="margin: 10px;" data-bind="visible: !hasTestResults()">
                             <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
-                        </div>                                
+                        </div>
                         <table class="input-param">
-                            <tbody data-bind="foreach: data.methodRecordset.Fields">
+                            <tbody data-bind="foreach: data.recordset.Fields">
                                 <tr>
                                     <td style="width: 155px;" data-bind="text: Name"></td>
-                                    <td><input style="width: 250px;" type="text" maxlength="50" data-bind="value: Alias" /></td>
+                                    <td>
+                                        <input style="width: 250px;" type="text" maxlength="50" data-bind="value: Alias" /></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div style="width: 480px; margin-top: 10px;">
                         <label class="inline" for="recordsetName">Recordset Name:</label>
-                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.methodRecordset.Name" />
+                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.recordset.Name" />
                         <br />
                         <span style="font-size: 0.95em;"><b>Note:</b> Recordset name is optional if only returning 1 record.</span>
                     </div>
@@ -155,43 +158,43 @@
             <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save, jEnable: isFormValid">Ok</button>
             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
+        <div id="actionInspectorDialog" title="Action Inspector">
+            <div id="actionInspector" class="scrollable-xy box-border" style="height: 400px; font-family: Consolas" data-bind="html: data.method.SourceCode">
+            </div>
+        </div>
     </div>
 </div>
 <div id="saveDialogContainer">
-</div>
-<div id="actionInspectorDialog" title="Action Inspector">
-    <div id="actionInspector" class="scrollable" style="height: 400px;" data-bind="html: data.methodSource">
-    </div>
 </div>
 
 <script src="Scripts/Sources/ServiceViewModel.js"></script>
 <script type="text/javascript">
     //var serviceViewModel = new SerivceViewModel("{8A49D826-0B3E-4DB5-8D01-490A75A1B698}", "SqlDatabase");        
     var viewModel = new SerivceViewModel(null, "SqlDatabase");
-
-    $("#actionInspectorDialog").dialog({
-        resizable: false,
-        autoOpen: false,
-        modal: true,
-        width: 800,
-        buttons: {
-            "Close": function () {
-                $(this).dialog("close");
-            }
-        }
-    });
-
-    // inject SaveDialog
-    $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
-        $("button").button();
-    });
-
+    
     $(function () {
         // apply jquery-ui themes
         $("button").button();
         $("#tabs").tabs();
 
         ko.applyBindings(viewModel, document.getElementById("serviceForm"));
+        
+        $("#actionInspectorDialog").dialog({
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            width: 800,
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        // inject SaveDialog
+        $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
+            $("button").button();
+        });
     });
 
 </script>

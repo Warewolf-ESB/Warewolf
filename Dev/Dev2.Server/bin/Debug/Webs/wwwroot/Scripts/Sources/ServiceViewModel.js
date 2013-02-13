@@ -19,9 +19,12 @@
         resourcePath: ko.observable(""),
 
         source: ko.observable(),
-        methodName: ko.observable(""),
-        methodParameters: ko.observableArray(),
-        methodRecordset: {
+        method: {
+            Name: ko.observable(""),
+            SourceCode: ko.observable(""),
+            Parameters: ko.observableArray()
+        },
+        recordset: {
             Name: ko.observable(""),
             Fields: ko.observableArray(),
             Records: ko.observableArray()
@@ -41,28 +44,28 @@
         });
     });
     
-    self.hasMethodName = ko.computed(function () {
-        return self.data.methodName() !== "";
+    self.hasMethod = ko.computed(function () {
+        return self.data.method.Name() !== "";
     });
-    self.hasMethodResults = ko.observable(false);
+    self.hasTestResults = ko.observable(false);
     self.isFormValid = ko.computed(function () {
-        return self.hasMethodName() && self.hasMethodResults();
+        return self.hasMethod() && self.hasTestResults();
     });
     
     self.data.source.subscribe(function (newValue) {
-        self.data.methodName("");
-        self.data.methodParameters([]);
         self.sourceMethodSearchTerm("");
-        self.hasMethodResults(false);
-        self.data.methodRecordset.Name("");
-        self.data.methodRecordset.Fields([]);
-        self.data.methodRecordset.Records([]);
+        self.hasTestResults(false);
+
+        self.data.method.Name("");
+        self.data.method.SourceCode("");
+        self.data.method.Parameters([]);
+
+        self.data.recordset.Name("");
+        self.data.recordset.Fields([]);
+        self.data.recordset.Records([]);
 
         $inputsTable.hide();
-        $.post("Service/Services/Methods" + window.location.search, ko.toJSON(newValue), function (result) {
-            self.sourceMethods(result);
-            self.sourceMethods.sort(utils.nameCaseInsensitiveSort);
-        });
+        self.loadMethods(newValue);
     });   
 
     self.title = ko.observable("New Service");
@@ -74,10 +77,20 @@
     });
 
     utils.registerSelectHandler($sourceMethods, function (selectedItem) {
-        self.data.methodName(selectedItem.Name);
-        self.data.methodParameters(selectedItem.Parameters);
+        self.data.method.Name(selectedItem.Name);
+        self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
+        self.data.method.Parameters(selectedItem.Parameters);
+
+        self.data.recordset.Name(selectedItem.Name);
+
         $inputsTable.show();
     });
+
+    self.getJsonData = function () {
+        // Don't need to send records back!
+        self.data.recordset.Records([]);
+        return ko.toJSON(self.data);
+    };
     
     self.load = function () {
         var args = ko.toJSON({
@@ -98,6 +111,12 @@
         }); 
     };
 
+    self.loadMethods = function (source) {
+        $.post("Service/Services/Methods" + window.location.search, ko.toJSON(source), function (result) {
+            self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
+        });
+    };
+
     self.showTab = function (tabIndex) {
         $tabs.tabs("option", "active", tabIndex);
     };
@@ -112,13 +131,12 @@
         $actionInspectorDialog.dialog("open");
     };
     
-    self.testAction = function () {
-        var args = ko.toJSON(self.data);
-        $.post("Service/Services/Test" + window.location.search, args, function(result) {
-            self.hasMethodResults(true);          
-            self.data.methodRecordset.Name(result.Name);
-            self.data.methodRecordset.Fields(result.Fields);
-            self.data.methodRecordset.Records(result.Records);
+    self.testAction = function() {
+        $.post("Service/Services/Test" + window.location.search, self.getJsonData(), function (result) {
+            self.hasTestResults(true);          
+            self.data.recordset.Name(result.Name);
+            self.data.recordset.Fields(result.Fields);
+            self.data.recordset.Records(result.Records);
         });        
     };
 

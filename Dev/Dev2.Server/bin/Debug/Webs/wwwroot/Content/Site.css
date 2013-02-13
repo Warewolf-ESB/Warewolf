@@ -494,16 +494,20 @@ a.selectable {
         background-color: white;
     }
 
-
-div.scrollable {
-    border:1px solid #E2E2E2; 
-    overflow-y: scroll;
-}
-
 /* To hide the close button on all dialogs */
 /*.ui-dialog-titlebar-close {
   visibility: hidden;
 }*/
+
+.scrollable-y {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.scrollable-xy {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
 
 .box-border {
     border: 1px solid #E2E2E2;
