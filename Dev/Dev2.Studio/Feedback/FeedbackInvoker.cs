@@ -131,6 +131,7 @@ namespace Dev2.Studio.Feedback
             InvokeAction(feedbackAction);
         }
 
+        // 13 Feb 2013 - Michael Cullen - Modified to fix Bug 8809
         private bool EnsureNoFeedbackSessionsInProgress(string feedbackType)
         {
             if(CurrentAction == null)

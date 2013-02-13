@@ -296,6 +296,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // The workflow so we have a second tab
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 

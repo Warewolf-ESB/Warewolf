@@ -62,7 +62,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Mouse.Click(close);
             // Rare closure bug if you click a DDL before
             UITestControl theTab = FindTabByName("tabName");
-            if(theTab != null)
+            if(theTab.Container != null)
             {
                 Mouse.Click(close);
             }

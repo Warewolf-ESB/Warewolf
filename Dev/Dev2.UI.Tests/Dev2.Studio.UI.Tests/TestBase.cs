@@ -87,7 +87,7 @@ namespace Dev2.CodedUI.Tests
             // Whilst debugging a Coded UI Test, you might want to keep the Workflow Designer as is
             // In this case, you should set it to false
 // ReSharper disable ReplaceWithSingleAssignment.False
-            bool toCheck = false;
+            bool toCheck = true;
 
             // On the test box, all test initialisations should always run
             if (GetStudioWindowName().Contains("IntegrationTester"))
@@ -113,7 +113,7 @@ namespace Dev2.CodedUI.Tests
                 try
                 {
                     //Process[] processList = System.Diagnostics.Process.GetProcesses();
-                    List<Process> findDev2Servers = Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server")).ToList();
+                    List<Process> findDev2Servers = Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server") && !p.ProcessName.Contains("vshost")).ToList();
                     int serverCounter = findDev2Servers.Count();
                     if (serverCounter != 1)
                     {
@@ -174,7 +174,7 @@ namespace Dev2.CodedUI.Tests
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error - Unable to close tabs!", ex.InnerException);
+                    throw new Exception("Error - Unable to close tabs! Reason: " + ex.Message);
                 }
             }
         }
