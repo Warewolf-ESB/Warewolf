@@ -43,7 +43,7 @@ namespace Dev2.Studio.Feedback
             {
                 return _currentFeedbackAction;
             }
-            private set
+            set
             {
                 _currentFeedbackAction = value;
                 OnPropertyChanged("CurrentAction");
@@ -122,6 +122,10 @@ namespace Dev2.Studio.Feedback
             }
 
             string feedbackType = feedbackAction.ToString();
+            if(feedbackType == null)
+            {
+                feedbackType = "Moq.IAsyncFeedbackActionProxy";
+            }
             feedbackType = feedbackType.Remove(0, feedbackType.LastIndexOf(".", System.StringComparison.Ordinal) + 1);
             if (!EnsureNoFeedbackSessionsInProgress(feedbackType))
             {
@@ -139,7 +143,7 @@ namespace Dev2.Studio.Feedback
                 return true;
             }
 
-            if (feedbackType == "RecorderFeedbackAction" || feedbackType == "IAsyncFeedbackActionProxy") // IAsyncFeedbackActionProxy required for Mocking
+            if (feedbackType.ToString() == "RecorderFeedbackAction" || feedbackType.ToString() == "IAsyncFeedbackActionProxy") // IAsyncFeedbackActionProxy required for Mocking
             {
                 MessageBoxResult result = Popup.Show("Another feedback session is in progress, would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
                 if (result == MessageBoxResult.No)

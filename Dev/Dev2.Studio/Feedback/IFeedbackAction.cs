@@ -7,5 +7,6 @@ namespace Dev2.Studio.Feedback
         bool CanProvideFeedback { get; }
         int Priority { get; }
         void StartFeedback();
+        string ToString();
     }
 }

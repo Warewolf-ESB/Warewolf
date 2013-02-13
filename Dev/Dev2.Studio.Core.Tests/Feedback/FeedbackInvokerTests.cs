@@ -155,6 +155,34 @@ namespace Dev2.Core.Tests.Feedback
             Assert.AreEqual(feedbackAction2.Object, feedbackInvoker.CurrentAction);
         }
 
+        // 13 Feb 2013 - Added by Michael to verify Bug 8809
+        [TestMethod]
+        public void InvokeFeedback_Where_AlreadyRecording_UserDoesntWantToUseRecording_Expected_LimitedPopups()
+        {
+            Mock<IAsyncFeedbackAction> feedbackAction = new Mock<IAsyncFeedbackAction>();
+            feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
+            feedbackAction.Setup(f => f.Priority).Returns(2);
+            feedbackAction.Setup(f => f.ToString()).Returns("NotRecorderFeedbackAction");
+            feedbackAction.Setup(f => f.StartFeedback()).Verifiable();
+            FeedbackInvoker theInvoker = new FeedbackInvoker();
+            theInvoker.CurrentAction = feedbackAction.Object;
+
+            // The first time, if the user clicks yes, it uses the recording, and kills the current action
+            Mock<IPopUp> firstPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(firstPopup);
+            ImportService.SatisfyImports(theInvoker);
+            theInvoker.InvokeFeedback(feedbackAction.Object);
+            Assert.IsTrue(theInvoker.CurrentAction == null);
+
+            // The second time, if the user clicks no, it drops the recording, and uses the current action
+            Mock<IPopUp> secondPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            theInvoker.CurrentAction = feedbackAction.Object;
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(secondPopup);
+            ImportService.SatisfyImports(theInvoker);
+            theInvoker.InvokeFeedback(feedbackAction.Object);
+            Assert.IsFalse(theInvoker.CurrentAction == null);
+        }
+
         [TestMethod]
         public void InvokeFeedback_Where_EmailAndRecorderActionsProvidedAndUserAnswersNoToRecordingPrompt_Expected_EmailActionInvoked()
         {
