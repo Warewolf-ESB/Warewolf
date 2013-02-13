@@ -82,6 +82,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         }
 
 
+        // Sashen.Naidoo: 13-02-2012 : Bug 8081 
         // A reconnection spam used to cause a set of issues in the Studio
         // This was how the bug replicated itself, because the studio did not wait for the
         // server to return information
@@ -121,6 +122,9 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             Assert.IsTrue(dispatchClient.LoggedIn, "The TCPDispatchedClient was unable to login to the server");
         }
 
+        // Sashen.Naidoo : 13-02-2012 : Bug 8791 : This test ensures that the TCPDispatchedClient can still make a valid 
+        //                                         a valid connection to the Server as it previously did, it just checks 
+        //                                         that the TCPDispatchedClient only creates a connection
         [TestMethod]
         public void TCPDispatchedClient_Connect_Expected_ConnectionEstablishedToServer() {
             TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
@@ -129,7 +133,8 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             Assert.IsTrue(dispatchClient.Connections[0].Alive, "An error occured during the connect call on the TCPDispatchClient");
         }
 
-
+        // Sashen.Naidoo : 13-02-2012 : Bug 8791 : Test to check that invalid URI's throws an exception in the TCPDispatchedClient
+        //                                         this is to check that the correct exception is thrown.
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TCPDispatchedClient_Login_UnavailableServer_Expected_()
