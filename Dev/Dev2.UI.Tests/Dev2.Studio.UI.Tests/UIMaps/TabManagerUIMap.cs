@@ -60,6 +60,12 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             UITestControl close = new UITestControl(control);
             close.SearchProperties["AutomationId"] = "closeBtn";
             Mouse.Click(close);
+            // Rare closure bug if you click a DDL before
+            UITestControl theTab = FindTabByName("tabName");
+            if(theTab != null)
+            {
+                Mouse.Click(close);
+            }
         }
 
         public void MiddleClickCloseTab(string tabName)

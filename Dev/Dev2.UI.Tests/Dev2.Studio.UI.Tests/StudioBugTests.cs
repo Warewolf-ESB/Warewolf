@@ -319,10 +319,10 @@ namespace Dev2.Studio.UI.Tests
         {
             try
             {
-                myTestBase.CreateCustomWorkflow("6672", "CodedUITestCategory");
-                _explorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CodedUITestCategory", "6672");
+                myTestBase.CreateCustomWorkflow("6672");
+                _explorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6672");
                 _explorerUIMap.DoRefresh();
-                myTestBase.CreateCustomWorkflow("6672", "CodedUITestCategory");
+                myTestBase.CreateCustomWorkflow("6672");
                 myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6672");
             }
             catch

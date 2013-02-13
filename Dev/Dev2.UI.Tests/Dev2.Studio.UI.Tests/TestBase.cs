@@ -351,7 +351,8 @@ namespace Dev2.CodedUI.Tests
             // Create the workflow
             CreateCustomWorkflow("PBI8601Test");
             Thread.Sleep(2500);
-            UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601Test");
+            // UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601Test");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("RightClickMenuTests");
 
             // Add an assign control
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
@@ -359,10 +360,20 @@ namespace Dev2.CodedUI.Tests
             // Click the Adorner button
             WorkflowDesignerUIMap.AssignControl_ClickQuickVariableInputButton(theTab, "Assign");
 
-            // Enter soem data
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
+            // Enter some invalid data
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
 
             // Click done
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
+
+            // Make sure an error has been thrown
+            string previewText = WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_GetPreviewData(theTab, "Assign");
+            StringAssert.Contains(previewText, "Prefix contains invalid characters");
+
+            // Click cancel, and enter some correct data
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickCancel(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_ClickQuickVariableInputButton(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
             // Check the data
@@ -676,7 +687,7 @@ namespace Dev2.CodedUI.Tests
         public void RightClickMenuTests_Expected_NoErrors()
         {
             // Create a Workflow
-            //CreateCustomWorkflow("RightClickMenuTests", "CodedUITestCategory");
+            //CreateCustomWorkflow("RightClickMenuTests");
 
             // 5559.1 - Refresh
 
@@ -763,7 +774,7 @@ namespace Dev2.CodedUI.Tests
             Assert.AreEqual(serversBefore + 1, serversAfter, "Connecting to a new server did not add it to the explorer list.");
             ExplorerUIMap.Server_RightClick_Delete("tfsbld");
             */
-
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITWESTCATEGORY", "RightClickMenuTests");
         }
 
         // 8,9,10,11 are being exempt for now (RE Sashen)
