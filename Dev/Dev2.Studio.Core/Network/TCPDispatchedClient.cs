@@ -37,6 +37,8 @@ namespace Dev2.Studio.Core
         private volatile NetworkState _networkState;
         private volatile Connection _primaryConnection;
 
+        private ManualResetEventSlim _socketConnectionRecieved;
+
         private DispatcherFrame _clientDetailsReceivedFrame;
         private object _clientDetailsReceivedLock;
         private bool _clientDetailsReveived;
@@ -68,8 +70,8 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region Events
-        public event NetworkStateEventHandler NetworkStateChanged { add { if(!_disposing) _onNetworkStateChanged += value; } remove { if(!_disposing) _onNetworkStateChanged -= value; } }
-        public event LoginStateEventHandler LoginStateChanged { add { if(!_disposing) _onLoginStateChanged += value; } remove { if(!_disposing) _onLoginStateChanged -= value; } }
+        public event NetworkStateEventHandler NetworkStateChanged { add { if (!_disposing) _onNetworkStateChanged += value; } remove { if (!_disposing) _onNetworkStateChanged -= value; } }
+        public event LoginStateEventHandler LoginStateChanged { add { if (!_disposing) _onLoginStateChanged += value; } remove { if (!_disposing) _onLoginStateChanged -= value; } }
         #endregion
 
         #region Constructor
@@ -96,11 +98,11 @@ namespace Dev2.Studio.Core
 
             _serverMessaging = new ServerMessaging();
 
-            if(!isAuxiliary)
+            if (!isAuxiliary)
             {
                 _channels[0].Register(0, PacketTemplates.Client_OnAuxiliaryConnectionReply, new PacketEventHandler(OnAuxiliaryConnectionReply));
                 _channels[0].Register(1, PacketTemplates.Client_OnDebugWriterWrite, new PacketEventHandler(OnDebugWriterWrite));
-                
+
                 _channels[1].Register(0, PacketTemplates.Both_OnNetworkMessageRevieved, new PacketEventHandler(OnNetworkMessageRevieved));
             }
 
@@ -131,7 +133,7 @@ namespace Dev2.Studio.Core
             _networkState = state;
 
             RaiseNetworkStateChanged(new NetworkStateEventArgs(oldState, state, isError, message));
-            if(state == NetworkState.Offline && _loggedIn)
+            if (state == NetworkState.Offline && _loggedIn)
                 RaiseLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Logout, false));
         }
         #endregion
@@ -143,21 +145,21 @@ namespace Dev2.Studio.Core
 
         public void AddDebugWriter(IDebugWriter writer)
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(_isAuxiliary)
+            if (_isAuxiliary)
                 throw new InvalidOperationException("Auxiliary clients cannot add debug writers.");
-            if(_networkState != NetworkState.Online)
+            if (_networkState != NetworkState.Online)
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
-            if(!_loggedIn)
+            if (!_loggedIn)
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
-            if(writer == null)
+            if (writer == null)
                 throw new ArgumentNullException("writer");
             Guid id = _accountID;
 
-            lock(_writerGuard)
+            lock (_writerGuard)
             {
-                if(!_debugWriters.ContainsKey(id))
+                if (!_debugWriters.ContainsKey(id))
                 {
                     _debugWriters.Add(id, writer);
                 }
@@ -173,13 +175,13 @@ namespace Dev2.Studio.Core
 
         public void RemoveDebugWriter(IDebugWriter writer)
         {
-            if(writer == null)
+            if (writer == null)
                 throw new ArgumentNullException("writer");
             Guid id = _accountID;
 
-            lock(_writerGuard)
+            lock (_writerGuard)
             {
-                if(_debugWriters.Remove(id))
+                if (_debugWriters.Remove(id))
                 {
                     Packet p = new Packet(PacketTemplates.Server_OnDebugWriterSubtraction);
                     Send(p);
@@ -189,9 +191,9 @@ namespace Dev2.Studio.Core
 
         public void RemoveDebugWriter(Guid writerID)
         {
-            lock(_writerGuard)
+            lock (_writerGuard)
             {
-                if(_debugWriters.Remove(writerID))
+                if (_debugWriters.Remove(writerID))
                 {
                     Packet p = new Packet(PacketTemplates.Server_OnDebugWriterSubtraction);
                     Send(p);
@@ -204,12 +206,12 @@ namespace Dev2.Studio.Core
             var debugState = new DebugState(reader);
             IDebugWriter writer;
 
-            lock(_writerGuard)
+            lock (_writerGuard)
             {
                 _debugWriters.TryGetValue(_accountID, out writer);
             }
 
-            if(writer != null)
+            if (writer != null)
             {
                 writer.Write(debugState);
             }
@@ -257,13 +259,13 @@ namespace Dev2.Studio.Core
         #region Auxiliary Connection Handling
         public TCPDispatchedClient CreateAuxiliaryClient()
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(_isAuxiliary)
+            if (_isAuxiliary)
                 throw new InvalidOperationException("Auxiliary clients cannot create nested auxiliary clients.");
-            if(_networkState != NetworkState.Online)
+            if (_networkState != NetworkState.Online)
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
-            if(!_loggedIn)
+            if (!_loggedIn)
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
 
 
@@ -273,33 +275,33 @@ namespace Dev2.Studio.Core
 
             ExecuteCommandToken token = new ExecuteCommandToken(commandSerial);
 
-            lock(_commandLock)
+            lock (_commandLock)
                 _pendingCommands.Add(commandSerial, token);
 
             _primaryConnection.Send(p);
             ByteBuffer result = token.Execute();
 
-            if(result != null)
+            if (result != null)
             {
                 Guid connectionAuth = result.ReadGuid();
                 TCPDispatchedClient client = new TCPDispatchedClient(Name + " (Auxiliary)", true);
 
                 NetworkStateEventArgs netArgs = client.Connect(_hostNameOrAddress, _port + 20000);
 
-                if(netArgs.ToState == System.Network.NetworkState.Online)
+                if (netArgs.ToState == System.Network.NetworkState.Online)
                 {
                     byte[] raw = connectionAuth.ToByteArray();
                     string username = "Auth";
                     string password = "P";
 
-                    for(int i = 0; i < 8; i++)
+                    for (int i = 0; i < 8; i++)
                     {
                         username += raw[i].ToString();
                         password += raw[i + 8].ToString();
                     }
 
                     LoginStateEventArgs loginArgs = client.Login(new TWALoginBroker(username, password));
-                    if(loginArgs.LoggedIn)
+                    if (loginArgs.LoggedIn)
                         return client;
                 }
 
@@ -312,18 +314,18 @@ namespace Dev2.Studio.Core
 
         private void OnAuxiliaryConnectionReply(INetworkOperator op, ByteBuffer reader)
         {
-            if(_isAuxiliary)
+            if (_isAuxiliary)
                 throw new InvalidOperationException("Auxiliary connections cannot receive this packet.");
             int commandSerial = reader.ReadInt32();
             ExecuteCommandToken token = null;
 
-            lock(_commandLock)
+            lock (_commandLock)
             {
-                if(_pendingCommands.TryGetValue(commandSerial, out token))
+                if (_pendingCommands.TryGetValue(commandSerial, out token))
                     _pendingCommands.Remove(commandSerial);
             }
 
-            if(token != null)
+            if (token != null)
             {
                 token.Complete(reader);
             }
@@ -351,7 +353,7 @@ namespace Dev2.Studio.Core
                     _clientDetailsReceivedFrame = new DispatcherFrame();
                 }
 
-                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => 
+                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
                 {
                     _clientDetailsReceivedResetEvent.Reset();
                     _clientDetailsReceivedResetEvent.Wait(GlobalConstants.NetworkTimeOut);
@@ -412,15 +414,15 @@ namespace Dev2.Studio.Core
 
         private void RaiseNetworkStateChanged(NetworkStateEventArgs args)
         {
-            if(args.ToState != NetworkState.Online)
+            if (args.ToState != NetworkState.Online)
                 CancelPending();
 
-            if(_onNetworkStateChangedCore != null)
+            if (_onNetworkStateChangedCore != null)
             {
                 _onNetworkStateChangedCore(this, args);
             }
 
-            if(_onNetworkStateChanged != null)
+            if (_onNetworkStateChanged != null)
             {
                 _onNetworkStateChanged(this, args);
             }
@@ -428,7 +430,7 @@ namespace Dev2.Studio.Core
 
         private void RaiseLoginStateChanged(LoginStateEventArgs args)
         {
-            if(!args.LoggedIn)
+            if (!args.LoggedIn)
             {
                 CancelPending();
                 //_accountID = Guid.Empty;
@@ -436,12 +438,12 @@ namespace Dev2.Studio.Core
 
             _loggedIn = args.LoggedIn;
 
-            if(_onLoginStateChangedCore != null)
+            if (_onLoginStateChangedCore != null)
             {
                 _onLoginStateChangedCore(this, args);
             }
 
-            if(_onLoginStateChanged != null)
+            if (_onLoginStateChanged != null)
             {
                 _onLoginStateChanged(this, args);
             }
@@ -457,23 +459,23 @@ namespace Dev2.Studio.Core
 
         public LoginStateEventArgs Login(OutboundAuthenticationBroker broker)
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(broker == null)
+            if (broker == null)
                 throw new ArgumentNullException("broker");
-            if(Interlocked.CompareExchange(ref _withinConnect, True, False) != False)
+            if (Interlocked.CompareExchange(ref _withinConnect, True, False) != False)
                 throw new InvalidOperationException("TCPDispatchedClient does not support concurrent connect/login operations.");
 
-            if(_networkState != NetworkState.Online)
+            if (_networkState != NetworkState.Online)
             {
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
             }
 
-            if(_loggedIn)
+            if (_loggedIn)
             {
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
                 throw new InvalidOperationException("TCPDispatchedClient is already logged in.");
             }
@@ -485,7 +487,7 @@ namespace Dev2.Studio.Core
             {
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     _loginFrameArgs = null;
                     _connectFrameArgs = null;
@@ -501,7 +503,7 @@ namespace Dev2.Studio.Core
             {
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     result = _loginFrameArgs;
                     networkResult = _connectFrameArgs;
@@ -515,15 +517,15 @@ namespace Dev2.Studio.Core
                     _onNetworkStateChangedCore = null;
                 }
 
-                if(frame != null)
+                if (frame != null)
                     frame.Continue = false;
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
             }
 
-            if(result == null)
+            if (result == null)
             {
-                if(networkResult != null)
+                if (networkResult != null)
                     result = new LoginStateEventArgs(AuthenticationResponse.Unspecified, false);
                 else
                 {
@@ -536,28 +538,28 @@ namespace Dev2.Studio.Core
 
         private void LoginImpl(OutboundAuthenticationBroker broker)
         {
-            if(_loggedIn)
+            if (_loggedIn)
                 return;
             broker.BeginAuthentication(_primaryConnection);
         }
 
         public LoginStateEventArgs Logout()
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(Interlocked.CompareExchange(ref _withinConnect, True, False) != False)
+            if (Interlocked.CompareExchange(ref _withinConnect, True, False) != False)
                 throw new InvalidOperationException("TCPDispatchedClient does not support concurrent connect/login operations.");
 
-            if(_networkState != NetworkState.Online)
+            if (_networkState != NetworkState.Online)
             {
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
             }
 
-            if(!_loggedIn)
+            if (!_loggedIn)
             {
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
             }
@@ -569,7 +571,7 @@ namespace Dev2.Studio.Core
             {
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     _loginFrameArgs = null;
                     _connectFrameArgs = null;
@@ -585,7 +587,7 @@ namespace Dev2.Studio.Core
             {
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     result = _loginFrameArgs;
                     networkResult = _connectFrameArgs;
@@ -599,15 +601,15 @@ namespace Dev2.Studio.Core
                     _onNetworkStateChangedCore = null;
                 }
 
-                if(frame != null)
+                if (frame != null)
                     frame.Continue = false;
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
             }
 
-            if(result == null)
+            if (result == null)
             {
-                if(networkResult != null)
+                if (networkResult != null)
                     result = new LoginStateEventArgs(AuthenticationResponse.Logout, false);
                 else
                 {
@@ -620,7 +622,7 @@ namespace Dev2.Studio.Core
 
         private void LogoutImpl()
         {
-            if(!_loggedIn)
+            if (!_loggedIn)
                 return;
 
             Packet p = new Packet(InternalTemplates.Server_LogoutReceived);
@@ -631,15 +633,15 @@ namespace Dev2.Studio.Core
         {
             DispatcherFrame frame = null;
 
-            if(args.ToState == NetworkState.Offline)
+            if (args.ToState == NetworkState.Offline)
             {
-                lock(_frameLock)
+                lock (_frameLock)
                 {
-                    if(_frame != null && _connectFrameArgs == null)
+                    if (_frame != null && _connectFrameArgs == null)
                     {
                         _connectFrameArgs = args;
 
-                        if(_loginFrameArgs == null)
+                        if (_loginFrameArgs == null)
                         {
                             frame = _frame;
                             _frame = null;
@@ -648,7 +650,7 @@ namespace Dev2.Studio.Core
                 }
             }
 
-            if(frame != null)
+            if (frame != null)
                 frame.Continue = false;
         }
 
@@ -656,9 +658,9 @@ namespace Dev2.Studio.Core
         {
             DispatcherFrame frame = null;
 
-            lock(_frameLock)
+            lock (_frameLock)
             {
-                if(_frame != null && _loginFrameArgs == null)
+                if (_frame != null && _loginFrameArgs == null)
                 {
                     _onNetworkStateChangedCore = null;
                     _loginFrameArgs = args;
@@ -667,7 +669,7 @@ namespace Dev2.Studio.Core
                 }
             }
 
-            if(frame != null)
+            if (frame != null)
                 frame.Continue = false;
         }
         #endregion
@@ -675,13 +677,13 @@ namespace Dev2.Studio.Core
         #region ExecuteCommand Handling
         public string ExecuteCommand(string payload)
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(payload == null)
+            if (payload == null)
                 throw new ArgumentNullException("payload");
-            if(_networkState != NetworkState.Online)
+            if (_networkState != NetworkState.Online)
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
-            if(!_loggedIn)
+            if (!_loggedIn)
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
 
             int commandSerial = Interlocked.Increment(ref _commandSerial);
@@ -692,34 +694,34 @@ namespace Dev2.Studio.Core
 
             ExecuteCommandToken token = new ExecuteCommandToken(commandSerial);
 
-            lock(_commandLock)
+            lock (_commandLock)
                 _pendingCommands.Add(commandSerial, token);
 
             _primaryConnection.Send(p);
             ByteBuffer reader = token.Execute();
 
             string result = null;
-            if(reader != null)
+            if (reader != null)
                 result = reader.ReadString();
             return result;
         }
 
         public ByteBuffer ExecuteCommand(ByteBuffer payload)
         {
-            if(payload == null)
+            if (payload == null)
                 throw new ArgumentNullException("payload");
             return ExecuteCommand(payload, 0, (int)payload.Length);
         }
 
         public ByteBuffer ExecuteCommand(ByteBuffer payload, int index, int count)
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(payload == null)
+            if (payload == null)
                 throw new ArgumentNullException("payload");
-            if(_networkState != NetworkState.Online)
+            if (_networkState != NetworkState.Online)
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
-            if(!_loggedIn)
+            if (!_loggedIn)
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
 
             int commandSerial = Interlocked.Increment(ref _commandSerial);
@@ -730,7 +732,7 @@ namespace Dev2.Studio.Core
 
             ExecuteCommandToken token = new ExecuteCommandToken(commandSerial);
 
-            lock(_commandLock)
+            lock (_commandLock)
                 _pendingCommands.Add(commandSerial, token);
 
             _primaryConnection.Send(p);
@@ -744,13 +746,13 @@ namespace Dev2.Studio.Core
             int commandSerial = reader.ReadInt32();
             ExecuteCommandToken token = null;
 
-            lock(_commandLock)
+            lock (_commandLock)
             {
-                if(_pendingCommands.TryGetValue(commandSerial, out token))
+                if (_pendingCommands.TryGetValue(commandSerial, out token))
                     _pendingCommands.Remove(commandSerial);
             }
 
-            if(token != null)
+            if (token != null)
             {
                 token.Complete(reader);
             }
@@ -760,13 +762,13 @@ namespace Dev2.Studio.Core
         {
             Dictionary<int, ExecuteCommandToken> pending;
 
-            lock(_commandLock)
+            lock (_commandLock)
             {
                 pending = _pendingCommands;
                 _pendingCommands = new Dictionary<int, ExecuteCommandToken>();
             }
 
-            foreach(KeyValuePair<int, ExecuteCommandToken> kvp in pending)
+            foreach (KeyValuePair<int, ExecuteCommandToken> kvp in pending)
             {
                 kvp.Value.Cancel();
             }
@@ -781,14 +783,14 @@ namespace Dev2.Studio.Core
 
         protected override void OnLoginFailed(Connection connection, OutboundAuthenticationBroker broker, AuthenticationResponse reason, bool expectDisconnect)
         {
-            if(reason == AuthenticationResponse.Success)
+            if (reason == AuthenticationResponse.Success)
                 throw new InvalidOperationException();
             RaiseLoginStateChanged(new LoginStateEventArgs(reason, expectDisconnect));
         }
 
         private void OnLogoutReceived(INetworkOperator op, ByteBuffer reader)
         {
-            if(_primaryConnection != null && _primaryConnection.Alive)
+            if (_primaryConnection != null && _primaryConnection.Alive)
             {
                 _primaryConnection.Crypt = NullCryptProvider.Singleton;
                 _primaryConnection.Assembler = null;
@@ -803,14 +805,14 @@ namespace Dev2.Studio.Core
         #region Outgoing Connection Handling
         public NetworkStateEventArgs Connect(string hostNameOrAddress, int port)
         {
-            if(Disposed)
+            if (Disposed)
                 throw new ObjectDisposedException("TCPDispatchedClient");
-            if(Interlocked.CompareExchange(ref _withinConnect, True, False) != False)
+            if (Interlocked.CompareExchange(ref _withinConnect, True, False) != False)
                 throw new InvalidOperationException("TCPDispatchedClient does not support concurrent connect/login operations.");
 
-            if(_networkState != NetworkState.Offline)
+            if (_networkState != NetworkState.Offline)
             {
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
                 throw new InvalidOperationException("TCPDispatchedClient is not offline.");
             }
@@ -823,7 +825,7 @@ namespace Dev2.Studio.Core
             {
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     _connectFrameArgs = null;
                     _loginFrameArgs = null;
@@ -838,7 +840,7 @@ namespace Dev2.Studio.Core
             {
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     result = _connectFrameArgs;
                     frame = _frame;
@@ -849,9 +851,9 @@ namespace Dev2.Studio.Core
                     _onNetworkStateChangedCore = null;
                 }
 
-                if(frame != null)
+                if (frame != null)
                     frame.Continue = false;
-                if(Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
+                if (Interlocked.CompareExchange(ref _withinConnect, False, True) != True)
                     throw new InvalidOperationException("Unexpected connection state encountered.");
             }
 
@@ -860,22 +862,27 @@ namespace Dev2.Studio.Core
 
         private void ConnectImpl(string hostNameOrAddress, int port)
         {
-            if(_networkState != NetworkState.Offline)
+            _socketConnectionRecieved = new ManualResetEventSlim();
+            if (_networkState != NetworkState.Offline)
                 return;
             SetNetworkState(NetworkState.Connecting);
 
             IPAddress potentialAddress = null;
 
-            if(IPAddress.TryParse(hostNameOrAddress, out potentialAddress))
+            if (IPAddress.TryParse(hostNameOrAddress, out potentialAddress))
             {
                 Socket s = null;
 
                 try
                 {
                     s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    // Wait for a socket connection to be attained
+                    _socketConnectionRecieved.Reset();
                     s.BeginConnect(new IPEndPoint(potentialAddress, port), new AsyncCallback(OnEndConnect), s);
+                    _socketConnectionRecieved.Wait(GlobalConstants.NetworkTimeOut);
+
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     try { s.Shutdown(SocketShutdown.Both); }
                     catch { }
@@ -892,7 +899,7 @@ namespace Dev2.Studio.Core
                 envoy.EnvoyReturned += new EnvoyReturnedEventHandler(OnEnvoyReturned);
                 Exception result = envoy.BeginResolution();
 
-                if(result != null)
+                if (result != null)
                 {
                     envoy.EnvoyReturned -= new EnvoyReturnedEventHandler(OnEnvoyReturned);
                     envoy.Dispose();
@@ -907,7 +914,7 @@ namespace Dev2.Studio.Core
             envoy.EnvoyReturned -= new EnvoyReturnedEventHandler(OnEnvoyReturned);
             envoy.Dispose();
 
-            if(!successful)
+            if (!successful)
                 SetNetworkState(NetworkState.Offline, true, "A connection to the server could not be established. Reason : The specified server could not be found.");
             else
             {
@@ -918,14 +925,14 @@ namespace Dev2.Studio.Core
                     s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     IPAddress address = null;
 
-                    for(int i = 0; i < resolvedHostEntry.AddressList.Length; i++)
-                        if(resolvedHostEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                    for (int i = 0; i < resolvedHostEntry.AddressList.Length; i++)
+                        if (resolvedHostEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
                         {
                             address = resolvedHostEntry.AddressList[i];
                             break;
                         }
 
-                    if(address == null)
+                    if (address == null)
                     {
                         try { s.Shutdown(SocketShutdown.Both); }
                         catch { }
@@ -938,7 +945,7 @@ namespace Dev2.Studio.Core
                     else
                         s.BeginConnect(new IPEndPoint(address, port), new AsyncCallback(OnEndConnect), s);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     try { s.Shutdown(SocketShutdown.Both); }
                     catch { }
@@ -959,8 +966,9 @@ namespace Dev2.Studio.Core
             {
                 socket = (Socket)asyncResult.AsyncState;
                 socket.EndConnect(asyncResult);
+                _socketConnectionRecieved.Set();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 try { socket.Shutdown(SocketShutdown.Both); }
                 catch { }
@@ -978,7 +986,7 @@ namespace Dev2.Studio.Core
 
         private void ConstructConnection(Socket socket)
         {
-            if(_disposing)
+            if (_disposing)
             {
                 NetworkHelper.ReleaseSocket(ref socket);
                 return;
@@ -991,32 +999,32 @@ namespace Dev2.Studio.Core
                 Connection con = new AsyncConnection(this, socket, NetworkDirection.Outbound);
                 con.Start();
 
-                if(con.Alive)
+                if (con.Alive)
                 {
-                    if(_primaryConnection == null)
+                    if (_primaryConnection == null)
                     {
                         _primaryConnection = con;
                         SetNetworkState(NetworkState.Online);
                     }
-                    else if(NetworkState == NetworkState.Offline)
+                    else if (NetworkState == NetworkState.Offline)
                         con.Dispose();
                 }
                 else
                 {
                     con.Dispose();
-                    if(_primaryConnection == null)
+                    if (_primaryConnection == null)
                         error = true;
                 }
             }
             catch { NetworkHelper.ReleaseSocket(ref socket); }
 
-            if(error)
+            if (error)
                 Disconnect(NetworkDirection.Bidirectional);
         }
 
         protected override void OnConnectionDisposed(Connection connection)
         {
-            if(connection == _primaryConnection)
+            if (connection == _primaryConnection)
             {
                 _serverMessaging.MessageAggregator.Publish(new NetworkContextDetachedMessage(), new StudioNetworkChannelContext(connection, AccountID, ServerID));
                 _primaryConnection = null;
@@ -1029,11 +1037,11 @@ namespace Dev2.Studio.Core
         {
             DispatcherFrame frame = null;
 
-            if(args.ToState == NetworkState.Offline)
+            if (args.ToState == NetworkState.Offline)
             {
-                lock(_frameLock)
+                lock (_frameLock)
                 {
-                    if(_frame != null && _connectFrameArgs == null)
+                    if (_frame != null && _connectFrameArgs == null)
                     {
                         _connectFrameArgs = args;
                         frame = _frame;
@@ -1041,11 +1049,11 @@ namespace Dev2.Studio.Core
                     }
                 }
             }
-            else if(args.ToState == NetworkState.Online)
+            else if (args.ToState == NetworkState.Online)
             {
-                lock(_frameLock)
+                lock (_frameLock)
                 {
-                    if(_frame != null && _connectFrameArgs == null)
+                    if (_frame != null && _connectFrameArgs == null)
                     {
                         _connectFrameArgs = args;
                         frame = _frame;
@@ -1054,7 +1062,7 @@ namespace Dev2.Studio.Core
                 }
             }
 
-            if(frame != null)
+            if (frame != null)
                 frame.Continue = false;
         }
         #endregion
@@ -1063,28 +1071,28 @@ namespace Dev2.Studio.Core
 
         public void Send(byte[] data, int index, int length)
         {
-            if(_primaryConnection == null)
+            if (_primaryConnection == null)
                 throw new InvalidOperationException("TCPDispatchedClient is not connected.");
             _primaryConnection.Send(data, index, length);
         }
 
         public void Send(Packet p)
         {
-            if(_primaryConnection == null)
+            if (_primaryConnection == null)
                 throw new InvalidOperationException("TCPDispatchedClient is not connected.");
             _primaryConnection.Send(p);
         }
 
         public void SendExtended(Packet p, byte[] extension, int extensionLength)
         {
-            if(_primaryConnection == null)
+            if (_primaryConnection == null)
                 throw new InvalidOperationException("TCPDispatchedClient is not connected.");
             _primaryConnection.SendExtended(p, extension, extensionLength);
         }
 
         public void SendRange(params Packet[] p)
         {
-            if(_primaryConnection == null)
+            if (_primaryConnection == null)
                 throw new InvalidOperationException("TCPDispatchedClient is not connected.");
             _primaryConnection.SendRange(p);
         }
@@ -1117,7 +1125,7 @@ namespace Dev2.Studio.Core
 
         protected override void Dispatch(Connection connection, PacketData extension, PacketData packet, bool isResponse)
         {
-            if(isResponse)
+            if (isResponse)
                 _extensions[extension.Channel].Response(_channels[packet.Channel], connection, extension, packet);
             else
                 _extensions[extension.Channel].Dispatch(_channels[packet.Channel], connection, extension, packet);
@@ -1127,24 +1135,24 @@ namespace Dev2.Studio.Core
         #region Disposal Handling
         protected override void OnDisposing(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 CancelPending();
                 DispatcherFrame frame = null;
 
-                lock(_frameLock)
+                lock (_frameLock)
                 {
                     _onNetworkStateChangedCore = null;
                     _onLoginStateChangedCore = null;
 
-                    if(_frame != null)
+                    if (_frame != null)
                     {
                         frame = _frame;
                         _frame = null;
                     }
                 }
 
-                if(frame != null)
+                if (frame != null)
                     frame.Continue = false;
             }
         }
@@ -1183,12 +1191,12 @@ namespace Dev2.Studio.Core
                     //TODO Put network timeout limit & deal with propogating the error
                     _handle.Wait(_source.Token);
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     cancelled = true;
                 }
 
-                if(cancelled)
+                if (cancelled)
                 {
                     _result = null;
                 }
