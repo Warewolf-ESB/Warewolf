@@ -121,7 +121,9 @@ namespace Dev2.Studio.Feedback
                 return;
             }
 
-            if (!EnsureNoFeedbackSessionsInProgress())
+            string feedbackType = feedbackAction.ToString();
+            feedbackType = feedbackType.Remove(0, feedbackType.LastIndexOf(".", System.StringComparison.Ordinal) + 1);
+            if (!EnsureNoFeedbackSessionsInProgress(feedbackType))
             {
                 return;
             }
@@ -129,26 +131,48 @@ namespace Dev2.Studio.Feedback
             InvokeAction(feedbackAction);
         }
 
-        private bool EnsureNoFeedbackSessionsInProgress()
+        private bool EnsureNoFeedbackSessionsInProgress(string feedbackType)
         {
             if(CurrentAction == null)
             {
                 return true;
             }
 
-            MessageBoxResult result = Popup.Show("Another feedback session is in progress, would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
-            if(result != MessageBoxResult.Yes)
+            if (feedbackType == "RecorderFeedbackAction" || feedbackType == "IAsyncFeedbackActionProxy") // IAsyncFeedbackActionProxy required for Mocking
             {
-                return false;
-            }
+                MessageBoxResult result = Popup.Show("Another feedback session is in progress, would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                if (result == MessageBoxResult.No)
+                {
+                    return false;
+                }
 
-            IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
-            if(asyncFeedback != null)
+                IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
+                if (asyncFeedback != null)
+                {
+                    asyncFeedback.CancelFeedback();
+                }
+            }
+            else // A feedback recording is in progress, but the user did not want to use the Feedback Recorder
             {
-                asyncFeedback.CancelFeedback();
+                IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction; // Get the current recording
+                if (asyncFeedback != null)
+                {
+                    MessageBoxResult result = Popup.Show("As a previous feedback recording session was in progress, it has been cancelled. Would you like to attach its recording file to your feedback?", "Attach previous feedback recording", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // If the user wants to use the previous recording, use it
+                        asyncFeedback.FinishFeedBack();
+                        CurrentAction = null;
+                        return false;
+                    }
+                    else
+                    {
+                        // If the user doesn't want to use the previous recording, discard it, and carry on as per usual
+                        asyncFeedback.CancelFeedback();
+                        return true;
+                    }
+                }
             }
-
-            CurrentAction = null;
             return true;
         }
 
