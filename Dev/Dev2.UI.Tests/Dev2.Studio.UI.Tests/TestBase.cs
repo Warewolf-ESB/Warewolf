@@ -113,9 +113,9 @@ namespace Dev2.CodedUI.Tests
                 try
                 {
                     //Process[] processList = System.Diagnostics.Process.GetProcesses();
-                    List<Process> findDev2Servers = Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server") && !p.ProcessName.Contains("vshost")).ToList();
+                    List<Process> findDev2Servers = Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server")).ToList();
                     int serverCounter = findDev2Servers.Count();
-                    if (serverCounter != 1)
+                    if (!(serverCounter > 0 && serverCounter < 3))
                     {
                         Assert.Fail("Tests cannot run - The Server is not running!");
                     }

@@ -518,6 +518,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         #endregion
 
+        #region FindRecords Control
+
+        public int FindRecords_GetDDLHeight(UITestControl theTab, string findRecordsControlTitle)
+        {
+            UITestControl findRecordsControl = FindControlByAutomationId(theTab, findRecordsControlTitle);
+            WpfComboBox theComboBox = (WpfComboBox)findRecordsControl.GetChildren()[5];
+            return theComboBox.Height;
+        }
+
+        #endregion BaseConvert Control
+
         #region Sort Control
 
         public int Sort_GetDDLHeight(UITestControl theTab, string sortControlTitle)
