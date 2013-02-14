@@ -1,4 +1,4 @@
-﻿function SerivceViewModel(resourceID, resourceType) {
+﻿function DbSerivceViewModel(resourceID, resourceType) {
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
