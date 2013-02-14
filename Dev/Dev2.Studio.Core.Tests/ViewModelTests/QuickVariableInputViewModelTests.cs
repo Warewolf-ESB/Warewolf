@@ -1,4 +1,5 @@
-﻿using Dev2.Core.Tests.Utils;
+﻿using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.ViewModels.QuickVariableInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -60,10 +61,10 @@ namespace Dev2.Core.Tests.ViewModelTests
         //
         #endregion
 
+        #region Preview Tests
+
         [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void QuickVariableInputViewModel_Preview_With_All_Fields_Populated_OverWrite_False_Expected_Correct_Preview()
-        // ReSharper restore InconsistentNaming
+        public void QuickVariableInputViewModelPreviewWithAllFieldsPopulatedOverWriteFalseExpectedCorrectPreview()
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
@@ -80,9 +81,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void QuickVariableInputViewModel_Preview_With_All_Fields_Populated_OverWrite_True_Expected_Correct_Preview()
-        // ReSharper restore InconsistentNaming
+        public void QuickVariableInputViewModelPreviewWithAllFieldsPopulatedOverWriteTrueExpectedCorrectPreview()
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
@@ -98,9 +97,37 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void QuickVariableInputViewModel_Split_With_All_Fields_Populated_Expected_Correct_Results_Returned()
-        // ReSharper restore InconsistentNaming
+        public void QuickVariableInputViewModelPreviewWithMoreThenThreeItemsBeingAddedExpectedCorrectPreview()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo,Email", SplitType = "Chars", SplitToken = ",", Overwrite = true };
+            viewModel.Preview();
+
+            Assert.AreEqual(@"1 [[Customer().Fname]]
+2 [[Customer().LName]]
+3 [[Customer().TelNo]]
+...", viewModel.PreviewText);
+        }
+
+        #endregion
+
+        #region Split Tests
+
+        [TestMethod]
+        public void QuickVariableInputViewModelSplitWithIncompleteVariableListAndAllFieldsPopulatedExpectedCorrectResultsReturned()
+        {
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity())) { Suffix = "", Prefix = "Customer().", VariableListString = "FName,LName,", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+            List<string> returnedList = viewModel.Split();
+            List<string> expectedCollection = new List<string> { "FName", "LName" };
+
+            CollectionAssert.AreEqual(expectedCollection, returnedList);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelSplitWithAllFieldsPopulatedExpectedCorrectResultsReturned()
         {
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity())) { Suffix = "", Prefix = "Customer().", VariableListString = "FName,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
             List<string> returnedList = viewModel.Split();
@@ -111,21 +138,96 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void QuickVariableInputViewModel_Split_With_Incomplete_VariableList_And_All_Fields_Populated_Expected_Correct_Results_Returned()
-        // ReSharper restore InconsistentNaming
+        public void QuickVariableInputViewModelSplitWithIndexAndAllFieldsPopulatedExpectedCorrectResultsReturned()
         {
-            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity())) { Suffix = "", Prefix = "Customer().", VariableListString = "FName,LName,", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity())) { Suffix = "", Prefix = "Customer().", VariableListString = "FNameLNameTelNo", SplitType = "Index", SplitToken = "4", Overwrite = false };
             List<string> returnedList = viewModel.Split();
-            List<string> expectedCollection = new List<string> { "FName", "LName" };
+            List<string> expectedCollection = new List<string> { "FNam", "eLNa", "meTe", "lNo" };
 
             CollectionAssert.AreEqual(expectedCollection, returnedList);
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void QuickVariableInputViewModel_MakeDataListReady_With_All_Fields_Populated_Expected_Correct_Results_Returned()
-        // ReSharper restore InconsistentNaming
+        public void QuickVariableInputViewModelNewLineWithAllFieldsPopulatedExpectedCorrectResultsReturned()
+        {
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity()))
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = @"Fname
+Lname
+TelNo
+Email",
+                SplitType = "New Line",
+                SplitToken = "",
+                Overwrite = false
+            };
+            List<string> returnedList = viewModel.Split();
+            List<string> expectedCollection = new List<string> { "Fname", "Lname", "TelNo", "Email" };
+
+            CollectionAssert.AreEqual(expectedCollection, returnedList);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelSpaceWithAllFieldsPopulatedExpectedCorrectResultsReturned()
+        {
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity()))
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = @"Fname Lname TelNo Email",
+                SplitType = "Space",
+                SplitToken = "",
+                Overwrite = false
+            };
+            List<string> returnedList = viewModel.Split();
+            List<string> expectedCollection = new List<string> { "Fname", "Lname", "TelNo", "Email" };
+
+            CollectionAssert.AreEqual(expectedCollection, returnedList);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelTabWithAllFieldsPopulatedExpectedCorrectResultsReturned()
+        {
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity()))
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = @"Fname	Lname	TelNo	Email",
+                SplitType = "Tab",
+                SplitToken = "",
+                Overwrite = false
+            };
+            List<string> returnedList = viewModel.Split();
+            List<string> expectedCollection = new List<string> { "Fname", "Lname", "TelNo", "Email" };
+
+            CollectionAssert.AreEqual(expectedCollection, returnedList);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelEndWithAllFieldsPopulatedExpectedCorrectResultsReturned()
+        {
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity()))
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = @"FnameLnameTelNoEmail",
+                SplitType = "End",
+                SplitToken = "",
+                Overwrite = false
+            };
+            List<string> returnedList = viewModel.Split();
+            List<string> expectedCollection = new List<string> { "FnameLnameTelNoEmail" };
+
+            CollectionAssert.AreEqual(expectedCollection, returnedList);
+        }
+
+        #endregion
+
+        #region MakeDataListReady Tests
+
+        [TestMethod]
+        public void QuickVariableInputViewModelMakeDataListReadyWithAllFieldsPopulatedExpectedCorrectResultsReturned()
         {
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity())) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
             IList<string> listToMakeReady = new List<string>();
@@ -140,5 +242,168 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.AreEqual("[[Customer().LName]]", returnedList[1]);
             Assert.AreEqual("[[Customer().TelNo]]", returnedList[2]);
         }
+
+        #endregion
+
+        #region AddToActivity Tests
+
+        [TestMethod]
+        public void QuickVariableInputViewModelAddToActivityWithAllFieldsPopulatedExpectedSixRowsReturned()
+        {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.AddToActivity();
+
+            int colCount = viewModel.Model.GetCollectionCount();
+            Assert.AreEqual(6, colCount);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelAddToActivityWithErrorInPrefixExpectedErrorTextToBeDisplayed()
+        {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Custo@mer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.AddToActivity();
+            string expected = "Prefix contains invalid characters";
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelAddToActivityWithErrorInVariablesExpectedErrorTextToBeDisplayed()
+        {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LN@ame,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.AddToActivity();
+            string expected = "Some of your variables contains invalid characters";
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Validation Tests
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithInvalidCharsInPrefixExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Cust<>omer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Prefix contains invalid characters";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithInvalidCharsInSuffixExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "@", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Suffix contains invalid characters";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithNegativeNumberForIndexSplitExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Index", SplitToken = "-1", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Please supply positive value for a Index split";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithTextForIndexSplitExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Index", SplitToken = "text", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Please supply numeric value for a Index split";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithBlankValueForCharSplitExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = "", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Please supply value for a Character split";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithBlankValueInVariableListExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Variable List String can not be blank/empty";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
     }
 }

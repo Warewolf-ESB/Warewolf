@@ -41,6 +41,14 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         #region Properties
 
+        public QuickVariableInputModel Model
+        {
+            get
+            {
+                return _model;
+            }
+        }
+
         public enErrorType Status
         {
             get
@@ -418,18 +426,14 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             switch (splitType)
             {
                 case "Index":
-                    try
+                    if (!string.IsNullOrEmpty(at))
                     {
-                        if (!string.IsNullOrEmpty(at))
+                        int indexNum;
+                        if (int.TryParse(at, out indexNum) && indexNum > 0)
                         {
-                            int indexNum = Convert.ToInt32(at);
-                            if (indexNum > 0)
-                            {
-                                dtb.AddIndexOp(indexNum);
-                            }
+                            dtb.AddIndexOp(indexNum);
                         }
                     }
-                    catch (Exception) { }
                     break;
 
                 case "End":
