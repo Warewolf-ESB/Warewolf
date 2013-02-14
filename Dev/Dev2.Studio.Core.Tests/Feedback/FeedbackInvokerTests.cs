@@ -157,30 +157,43 @@ namespace Dev2.Core.Tests.Feedback
 
         // 13 Feb 2013 - Added by Michael to verify Bug 8809
         [TestMethod]
-        public void InvokeFeedback_Where_AlreadyRecording_UserDoesntWantToUseRecording_Expected_LimitedPopups()
+        public void InvokeFeedback_Where_UserClicksFeedback_Expected_LimitedPopups()
         {
             Mock<IAsyncFeedbackAction> feedbackAction = new Mock<IAsyncFeedbackAction>();
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
             feedbackAction.Setup(f => f.Priority).Returns(2);
-            feedbackAction.Setup(f => f.ToString()).Returns("NotRecorderFeedbackAction");
             feedbackAction.Setup(f => f.StartFeedback()).Verifiable();
             FeedbackInvoker theInvoker = new FeedbackInvoker();
             theInvoker.CurrentAction = feedbackAction.Object;
 
-            // The first time, if the user clicks yes, it uses the recording, and kills the current action
-            Mock<IPopUp> firstPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(firstPopup);
+            Mock<IPopUp> yesPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> noPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            
+            // If it's already recording, display a box to confirm if the user wants to stop the recording, and click Yes
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(yesPopup);
             ImportService.SatisfyImports(theInvoker);
-            theInvoker.InvokeFeedback(feedbackAction.Object);
-            Assert.IsTrue(theInvoker.CurrentAction == null);
+            theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
 
-            // The second time, if the user clicks no, it drops the recording, and uses the current action
-            Mock<IPopUp> secondPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            theInvoker.CurrentAction = feedbackAction.Object;
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(secondPopup);
+            // If it's already recording, display a box to confirm if the user wants to stop the recording, and click No
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(noPopup);
             ImportService.SatisfyImports(theInvoker);
-            theInvoker.InvokeFeedback(feedbackAction.Object);
-            Assert.IsFalse(theInvoker.CurrentAction == null);
+            theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
+
+            // If it's not recording, display the information box, and click Yes
+            theInvoker.CurrentAction = null;
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(yesPopup);
+            ImportService.SatisfyImports(theInvoker);
+            theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
+
+            // If it's not recording, display the information box, and click No
+            theInvoker.CurrentAction = null;
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(noPopup);
+            ImportService.SatisfyImports(theInvoker);
+            theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
+            
+            // Check all popups showed the correct amount of times
+            yesPopup.Verify(p => p.Show(), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking yes
+            noPopup.Verify(p => p.Show(), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking no
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.AppResources.ExtensionMethods;
+﻿using System.Diagnostics;
+using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Dev2.Studio.Feedback
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -64,8 +65,10 @@ namespace Dev2.Studio.Feedback
             InvokeFeedbackImpl(feedbackAction);
         }
 
+        // 14 Feb 2013 - Michael Cullen - Modified to fix Bug 8809
         public void InvokeFeedback(IFeedbackAction emailFeedbackAction, IAsyncFeedbackAction recordedFeedbackAction)
         {
+            // The person clicked the Feedback button
             if (emailFeedbackAction == null)
             {
                 throw new ArgumentNullException("emailFeedbackAction");
@@ -80,15 +83,28 @@ namespace Dev2.Studio.Feedback
 
             if (recordedFeedbackAction.CanProvideFeedback)
             {
-                MessageBoxResult result = Popup.Show("The ability to give feedback by recording steps is available on your system, would you like to use it?", "Recorded Feedback", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
+                if (asyncFeedback != null) // If a recording session is already in progress, ask the user if he wants to stop it.
+                {
 
-                if (result == MessageBoxResult.Yes)
-                {
-                    actionToInvoke = recordedFeedbackAction;
+                    MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to stop it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        asyncFeedback.FinishFeedBack();
+                    }
                 }
-                else if (result == MessageBoxResult.No)
+                else // Else give him the normal message asking what he wants to do.
                 {
-                    actionToInvoke = emailFeedbackAction;
+                    MessageBoxResult result = Popup.Show("The ability to give feedback by recording steps is available on your system - Would you like to use it?", "Recorded Feedback", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        actionToInvoke = recordedFeedbackAction;
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        actionToInvoke = emailFeedbackAction;
+                    }
                 }
             }
             else
@@ -122,7 +138,7 @@ namespace Dev2.Studio.Feedback
             }
 
             string feedbackType = feedbackAction.ToString();
-            if(feedbackType == null)
+            if (feedbackType == null)
             {
                 feedbackType = "Moq.IAsyncFeedbackActionProxy";
             }
@@ -135,48 +151,23 @@ namespace Dev2.Studio.Feedback
             InvokeAction(feedbackAction);
         }
 
-        // 13 Feb 2013 - Michael Cullen - Modified to fix Bug 8809
         private bool EnsureNoFeedbackSessionsInProgress(string feedbackType)
         {
-            if(CurrentAction == null)
+            if (CurrentAction == null)
             {
                 return true;
             }
 
-            if (feedbackType.ToString() == "RecorderFeedbackAction" || feedbackType.ToString() == "IAsyncFeedbackActionProxy") // IAsyncFeedbackActionProxy required for Mocking
+            MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
+            if (result == MessageBoxResult.No)
             {
-                MessageBoxResult result = Popup.Show("Another feedback session is in progress, would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                if (result == MessageBoxResult.No)
-                {
-                    return false;
-                }
-
-                IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
-                if (asyncFeedback != null)
-                {
-                    asyncFeedback.CancelFeedback();
-                }
+                return false;
             }
-            else // A feedback recording is in progress, but the user did not want to use the Feedback Recorder
+
+            IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
+            if (asyncFeedback != null)
             {
-                IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction; // Get the current recording
-                if (asyncFeedback != null)
-                {
-                    MessageBoxResult result = Popup.Show("As a previous feedback recording session was in progress, it has been cancelled. Would you like to attach its recording file to your feedback?", "Attach previous feedback recording", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        // If the user wants to use the previous recording, use it
-                        asyncFeedback.FinishFeedBack();
-                        CurrentAction = null;
-                        return false;
-                    }
-                    else
-                    {
-                        // If the user doesn't want to use the previous recording, discard it, and carry on as per usual
-                        asyncFeedback.CancelFeedback();
-                        return true;
-                    }
-                }
+                asyncFeedback.CancelFeedback();
             }
             return true;
         }
