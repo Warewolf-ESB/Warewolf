@@ -1,4 +1,20 @@
-﻿using CircularDependencyTool;
+﻿using System;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Xml.Linq;
+using CircularDependencyTool;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates;
@@ -36,22 +52,6 @@ using Dev2.Studio.Views.Workflow;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
-using System;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Views;
@@ -138,7 +138,7 @@ namespace Dev2.Studio
             Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureSwitchExpression, input => ConfigureSwitchExpression(input as Tuple<ModelItem, IEnvironmentModel>));
             Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureCaseExpression, input => ConfigureSwitchCaseExpression(input as Tuple<ModelItem, IEnvironmentModel>));
             // 28.01.2013 - Travis.Frisinger : Added Edit Case Functionality
-            Mediator.RegisterToReceiveMessage(MediatorMessages.EditCaseExpression, input => EditSwitchCaseExpression(input as Tuple<ModelProperty, IEnvironmentModel>)); 
+            Mediator.RegisterToReceiveMessage(MediatorMessages.EditCaseExpression, input => EditSwitchCaseExpression(input as Tuple<ModelProperty, IEnvironmentModel>));
             Mediator.RegisterToReceiveMessage(MediatorMessages.WorkflowActivitySelected, input => WorkflowActivitySelected(input as IWebActivity));
             Mediator.RegisterToReceiveMessage(MediatorMessages.RemoveDataMapping, input => RemoveDataMapping());
             Mediator.RegisterToReceiveMessage(MediatorMessages.TabContextChanged, TabContextChanged);
@@ -735,7 +735,7 @@ namespace Dev2.Studio
                     ErrorResultTO errors;
                     var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
 
-                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
                     {
                         // Bad things happened... Tell the user
                         PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -879,7 +879,7 @@ namespace Dev2.Studio
                     ErrorResultTO errors;
                     var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
 
-                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
                     {
                         // Bad things happened... Tell the user
                         PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -966,7 +966,7 @@ namespace Dev2.Studio
 
                             if(ds != null)
                             {
- 
+
                                 // FetchSwitchData
                                 string expressionToInject = string.Join("", GlobalConstants.InjectedSwitchDataFetch, "(\"", ds.SwitchVariable, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
@@ -1004,7 +1004,7 @@ namespace Dev2.Studio
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
             var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
 
-            if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+            if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
             {
                 // Bad things happened... Tell the user
                 PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1073,7 +1073,7 @@ namespace Dev2.Studio
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
             var dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString, out errors); // fake it to get the ID
 
-            if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+            if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
             {
                 // Bad things happened... Tell the user
                 PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1092,7 +1092,7 @@ namespace Dev2.Studio
             else
             {
                 // Problems, push empty model ;)
-                compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultCase, out errors);    
+                compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultCase, out errors);
             }
 
             // now invoke the wizard ;)
@@ -1117,7 +1117,7 @@ namespace Dev2.Studio
                     if(ds != null)
                     {
                         // ReSharper disable PossibleNullReferenceException
-                        switchCaseValue.SetValue(ds.SwitchVariable);   
+                        switchCaseValue.SetValue(ds.SwitchVariable);
                         // ReSharper restore PossibleNullReferenceException
                     }
                 }
@@ -1151,7 +1151,7 @@ namespace Dev2.Studio
                     selectedItem = item;
                 }
             }
-         
+
             if(selectedItem != null)
             {
                 SetActiveDocument(selectedItem);
@@ -1291,6 +1291,16 @@ namespace Dev2.Studio
             var resourceModel = ResourceModelFactory.CreateResourceModel(environment, resourceType, resourceType);
             var resourceViewModel = new ResourceWizardViewModel(resourceModel);
 
+            //
+            // TWR: 2013.02.14
+            // PBI: 801
+            // BUG: 8477
+            //
+            if(resourceModel.ShowWebPageDialog())
+            {
+                return;
+            }
+
             var doesServiceExist = environment.Resources.Find(r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
 
             if(doesServiceExist)
@@ -1333,9 +1343,9 @@ namespace Dev2.Studio
             var resourceModelToEdit = resourceModel as IContextualResourceModel;
 
             if(resourceModelToEdit.ShowWebPageDialog())
-                        {
+            {
                 return;
-                }
+            }
 
             var doesServiceExist = resourceModelToEdit != null &&
                 resourceModelToEdit.Environment.Resources.Find(r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
@@ -1356,7 +1366,7 @@ namespace Dev2.Studio
                     var args = StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(), resourceModelToEdit);
                     var dataListID = resourceModelToEdit.Environment.UploadToDataList(args, out errors);
 
-                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
                     {
                         // Bad things happened... Tell the user
                         PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1418,7 +1428,7 @@ namespace Dev2.Studio
                     ErrorResultTO errors;
                     var dataListID = environment.UploadToDataList(xmlOutput, out errors);
 
-                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
                     {
                         // Bad things happened... Tell the user
                         PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1837,10 +1847,10 @@ namespace Dev2.Studio
             ImportService.SatisfyImports(dialogueViewModel);
             var packUri = StringResources.Dev2_Logo;
             dialogueViewModel.SetupDialogue(StringResources.About_Header_Text, String.Format(StringResources.About_Content, StringResources.CurrentVersion, StringResources.CurrentVersion), packUri, StringResources.About_Description_Header);
-            var dev2Dialog = new Dev2Dialogue 
-            { 
-                Owner = Application.Current.MainWindow, 
-                DataContext = dialogueViewModel 
+            var dev2Dialog = new Dev2Dialogue
+            {
+                Owner = Application.Current.MainWindow,
+                DataContext = dialogueViewModel
             };
             dialogueViewModel.OnOkClick += (e, f) =>
             {

@@ -312,6 +312,8 @@
     <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
     <Compile Include="Webs\RootWebSite.cs" />
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Dev2DecisionCallbackHandler.cs" />
@@ -341,7 +343,7 @@
     <Compile Include="AppResources\ExtensionMethods\IPopUpExtensionMethods.cs" />
     <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Custom Dev2 Controls\Connections\ConnectCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\ConnectCallbackHandler.cs" />
     <Compile Include="Custom Dev2 Controls\SimpleGridSplitter.cs" />
     <Compile Include="Custom Dev2 Controls\Connections\ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>

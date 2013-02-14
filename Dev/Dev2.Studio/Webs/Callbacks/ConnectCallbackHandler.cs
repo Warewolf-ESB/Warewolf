@@ -1,22 +1,15 @@
-﻿using Dev2.Studio.Core;
+﻿using System;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Newtonsoft.Json.Linq;
-using System;
-using System.ComponentModel.Composition;
-using System.Windows;
 
-namespace Dev2.Studio.Custom_Dev2_Controls.Connections
+namespace Dev2.Studio.Webs.Callbacks
 {
-    public class ConnectCallbackHandler : IPropertyEditorWizard
+    public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
-        public Window Owner { get; set; }
         public IServer Server { get; private set; }
-
-        [Import]
-        public IFrameworkRepository<IEnvironmentModel> CurrentEnvironmentRepository { get; set; }
 
         readonly int _webServerPort;
 
@@ -30,6 +23,11 @@ namespace Dev2.Studio.Custom_Dev2_Controls.Connections
         }
 
         #endregion
+
+        protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
+        {
+            Save(jsonObj.ResourceID.Value, jsonObj.Address.Value, jsonObj.ResourceName.Value, (int)jsonObj.WebServerPort.Value, environmentModel);
+        }
 
         #region Save
 
@@ -91,74 +89,6 @@ namespace Dev2.Studio.Custom_Dev2_Controls.Connections
             }
 
             Mediator.SendMessage(MediatorMessages.AddServerToExplorer, Server.Environment);
-        }
-
-        #endregion
-
-        #region Implementation of IPropertyEditorWizard
-
-        public ILayoutObjectViewModel SelectedLayoutObject
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        public void OpenPropertyEditor()
-        {
-        }
-
-        public void Dev2Set(string data, string uri)
-        {
-        }
-
-        public void Dev2SetValue(string value)
-        {
-            Dev2SetValue(value, EnvironmentRepository.DefaultEnvironment);
-        }
-
-        public void Dev2SetValue(string value, IEnvironmentModel defaultEnvironment)
-        {
-            Close();
-
-            if(string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException("value");
-            }
-            dynamic jsonObj = JObject.Parse(value);
-            Save(jsonObj.ResourceID.Value, jsonObj.Address.Value, jsonObj.ResourceName.Value, (int)jsonObj.WebServerPort.Value, defaultEnvironment);
-        }
-
-        public void Dev2Done()
-        {
-        }
-
-        public void Dev2ReloadResource(string resourceName, string resourceType)
-        {
-        }
-
-        public void Close()
-        {
-            if(Owner != null)
-            {
-                Owner.Close();
-            }
-        }
-
-        public void Cancel()
-        {
-            Close();
-        }
-
-        public event NavigateRequestedEventHandler NavigateRequested;
-
-        protected void OnNavigateRequested(string uri)
-        {
-            if(NavigateRequested != null)
-            {
-                NavigateRequested(uri);
-            }
         }
 
         #endregion
