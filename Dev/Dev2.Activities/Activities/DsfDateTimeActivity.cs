@@ -76,7 +76,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputFormat = string.Empty;
             OutputFormat = string.Empty;
             //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
-            TimeModifierType = string.Empty;
+            TimeModifierType = "Years";
             TimeModifierAmountDisplay = string.Empty;
             TimeModifierAmount = 0;
             Result = string.Empty;

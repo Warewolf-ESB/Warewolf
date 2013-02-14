@@ -34,12 +34,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfNumberFormatActivity()
             : base("Format Number")
         {
-
+            RoundingType = "None";
         }
 
         static DsfNumberFormatActivity()
         {
             _numberFormatter = new Dev2NumberFormatter(); // REVIEW : Please use a factory method to create
+
         }
         #endregion Constructors
 

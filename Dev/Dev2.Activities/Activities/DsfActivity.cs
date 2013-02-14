@@ -152,9 +152,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListBinder binder = context.GetExtension<IDataListBinder>();
             IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
-
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
+
+            //Bug 8589
+            //if (dataObject != null && compiler != null)
+            //{
+            //    compiler.ClearErrors(dataObject.DataListID);
+
+            //    if (!dataObject.IsDataListScoped)
+            //    {
+            //        var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
+            //        DataListExecutionID.Set(context, dataListExecutionID);
+
+            //    }
+            //    else
+            //    {
+            //        // recycle the DataList ;)
+            //        DataListExecutionID.Set(context, dataObject.DataListID);
+            //    }
+            //}
+
+
             Guid parentID = dataObject.DataListID;
             Guid executionID = DataListExecutionID.Get(context);
             ParentServiceName = dataObject.ServiceName;
@@ -378,7 +397,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-         
+
         #region Overridden ActivityAbstact Methods
 
         public override IBinaryDataList GetInputs()

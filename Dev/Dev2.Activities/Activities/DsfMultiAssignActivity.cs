@@ -114,8 +114,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     // Merge Back into list
 
-                        compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                        allErrors.MergeErrors(errors);
+                    compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
+                    allErrors.MergeErrors(errors);
                 }
 
             }

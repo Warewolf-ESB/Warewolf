@@ -28,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : base("Sort Records")
         {
             SortField = string.Empty;
-            SelectedSort = string.Empty;
+            SelectedSort = "Forward";
             this.DisplayName = "Sort Records";
         }
 

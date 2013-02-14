@@ -118,6 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = context.GetExtension<IDataListCompiler>();
 
+            //Bug 8589 - Moved to the DsfActivity - Massimo.Guerrera
             if (dataObject != null && compiler != null)
             {
                 compiler.ClearErrors(dataObject.DataListID);
@@ -134,6 +135,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DataListExecutionID.Set(context, dataObject.DataListID);
                 }
             }
+
+
 
             if (dataObject != null)
             {
