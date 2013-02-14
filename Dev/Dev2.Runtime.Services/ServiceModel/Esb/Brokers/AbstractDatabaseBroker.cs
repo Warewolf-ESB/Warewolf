@@ -1,8 +1,9 @@
-﻿using Dev2.Runtime.ServiceModel.Data;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -18,20 +19,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <summary>
         /// Gets the service methods for this esb endpoint.
         /// </summary>
-        /// <param name="dbService">The resource.</param>
+        /// <param name="dbSource">The db source.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">resource</exception>
-        /// <exception cref="System.Exception"></exception>
-        public ServiceMethodList GetServiceMethods(DbService dbService)
+        public ServiceMethodList GetServiceMethods(DbSource dbSource)
         {
-            if (dbService == null)
+            if(dbSource == null)
             {
-                throw new ArgumentNullException("dbService");
-            }
-
-            if (dbService.Source == null)
-            {
-                throw new ArgumentNullException("dbService.Source");
+                throw new ArgumentNullException("dbSource");
             }
 
             var serviceMethods = new ServiceMethodList();
@@ -41,9 +36,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             Func<IDbCommand, IList<IDataParameter>, string, bool> procedureFunc = (command, parameters, helpText) =>
             {
-                ServiceMethod serviceMethod = ServiceMethodFromCommand(command);
-                IEnumerable<MethodParameter> methodParameters = parameters.Select(MethodParameterFromDataParameter);
-                serviceMethod.Parameters.AddRange(methodParameters);
+                var serviceMethod = CreateServiceMethod(command, parameters, helpText);
+                serviceMethods.Add(serviceMethod);
                 return true;
             };
 
@@ -52,16 +46,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             Func<IDbCommand, IList<IDataParameter>, string, bool> functionFunc = (command, parameters, helpText) =>
             {
-                ServiceMethod serviceMethod = ServiceMethodFromCommand(command);
-                IEnumerable<MethodParameter> methodParameters = parameters.Select(MethodParameterFromDataParameter);
-                serviceMethod.Parameters.AddRange(methodParameters);
+                var serviceMethod = CreateServiceMethod(command, parameters, helpText);
+                serviceMethods.Add(serviceMethod);
                 return true;
             };
 
             //
             // Get stored procedures and functions for this database source
             //
-            using (var conn = CreateConnection(dbService.Source.ConnectionString))
+            using(var conn = CreateConnection(dbSource.ConnectionString))
             {
                 conn.Open();
                 GetStoredProcedures(conn, procedureFunc, functionFunc);
@@ -80,7 +73,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <exception cref="System.Exception"></exception>
         public IOutputDescription TestServiceMethod(Resource resource, ServiceMethod serviceMethod)
         {
-            if (resource == null)
+            if(resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
@@ -89,13 +82,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             // Check the resource is of the correct type
             //
             var dbSource = resource as DbSource;
-            if (dbSource == null)
+            if(dbSource == null)
             {
                 throw new Exception(string.Format("Unexpected resource type, recieved '{0}', expected '{1}'.", resource.GetType(), typeof(DbSource)));
             }
 
             IOutputDescription result = null;
-            using (var conn = CreateConnection(dbSource.ConnectionString))
+            using(var conn = CreateConnection(dbSource.ConnectionString))
             {
                 conn.Open();
                 IDbTransaction transaction = conn.BeginTransaction();
@@ -119,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
-                    if (!string.IsNullOrEmpty(xmlResult))
+                    if(!string.IsNullOrEmpty(xmlResult))
                     {
                         dataSourceShape.Paths.AddRange(dataBrowser.Map(xmlResult));
                     }
@@ -130,7 +123,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     {
                         transaction.Rollback();
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         TraceWriter.WriteTrace("Transactional Error : " + e.Message + Environment.NewLine + e.StackTrace);
                     }
@@ -153,20 +146,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <param name="commandBehavior">The command behavior.</param>
         protected void ExecuteSelect(IDbCommand selectCommand, Func<IDataReader, bool> rowProcessor, bool continueOnProcessorException = false, CommandBehavior commandBehavior = CommandBehavior.CloseConnection)
         {
-            using (var reader = selectCommand.ExecuteReader(commandBehavior))
+            using(var reader = selectCommand.ExecuteReader(commandBehavior))
             {
-                if (reader != null)
+                if(reader != null)
                 {
                     bool read = true;
-                    while (read && reader.Read())
+                    while(read && reader.Read())
                     {
                         try
                         {
                             read = rowProcessor(reader);
                         }
-                        catch (Exception)
+                        catch(Exception)
                         {
-                            if (!continueOnProcessorException)
+                            if(!continueOnProcessorException)
                             {
                                 throw;
                             }
@@ -177,14 +170,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
         }
 
+
+        #region CreateServiceMethod
+
         /// <summary>
-        /// Create a ServiceMethod from a IDbCommand.
+        /// Creates the service method from a IDbCommand.
         /// </summary>
         /// <param name="command">The command.</param>
-        protected ServiceMethod ServiceMethodFromCommand(IDbCommand command)
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="sourceCode">The source code.</param>
+        /// <returns></returns>
+        /// <author>trevor.williams-ros</author>
+        /// <date>2013/02/14</date>
+        ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode)
         {
-            return new ServiceMethod(command.CommandText, null, null, null);
+            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null);
         }
+
+        #endregion
 
         /// <summary>
         /// Create a MethodParameter from a IDataParameter.
@@ -208,7 +211,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             command.CommandText = serviceMethod.Name;
             command.CommandType = CommandType.StoredProcedure;
 
-            foreach (var methodParameter in serviceMethod.Parameters)
+            foreach(var methodParameter in serviceMethod.Parameters)
             {
                 IDbDataParameter dataParameter = DataParameterFromMethodParameter(command, methodParameter);
                 command.Parameters.Add(dataParameter);
@@ -279,5 +282,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         protected abstract IDbConnection CreateConnection(string connectionString);
 
         #endregion
+
     }
 }

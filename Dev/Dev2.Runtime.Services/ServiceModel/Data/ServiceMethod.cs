@@ -12,13 +12,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CTOR
 
         public ServiceMethod()
-            : this("", null, null, null)
+            : this(string.Empty, string.Empty, null, null, null)
         {
         }
 
-        public ServiceMethod(string name, IOutputDescription outputDescription, IEnumerable<MethodParameter> parameters, IEnumerable<MethodOutput> outputs)
+        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs)
         {
             Name = name;
+            SourceCode = sourceCode;
             OutputDescription = outputDescription;
             Parameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();

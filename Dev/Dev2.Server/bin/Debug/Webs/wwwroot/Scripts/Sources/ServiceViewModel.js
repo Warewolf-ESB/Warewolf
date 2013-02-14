@@ -49,6 +49,7 @@
     });
     self.hasTestResults = ko.observable(false);
     self.isFormValid = ko.computed(function () {
+        // TODO: FIX isFormValid
         var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
         console.log("isRecordsetNameOptional: " + isRecordsetNameOptional);
         return isRecordsetNameOptional ? true : self.data.recordset.Name !== "";
@@ -114,7 +115,7 @@
     };
 
     self.loadMethods = function (source) {
-        $.post("Service/Services/Methods" + window.location.search, ko.toJSON(source), function (result) {
+        $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
         });
     };

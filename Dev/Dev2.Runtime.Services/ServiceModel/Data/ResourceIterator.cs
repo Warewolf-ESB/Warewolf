@@ -8,6 +8,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     internal static class ResourceIterator
     {
+        #region Iterate
+
         public static void Iterate(IEnumerable<string> folders, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params Delimiter[] delimiters)
         {
             if(delimiters == null || delimiters.Length == 0 || action == null || folders == null)
@@ -27,20 +29,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                     var delimiterFound = false;
                     foreach(var delimiter in delimiters)
                     {
-                        var startTokenLength = delimiter.Start.Length;
-                        var startIdx = content.IndexOf(delimiter.Start, StringComparison.InvariantCultureIgnoreCase);
-                        if(startIdx == -1)
-                        {
-                            continue;
-                        }
-                        startIdx += startTokenLength;
-                        var endIdx = content.IndexOf(delimiter.End, startIdx, StringComparison.InvariantCultureIgnoreCase);
-                        var length = endIdx - startIdx;
-                        if(length > 0)
+                        string value;
+                        if(delimiter.TryGetValue(content, out value))
                         {
                             delimiterFound = true;
-                            var tokenValue = content.Substring(startIdx, length);
-                            iteratorResult.Values.Add(delimiter.ID, tokenValue);
+                            iteratorResult.Values.Add(delimiter.ID, value);
                         }
                     }
                     if(delimiterFound)
@@ -53,5 +46,32 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
             }
         }
+
+        #endregion
+
+        #region TryGetValue
+
+        public static bool TryGetValue(this Delimiter delimiter, string content, out string delimiterValue)
+        {
+            delimiterValue = string.Empty;
+            var startTokenLength = delimiter.Start.Length;
+            var startIdx = content.IndexOf(delimiter.Start, StringComparison.InvariantCultureIgnoreCase);
+            if(startIdx == -1)
+            {
+                return false;
+            }
+            startIdx += startTokenLength;
+            var endIdx = content.IndexOf(delimiter.End, startIdx, StringComparison.InvariantCultureIgnoreCase);
+            var length = endIdx - startIdx;
+            if(length > 0)
+            {
+                delimiterValue = content.Substring(startIdx, length);
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+
     }
 }

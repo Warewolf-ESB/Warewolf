@@ -18,26 +18,26 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class ServicesTests
     {
-        #region Methods
+        #region DbMethods
 
         [TestMethod]
-        public void MethodsWithNullArgsExpectedReturnsEmptyList()
+        public void DbMethodsWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.Methods(null, Guid.Empty, Guid.Empty);
+            var result = services.DbMethods(null, Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod]
-        public void MethodsWithInvalidArgsExpectedReturnsEmptyList()
+        public void DbMethodsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.Methods("xxxx", Guid.Empty, Guid.Empty);
+            var result = services.DbMethods("xxxx", Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod]
-        public void MethodsWithValidArgsExpectedReturnsList()
+        public void DbMethodsWithValidArgsExpectedReturnsList()
         {
             var service = CreateCountriesDbService();
             var args = service.ToString();
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             GlobalConstants.GetWorkspacePath(workspaceID);
 
             var services = new ServicesMock();
-            var result = services.Methods(args, workspaceID, Guid.Empty);
+            var result = services.DbMethods(args, workspaceID, Guid.Empty);
 
             // TODO: Fix
             Assert.AreEqual(50, result.Count);
@@ -303,7 +303,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
         #endregion
 
-        #region CreateDbService
+        #region CreateCountriesDbService
 
         static Service CreateCountriesDbService()
         {

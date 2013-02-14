@@ -1,11 +1,11 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Xml.Linq;
+using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -46,16 +46,16 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Methods
+        #region DbMethods
 
-        // POST: Service/Services/Methods
-        public ServiceMethodList Methods(string args, Guid workspaceID, Guid dataListID)
+        // POST: Service/Services/DbMethods
+        public ServiceMethodList DbMethods(string args, Guid workspaceID, Guid dataListID)
         {
             var result = new ServiceMethodList();
             try
             {
-                var service = DeserializeService(args) as DbService;
-                var serviceMethods = FetchMethods(service);
+                var source = JsonConvert.DeserializeObject<DbSource>(args);
+                var serviceMethods = FetchMethods(source);
                 result.AddRange(serviceMethods);
             }
             catch(Exception ex)
@@ -152,10 +152,10 @@ namespace Dev2.Runtime.ServiceModel
 
         #region FetchDatabaseBroker
 
-        public virtual ServiceMethodList FetchMethods(DbService service)
+        public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
             var broker = new MsSqlBroker();
-            return broker.GetServiceMethods(service);
+            return broker.GetServiceMethods(dbSource);
         }
 
         #endregion

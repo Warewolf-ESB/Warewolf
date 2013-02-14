@@ -160,12 +160,11 @@ namespace Dev2.Runtime.ServiceModel
                     Guid resourceID;
                     Guid.TryParse(value, out resourceID);
 
-                    resources.Add(new Resource
-                    {
-                        ResourceID = resourceID,
-                        ResourceName = iteratorResult.Values[3],
-                        ResourceType = resourceType
-                    });
+                    string resourceName;
+                    iteratorResult.Values.TryGetValue(3, out resourceName);
+                    string resourcePath;
+                    iteratorResult.Values.TryGetValue(4, out resourcePath);
+                    resources.Add(ReadResource(resourceID, resourceType, resourceName, resourcePath, iteratorResult.Content));
                 }
                 return true;
             }, new Delimiter
@@ -183,10 +182,14 @@ namespace Dev2.Runtime.ServiceModel
                 ID = 3,
                 Start = " Name=\"",
                 End = "\" "
+            }, new Delimiter
+            {
+                ID = 4,
+                Start = "<Category>",
+                End = "</Category>"
             });
             return resources;
         }
-
 
         #endregion
 
@@ -210,6 +213,28 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+        #region ReadResource
+
+        static Resource ReadResource(Guid resourceID, enSourceType resourceType, string resourceName, string resourcePath, string content)
+        {
+            Delimiter delimiter;
+            string delimiterValue;
+
+            switch(resourceType)
+            {
+                case enSourceType.SqlDatabase:
+                case enSourceType.MySqlDatabase:
+                    delimiter = new Delimiter { ID = 1, Start = " ConnectionString=\"", End = "\" " };
+                    delimiter.TryGetValue(content, out delimiterValue);
+                    return new DbSource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath, ConnectionString = delimiterValue };
+            }
+
+            return new Resource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath };
+        }
+
+        #endregion
+
 
         #region Save
 
