@@ -128,9 +128,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
-
-                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                allErrors.MergeErrors(errors);
             }
             finally
             {

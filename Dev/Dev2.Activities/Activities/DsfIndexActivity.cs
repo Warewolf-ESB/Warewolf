@@ -150,8 +150,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
-                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                allErrors.MergeErrors(errors);
 
                 #endregion Add Result to DataList
 

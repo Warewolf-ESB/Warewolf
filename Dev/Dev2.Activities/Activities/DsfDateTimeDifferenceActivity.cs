@@ -89,7 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
+            Guid executionId = DataListExecutionID.Get(context);
             allErrors.MergeErrors(errors);
             string error = string.Empty;
 
@@ -151,9 +151,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
-                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                allErrors.MergeErrors(errors);
-
             }
             catch (Exception e)
             {

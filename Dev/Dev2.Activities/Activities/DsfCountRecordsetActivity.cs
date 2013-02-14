@@ -88,48 +88,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
+            Guid executionId = DataListExecutionID.Get(context);
             allErrors.MergeErrors(errors);
 
             // Process if no errors
             try
             {
-                if(!string.IsNullOrWhiteSpace(RecordsetName))
+                if (!string.IsNullOrWhiteSpace(RecordsetName))
                 {
                     IBinaryDataListEntry recset = compiler.Evaluate(executionId, enActionType.User, RecordsetName, false, out errors);
-                    if(errors.HasErrors())
+                    if (errors.HasErrors())
                     {
                         allErrors.MergeErrors(errors);
                     }
 
-                    if(recset != null && recset.Columns != null && CountNumber != string.Empty)
+                    if (recset != null && recset.Columns != null && CountNumber != string.Empty)
                     {
                         string error;
                         // Travis.Frisinger - Re-did work for bug 7853 
-                        if(recset.IsEmpty())
+                        if (recset.IsEmpty())
                         {
                             compiler.Upsert(executionId, CountNumber, "0", out errors);
                         }
-                        else if(recset.FetchRecordAt(1, out error).Count > 0)
+                        else if (recset.FetchRecordAt(1, out error).Count > 0)
                         {
                             compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(), out errors);
                         }
 
                         allErrors.MergeErrors(errors);
                     }
-                    else if(recset == null || recset.Columns == null)
+                    else if (recset == null || recset.Columns == null)
                     {
                         allErrors.AddError(RecordsetName + " is not a recordset");
                     }
-                    else if(CountNumber == string.Empty)
+                    else if (CountNumber == string.Empty)
                     {
                         allErrors.AddError("Blank result variable");
-                    }
-
-                    compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                    if(errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
                     }
                 }
                 else
@@ -143,7 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.DeleteDataListByID(executionId);
 
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     string err = DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
@@ -159,7 +153,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            if(!string.IsNullOrEmpty(RecordsetName))
+            if (!string.IsNullOrEmpty(RecordsetName))
             {
                 var itemToAdd = new DebugItem
                 {
@@ -167,7 +161,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     new DebugItemResult { Type = DebugItemResultType.Variable, Value = RecordsetName }
                 };
 
-                foreach(IDebugItemResult debugItemResult in CreateDebugItems(RecordsetName, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(RecordsetName, dataList))
                 {
                     itemToAdd.Add(debugItemResult);
                 }
@@ -184,10 +178,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            if(!string.IsNullOrEmpty(CountNumber))
+            if (!string.IsNullOrEmpty(CountNumber))
             {
                 DebugItem itemToAdd = new DebugItem();
-                foreach(IDebugItemResult debugItemResult in CreateDebugItems(CountNumber, dataList))
+                foreach (IDebugItemResult debugItemResult in CreateDebugItems(CountNumber, dataList))
                 {
                     itemToAdd.Add(debugItemResult);
                 }
@@ -204,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates.Count == 1)
+            if (updates.Count == 1)
             {
                 RecordsetName = updates[0].Item2;
             }
@@ -212,7 +206,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates.Count == 1)
+            if (updates.Count == 1)
             {
                 CountNumber = updates[0].Item2;
             }

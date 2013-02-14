@@ -77,9 +77,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.Upsert(executionId, Result, result, out errors);
                 allErrors.MergeErrors(errors);
-
-                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                allErrors.MergeErrors(errors);
             }
             finally
             {

@@ -155,23 +155,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            //Bug 8589
-            //if (dataObject != null && compiler != null)
-            //{
-            //    compiler.ClearErrors(dataObject.DataListID);
+            if (dataObject != null && compiler != null)
+            {
+                compiler.ClearErrors(dataObject.DataListID);
 
-            //    if (!dataObject.IsDataListScoped)
-            //    {
-            //        var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
-            //        DataListExecutionID.Set(context, dataListExecutionID);
+                if (!dataObject.IsDataListScoped)
+                {
+                    var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
+                    DataListExecutionID.Set(context, dataListExecutionID);
 
-            //    }
-            //    else
-            //    {
-            //        // recycle the DataList ;)
-            //        DataListExecutionID.Set(context, dataObject.DataListID);
-            //    }
-            //}
+                }
+                else
+                {
+                    // recycle the DataList ;)
+                    DataListExecutionID.Set(context, dataObject.DataListID);
+                }
+            }
 
 
             Guid parentID = dataObject.DataListID;

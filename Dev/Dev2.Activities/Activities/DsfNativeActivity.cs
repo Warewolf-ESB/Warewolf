@@ -45,7 +45,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string UniqueID { get; set; }
 
         protected string InstanceID;
-        readonly private bool IsDebugByPassed = false; // Bug 7951: TWR - Debug output doesn't show all activities that are executed
+        readonly private bool IsDebugByPassed = true; // Bug 7951: TWR - Debug output doesn't show all activities that are executed
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
 
         readonly IDebugDispatcher _debugDispatcher;
@@ -118,22 +118,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = context.GetExtension<IDataListCompiler>();
 
-            //Bug 8589 - Moved to the DsfActivity - Massimo.Guerrera
+
             if (dataObject != null && compiler != null)
             {
                 compiler.ClearErrors(dataObject.DataListID);
+                //Bug 8589 - Moved to the DsfActivity - Massimo.Guerrera
+                //if (!dataObject.IsDataListScoped)
+                //{
+                //    var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
+                //    DataListExecutionID.Set(context, dataListExecutionID);
 
-                if (!dataObject.IsDataListScoped)
-                {
-                    var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
-                    DataListExecutionID.Set(context, dataListExecutionID);
-
-                }
-                else
-                {
-                    // recycle the DataList ;)
-                    DataListExecutionID.Set(context, dataObject.DataListID);
-                }
+                //}
+                //else
+                //{
+                // recycle the DataList ;)
+                DataListExecutionID.Set(context, dataObject.DataListID);
+                //}
             }
 
 
@@ -262,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!isResumable && !dataObject.IsDataListScoped)
                 {
-                    compiler.ForceDeleteDataListByID(dataListExecutionID);
+                    //compiler.ForceDeleteDataListByID(dataListExecutionID);
                     //compiler.DeleteDataListByID(dataListExecutionID);
                 }
                 else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)

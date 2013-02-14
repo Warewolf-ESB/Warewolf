@@ -122,10 +122,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 }
-
-                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                allErrors.MergeErrors(errors);
-
             }
             catch (Exception e)
             {

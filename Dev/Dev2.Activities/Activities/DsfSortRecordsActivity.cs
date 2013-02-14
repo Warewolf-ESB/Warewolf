@@ -93,14 +93,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     allErrors.AddError("No recordset given");
                 }
-
-                compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                if (errors.HasErrors())
-                {
-                    allErrors.MergeErrors(errors);
-                }
-
-
             }
             finally
             {

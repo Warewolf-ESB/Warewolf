@@ -113,11 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             compiler.Upsert(dlID, toUpsertDeferred, out errors);
                         }
 
-                        allErrors.MergeErrors(errors);
-
-                        //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                        //allErrors.MergeErrors(errors);
-
+                        allErrors.MergeErrors(errors);                       
                     }
 
                 }
