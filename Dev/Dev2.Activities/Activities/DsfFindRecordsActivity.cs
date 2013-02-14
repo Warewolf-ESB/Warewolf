@@ -66,7 +66,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             // Initialise all the properties here
             FieldsToSearch = string.Empty;
-            SearchType = string.Empty;
+            SearchType = "<";
             SearchCriteria = string.Empty;
             Result = string.Empty;
             StartIndex = string.Empty;
