@@ -15,3 +15,9 @@ robocopy %buildlocation% %targetdir% /E
 robocopy %svndirectory% %targetdir% /E
 
 REM if you are using a deployment package you can run it here, after you copy it to your deployment directory
+
+REM ** Start Server **
+C:\Deploy\Dev2.Server.exe -i
+timout /T 120 /NOBREAK
+
+C:\Deploy\Dev2.Studio.exe
