@@ -144,7 +144,7 @@
             <DataGridTemplateColumn Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Dev2:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextValue}" AllowUserCalculateMode="True" Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <Dev2:IntellisenseTextBox Width="Auto" AcceptsTab="True" DefaultText="{Binding WatermarkTextValue}" AllowUserCalculateMode="True" Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValuetxt_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}" />

@@ -33,7 +33,7 @@ namespace Dev2.Studio.Feedback
     {
         #region Class Members
 
-        private static DateTime _lastRecordingStartDateTimeStamp;
+        private static DateTime LastRecordingStartDateTimeStamp;
 
         private const string Executable = "psr.exe";
         private const string StartParameters = "/start /gui 0 /output \"{0}\"";
@@ -59,7 +59,7 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.ArgumentNullException">fileExistsFunction</exception>
         public FeedbackRecorder(Func<string, bool> fileExistsFunction)
         {
-            if(fileExistsFunction == null)
+            if (fileExistsFunction == null)
             {
                 throw new ArgumentNullException("fileExistsFunction");
             }
@@ -113,7 +113,7 @@ namespace Dev2.Studio.Feedback
                 throw new ArgumentNullException("outputpath");
             }
 
-            if(CheckIfProcessIsRunning())
+            if (CheckIfProcessIsRunning())
             {
                 throw new FeedbackRecordingInprogressException("Can't start the feedback recorder because one is already running.");
             }
@@ -133,7 +133,7 @@ namespace Dev2.Studio.Feedback
         /// </summary>
         public void StopRecording()
         {
-            if(!CheckIfProcessIsRunning())
+            if (!CheckIfProcessIsRunning())
             {
                 return;
             }
@@ -148,27 +148,27 @@ namespace Dev2.Studio.Feedback
         {
             Process[] processes = Process.GetProcessesByName("psr");
 
-            if(processes.Length == 0)
+            if (processes.Length == 0)
             {
                 return;
             }
 
             int timeouts = 0;
 
-            foreach(Process process in processes)
+            foreach (Process process in processes)
             {
-                if(!process.HasExited)
+                if (!process.HasExited)
                 {
                     process.Kill();
                     process.WaitForExit(10000);
-                    if(!process.HasExited)
+                    if (!process.HasExited)
                     {
                         timeouts++;
                     }
                 }
             }
 
-            if(timeouts > 0)
+            if (timeouts > 0)
             {
                 throw new FeedbackRecordingTimeoutException(
                     "Couldn't exit all recording processes.");
@@ -185,12 +185,15 @@ namespace Dev2.Studio.Feedback
         private void StartProcess()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(Executable, string.Format(StartParameters, OutputPath));
+            //startInfo.Verb = "runas"; //  //2013.02.06: Ashley Lewis - Bug 8611: indicates to elevate privileges
+            //startInfo.UseShellExecute = true; //2013.02.06: Ashley Lewis - Bug 8611: Changed to true
             startInfo.ErrorDialog = false;
 
             Process process = new Process();
+            //process.EnableRaisingEvents = true; // enable WaitForExit() 2013.02.06: Ashley Lewis - Bug 8611: Added this line
             process.StartInfo = startInfo;
             process.Start();
-            _lastRecordingStartDateTimeStamp = DateTime.Now;
+            LastRecordingStartDateTimeStamp = DateTime.Now;
         }
 
         /// <summary>
@@ -201,7 +204,7 @@ namespace Dev2.Studio.Feedback
         {
             Process[] processesToMonitor = Process.GetProcessesByName("psr");
 
-            if(processesToMonitor.Length == 0)
+            if (processesToMonitor.Length == 0)
             {
                 throw new FeedbackRecordingNoProcessesExcpetion("No processes to stop.");
             }
@@ -220,7 +223,7 @@ namespace Dev2.Studio.Feedback
             // It isn't very pretty but psr.exe doesn't provide a mechanism to check if it has finished initializing, 
             // and there is no standard in .net to tell if a process that has been started is 'ready'.
             //
-            if((DateTime.Now - _lastRecordingStartDateTimeStamp).TotalMilliseconds < 500)
+            if ((DateTime.Now - LastRecordingStartDateTimeStamp).TotalMilliseconds < 500)
             {
                 Thread.Sleep(500);
             }
@@ -239,22 +242,22 @@ namespace Dev2.Studio.Feedback
             FileInfo path = new FileInfo(OutputPath);
 
             string extension = Path.GetExtension(OutputPath);
-            if(string.Compare(extension, ".zip", StringComparison.OrdinalIgnoreCase) != 0 && string.Compare(extension, ".xml", StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(extension, ".zip", StringComparison.OrdinalIgnoreCase) != 0 && string.Compare(extension, ".xml", StringComparison.OrdinalIgnoreCase) != 0)
             {
                 throw new InvalidOperationException("The output path for a recording can only be to a 'xml' or 'zip' file.");
             }
 
-            if(path.Exists)
+            if (path.Exists)
             {
                 throw new IOException("File specified in the output path already exists.");
             }
 
-            if(path.Directory == null)
+            if (path.Directory == null)
             {
                 throw new IOException("Output path is invalid.");
             }
 
-            if(!path.Directory.Exists)
+            if (!path.Directory.Exists)
             {
                 path.Directory.Create();
             }
@@ -277,12 +280,12 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.Exception">Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'</exception>
         private void WaitForProcessesToEnd(Process[] processes)
         {
-            foreach(Process process in processes)
+            foreach (Process process in processes)
             {
-                if(!process.HasExited)
+                if (!process.HasExited)
                 {
                     process.WaitForExit(10000);
-                    if(!process.HasExited)
+                    if (!process.HasExited)
                     {
                         throw new FeedbackRecordingTimeoutException("Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'");
                     }
