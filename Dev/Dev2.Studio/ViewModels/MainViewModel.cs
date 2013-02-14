@@ -23,6 +23,7 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -40,7 +41,7 @@ namespace Dev2.Studio.ViewModels
 
         private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
 
-        private readonly IDebugWriter _debugWriter = new DebugWriter(s =>
+        private IDebugWriter _debugWriter = new DebugWriter(s =>
                                                                      Application.Current.Dispatcher.BeginInvoke(
                                                                          DispatcherPriority.Normal,
                                                                          new Action(
@@ -702,9 +703,20 @@ namespace Dev2.Studio.ViewModels
 
                     XElement dataList = XElement.Parse(debugTO.XmlData);
                     dataList.Add(new XElement("BDSDebugMode", debugTO.IsDebugMode));
-                    WebServer.SendAsync(WebServerMethod.POST, resourceModel, dataList.ToString());
+
+
+                    // Sashen.Naidoo : 14-02-2012 : BUG 8793 : Added asynchronous callback to remove the debugwriter when the the Webserver callback has completed.
+                    //                              Previously, everytime the debug method was invoked it would add a debug writer to the clientcontext and
+                    //                              this would never be removed
+
+                    Action<UploadStringCompletedEventArgs> webserverCallback = asyncCallback => clientContext.RemoveDebugWriter(_debugWriter); 
+                    
+                    WebServer.SendAsync(WebServerMethod.POST, resourceModel, dataList.ToString(), webserverCallback);
+                    
+                    
                 }
             }
+            
         }
 
         public void Build(IContextualResourceModel model, bool showWindow = true, bool deploy = true)

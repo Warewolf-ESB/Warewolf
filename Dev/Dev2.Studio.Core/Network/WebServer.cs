@@ -23,6 +23,11 @@ namespace Dev2.Studio.Core.Network
             Send(method, resourceModel, payload, args => { });
         }
 
+        public static void SendAsync(WebServerMethod method, IContextualResourceModel resourceModel, string payload, Action<UploadStringCompletedEventArgs> asyncCallback)
+        {
+            Send(method, resourceModel, payload, asyncCallback);
+        }
+
         public static void Send(WebServerMethod method, IContextualResourceModel resourceModel, string payload, Action<UploadStringCompletedEventArgs> asyncCallback = null)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
