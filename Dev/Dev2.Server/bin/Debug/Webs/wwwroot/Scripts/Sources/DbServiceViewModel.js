@@ -1,4 +1,4 @@
-﻿function DbSerivceViewModel(resourceID, resourceType) {
+﻿function DbSerivceViewModel(resourceID, resourceType, resourceName) {
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -9,13 +9,13 @@
     var $tabs = $("#tabs");
 
     self.saveUri = "Service/Services/Save";
-    
-    self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
-    
+        
+    self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);    
+
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable(resourceType),
-        resourceName: ko.observable(""),
+        resourceName: ko.observable(resourceName),
         resourcePath: ko.observable(""),
 
         source: ko.observable(),
@@ -51,7 +51,7 @@
     self.isFormValid = ko.computed(function () {
         // TODO: FIX isFormValid
         var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
-        console.log("isRecordsetNameOptional: " + isRecordsetNameOptional);
+        //console.log("isRecordsetNameOptional: " + isRecordsetNameOptional);
         return isRecordsetNameOptional ? true : self.data.recordset.Name !== "";
     });
     
@@ -97,15 +97,17 @@
     
     self.load = function () {
         var args = ko.toJSON({
-            resourceID: self.data.resourceID(),
-            resourceType: self.data.resourceType()
+            resourceID: resourceID,
+            resourceType: resourceType,
+            resourceName: resourceName
         });
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-
+            console.log(result);
+            
             self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
         });
         $.post("Service/Resources/Sources" + window.location.search, args, function (result) {
@@ -125,6 +127,12 @@
     };
     
     self.editSource = function () {
+        var url = window.location.origin + "/services/DatabaseSourceManagement?Dev2SourceManagementDatabaseSource="
+            + self.data.source.Name + "&Dev2ServiceType=Database&Dev2SourceName=" + self.data.source.Name;
+
+        //$.get(url, function (result) {
+        //    console.log(result);
+        //});
     };
 
     self.newSource = function () {
