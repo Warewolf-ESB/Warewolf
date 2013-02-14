@@ -164,11 +164,11 @@
     <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
-    <Content Include="wwwroot\Scripts\Sources\ServiceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\DbServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\dev2-utils.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
-    <Content Include="wwwroot\Views\Sources\Service.htm" />
+    <Content Include="wwwroot\Views\Sources\DbService.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Scripts\Switch\DragModel.js" />
