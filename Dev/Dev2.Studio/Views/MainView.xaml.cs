@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
@@ -52,7 +53,9 @@ namespace Dev2.Studio.Views
 
         #region Event Handlers
 
+// ReSharper disable InconsistentNaming
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
+// ReSharper restore InconsistentNaming
         {
 
             IMainViewModel dataContext = DataContext as IMainViewModel;
@@ -75,8 +78,15 @@ namespace Dev2.Studio.Views
 
         private void RibbonWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MainViewModel data = this.DataContext as MainViewModel;
-            data.UserInterfaceLayoutProvider.Value.PersistTabs(TabManager.Items);
+            MainViewModel data = DataContext as MainViewModel;
+            if(data != null)
+            {
+                data.UserInterfaceLayoutProvider.Value.PersistTabs(TabManager.Items);
+            }
+            else
+            {
+                throw new Exception("Error - data was null in MainView.xaml.cs!");
+            }
             Application.Current.Shutdown();
         }
 
@@ -85,11 +95,25 @@ namespace Dev2.Studio.Views
             ContentControl documentToClose = sender as ContentControl;
             if (documentToClose != null)
             {
-                MainViewModel data = this.DataContext as MainViewModel;
-                e.Cancel = (!data.UserInterfaceLayoutProvider.Value.RemoveDocument(documentToClose.DataContext));
+                MainViewModel data = DataContext as MainViewModel;
+                if(data != null)
+                {
+                    e.Cancel = (!data.UserInterfaceLayoutProvider.Value.RemoveDocument(documentToClose.DataContext));
+                }
+                else
+                {
+                    throw new Exception("Error - data was null in MainView.xaml.cs!");
+                }
             }
 
-            EventAggregator.Publish(new TabClosedMessage(documentToClose.Content));
+            if(documentToClose != null)
+            {
+                EventAggregator.Publish(new TabClosedMessage(documentToClose.Content));
+            }
+            else
+            {
+                throw new Exception("Error - documentToClose was null in MainView.xaml.cs!");
+            }
         }
 
         #endregion Event Handlers

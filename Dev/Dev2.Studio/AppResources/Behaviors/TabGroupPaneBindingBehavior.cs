@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Core.AppResources.ExtensionMethods;
+﻿using System;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,17 +62,38 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 foreach (FrameworkElement itemToRemove in tabGroupPane.Items.OfType<FrameworkElement>().Where(f => itemsToRemove.Contains(f.DataContext)).ToList())
                 {
-                    tabGroupPane.Items.Remove(itemToRemove);
+                    if(tabGroupPane.Items != null)
+                    {
+                        tabGroupPane.Items.Remove(itemToRemove);
+                    }
+                    else
+                    {
+                        throw new Exception("Error - Items was null in TabGroupPaneBindingBehaviour.cs!");
+                    }
                 }
             }
 
             foreach (var itemToAdd in itemsToAdd)
             {
-                FrameworkElement visualItem = ItemTemplate.LoadContent() as FrameworkElement;
-                if (visualItem == null) continue;
+                if(ItemTemplate != null)
+                {
+                    FrameworkElement visualItem = ItemTemplate.LoadContent() as FrameworkElement;
+                    if (visualItem == null) continue;
 
-                visualItem.DataContext = itemToAdd;
-                AssociatedObject.Items.Add(visualItem);
+                    if(itemToAdd != null)
+                    {
+                        visualItem.DataContext = itemToAdd;
+                    }
+                    else
+                    {
+                        throw new Exception("Error - itemToAdd was null in TabGroupPaneBindingBehaviour.cs!");
+                    }
+                    AssociatedObject.Items.Add(visualItem);
+                }
+                else
+                {
+                    throw new Exception("Error - ItemTemplate was null in TabGroupPaneBindingBehaviour.cs!");
+                }
             }
         }
 
@@ -113,13 +135,20 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private static void ItemsSourceChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            TabGroupPaneBindingBehavior itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if (itemsControlBindingBehavior == null) return;
+            if(dependencyObject != null)
+            {
+                TabGroupPaneBindingBehavior itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
+                if (itemsControlBindingBehavior == null) return;
 
-            itemsControlBindingBehavior.UpdateDestinationItems();
+                itemsControlBindingBehavior.UpdateDestinationItems();
 
-            itemsControlBindingBehavior.UnsubscribeFromItemsSource(e.OldValue as INotifyCollectionChanged);
-            itemsControlBindingBehavior.SubscribeToItemsSource(e.NewValue as INotifyCollectionChanged);
+                itemsControlBindingBehavior.UnsubscribeFromItemsSource(e.OldValue as INotifyCollectionChanged);
+                itemsControlBindingBehavior.SubscribeToItemsSource(e.NewValue as INotifyCollectionChanged);
+            }
+            else
+            {
+                throw new Exception("Error - dependencyObject was null in TabGroupPaneBindingBehaviour.cs!");
+            }
         }
 
         #endregion ItemsSource
