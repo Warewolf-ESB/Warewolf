@@ -129,7 +129,7 @@ namespace ActivityUnitTests.ActivityTest
   </Recset>
 </ADL>";
 
-            CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
+            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
@@ -137,7 +137,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
 
@@ -207,7 +207,7 @@ namespace ActivityUnitTests.ActivityTest
   </Recset>
 </ADL>";
 
-            CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
+            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
@@ -215,7 +215,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
             Assert.AreEqual(6, entry.ItemCollectionSize());
@@ -284,7 +284,7 @@ namespace ActivityUnitTests.ActivityTest
   </Recset>
 </ADL>";
 
-            CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
+            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
@@ -292,7 +292,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
             Assert.AreEqual(6, entry.ItemCollectionSize());
@@ -313,7 +313,7 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
-            CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
+            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
@@ -321,7 +321,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
             Assert.AreEqual(1, entry.ItemCollectionSize());
@@ -342,12 +342,12 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
-            CurrentDL = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
+            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #region Get Debug Input/Output Tests

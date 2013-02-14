@@ -429,7 +429,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfReplaceActivity { FieldsToSearch = fieldsToSearch, Find = find, ReplaceWith = replaceWith, Result = result, CaseMatch = caseMatch }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

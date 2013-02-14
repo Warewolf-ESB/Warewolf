@@ -7,7 +7,9 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTests
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -130,7 +132,7 @@ namespace ActivityUnitTests.ActivityTests
             string expected = @"<Error><![CDATA[The following errors occured : 
 Literal expressed from index 4 doesn't match what is specified in the input format.]]></Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -152,7 +154,7 @@ Literal expressed from index 4 doesn't match what is specified in the input form
             string expected = @"<Error><![CDATA[The following errors occured : 
 Literal expressed from index 4 doesn't match what is specified in the input format.]]></Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -174,7 +176,7 @@ Literal expressed from index 4 doesn't match what is specified in the input form
 Literal expressed from index 7 doesn't match what is specified in the input format.]]></Error>";
              */
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -195,7 +197,7 @@ Literal expressed from index 7 doesn't match what is specified in the input form
             string expected = @"<Error><![CDATA[The following errors occured : 
 Input can't be null/empty.]]></Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -216,7 +218,7 @@ Input can't be null/empty.]]></Error>";
             string expected = @"<Error><![CDATA[The following errors occured : 
 Input can't be null/empty.]]></Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -236,7 +238,7 @@ Input can't be null/empty.]]></Error>";
             string expected = @"<Error><![CDATA[The following errors occured : 
 Format can't be null/empty.]]></Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -256,7 +258,7 @@ Format can't be null/empty.]]></Error>";
             /* Expected Result - how can we retrieve from datalist
             string expected = @"<Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Error Test Cases
@@ -342,7 +344,7 @@ Format can't be null/empty.]]></Error>";
             {
                 Action = new DsfDateTimeDifferenceActivity { Input1 = input1, Input2 = input2, InputFormat = inputFormat, OutputType = outputType, Result = result }
             };
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

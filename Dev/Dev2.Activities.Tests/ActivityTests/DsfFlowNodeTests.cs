@@ -1,4 +1,9 @@
-﻿using Dev2.Common;
+﻿using System.Activities.Statements;
+using System.Collections.ObjectModel;
+using System.Data;
+using Dev2;
+using Dev2.Common;
+using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
@@ -127,6 +132,32 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].Count);
+        }
+
+        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913
+        [TestMethod]
+        [ExpectedException(typeof(InvalidExpressionException))]
+        public void DecisionWithQuotesInScalarExpectedNoUnhandledExceptions()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[var]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
+
+            CurrentDl = "<ADL><var/></ADL>";
+            TestData = "<root><var>\"</var></root>";
+            TestStartNode = new FlowStep
+            {
+                Action = act
+            };
+            IDSFDataObject result = ExecuteProcess();
+
+            IList<string> getDatalistID = new List<string>(){result.DataListID.ToString()};
+            Assert.IsTrue(new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID));
         }
 
         #endregion

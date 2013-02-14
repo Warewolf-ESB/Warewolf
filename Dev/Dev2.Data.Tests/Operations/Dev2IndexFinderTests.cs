@@ -85,6 +85,71 @@ namespace Dev2.Data.Tests.Operations
         }
 
         [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_ALL_RightToLeft_Expected_Index_Of_Eight_AND_FIVE_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABCFDEFGHIB", enIndexFinderOccurrence.AllOccurrences, "F",
+                                   enIndexFinderDirection.RightToLeft, false, 0);
+            Assert.AreEqual(5, actual.ElementAt(0));
+            Assert.AreEqual(8, actual.ElementAt(1));
+        }
+
+        //Juries Bug 8725
+        [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_ALL_RightToLeft_WITH_DOUBLE_Expected_Index_Of_Eight_AND_FIVE_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABFFDFFGHIB", enIndexFinderOccurrence.AllOccurrences, "FF",
+                                   enIndexFinderDirection.RightToLeft, false, 0);
+            Assert.AreEqual(5, actual.ElementAt(0));
+            Assert.AreEqual(8, actual.ElementAt(1));
+        }
+
+        //Juries Bug 8725
+        [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_FIRST_RightToLeft_WITH_DOUBLE_Expected_Index_Of_FIVE_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABFFDFFGHIB", enIndexFinderOccurrence.FirstOccurrence, "FF",
+                                   enIndexFinderDirection.RightToLeft, false, 0);
+            Assert.AreEqual(5, actual.ElementAt(0));
+        }
+
+        //Juries Bug 8725
+        [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_LAST_RightToLeft_WITH_DOUBLE_Expected_Index_Of_Eight_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABFFDFFGHIB", enIndexFinderOccurrence.LastOccurrence, "FF",
+                                   enIndexFinderDirection.RightToLeft, false, 0);
+            Assert.AreEqual(8, actual.ElementAt(0));
+        }
+
+        //Juries Bug 8725
+        [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_ALL_LeftToRight_WITH_DOUBLE_Expected_Index_Of_Three_AND_Six_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABFFDFFGHIB", enIndexFinderOccurrence.AllOccurrences, "FF",
+                                   enIndexFinderDirection.LeftToRight, false, 0);
+            Assert.AreEqual(3, actual.ElementAt(0));
+            Assert.AreEqual(6, actual.ElementAt(1));
+        }
+
+        //Juries Bug 8725
+        [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_FIRST_LeftToRight_WITH_DOUBLE_Expected_Index_Of_Three_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABFFDFFGHIB", enIndexFinderOccurrence.FirstOccurrence, "FF",
+                                   enIndexFinderDirection.LeftToRight, false, 0);
+            Assert.AreEqual(3, actual.ElementAt(0));
+        }
+
+        //Juries Bug 8725
+        [TestMethod]
+        public void FindIndex_RawData_Search_In_RawData_LAST_LeftToRight_WITH_DOUBLE_Expected_Index_Of_6_Returned()
+        {
+            var actual = _indexFinder.FindIndex("ABFFDFFGHIB", enIndexFinderOccurrence.LastOccurrence, "FF",
+                                   enIndexFinderDirection.LeftToRight, false, 0);
+            Assert.AreEqual(6, actual.ElementAt(0));
+        }
+
+        [TestMethod]
         public void FindIndex_RawData_Search_In_RawData_First_RightToLeft_Expected_Index_Of_Five_Returned()
         {
             var actual = _indexFinder.FindIndex("ABCFDEFGHIB", enIndexFinderOccurrence.FirstOccurrence, "F",

@@ -1121,7 +1121,7 @@ namespace ActivityUnitTests.ActivityTest
 
             GetScalarValueFromDataList(result.DataListID, "Variable", out actual, out error);
             Assert.AreEqual(expected, actual);
-            Assert.IsFalse(_compiler.HasErrors(result.DataListID));
+            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -1137,7 +1137,7 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Calculate Mode Tests
@@ -1227,7 +1227,7 @@ namespace ActivityUnitTests.ActivityTest
                 };
             }
             TestData = testData;
-            CurrentDL = currentDL;
+            CurrentDl = currentDL;
         }
 
         private string GetSimpleADL()

@@ -363,7 +363,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfDeleteRecordActivity { RecordsetName = recordSetName, Result = resultVar }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

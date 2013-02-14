@@ -36,7 +36,7 @@ namespace Dev2.DataList
                         }
                     }
                     else
-                    {                        
+                    {          
                         if (!p.Payload.ToLower().Contains(to.SearchCriteria.ToLower()))
                         {
                             fnResult.Add(p.Index.ToString());

@@ -116,7 +116,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
 
-                                bool added = false;
                                 while (tokenizer.HasMoreOps() && opCnt < iterNumber)
                                 {
 

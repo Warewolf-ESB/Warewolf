@@ -35,7 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfHttpActivity {  }
             };
             TestData = "";
-            CurrentDL = "<ADL></ADL>";
+            CurrentDl = "<ADL></ADL>";
         }
 
         #endregion

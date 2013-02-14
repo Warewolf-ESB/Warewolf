@@ -102,6 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                             foreach (IBinaryDataListItem c in cols)
                             {
+                                indexToUpsertTo = c.ItemCollectionIndex;//2013.02.13: Ashley Lewis - Bug 8725, Task 8836
                                 string val = broker.Convert(c.TheValue);
                                 string expression = item.ToExpression;
 
@@ -109,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression,
                                                                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    indexToUpsertTo++;
+                                    //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
 
                                 toUpsert.Add(expression, val);

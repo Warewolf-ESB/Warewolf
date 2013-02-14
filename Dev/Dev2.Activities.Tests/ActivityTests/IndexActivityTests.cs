@@ -396,7 +396,7 @@ namespace ActivityUnitTests.ActivityTests
                 }
             };
 
-            CurrentDL = currentDL;
+            CurrentDl = currentDL;
             TestData = testData;
         }
 

@@ -95,7 +95,7 @@ namespace Dev2.Data.Operations
                 case enIndexFinderOccurrence.FirstOccurrence:
                     if (lastIndex != -1)
                     {
-                        index = stringToSearchIn.Length - lastIndex;
+                        index = stringToSearchIn.Length - lastIndex - (charsToSearchFor.Length - 1);
                     }
                     result = new[] { index };
                     break;
@@ -103,7 +103,7 @@ namespace Dev2.Data.Operations
                 case enIndexFinderOccurrence.LastOccurrence:
                     if (firstIndex != -1)
                     {
-                        index = stringToSearchIn.Length - firstIndex;
+                        index = stringToSearchIn.Length - firstIndex - (charsToSearchFor.Length - 1);
                     }
                     result = new[] { index };
                     break;
@@ -111,14 +111,14 @@ namespace Dev2.Data.Operations
                 case enIndexFinderOccurrence.AllOccurrences:
                     List<int> foundIndexes = new List<int>();
                     stringToSearchIn = stringToSearchIn.ReverseString();
-                    foundIndexes.Add(firstIndex);
                     int currentIndex = firstIndex;
-                    while (currentIndex != -1)
+                    while (currentIndex != -1 && currentIndex != stringToSearchIn.Length)
                     {
                         currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex, comparisonType);
                         if (currentIndex != -1)
                         {
-                            foundIndexes.Add(currentIndex + 1);
+                            currentIndex++;
+                            foundIndexes.Add(currentIndex);
                         }
                     }
                     result = foundIndexes.ToArray();

@@ -1,4 +1,5 @@
 ﻿using Dev2;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -8,7 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTests
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Summary description for BaseConvertActivityTests
@@ -119,6 +122,59 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
+        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836
+        [TestMethod]
+        public void BaseConvertScalarNumberToBase64ExpectedStringToBase64()
+        {
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
+            SetupArguments(@"<root><testVar>1</testVar></root>"
+                          , ActivityStrings.CaseConvert_DLShape
+                          , convertCollection
+                          );
+            IDSFDataObject result = ExecuteProcess();
+
+            string expected = @"MQ==";
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void BaseConvertRecsetWithStarIndexToBinaryExpectedOutputToCorrectRecords()
+        {
+            SetupArguments(
+                            @"<root></root>"
+                          , ActivityStrings.BaseConvert_DLShape.Replace("<ADL>","<ADL><setup/>")
+                          , new List<BaseConvertTO>() { new BaseConvertTO("", "Text", "Binary", "[[setup]]", 1) }
+                          );
+            IDSFDataObject result = ExecuteProcess();
+            ErrorResultTO errorResult;
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
+
+            IBinaryDataListItem isolatedRecord = Dev2BinaryDataListFactory.CreateBinaryItem("CONVERT THIS TO BINARY", "Field");
+            string error;
+            IBinaryDataListEntry entry;
+            bdl.TryGetEntry("Recset", out entry, out error);
+            entry.TryPutRecordItemAtIndex(isolatedRecord, 5, out error);
+
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Recset(*).Field]]", "Text", "Binary", "[[Recset(*).Field]]", 1) };
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfBaseConvertActivity { ConvertCollection = convertCollection }
+            };
+            result = ExecuteProcess();
+
+            IList<IBinaryDataListEntry> actual = bdl.FetchRecordsetEntries();
+            var index = actual[0].FetchRecordAt(5, out error)[0].ItemCollectionIndex;
+            var count = actual.Count();
+            var actualValue = actual[0].FetchRecordAt(5, out error)[0].TheValue;
+
+            Assert.AreEqual("01000011010011110100111001010110010001010101001001010100001000000101010001001000010010010101001100100000010101000100111100100000010000100100100101001110010000010101001001011001", actualValue);
+            Assert.AreEqual(1, count); // still only one record
+            Assert.AreEqual(5, index); // and that record has not moved
+        }
+
         #endregion Base Convert Cases
 
         #region Language Tests
@@ -172,20 +228,21 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Negative Tests
 
-        [TestMethod]
-        public void BaseConvert_ScalarToBase64_Expected_ErrorTag()
-        {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
+        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836 - "0001010111010" can be converted to Base64 as text
+        //[TestMethod]
+        //public void BaseConvert_ScalarToBase64_Expected_ErrorTag()
+        //{
+        //    IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
 
-            SetupArguments(
-                            @"<root><testVar>0001010111010</testVar></root>"
-                          , ActivityStrings.CaseConvert_DLShape
-                          , convertCollection
-                          );
+        //    SetupArguments(
+        //                    @"<root><testVar>0001010111010</testVar></root>"
+        //                  , ActivityStrings.CaseConvert_DLShape
+        //                  , convertCollection
+        //                  );
 
-            IDSFDataObject result = ExecuteProcess();
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
-        }
+        //    IDSFDataObject result = ExecuteProcess();
+        //    Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        //}
 
         [TestMethod]
         public void BaseConvert_Convert_Binary_To_Text_With_Base64_Value_Expected_ErrorTag()
@@ -290,7 +347,7 @@ namespace ActivityUnitTests.ActivityTests
                 Action = new DsfBaseConvertActivity { ConvertCollection = converCollection }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

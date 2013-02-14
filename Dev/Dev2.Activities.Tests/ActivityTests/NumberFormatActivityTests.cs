@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

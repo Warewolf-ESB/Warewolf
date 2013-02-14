@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Linq;
+using Dev2;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -13,93 +14,48 @@ using Moq;
 using System;
 using System.Activities;
 using System.Activities.Statements;
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework;
 
+// ReSharper disable CheckNamespace
 namespace ActivityUnitTests
+// ReSharper restore CheckNamespace
 {
     [TestClass]
     public class BaseActivityUnitTest
     {
 
-        public IFrameworkWorkspaceChannel _dsfChannel;
-        public IFrameworkSecurityContext _securityContext;
-        public Uri _dsfAdddress = new Uri("http://localhost:77/dsf");
-        private dynamic _testData;
-        private Guid _executionId;
-        private dynamic _currentDL;
-        private string _callBackData = "Default Data";
-        public Mock<IFrameworkWorkspaceChannel> _mockChannel;
-        public IDataListCompiler _compiler;
+        public IFrameworkWorkspaceChannel DsfChannel;
+        public IFrameworkSecurityContext SecurityContext;
+        public Uri DsfAdddress = new Uri("http://localhost:77/dsf");
+        public Mock<IFrameworkWorkspaceChannel> MockChannel;
+        public IDataListCompiler Compiler;
 
-        public BaseActivityUnitTest() { }
-
-        FlowStep _testStartNode = new FlowStep
+        public BaseActivityUnitTest()
         {
-            Action = new DsfCommentActivity()
-        };
-
-        public Guid ExecutionID { get { return _executionId; } set { _executionId = value; } }
-
-        public dynamic TestData
-        {
-
-            get
+            CallBackData = "Default Data";
+            TestStartNode = new FlowStep
             {
-                return _testData;
-            }
-            set
-            {
-                _testData = value;
-            }
+                Action = new DsfCommentActivity()
+            };
         }
 
-        public dynamic CurrentDL
-        {
+        public Guid ExecutionID { get; set; }
 
-            get
-            {
-                return _currentDL;
-            }
-            set
-            {
-                _currentDL = value;
-            }
-        }
+        public dynamic TestData { get; set; }
 
-        public FlowStep TestStartNode
-        {
-            get
-            {
-                return _testStartNode;
-            }
-            set
-            {
-                _testStartNode = value;
-            }
-        }
+        public dynamic CurrentDl { get; set; }
 
-        public string CallBackData
-        {
-            set
-            {
-                _callBackData = value;
-            }
-            get
-            {
-                return _callBackData;
-            }
-        }
+        public FlowStep TestStartNode { get; set; }
+
+        public string CallBackData { get; set; }
 
         public DynamicActivity FlowchartProcess
         {
             get
             {
-                var activity = new DynamicActivity();
-                activity.Implementation = () => FlowchartActivityBuilder.Implementation;
+                var activity = new DynamicActivity { Implementation = () => FlowchartActivityBuilder.Implementation };
                 foreach (DynamicActivityProperty prop in FlowchartActivityBuilder.Properties)
                 {
                     activity.Properties.Add(prop);
@@ -113,7 +69,7 @@ namespace ActivityUnitTests
         {
             get
             {
-                var builder = new ActivityBuilder()
+                var builder = new ActivityBuilder
                 {
                     //Name = _workflowModel.ResourceName,
                     //Name = _workflowModel.ResourceName, //string.Format("{0}.{1}.{2}.{3}", _workflowModel.Module, _workflowModel.SubModule, _workflowModel.Action, _workflowModel.ResourceName),
@@ -141,7 +97,7 @@ namespace ActivityUnitTests
                 };
 
 
-                VisualBasicSettings vbs = new VisualBasicSettings
+                var vbs = new VisualBasicSettings
                 {
                     ImportReferences =     {
                         new VisualBasicImportReference {
@@ -167,39 +123,35 @@ namespace ActivityUnitTests
         public dynamic ExecuteProcess()
         {
 
-            ServiceAction svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
+            var svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
 
             svc.SetActivity(FlowchartProcess);
 
-            Mock<IFrameworkDataChannel> mockChannel = new Mock<IFrameworkDataChannel>();
+            var mockChannel = new Mock<IFrameworkDataChannel>();
 
-            mockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), GlobalConstants.NullDataListID)).Callback((string xml, Guid dlId, Guid id) => ExecuteCallBack(xml)).Returns(() => result);
+            mockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), GlobalConstants.NullDataListID)).Callback((string xml, Guid dlId, Guid id) => ExecuteCallBack(xml)).Returns(() => _result);
 
             var invoker = new DynamicServicesInvoker(mockChannel.Object, null, false, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace);
 
-            if (CurrentDL == null)
+            if (CurrentDl == null)
             {
-                CurrentDL = TestData;
+                CurrentDl = TestData;
             }
 
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             if (ExecutionID == Guid.Empty)
             {
-                _compiler = DataListFactory.CreateDataListCompiler();
-                ExecutionID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDL, out errors);
+                Compiler = DataListFactory.CreateDataListCompiler();
+                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
             }
             if (errors.HasErrors())
             {
-                string errorString = string.Empty;
-                foreach (string item in errors.FetchErrors())
-                {
-                    errorString += item;
-                }
+                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
 
                 throw new Exception(errorString);
             }
 
-            DsfDataObject dataObject = new DsfDataObject(CurrentDL, ExecutionID)
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionID)
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
@@ -219,53 +171,42 @@ namespace ActivityUnitTests
         /// <returns></returns>
         public dynamic ExecuteForEachProcess()
         {
-            try
+            var svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
+
+            svc.SetActivity(FlowchartProcess);
+
+
+
+
+            if (CurrentDl == null)
             {
-                ServiceAction svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
-
-                svc.SetActivity(FlowchartProcess);
-
-
-
-
-                if (CurrentDL == null)
-                {
-                    CurrentDL = TestData;
-                }
-                //UnlimitedObject.GetStringXmlDataAsUnlimitedObject(CurrentDL)
-                _compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors = new ErrorResultTO();
-                Guid exID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDL, out errors);
-                if (errors.HasErrors())
-                {
-                    string errorString = string.Empty;
-                    foreach (string item in errors.FetchErrors())
-                    {
-                        errorString += item;
-                    }
-
-                    throw new Exception(errorString);
-                }
-
-                DsfDataObject dataObject = new DsfDataObject(CurrentDL, exID)
-                {
-                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                    //       if this is NOT provided which will cause the tests to fail!
-                    ServerID = Guid.NewGuid() 
-                };
-                _mockChannel = new Mock<IFrameworkWorkspaceChannel>();
-                _mockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .Returns((string svcName, Guid wsId, Guid executionID) => { return executionID.ToString(); }).Verifiable();
-
-                var invoker = new DynamicServicesInvoker(_mockChannel.Object, null, false, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace);
-
-                invoker.WorkflowApplication(svc, dataObject, TestData);
-                return dataObject;
+                CurrentDl = TestData;
             }
-            catch (Exception ex)
+            //UnlimitedObject.GetStringXmlDataAsUnlimitedObject(CurrentDL)
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid exID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            if (errors.HasErrors())
             {
-                throw ex;
+                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+
+                throw new Exception(errorString);
             }
+
+            var dataObject = new DsfDataObject(CurrentDl, exID)
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid() 
+            };
+            MockChannel = new Mock<IFrameworkWorkspaceChannel>();
+            MockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                       .Returns((string svcName, Guid wsId, Guid executionID) => executionID.ToString()).Verifiable();
+
+            var invoker = new DynamicServicesInvoker(MockChannel.Object, null, false, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace);
+
+            invoker.WorkflowApplication(svc, dataObject, TestData);
+            return dataObject;
         }
 
 
@@ -273,7 +214,7 @@ namespace ActivityUnitTests
 
 
         // return for the callback
-        string result = "<error>nop</error>";
+        string _result = "<error>nop</error>";
 
         /*
          * After much fing around it appears the mock is staticly evaluated and the result cannot be changed for a callback return value
@@ -285,19 +226,12 @@ namespace ActivityUnitTests
 
             string partName = serviceRequest.GetValue("WebPartServiceName");
 
-            Console.WriteLine("Part : " + partName);
+            Console.WriteLine(@"Part : " + partName);
 
             if (partName == "HtmlWidget")
             {
-                string payload = (new UnlimitedObject(XElement.Parse(xml)).XPath("//Value/node()").Inner());
-
-                result = ActivityStrings.webpartTemplate.Replace("!REPLACE!", CallBackData);
+                _result = ActivityStrings.webpartTemplate.Replace("!REPLACE!", CallBackData);
             }
-
-        }
-
-        private void ExecuteForEachInnerActivityCallback(Guid dataListID)
-        {
 
         }
 
@@ -306,18 +240,18 @@ namespace ActivityUnitTests
         public void CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             TestStartNode = new FlowStep
             {
                 Action = activity
             };
 
             TestData = dataListWithData;
-            CurrentDL = dataListShape;
+            CurrentDl = dataListShape;
 
-            _compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDL, out errors);
-            IBinaryDataList dl = _compiler.FetchBinaryDataList(ExecutionID, out errors);
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
             inputResults = activity.GetDebugInputs(dl);
             ExecuteProcess();
             outputResults = activity.GetDebugOutputs(dl);
@@ -326,18 +260,18 @@ namespace ActivityUnitTests
         public void CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             TestStartNode = new FlowStep
             {
                 Action = activity
             };
 
             TestData = dataListWithData;
-            CurrentDL = dataListShape;
+            CurrentDl = dataListShape;
 
-            _compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDL, out errors);
-            IBinaryDataList dl = _compiler.FetchBinaryDataList(ExecutionID, out errors);
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
             inputResults = activity.GetDebugInputs(dl);
             outputResults = activity.GetDebugOutputs(dl);
         }
@@ -347,13 +281,12 @@ namespace ActivityUnitTests
 
         public bool GetScalarValueFromDataList(Guid dataListId, string fieldToRetrieve, out string result, out string error)
         {
-            ErrorResultTO errorResult = new ErrorResultTO();
-            IBinaryDataListEntry entry = null;
-            bool fine = _compiler.FetchBinaryDataList(dataListId, out errorResult).TryGetEntry(fieldToRetrieve, out entry, out error);
-            IBinaryDataListItem item = null;
+            ErrorResultTO errorResult;
+            IBinaryDataListEntry entry;
+            bool fine = Compiler.FetchBinaryDataList(dataListId, out errorResult).TryGetEntry(fieldToRetrieve, out entry, out error);
             if (entry != null && fine)
             {
-                item = entry.FetchScalar();
+                IBinaryDataListItem item = entry.FetchScalar();
                 result = item.TheValue;
             }
             else
@@ -366,16 +299,15 @@ namespace ActivityUnitTests
 
         public bool GetRecordSetFieldValueFromDataList(Guid dataListId, string recordSet, string fieldNameToRetrieve, out IList<IBinaryDataListItem> result, out string error)
         {
-            string results = string.Empty;
             IList<IBinaryDataListItem> dLItems = new List<IBinaryDataListItem>();
-            ErrorResultTO errorResult = new ErrorResultTO();
-            IBinaryDataListEntry entry = null;
+            ErrorResultTO errorResult;
+            IBinaryDataListEntry entry;
             bool isCool = true;
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(dataListId, out errorResult);
-            bool fine = bdl.TryGetEntry(recordSet, out entry, out error);
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(dataListId, out errorResult);
+            bdl.TryGetEntry(recordSet, out entry, out error);
 
             IIndexIterator idxItr = entry.FetchRecordsetIndexes();
-            while (idxItr.HasMore())
+            while(idxItr.HasMore())
             {
                 dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, idxItr.FetchNextIndex(), out error));
             }
@@ -384,28 +316,24 @@ namespace ActivityUnitTests
             //    dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, recordSetEntry, out error));
             //}
             result = dLItems;
-            if (!string.IsNullOrEmpty(error))
+            if(!string.IsNullOrEmpty(error))
             {
                 isCool = false;
             }
 
-            return isCool;
+            return isCool ;
         }
 
         protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListId, string recordSetName, string fieldToRetrieve, out string error)
         {
-            List<string> retVals = new List<string>();
-            IList<IBinaryDataListItem> dataListItems = new List<IBinaryDataListItem>();
+            var retVals = new List<string>();
+            IList<IBinaryDataListItem> dataListItems;
             if (GetRecordSetFieldValueFromDataList(dataListId, recordSetName, fieldToRetrieve, out dataListItems, out error))
             {
-                foreach (IBinaryDataListItem item in dataListItems)
-                {
-                    retVals.Add(item.TheValue);
-                }
+                retVals.AddRange(dataListItems.Select(item => item.TheValue));
             }
             return retVals;
         }
-
 
         #endregion Retrieve DataList Values
     }

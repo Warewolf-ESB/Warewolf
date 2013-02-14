@@ -22,19 +22,22 @@ namespace Dev2.Converters
             string result = string.Empty;
 
             // convert from to base type
-            if(_from.IsType(payload)){
+            if (_from.IsType(payload))
+            {
 
                 byte[] rawBytes = _from.NeutralizeToCommon(payload);
 
                 // convert to expected type
                 result = _to.ConvertToBase(rawBytes);
-                
 
-            }else{
+
+            }
+            else
+            {
                 //throw new ConversionException - wrong base format
                 throw new BaseTypeException("Base Conversion Broker was expecting [ " + _from.HandlesType() + " ] but the data was not in this format");
             }
-           
+
             return result;
         }
     }

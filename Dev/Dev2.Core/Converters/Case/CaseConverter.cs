@@ -74,7 +74,8 @@ namespace Dev2
             // start by converting entire string to lower case
             string lowerCase = word.ToLower();
             // matches the first sentence of a string, as well as subsequent sentences
-            Regex reg = new Regex(@"(^[a-z])|\.\s+(.)", RegexOptions.ExplicitCapture);
+            //Juries Bug 8725
+            Regex reg = new Regex(@"(?<=(^|[.;:])\s*)[a-z]", RegexOptions.Compiled | RegexOptions.Multiline);
             // MatchEvaluator delegate defines replacement of setence starts to uppercase        
             return reg.Replace(lowerCase, s => s.Value.ToUpper());
         }
@@ -100,11 +101,14 @@ namespace Dev2
 
         private static string ConvertToAllFirstUpper(string stringToConvert)
         {
-            string result = string.Empty;
             TextInfo txInfo = CultureInfo.CurrentCulture.TextInfo;
-            
-            txInfo.ToTitleCase(stringToConvert);
-            return txInfo.ToTitleCase(stringToConvert);
+
+            var str = txInfo.ToTitleCase(stringToConvert);
+
+            //Juries Bug 8725
+            Regex reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
+
+            return reg.Replace(str, s => s.Value.ToLower());
         }
 
         #endregion Convert Methods

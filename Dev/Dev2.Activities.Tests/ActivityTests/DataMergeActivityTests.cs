@@ -392,7 +392,7 @@ Wallis0000Buchan
                 Action = new DsfDataMergeActivity { Result = result, MergeCollection = mergeCollection }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

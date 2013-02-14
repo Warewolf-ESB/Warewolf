@@ -150,6 +150,40 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
 
         }
 
+        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840
+        [TestMethod]
+        public void FormatWithTrailingZerosInOutputExpectedTrailingZerosNotRemoved()
+        {
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
+            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
+            dateTimeTO.DateTime = "2013/02/07 08:38:56.953 PM";
+            dateTimeTO.InputFormat = "yyyy/mm/dd 12h:min:ss.sp am/pm";
+            dateTimeTO.OutputFormat = "sp";
+            dateTimeTO.TimeModifierType = "Split Secs";
+            dateTimeTO.TimeModifierAmount = -53;
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+
+            Assert.AreEqual("900", result);
+        }
+        [TestMethod]
+        public void FormatWithTrailingSpacesInInputExpectedOutputDateNotBlank()
+        {
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
+            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
+            dateTimeTO.DateTime = "14101988  ";
+            dateTimeTO.InputFormat = "ddmmyyyy  ";
+            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd";
+            dateTimeTO.TimeModifierType = "Years";
+            dateTimeTO.TimeModifierAmount = 23;
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+
+            Assert.AreEqual("2011/10/14", result);
+        }
+
         /// <summary>
         /// Tests that non-matching input to format does not return any date time format
         /// </summary>

@@ -19,11 +19,12 @@ namespace Dev2.Converters {
         }
 
         public bool IsType(string payload) {
-            bool result = (!Regex.IsMatch(payload, "^[01]+$")
-                && !(System.Text.RegularExpressions.Regex.IsMatch(payload, @"\A\b[0-9a-fA-F]+\b\Z")
-                     || System.Text.RegularExpressions.Regex.IsMatch(payload, @"\A\b(0[xX])?[0-9a-fA-F]+\b\Z")));
+            //bool result = (!Regex.IsMatch(payload, "^[01]+$")
+            //    && !(System.Text.RegularExpressions.Regex.IsMatch(payload, @"\A\b[0-9a-fA-F]+\b\Z")
+            //         || System.Text.RegularExpressions.Regex.IsMatch(payload, @"\A\b(0[xX])?[0-9a-fA-F]+\b\Z")));
 
-            return result;
+            //2013.02.13: Ashley Lewis - Bug 8725, Task 8836
+            return true;
         }
 
         public Enum HandlesType() {

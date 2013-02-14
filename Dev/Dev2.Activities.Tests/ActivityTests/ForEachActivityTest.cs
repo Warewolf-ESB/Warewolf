@@ -82,7 +82,7 @@ namespace ActivityUnitTests.ActivityTest
                           , "2"
                           );
             IDSFDataObject result = ExecuteForEachProcess();
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
         }
 
         [TestMethod] // - OK
@@ -96,7 +96,7 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteForEachProcess();
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
         }
 
         [TestMethod] // - OK
@@ -109,7 +109,7 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result = ExecuteForEachProcess();
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
         }
 
         [TestMethod] // - OK
@@ -122,7 +122,7 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result = ExecuteForEachProcess();
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
         }
 
         [TestMethod] // - OK
@@ -135,7 +135,7 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result = ExecuteForEachProcess();
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
         }
 
         [TestMethod] // - OK
@@ -148,7 +148,7 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result = ExecuteForEachProcess();
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
         }
 
         [TestMethod] // - OK
@@ -161,7 +161,7 @@ namespace ActivityUnitTests.ActivityTest
                            );
             IDSFDataObject result = ExecuteForEachProcess();
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
         }
 
         #endregion Number Of Execution Tests
@@ -305,7 +305,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
 
         }
@@ -332,7 +332,7 @@ namespace ActivityUnitTests.ActivityTest
                                                      , "" };
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -355,7 +355,7 @@ namespace ActivityUnitTests.ActivityTest
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
             Assert.AreEqual(expected, actual);
         }
 
@@ -378,7 +378,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
 
-            _mockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
             Assert.AreEqual(expected, actual);
 
         }
@@ -395,7 +395,7 @@ namespace ActivityUnitTests.ActivityTest
                           , outputMapping
                           );
             IDSFDataObject result = ExecuteForEachProcess();
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Output Mapping Tests
@@ -502,7 +502,7 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

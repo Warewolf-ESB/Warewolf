@@ -307,7 +307,7 @@ namespace ActivityUnitTests.ActivityTest
             TestData = ActivityStrings.SortDataList;
             IDSFDataObject result = ExecuteProcess();
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Negative Test Cases
@@ -369,7 +369,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfSortRecordsActivity { SortField = sortField, SelectedSort = selectedSort }
             };
 
-            CurrentDL = currentDL;
+            CurrentDl = currentDL;
             TestData = testData;
         }
 

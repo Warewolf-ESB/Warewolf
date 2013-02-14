@@ -215,7 +215,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.Case
             IBinaryDataListItem item = Dev2BinaryDataListFactory.CreateBinaryItem("1make fi5rst le6tter up3percase", "");
             IBinaryDataListItem result = converter.TryConvert("Title Case", item);
 
-            Assert.AreEqual("1Make Fi5rst Le6tter Up3percase", result.TheValue);
+            Assert.AreEqual("1make Fi5rst Le6tter Up3percase", result.TheValue);
         }
 
 

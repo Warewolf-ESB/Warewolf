@@ -70,7 +70,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = @"Sum([[scalar]], 10)", Result = "[[result]]" }
             };
 
-            CurrentDL = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
+            CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string error = string.Empty;
@@ -131,14 +131,14 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]];[[RecordSet().Field]])", Result = "[[result]]" }
             };
 
-            CurrentDL = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
+            CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = ActivityStrings.CalculateActivityADL;
             IDSFDataObject result = ExecuteProcess();
 
             string error = string.Empty;
             string entry = string.Empty;
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
 
         }
 
@@ -152,7 +152,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = @"Sum([[scalar]],[[RecordSet(1).Field]],[[RecordSet(2).Field]])", Result = "[[result]]" }
             };
 
-            CurrentDL = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
+            CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "32";
@@ -174,7 +174,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]]:[[RecordSet(2).Field]])", Result = "[[result]]" }
             };
 
-            CurrentDL = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
+            CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "30";
@@ -195,7 +195,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = "Concatenate([[testVar]], \"moreText\")", Result = "[[NewTestVar]]" }
             };
 
-            CurrentDL = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
+            CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "ATestmoreText";
@@ -213,7 +213,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = "Right([[testVar]], 2)", Result = "[[NewTestVar]]" }
             };
 
-            CurrentDL = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
+            CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "st";
@@ -231,7 +231,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = "Left([[testVar]], 2)", Result = "[[NewTestVar]]" }
             };
 
-            CurrentDL = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
+            CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "AT";
@@ -250,7 +250,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = "Concatenate([[testRecSet(1).testField]], \"moreText\")", Result = "[[NewTestVar]]" }
             };
 
-            CurrentDL = "<ADL><testRecSet><testField></testField></testRecSet><NewTestVar></NewTestVar></ADL>";
+            CurrentDl = "<ADL><testRecSet><testField></testField></testRecSet><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testRecSet><testField>ATest</testField></testRecSet><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "ATestmoreText";
@@ -270,7 +270,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]])", Result = "[[sumResult]]" }
             };
 
-            CurrentDL = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
+            CurrentDl = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "10";
@@ -290,7 +290,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
             };
 
-            CurrentDL = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
+            CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "20";

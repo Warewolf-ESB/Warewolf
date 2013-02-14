@@ -52,7 +52,7 @@ namespace ActivityUnitTests.ActivityTest {
                 Action = new DsfSortRecordsActivity { SortField = sortField, SelectedSort = selectedSort }
             };
 
-            CurrentDL = currentDL;
+            CurrentDl = currentDL;
             TestData = testData;
         }
 

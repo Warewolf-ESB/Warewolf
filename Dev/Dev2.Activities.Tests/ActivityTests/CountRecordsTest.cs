@@ -179,7 +179,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
 
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -189,7 +189,7 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result = ExecuteProcess();
             string error = string.Empty;
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             IDSFDataObject result = ExecuteProcess();
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
 
@@ -213,7 +213,7 @@ namespace ActivityUnitTests.ActivityTest
             IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
             string error = string.Empty;
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Error Test Cases
@@ -274,7 +274,7 @@ namespace ActivityUnitTests.ActivityTest
                 Action = new DsfCountRecordsetActivity { RecordsetName = recordSetName, CountNumber = countNumber }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

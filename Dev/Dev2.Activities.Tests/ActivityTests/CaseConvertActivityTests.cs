@@ -192,7 +192,7 @@ namespace ActivityUnitTests.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"Change This 5435123130T Lete2435r Upper Case";
+            string expected = @"Change This 5435123130t Lete2435r Upper Case";
             string actual = string.Empty;
             string error = string.Empty;
 
@@ -272,7 +272,7 @@ namespace ActivityUnitTests.ActivityTests
 
             GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Error Handling Tests
@@ -404,7 +404,7 @@ namespace ActivityUnitTests.ActivityTests
             IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
             string error = string.Empty;
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
 
         }
 
@@ -419,7 +419,7 @@ namespace ActivityUnitTests.ActivityTests
                 Action = new DsfCaseConvertActivity { ConvertCollection = convertCollection }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 

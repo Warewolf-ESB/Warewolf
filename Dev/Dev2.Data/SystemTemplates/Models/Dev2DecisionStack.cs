@@ -113,7 +113,7 @@ namespace Dev2.Data.SystemTemplates.Models
             //{
             //    return val.Replace(GlobalConstants.VBSerializerToken, "\"");
             //}
-
+            
             return val.Replace("!", "\"");
 
         }

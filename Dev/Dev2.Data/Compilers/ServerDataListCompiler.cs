@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Web.Script.Serialization;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract;
@@ -1465,6 +1466,7 @@ namespace Dev2.Server.Datalist
                                     {
                                         //p.Option.DisplayValue != val.FetchScalar().TheValue
                                         expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
+                                        
                                     }
                                     else
                                     {

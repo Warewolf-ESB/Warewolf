@@ -680,7 +680,7 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
 
         }
 
@@ -703,7 +703,7 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -718,7 +718,7 @@ namespace ActivityUnitTests.ActivityTest
             string expected = @"<Error><![CDATA[The following errors occured : 
 No tokenize operations!]]></Error>";
              */
-            Assert.IsTrue(_compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -859,7 +859,7 @@ No tokenize operations!]]></Error>";
                 Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection }
             };
 
-            CurrentDL = testData;
+            CurrentDl = testData;
             TestData = currentDL;
         }
 
