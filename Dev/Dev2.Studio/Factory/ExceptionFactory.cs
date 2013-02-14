@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
@@ -62,7 +63,23 @@ namespace Dev2.Studio.Factory
             {
                 builder.AppendLine("StackTrace:");
                 builder.AppendLine(exception.StackTrace);
+
+                // 14th Feb 2013
+                // Added by Michael to assist with debugging (Bug 8839)
+                string fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
+                StackTrace theStackTrace = new StackTrace();
+                for (int j = theStackTrace.FrameCount - 1; j >= 0; j--)
+                {
+                    string module = theStackTrace.GetFrame(j).GetMethod().Module.ToString();
+                    if (module != "WindowsBase.dll" && module != "CommonLanguageRuntimeLibrary")
+                    {
+
+                        fullStackTrace += "--> " + theStackTrace.GetFrame(j).GetMethod().Name + " (" + theStackTrace.GetFrame(j).GetMethod().Module + ")";
+                    }
+                }
+                builder.Append(fullStackTrace);
             }
+
 
             return builder;
         }
