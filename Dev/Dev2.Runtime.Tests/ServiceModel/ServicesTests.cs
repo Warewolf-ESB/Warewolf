@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             GlobalConstants.GetWorkspacePath(workspaceID);
 
-            var services = new Dev2.Runtime.ServiceModel.Services();
+            var services = new ServicesMock();
             var result = services.Methods(args, workspaceID, Guid.Empty);
 
             // TODO: Fix

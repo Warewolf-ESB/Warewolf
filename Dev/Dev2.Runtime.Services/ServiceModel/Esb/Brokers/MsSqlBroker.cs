@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Xml;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -27,7 +28,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var sqlConnection = connection as SqlConnection;
             if (sqlConnection == null)
             {
-                throw new ArgumentException("Expected type SqlConnection.", "connection");
+                throw new ArgumentException(string.Format("Expected type '{0}', received '{1}'.", typeof(SqlConnection), connection), "connection");
             }
 
             var proceduresDataTable = GetSchema(sqlConnection, "Procedures");
@@ -95,6 +96,41 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         protected override IDbConnection CreateConnection(string connectionString)
         {
             return new SqlConnection(connectionString);
+        }
+
+        /// <summary>
+        /// Mormalizes a data payload.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        protected override string NormalizeXmlPayload(string payload)
+        {
+            StringBuilder result = new StringBuilder();
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.LoadXml(payload);
+            XmlNodeList nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
+            int foundXMLFrags = 0;
+
+            foreach (XmlNode n in nl)
+            {
+                string tmp = n.InnerXml;
+                result = result.Append(tmp);
+                foundXMLFrags++;
+            }
+
+            string res = result.ToString();
+
+            if (foundXMLFrags >= 1)
+            {
+                res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
+            }
+            else if (foundXMLFrags == 0)
+            {
+                res = payload;
+            }
+
+            return base.NormalizeXmlPayload(res);
         }
 
         #endregion

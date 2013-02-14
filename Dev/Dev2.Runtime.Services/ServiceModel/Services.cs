@@ -1,10 +1,11 @@
-﻿using System;
-using System.Xml.Linq;
-using Dev2.DynamicServices;
+﻿using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -53,27 +54,9 @@ namespace Dev2.Runtime.ServiceModel
             var result = new ServiceMethodList();
             try
             {
-                //TODO
-                //1. Hydrate source string into a source data model
-                //2. Get a list of actions for that source
-                //3. Create instances for ServiceAction for each action
-                //4. Return the JSON representation of the service actions
-
-                var service = DeserializeService(args);
-
-                var random = new Random();
-                for(var i = 0; i < 50; i++)
-                {
-                    var method = new ServiceMethod { Name = string.Format("dbo.Pr_GetCake_{0:00}", i) };
-                    for(var j = 0; j < 10; j++)
-                    {
-                        var varLength = j % 4 == 0 ? 30 : 15;
-                        method.Parameters.Add(new MethodParameter { Name = random.GenerateString(varLength, "@") });
-                    }
-                    method.SourceCode = "ALTER procedure " + method.Name + "\n(\n\t@CakeName varchar(50)\n)\nas\n\nselect * from Country \nwhere [Description] like @Prefix + '%'\norder by Description asc";
-
-                    result.Add(method);
-                }
+                var service = DeserializeService(args) as DbService;
+                var serviceMethods = FetchMethods(service);
+                result.AddRange(serviceMethods);
             }
             catch(Exception ex)
             {
@@ -167,6 +150,16 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        #region FetchDatabaseBroker
+
+        public virtual ServiceMethodList FetchMethods(DbService service)
+        {
+            var broker = new MsSqlBroker();
+            return broker.GetServiceMethods(service);
+        }
+
+        #endregion
+
         #region DeserializeService
 
         static Service DeserializeService(string args)
@@ -185,7 +178,5 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
-
     }
 }

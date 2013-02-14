@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
@@ -10,28 +11,27 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     /// <summary>
     /// Provides base logic for database brokers.
     /// </summary>
-    public abstract class AbstractDatabaseBroker : IEsbEndpoint
+    public abstract class AbstractDatabaseBroker
     {
         #region Methods
 
         /// <summary>
         /// Gets the service methods for this esb endpoint.
         /// </summary>
-        /// <param name="resource">The resource.</param>
+        /// <param name="dbService">The resource.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">resource</exception>
         /// <exception cref="System.Exception"></exception>
-        public ServiceMethodList GetServiceMethods(Resource resource)
+        public ServiceMethodList GetServiceMethods(DbService dbService)
         {
-            if (resource == null)
+            if (dbService == null)
             {
-                throw new ArgumentNullException("resource");
+                throw new ArgumentNullException("dbService");
             }
 
-            var dbSource = resource as DbSource;
-            if (dbSource == null)
+            if (dbService.Source == null)
             {
-                throw new Exception(string.Format("Unexpected source type, recieved '{0}', expected '{1}'.", resource.GetType(), typeof(DbSource)));
+                throw new ArgumentNullException("dbService.Source");
             }
 
             var serviceMethods = new ServiceMethodList();
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Get stored procedures and functions for this database source
             //
-            using (var conn = CreateConnection(dbSource.ConnectionString))
+            using (var conn = CreateConnection(dbService.Source.ConnectionString))
             {
                 conn.Open();
                 GetStoredProcedures(conn, procedureFunc, functionFunc);
@@ -85,10 +85,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 throw new ArgumentNullException("resource");
             }
 
+            //
+            // Check the resource is of the correct type
+            //
             var dbSource = resource as DbSource;
             if (dbSource == null)
             {
-                throw new Exception(string.Format("Unexpected source type, recieved '{0}', expected '{1}'.", resource.GetType(), typeof(DbSource)));
+                throw new Exception(string.Format("Unexpected resource type, recieved '{0}', expected '{1}'.", resource.GetType(), typeof(DbSource)));
             }
 
             IOutputDescription result = null;
@@ -99,14 +102,27 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                 try
                 {
+                    //
+                    // Execute command and normalize XML
+                    //
                     var command = CommandFromServiceMethod(conn, serviceMethod);
+                    var dataSet = ExecuteSelect(command);
+                    string xmlResult = dataSet.GetXml();
+                    xmlResult = NormalizeXmlPayload(xmlResult);
 
                     //
-                    // Execute command and extract XML
+                    // Map shape of XML
                     //
-                    //var dataSet = msSqlDataBroker.ExecuteSelect(command);
-                    //string resultXML = dataSet.GetXml();
-                    //resultXML = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataset.GetXml())
+                    IOutputDescription ouputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+                    IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+                    ouputDescription.DataSourceShapes.Add(dataSourceShape);
+
+                    IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+
+                    if (!string.IsNullOrEmpty(xmlResult))
+                    {
+                        dataSourceShape.Paths.AddRange(dataBrowser.Map(xmlResult));
+                    }
                 }
                 finally
                 {
@@ -122,18 +138,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Executes a service method of this ESB endpoint.
-        /// </summary>
-        /// <param name="resource">The resource.</param>
-        /// <param name="serviceMethod">The service method.</param>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public Guid ExecuteServiceMethod(Resource resource, ServiceMethod serviceMethod)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
@@ -231,7 +235,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         #endregion Protected Methods
 
-        #region Abstract Methods
+        #region Protected Virtual Methods
+
+        /// <summary>
+        /// Override for implementation specific normalization of a XML payload. By Default unescapes triangle bracked characters from &lt; and &gt;.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        protected virtual string NormalizeXmlPayload(string payload)
+        {
+            //
+            // Unescape '<>' characters delimiting
+            //
+            return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
+        }
+
+        #endregion
+
+        #region Protected Abstract Methods
 
         /// <summary>
         /// Override to return stored procedures.
@@ -251,7 +272,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         protected abstract DataSet ExecuteSelect(IDbCommand command);
 
         /// <summary>
-        /// Override to create a connection.
+        /// Override to create an implementation specific connection.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <returns></returns>

@@ -1,4 +1,6 @@
-﻿using Dev2.Runtime.ServiceModel.Data;
+﻿using Dev2.Runtime;
+using Dev2.Runtime.ServiceModel.Data;
+using System;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -12,6 +14,26 @@ namespace Dev2.Tests.Runtime.ServiceModel
             FetchRecordsetHitCount++;
             FetchRecordsetAddFields = addFields;
             return service.Recordset;
+        }
+
+        public override ServiceMethodList FetchMethods(DbService service)
+        {
+            var result = new ServiceMethodList();
+            var random = new Random();
+            for (var i = 0; i < 50; i++)
+            {
+                var method = new ServiceMethod { Name = string.Format("dbo.Pr_GetCake_{0:00}", i) };
+                for (var j = 0; j < 10; j++)
+                {
+                    var varLength = j % 4 == 0 ? 30 : 15;
+                    method.Parameters.Add(new MethodParameter { Name = random.GenerateString(varLength, "@") });
+                }
+                method.SourceCode = "ALTER procedure " + method.Name + "\n(\n\t@CakeName varchar(50)\n)\nas\n\nselect * from Country \nwhere [Description] like @Prefix + '%'\norder by Description asc";
+
+                result.Add(method);
+            }
+
+            return result;
         }
     }
 }
