@@ -65,7 +65,7 @@ namespace Dev2.Studio.Factory
                 builder.AppendLine(exception.StackTrace);
 
                 // 14th Feb 2013
-                // Added by Michael to assist with debugging (Bug 8839)
+                // Added by Michael to assist with debugging
                 string fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
                 StackTrace theStackTrace = new StackTrace();
                 for (int j = theStackTrace.FrameCount - 1; j >= 0; j--)
