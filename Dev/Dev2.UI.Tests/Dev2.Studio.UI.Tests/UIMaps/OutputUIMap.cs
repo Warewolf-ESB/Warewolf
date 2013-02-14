@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Collections.Generic;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 {
     public partial class OutputUIMap
     {
+        
         public bool DoesBug8747Pass()
         {
             WpfTree theTree = OutputTree();
@@ -18,7 +20,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             UITestControl firstWorkflow = subWorkflows[0];
             
             // This lists the step of the specific bugs error
-            WpfTreeItem theStep = (WpfTreeItem)GetWorkflowSteps(firstWorkflow)[0];
+            WpfTreeItem theStep = (WpfTreeItem)GetWorkflowSteps(firstWorkflow, "Assign")[0];
             if (!IsStepInError(theStep))
             {
                 return false;
@@ -33,6 +35,29 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             
             // Everything passes :D
             return true;
+        }
+
+        public UITestControlCollection GetOutputWindow()
+        {
+            WpfTree debugOutputControlTree = OutputTree();
+            return debugOutputControlTree.Nodes;
+             
+        }
+
+        public UITestControlCollection GetStepInOutputWindow(UITestControl outputWindow, string stepToFind)
+        {
+            UITestControl workflowSearcher = new UITestControl(outputWindow);
+            UITestControlCollection coll = outputWindow.GetChildren();
+            UITestControlCollection results = new UITestControlCollection();
+            foreach (var child in coll)
+            {
+                if (child.Name.Equals(stepToFind))
+                {
+                    results.Add(child);
+                }
+            }
+
+            return results;
         }
 
         public void ClickClose()
@@ -50,10 +75,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             Mouse.Click(closeBtn);
         }
 
-        private UITestControlCollection GetWorkflowSteps(UITestControl theWorkflow)
+        public UITestControlCollection GetWorkflowSteps(UITestControl theWorkflow, string controlId)
         {
             UITestControl stepSearcher = new UITestControl(theWorkflow);
-            stepSearcher.SearchProperties.Add("AutomationId", "Assign", PropertyExpressionOperator.Contains);
+            stepSearcher.SearchProperties.Add("AutomationId", controlId, PropertyExpressionOperator.Contains);
             UITestControlCollection steps = stepSearcher.FindMatchingControls();
             return steps;
         }

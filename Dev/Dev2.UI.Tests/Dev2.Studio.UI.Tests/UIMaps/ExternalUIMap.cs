@@ -14,6 +14,7 @@
     using MouseButtons = System.Windows.Forms.MouseButtons;
     using System.Diagnostics;
     using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+    using System.Windows.Forms;
 
 
     public partial class ExternalUIMap
@@ -33,6 +34,15 @@
             
             string body = bodyText.GetProperty("InnerText").ToString();
             return body;
+        }
+
+        public void SendIERefresh()
+        {
+            UITestControl ie = GetIE();
+
+            ie.SetFocus();
+
+            SendKeys.SendWait("{F5}");
         }
 
         public void CloseAllInstancesOfIE()

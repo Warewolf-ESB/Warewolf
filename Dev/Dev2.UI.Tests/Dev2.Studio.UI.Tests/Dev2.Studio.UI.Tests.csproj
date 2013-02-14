@@ -63,6 +63,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugOutputUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
     <Compile Include="FeedbackUITests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="UIMaps\WorkflowDesignerUIMap.Designer.cs" />
     <Compile Include="UIMaps\WorkflowWizardUIMap.cs" />
     <Compile Include="UIMaps\WorkflowWizardUIMap.Designer.cs" />
+    <Compile Include="UITestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UIMaps\FeedbackUIMap.uitest" />
