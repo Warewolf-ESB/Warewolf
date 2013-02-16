@@ -3,7 +3,6 @@ using System.IO;
 using System.Xml;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -80,18 +79,34 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void Paths_Expected_JSONSources()
         {
-            var threadSave = Guid.NewGuid();
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory() + @"/Workspaces/" + threadSave, "Plugins"));
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory() + @"/Workspaces/" + threadSave, "Services"));
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory() + @"/Workspaces/" + threadSave, "Sources"));
-            var xml = XmlResource.Fetch("Calculate_RecordSet_Subtract");
-            xml.Save(Path.Combine(Path.Combine(Directory.GetCurrentDirectory() + @"/Workspaces/" + threadSave, "Services"), "Calculate_RecordSet_Subtract.xml"));
-            xml = XmlResource.Fetch("HostSecurityProviderServerSigned");
-            xml.Save(Path.Combine(Path.Combine(Directory.GetCurrentDirectory() + @"/Workspaces/" + threadSave, "Sources"), "HostSecurityProviderServerSigned.xml"));
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var servicesPath = Path.Combine(workspacePath, "Services");
+            var sourcesPath = Path.Combine(workspacePath, "Sources");
+            var pluginsPath = Path.Combine(workspacePath, "Plugins");
+            try
+            {
+                Directory.CreateDirectory(servicesPath);
+                Directory.CreateDirectory(sourcesPath);
+                Directory.CreateDirectory(pluginsPath);
 
-            var testResources = new Dev2.Runtime.ServiceModel.Resources();
-            string actual = testResources.Paths("", threadSave, generateADLGuid());
-            Assert.AreEqual("[\"Integration Test Services\"]", actual);
+                var xml = XmlResource.Fetch("Calculate_RecordSet_Subtract");
+                xml.Save(Path.Combine(servicesPath, "Calculate_RecordSet_Subtract.xml"));
+
+                xml = XmlResource.Fetch("HostSecurityProviderServerSigned");
+                xml.Save(Path.Combine(sourcesPath, "HostSecurityProviderServerSigned.xml"));
+
+                var testResources = new Dev2.Runtime.ServiceModel.Resources();
+                var actual = testResources.Paths("", workspaceID, Guid.Empty);
+                Assert.AreEqual("[\"Integration Test Services\"]", actual);
+            }
+            finally
+            {
+                if(Directory.Exists(workspacePath))
+                {
+                    Directory.Delete(workspacePath, true);
+                }
+            }
         }
 
         #region private test methods
@@ -197,17 +212,17 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 const int ExpectedCount = 6;
                 for(var i = 0; i < ExpectedCount; i++)
                 {
-                    var svc = new Service
+                    var resource = new Resource
                     {
                         ResourceID = Guid.NewGuid(),
                         ResourceName = string.Format("My Name {0}", i),
                         ResourcePath = string.Format("My Path {0}", i),
-                        ResourceType = (i % Modulo == 0) ? enSourceType.SqlDatabase : enSourceType.Unknown
+                        ResourceType = (i % Modulo == 0) ? ResourceType.DbSource : ResourceType.Unknown
                     };
-                    svc.Save(workspaceID, Guid.Empty);
+                    resource.Save(workspaceID, Guid.Empty);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                var result = resources.Sources("{\"resourceType\":\"SqlDatabase\"}", workspaceID, Guid.Empty);
+                var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
             }

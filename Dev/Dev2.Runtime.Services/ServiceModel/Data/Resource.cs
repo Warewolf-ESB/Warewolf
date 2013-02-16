@@ -1,8 +1,7 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -11,7 +10,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public Guid ResourceID { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enSourceType ResourceType { get; set; }
+        public ResourceType ResourceType { get; set; }
 
         public string ResourceName { get; set; }
         public string ResourcePath { get; set; }
@@ -30,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             ResourceID = Guid.Parse(xml.AttributeSafe("ID"));
-            ResourceType = (enSourceType)Enum.Parse(typeof(enSourceType), xml.AttributeSafe("Type"));
+            ResourceType = ParseResourceType(xml.AttributeSafe("ResourceType"));
             ResourceName = xml.AttributeSafe("Name");
             ResourcePath = xml.ElementSafe("Category");
         }
@@ -54,8 +53,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return new XElement(Resources.RootElements[ResourceType],
                 new XAttribute("ID", ResourceID),
                 new XAttribute("Name", ResourceName ?? string.Empty),
-                new XAttribute("Type", ResourceType),
-                new XElement("TypeOf", ResourceType),
+                new XAttribute("ResourceType", ResourceType),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
                 new XElement("Category", ResourcePath ?? string.Empty)
                 );
@@ -68,6 +66,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+        #endregion
+
+        #region ParseResourceType
+
+        protected ResourceType ParseResourceType(string resourceTypeStr)
+        {
+            ResourceType resourceType;
+            Enum.TryParse(resourceTypeStr, out resourceType);
+            return resourceType;
         }
 
         #endregion

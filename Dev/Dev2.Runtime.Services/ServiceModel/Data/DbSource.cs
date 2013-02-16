@@ -11,11 +11,13 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public DbSource()
         {
+            ResourceType = ResourceType.DbSource;
         }
 
         public DbSource(XElement xml)
             : base(xml)
         {
+            ResourceType = ResourceType.DbSource;
             Server = xml.AttributeSafe("Server");
             Database = xml.AttributeSafe("Database");
             ConnectionString = xml.AttributeSafe("ConnectionString");

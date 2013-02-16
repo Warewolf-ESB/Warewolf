@@ -22,10 +22,10 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Connections/Get
         public Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
         {
-            var result = new Connection { ResourceID = Guid.Empty, ResourceType = enSourceType.Dev2Server, WebServerPort = Connection.DefaultWebServerPort };
+            var result = new Connection { ResourceID = Guid.Empty, ResourceType = ResourceType.Server, WebServerPort = Connection.DefaultWebServerPort };
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceID, enSourceType.Dev2Server, resourceID);
+                var xmlStr = Resources.ReadXml(workspaceID, ResourceType.Server, resourceID);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -101,19 +101,7 @@ namespace Dev2.Runtime.ServiceModel
                 var connection = JsonConvert.DeserializeObject<Connection>(args);
                 switch(connection.ResourceType)
                 {
-                    case enSourceType.SqlDatabase:
-                        break;
-                    case enSourceType.MySqlDatabase:
-                        break;
-                    case enSourceType.WebService:
-                        break;
-                    case enSourceType.DynamicService:
-                        break;
-                    case enSourceType.ManagementDynamicService:
-                        break;
-                    case enSourceType.Plugin:
-                        break;
-                    case enSourceType.Dev2Server:
+                    case ResourceType.Server:
                         result = CanConnectServer(connection);
                         break;
                 }

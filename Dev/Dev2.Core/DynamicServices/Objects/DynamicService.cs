@@ -9,19 +9,14 @@
 //                  
 #endregion
 
-using Dev2.DynamicServices;
 
-namespace Dev2.DynamicServices {
+namespace Dev2.DynamicServices
+{
     #region Using Directives
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Xml.Linq;
-    using Dev2;
-    using System.Text.RegularExpressions;
-    using System.Collections;
-    using System.Diagnostics;
+
     #endregion
 
     #region Dynamic Service Class - Represents a service with all its actions
@@ -30,7 +25,8 @@ namespace Dev2.DynamicServices {
     /// A service can contain actions that define what the service can do
     /// This class is hydrated from the service definition file.
     /// </summary>
-    public class DynamicService : DynamicServiceObjectBase {
+    public class DynamicService : DynamicServiceObjectBase
+    {
         readonly List<string> _currentDebuggers = new List<string>();
 
         #region Public Properties
@@ -51,19 +47,26 @@ namespace Dev2.DynamicServices {
 
         public string UnitTestTargetWorkflowService { get; set; }
 
-        public List<string> Debuggers {
-            get {
+        public List<string> Debuggers
+        {
+            get
+            {
                 return _currentDebuggers;
             }
         }
 
         #endregion
 
-        public Guid ServiceId {
-            get {
+        public Guid ID { get; set; }
+
+        public Guid ServiceId
+        {
+            get
+            {
                 throw new System.NotImplementedException();
             }
-            set {
+            set
+            {
             }
         }
 
@@ -71,7 +74,9 @@ namespace Dev2.DynamicServices {
         /// <summary>
         /// Initializes the Dynamic Service
         /// </summary>
-        public DynamicService() : base(enDynamicServiceObjectType.DynamicService){
+        public DynamicService()
+            : base(enDynamicServiceObjectType.DynamicService)
+        {
             //Initialize the Actions Property
             Actions = new List<ServiceAction>();
             Mode = enDynamicServiceMode.Normal;
@@ -83,14 +88,17 @@ namespace Dev2.DynamicServices {
         /// Compiles this object
         /// </summary>
         /// <returns></returns>
-        public override bool Compile() {
+        public override bool Compile()
+        {
             base.Compile();
 
-            if (this.Actions.Count == 0) {
+            if(this.Actions.Count == 0)
+            {
                 WriteCompileError(Resources.CompilerError_ServiceHasNoActions);
             }
 
-            this.Actions.ForEach(c => {
+            this.Actions.ForEach(c =>
+            {
                 c.Compile();
                 c.CompilerErrors.ToList().ForEach(d => this.CompilerErrors.Add(d));
             });

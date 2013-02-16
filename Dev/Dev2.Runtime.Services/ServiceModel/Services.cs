@@ -1,13 +1,12 @@
-﻿using Dev2.Common;
-using Dev2.DynamicServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -22,18 +21,17 @@ namespace Dev2.Runtime.ServiceModel
             {
                 dynamic argsObj = JObject.Parse(args);
 
-                var resourceType = (enSourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
-                var xmlStr = Resources.ReadXml(workspaceID, GlobalConstants.ServicesDirectory, argsObj.resourceID.Value);
+                var resourceType = (ResourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
+                var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
                     switch(resourceType)
                     {
-                        case enSourceType.SqlDatabase:
-                        case enSourceType.MySqlDatabase:
+                        case ResourceType.DbService:
                             return new DbService(xml);
 
-                        case enSourceType.Plugin:
+                        case ResourceType.Plugin:
                             break;
                     }
                 }
@@ -69,14 +67,14 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Test
+        #region DbTest
 
-        // POST: Service/Services/Test
-        public Recordset Test(string args, Guid workspaceID, Guid dataListID)
+        // POST: Service/Services/DbTest
+        public Recordset DbTest(string args, Guid workspaceID, Guid dataListID)
         {
             try
             {
-                var service = DeserializeService(args);
+                var service = JsonConvert.DeserializeObject<DbService>(args);
 
                 if(string.IsNullOrEmpty(service.Recordset.Name))
                 {
@@ -84,7 +82,7 @@ namespace Dev2.Runtime.ServiceModel
                 }
 
                 var addFields = service.Recordset.Fields.Count == 0;
-                if (addFields)
+                if(addFields)
                 {
                     service.Recordset.Fields.Clear();
                 }
@@ -128,80 +126,72 @@ namespace Dev2.Runtime.ServiceModel
 
         #region FetchRecordset
 
-        public virtual Recordset FetchRecordset(Service service, bool addFields)
+        public virtual Recordset FetchRecordset(DbService dbService, bool addFields)
         {
-            DbService dbService = service as DbService;
-            if (dbService == null)
+            if(dbService == null)
             {
-                throw new ArgumentException(string.Format("Service of type '{0}' expected, '{1}' reveived.'", typeof(DbService), service.GetType()), "service");
+                throw new ArgumentNullException("dbService");
             }
 
-            //
-            // Using the MsSqlBroker run the service test mode
-            //
             var broker = new MsSqlBroker();
             var outputDescription = broker.TestService(dbService);
 
-            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
             {
                 throw new Exception("Error retrieving shape from service output.");
             }
 
+            // Clear out the Recordset.Fields list because the sequence and
+            // number of fields may have changed since the last invocation.
             //
-            // Add path data to recordset
+            // Create a copy of the Recordset.Fields list before clearing it
+            // so that we don't lose the user-defined aliases.
             //
-            if (addFields)
+            var rsFields = new List<RecordsetField>(dbService.Recordset.Fields);
+            dbService.Recordset.Fields.Clear();
+
+            for(var i = 0; i < outputDescription.DataSourceShapes[0].Paths.Count; i++)
             {
-                //
-                // Add paths as fields
-                //
-                foreach (var path in outputDescription.DataSourceShapes[0].Paths)
+                var path = outputDescription.DataSourceShapes[0].Paths[i];
+                var name = path.DisplayPath.Replace("NewDataSet().Table.", "");
+
+                #region Remove recordset name if present
+
+                var idx = name.IndexOf("()", StringComparison.InvariantCultureIgnoreCase);
+                if(idx > 0)
                 {
-                    service.Recordset.Fields.Add(new RecordsetField { Name = path.DisplayPath, Alias = path.OutputExpression, Path = path });
+                    name = name.Remove(0, idx);
+                }
+
+                #endregion
+
+                var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? name : path.OutputExpression, Path = path };
+
+                RecordsetField rsField;
+                if(!addFields && (rsField = rsFields.FirstOrDefault(f => f.Path.ActualPath == path.ActualPath)) != null)
+                {
+                    field.Alias = rsField.Alias;
+                }
+                dbService.Recordset.Fields.Add(field);
+
+                var data = path.SampleData.Split(',');
+                for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
+                {
+                    dbService.Recordset.SetValue(recordIndex, i, data[recordIndex]);
                 }
             }
-            else
-            {
-                //
-                // Remove fields for paths that no longer exist
-                //
-                var fieldsToRemove = service.Recordset.Fields.Where(r => !outputDescription.DataSourceShapes[0].Paths.Any(p => p.DisplayPath == r.Path.DisplayPath)).ToList();
-                foreach(var recordsetField in fieldsToRemove)
-                {
-                    service.Recordset.Fields.Remove(recordsetField);
-                }
 
-                //
-                // Add fields for new paths
-                //
-                var pathsToAdd = outputDescription.DataSourceShapes[0].Paths.Where(r => !service.Recordset.Fields.Any(f => f.Path.DisplayPath == r.DisplayPath)).ToList();
-                foreach (var path in pathsToAdd)
-                {
-                    service.Recordset.Fields.Add(new RecordsetField { Name = path.DisplayPath, Alias = path.OutputExpression, Path = path });
-                }
-            }
-
-            service.Recordset.AddRecord(fieldIndex => 
-                {
-                    if (fieldIndex < outputDescription.DataSourceShapes[0].Paths.Count)
-                    {
-                        return outputDescription.DataSourceShapes[0].Paths[fieldIndex].SampleData;
-                    }
-
-                    return "Index out of bounds";
-                });
-
-            return service.Recordset;
+            return dbService.Recordset;
         }
 
         #endregion
 
         #region FetchMethods
 
-        public virtual ServiceMethodList FetchMethods(DbSource source)
+        public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
             var broker = new MsSqlBroker();
-            return broker.GetServiceMethods(source);
+            return broker.GetServiceMethods(dbSource);
         }
 
         #endregion
@@ -213,11 +203,10 @@ namespace Dev2.Runtime.ServiceModel
             var service = JsonConvert.DeserializeObject<Service>(args);
             switch(service.ResourceType)
             {
-                case enSourceType.SqlDatabase:
-                case enSourceType.MySqlDatabase:
+                case ResourceType.DbService:
                     return JsonConvert.DeserializeObject<DbService>(args);
 
-                case enSourceType.Plugin:
+                case ResourceType.Plugin:
                     break;
             }
             return service;

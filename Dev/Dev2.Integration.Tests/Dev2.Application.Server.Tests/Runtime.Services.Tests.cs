@@ -1,8 +1,8 @@
 ﻿using System;
+using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Runtime.Diagnostics;
 
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
@@ -16,7 +16,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             //Create Connection
             Connection conn = SetupDefaultConnection();
             Connections connections = new Connections();
-            
+
             //Attemp to test the connection
             ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
 
@@ -42,16 +42,18 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         private Connection SetupDefaultConnection()
         {
-            Connection testConnection = new Connection();
-            testConnection.Address = "http://localhost:77/dsf";
-            testConnection.AuthenticationType = AuthenticationType.Windows;
-            testConnection.Password = "secret";
-            testConnection.ResourceID = Guid.NewGuid();
-            testConnection.ResourceName = "TestResourceIMadeUp";
-            testConnection.ResourcePath = @"host\Server";
-            testConnection.ResourceType = DynamicServices.enSourceType.Dev2Server;
-            testConnection.UserName = @"Domain\User";
-            testConnection.WebServerPort = 1234;
+            var testConnection = new Connection
+            {
+                Address = "http://localhost:77/dsf",
+                AuthenticationType = AuthenticationType.Windows,
+                Password = "secret",
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "TestResourceIMadeUp",
+                ResourcePath = @"host\Server",
+                ResourceType = ResourceType.Server,
+                UserName = @"Domain\User",
+                WebServerPort = 1234
+            };
 
             return testConnection;
         }

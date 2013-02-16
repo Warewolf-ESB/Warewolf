@@ -33,6 +33,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return _cells[index];
             }
+            set
+            {
+                _cells[index] = value;
+            }
         }
 
         public int Count

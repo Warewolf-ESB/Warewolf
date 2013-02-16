@@ -1565,17 +1565,7 @@ namespace Dev2.DynamicServices
                         }
 
                         // PBI 6597: TWR - added source ID check
-                        if(source.ID is string && !string.IsNullOrEmpty(source.ID))
-                        {
-                            src.ID = Guid.Parse(source.ID);
-                        }
-                        else
-                        {
-                            src.ID = Guid.NewGuid();
-                            var xml = XElement.Parse(src.ResourceDefinition);
-                            xml.Add(new XAttribute("ID", src.ID.ToString()));
-                            src.ResourceDefinition = xml.ToString(SaveOptions.DisableFormatting);
-                        }
+                        SetID(src, source);
 
                         objectsLoaded.Add(src);
                     }
@@ -2036,6 +2026,10 @@ namespace Dev2.DynamicServices
                         ds.Actions.Remove(sa);
                     }
 
+                    // PBI: 801: TWR - added ID check
+                    SetID(ds, service);
+
+
                     objectsLoaded.Add(ds);
                 }
             }
@@ -2045,6 +2039,42 @@ namespace Dev2.DynamicServices
 
             return objectsLoaded;
         }
+
+        #endregion
+
+        #region SetID
+
+        static void SetID(IDynamicServiceObject dso, dynamic resource)
+        {
+            Guid id;
+            if(resource.ID is string && !string.IsNullOrEmpty(resource.ID))
+            {
+                id = Guid.Parse(resource.ID);
+            }
+            else
+            {
+                id = Guid.NewGuid();
+                var xml = XElement.Parse(dso.ResourceDefinition);
+                xml.Add(new XAttribute("ID", id.ToString()));
+                dso.ResourceDefinition = xml.ToString(SaveOptions.DisableFormatting);
+            }
+
+            // TODO: Add ID property to IDynamicServiceObject
+            var source = dso as Source;
+            if(source != null)
+            {
+                source.ID = id;
+            }
+            else
+            {
+                var ds = dso as DynamicService;
+                if(ds != null)
+                {
+                    ds.ID = id;
+                }
+            }
+        }
+
         #endregion
 
         public void MapServiceActionDependencies(ServiceAction serviceAction)

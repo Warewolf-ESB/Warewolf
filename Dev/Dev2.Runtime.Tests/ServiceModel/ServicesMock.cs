@@ -9,7 +9,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public int FetchRecordsetHitCount { get; set; }
         public bool FetchRecordsetAddFields { get; set; }
 
-        public override Recordset FetchRecordset(Service service, bool addFields)
+        public override Recordset FetchRecordset(DbService service, bool addFields)
         {
             FetchRecordsetHitCount++;
             FetchRecordsetAddFields = addFields;

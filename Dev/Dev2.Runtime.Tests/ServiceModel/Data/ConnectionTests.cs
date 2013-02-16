@@ -1,11 +1,10 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -19,7 +18,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var conn = new Connection
             {
-                ResourceType = enSourceType.Dev2Server,
+                ResourceType = ResourceType.Server,
                 Address = "http://www.google.co.za"
             };
             var connections = new Connections();
@@ -33,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         //{
         //    var conn = new Connection
         //    {
-        //        ResourceType = enSourceType.Dev2Server,
+        //        ResourceType = ResourceType.Server,
         //        //Address = "http://localhost:77/dsf"
         //        Address = "http://localhost:77/dsf"
         //    };
@@ -47,7 +46,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var conn = new Connection
             {
-                ResourceType = enSourceType.Dev2Server,
+                ResourceType = ResourceType.Server,
                 Address = "http://192.168.13.42:788/dsf"
             };
             var connections = new ConnectionsMock { CanConnectToTcpClientHitCount = 0 };
@@ -132,7 +131,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             testConnection.ResourceID = Guid.NewGuid();
             testConnection.ResourceName = "TestResourceIMadeUp";
             testConnection.ResourcePath = @"host\Server";
-            testConnection.ResourceType = DynamicServices.enSourceType.Dev2Server;
+            testConnection.ResourceType = ResourceType.Server;
             testConnection.UserName = @"Domain\User";
             testConnection.WebServerPort = 8080;
 

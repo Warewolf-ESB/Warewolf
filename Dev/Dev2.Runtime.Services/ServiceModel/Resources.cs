@@ -19,28 +19,22 @@ namespace Dev2.Runtime.ServiceModel
     {
         #region Static RootFolders/Elements
 
-        public static volatile Dictionary<enSourceType, string> RootFolders = new Dictionary<enSourceType, string>
+        public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
         {
-            { enSourceType.SqlDatabase, "Sources" },
-            { enSourceType.MySqlDatabase, "Sources" },
-            { enSourceType.WebService, "Sources" },
-            { enSourceType.DynamicService, "Services" },
-            { enSourceType.ManagementDynamicService, "Services" },
-            { enSourceType.Plugin, "Plugins" },
-            { enSourceType.Unknown, "Sources" },
-            { enSourceType.Dev2Server, "Sources" }
+            { ResourceType.Unknown, "Services" },
+            { ResourceType.DbSource, "Sources" },
+            { ResourceType.DbService, "Services" },
+            { ResourceType.Plugin, "Plugins" },
+            { ResourceType.Server, "Sources" }
         };
 
-        internal static volatile Dictionary<enSourceType, string> RootElements = new Dictionary<enSourceType, string>
+        internal static volatile Dictionary<ResourceType, string> RootElements = new Dictionary<ResourceType, string>
         {
-            { enSourceType.SqlDatabase, "Source" },
-            { enSourceType.MySqlDatabase, "Source" },
-            { enSourceType.WebService, "Source" },
-            { enSourceType.DynamicService, "Service" },
-            { enSourceType.ManagementDynamicService, "Service" },
-            { enSourceType.Plugin, "Plugin" },
-            { enSourceType.Unknown, "Source" },
-            { enSourceType.Dev2Server, "Source" }
+            { ResourceType.Unknown, "Service" },
+            { ResourceType.DbSource, "Source" },
+            { ResourceType.DbService, "Service" },
+            { ResourceType.Plugin, "Plugin" },
+            { ResourceType.Server, "Source" }
         };
 
         #endregion
@@ -72,15 +66,15 @@ namespace Dev2.Runtime.ServiceModel
         {
             if(!String.IsNullOrEmpty(args))
             {
-                var sourceType = (enSourceType)Enum.Parse(typeof(enSourceType), args);
+                var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), args);
 
                 var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
                 var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
-                if(sourceType == enSourceType.Dev2Server)
+                if(resourceType == ResourceType.Server)
                 {
                     names.Add("localhost"); // auto-added to studio on startup
                 }
-                ResourceIterator.Iterate(new[] { RootFolders[sourceType] }, workspaceID, iteratorResult =>
+                ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
                 {
                     string value;
                     if(iteratorResult.Values.TryGetValue(1, out value))
@@ -145,15 +139,52 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Read
 
-        public static ResourceList Read(Guid workspaceID, enSourceType resourceType)
+        public static ResourceList Read(Guid workspaceID, ResourceType resourceType)
         {
             var resources = new ResourceList();
             var resourceTypeStr = resourceType.ToString();
 
             ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
             {
+                var isResourceType = false;
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value) && value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase))
+
+                if(iteratorResult.Values.TryGetValue(1, out value))
+                {
+                    // Check ResourceType attribute
+                    isResourceType = value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase);
+                }
+                else if(iteratorResult.Values.TryGetValue(5, out value))
+                {
+                    // This is here for legacy XML!
+                    #region Check Type attribute
+
+                    enSourceType sourceType;
+                    if(iteratorResult.Values.TryGetValue(5, out value) && Enum.TryParse(value, out sourceType))
+                    {
+                        switch(sourceType)
+                        {
+                            case enSourceType.SqlDatabase:
+                            case enSourceType.MySqlDatabase:
+                                isResourceType = resourceType == ResourceType.DbSource;
+                                break;
+                            case enSourceType.WebService:
+                                break;
+                            case enSourceType.DynamicService:
+                                isResourceType = resourceType == ResourceType.DbService;
+                                break;
+                            case enSourceType.Plugin:
+                                isResourceType = resourceType == ResourceType.Plugin;
+                                break;
+                            case enSourceType.Dev2Server:
+                                isResourceType = resourceType == ResourceType.Server;
+                                break;
+                        }
+                    }
+
+                    #endregion
+                }
+                if(isResourceType)
                 {
                     // older resources may not have an ID yet!!
                     iteratorResult.Values.TryGetValue(2, out value);
@@ -170,7 +201,7 @@ namespace Dev2.Runtime.ServiceModel
             }, new Delimiter
             {
                 ID = 1,
-                Start = " Type=\"",
+                Start = " ResourceType=\"",
                 End = "\" "
             }, new Delimiter
             {
@@ -187,6 +218,11 @@ namespace Dev2.Runtime.ServiceModel
                 ID = 4,
                 Start = "<Category>",
                 End = "</Category>"
+            }, new Delimiter
+            {
+                ID = 5,
+                Start = " Type=\"",
+                End = "\" "
             });
             return resources;
         }
@@ -195,7 +231,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ReadXml
 
-        public static string ReadXml(Guid workspaceID, enSourceType resourceType, string resourceID)
+        public static string ReadXml(Guid workspaceID, ResourceType resourceType, string resourceID)
         {
             return ReadXml(workspaceID, RootFolders[resourceType], resourceID);
         }
@@ -221,15 +257,14 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ReadResource
 
-        static Resource ReadResource(Guid resourceID, enSourceType resourceType, string resourceName, string resourcePath, string content)
+        static Resource ReadResource(Guid resourceID, ResourceType resourceType, string resourceName, string resourcePath, string content)
         {
             Delimiter delimiter;
             string delimiterValue;
 
             switch(resourceType)
             {
-                case enSourceType.SqlDatabase:
-                case enSourceType.MySqlDatabase:
+                case ResourceType.DbSource:
                     delimiter = new Delimiter { ID = 1, Start = " ConnectionString=\"", End = "\" " };
                     delimiter.TryGetValue(content, out delimiterValue);
                     return new DbSource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath, ConnectionString = delimiterValue };
@@ -290,12 +325,12 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ParseResourceType
 
-        internal static enSourceType ParseResourceType(string resourceTypeStr)
+        internal static ResourceType ParseResourceType(string resourceTypeStr)
         {
-            enSourceType resourceType;
+            ResourceType resourceType;
             if(!Enum.TryParse(resourceTypeStr, out resourceType))
             {
-                resourceType = enSourceType.SqlDatabase;
+                resourceType = ResourceType.Unknown;
             }
             return resourceType;
         }

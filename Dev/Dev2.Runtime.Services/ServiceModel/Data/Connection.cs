@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -23,11 +24,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Connection()
         {
+            ResourceType = ResourceType.Server;
         }
 
         public Connection(XElement xml)
             : base(xml)
         {
+            ResourceType = ResourceType.Server;
+
             var connectionString = xml.AttributeSafe("ConnectionString");
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
@@ -76,7 +80,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                     );
             }
 
-            result.Add(new XAttribute("ConnectionString", connectionString));
+            result.Add(
+                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("Type", enSourceType.Dev2Server),
+                new XElement("TypeOf", enSourceType.Dev2Server)
+                );
 
             return result;
         }

@@ -1,12 +1,11 @@
-﻿using Dev2.Common;
-using Dev2.DynamicServices;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -18,42 +17,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class ServicesTests
     {
-        #region DbMethods
-
-        [TestMethod]
-        public void DbMethodsWithNullArgsExpectedReturnsEmptyList()
-        {
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.DbMethods(null, Guid.Empty, Guid.Empty);
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void DbMethodsWithInvalidArgsExpectedReturnsEmptyList()
-        {
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.DbMethods("xxxx", Guid.Empty, Guid.Empty);
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void DbMethodsWithValidArgsExpectedReturnsList()
-        {
-            var service = CreateCountriesDbService();
-            var args = service.ToString();
-            var workspaceID = Guid.NewGuid();
-
-            GlobalConstants.GetWorkspacePath(workspaceID);
-
-            var services = new ServicesMock();
-            var result = services.DbMethods(args, workspaceID, Guid.Empty);
-
-            // TODO: Fix
-            Assert.AreEqual(50, result.Count);
-        }
-
-        #endregion
-
         #region Save
 
         [TestMethod]
@@ -129,8 +92,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
             var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
-            //var path = Path.Combine(workspacePath, Dev2.Runtime.ServiceModel.Resources.RootFolders[enSourceType.SqlDatabase]); //This line was changed to the one below because it was pointing to the /Sources folder instead of the /Services.
-            var path = Path.Combine(workspacePath, GlobalConstants.ServicesDirectory);
+            var path = Path.Combine(workspacePath, Dev2.Runtime.ServiceModel.Resources.RootFolders[ResourceType.DbService]);
             var fileName = String.Format("{0}\\{1}.xml", path, svc.ResourceName);
             try
             {
@@ -174,10 +136,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void GetWithValidArgsExpectedReturnsService()
         {
-            Assert.Inconclusive("This test is written for a source not a service. Please update.");
             var svc = CreateCountriesDbService();
             var saveArgs = svc.ToString();
-            var getArgs = string.Format("{{\"resourceID\":\"{0}\",\"resourceType\":\"SqlDatabase\"}}", svc.ResourceID);
+            var getArgs = string.Format("{{\"resourceID\":\"{0}\",\"resourceType\":\"{1}\"}}", svc.ResourceID, ResourceType.DbService);
 
             var workspaceID = Guid.NewGuid();
             var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
@@ -202,26 +163,62 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion
 
-        #region Test
+        #region DbMethods
 
         [TestMethod]
-        public void TestWithNullArgsExpectedReturnsRecordsetWithError()
+        public void DbMethodsWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.Test(null, Guid.Empty, Guid.Empty);
+            var result = services.DbMethods(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void DbMethodsWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.DbMethods("xxxx", Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void DbMethodsWithValidArgsExpectedReturnsList()
+        {
+            var service = CreateCountriesDbService();
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var services = new ServicesMock();
+            var result = services.DbMethods(args, workspaceID, Guid.Empty);
+
+            // TODO: Fix
+            Assert.AreEqual(50, result.Count);
+        }
+
+        #endregion
+
+        #region DbTest
+
+        [TestMethod]
+        public void DbTestWithNullArgsExpectedReturnsRecordsetWithError()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.DbTest(null, Guid.Empty, Guid.Empty);
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod]
-        public void TestWithInvalidArgsExpectedReturnsRecordsetWithError()
+        public void DbTestWithInvalidArgsExpectedReturnsRecordsetWithError()
         {
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.Test("xxx", Guid.Empty, Guid.Empty);
+            var result = services.DbTest("xxx", Guid.Empty, Guid.Empty);
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod]
-        public void TestWithValidArgsAndNoRecordsetNameExpectedUpdatesRecordsetNameToServiceMethodName()
+        public void DbTestWithValidArgsAndNoRecordsetNameExpectedUpdatesRecordsetNameToServiceMethodName()
         {
             var service = CreateCountriesDbService();
             service.Recordset.Name = null;
@@ -229,13 +226,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var workspaceID = Guid.NewGuid();
 
             var services = new ServicesMock();
-            var result = services.Test(args, workspaceID, Guid.Empty);
+            var result = services.DbTest(args, workspaceID, Guid.Empty);
 
             Assert.AreEqual(result.Name, service.Method.Name);
         }
 
         [TestMethod]
-        public void TestWithValidArgsAndRecordsetNameExpectedDoesNotUpdateRecordsetNameToServiceMethodName()
+        public void DbTestWithValidArgsAndRecordsetNameExpectedDoesNotUpdateRecordsetNameToServiceMethodName()
         {
             var service = CreateCountriesDbService();
             service.Recordset.Name = "MyCities";
@@ -243,26 +240,26 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var workspaceID = Guid.NewGuid();
 
             var services = new ServicesMock();
-            var result = services.Test(args, workspaceID, Guid.Empty);
+            var result = services.DbTest(args, workspaceID, Guid.Empty);
 
             Assert.AreEqual(result.Name, service.Recordset.Name);
         }
 
         [TestMethod]
-        public void TestWithValidArgsAndRecordsetFieldsExpectedDoesNotAddRecordsetFields()
+        public void DbTestWithValidArgsAndRecordsetFieldsExpectedDoesNotAddRecordsetFields()
         {
             var svc = CreateCountriesDbService();
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
 
             var services = new ServicesMock();
-            var result = services.Test(args, workspaceID, Guid.Empty);
+            var result = services.DbTest(args, workspaceID, Guid.Empty);
             Assert.IsFalse(services.FetchRecordsetAddFields);
             Assert.AreEqual(svc.Recordset.Fields.Count, result.Fields.Count);
         }
 
         [TestMethod]
-        public void TestWithValidArgsAndNoRecordsetFieldsExpectedAddsRecordsetFields()
+        public void DbTestWithValidArgsAndNoRecordsetFieldsExpectedAddsRecordsetFields()
         {
             var svc = CreateCountriesDbService();
             svc.Recordset.Fields.Clear();
@@ -271,19 +268,19 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var workspaceID = Guid.NewGuid();
 
             var services = new ServicesMock();
-            services.Test(args, workspaceID, Guid.Empty);
+            services.DbTest(args, workspaceID, Guid.Empty);
             Assert.IsTrue(services.FetchRecordsetAddFields);
         }
 
         [TestMethod]
-        public void TestWithValidArgsExpectedFetchesRecordset()
+        public void DbTestWithValidArgsExpectedFetchesRecordset()
         {
             var svc = CreateCountriesDbService();
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
 
             var services = new ServicesMock();
-            var result = services.Test(args, workspaceID, Guid.Empty);
+            var result = services.DbTest(args, workspaceID, Guid.Empty);
 
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
             Assert.AreEqual(result.Name, svc.Recordset.Name);
@@ -291,14 +288,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void TestWithValidArgsExpectedClearsRecordsFirst()
+        public void DbTestWithValidArgsExpectedClearsRecordsFirst()
         {
             var service = CreateCountriesDbService();
             var args = service.ToString();
             var workspaceID = Guid.NewGuid();
 
             var services = new ServicesMock();
-            var result = services.Test(args, workspaceID, Guid.Empty);
+            var result = services.DbTest(args, workspaceID, Guid.Empty);
 
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
             Assert.AreEqual(0, result.Records.Count);
@@ -313,7 +310,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "CountriesService",
-                ResourceType = enSourceType.SqlDatabase,
+                ResourceType = ResourceType.DbService,
                 ResourcePath = "Test",
                 Method = new ServiceMethod
                 {
@@ -332,7 +329,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "CitiesDB",
-                    ResourceType = enSourceType.SqlDatabase,
+                    ResourceType = ResourceType.DbSource,
                     ResourcePath = "Test",
                     Server = "RSAKLFSVRGENDEV",
                     Database = "Cities",
