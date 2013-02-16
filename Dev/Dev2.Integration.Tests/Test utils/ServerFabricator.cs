@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
-using Unlimited.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Studio.Core.Network;
 using System.Management;
 
 namespace Dev2.Integration.Tests

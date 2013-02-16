@@ -10,6 +10,7 @@
 //                  
 #endregion
 
+using System.Xaml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -25,6 +26,7 @@ namespace Dev2.DynamicServices {
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Xml;
     #endregion
 
     #region Service Action Class - Represents a single action within a service
@@ -108,7 +110,7 @@ namespace Dev2.DynamicServices {
                         throw new ArgumentNullException("XamlDefinition");
                     }
 
-                    _workflowActivity = ActivityXamlServices.Load(_xamlStream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(XamlDefinition)));
+                    _workflowActivity = ActivityXamlServices.Load(_xamlStream = new MemoryStream(Encoding.UTF8.GetBytes(XamlDefinition)));
                     _xamlStream.Seek(0, SeekOrigin.Begin);
                     _workflowPool.Clear();
 

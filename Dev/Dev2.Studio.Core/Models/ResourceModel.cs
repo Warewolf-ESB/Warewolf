@@ -446,7 +446,14 @@ namespace Dev2.Studio.Core.Models {
         public bool IsWorkflowSaved(string viewModelServiceDef)
         {
             bool _isWorkflowSaved = false;
-            string current = viewModelServiceDef;            
+            string current = viewModelServiceDef;         
+   
+            // Sanity check ;)
+            if(current == null || WorkflowXaml == null)
+            {
+                throw new InvalidOperationException("Null Workflow Data");
+            }
+
             XElement comp1 = XElement.Parse(current);
             XElement comp2 = XElement.Parse(WorkflowXaml);
 

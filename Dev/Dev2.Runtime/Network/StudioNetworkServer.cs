@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Network;
-using System.Security.Cryptography;
-using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Network;
 using Dev2.DynamicServices.Network.Auxiliary;
 using Dev2.Network;
 using Dev2.Network.Messages;
-using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.DynamicServices {

@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core;
-using System.Network;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Composition;
 
@@ -16,7 +15,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     {
         #region Test Members
 
-        private ImportServiceContext importServiceContext;
+        private ImportServiceContext _importServiceContext;
 
         #endregion Test Members
 
@@ -30,9 +29,9 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         [TestInitialize]
         public void StudioServerCommsInitialize()
         {
-            if (importServiceContext == null)
+            if (_importServiceContext == null)
             {
-                importServiceContext = CompositionInitializer.DefaultInitialize();
+                _importServiceContext = CompositionInitializer.DefaultInitialize();
             }
         }
 
@@ -47,7 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         // And the server would send the studio a ClientDetails message on Connection (required by the Studio)
         // that was just ignored by the Studio.
         [TestMethod]
-        public void EnvironmentConnection_WithServerAuthentication_Expected_ClientDetailsRecieved()
+        public void EnvironmentConnectionWithServerAuthenticationExpectedClientDetailsRecieved()
         {
 
             EnvironmentConnection conn = SetupEnvironmentConnection();
@@ -65,7 +64,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
 
         [TestMethod]
-        public void EnvironmentConnection_ReconnectToServer_Expeceted_ClientConnectionSuccessful()
+        public void EnvironmentConnectionReconnectToServerExpecetedClientConnectionSuccessful()
         {
             EnvironmentConnection conn = SetupEnvironmentConnection();
 
@@ -87,7 +86,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         // This was how the bug replicated itself, because the studio did not wait for the
         // server to return information
         [TestMethod]
-        public void EnvironmentConnection_ReconnectionSpam_Expected_AlwaysReconnects()
+        public void EnvironmentConnectionReconnectionSpamExpectedAlwaysReconnects()
         {
             // We will perform 10 connections and check if the studio can always connect to the server
             EnvironmentConnection environmentConn = SetupEnvironmentConnection();
@@ -113,7 +112,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         //                            or the Studio did not perform a TCP login synchronously (as can be seen no waits are 
         //                            performed in the test)
         [TestMethod]
-        public void TCPDispatchedClient_Login_Expected_LoginResponseFromServer()
+        public void TcpDispatchedClientLoginExpectedLoginResponseFromServer()
         {
             TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
             Uri hostname = new Uri(ServerSettings.DsfAddress);
@@ -126,7 +125,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         //                                         a valid connection to the Server as it previously did, it just checks 
         //                                         that the TCPDispatchedClient only creates a connection
         [TestMethod]
-        public void TCPDispatchedClient_Connect_Expected_ConnectionEstablishedToServer() {
+        public void TcpDispatchedClientConnectExpectedConnectionEstablishedToServer() {
             TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
             Uri hostname = new Uri(ServerSettings.DsfAddress);
             dispatchClient.Connect(hostname.Host, hostname.Port); 
@@ -137,7 +136,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         //                                         this is to check that the correct exception is thrown.
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void TCPDispatchedClient_Login_UnavailableServer_Expected_()
+        public void TcpDispatchedClientLoginUnavailableServerExpected()
         {
             TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
             Uri hostname = new Uri("http://somewhereOutThere:99/ddd");

@@ -1274,7 +1274,7 @@ namespace Dev2.Runtime.InterfaceImplementors
         /// <returns>
         /// UnlimitedObject
         /// </returns>
-        public Guid ManagementDynamicService(ServiceAction serviceAction, IDSFDataObject xmlRequest)
+        public Guid  ManagementDynamicService(ServiceAction serviceAction, IDSFDataObject xmlRequest)
         {
             var errors = new ErrorResultTO();
             var allErrors = new ErrorResultTO();

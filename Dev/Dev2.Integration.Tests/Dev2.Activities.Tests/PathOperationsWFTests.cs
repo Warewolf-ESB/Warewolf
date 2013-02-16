@@ -63,7 +63,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFileUsingRecordsetWithStar()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithStar");
+            //string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithStar");
+
+            string PostData = String.Format("{0}{1}", "http://192.168.104.33:1234/services", "CreateFileUsingRecordsetWithStar");
             string expected = @"<Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recorset><Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt</record></Recorset><Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt</record></Recorset><Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt</record></Recorset><DeleteFileRes>Successful</DeleteFileRes><RESULT><RES>Successful</RES></RESULT><RESULT><RES>Successful</RES></RESULT><RESULT><RES>Successful</RES></RESULT><RESULT><RES>Successful</RES></RESULT>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
