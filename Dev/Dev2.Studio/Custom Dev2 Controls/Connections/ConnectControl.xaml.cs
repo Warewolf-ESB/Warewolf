@@ -1,14 +1,14 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+using Dev2.DynamicServices;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace Dev2.UI
 {
@@ -130,7 +130,7 @@ namespace Dev2.UI
 
         void OnConnectClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.Sources.ShowDialog(EnvironmentRepository.DefaultEnvironment, enSourceType.Dev2Server);
+            RootWebSite.ShowDialog(EnvironmentRepository.DefaultEnvironment, enSourceType.Dev2Server);
         }
 
         #endregion

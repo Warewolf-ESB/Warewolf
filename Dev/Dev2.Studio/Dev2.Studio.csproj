@@ -318,8 +318,11 @@
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
     <Compile Include="Webs\RootWebSite.cs" />
+    <Compile Include="Webs\WebBrowserWindow.xaml.cs">
+      <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Webs\WebSites.cs" />
-    <Compile Include="Webs\Dev2DecisionCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="AppResources\Comparers\DeployStatsTOComparer.cs" />
     <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelToImageConverter.cs">
@@ -848,6 +851,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Workflow\WorkflowInputDataWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Webs\WebBrowserWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

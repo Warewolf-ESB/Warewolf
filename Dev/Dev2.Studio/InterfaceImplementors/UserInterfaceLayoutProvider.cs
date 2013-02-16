@@ -1303,7 +1303,7 @@ namespace Dev2.Studio
             // PBI: 801
             // BUG: 8477
             //
-            if(resourceModel.ShowWebPageDialog())
+            if(RootWebSite.ShowDialog(resourceModel))
             {
                 return;
             }
@@ -1349,7 +1349,7 @@ namespace Dev2.Studio
 
             var resourceModelToEdit = resourceModel as IContextualResourceModel;
 
-            if(resourceModelToEdit.ShowWebPageDialog())
+            if(RootWebSite.ShowDialog(resourceModelToEdit))
             {
                 return;
             }

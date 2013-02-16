@@ -10,67 +10,14 @@ namespace Dev2.Studio.Webs
     {
         public const string SiteName = "wwwroot";
 
-        #region Sources
-
-        public static class Sources
-        {
-            #region ShowDialog
-
-            //
-            // TWR: 2013.02.14 - refactored to accommodate new requests
-            // PBI: 801
-            // BUG: 8477
-            //
-            public static bool ShowDialog(IEnvironmentModel environment, enSourceType sourceType, string idStr = null)
-            {
-                if(environment == null)
-                {
-                    throw new ArgumentNullException("environment");
-                }
-
-                Guid id;
-                Guid.TryParse(idStr, out id);
-
-                string pageName;
-                WebsiteCallbackHandler pageHandler;
-                double width;
-                double height;
-
-                switch(sourceType)
-                {
-                    case enSourceType.Dev2Server:
-                        pageName = "server";
-                        pageHandler = new ConnectCallbackHandler();
-                        width = 850;
-                        height = 600;
-                        break;
-                    case enSourceType.SqlDatabase:
-                    case enSourceType.MySqlDatabase:
-                        pageName = "dbservice";
-                        pageHandler = new DbServiceCallbackHandler();
-                        width = 1040;
-                        height = 630;
-                        break;
-                    default:
-                        return false;
-                }
-                environment.ShowWebPageDialog(SiteName, string.Format("sources/{0}?rid={1}", pageName, id), pageHandler, width, height);
-                return true;
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region ShowDialog(this IContextualResourceModel resourceModel)
+        #region ShowDialog(IContextualResourceModel resourceModel)
 
         //
         // TWR: 2013.02.14 - refactored to accommodate new requests
         // PBI: 801
         // BUG: 8477
         //
-        public static bool ShowWebPageDialog(this IContextualResourceModel resourceModel)
+        public static bool ShowDialog(IContextualResourceModel resourceModel)
         {
             if(resourceModel == null)
             {
@@ -96,10 +43,51 @@ namespace Dev2.Studio.Webs
                 Enum.TryParse(serviceXml.AttributeSafe("Type"), out sourceType);
             }
 
-            return Sources.ShowDialog(resourceModel.Environment, sourceType, serviceID);
+            return ShowDialog(resourceModel.Environment, sourceType, serviceID);
         }
 
         #endregion
 
+        #region ShowDialog(IEnvironmentModel environment, enSourceType sourceType, string idStr = null)
+
+        public static bool ShowDialog(IEnvironmentModel environment, enSourceType sourceType, string idStr = null)
+        {
+            if(environment == null)
+            {
+                throw new ArgumentNullException("environment");
+            }
+
+            Guid id;
+            Guid.TryParse(idStr, out id);
+
+            string pageName;
+            WebsiteCallbackHandler pageHandler;
+            double width;
+            double height;
+
+            switch(sourceType)
+            {
+                case enSourceType.Dev2Server:
+                    pageName = "sources/server";
+                    pageHandler = new ConnectCallbackHandler();
+                    width = 690;
+                    height = 500;
+                    break;
+
+                case enSourceType.SqlDatabase:
+                case enSourceType.MySqlDatabase:
+                    pageName = "services/dbservice";
+                    pageHandler = new DbServiceCallbackHandler();
+                    width = 941;
+                    height = 570;
+                    break;
+                default:
+                    return false;
+            }
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?rid={1}", pageName, id), pageHandler, width, height);
+            return true;
+        }
+
+        #endregion
     }
 }

@@ -1,7 +1,6 @@
-﻿using Dev2.Studio.Core.AppResources.Browsers;
+﻿using System.Windows;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
-using System.Windows;
-using Unlimited.Applications.BusinessDesignStudio.Views;
 
 namespace Dev2.Studio.Webs
 {
@@ -11,15 +10,20 @@ namespace Dev2.Studio.Webs
 
         public static Window CreateWebPageDialog(this IEnvironmentModel environment, string website, string relativeUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600)
         {
+            var uriString = string.Format("{0}{1}/{2}", environment.WebServerAddress, website.Trim('/'), relativeUriString.Trim('/'));
+            return CreateWebPageDialog(uriString, callbackHandler, width, height);
+        }
+
+        public static Window CreateWebPageDialog(string absoluteUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600)
+        {
             Browser.CallbackHandler.PropertyEditorViewModel = callbackHandler;
 
-            var uriString = string.Format("{0}{1}/{2}", environment.WebServerAddress, website.Trim('/'), relativeUriString.Trim('/'));
-            var window = new WebPropertyEditorWindow { Width = width, Height = height };
+            var window = new WebBrowserWindow { Width = width, Height = height };
 
             callbackHandler.NavigateRequested += uri => window.Browser.LoadSafe(uri);
             callbackHandler.Owner = window;
 
-            window.Browser.LoadSafe(uriString);
+            window.Browser.LoadSafe(absoluteUriString);
 
             return window;
         }
@@ -36,14 +40,7 @@ namespace Dev2.Studio.Webs
 
         public static void ShowWebPageDialog(string absoluteUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600)
         {
-            Browser.CallbackHandler.PropertyEditorViewModel = callbackHandler;
-
-            var window = new WebPropertyEditorWindow { Width = width, Height = height };
-
-            callbackHandler.NavigateRequested += uri => window.Browser.LoadSafe(uri);
-            callbackHandler.Owner = window;
-
-            window.Browser.LoadSafe(absoluteUriString);
+            var window = CreateWebPageDialog(absoluteUriString, callbackHandler, width, height);
             window.ShowDialog();
         }
 
