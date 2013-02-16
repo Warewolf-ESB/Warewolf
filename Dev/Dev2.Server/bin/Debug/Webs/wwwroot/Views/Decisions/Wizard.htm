@@ -27,7 +27,7 @@
                         <!-- KO Template -->
                         <div class="decision-wrapper" id="decisionView">
                             <div data-bind="template: { foreach: data.TheStack  }" id="decisionList" style="width: 100%;">
-                                <div id="decisionRow">
+                                <div id="decisionRow" style="height: 37px;">
                                     &nbsp; If :
 									<input type="text" name="Col1" id="Col1" data-bind="value: Col1, visible: PopulatedColumnCnt > 0" class="veryShortField required" />
 
@@ -72,8 +72,8 @@
                                 <label class="decision-mode-text">Require All decisions to be True</label>
                             </span>
                             <span>
-                                <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
                                 <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
+                                <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
                             </span>
                         </div>
 

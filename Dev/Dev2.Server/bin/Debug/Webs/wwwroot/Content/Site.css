@@ -151,6 +151,7 @@ h5, h6 {
 .floatRight{
 	float:right;
 	margin-right:10px;
+    clear: both;
 }
 
 .help {
