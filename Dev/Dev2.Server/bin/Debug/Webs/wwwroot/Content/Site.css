@@ -5,16 +5,15 @@
 }
 
 body {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     background-color: #fff;
     color: #333;
-    font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
 }
 
 a {
-    color: #e17009;
+    color: #eb8f00;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -23,7 +22,7 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #e17009;
+        color: #eb8f00;
     }
 
     a:hover {
@@ -74,19 +73,19 @@ h4, h5, h6 {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 h2 {
-    font-size: 1.75em;
-}
-
-h3 {
     font-size: 1.2em;
 }
 
-h4 {
+h3 {
     font-size: 1.1em;
+}
+
+h4 {
+    font-size: 1.0em;
 }
 
 h5, h6 {
@@ -107,13 +106,22 @@ h5, h6 {
     width: 100%;
 }
 
-#header {
+/*#header {
     margin-bottom: 20px;
-}
+}*/
 
 .sources-server-form {
-    width: 525px;
+    width: 415px;
 }
+
+.sources-server-form-label {
+    width: 140px;
+    display: inline-block;
+    float: none;
+    border: 0;
+    vertical-align: baseline
+}
+
 /* Travis : Adjusted for Decision Wizard */
 
 .decision-form{
@@ -148,12 +156,14 @@ h5, h6 {
 .help {
     float: left;
     margin-left: 20px;
-    margin-top: 30px;
+}
+.help-show-check {
+    margin-top: -53px;
+    color: white;
 }
 
 .help-text {
-    /*background-color: #E9F4F7;*/
-    background-color: #dfeffc;
+    background-color: #eeeeee;
 }
 
 .help-text p {
@@ -162,23 +172,13 @@ h5, h6 {
 
 .help-text-max {
     width: 200px;
-    margin-top: 15px;
+    margin-top: 25px;
     padding: 10px 20px;
 }
 
 .help-text-min {
     margin: 0;
     padding: 3px;
-}
-
-.button-bar {
-    margin: 20px 0 10px 0;
-    text-align: right;
-}
-
-
-.button-bar button {
-    min-width: 100px;
 }
 
 .field {
@@ -202,9 +202,7 @@ h5, h6 {
 
 label {
     display: block;
-    font-size: 1.2em;
     font-weight: normal;
-    /*text-shadow: 2px 2px 2px #ccc;*/
     float: left;
     margin-right:10px;
     text-align: right;
@@ -224,19 +222,14 @@ label.checkbox, label.radio, label.inline  {
 }
 
 label.inline {
-    vertical-align: middle;
-    line-height: 1em;
+    vertical-align: baseline
 }
 
 
+
 input, textarea, select {
-    border: 1px solid #e2e2e2;
-    background: #fff;
-    color: #333;
-    font-size: 1.2em;
-    margin: 5px 0 6px 0;
-    padding: 5px;
-    width: 300px;
+    padding: 3px;
+    width: 250px;
 }
 
 textarea {
@@ -244,36 +237,12 @@ textarea {
     width: 500px;
 }
 
-    input:focus, textarea:focus {
-        border: 1px solid #7ac0da;
-    }
-
     input[type="checkbox"] {
         background: transparent;
         border: inherit;
         width: auto;
     }
 
-    input[type="submit"],
-    input[type="button"],
-    button {
-        background-color: #d3dce0;
-        border: 1px solid #787878;
-        cursor: pointer;
-        font-size: 1.2em;
-        font-weight: 600;
-        padding: 7px;
-        margin-right: 8px;
-        width: auto;
-    }
-
-    td input[type="submit"],
-    td input[type="button"],
-    td button {
-        font-size: 1em;
-        padding: 4px;
-        margin-right: 4px;
-    }
 
 /* info and errors */
 .message-info {
@@ -291,7 +260,6 @@ textarea {
 
 .message-success {
     color: green;
-    font-size: 1.1em;
     margin: 20px 0 10px 0;
 }
 
@@ -325,7 +293,7 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-errors {
     color: red;
     font-weight: bold;
-    font-size: 1.1em;
+    /*font-size: 1.1em;*/
 }
 
 .validation-summary-valid {
@@ -343,7 +311,6 @@ table {
 }
 
 th {
-    font-size: 1.2em;
     text-align: left;
     border: none 0px;
     padding-left: 0;
@@ -374,7 +341,6 @@ th {
         position: absolute;
         right: 0em;
         top: 0;
-        font-size: 0.75em;
     }
 
     th.asc a:after {
@@ -397,19 +363,19 @@ table.data-table {
 }
 
 table.data-table th {
-    font-size: 0.95em;
+    font-size: 0.85em !important;
     text-align: left;
     padding: 2px;
-    border-right: 1px solid #E2E2E2;
-    border-bottom: 1px solid #E2E2E2;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
 }
 
 table.data-table td {
-    font-size: 0.85em;
+    font-size: 0.85em !important;
     text-align: left;
     padding: 2px;
-    border-right: 1px solid #E2E2E2;
-    border-bottom: 1px solid #E2E2E2;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
 }
 
 table.input-param {
@@ -417,7 +383,7 @@ table.input-param {
     margin: 0;
 }
 table.input-param th, table.input-param td {
-    font-size: 0.85em;    
+    /*font-size: 0.85em;*/    
 }
 
 td.input-param-name, th.input-param-name {
@@ -456,29 +422,28 @@ ol.selectable {
     padding: 0;
 }
     ol.selectable .ui-selecting {
-        background: #e17009;
+        background: #eb8f00;
     }
 
     ol.selectable .ui-selected,
     select option:hover {
-        background: #e17009;
+        background: #eb8f00;
         color: white;
     }
 
 ol.selectable li {
     margin: 0; 
     padding: 0.25em; 
-    font-size: 1em;
     cursor:default;
 }
 
 .text-selectable {
-    color: #e17009;
+    color: #eb8f00;
 }
 
 
 a.selectable {
-    color: #e17009;
+    color: #eb8f00;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -487,7 +452,7 @@ a.selectable {
 
     a.selectable:link, a.selectable:visited,
     a.selectable:active, a.selectable:hover {
-        color: #e17009;
+        color: #eb8f00;
     }
 
     a.selectable:hover {
@@ -510,16 +475,16 @@ a.selectable {
 
 
 .box-border {
-    border: 1px solid #E2E2E2;
+    border: 1px solid #cccccc;
 }
 
 .box-background {
-    background: #E2E2E2;
+    background: #cccccc;
 }
 
 .box-separator {
     padding-right: 10px;
-    border-right: #a6c9e2 solid 1px;
+    border-right: #cccccc solid 1px;
 }
 
 ::-webkit-input-placeholder {
@@ -527,6 +492,23 @@ a.selectable {
 }
 
 /*::selection {
-     background: #e17009; 
+     background: #eb8f00; 
      color: white;
 }*/
+
+
+.button-bar {
+    margin: 10px 0 10px 0;
+    text-align: right;
+}
+
+.ui-dialog-buttonpane button,
+.button-bar button {
+    min-width: 90px;
+}
+
+
+body,
+.ui-widget {
+    font-size: 0.95em !important;
+}

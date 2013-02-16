@@ -19,8 +19,7 @@
     <script src="Scripts/dev2-jquery.js"></script>
     <script src="Scripts/dev2-ko.js"></script>
     <script src="Scripts/dev2-utils.js"></script>
-    <link href="Content/themes/redmond/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />  
-    <!--<link href="Content/themes/base/jquery-ui.css" rel="stylesheet" />-->
+    <link href="Content/themes/dev2/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />  
     <link href="Content/Site.css" rel="stylesheet" />
 	<style>
 		.ui-autocomplete-loading {
@@ -40,7 +39,7 @@
             $(document).keydown(function (e) {
                 // ESCAPE key pressed
                 if (e.keyCode == 27) {
-                    window.close();
+                    Dev2Awesomium.Cancel();
                 }
             });            
         });

@@ -1,8 +1,8 @@
-﻿<div id="container" style="margin-left: 10px">
+﻿<div id="container" class="ui-widget-content" style="height: 490px">
+    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
+    </div>
     <div class="float-left">
-        <div id="header">
-            <h1 data-bind="text: title"></h1>
-        </div>
+
         <div id="body">
             <form id="mainForm" data-bind="submit: save">
                 <div id="mainFormError" class="error" style="display: none; text-align: right;">
@@ -12,11 +12,11 @@
                 <div class="sources-server-form">
                     <div>
                         <div class="field">
-                            <label for="address">Address:</label>
+                            <label class="sources-server-form-label" for="address">Address:</label>
                             <input class="required" tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address" />
-                        </div>				
+                        </div>
                         <div class="field">
-                            <label>Authentication Type:</label>
+                            <label class="sources-server-form-label">Authentication Type:</label>
                             <span>
                                 <span>
                                     <input tabindex="2" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
@@ -29,11 +29,11 @@
                             </span>
                         </div>
                         <div class="field">
-                            <label for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
+                            <label class="sources-server-form-label" for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
                             <input tabindex="4" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName" />
                         </div>
                         <div class="field">
-                            <label for="password" data-bind="visible: isUserInputVisible">Password:</label>
+                            <label class="sources-server-form-label" for="password" data-bind="visible: isUserInputVisible">Password:</label>
                             <input tabindex="5" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password" />
                         </div>
                         <div style="text-align: right">
@@ -61,12 +61,12 @@
             </form>
         </div>
     </div>
-    <div class="help">
-        <div class="field">
+    <div class="help float-left">
+        <div class="help-show-check">
             <input type="checkbox" name="showHelp" id="showHelp" data-bind="checked: isHelpTextVisible" />
             <label class="checkbox" for="showHelp">Show Descriptions</label>
         </div>
-        <div class="help-text help-text-max" data-bind="html: helpText, visible: isHelpTextVisible">
+        <div class="help-text help-text-max ui-widget-content" data-bind="html: helpText, visible: isHelpTextVisible">
         </div>
     </div>
 </div>
@@ -76,58 +76,58 @@
 <script type="text/javascript">
     function ViewModel(loadedCallback) {
         var self = this;
-		var $mainForm = $("#mainForm");
-		var $testButton = $("#testButton");	
-		var $errDiv = $("#mainFormError");
-		var $errDivSpan = $("#mainFormError span");
-		var $address = $("#address");	
-		
-		self.saveUri  = "Service/Connections/Save";
-		
+        var $mainForm = $("#mainForm");
+        var $testButton = $("#testButton");
+        var $errDiv = $("#mainFormError");
+        var $errDivSpan = $("#mainFormError span");
+        var $address = $("#address");
+
+        self.saveUri = "Service/Connections/Save";
+
         self.data = {
-			resourceID: ko.observable(""),
-            resourceType: ko.observable("Dev2Server"),
+            resourceID: ko.observable(""),
+            resourceType: ko.observable("Server"),
             resourceName: ko.observable(""),
             resourcePath: ko.observable(""),
-			
+
             address: ko.observable(""),
             authenticationType: ko.observable("User"),
             userName: ko.observable(""),
             password: ko.observable(""),
-			webServerPort: ko.observable(1234)
+            webServerPort: ko.observable(1234)
         };
 
-		var resourceID = getParameterByName("rid");
-		self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
-		self.data.resourceID( self.isEditing ? resourceID : $.Guid.Empty() );
+        var resourceID = getParameterByName("rid");
+        self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
+        self.data.resourceID(self.isEditing ? resourceID : $.Guid.Empty());
 
-		self.title = ko.observable("New Server");
-		self.title.subscribe(function (newValue) {
-		    document.title = newValue;
-		});
-        
-		self.saveTitle = ko.computed(function () {
-		    return self.data ? "<b>Server:</b> " + self.data.address() : "";
-		});
-        
-		$.post("Service/Connections/Get" + window.location.search, self.data.resourceID(), function (result) {
-			self.data.resourceID(result.ResourceID);
-			self.data.resourceType(result.ResourceType);
-			self.data.resourceName(result.ResourceName);
-			self.data.resourcePath(result.ResourcePath);
-			
-			self.data.address(result.Address);
-			self.data.authenticationType(result.AuthenticationType);
-			self.data.userName(result.UserName);
-			self.data.password(result.Password);
-			self.data.webServerPort(result.WebServerPort);
-			
-			self.title(self.isEditing ? "Edit Server - " + result.ResourceName : "New Server");
-		});
-		
-		self.data.authenticationType.subscribe(function(newValue) {
-			var isUser = newValue == "User";
-			if (isUser) {
+        self.title = ko.observable("New Server");
+        self.title.subscribe(function (newValue) {
+            document.title = newValue;
+        });
+
+        self.saveTitle = ko.computed(function () {
+            return self.data ? "<b>Server:</b> " + self.data.address() : "";
+        });
+
+        $.post("Service/Connections/Get" + window.location.search, self.data.resourceID(), function (result) {
+            self.data.resourceID(result.ResourceID);
+            self.data.resourceType(result.ResourceType);
+            self.data.resourceName(result.ResourceName);
+            self.data.resourcePath(result.ResourcePath);
+
+            self.data.address(result.Address);
+            self.data.authenticationType(result.AuthenticationType);
+            self.data.userName(result.UserName);
+            self.data.password(result.Password);
+            self.data.webServerPort(result.WebServerPort);
+
+            self.title(self.isEditing ? "Edit Server - " + result.ResourceName : "New Server");
+        });
+
+        self.data.authenticationType.subscribe(function (newValue) {
+            var isUser = newValue == "User";
+            if (isUser) {
                 $("#userName").addClass("required");
                 $("#password").addClass("required");
             }
@@ -135,13 +135,13 @@
                 $("#userName").removeClass("required");
                 $("#password").removeClass("required");
             }
-			$("#userName").removeClass("error");
-			$("#password").removeClass("error");
-			$mainForm.validate().form();
-			self.isUserInputVisible(isUser);
-		});
-		
-		self.isUserInputVisible = ko.observable(true);
+            $("#userName").removeClass("error");
+            $("#password").removeClass("error");
+            $mainForm.validate().form();
+            self.isUserInputVisible(isUser);
+        });
+
+        self.isUserInputVisible = ko.observable(true);
         self.helpDictionaryID = "Server";
         self.helpDictionary = {};
         self.helpText = ko.observable("");
@@ -158,23 +158,23 @@
             text = text ? text : "";
             self.helpText(text);
         };
-        self.cancel = function () {			
-			Dev2Awesomium.Cancel();
+        self.cancel = function () {
+            Dev2Awesomium.Cancel();
             return true;
         };
-        self.test = function () {			
-			if(!$mainForm.validate().form()){
-				return;
-			}
-			
-			$testButton.button("option", "disabled", true);
+        self.test = function () {
+            if (!$mainForm.validate().form()) {
+                return;
+            }
+
+            $testButton.button("option", "disabled", true);
             self.showTestResults(false);
             self.isTestResultsLoading(true);
-			
-			var data = $.extend(self.data, self.saveData);
+
+            var data = $.extend(self.data, self.saveData);
             var jsonData = ko.toJSON(data);
             $.post("Service/Connections/Test" + window.location.search, jsonData, function (result) {
-				$testButton.button("option", "disabled", false);
+                $testButton.button("option", "disabled", false);
                 self.isTestResultsLoading(false);
                 self.showTestResults(true);
                 self.testError(result.ErrorMessage);
@@ -192,14 +192,14 @@
         self.save = function () {
             if ($mainForm.validate().form()) {
                 $("#saveForm").dialog("open");
-			}
+            }
         };
 
         $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
             self.helpDictionary = result;
             self.updateHelpText("default");
         });
-		
+
         $(":input").focus(function () {
             self.updateHelpText(this.id);
         });
@@ -212,39 +212,39 @@
             select: function (event, ui) {
                 var addr = "http://" + ui.item.value + ":77/dsf";
                 viewModel.data.address(addr);
-				return false;
+                return false;
             }
-        });       
-		
-		$mainForm.validate({
-			invalidHandler: function(form, validator) {
-				submitted = true;
-			},
-			showErrors: function(errorMap, errorList) {
-				var errors = this.numberOfInvalids();
-				if(errors == 0) {
-					$errDiv.hide();
-				}
-				else {
-					var message = errors == 1
+        });
+
+        $mainForm.validate({
+            invalidHandler: function (form, validator) {
+                submitted = true;
+            },
+            showErrors: function (errorMap, errorList) {
+                var errors = this.numberOfInvalids();
+                if (errors == 0) {
+                    $errDiv.hide();
+                }
+                else {
+                    var message = errors == 1
 							? 'You missed 1 field. It has been highlighted below.'
 							: 'You missed ' + errors + ' fields. They have been highlighted below.';
-					$errDivSpan.html(message);
-					$errDiv.show();
-				}
-				this.defaultShowErrors();
-			}
-		});
+                    $errDivSpan.html(message);
+                    $errDiv.show();
+                }
+                this.defaultShowErrors();
+            }
+        });
 
         // inject SaveDialog
-        $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {           
+        $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
             if (loadedCallback) {
                 loadedCallback();
             }
-        });		
+        });
     };
 
-    var viewModel = new ViewModel(function() {        
+    var viewModel = new ViewModel(function () {
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
     });

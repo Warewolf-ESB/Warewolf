@@ -1,4 +1,4 @@
-﻿function DbSerivceViewModel(resourceID, resourceType, resourceName) {
+﻿function DbSerivceViewModel(resourceID) {
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -14,8 +14,8 @@
 
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
-        resourceType: ko.observable(resourceType),
-        resourceName: ko.observable(resourceName),
+        resourceType: ko.observable("DbService"),
+        resourceName: ko.observable(""),
         resourcePath: ko.observable(""),
 
         source: ko.observable(),
@@ -54,7 +54,13 @@
         //console.log("isRecordsetNameOptional: " + isRecordsetNameOptional);
         return isRecordsetNameOptional ? true : self.data.recordset.Name !== "";
     });
-    
+
+    self.isSourceMethodsLoading = ko.observable(false);
+    self.isTestResultsLoading = ko.observable(false);
+    self.isTestEnabled = ko.computed(function () {
+        return self.hasMethod() && !self.isTestResultsLoading();
+    });
+
     self.data.source.subscribe(function (newValue) {
         self.sourceMethodSearchTerm("");
         self.hasTestResults(false);
@@ -97,27 +103,27 @@
     
     self.load = function () {
         var args = ko.toJSON({
-            resourceID: resourceID,
-            resourceType: resourceType,
-            resourceName: resourceName
+            resourceID: self.data.resourceID(),
+            resourceType: "DbService"
         });
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-            console.log(result);
             
             self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
         });
-        $.post("Service/Resources/Sources" + window.location.search, args, function (result) {
+        $.post("Service/Resources/Sources" + window.location.search, ko.toJSON({ resourceType: "DbSource"}), function (result) {
             self.sources(result);
             self.sources.sort(utils.resourceNameCaseInsensitiveSort);
         }); 
     };
 
     self.loadMethods = function (source) {
+        self.isSourceMethodsLoading(true);
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
+            self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
         });
     };
@@ -142,9 +148,11 @@
         $actionInspectorDialog.dialog("open");
     };
     
-    self.testAction = function() {
-        $.post("Service/Services/Test" + window.location.search, self.getJsonData(), function (result) {
-            self.hasTestResults(true);          
+    self.testAction = function () {
+        self.isTestResultsLoading(true);
+        $.post("Service/Services/DbTest" + window.location.search, self.getJsonData(), function (result) {
+            self.isTestResultsLoading(false);
+            self.hasTestResults(true);
             self.data.recordset.Name(result.Name);
             self.data.recordset.Fields(result.Fields);
             self.data.recordset.Records(result.Records);
