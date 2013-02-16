@@ -7,6 +7,7 @@ namespace Dev2.Common
     {
         //Network
         public const int NetworkTimeOut = 10000; //Bug 8796
+        public const string NetworkCommunicationErrorTextFormat = "An error occured while executing the '{0}' command";
 
         //Resource Constants
         public const string ResourceFileExtension = ".xml";
@@ -107,7 +108,9 @@ namespace Dev2.Common
         public const string _FIXED_WIZARD = "FixedWizard";
         public const string _DECISION_STACK = "Dev2DecisionStack";
 
-
+        //Resource directories
+        public const string ServicesDirectory = "Services";
+        public const string SourcesDirectory = "Sources";
 
         // Output TO for Activity Upsert
         public const string OutputTONonRSField = "Field";

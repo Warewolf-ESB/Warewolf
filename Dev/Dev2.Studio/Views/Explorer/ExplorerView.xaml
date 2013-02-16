@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
              xmlns:Dev2="clr-namespace:Dev2.UI"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-             Name="Explorer"
+    xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
+    Name="Explorer"
              ap:UIElementTitleProperty.Title="Explorer">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +27,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="25"/>
             </Grid.ColumnDefinitions>
 
             <Dev2:ConnectControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Margin="0,0,0,5"
@@ -47,7 +48,13 @@
                 </TextBox.Style>
             </TextBox>
 
-            <Button Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" AutomationProperties.AutomationId="UI_btnRefresh_AutoID" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Command="{Binding Path=NavigationViewModel.RefreshMenuCommand}">
+            <customDev2Controls:CircularProgressBar Grid.Row="1" Grid.Column="1" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    Visibility="{Binding NavigationViewModel.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
+            <Button Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" AutomationProperties.AutomationId="UI_btnRefresh_AutoID" 
+                    Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Command="{Binding Path=NavigationViewModel.RefreshMenuCommand}"
+                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Visibility="{Binding NavigationViewModel.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>

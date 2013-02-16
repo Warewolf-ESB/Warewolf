@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.Composition;
-using System.Windows.Input;
-using Dev2.Studio.Core;
+﻿using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Navigation;
+using System.ComponentModel.Composition;
+using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {

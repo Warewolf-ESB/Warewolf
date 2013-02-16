@@ -590,6 +590,11 @@ namespace Dev2.Studio.ViewModels
                                                                                workspaceItem.WorkspaceID,
                                                                                GlobalConstants.NullDataListID);
 
+                if (result == null)
+                {
+                    result = string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, publishRequest.Service);
+                }
+
                 var sb = new StringBuilder();
                 sb.AppendLine(String.Format("<Save StartDate=\"{0}\">",
                                             DateTime.Now.ToString(CultureInfo.InvariantCulture)));
@@ -764,9 +769,16 @@ namespace Dev2.Studio.ViewModels
             buildRequest.ResourceXml = model.ToServiceDefinition();
 
             Guid workspaceID = ((IStudioClientContext) model.Environment.DsfChannel).AccountID;
-            sb.AppendLine(model.Environment.DsfChannel.ExecuteCommand(buildRequest.XmlString, workspaceID,
-                                                                      GlobalConstants.NullDataListID));
 
+            string result = model.Environment.DsfChannel.ExecuteCommand(buildRequest.XmlString, workspaceID,
+                                                                      GlobalConstants.NullDataListID);
+            if (result == null)
+            {
+
+                result = string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
+            }
+
+            sb.AppendLine(result);      
             sb.AppendLine(String.Format("</Build>"));
             OutputMessage += sb.ToString();
             DisplayOutput(OutputMessage, showWindow);
@@ -824,6 +836,11 @@ namespace Dev2.Studio.ViewModels
                 var ctx = (IStudioClientContext) environment.DsfChannel;
                 string msg = environment.DsfChannel.ExecuteCommand(dataObject.XmlString, ctx.AccountID,
                                                                    GlobalConstants.NullDataListID);
+                if (msg == null)
+                {
+                    throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, dataObject.Service));
+                }
+
                 DisplayOutput(msg);
             }
             else

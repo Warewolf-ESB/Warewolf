@@ -2,6 +2,7 @@
 using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Messages;
+using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.Network;
 using System;
@@ -39,10 +40,8 @@ namespace Dev2.Studio.Core
 
         private ManualResetEventSlim _socketConnectionRecieved;
 
-        private DispatcherFrame _clientDetailsReceivedFrame;
-        private object _clientDetailsReceivedLock;
         private bool _clientDetailsReveived;
-        private ManualResetEventSlim _clientDetailsReceivedResetEvent;
+        DispatcherFrameToken<object> _clientDetailsReveivedToken = new DispatcherFrameToken<object>(false);
 
         private DispatcherFrame _frame;
         private NetworkStateEventArgs _connectFrameArgs;
@@ -55,7 +54,7 @@ namespace Dev2.Studio.Core
 
         private int _commandSerial;
         private object _commandLock;
-        private Dictionary<int, ExecuteCommandToken> _pendingCommands;
+        private Dictionary<int, DispatcherFrameToken<ByteBuffer>> _pendingCommands;
         #endregion
 
         #region Public Properties
@@ -83,9 +82,7 @@ namespace Dev2.Studio.Core
         private TCPDispatchedClient(string name, bool isAuxiliary)
             : base(name)
         {
-            _clientDetailsReceivedLock = new object();
             _clientDetailsReveived = false;
-            _clientDetailsReceivedResetEvent = new ManualResetEventSlim();
 
             _frameLock = new object();
             _commandLock = new object();
@@ -112,7 +109,7 @@ namespace Dev2.Studio.Core
             _channels[15].Register(2, InternalTemplates.Client_OnExecuteBinaryCommandReceived, new PacketEventHandler(OnExecuteCommandReceived));
 
             _channels[15].Register(3, InternalTemplates.Client_OnClientDetailsReceived, new PacketEventHandler(OnClientDetailsReceived));
-            _pendingCommands = new Dictionary<int, ExecuteCommandToken>();
+            _pendingCommands = new Dictionary<int, DispatcherFrameToken<ByteBuffer>>();
         }
         #endregion
 
@@ -273,13 +270,15 @@ namespace Dev2.Studio.Core
             Packet p = new Packet(PacketTemplates.Server_OnAuxiliaryConnectionRequested);
             p.Write(commandSerial);
 
-            ExecuteCommandToken token = new ExecuteCommandToken(commandSerial);
+            DispatcherFrameToken<ByteBuffer> token = new DispatcherFrameToken<ByteBuffer>(null);
 
             lock (_commandLock)
+            {
                 _pendingCommands.Add(commandSerial, token);
+            }
 
             _primaryConnection.Send(p);
-            ByteBuffer result = token.Execute();
+            ByteBuffer result = token.WaitForResponse(GlobalConstants.NetworkTimeOut);
 
             if (result != null)
             {
@@ -317,7 +316,7 @@ namespace Dev2.Studio.Core
             if (_isAuxiliary)
                 throw new InvalidOperationException("Auxiliary connections cannot receive this packet.");
             int commandSerial = reader.ReadInt32();
-            ExecuteCommandToken token = null;
+            DispatcherFrameToken<ByteBuffer> token;
 
             lock (_commandLock)
             {
@@ -327,7 +326,7 @@ namespace Dev2.Studio.Core
 
             if (token != null)
             {
-                token.Complete(reader);
+                token.SetResponse(reader);
             }
         }
         #endregion
@@ -346,45 +345,14 @@ namespace Dev2.Studio.Core
                 return _clientDetailsReveived;
             }
 
-            try
+            object result = _clientDetailsReveivedToken.WaitForResponse(GlobalConstants.NetworkTimeOut);
+            if (result == null)
             {
-                lock (_clientDetailsReceivedLock)
-                {
-                    _clientDetailsReceivedFrame = new DispatcherFrame();
-                }
-
-                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
-                {
-                    _clientDetailsReceivedResetEvent.Reset();
-                    _clientDetailsReceivedResetEvent.Wait(GlobalConstants.NetworkTimeOut);
-
-                    DispatcherFrame frame;
-                    lock (_clientDetailsReceivedLock)
-                    {
-                        frame = _clientDetailsReceivedFrame;
-                    }
-
-                    if (frame != null)
-                    {
-                        frame.Continue = false;
-                    }
-                }), null);
-                Dispatcher.PushFrame(_clientDetailsReceivedFrame);
+                _clientDetailsReveived = false;
             }
-            finally
+            else
             {
-                DispatcherFrame frame;
-
-                lock (_clientDetailsReceivedLock)
-                {
-                    frame = _clientDetailsReceivedFrame;
-                    _clientDetailsReceivedFrame = null;
-                }
-
-                if (frame != null)
-                {
-                    frame.Continue = false;
-                }
+                _clientDetailsReveived = Convert.ToBoolean(result);
             }
 
             return _clientDetailsReveived;
@@ -395,21 +363,7 @@ namespace Dev2.Studio.Core
             _serverID = reader.ReadGuid();
             _accountID = reader.ReadGuid();
 
-            DispatcherFrame frame;
-
-            lock (_clientDetailsReceivedLock)
-            {
-                frame = _clientDetailsReceivedFrame;
-                _clientDetailsReceivedFrame = null;
-            }
-
-            _clientDetailsReveived = true;
-            _clientDetailsReceivedResetEvent.Set();
-
-            if (frame != null)
-            {
-                frame.Continue = false;
-            }
+            _clientDetailsReveivedToken.SetResponse(true);
         }
 
         private void RaiseNetworkStateChanged(NetworkStateEventArgs args)
@@ -692,13 +646,15 @@ namespace Dev2.Studio.Core
             p.Write(commandSerial);
             p.Write(payload);
 
-            ExecuteCommandToken token = new ExecuteCommandToken(commandSerial);
+            DispatcherFrameToken<ByteBuffer> token = new DispatcherFrameToken<ByteBuffer>(null);
 
             lock (_commandLock)
+            {
                 _pendingCommands.Add(commandSerial, token);
+            }
 
             _primaryConnection.Send(p);
-            ByteBuffer reader = token.Execute();
+            ByteBuffer reader = token.WaitForResponse(GlobalConstants.NetworkTimeOut);
 
             string result = null;
             if (reader != null)
@@ -730,13 +686,15 @@ namespace Dev2.Studio.Core
             p.Write(commandSerial);
             p.Write(payload.Data, index, count);
 
-            ExecuteCommandToken token = new ExecuteCommandToken(commandSerial);
+            DispatcherFrameToken<ByteBuffer> token = new DispatcherFrameToken<ByteBuffer>(null);
 
             lock (_commandLock)
+            {
                 _pendingCommands.Add(commandSerial, token);
+            }
 
             _primaryConnection.Send(p);
-            ByteBuffer result = token.Execute();
+            ByteBuffer result = token.WaitForResponse(GlobalConstants.NetworkTimeOut);
 
             return result;
         }
@@ -744,7 +702,7 @@ namespace Dev2.Studio.Core
         private void OnExecuteCommandReceived(INetworkOperator op, ByteBuffer reader)
         {
             int commandSerial = reader.ReadInt32();
-            ExecuteCommandToken token = null;
+            DispatcherFrameToken<ByteBuffer> token;
 
             lock (_commandLock)
             {
@@ -754,21 +712,21 @@ namespace Dev2.Studio.Core
 
             if (token != null)
             {
-                token.Complete(reader);
+                token.SetResponse(reader);
             }
         }
 
         private void CancelPending()
         {
-            Dictionary<int, ExecuteCommandToken> pending;
+            Dictionary<int, DispatcherFrameToken<ByteBuffer>> pending;
 
             lock (_commandLock)
             {
                 pending = _pendingCommands;
-                _pendingCommands = new Dictionary<int, ExecuteCommandToken>();
+                _pendingCommands = new Dictionary<int, DispatcherFrameToken<ByteBuffer>>();
             }
 
-            foreach (KeyValuePair<int, ExecuteCommandToken> kvp in pending)
+            foreach (KeyValuePair<int, DispatcherFrameToken<ByteBuffer>> kvp in pending)
             {
                 kvp.Value.Cancel();
             }
@@ -1163,67 +1121,6 @@ namespace Dev2.Studio.Core
             _onNetworkStateChanged = null;
             _onLoginStateChanged = null;
             _serverMessaging = null;
-        }
-        #endregion
-
-        #region ExecuteCommandToken
-        private sealed class ExecuteCommandToken
-        {
-            private int _serial;
-            private ManualResetEventSlim _handle;
-            private ByteBuffer _result;
-
-            private CancellationTokenSource _source;
-
-            public ExecuteCommandToken(int serial)
-            {
-                _source = new CancellationTokenSource();
-                _serial = serial;
-                _handle = new ManualResetEventSlim(false);
-            }
-
-            public ByteBuffer Execute()
-            {
-                bool cancelled = false;
-
-                try
-                {
-                    //TODO Put network timeout limit & deal with propogating the error
-                    _handle.Wait(_source.Token);
-                }
-                catch (OperationCanceledException)
-                {
-                    cancelled = true;
-                }
-
-                if (cancelled)
-                {
-                    _result = null;
-                }
-                else
-                {
-                    _source.Dispose();
-                }
-
-                _handle.Dispose();
-
-                ByteBuffer result = _result;
-                _result = null;
-                return result;
-            }
-
-            public void Cancel()
-            {
-                _source.Cancel();
-                _source.Dispose();
-
-            }
-
-            public void Complete(ByteBuffer result)
-            {
-                _result = result;
-                _handle.Set();
-            }
         }
         #endregion
 

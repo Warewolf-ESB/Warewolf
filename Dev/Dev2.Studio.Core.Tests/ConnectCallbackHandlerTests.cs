@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests
         {
             var dsfChannel = new Mock<IStudioClientContext>();
             dsfChannel.Setup(c => c.AccountID).Returns(It.IsAny<Guid>());
-            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("").Verifiable();
 
             var targetEnv = new Mock<IEnvironmentModel>();
             targetEnv.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -21,7 +23,7 @@ namespace Dev2.Runtime.ServiceModel
                 dynamic argsObj = JObject.Parse(args);
 
                 var resourceType = (enSourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
-                var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
+                var xmlStr = Resources.ReadXml(workspaceID, GlobalConstants.ServicesDirectory, argsObj.resourceID.Value);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -82,7 +84,7 @@ namespace Dev2.Runtime.ServiceModel
                 }
 
                 var addFields = service.Recordset.Fields.Count == 0;
-                if(addFields)
+                if (addFields)
                 {
                     service.Recordset.Fields.Clear();
                 }
@@ -128,34 +130,78 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual Recordset FetchRecordset(Service service, bool addFields)
         {
-            if(addFields)
+            DbService dbService = service as DbService;
+            if (dbService == null)
             {
-                // TODO: Implement real stuff
-                for(var j = 0; j < 30; j++)
+                throw new ArgumentException(string.Format("Service of type '{0}' expected, '{1}' reveived.'", typeof(DbService), service.GetType()), "service");
+            }
+
+            //
+            // Using the MsSqlBroker run the service test mode
+            //
+            var broker = new MsSqlBroker();
+            var outputDescription = broker.TestService(dbService);
+
+            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+            {
+                throw new Exception("Error retrieving shape from service output.");
+            }
+
+            //
+            // Add path data to recordset
+            //
+            if (addFields)
+            {
+                //
+                // Add paths as fields
+                //
+                foreach (var path in outputDescription.DataSourceShapes[0].Paths)
                 {
-                    var colName = "Column" + (j + 1);
-                    service.Recordset.Fields.Add(new RecordsetField { Name = colName, Alias = colName });
+                    service.Recordset.Fields.Add(new RecordsetField { Name = path.DisplayPath, Alias = path.OutputExpression, Path = path });
+                }
+            }
+            else
+            {
+                //
+                // Remove fields for paths that no longer exist
+                //
+                var fieldsToRemove = service.Recordset.Fields.Where(r => !outputDescription.DataSourceShapes[0].Paths.Any(p => p.DisplayPath == r.Path.DisplayPath)).ToList();
+                foreach(var recordsetField in fieldsToRemove)
+                {
+                    service.Recordset.Fields.Remove(recordsetField);
+                }
+
+                //
+                // Add fields for new paths
+                //
+                var pathsToAdd = outputDescription.DataSourceShapes[0].Paths.Where(r => !service.Recordset.Fields.Any(f => f.Path.DisplayPath == r.DisplayPath)).ToList();
+                foreach (var path in pathsToAdd)
+                {
+                    service.Recordset.Fields.Add(new RecordsetField { Name = path.DisplayPath, Alias = path.OutputExpression, Path = path });
                 }
             }
 
-            // TODO: Implement real stuff
-            var random = new Random();
-            for(var i = 0; i < 15; i++)
-            {
-                service.Recordset.AddRecord(fieldIndex => random.GenerateString(30, string.Empty, true));
-            }
+            service.Recordset.AddRecord(fieldIndex => 
+                {
+                    if (fieldIndex < outputDescription.DataSourceShapes[0].Paths.Count)
+                    {
+                        return outputDescription.DataSourceShapes[0].Paths[fieldIndex].SampleData;
+                    }
+
+                    return "Index out of bounds";
+                });
 
             return service.Recordset;
         }
 
         #endregion
 
-        #region FetchDatabaseBroker
+        #region FetchMethods
 
-        public virtual ServiceMethodList FetchMethods(DbSource dbSource)
+        public virtual ServiceMethodList FetchMethods(DbSource source)
         {
             var broker = new MsSqlBroker();
-            return broker.GetServiceMethods(dbSource);
+            return broker.GetServiceMethods(source);
         }
 
         #endregion

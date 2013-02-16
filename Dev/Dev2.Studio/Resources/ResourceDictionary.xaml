@@ -39,6 +39,7 @@
     <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed" />
     <converters3:NavigationViewModelToImageConverter x:Key="NavigationViewModelToImageConverter" />
     <converters:LayoutObjectViewModelToImageConverter x:Key="LayoutObjectViewModelToImageConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
@@ -127,6 +128,12 @@
                                                          AutoReverse="True"
                                                          Duration="0:0:1"/>
     </Storyboard>
+
+    <Style x:Key="ImageTickStyle" TargetType="Image">
+        <Setter Property="Height" Value="15" />
+        <Setter Property="Width" Value="15" />
+        <Setter Property="Source" Value="/Images/tickIcon.png" />
+    </Style>
 
     <Style x:Key="FlashingFrameworkElement" TargetType="FrameworkElement">
         <Style.Triggers>

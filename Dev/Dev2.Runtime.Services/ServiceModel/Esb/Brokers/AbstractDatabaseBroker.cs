@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using Dev2.Runtime.ServiceModel.Data;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -17,7 +16,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         #region Methods
 
         /// <summary>
-        /// Gets the service methods for this esb endpoint.
+        /// Gets the service methods for service.
         /// </summary>
         /// <param name="dbSource">The db source.</param>
         /// <returns></returns>
@@ -64,31 +63,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
         /// <summary>
-        /// Executes a service method of this ESB endpoint in test mode.
+        /// Executes a service in test mode
         /// </summary>
-        /// <param name="resource">The resource.</param>
-        /// <param name="serviceMethod">The service method.</param>
-        /// <returns></returns>
+        /// <param name="dbService">The service to execute.</param>
         /// <exception cref="System.ArgumentNullException">resource</exception>
-        /// <exception cref="System.Exception"></exception>
-        public IOutputDescription TestServiceMethod(Resource resource, ServiceMethod serviceMethod)
+        public IOutputDescription TestService(DbService dbService)
         {
-            if(resource == null)
+            if (dbService == null)
             {
-                throw new ArgumentNullException("resource");
+                throw new ArgumentNullException("dbService");
             }
 
-            //
-            // Check the resource is of the correct type
-            //
-            var dbSource = resource as DbSource;
-            if(dbSource == null)
+            if (dbService.Source == null)
             {
-                throw new Exception(string.Format("Unexpected resource type, recieved '{0}', expected '{1}'.", resource.GetType(), typeof(DbSource)));
+                throw new ArgumentNullException("dbService.Source");
             }
 
-            IOutputDescription result = null;
-            using(var conn = CreateConnection(dbSource.ConnectionString))
+            IOutputDescription result;
+            using (var conn = CreateConnection(dbService.Source.ConnectionString))
             {
                 conn.Open();
                 IDbTransaction transaction = conn.BeginTransaction();
@@ -98,7 +90,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     // Execute command and normalize XML
                     //
-                    var command = CommandFromServiceMethod(conn, serviceMethod);
+                    var command = CommandFromServiceMethod(conn, transaction, dbService.Method);
                     var dataSet = ExecuteSelect(command);
                     string xmlResult = dataSet.GetXml();
                     xmlResult = NormalizeXmlPayload(xmlResult);
@@ -106,9 +98,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     // Map shape of XML
                     //
-                    IOutputDescription ouputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+                    result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                     IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-                    ouputDescription.DataSourceShapes.Add(dataSourceShape);
+                    result.DataSourceShapes.Add(dataSourceShape);
 
                     IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
@@ -203,11 +195,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="serviceMethod">The service method.</param>
-        /// <returns></returns>
         protected IDbCommand CommandFromServiceMethod(IDbConnection connection, ServiceMethod serviceMethod)
+        {
+            return CommandFromServiceMethod(connection, null, serviceMethod);
+        }
+
+        /// <summary>
+        /// Create a IDbCommand from a ServiceMethod.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="transaction">The transaction.</param>
+        /// <param name="serviceMethod">The service method.</param>
+        protected IDbCommand CommandFromServiceMethod(IDbConnection connection, IDbTransaction transaction, ServiceMethod serviceMethod)
         {
             var command = connection.CreateCommand();
 
+            command.Transaction = transaction;
             command.CommandText = serviceMethod.Name;
             command.CommandType = CommandType.StoredProcedure;
 

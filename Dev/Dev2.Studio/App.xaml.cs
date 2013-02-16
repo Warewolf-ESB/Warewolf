@@ -25,7 +25,7 @@ namespace Dev2.Studio
                 _processGuard = localprocessGuard;
             }
             else
-            {
+            {              
                 Environment.Exit(Environment.ExitCode);
             }
             InitializeComponent();
@@ -69,13 +69,19 @@ namespace Dev2.Studio
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             try
-        {
-            ExceptionFactory.CreateViewModel(e.Exception).Show();
+            {
+                ExceptionFactory.CreateViewModel(e.Exception).Show();
                 e.Handled = true;
-            //TODO Log
+                //TODO Log
             }
             catch (Exception)
             {
+                if (Current == null || Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished)
+                {
+                    // Do nothing if shutdown is in progress
+                    return;
+                }
+
                 MessageBox.Show(
                     "An unexpected unrecoverable exception has been encountered. The application will now shut down;");
                 Current.Shutdown();

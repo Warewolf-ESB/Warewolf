@@ -60,7 +60,7 @@
     <Compile Include="Messaging\Messages\ErrorMessage.cs" />
     <Compile Include="Messaging\Messages\NetworkContextDetachedMessage.cs" />
     <Compile Include="Messaging\Messages\TestMessage.cs" />
-    <Compile Include="Messaging\SynchronousNetworkMessageToken.cs" />
+    <Compile Include="Messaging\DispatcherFrameToken.cs" />
     <Compile Include="Messaging\ServerNetworkMessageAggregator.cs" />
     <Compile Include="Messaging\StudioNetworkMessageAggregator.cs" />
     <Compile Include="Messaging\NetworkMessageBroker.cs" />

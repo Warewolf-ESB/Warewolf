@@ -231,7 +231,7 @@ namespace Dev2.Core.Tests
         public static Mock<IStudioClientContext> SetupIFrameworkDataChannel_EmptyReturn()
         {
             Mock<IStudioClientContext> mockDataChannel = new Mock<IStudioClientContext>();
-            mockDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
+            mockDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
             return mockDataChannel;
         }

@@ -84,6 +84,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             string updateResult = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
+            if (updateResult == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
+            }
+
             dynamic reloadResultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(updateResult);
             if (reloadResultObj.HasError)
             {
@@ -103,6 +108,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             string reloadResult = Environment.DsfChannel.ExecuteCommand(reloadPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
+            if (reloadResult == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, reloadPayload.Service));
+            }
+
             // Debug statements do not belong in product code ;)
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
             //Debug.WriteLine(reloadResult);
@@ -116,11 +126,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "GetResourceService";
             findPayload.ResourceName = resourceName;
-            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);;
-            ;
+            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
             findPayload.Roles = string.Join(",", SecurityContext.Roles);
 
             string findResult = Environment.DsfChannel.ExecuteCommand(findPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+
+            if (findResult == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, findPayload.Service));
+            }
 
             dynamic findResultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(findResult);
             if (findResultObj.HasError)
@@ -207,7 +221,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.Service = "AddResourceService";
             package.ResourceXml = instanceObj.ToServiceDefinition();
             package.Roles = string.Join(",", SecurityContext.Roles);
-            Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            string result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
+            }
         }
 
         public void DeployResource(IResourceModel resource)
@@ -226,7 +244,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.Service = "DeployResourceService";
             package.ResourceXml = resource.ToServiceDefinition();
             package.Roles = string.Join(",", SecurityContext.Roles);
-            Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            string result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
+            }
         }
 
         public void Save(ICollection<IResourceModel> instanceObjs)
@@ -266,6 +288,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             string result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, dataObj.Service));
+            }
+
             // Debug statements do not belong in product code ;)
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
             //Debug.WriteLine(result);
@@ -300,6 +327,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Roles = string.Join(",", SecurityContext.Roles);
 
             string result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, dataObj.Service));
+            }
 
             // Debug statements do not belong in product code ;)
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
@@ -527,6 +558,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var workspaceID = ((IStudioClientContext)targetEnvironment.DsfChannel).AccountID;
             var result = targetEnvironment.DsfChannel.ExecuteCommand(dataObj.XmlString, workspaceID, GlobalConstants.NullDataListID);
+
+            if (result == null)
+            {
+                dynamic tmp = dataObj;
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
+            }
+
             var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
             {

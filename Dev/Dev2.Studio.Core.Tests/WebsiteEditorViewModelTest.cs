@@ -93,6 +93,7 @@ namespace Dev2.Core.Tests
             _test.Setup(c => c.WebsiteServiceName).Returns("Test");
             _test.Setup(c => c.MetaTags).Returns("greatness, success");
             _test.Setup(c => c.ResourceModel).Returns(_res.Object);
+
         }
 
         #endregion

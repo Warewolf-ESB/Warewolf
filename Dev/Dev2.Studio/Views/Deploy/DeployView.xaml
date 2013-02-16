@@ -7,7 +7,8 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-             Name="DeployUserControl"
+    xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
+    Name="DeployUserControl"
              ap:UIElementTitleProperty.Title="Deploy">
     <Grid>
         <Grid.RowDefinitions>
@@ -22,6 +23,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
@@ -30,8 +32,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto" SharedSizeGroup="A" />
                 </Grid.RowDefinitions>
                 
                 <Grid Grid.Row="0">
@@ -142,27 +142,6 @@
                         </HierarchicalDataTemplate>
                     </nv:NavigationView.ItemTemplate>
                 </nv:NavigationView>
-                
-                <TextBlock Grid.Row="3" Margin="5,5,5,5" FontWeight="Bold" >Selected for Deploy:</TextBlock>
-
-                <ItemsControl Grid.Row="4" Margin="5,0,0,0" Grid.IsSharedSizeScope="True" ItemsSource="{Binding SourceStats}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" SharedSizeGroup="AA" />
-                                    <ColumnDefinition Width="*" SharedSizeGroup="BB" />
-                                </Grid.ColumnDefinitions>
-                                
-                                <TextBlock Grid.Column="0" HorizontalAlignment="Left">
-                                    <Run Text="{Binding Name}" />
-                                    <Run Text=" : " />
-                                </TextBlock>
-                                <TextBlock Grid.Column="1" Text="{Binding Description}" HorizontalAlignment="Left" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
             </Grid>
 
             <GridSplitter Width="2.5" />
@@ -172,9 +151,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto" SharedSizeGroup="A" />
-                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -277,10 +253,23 @@
                         </HierarchicalDataTemplate>
                     </nv:NavigationView.ItemTemplate>                    
                 </nv:NavigationView>
+            </Grid>
+            
+            <Grid Grid.ColumnSpan="2" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 
-                <TextBlock Grid.Row="3" Margin="5,5,5,5" FontWeight="Bold" >Deploy Summary:</TextBlock>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                <ItemsControl Grid.Row="4" Margin="5,0,0,0" Grid.IsSharedSizeScope="True" ItemsSource="{Binding TargetStats}">
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,5,5,0" FontWeight="Bold" >Selected for Deploy:</TextBlock>
+
+                <ItemsControl Grid.Column="0" Grid.Row="1" Grid.IsSharedSizeScope="True" ItemsSource="{Binding SourceStats}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -289,7 +278,7 @@
                                     <ColumnDefinition Width="*" SharedSizeGroup="BB" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" HorizontalAlignment="Left">
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Right">
                                     <Run Text="{Binding Name}" />
                                     <Run Text=" : " />
                                 </TextBlock>
@@ -298,21 +287,66 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </Grid>
-            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
-                    Content="Deploy" HorizontalAlignment="Left" Background="Transparent" 
-                    BorderBrush="Transparent" Command="{Binding DeployCommand}" MaxWidth="50" MinWidth="50" />
-                <TextBlock Text="Please select a destination server." AutomationProperties.AutomationId="UI_DeployDestinationTB_AutoID"
-                           VerticalAlignment="Center" Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverterNullIsVisible}}"
-                           Margin="3,0,0,0"/>
-                <ContentControl Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverter}}">
-                    <TextBlock Text="Please select something to deploy." AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
-                               VerticalAlignment="Center" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                               Margin="3,0,0,0"/>
-                </ContentControl>
-            </StackPanel>
 
+                <TextBlock Grid.Column="1" Grid.Row="0" Margin="0,5,5,0" FontWeight="Bold" >Deploy Summary:</TextBlock>
+
+                <ItemsControl Grid.Column="1" Grid.Row="1"
+                                Grid.IsSharedSizeScope="True" ItemsSource="{Binding TargetStats}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" SharedSizeGroup="AA" />
+                                    <ColumnDefinition Width="*" SharedSizeGroup="BB" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Right">
+                                <Run Text="{Binding Name}" />
+                                <Run Text=" : " />
+                                </TextBlock>
+                                <TextBlock Grid.Column="1" Text="{Binding Description}" HorizontalAlignment="Left" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Grid.Column="2" Grid.Row="0" Margin="0,5,5,0" FontWeight="Bold" >Steps to Deploy:</TextBlock>
+
+                <Grid Grid.Column="2" Grid.Row="1" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0" Grid.Row="0" Style="{StaticResource ImageTickStyle}" 
+                               Visibility="{Binding SelectedSourceServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="1. Connect to a source server." AutomationProperties.AutomationId="UI_DeploySourceTB_AutoID"
+                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+
+                    <Image Grid.Column="0" Grid.Row="1" Style="{StaticResource ImageTickStyle}" 
+                               Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="2. Connect to a destination server." AutomationProperties.AutomationId="UI_DeployDestinationTB_AutoID"
+                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+
+                    <Image Grid.Column="0" Grid.Row="2" Style="{StaticResource ImageTickStyle}" 
+                               Visibility="{Binding SourceItemsSelected, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="3. Please select something to deploy." AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                </Grid>
+            </Grid>
+            
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <customDev2Controls:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="0,0,5,0" 
+                                                        Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}"/>
+                <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
+                    Content="Deploy" HorizontalAlignment="Left" Background="Transparent"
+                    BorderBrush="Transparent" Command="{Binding DeployCommand}" IsEnabled="{Binding CanDeploy}" MaxWidth="50" MinWidth="50" />
+            </StackPanel>
         </Grid>                
     </Grid>
 </UserControl>

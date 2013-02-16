@@ -1,10 +1,7 @@
-﻿using BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudio;
-using Dev2;
+﻿using Dev2;
 using Dev2.Composition;
 using Dev2.Core.Tests;
 using Dev2.DynamicServices;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
@@ -70,7 +67,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.Setup(res => res.DisplayName).Returns("My New Resource");
             resourceModel.Setup(res => res.ServiceDefinition).Returns("My new Resource service definition");
 
-            dataChannel.Setup(channel => channel.ExecuteCommand("SomeString", It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<x><text>Im Happy</text></x>").Verifiable();
+            dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<x><text>Im Happy</text></x>").Verifiable();
 
             environmentModel.Setup(model => model.LoadResources()).Verifiable();
             environmentModel.Setup(model => model.DsfChannel).Returns(dataChannel.Object);
@@ -382,7 +379,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var testEnv = new EnviromentRepositoryTest().CreateTestEnvironmentWithSecurityContext();
 
             var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("").Verifiable();
             dsfChannel.Setup(c => c.AccountID).Returns(It.IsAny<Guid>());
 
             var targetEnv = new Mock<IEnvironmentModel>();
@@ -410,7 +407,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var testEnv = new EnviromentRepositoryTest().CreateTestEnvironmentWithSecurityContext();
 
             var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("").Verifiable();
             dsfChannel.Setup(c => c.AccountID).Returns(It.IsAny<Guid>());
 
             var targetEnv = new Mock<IEnvironmentModel>();

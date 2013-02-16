@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Save
 
-        public void Save(Guid workspaceID, Guid dataListID)
+        public virtual void Save(Guid workspaceID, Guid dataListID)
         {
             var xml = ToXml();
             Resources.Save(workspaceID, Resources.RootFolders[ResourceType], ResourceName, xml.ToString());

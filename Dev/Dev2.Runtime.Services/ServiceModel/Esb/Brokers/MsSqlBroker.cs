@@ -105,6 +105,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         protected override string NormalizeXmlPayload(string payload)
         {
+            DataTable dt;
             StringBuilder result = new StringBuilder();
 
             XmlDocument xDoc = new XmlDocument();

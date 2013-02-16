@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
@@ -12,6 +6,12 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -197,12 +197,17 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string ReadXml(Guid workspaceID, enSourceType resourceType, string resourceID)
         {
+            return ReadXml(workspaceID, RootFolders[resourceType], resourceID);
+        }
+
+        public static string ReadXml(Guid workspaceID, string directoryName, string resourceID)
+        {
             var result = String.Empty;
 
-            ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+            ResourceIterator.Iterate(new[] { directoryName }, workspaceID, iteratorResult =>
             {
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if (iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = iteratorResult.Content;
                     return false;

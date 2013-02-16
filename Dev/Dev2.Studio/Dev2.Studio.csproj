@@ -301,6 +301,9 @@
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
+    <Compile Include="Custom Dev2 Controls\CircularProgressBar.xaml.cs">
+      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Diagnostics\DebugLineGroup.cs" />
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
@@ -671,6 +674,10 @@
     <Page Include="ActivityDesigners\PathOperationDesigners\DsfZipDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Dev2 Controls\CircularProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Custom Dev2 Controls\Connections\ConnectControl.xaml">
       <SubType>Designer</SubType>

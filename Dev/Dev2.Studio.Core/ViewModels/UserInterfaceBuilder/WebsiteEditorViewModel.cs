@@ -547,7 +547,11 @@ namespace Dev2.Studio.Core.ViewModels
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;
                 var workspaceID = ((IStudioClientContext)_webActivity.ResourceModel.Environment.DsfChannel).AccountID;
-                _webActivity.ResourceModel.Environment.DsfChannel.ExecuteCommand(package.XmlString, workspaceID, GlobalConstants.NullDataListID);
+                string result = _webActivity.ResourceModel.Environment.DsfChannel.ExecuteCommand(package.XmlString, workspaceID, GlobalConstants.NullDataListID);
+                if (result == null)
+                {
+                    throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, StringResources.Website_BootStrap_Service));
+                }
             }
         }
 

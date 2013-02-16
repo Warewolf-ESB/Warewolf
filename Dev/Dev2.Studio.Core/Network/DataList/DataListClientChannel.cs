@@ -24,7 +24,7 @@ namespace Dev2.Studio.Core.Network.DataList
         private bool _isDisposed = false;
 
         private ThreadLocal<object> _threadSpecificContext = new ThreadLocal<object>();
-        private ConcurrentDictionary<long, SynchronousNetworkMessageToken> _pendingMessages = new ConcurrentDictionary<long, SynchronousNetworkMessageToken>();
+        private ConcurrentDictionary<long, DispatcherFrameToken<INetworkMessage>> _pendingMessages = new ConcurrentDictionary<long, DispatcherFrameToken<INetworkMessage>>();
         
         private Guid _serverID;
         private Guid _accountID;
@@ -380,7 +380,7 @@ namespace Dev2.Studio.Core.Network.DataList
         private INetworkMessage SendSynchronousMessage<T>(T message) where T : INetworkMessage, new()
         {
             long handle = Interlocked.Increment(ref _handles);
-            SynchronousNetworkMessageToken messageToken = new SynchronousNetworkMessageToken(handle);
+            DispatcherFrameToken<INetworkMessage> messageToken = new DispatcherFrameToken<INetworkMessage>(new ErrorMessage(handle, "Send message timeout."));
             if (!_pendingMessages.TryAdd(handle, messageToken))
             {
                 throw new InvalidOperationException("A duplicate message handle has been detected in the DataListChannel.");
@@ -390,11 +390,11 @@ namespace Dev2.Studio.Core.Network.DataList
 
             try
             {
-                _serverMessaging.MessageBroker.Send<T>(message, _client);
+                _serverMessaging.MessageBroker.Send(message, _client);
             }
             catch
             {
-                SynchronousNetworkMessageToken tmpToken;
+                DispatcherFrameToken<INetworkMessage> tmpToken;
                 if (!_pendingMessages.TryRemove(handle, out tmpToken))
                 {
                     tmpToken.SetResponse(null);
@@ -430,9 +430,9 @@ namespace Dev2.Studio.Core.Network.DataList
                 // Release all pening messages in the event of an error, this is to prevent the studio from hanging,
                 // but should should be expanded to try and be more specific to a handle.
                 //
-                foreach (KeyValuePair<long, SynchronousNetworkMessageToken> item in _pendingMessages.ToList())
+                foreach (KeyValuePair<long, DispatcherFrameToken<INetworkMessage>> item in _pendingMessages.ToList())
                 {
-                    SynchronousNetworkMessageToken messageToken;
+                    DispatcherFrameToken<INetworkMessage> messageToken;
                     if (_pendingMessages.TryRemove(item.Key, out messageToken))
                     {
                         messageToken.SetResponse(null);
@@ -441,7 +441,7 @@ namespace Dev2.Studio.Core.Network.DataList
             }
             else
             {
-                SynchronousNetworkMessageToken messageToken;
+                DispatcherFrameToken<INetworkMessage> messageToken;
                 if (_pendingMessages.TryRemove(message.Handle, out messageToken))
                 {
                     messageToken.SetResponse(message);
@@ -487,7 +487,7 @@ namespace Dev2.Studio.Core.Network.DataList
                     return;
                 }
 
-                foreach (SynchronousNetworkMessageToken token in _pendingMessages.Values)
+                foreach (DispatcherFrameToken<INetworkMessage> token in _pendingMessages.Values)
                 {
                     try
                     {

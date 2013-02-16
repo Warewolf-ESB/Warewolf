@@ -406,11 +406,11 @@ namespace Dev2.Core.Tests
             Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<PersistChildChainMessage>();
             Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
 
-            _networkMessageBroker.Setup(e => e.Send<PersistChildChainMessage>(It.IsAny<PersistChildChainMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
+            _networkMessageBroker.Setup(e => e.Send(It.IsAny<PersistChildChainMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
             {
                 Task t = new Task(new Action(() =>
                 {
-                    studioNetworkMessageAggregator.Publish(new PersistChildChainResultMessage { Handle = 1, Result = false }, _studioNetworkChannelContext.Object, true);
+                    studioNetworkMessageAggregator.Publish(new PersistChildChainResultMessage { Handle = 1, Result = false }, _studioNetworkChannelContext.Object);
                 }));
 
                 t.Start();

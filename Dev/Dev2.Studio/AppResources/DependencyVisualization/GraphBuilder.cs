@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dev2;
+using Dev2.Common;
+using Dev2.Studio.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
-using Dev2;
 using System.Windows;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Common;
+using System.Xml.Linq;
 using Unlimited.Framework;
 
 namespace CircularDependencyTool
@@ -28,6 +28,11 @@ namespace CircularDependencyTool
 
             var workspaceID = ((IStudioClientContext)_resource.Environment.DsfChannel).AccountID;
             dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(_resource.Environment.DsfChannel.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
+
+            if (data == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, test.Service));
+            }
 
             dynamic gr = data.graph;
 

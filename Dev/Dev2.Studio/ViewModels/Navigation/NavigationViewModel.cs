@@ -33,6 +33,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     {
         #region private fields
 
+        private bool _isRefreshing;
         private readonly List<IEnvironmentModel> _environments;
         private readonly ITreeNode _root;
         private readonly bool _useAuxiliryConnections;
@@ -64,6 +65,19 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion ctor + intit
 
         #region public properties
+
+        public bool IsRefreshing
+        {
+            get
+            {
+                return _isRefreshing;
+            }
+            set
+            {
+                _isRefreshing = value;
+                NotifyOfPropertyChange(() => IsRefreshing);
+            }
+        }
 
         public IUserInterfaceLayoutProvider UserInterfaceLayoutProvider { get; set; }
 
@@ -240,31 +254,23 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Reloads an environment and all of it's resources if the environment 
-        /// is being represented by this navigation view model
-        /// </summary>
-        /// <param name="environment">The environment.</param>
-        public void RefreshEnvironment(IEnvironmentModel environment)
-        {
-            if (!_environments.Contains(environment, EnvironmentModelEqualityComparer.Current)) 
-                return;
-
-            var environmentNavigationItemViewModel =
-                Find(environment, true);
-            environmentNavigationItemViewModel.IsChecked = false;
-
-            LoadEnvironmentResources(environment);
-        }
-
-        /// <summary>
         ///     Reload all environments resources
         /// </summary>
         public void RefreshEnvironments()
         {
+            if (IsRefreshing)
+            {
+                return;
+            }
+
+            IsRefreshing = true;
+
             foreach (var environment in _environments)
             {
                 RefreshEnvironment(environment);
             }
+            
+            IsRefreshing = false;
         }
 
         /// <summary>
@@ -272,36 +278,19 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void UpdateWorkspaces()
         {
+            if (IsRefreshing)
+            {
+                return;
+            }
+
+            IsRefreshing = true;
+
             foreach (var environment in _environments)
             {
                 UpdateWorkspace(environment, UserInterfaceLayoutProvider.WorkspaceItems);
             }
-        }
 
-        /// <summary>
-        ///     Updates the workspace of an environment then reloads it's resources,
-        ///     any existing resources will be cleared.
-        ///     If there isn't a node to represent the environment one is created.
-        ///     If the environment isn't connected an attempt is made to connect.
-        /// </summary>
-        public void UpdateWorkspace(IEnvironmentModel environment, IList<IWorkspaceItem> workspaceItems)
-        {
-            if (environment != null && !environment.IsConnected)
-            {
-                Connect(environment);
-            }
-
-            if (environment == null || environment.Resources == null || !environment.IsConnected) return;
-
-            //
-            // Load the environments resources
-            //
-            environment.Resources.UpdateWorkspace(workspaceItems);
-
-            //
-            // Build the resources into a tree
-            //
-            BuildNavigationItemViewModels(environment);
+            IsRefreshing = false;
         }
 
         /// <summary>
@@ -410,6 +399,49 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion public methods
 
         #region private methods
+
+        /// <summary>
+        /// Reloads an environment and all of it's resources if the environment 
+        /// is being represented by this navigation view model
+        /// </summary>
+        /// <param name="environment">The environment.</param>
+        private void RefreshEnvironment(IEnvironmentModel environment)
+        {
+            if (!_environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
+                return;
+
+            var environmentNavigationItemViewModel =
+                Find(environment, true);
+            environmentNavigationItemViewModel.IsChecked = false;
+
+            LoadEnvironmentResources(environment);
+        }
+
+        /// <summary>
+        ///     Updates the workspace of an environment then reloads it's resources,
+        ///     any existing resources will be cleared.
+        ///     If there isn't a node to represent the environment one is created.
+        ///     If the environment isn't connected an attempt is made to connect.
+        /// </summary>
+        private void UpdateWorkspace(IEnvironmentModel environment, IList<IWorkspaceItem> workspaceItems)
+        {
+            if (environment != null && !environment.IsConnected)
+            {
+                Connect(environment);
+            }
+
+            if (environment == null || environment.Resources == null || !environment.IsConnected) return;
+
+            //
+            // Load the environments resources
+            //
+            environment.Resources.UpdateWorkspace(workspaceItems);
+
+            //
+            // Build the resources into a tree
+            //
+            BuildNavigationItemViewModels(environment);
+        }
 
         /// <summary>
         /// Updates the search filter, by setting it on the root node, from there it filters down.

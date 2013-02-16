@@ -1,20 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using System.Xml.Linq;
-using CircularDependencyTool;
+﻿using CircularDependencyTool;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates;
@@ -52,6 +36,22 @@ using Dev2.Studio.Views.Workflow;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
+using System;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Views;
@@ -331,7 +331,14 @@ namespace Dev2.Studio
             request.ResourceType = resourceType;
             request.Roles = roles;
             var workspaceID = ((IStudioClientContext)resource.Environment.DsfChannel).AccountID;
-            return UnlimitedObject.GetStringXmlDataAsUnlimitedObject(resource.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID));
+
+            string result = resource.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, request.Service));
+            }
+            
+            return UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
         }
 
         private bool QueryDeleteExplorerResource(string resourceName, string resourceType, bool hasDependencies, out bool openDependencyGraph)

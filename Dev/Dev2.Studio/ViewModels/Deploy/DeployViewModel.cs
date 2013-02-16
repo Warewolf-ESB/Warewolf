@@ -49,6 +49,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private AbstractTreeViewModel _initialNavigationItemViewModel;
         private IContextualResourceModel _initialResource;
         private IEnvironmentModel _initialEnvironment;
+        private bool _isDeploying;
         private bool _initialLoad = true;
         private bool _selectingAndExpandingFromNavigationItem;
 
@@ -118,7 +119,15 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                return SelectedDestinationServer != null && _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0;
+                return SelectedDestinationServer != null && _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0 && !IsDeploying;
+            }
+        }
+
+        public bool SourceItemsSelected
+        {
+            get
+            {
+                return _sourceDeployItemCount > 0;
             }
         }
 
@@ -145,6 +154,23 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 _targetEnvironment = value;
                 NotifyOfPropertyChange(() => TargetEnvironment);
+            }
+        }
+
+        /// <summary>
+        /// Used to indicate if a deploy is in progress
+        /// </summary>
+        public bool IsDeploying 
+        {
+            get
+            {
+                return _isDeploying;
+            }
+            private set
+            {
+                _isDeploying = value;
+                NotifyOfPropertyChange(() => IsDeploying);
+                NotifyOfPropertyChange(() => CanDeploy);
             }
         }
 
@@ -229,6 +255,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     LoadDestinationEnvironment(_selectedDestinationServer);
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
                     NotifyOfPropertyChange(() => CanDeploy);
+                    NotifyOfPropertyChange(() => SourceItemsSelected);
                 }
             }
         }
@@ -290,6 +317,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
             _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
             NotifyOfPropertyChange(() => CanDeploy);
+            NotifyOfPropertyChange(() => SourceItemsSelected);
         }
 
 
@@ -425,7 +453,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             // Deploy the resources
             //
             var deployDTO = new DeployDTO { ResourceModels = resourcesToDeploy };
+            IsDeploying = true;
             _deployService.Deploy(deployDTO, TargetEnvironment);
+            IsDeploying = false;
 
             //
             // Reload the environments resources & update explorer
