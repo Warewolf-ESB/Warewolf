@@ -27,6 +27,8 @@ REM if you are using a deployment package you can run it here, after you copy it
 REM ** Start Server **
 C:\ExecuteFrom\Dev2.Server.exe -i
 timeout /T 120 /NOBREAK
+echo "Server Running" >> C:\Scripts\log.log
 
 C:\ExecuteFrom\Dev2.Studio.exe
 timeout /T 60 /NOBREAK
+echo "Studio Running" >> C:\Scripts\log.log
