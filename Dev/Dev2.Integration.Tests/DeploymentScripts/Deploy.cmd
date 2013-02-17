@@ -6,7 +6,6 @@ set svndirectory= "\\rsaklfsvrtfsbld\Automated Builds\LatestDevelopmentResources
 
 REM set deployment path
 set targetdir="C:\Deploy"\
-set executedir="C:\ExecuteFrom"
 
 REM create deployment directory
 if not exist %targetdir% (cmd /c mkdir %targetdir%)
@@ -15,5 +14,5 @@ REM copy build to the deployment directory
 robocopy %buildlocation% %targetdir% /E
 robocopy %svndirectory% %targetdir% /E
 
-
-REM if you are using a deployment package you can run it here, after you copy it to your deployment directory
+REM Install the server
+C:\Deploy\Dev2.Server.exe -i
