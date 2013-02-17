@@ -25,9 +25,10 @@ robocopy %targetdir% %executedir% /E
 REM if you are using a deployment package you can run it here, after you copy it to your deployment directory
 
 REM ** Start Server **
+
 start "" /B "C:\ExecuteFrom\Dev2.Server.exe" -i
 timeout /T 120 /NOBREAK
 echo "Server Running" >> C:\Scripts\log.log
 
-start "" /B "C:\ExecuteFrom\Dev2.Studio.exe"
-echo "Studio Running" >> C:\Scripts\log.log
+REM start "" /B "C:\ExecuteFrom\Dev2.Studio.exe"
+REM echo "Studio Running" >> C:\Scripts\log.log
