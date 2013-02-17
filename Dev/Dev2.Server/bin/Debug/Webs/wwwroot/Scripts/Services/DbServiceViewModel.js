@@ -2,15 +2,14 @@
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
-    var $sourceMethodsScrollBoxHeight = 275;
+    var $sourceMethodsScrollBoxHeight = 343;
     var $sourceMethods = $("#sourceMethods");
-    var $inputsTable = $("#inputsTable");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
 
     self.saveUri = "Service/Services/Save";
         
-    self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);    
+    self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);    
 
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
@@ -27,7 +26,9 @@
         recordset: {
             Name: ko.observable(""),
             Fields: ko.observableArray(),
-            Records: ko.observableArray()
+            Records: ko.observableArray(),
+            HasErrors: ko.observable(false),
+            ErrorMessage: ko.observable("")
         }
     };
 
@@ -47,7 +48,8 @@
     self.hasMethod = ko.computed(function () {
         return self.data.method.Name() !== "";
     });
-    self.hasTestResults = ko.observable(false);
+    self.hasTestResults = ko.observable(false);    
+    self.hasTestResultRecords = ko.observable(false);
     self.isFormValid = ko.computed(function () {
         // TODO: FIX isFormValid
         var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
@@ -62,18 +64,6 @@
     });
 
     self.data.source.subscribe(function (newValue) {
-        self.sourceMethodSearchTerm("");
-        self.hasTestResults(false);
-
-        self.data.method.Name("");
-        self.data.method.SourceCode("");
-        self.data.method.Parameters([]);
-
-        self.data.recordset.Name("");
-        self.data.recordset.Fields([]);
-        self.data.recordset.Records([]);
-
-        $inputsTable.hide();
         self.loadMethods(newValue);
     });   
 
@@ -91,19 +81,24 @@
         self.data.method.Parameters(selectedItem.Parameters);
 
         self.data.recordset.Name(selectedItem.Name);
-
-        $inputsTable.show();
     });
 
     self.getJsonData = function () {
         // Don't need to send records back!
         self.data.recordset.Records([]);
+        self.data.recordset.HasErrors(false);
+        self.data.recordset.ErrorMessage("");
         return ko.toJSON(self.data);
     };
-    
+
     self.load = function () {
+        self.loadSources(
+            self.loadService());
+    };
+    
+    self.loadService = function () {
         var args = ko.toJSON({
-            resourceID: self.data.resourceID(),
+            resourceID: resourceID,
             resourceType: "DbService"
         });
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
@@ -111,20 +106,71 @@
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-            
+
+            var matchOnID = !utils.IsNullOrEmptyGuid(result.Source.ResourceID);
+            $.each(self.sources(), function (index, source) {
+                if ((matchOnID && source.ResourceID.toLowerCase() === result.Source.ResourceID.toLowerCase())
+                    || source.ResourceName.toLowerCase() === result.Source.ResourceName.toLowerCase()) {
+                    
+                    // This will trigger a call to loadMethods
+                    self.data.source(source);
+                    return false;
+                }
+                return true;
+            });            
+           
+
+            // MUST set these AFTER setting data.source otherwise they will be blanked!
+            self.data.method.Name(result.Method.Name);
+            self.data.method.Parameters(result.Method.Parameters);            
+            self.data.recordset.Name(result.Recordset.Name);
+            self.data.recordset.Fields(result.Recordset.Fields);
+
             self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
         });
-        $.post("Service/Resources/Sources" + window.location.search, ko.toJSON({ resourceType: "DbSource"}), function (result) {
-            self.sources(result);
-            self.sources.sort(utils.resourceNameCaseInsensitiveSort);
-        }); 
     };
 
+    self.loadSources = function (callback) {
+        $.post("Service/Resources/Sources" + window.location.search, ko.toJSON({ resourceType: "DbSource" }), function (result) {
+            self.sources(result);
+            self.sources.sort(utils.resourceNameCaseInsensitiveSort);
+        }).done(function () {
+            if (callback) {
+                callback();
+            }
+        });
+    };
+    
     self.loadMethods = function (source) {
+        self.data.method.Name("");
+        self.data.method.SourceCode("");
+        self.data.method.Parameters([]);
+
+        self.data.recordset.Name("");
+        self.data.recordset.Fields([]);
+        self.data.recordset.Records([]);
+
+        self.sourceMethods([]);
+        self.sourceMethodSearchTerm("");
+        self.hasTestResults(false);
+        self.hasTestResultRecords(false);
         self.isSourceMethodsLoading(true);
+        
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
+            var methodName = self.data.method.Name();
+            if (methodName !== "") {
+                utils.selectAndScrollToListItem(methodName, $sourceMethodsScrollBox, $sourceMethodsScrollBoxHeight);
+
+                $.each(self.sourceMethods(), function (index, method) {
+                    if (method.Name.toLowerCase() === methodName.toLowerCase()) {
+                        self.data.method.SourceCode(utils.toHtml(method.SourceCode));
+                        return false;
+                    }
+                    return true;
+                });
+            }
         });
     };
 
@@ -152,11 +198,14 @@
         self.isTestResultsLoading(true);
         $.post("Service/Services/DbTest" + window.location.search, self.getJsonData(), function (result) {
             self.isTestResultsLoading(false);
-            self.hasTestResults(true);
+            self.hasTestResultRecords(result.Records.length > 0);
+            self.hasTestResults(!result.HasErrors);
             self.data.recordset.Name(result.Name);
             self.data.recordset.Fields(result.Fields);
             self.data.recordset.Records(result.Records);
-        });        
+            self.data.recordset.HasErrors(result.HasErrors);
+            self.data.recordset.ErrorMessage(result.ErrorMessage);
+        });
     };
 
     self.cancel = function () {
@@ -168,10 +217,5 @@
         $("#saveForm").dialog("open");
     };
 
-    self.initialize = function () {
-        $inputsTable.hide();
-    };
-    
-    self.initialize();
     self.load();
 };

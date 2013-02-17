@@ -44,7 +44,7 @@
                     </div>
                     <div style="clear: both;">
                         <div class="scrollable-y box-border" style="height: 175px; width: 520px;">
-                            <table id="inputsTable" class="input-param">
+                            <table id="inputsTable" class="input-param" data-bind="visible: hasMethod()">
                                 <tbody data-bind="foreach: data.method.Parameters">
                                     <tr>
                                         <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
@@ -59,7 +59,9 @@
                     <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
                     <div class="scrollable-xy box-border" style="height: 171px; width: 520px;">
                         <img src="Images/ajax-loader32.gif" alt="loading" style=" margin-top: 69px; margin-left: 244px;" data-bind="visible: isTestResultsLoading" />
-                        <table class="data-table" data-bind="visible: hasTestResults()">
+                        <div class="error" style="padding: 5px;"  data-bind="visible: data.recordset.HasErrors() && !isTestResultsLoading(), text:data.recordset.ErrorMessage"></div>
+                        <div style="padding: 5px;" data-bind="visible: hasTestResults() && !hasTestResultRecords()">No records were returned</div>
+                        <table class="data-table" data-bind="visible: hasTestResults() && hasTestResultRecords() && !isTestResultsLoading()">
                             <thead>
                                 <tr>
                                     <th>Record Name</th>
@@ -135,7 +137,7 @@
                         <div style="margin: 10px;" data-bind="visible: !hasTestResults()">
                             <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
                         </div>
-                        <table class="input-param">
+                        <table class="input-param" data-bind="visible: hasTestResults()">
                             <tbody data-bind="foreach: data.recordset.Fields">
                                 <tr>
                                     <td class="input-param-name" style="width: 155px;" data-bind="text: Name"></td>

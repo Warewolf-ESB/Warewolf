@@ -37,3 +37,7 @@ utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeig
 utils.toHtml = function (str) {
     return str.replace(/\n/g, '<br />').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
 };
+
+utils.IsNullOrEmptyGuid = function (str) {
+    return !$.Guid.IsValid(str) || $.Guid.IsEmpty(str);
+};
