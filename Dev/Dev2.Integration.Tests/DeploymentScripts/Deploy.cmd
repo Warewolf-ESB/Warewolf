@@ -12,7 +12,7 @@ REM create deployment directory
 if not exist %targetdir% (cmd /c mkdir %targetdir%)
 
 REM create execution directory
-if exist %executedir% (cmd /c del /Q %executedir%)
+if exist %executedir% (cmd /c rmdir /Q %executedir%)
 
 if not exist %executedir% (cmd /c mkdir %executedir%)
 
