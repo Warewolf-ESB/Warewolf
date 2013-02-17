@@ -28,7 +28,6 @@ REM ** Start Server **
 
 start "" /B "C:\ExecuteFrom\Dev2.Server.exe" -i
 timeout /T 120 /NOBREAK
-echo "Server Running" >> C:\Scripts\log.log
 
 REM start "" /B "C:\ExecuteFrom\Dev2.Studio.exe"
 REM echo "Studio Running" >> C:\Scripts\log.log
