@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Unlimited.Framework.Converters.Graph;
@@ -18,10 +20,47 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = ResourceType.DbService;
-            //var action = xml.Element("Action");
-            //Source = new DbSource(xml.Element("Action"));
-            //Method = new ServiceMethod();
-            //ResourceName = xml.AttributeSafe("Name");
+            var action = xml.Descendants("Action").FirstOrDefault();
+            if(action == null)
+            {
+                return;
+            }
+
+            Guid sourceID;
+            Guid.TryParse(action.AttributeSafe("SourceID"), out sourceID);
+            Source = new DbSource
+            {
+                ResourceID = sourceID,
+                ResourceName = action.AttributeSafe("SourceName")
+            };
+
+            Method = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>() };
+            foreach(var input in action.Descendants("Input"))
+            {
+                XElement validator;
+                bool emptyToNull;
+                Method.Parameters.Add(new MethodParameter
+                {
+                    Name = input.AttributeSafe("Name"),
+                    EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out emptyToNull) && emptyToNull,
+                    IsRequired = (validator = input.Element("Validator")) != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
+                    DefaultValue = input.AttributeSafe("DefaultValue")
+                });
+            }
+
+            Recordset = new Recordset { Name = action.AttributeSafe("Name") };
+            foreach(var output in action.Descendants("Output"))
+            {
+                Recordset.Fields.Add(new RecordsetField
+                {
+                    Name = output.AttributeSafe("Name"),
+                    Alias = output.AttributeSafe("MapsTo")
+                });
+            }
+            if(Recordset.Name == ResourceName)
+            {
+                Recordset.Name = Method.Name;
+            }
         }
 
         #endregion
@@ -54,39 +93,57 @@ namespace Dev2.Runtime.ServiceModel.Data
             var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
             var serializedOutputDescription = outputDescriptionSerializationService.Serialize(outputDescription);
 
-            var inputsElement = new XElement("Inputs");
+            var inputs = new XElement("Inputs");
 
-            #region Add inputs
+            #region Add method parameters to inputs
 
             foreach(var parameter in Method.Parameters)
             {
-                inputsElement.Add(new XElement("Input",
+                var input = new XElement("Input",
                     new XAttribute("Name", parameter.Name ?? string.Empty),
                     new XAttribute("Source", parameter.Name ?? string.Empty),
+                    new XAttribute("EmptyToNull", parameter.EmptyToNull),
                     new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
-                    ));
+                    );
 
                 if(parameter.IsRequired)
                 {
-                    inputsElement.Add(new XElement("Validator",
-                        new XAttribute("Type", "Required")));
+                    input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
                 }
+                inputs.Add(input);
+            }
+
+            #endregion
+
+            var outputs = new XElement("Outputs");
+
+            #region Add recordset fields to outputs
+
+            foreach(var field in Recordset.Fields)
+            {
+                var output = new XElement("Output",
+                    new XAttribute("Name", field.Name ?? string.Empty),
+                    new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                    new XAttribute("Value", "[[" + field.Alias + "]]")
+                    );
+                outputs.Add(output);
             }
 
             #endregion
 
             const enActionType ActionType = enActionType.InvokeStoredProc;
+
             var result = base.ToXml();
             result.AddFirst(
                 new XElement("Actions",
                     new XElement("Action",
-                        new XAttribute("Name", ResourceName ?? string.Empty),
+                        new XAttribute("Name", Recordset.Name ?? string.Empty),
                         new XAttribute("Type", ActionType),
                         new XAttribute("SourceID", Source.ResourceID),
                         new XAttribute("SourceName", Source.ResourceName ?? string.Empty),
                         new XAttribute("SourceMethod", Method.Name ?? string.Empty),
-                        inputsElement,
-                        new XElement("Outputs"),
+                        inputs,
+                        outputs,
                         new XElement("OutputDescription", new XCData(serializedOutputDescription)))),
                 new XElement("AuthorRoles"),
                 new XElement("Comment"),

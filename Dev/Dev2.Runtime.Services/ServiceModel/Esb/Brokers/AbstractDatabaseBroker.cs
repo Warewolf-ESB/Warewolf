@@ -187,7 +187,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <param name="parameter">The parameter.</param>
         protected MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
         {
-            return new MethodParameter(parameter.ParameterName.Replace("@", ""), false, false, "", "");
+            return new MethodParameter
+            {
+                Name = parameter.ParameterName.Replace("@", "")
+            };
         }
 
         /// <summary>

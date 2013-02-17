@@ -317,7 +317,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     Name = "dbo.spGetCountries",
                     Parameters = new List<MethodParameter>(new[]
                     {
-                        new MethodParameter("@Prefix", false, true, null, "b")
+                        new MethodParameter { Name = "@Prefix", EmptyToNull = false, IsRequired = true, Value = null, DefaultValue = "b" }
                     })
                 },
                 Recordset = new Recordset
@@ -338,8 +338,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             };
             service.Recordset.Fields.AddRange(new[]
             {
-                new RecordsetField{Name = "CountryID", Alias = "CountryID"}, 
-                new RecordsetField{Name = "Description", Alias = "Name"}
+                new RecordsetField { Name = "CountryID", Alias = "CountryID" },
+                new RecordsetField { Name = "Description", Alias = "Name" }
             });
             return service;
         }

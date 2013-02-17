@@ -153,14 +153,20 @@ namespace Dev2.Runtime.ServiceModel
             for(var i = 0; i < outputDescription.DataSourceShapes[0].Paths.Count; i++)
             {
                 var path = outputDescription.DataSourceShapes[0].Paths[i];
-                var name = path.DisplayPath.Replace("NewDataSet().Table.", "");
+                if(string.IsNullOrEmpty(path.SampleData))
+                {
+                    continue;
+                }
+
+                // Remove bogus names
+                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "");
 
                 #region Remove recordset name if present
 
                 var idx = name.IndexOf("()", StringComparison.InvariantCultureIgnoreCase);
-                if(idx > 0)
+                if(idx >= 0)
                 {
-                    name = name.Remove(0, idx);
+                    name = name.Remove(0, idx + 2);
                 }
 
                 #endregion

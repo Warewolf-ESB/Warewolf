@@ -28,7 +28,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 throw new ArgumentNullException("xml");
             }
 
-            ResourceID = Guid.Parse(xml.AttributeSafe("ID"));
+            Guid resourceID;
+            Guid.TryParse(xml.AttributeSafe("ID"), out resourceID);
+            ResourceID = resourceID;
             ResourceType = ParseResourceType(xml.AttributeSafe("ResourceType"));
             ResourceName = xml.AttributeSafe("Name");
             ResourcePath = xml.ElementSafe("Category");
