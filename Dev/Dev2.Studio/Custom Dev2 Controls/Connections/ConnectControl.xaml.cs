@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
@@ -130,7 +131,7 @@ namespace Dev2.UI
 
         void OnConnectClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.DefaultEnvironment, enSourceType.Dev2Server);
+            RootWebSite.ShowDialog(EnvironmentRepository.DefaultEnvironment, ResourceType.Server);
         }
 
         #endregion

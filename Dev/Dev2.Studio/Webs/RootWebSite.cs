@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
@@ -24,58 +25,84 @@ namespace Dev2.Studio.Webs
                 return false;
             }
 
-            string serviceID;
-            var sourceType = enSourceType.Unknown;
+            string resourceID;
+            var resourceType = ResourceType.Unknown;
 
             if(string.IsNullOrEmpty(resourceModel.ServiceDefinition))
             {
-                serviceID = Guid.Empty.ToString();
+                resourceID = Guid.Empty.ToString();
                 if(resourceModel.IsDatabaseService)
                 {
-                    sourceType = enSourceType.SqlDatabase;
+                    resourceType = ResourceType.DbService;
                 }
             }
             else
             {
-                var serviceXml = XElement.Parse(resourceModel.ServiceDefinition);
+                var resourceXml = XElement.Parse(resourceModel.ServiceDefinition);
 
-                serviceID = serviceXml.AttributeSafe("ID");
-                Enum.TryParse(serviceXml.AttributeSafe("Type"), out sourceType);
+                resourceID = resourceXml.AttributeSafe("ID");
+                if(string.IsNullOrEmpty(resourceID))
+                {
+                    resourceID = resourceXml.AttributeSafe("Name");
+                }
+                Enum.TryParse(resourceXml.AttributeSafe("ResourceType"), out resourceType);
+
+                if(resourceType == ResourceType.Unknown)
+                {
+                    #region Try determine resourceType of 'old' resources
+
+                    if(resourceXml.Name.LocalName.Equals("Source", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if(resourceXml.AttributeSafe("Type").Equals(enSourceType.Dev2Server.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            resourceType = ResourceType.Server;
+                        }
+                    }
+                    else if(resourceXml.Name.LocalName.Equals("Service", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if(resourceXml.ElementSafe("TypeOf").Equals(enActionType.InvokeStoredProc.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            // DynamicServicesHost auto-adds an ID to each service if it doesn't exist in the persisted XML
+                            // Since the resource is read from disk rather than DynamicServicesHost we use the name instead                            
+                            resourceID = resourceXml.AttributeSafe("Name");
+                            resourceType = ResourceType.DbService;
+                        }
+                    }
+
+                    #endregion
+
+                }
             }
 
-            return ShowDialog(resourceModel.Environment, sourceType, serviceID);
+            return ShowDialog(resourceModel.Environment, resourceType, resourceID);
         }
 
         #endregion
 
-        #region ShowDialog(IEnvironmentModel environment, enSourceType sourceType, string idStr = null)
+        #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, enSourceType sourceType, string idStr = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
         {
             if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
 
-            Guid id;
-            Guid.TryParse(idStr, out id);
-
             string pageName;
             WebsiteCallbackHandler pageHandler;
             double width;
             double height;
 
-            switch(sourceType)
+            switch(resourceType)
             {
-                case enSourceType.Dev2Server:
+                case ResourceType.Server:
                     pageName = "sources/server";
                     pageHandler = new ConnectCallbackHandler();
                     width = 690;
                     height = 500;
                     break;
 
-                case enSourceType.SqlDatabase:
-                case enSourceType.MySqlDatabase:
+                case ResourceType.DbService:
                     pageName = "services/dbservice";
                     pageHandler = new DbServiceCallbackHandler();
                     width = 941;
@@ -84,7 +111,7 @@ namespace Dev2.Studio.Webs
                 default:
                     return false;
             }
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?rid={1}", pageName, id), pageHandler, width, height);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?rid={1}", pageName, resourceID), pageHandler, width, height);
             return true;
         }
 

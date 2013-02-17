@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -9,8 +10,6 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
-        public IServer Server { get; private set; }
-
         readonly int _webServerPort;
 
         #region CTOR
@@ -23,6 +22,8 @@ namespace Dev2.Studio.Webs.Callbacks
         }
 
         #endregion
+
+        public IServer Server { get; private set; }
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
@@ -81,6 +82,8 @@ namespace Dev2.Studio.Webs.Callbacks
                 // NOTE: This must ALWAYS save the environment to the server
                 //
                 ResourceRepository.AddEnvironment(defaultEnvironment, Server.Environment);
+
+                ReloadResource(defaultEnvironment, connectionName, ResourceType.Source);
             }
 
             if(CurrentEnvironmentRepository != null)
