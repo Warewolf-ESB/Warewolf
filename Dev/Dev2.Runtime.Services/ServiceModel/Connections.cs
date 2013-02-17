@@ -7,7 +7,7 @@ using System.Linq;
 using System.Network;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.DynamicServices;
+using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;

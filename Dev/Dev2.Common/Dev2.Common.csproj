@@ -50,6 +50,7 @@
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\Enums.cs" />
+    <Compile Include="ServiceModel\ResourceType.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />

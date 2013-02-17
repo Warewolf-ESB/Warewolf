@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common;
+using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;

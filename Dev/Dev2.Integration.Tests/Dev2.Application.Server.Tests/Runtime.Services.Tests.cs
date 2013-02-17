@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;

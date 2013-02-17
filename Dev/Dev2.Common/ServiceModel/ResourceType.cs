@@ -1,12 +1,5 @@
-﻿
-namespace Dev2.Runtime.ServiceModel.Data
+﻿namespace Dev2.Common.ServiceModel
 {
-    public enum AuthenticationType
-    {
-        Windows,
-        User
-    }
-
     public enum ResourceType
     {
         Unknown,
