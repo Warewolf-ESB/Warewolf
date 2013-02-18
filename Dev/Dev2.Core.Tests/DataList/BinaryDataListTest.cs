@@ -1,4 +1,6 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Diagnostics;
+using System.IO;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -20,6 +22,7 @@ namespace Unlimited.UnitTest.Framework.DataList
 
         private IBinaryDataList dlWithBankScalar;
         private IBinaryDataList dlWithPopulatedScalar;
+        static Process _redisProcess;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -48,7 +51,25 @@ namespace Unlimited.UnitTest.Framework.DataList
         // Use ClassCleanup to run code after all tests in a class have run
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
-        
+
+        [ClassInitialize()]
+        public static void BaseActivityUnitTestInitialize(TestContext testContext)
+        {
+            //var pathToRedis = Path.Combine(testContext.DeploymentDirectory, "redis-server.exe");
+            //if (_redisProcess == null) _redisProcess = Process.Start(pathToRedis);
+        }
+
+        //Use ClassCleanup to run code after all tests in a class have run
+        [ClassCleanup()]
+        public static void BaseActivityUnitTestCleanup()
+        {
+            if (_redisProcess != null)
+            {
+                _redisProcess.Kill();
+            }
+        }
+
+
         //Use TestInitialize to run code before running each test 
          [TestInitialize()]
         public void MyTestInitialize()
@@ -177,162 +198,180 @@ namespace Unlimited.UnitTest.Framework.DataList
          [TestMethod] // - ok
          public void UnionDataWithBlankOverwrite_Expect_BlankScalar()
          {
-             ErrorResultTO errors = new ErrorResultTO();
-             Guid mergeID = dlWithPopulatedScalar.UID;
-             dlWithPopulatedScalar = dlWithPopulatedScalar.Merge(dlWithBankScalar, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
+
+                 ErrorResultTO errors = new ErrorResultTO();
+                 Guid mergeID = dlWithPopulatedScalar.UID;
+                 dlWithPopulatedScalar = dlWithPopulatedScalar.Merge(dlWithBankScalar, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
 
 
-             IBinaryDataListEntry scalar;
-             string error;
-             dlWithPopulatedScalar.TryGetEntry("myScalar", out scalar, out error);
+                 IBinaryDataListEntry scalar;
+                 string error;
+                 dlWithPopulatedScalar.TryGetEntry("myScalar", out scalar, out error);
 
-             Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
-             Assert.AreEqual(mergeID, dlWithPopulatedScalar.UID);
-             Assert.IsFalse(errors.HasErrors());
+                 Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+                 Assert.AreEqual(mergeID, dlWithPopulatedScalar.UID);
+                 Assert.IsFalse(errors.HasErrors());
+             
          }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_Merged_Shape()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            Guid mergeID = dl1.UID;
-            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out errors);
-           
-            
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
 
-            Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
-            Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
-            Assert.AreEqual(mergeID, dl1.UID);
-            Assert.IsFalse(errors.HasErrors());
+                Guid mergeID = dl1.UID;
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out errors);
+
+
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+
+                Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+                Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
+                Assert.AreEqual(mergeID, dl1.UID);
+                Assert.IsFalse(errors.HasErrors());
+            
         }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_Merged_Data()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            Guid mergeID = dl1.UID;
-            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
+
+                Guid mergeID = dl1.UID;
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
+
+
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+
+                Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
+                Assert.AreEqual("r3a.f1.value2", (rs.FetchRecordAt(3, out error)[0]).TheValue);
+                Assert.AreEqual(mergeID, dl1.UID);
+                Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
+                Assert.IsFalse(errors.HasErrors());
             
-
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
-
-            Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
-            Assert.AreEqual("r3a.f1.value2", (rs.FetchRecordAt(3, out error)[0]).TheValue);
-            Assert.AreEqual(mergeID, dl1.UID);
-            Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
-            Assert.IsFalse(errors.HasErrors());
         }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_NonExistRow_CausesAdd()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            Guid mergeID = dl1.UID;
-            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
+
+                Guid mergeID = dl1.UID;
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
 
 
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
 
-            Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
-            Assert.AreEqual("r2a.f1.value2", (rs.FetchRecordAt(2, out error)[0]).TheValue);
-            Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
-            Assert.AreEqual(4, rs.ItemCollectionSize());
-            Assert.IsFalse(errors.HasErrors());
+                Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
+                Assert.AreEqual("r2a.f1.value2", (rs.FetchRecordAt(2, out error)[0]).TheValue);
+                Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
+                Assert.AreEqual(4, rs.ItemCollectionSize());
+                Assert.IsFalse(errors.HasErrors());
+            
         }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_Merged_Data_In_New_Object()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            Guid mergeID = dl1.UID;
-            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
+
+                Guid mergeID = dl1.UID;
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
+
+
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+
+                Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
+                Assert.AreEqual("r3a.f1.value2", (rs.FetchRecordAt(3, out error)[0]).TheValue);
+                Assert.AreNotEqual(mergeID, dl1.UID);
+                Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
+                Assert.IsFalse(errors.HasErrors());
             
-
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
-
-            Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
-            Assert.AreEqual("r3a.f1.value2", (rs.FetchRecordAt(3, out error)[0]).TheValue);
-            Assert.AreNotEqual(mergeID, dl1.UID);
-            Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
-            Assert.IsFalse(errors.HasErrors());
         }
 
         [TestMethod]  // - ok
         public void UnionCloneList_VarList_Expected_Merged_Data_In_New_Object()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            Guid mergeID = dl1.UID;
-            dl1 = dl1.Merge(dl4, enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
+
+                Guid mergeID = dl1.UID;
+                dl1 = dl1.Merge(dl4, enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
 
 
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            IBinaryDataListEntry rs2;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
-            dl1.TryGetEntry("recset2", out rs2, out error);
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                IBinaryDataListEntry rs2;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+                dl1.TryGetEntry("recset2", out rs2, out error);
 
-            Assert.AreEqual("myValue4", scalar.FetchScalar().TheValue);
-            Assert.AreNotEqual(mergeID, dl1.UID);
-            Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
-            Assert.AreEqual(3, rs2.FetchLastRecordsetIndex());
-            Assert.IsFalse(errors.HasErrors());
+                Assert.AreEqual("myValue4", scalar.FetchScalar().TheValue);
+                Assert.AreNotEqual(mergeID, dl1.UID);
+                Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
+                Assert.AreEqual(3, rs2.FetchLastRecordsetIndex());
+                Assert.IsFalse(errors.HasErrors());
+            
         }
 
         [TestMethod] // - ok
         public void IntersectList_Expected_Merged_Shape()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
-            Guid mergeID = dl1.UID;
 
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
 
-            Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
-            Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
-            Assert.AreEqual(mergeID, dl1.UID);
-            Assert.IsFalse(errors.HasErrors());
+
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
+                Guid mergeID = dl1.UID;
+
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+
+                Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+                Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
+                Assert.AreEqual(mergeID, dl1.UID);
+                Assert.IsFalse(errors.HasErrors());
+            
         }
 
         [TestMethod] // - ok
         public void IntersectList_VarList_SomeSame_Expected_Merged_Shape_WithErrors()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
-            Guid mergeID = dl1.UID;
 
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
+                Guid mergeID = dl1.UID;
 
-            Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
-            Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
-            Assert.AreEqual(mergeID, dl1.UID);
-            Assert.IsFalse(errors.HasErrors());
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+
+                Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+                Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
+                Assert.AreEqual(mergeID, dl1.UID);
+                Assert.IsFalse(errors.HasErrors());
+            
         }
 
 
@@ -340,22 +379,24 @@ namespace Unlimited.UnitTest.Framework.DataList
         public void IntersectVarList_Expected_Merged_Data_Missing_recset2()
         {
             ErrorResultTO errors = new ErrorResultTO();
-            dl1 = dl1.Merge(dl4, enDataListMergeTypes.Intersection, enTranslationDepth.Data, false, out errors);
-            Guid mergeID = dl1.UID;
 
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry rs;
-            IBinaryDataListEntry rs2;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
-            dl1.TryGetEntry("recset2", out rs2, out error);
+                dl1 = dl1.Merge(dl4, enDataListMergeTypes.Intersection, enTranslationDepth.Data, false, out errors);
+                Guid mergeID = dl1.UID;
 
-            Assert.AreEqual("myValue4", scalar.FetchScalar().TheValue);
-            Assert.AreEqual("r1.f1.value", (rs.FetchRecordAt(1, out error)[0]).TheValue);
-            Assert.IsTrue(rs2 == null);
-            Assert.IsTrue(errors.HasErrors());
-            Assert.AreEqual("Missing DataList item [ recset ] ", errors.FetchErrors()[0]);
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                IBinaryDataListEntry rs2;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+                dl1.TryGetEntry("recset2", out rs2, out error);
+
+                Assert.AreEqual("myValue4", scalar.FetchScalar().TheValue);
+                Assert.AreEqual("r1.f1.value", (rs.FetchRecordAt(1, out error)[0]).TheValue);
+                Assert.IsTrue(rs2 == null);
+                Assert.IsTrue(errors.HasErrors());
+                Assert.AreEqual("Missing DataList item [ recset ] ", errors.FetchErrors()[0]);
+            
         }
 
         #endregion
@@ -365,53 +406,59 @@ namespace Unlimited.UnitTest.Framework.DataList
         [TestMethod]
         public void Delete_Last_Record_Expected_Last_Row_Deleted()
         {
-            var entires = dl2.FetchRecordsetEntries();
-            var entry = entires[0];
-            int preRecordCount = entry.ItemCollectionSize();
-            bool result = entry.TryDeleteRows("");
-            int postRecordCount = entry.ItemCollectionSize();
 
-            Assert.IsTrue(postRecordCount == (preRecordCount - 1));
-            Assert.IsTrue(result);
+                var entires = dl2.FetchRecordsetEntries();
+                var entry = entires[0];
+                int preRecordCount = entry.ItemCollectionSize();
+                bool result = entry.TryDeleteRows("");
+                int postRecordCount = entry.ItemCollectionSize();
+
+                Assert.IsTrue(postRecordCount == (preRecordCount - 1));
+                Assert.IsTrue(result);
+            
         }
 
         [TestMethod]
         public void Delete_All_Records_Expected_Blank_Recordset()
         {
-            var entires = dl2.FetchRecordsetEntries();
-            var entry = entires[0];
-            int preRecordCount = entry.ItemCollectionSize();
-            bool result = entry.TryDeleteRows("*");
-            int postRecordCount = entry.ItemCollectionSize();
 
-            Assert.IsTrue(postRecordCount == 1);
-            Assert.IsTrue(result);
+                var entires = dl2.FetchRecordsetEntries();
+                var entry = entires[0];
+                int preRecordCount = entry.ItemCollectionSize();
+                bool result = entry.TryDeleteRows("*");
+                int postRecordCount = entry.ItemCollectionSize();
+
+                Assert.IsTrue(postRecordCount == 1);
+                Assert.IsTrue(result);
+            
         }
 
         [TestMethod]
         public void Delete_At_Expected_Middle_Row_Deleted()
         {
-            var entires = dl2.FetchRecordsetEntries();
-            var entry = entires[0];
-            int preRecordCount = entry.ItemCollectionSize();
-            bool result = entry.TryDeleteRows("2");
-            int postRecordCount = entry.ItemCollectionSize();
+                var entires = dl2.FetchRecordsetEntries();
+                var entry = entires[0];
+                int preRecordCount = entry.ItemCollectionSize();
+                bool result = entry.TryDeleteRows("2");
+                int postRecordCount = entry.ItemCollectionSize();
 
-            Assert.IsTrue(postRecordCount == 2);
-            Assert.IsTrue(result);
+                Assert.IsTrue(postRecordCount == 2);
+                Assert.IsTrue(result);
+            
         }
 
         [TestMethod]
         public void Delete_At_NullIndex_Expected_NoOperationPerformed()
         {
-            var entires = dl2.FetchRecordsetEntries();
-            var entry = entires[0];
-            int preRecordCount = entry.ItemCollectionSize();
-            bool result = entry.TryDeleteRows(null);
-            int postRecordCount = entry.ItemCollectionSize();
+ var entires = dl2.FetchRecordsetEntries();
+                var entry = entires[0];
+                int preRecordCount = entry.ItemCollectionSize();
+                bool result = entry.TryDeleteRows(null);
+                int postRecordCount = entry.ItemCollectionSize();
 
-            Assert.IsTrue(postRecordCount == 3);
-            Assert.IsFalse(result);
+                Assert.IsTrue(postRecordCount == 3);
+                Assert.IsFalse(result);
+            
         }
 
 
@@ -422,23 +469,25 @@ namespace Unlimited.UnitTest.Framework.DataList
         [TestMethod] // - ok
         public void IntersectList_DifferentShape_Expected_Errors()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            dl1 = dl1.Merge(dl3, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
-            Guid mergeID = dl1.UID;
+      
+                ErrorResultTO errors = new ErrorResultTO();
+                dl1 = dl1.Merge(dl3, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
+                Guid mergeID = dl1.UID;
 
-            IBinaryDataListEntry scalar;
-            IBinaryDataListEntry scalar2;
-            IBinaryDataListEntry rs;
-            IBinaryDataListEntry rs2;
-            string error;
-            dl1.TryGetEntry("myScalar", out scalar, out error);
-            dl1.TryGetEntry("theScalar", out scalar2, out error);
-            dl1.TryGetEntry("recset", out rs, out error);
-            dl1.TryGetEntry("recset2", out rs2, out error);
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry scalar2;
+                IBinaryDataListEntry rs;
+                IBinaryDataListEntry rs2;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("theScalar", out scalar2, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+                dl1.TryGetEntry("recset2", out rs2, out error);
 
-            Assert.IsTrue(errors.HasErrors());
-            Assert.AreEqual("Missing DataList item [ myScalar ] ", errors.FetchErrors()[0]);
-            Assert.AreEqual("Missing DataList item [ recset ] ", errors.FetchErrors()[1]);
+                Assert.IsTrue(errors.HasErrors());
+                Assert.AreEqual("Missing DataList item [ myScalar ] ", errors.FetchErrors()[0]);
+                Assert.AreEqual("Missing DataList item [ recset ] ", errors.FetchErrors()[1]);
+            
         }
 
         #endregion

@@ -1,4 +1,6 @@
-﻿using Dev2;
+﻿using System.Diagnostics;
+using System.IO;
+using Dev2;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -31,6 +33,8 @@ namespace ActivityUnitTests
         public Uri DsfAdddress = new Uri("http://localhost:77/dsf");
         public Mock<IFrameworkWorkspaceChannel> MockChannel;
         public IDataListCompiler Compiler;
+
+        
 
         public BaseActivityUnitTest()
         {
@@ -222,6 +226,7 @@ namespace ActivityUnitTests
 
         // return for the callback
         string _result = "<error>nop</error>";
+        protected static Process _redisProcess;
 
         /*
          * After much fing around it appears the mock is staticly evaluated and the result cannot be changed for a callback return value
@@ -316,7 +321,9 @@ namespace ActivityUnitTests
             IIndexIterator idxItr = entry.FetchRecordsetIndexes();
             while (idxItr.HasMore())
             {
-                dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, idxItr.FetchNextIndex(), out error));
+                var fetchNextIndex = idxItr.FetchNextIndex();
+                dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, fetchNextIndex, out error));
+
             }
 
             //foreach(int recordSetEntry in entry.FetchRecordsetIndexes()) {

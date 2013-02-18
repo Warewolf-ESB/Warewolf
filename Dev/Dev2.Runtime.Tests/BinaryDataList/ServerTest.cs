@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,7 @@ namespace Dev2.DynamicServices.Test {
         
         
         private TestContext testContextInstance;
+        static Process _redisProcess;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -55,11 +58,22 @@ namespace Dev2.DynamicServices.Test {
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext) {
             // boot strap the server
+//            var pathToRedis = Path.Combine(testContext.DeploymentDirectory, "redis-server.exe");
+//            if (_redisProcess == null) _redisProcess = Process.Start(pathToRedis);
             dls.AddTranslator(DataListTranslatorFactory.FetchBinaryTranslator());
             dls.AddTranslator(DataListTranslatorFactory.FetchXmlTranslator());
             dls.AddTranslator(DataListTranslatorFactory.FetchJSONTranslator());
 
 
+        }
+        //Use ClassCleanup to run code after all tests in a class have run
+        [ClassCleanup()]
+        public static void BaseActivityUnitTestCleanup()
+        {
+            if(_redisProcess != null)
+            {
+                _redisProcess.Kill();
+            }
         }
         //
         // Use ClassCleanup to run code after all tests in a class have run
@@ -107,14 +121,20 @@ namespace Dev2.DynamicServices.Test {
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformed, out errors);
             //enSystemTag
-            IBinaryDataListEntry entry = null;
-
-            if (obj.TryGetEntry("rs1", out entry, out error)) {
-                IList<IBinaryDataListItem> cols = entry.FetchRecordAt(1, out error);
-                int systemTagCount = Enum.GetValues(typeof(enSystemTag)).Length;
-                Assert.IsTrue(obj.FetchAllEntries().Count == 3 + systemTagCount && obj.FetchScalarEntries().Count == 2 + systemTagCount && obj.FetchRecordsetEntries().Count == 1 && cols.Count == 2);
-            } else {
-                Assert.Fail("Error");
+            
+            using(obj)
+            {
+                IBinaryDataListEntry entry = null;
+                if(obj.TryGetEntry("rs1", out entry, out error))
+                {
+                    IList<IBinaryDataListItem> cols = entry.FetchRecordAt(1, out error);
+                    int systemTagCount = Enum.GetValues(typeof(enSystemTag)).Length;
+                    Assert.IsTrue(obj.FetchAllEntries().Count == 3 + systemTagCount && obj.FetchScalarEntries().Count == 2 + systemTagCount && obj.FetchRecordsetEntries().Count == 1 && cols.Count == 2);
+                }
+                else
+                {
+                    Assert.Fail("Error");
+                }
             }
         }
 
@@ -177,12 +197,14 @@ namespace Dev2.DynamicServices.Test {
             IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(""));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
-
-            IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
-            IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
-            IBinaryDataListItem item = scalars[0].FetchScalar();
-            IList<IBinaryDataListItem> items = recordsets[0].FetchRecordAt(1, out error);
-            Assert.IsTrue(item != null && items != null);
+            using(obj)
+            {
+                IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
+                IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
+                IBinaryDataListItem item = scalars[0].FetchScalar();
+                IList<IBinaryDataListItem> items = recordsets[0].FetchRecordAt(1, out error);
+                Assert.IsTrue(item != null && items != null);
+            }
         }
 
         [TestMethod]
@@ -208,23 +230,25 @@ namespace Dev2.DynamicServices.Test {
             cols.Add(DataListFactory.CreateDev2Column("f3", ""));
             string error = string.Empty;
             ErrorResultTO errors = new ErrorResultTO();
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
-            dl.TryCreateRecordsetTemplate("rs1", "", cols, true, out error);
-            dl.TryCreateScalarTemplate(string.Empty, "scalar1", "", true, out error);
-            dl.TryCreateScalarValue("scalar1Value", "scalar1", out error);
-            dl.TryCreateRecordsetValue("rec1.f1.vale", "f1", "rs1", 1, out error);
-            dl.TryCreateRecordsetValue("rec1.f2.vale", "f2", "rs1", 1, out error);
-            dl.TryCreateRecordsetValue("rec1.f3.vale", "f3", "rs1", 1, out error);
-            dl.TryCreateRecordsetValue("rec2.f1.vale", "f1", "rs1", 2, out error);
-            dl.TryCreateRecordsetValue("rec2.f2.vale", "f2", "rs1", 2, out error);
-            dl.TryCreateRecordsetValue("rec2.f3.vale", "f3", "rs1", 2, out error);
 
-            DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
-            string result = tmp.FetchAsString();
+                IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+                dl.TryCreateRecordsetTemplate("rs1", "", cols, true, out error);
+                dl.TryCreateScalarTemplate(string.Empty, "scalar1", "", true, out error);
+                dl.TryCreateScalarValue("scalar1Value", "scalar1", out error);
+                dl.TryCreateRecordsetValue("rec1.f1.vale", "f1", "rs1", 1, out error);
+                dl.TryCreateRecordsetValue("rec1.f2.vale", "f2", "rs1", 1, out error);
+                dl.TryCreateRecordsetValue("rec1.f3.vale", "f3", "rs1", 1, out error);
+                dl.TryCreateRecordsetValue("rec2.f1.vale", "f1", "rs1", 2, out error);
+                dl.TryCreateRecordsetValue("rec2.f2.vale", "f2", "rs1", 2, out error);
+                dl.TryCreateRecordsetValue("rec2.f3.vale", "f3", "rs1", 2, out error);
 
-            Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
+                DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
+                string result = tmp.FetchAsString();
+
+                Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
+            
         }
 
         [TestMethod]
@@ -237,22 +261,24 @@ namespace Dev2.DynamicServices.Test {
             cols.Add(DataListFactory.CreateDev2Column("f2", ""));
             cols.Add(DataListFactory.CreateDev2Column("f3", ""));
             IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
-            dl.TryCreateRecordsetTemplate("rs1", "", cols, true, out error);
-            dl.TryCreateScalarTemplate(string.Empty, "scalar1", "", true, out error);
-            dl.TryCreateScalarValue("scalar1Value", "scalar1", out error);
-            dl.TryCreateRecordsetValue("rec1.f2.vale", "f2", "rs1", 1, out error);
-            dl.TryCreateRecordsetValue("rec1.f1.vale", "f1", "rs1", 1, out error);
-            dl.TryCreateRecordsetValue("rec1.f3.vale", "f3", "rs1", 1, out error);
-            dl.TryCreateRecordsetValue("rec2.f1.vale", "f1", "rs1", 2, out error);
-            dl.TryCreateRecordsetValue("rec2.f2.vale", "f2", "rs1", 2, out error);
-            dl.TryCreateRecordsetValue("rec2.f3.vale", "f3", "rs1", 2, out error);
 
-            DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
-            string result = tmp.FetchAsString();
+                dl.TryCreateRecordsetTemplate("rs1", "", cols, true, out error);
+                dl.TryCreateScalarTemplate(string.Empty, "scalar1", "", true, out error);
+                dl.TryCreateScalarValue("scalar1Value", "scalar1", out error);
+                dl.TryCreateRecordsetValue("rec1.f2.vale", "f2", "rs1", 1, out error);
+                dl.TryCreateRecordsetValue("rec1.f1.vale", "f1", "rs1", 1, out error);
+                dl.TryCreateRecordsetValue("rec1.f3.vale", "f3", "rs1", 1, out error);
+                dl.TryCreateRecordsetValue("rec2.f1.vale", "f1", "rs1", 2, out error);
+                dl.TryCreateRecordsetValue("rec2.f2.vale", "f2", "rs1", 2, out error);
+                dl.TryCreateRecordsetValue("rec2.f3.vale", "f3", "rs1", 2, out error);
 
-            Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
+                DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
+                string result = tmp.FetchAsString();
+
+                Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
+            
         }
         #endregion
 

@@ -210,6 +210,7 @@ namespace Unlimited.UnitTest.Framework.DataList
             DebugTO to = new DebugTO();
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
+            to.BaseSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
             to.ServiceName = "DummyService";

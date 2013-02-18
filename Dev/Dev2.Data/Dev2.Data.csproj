@@ -59,8 +59,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Common, Version=3.9.35.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.35.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis, Version=3.9.35.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text, Version=3.9.35.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -81,11 +99,12 @@
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListUtil.cs" />
     <Compile Include="Binary Objects\DataListItem.cs" />
-    <Compile Include="Binary Objects\Dev2BinaryDataListDictionary.cs" />
+    <Compile Include="Binary Objects\Dev2BinaryDataListStorage.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListEntryStorage.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListFactory.cs" />
     <Compile Include="Binary Objects\Dev2BinaryRecsetTO.cs" />
     <Compile Include="Binary Objects\Dev2Column.cs" />
+    <Compile Include="Binary Objects\Dev2RedisClient.cs" />
     <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Binary Objects\IBinaryDataList.cs" />
     <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />

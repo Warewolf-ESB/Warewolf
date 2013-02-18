@@ -12,7 +12,7 @@ using System.Linq;
 namespace Dev2.DataList.Contract.Binary_Objects
 {
     [Serializable]
-    internal class BinaryDataList : IBinaryDataList, IDisposable
+    internal class BinaryDataList : IBinaryDataList
     {
 
         #region Properties
@@ -107,7 +107,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
             else
             {
-                IBinaryDataListEntry template = new BinaryDataListEntry(theNameSpace, description, columns, isEditable, ioDir);
+                IBinaryDataListEntry template = new BinaryDataListEntry(theNameSpace, description, columns, isEditable, ioDir, UID);
                 _templateDict[theNameSpace] = template;
                 result = true;
 
@@ -142,7 +142,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
             else
             {
-                IBinaryDataListEntry template = new BinaryDataListEntry(key, description, isEditable, ioDir);
+                IBinaryDataListEntry template = new BinaryDataListEntry(key, description, isEditable, ioDir,UID);
                 _templateDict[key] = template;
                 result = true;
                 // create scalar intellisense part ;)
@@ -265,27 +265,27 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IBinaryDataListEntry tmp = null;
             bool result = false;
-            error = "Could not locate recordset template for [ " + value + " ]";
             string key = theNameSpace;
 
-            if (_templateDict.TryGetValue(key, out tmp))
+            if(_templateDict.TryGetValue(key, out tmp))
             {
 
-                if (tmp.IsRecordset)
+                if(tmp.IsRecordset)
                 {
+                    //var found = tmp.Columns.FirstOrDefault(column => String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal));
                     IList<Dev2Column> columns = tmp.Columns;
                     Dev2Column found = null;
 
-                    foreach (Dev2Column column in columns)
+                    foreach(Dev2Column column in columns)
                     {
-                        if (String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal))
+                        if(String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal))
                         {
                             found = column;
                             break;
                         }
                     }
 
-                    if (found != null)
+                    if(found != null)
                     {
                         tmp.TryPutRecordItemAtIndex(new BinaryDataListItem(value, theNameSpace, fieldName, idx), idx, out error);
                         _templateDict[key] = tmp; // update dic
@@ -301,6 +301,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     error = "Cannot add recordset to scalar";
                 }
+            }
+            else
+            {
+                error = "Could not locate recordset template for [ " + value + " ]";
             }
 
             return result;
@@ -767,8 +771,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void Dispose()
         {
+            if(_templateDict != null)
+            {
+                List<IBinaryDataListEntry> binaryDataListEntries = FetchAllEntries().ToList();
+                binaryDataListEntries.ForEach(entry => entry.Dispose());
+            }
             // Return item to the cache ;)
-            GCWriter.WriteData("Disposed Object ;)");
+            //GCWriter.WriteData("Disposed Object ;)");
         }
 
         #endregion

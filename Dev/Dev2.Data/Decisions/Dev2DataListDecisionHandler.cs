@@ -64,10 +64,10 @@ namespace Dev2.Data.Decision
         /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData)
         {
-
+           
             // Evaluate decisionDataPayload through the EvaluateFunction ;)
             Guid dlID = FetchDataListID(oldAmbientData);
-
+            if (dlID == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             // Swap out ! with a new internal token to avoid nasty issues with 
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
 

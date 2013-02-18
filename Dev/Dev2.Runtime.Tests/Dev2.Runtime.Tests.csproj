@@ -76,17 +76,17 @@
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\ConnectionsMock.cs" />
-    <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
+    <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerMock.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerTests.cs" />
     <Compile Include="ServiceModel\ServicesMock.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
+    <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
-    <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <Compile Include="DataListServerChannelTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
@@ -179,6 +179,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\InternallySigned.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServiceModel\Esb\Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Binaries\redis-server.exe">
+      <Link>redis-server.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServiceModel\Esb\Controllers\" />

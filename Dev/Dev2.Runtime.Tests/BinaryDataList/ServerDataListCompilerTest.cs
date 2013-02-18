@@ -23,9 +23,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         private static readonly string _dataListWellformedData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
         private static readonly string _dataListWellformedDataWithInfinateEvals = "<DataList><scalar1>[[scalar2]]</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2>[[scalar1]]</scalar2></DataList>";
         private static readonly string _dataListWellformedMult = "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
-        private static readonly string _dataListWellformedMultData = "<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>";
-        private static readonly string _dataListWellformedComplexData = "<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>";
-        
+
         private static DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
         private static DataListFormat binFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
 
@@ -74,7 +72,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             ErrorResultTO errors = new ErrorResultTO();
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
-
+            
             IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, Dev2.DataList.Contract.enActionType.User, "[[scalar1]]", out errors);
 
             Assert.IsFalse(errors.HasErrors());
@@ -149,14 +147,16 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void Evaluate_UserPartialRecursiveExpression_Expect_Value() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
             IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, Dev2.DataList.Contract.enActionType.User, "[[[[scalar2]]1]]", out errors);
 
             Assert.IsFalse(errors.HasErrors());
-            Assert.AreEqual("scalar3", (result.FetchScalar().TheValue));
+            var binaryDataListItem = result.FetchScalar();
+            var theValue = binaryDataListItem.TheValue;
+            Assert.AreEqual("scalar3", theValue);
 
         }
 
@@ -167,7 +167,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void UpsertScalar_Expect_Insert() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -190,7 +190,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void UpsertRecursiveEvaluatedScalar_Expect_Insert() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -213,7 +213,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void UpsertToRecordsetWithNumericIndex_Expect_Insert() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -236,7 +236,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void UpsertToRecordsetWithBlankIndex_Expect_Append() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -259,7 +259,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void UpsertToRecordsetWithStarIndex_Expect_Append() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -288,7 +288,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void ShapeInput_With_RecordsetAndScalar_Expect_New_DataList() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -311,7 +311,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void ShapeInput_With_RecordsetStarIndexAndScalar_Expect_New_DataList() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedComplexData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -334,7 +334,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
         [TestMethod]
         public void ShapeInput_With_RecordsetStarIndexAndScalar_WithDefaultValue_Expect_New_DataList() {
             ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedComplexData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
@@ -363,10 +363,12 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             string error = string.Empty;
 
             // Create parent dataList
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            var dataListWellformedMultData = "<DataList><scalar1>p1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>p2</scalar2></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dataListWellformedMultData));
             Guid parentID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             // Create child list to branch from -- Emulate Input shaping
-            data = (TestHelper.ConvertStringToByteArray(_dataListWellformedComplexData));
+            var dataListWellformedComplexData = "<DataList><scalar1>c1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>c2</scalar2></DataList>";
+            data = (TestHelper.ConvertStringToByteArray(dataListWellformedComplexData));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             // Set ParentID
             sdlc.SetParentUID(dlID, parentID, out errors);
@@ -388,7 +390,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Assert.AreEqual("rs2.f1.3", tmp.TryFetchRecordsetColumnAtIndex("f1", 5, out error).TheValue);
             // Check scalar value
             bdl.TryGetEntry("scalar1", out tmp, out error);
-            Assert.AreEqual("scalar", tmp.FetchScalar().TheValue);
+            Assert.AreEqual("c2", tmp.FetchScalar().TheValue);
         }
 
         [TestMethod]
@@ -398,10 +400,10 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             string error = string.Empty;
 
             // Create parent dataList
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid parentID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             // Create child list to branch from -- Emulate Input shaping
-            data = (TestHelper.ConvertStringToByteArray(_dataListWellformedComplexData));
+            data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             // Set ParentID
             sdlc.SetParentUID(dlID, parentID, out errors);
@@ -433,10 +435,10 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             string error = string.Empty;
 
             // Create parent dataList
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedMultData));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid parentID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             // Create child list to branch from -- Emulate Input shaping
-            data = (TestHelper.ConvertStringToByteArray(_dataListWellformedComplexData));
+            data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             // Set ParentID
             sdlc.SetParentUID(dlID, parentID, out errors);

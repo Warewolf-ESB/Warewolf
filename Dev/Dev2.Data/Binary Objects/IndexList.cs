@@ -10,6 +10,7 @@ namespace Dev2.Data.Binary_Objects
             public int MaxValue { get; private set; }
             public int MinValue { get; private set; }
             private readonly HashSet<int> _gaps;
+            IIndexIterator _indexIterator;
 
             public IndexList()
             {
@@ -63,9 +64,18 @@ namespace Dev2.Data.Binary_Objects
                 return (MaxValue - _gaps.Count);
             }
 
+            public void SetIterator(IIndexIterator indexIterator)
+            {
+                _indexIterator = indexIterator;
+            }
+
             public IIndexIterator FetchIterator()
             {
-                return new IndexIterator(_gaps, MaxValue);
+                if(_indexIterator == null)
+                {
+                    return new IndexIterator(_gaps, MaxValue);
+                }
+                return _indexIterator;
             }
 
         }

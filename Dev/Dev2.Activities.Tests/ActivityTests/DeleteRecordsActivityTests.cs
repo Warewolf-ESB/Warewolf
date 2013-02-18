@@ -1,4 +1,7 @@
-﻿using Dev2;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -60,6 +63,20 @@ namespace ActivityUnitTests.ActivityTest
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
+        [ClassInitialize()]
+        public static void BaseActivityUnitTestInitialize(TestContext testContext)
+        {
+//            var pathToRedis = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "redis-server.exe");
+//            _redisProcess = Process.Start(pathToRedis);
+        }
+
+        //Use ClassCleanup to run code after all tests in a class have run
+        [ClassCleanup()]
+        public static void BaseActivityUnitTestCleanup()
+        {
+            _redisProcess.Kill();
+        }
         #endregion
 
         #region Delete Using Index

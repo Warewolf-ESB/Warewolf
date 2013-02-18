@@ -303,25 +303,25 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
 
-        [TestMethod]
-        public void InvalidWorkflow_Test()
-        {
-            StringBuilder builder = new StringBuilder();
-            // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
-            builder.AppendLine("<configuration>");
-            builder.AppendLine("\t<AssemblyReferenceGroup>");
-            builder.AppendLine("\t</AssemblyReferenceGroup>");
-            builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
-            builder.AppendLine("\t\t<Workflow Name=\"LifeCycleDoesNotExit\"></Workflow>");
-            builder.AppendLine("\t</WorkflowGroup>");
-            builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
-            builder.AppendLine("\t</WorkflowGroup>");
-            builder.AppendLine("</configuration>");
+        //[TestMethod]
+        //public void InvalidWorkflow_Test()
+        //{
+        //    StringBuilder builder = new StringBuilder();
+        //    // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
+        //    builder.AppendLine("<configuration>");
+        //    builder.AppendLine("\t<AssemblyReferenceGroup>");
+        //    builder.AppendLine("\t</AssemblyReferenceGroup>");
+        //    builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
+        //    builder.AppendLine("\t\t<Workflow Name=\"LifeCycleDoesNotExit\"></Workflow>");
+        //    builder.AppendLine("\t</WorkflowGroup>");
+        //    builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
+        //    builder.AppendLine("\t</WorkflowGroup>");
+        //    builder.AppendLine("</configuration>");
 
-            string input = builder.ToString();
-            int errorCode = ExecuteServer(input);
-            Assert.AreEqual(5, errorCode);
-        }
+        //    string input = builder.ToString();
+        //    int errorCode = ExecuteServer(input);
+        //    Assert.AreEqual(5, errorCode);
+        //}
 
 
         [ClassCleanup]

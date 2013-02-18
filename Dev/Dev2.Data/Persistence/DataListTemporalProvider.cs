@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -24,6 +25,7 @@ namespace Dev2.DataList.Contract.Persistence {
         private static bool fileSystemInit = false;
 
         private static object _persistGuard = new object();
+        private static List<Task> _tasks = new List<Task>();
 
         // Total number of deletes before we force a GC... Tmp fix for the issue ;)
         //private static readonly int _deleteReclaimCnt = 5;
@@ -147,8 +149,12 @@ namespace Dev2.DataList.Contract.Persistence {
                             File.Delete(Path.Combine(_dataListPersistPath, id.ToString()));
                         }
                     }
-                    
-
+//                    
+                    var _task = new Task(() => tmp.Dispose(), TaskCreationOptions.None);
+                    _tasks.Add(_task);
+                    _task.ContinueWith(t => _tasks.Remove(t));
+                    _task.Start();
+//                    _task.Wait();
                     // TRAVIS ADD
                     //GCWriter.WriteData("---- Entry ----");
                     //GCWriter.WriteData("Left : " + _repo.Count);
@@ -163,6 +169,15 @@ namespace Dev2.DataList.Contract.Persistence {
                 }
 
             }
+        }
+
+        ~DataListTemporalProvider()
+        {
+            //TODO decide if this needs to happen
+            //if(_tasks != null)
+            //{
+            //    _task.Dispose();
+            //}
         }
 
         public void InitPersistence() {

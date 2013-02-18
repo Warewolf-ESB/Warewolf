@@ -56,6 +56,7 @@ namespace Dev2.Server.DataList.Translators
                                 errors.AddError(error);
                             }
                             result.Append("<");
+                            
                             result.Append(entry.Namespace);
                             // Append attribute
                             result.Append(_lockedAttribute);

@@ -74,7 +74,7 @@ namespace ActivityUnitTests.ActivityTest
         #region Language Tests
 
         [TestMethod]
-        public void Merge_Two_Sclars_Char_Merge_Expected_Data_Merged_Together_Success()
+        public void   Merge_Two_Sclars_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, "", "Left"));
             _mergeCollection.Add(new DataMergeDTO("[[CompanyTelNo]]", "None", "", 2, "", "Left"));

@@ -11,9 +11,10 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         //private IDictionary<int, IList<IBinaryDataListItem>> _items;
 
-        private Dev2BinaryDataListDictionary _items;
+        private Dev2BinaryDataListStorage _items;
 
         public int _appendIndex;
+        bool _isEmpty;
 
         #region Properties
 
@@ -41,11 +42,12 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             get
             {
-                if (key >= 0 && this._items[key] != null)
+                var binaryDataListItems = this._items[key];
+                if (key >= 0 && binaryDataListItems != null)
                 {
-                    return this._items[key];
+                    return binaryDataListItems;
                 }
-                else if (key >= 0 && this._items[key] == null)
+                else if (key >= 0 && binaryDataListItems == null)
                 {
                     // miss, add it ;)
 
@@ -66,7 +68,13 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public IIndexIterator Keys
         {
             get { return _items.Keys; }
+            set
+            {
+                _items.Keys = value;
+            }
         }
+
+        public Guid DataListKey { get; set; }
 
         #endregion
 
@@ -78,9 +86,15 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void Init()
         {
             //_items = new Dictionary<int, IList<IBinaryDataListItem>>();
-            _items = new Dev2BinaryDataListDictionary();
+            _items = new Dev2BinaryDataListStorage(this.Namespace,this.DataListKey);
+            _isEmpty = true;
             //Added by Mo always need to be set to true on init unless specified
             //IsEditable = true;
+        }
+
+        public void Dispose()
+        {
+            _items.Dispose();
         }
 
         /// <summary>
@@ -149,9 +163,16 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             return result;
         }
 
-        public bool IsEmtpy()
+        public bool IsEmtpy
         {
-            return _items.IsEmpty();
+            get
+            {
+                return _isEmpty;
+            }
+            set
+            {
+                _isEmpty = value;
+            }
         }
 
         #endregion

@@ -66,7 +66,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public static IBinaryDataListEntry CreateScalarEntry(string valueForScalar, out string error)
         {
-            IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty);
+            IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty);
             IBinaryDataListItem item = Dev2BinaryDataListFactory.CreateBinaryItem(valueForScalar, string.Empty);
             entry.TryPutScalar(item, out error);
             return entry;

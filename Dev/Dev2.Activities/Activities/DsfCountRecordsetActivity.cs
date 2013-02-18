@@ -88,7 +88,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
+            Guid executionId = dlID;
+           // Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
             allErrors.MergeErrors(errors);
 
             // Process if no errors
@@ -124,6 +125,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else if (CountNumber == string.Empty)
                     {
                         allErrors.AddError("Blank result variable");
+                    }
+
+                    //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
+                    if(errors.HasErrors())
+                    {
+                        allErrors.MergeErrors(errors);
                     }
                 }
                 else

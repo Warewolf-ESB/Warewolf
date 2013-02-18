@@ -2,6 +2,7 @@
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Reflection;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Network;
@@ -249,6 +250,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         private DateTime _nextForcedCollection;
         private Thread _gcmThread;
         private ThreadStart _gcmThreadStart;
+        Process _redisProcess;
         // END OF GC MANAGEMENT
         #endregion
 
@@ -291,7 +293,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             int result = 0;
             bool didBreak = false;
-
+           
 
             if(!SetWorkingDirectory())
             {
@@ -362,11 +364,11 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
-            if(!didBreak && !ExecuteWorkflowGroup("Initialization"))
-            {
-                result = 5;
-                didBreak = true;
-            }
+            //if(!didBreak && !ExecuteWorkflowGroup("Initialization"))
+            //{
+            //    result = 5;
+            //    didBreak = true;
+            //}
 
             if(!didBreak)
             {
@@ -382,11 +384,12 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         private int Stop(bool didBreak, int result)
         {
-            if(!ExecuteWorkflowGroup("Cleanup"))
-            {
-                didBreak = true;
-                result = 6;
-            }
+            Dev2RedisClient.StopRedis();
+            //if(!ExecuteWorkflowGroup("Cleanup"))
+            //{
+            //    didBreak = true;
+            //    result = 6;
+            //}
 
             if(!didBreak)
             {
@@ -1289,51 +1292,51 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// </summary>
         /// <param name="groupName">The group of workflows to be executed.</param>
         /// <returns>false if the execution failed, otherwise true</returns>
-        private bool ExecuteWorkflowGroup(string groupName)
-        {
-            WorkflowEntry[] entries;
+        //private bool ExecuteWorkflowGroup(string groupName)
+        //{
+        //    WorkflowEntry[] entries;
 
-            if(_workflowGroups.TryGetValue(groupName, out entries))
-            {
-                for(int i = 0; i < entries.Length; i++)
-                {
-                    WorkflowEntry entry = entries[i];
-                    StringBuilder builder = new StringBuilder();
+        //    if(_workflowGroups.TryGetValue(groupName, out entries))
+        //    {
+        //        for(int i = 0; i < entries.Length; i++)
+        //        {
+        //            WorkflowEntry entry = entries[i];
+        //            StringBuilder builder = new StringBuilder();
 
-                    if(entry.Arguments.Length > 0)
-                    {
-                        builder.AppendLine("<XmlData>");
-                        builder.AppendLine("  <ADL>");
+        //            if(entry.Arguments.Length > 0)
+        //            {
+        //                builder.AppendLine("<XmlData>");
+        //                builder.AppendLine("  <ADL>");
 
-                        for(int k = 0; k < entry.Arguments.Length; k++)
-                        {
-                            builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
-                        }
+        //                for(int k = 0; k < entry.Arguments.Length; k++)
+        //                {
+        //                    builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
+        //                }
 
-                        builder.AppendLine("  </ADL>");
-                        builder.AppendLine("</XmlData>");
-                    }
+        //                builder.AppendLine("  </ADL>");
+        //                builder.AppendLine("</XmlData>");
+        //            }
 
-                    string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
-                    string result = null;
+        //            string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
+        //            string result = null;
 
-                    try { result = _dynamicEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID); }
-                    catch(Exception e)
-                    {
-                        Fail("Workflow \"" + entry.Name + "\" execution failed", e);
-                        return false;
-                    }
+        //            try { result = _dynamicEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID); }
+        //            catch(Exception e)
+        //            {
+        //                Fail("Workflow \"" + entry.Name + "\" execution failed", e);
+        //                return false;
+        //            }
 
-                    if(ResultContainsError(result))
-                    {
-                        Fail("Workflow \"" + entry.Name + "\" execution failed", result);
-                        return false;
-                    }
-                }
-            }
+        //            if(ResultContainsError(result))
+        //            {
+        //                Fail("Workflow \"" + entry.Name + "\" execution failed", result);
+        //                return false;
+        //            }
+        //        }
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// Checks if any of the xml nodes in result are named "Error"
@@ -1442,11 +1445,20 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// <param name="disposing">true if managed resources should be disposed, otherwise false.</param>
         private void Dispose(bool disposing)
         {
+
             if(disposing)
+            {
+                if(_redisProcess != null)
+                {
+                    _redisProcess.Kill();
+                    _redisProcess.Dispose();
+                }
                 CleanupServer();
+            }
             _webserver = null;
             _dynamicEndpoint = null;
             _executionChannel = null;
+            _redisProcess = null;
         }
         #endregion
 
@@ -1529,6 +1541,9 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             // PBI : 5376 - Create instance of the Server compiler
             Write("Starting DataList Server...  ");
+            var pathToRedis = Path.Combine(Environment.CurrentDirectory, "redis-server.exe");
+            _redisProcess = Process.Start(pathToRedis);
+            Dev2RedisClient.StartRedis();
             DataListFactory.CreateServerDataListCompiler();
             Write("done.");
             WriteLine("");

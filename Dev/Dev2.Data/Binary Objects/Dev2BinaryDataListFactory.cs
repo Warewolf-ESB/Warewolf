@@ -180,6 +180,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return new BinaryDataListEntry(field, desc);
         }
 
+
+        /// <summary>
+        /// Creates the entry.
+        /// </summary>
+        /// <param name="field">The field.</param>
+        /// <param name="desc">The desc.</param>
+        /// <param name="dataListKey">The parent ID of the DataList used as part of the key for the items.</param>
+        /// <returns></returns>
+        public static IBinaryDataListEntry CreateEntry(string field, string desc,Guid dataListKey)
+        {
+            return new BinaryDataListEntry(field, desc,dataListKey);
+        }
+
         /// <summary>
         /// Creates the entry.
         /// </summary>

@@ -38,6 +38,7 @@ namespace Dev2.Common
         public const string SystemTagNamespace = "Dev2System";
         public const string SystemTagNamespaceSearch = "Dev2System.";
         public const string EvalautionScalar = "Dev2System.Expression";
+        public const string NullEntryNamespace = "NullEntryNamespace";
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
         public const string ErrorPayload = "Dev2System.Error";
         public const string ActivityRSResult = "Dev2ActivityResults";
@@ -55,7 +56,12 @@ namespace Dev2.Common
         public const string AllColumns = null;
         public const string NaughtyTextNode = "#text";
         public const char EvaluationToken = '[';
-        public const int DefaultDataListCacheSizeLvl1 = 1100;
+        public const int DefaultDataListCacheSizeLvl1 = 60000;
+        public const string DefaultDataListCacheSizeLvlMemoryPercentage = "35";
+        public const string DefaultDataListCacheSizeLvlMemoryPollingInterval = "00:00:10";
+        public const string DefaultDataListCacheSizeLvlMegaByteSize = "350";
+        public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
+        public const int DefaultDataListMaxCacheSizeLvl1 = 40000;
         public const int DefaultCachePageSizeLvl1 = 1100;
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultIntellisenseCacheLvl1 = 100;
@@ -143,5 +149,6 @@ namespace Dev2.Common
                    ? ApplicationPath
                    : Path.Combine(WorkspacePath, workspaceID.ToString());
         }
+
     }
 }

@@ -1,9 +1,10 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System;
+using Dev2.Data.Binary_Objects;
 using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    public interface IBinaryDataListEntry
+    public interface IBinaryDataListEntry:IDisposable
     {
         #region Properties
 
@@ -167,7 +168,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         /// <param name="error">The error.</param>
         /// <returns></returns>
-        IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error);
+        IBinaryDataListItem  TryFetchLastIndexedRecordsetUpsertPayload(out string error);
 
         /// <summary>
         /// Tries the fetch indexed recordset upsert payload.

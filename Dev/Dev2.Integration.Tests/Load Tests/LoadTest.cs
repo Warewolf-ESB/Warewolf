@@ -73,10 +73,13 @@ namespace Dev2.Integration.Tests.Load_Tests
 
             string exp = "<myPrimes><value> 104729</value></myPrimes>"; // Last value in the file
 
-            StringAssert.Contains(result, exp);
+            Assert.IsTrue(result.IndexOf(exp) > 0);
             // Travis.Frisinger - Bug 8579
             // Was 10.0 Moved to 2.5
-            Assert.IsTrue(duration <= 3, "The test did not finish in the required time - It finished in: " + duration + " seconds."); 
+            Console.WriteLine("Took " + duration);
+            Assert.IsTrue(duration <= 2.5);
+            
+            
         }
 
         // Travis.Frisinger - Bug 8579
@@ -95,6 +98,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
 
             StringAssert.Contains(result, exp);
+            Console.WriteLine("Took " + duration);
             if (duration <= 25.0)
             {
                 Assert.AreEqual(1,1);
@@ -105,7 +109,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             }
             else
             {
-                Assert.Fail("The process took too long to run!");
+                Assert.Fail("The process took too long to run! " + duration);
             }
         }
     }
