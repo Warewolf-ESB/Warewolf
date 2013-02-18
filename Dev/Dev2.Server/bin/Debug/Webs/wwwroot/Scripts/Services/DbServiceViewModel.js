@@ -177,17 +177,25 @@
     self.showTab = function (tabIndex) {
         $tabs.tabs("option", "active", tabIndex);
     };
+
+    self.showSource = function(sourceName) {
+        var args = ko.toJSON({
+            ResourceName: sourceName
+        });
+        if (Dev2Awesomium.Show("", args)) {
+            alert("Dev2Awesomium.Show finished");
+            self.load();
+            return true;
+        }
+        return false;
+    };
     
     self.editSource = function () {
-        var url = window.location.origin + "/services/DatabaseSourceManagement?Dev2SourceManagementDatabaseSource="
-            + self.data.source.Name + "&Dev2ServiceType=Database&Dev2SourceName=" + self.data.source.Name;
-
-        //$.get(url, function (result) {
-        //    console.log(result);
-        //});
+        return self.showSource(self.data.source().ResourceName);
     };
 
     self.newSource = function () {
+        return self.showSource("");
     };
     
     self.showAction = function () {
