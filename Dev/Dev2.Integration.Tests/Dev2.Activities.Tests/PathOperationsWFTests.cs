@@ -65,6 +65,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithStar");
 
+            // Why is this using a specific IP Address?? Is this service only on this machine?
             //string PostData = String.Format("{0}{1}", "http://192.168.104.33:1234/services", "CreateFileUsingRecordsetWithStar");
             string expected = @"<Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recorset><Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt</record></Recorset><Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt</record></Recorset><Recorset><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt</record></Recorset><DeleteFileRes>Successful</DeleteFileRes><RESULT><RES>Successful</RES></RESULT><RESULT><RES>Successful</RES></RESULT><RESULT><RES>Successful</RES></RESULT><RESULT><RES>Successful</RES></RESULT>";
 
@@ -168,7 +169,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.IsFalse(ResponseData.Contains(notExpected));
+            Assert.IsFalse(ResponseData.Contains(notExpected));            
         }
 
 

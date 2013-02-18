@@ -185,12 +185,11 @@ namespace Dev2.Studio.Feedback
         private void StartProcess()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(Executable, string.Format(StartParameters, OutputPath));
-            //startInfo.Verb = "runas"; //  //2013.02.06: Ashley Lewis - Bug 8611: indicates to elevate privileges
-            //startInfo.UseShellExecute = true; //2013.02.06: Ashley Lewis - Bug 8611: Changed to true
+            startInfo.Verb = "runas"; //2013.02.06: Ashley Lewis - Bug 8611: indicates to elevate privileges
+            startInfo.UseShellExecute = true; //2013.02.06: Ashley Lewis - Bug 8611: Required for raising privileges
             startInfo.ErrorDialog = false;
 
             Process process = new Process();
-            //process.EnableRaisingEvents = true; // enable WaitForExit() 2013.02.06: Ashley Lewis - Bug 8611: Added this line
             process.StartInfo = startInfo;
             process.Start();
             LastRecordingStartDateTimeStamp = DateTime.Now;
@@ -210,7 +209,9 @@ namespace Dev2.Studio.Feedback
             }
 
             ProcessStartInfo startInfo = new ProcessStartInfo(Executable, StopParameters);
-            startInfo.UseShellExecute = false;
+            startInfo.Verb = "runas"; //2013.02.06: Ashley Lewis - Bug 8611: indicates to elevate privileges
+            startInfo.UseShellExecute = true; //2013.02.06: Ashley Lewis - Bug 8611: Required for raising privileges
+            
             startInfo.ErrorDialog = false;
 
             Process process = new Process();
@@ -282,7 +283,7 @@ namespace Dev2.Studio.Feedback
         {
             foreach (Process process in processes)
             {
-                if (!process.HasExited)
+                if(process != null && process.Id !=0)
                 {
                     process.WaitForExit(10000);
                     if (!process.HasExited)

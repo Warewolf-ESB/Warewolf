@@ -11,6 +11,7 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Threading;
 
 #endregion
 
@@ -36,6 +37,8 @@ namespace Dev2.Core.Tests
         ServiceTypeTreeViewModel serviceTypeVM;
         ServiceTypeTreeViewModel serviceTypeVM2;
 
+        private static object _testGuard = new object();
+
         #endregion
 
         /// <summary>
@@ -49,6 +52,8 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
+            Monitor.Enter(_testGuard);
+
             CompositionInitializer.DeployViewModelOkayTest();
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
@@ -78,6 +83,11 @@ namespace Dev2.Core.Tests
             resourceVM2 = TreeViewModelFactory.Create(mockResourceModel2.Object, categoryVM2, false) as ResourceTreeViewModel;
         }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
 
         #endregion
 

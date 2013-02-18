@@ -90,5 +90,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                 }
             }
         }
+
+        private void CbxLoad(object sender, RoutedEventArgs e)
+        {
+            if(sender is ComboBox)
+            {
+                var cbx = sender as ComboBox;
+                dynamic temp = cbx.DataContext;
+                string selectedVal = temp.ModelItem.SelectedSort;
+                //2013.02.08: Ashley Lewis - Bug 8725, Task 8734 - Prevent blank sort order
+                cbx.SelectedValue = !string.IsNullOrEmpty(selectedVal) ? selectedVal : "Forward";
+            }
+        }
     }
 }
