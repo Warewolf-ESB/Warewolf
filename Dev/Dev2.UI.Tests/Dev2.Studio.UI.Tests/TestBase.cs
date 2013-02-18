@@ -2257,7 +2257,7 @@ namespace Dev2.CodedUI.Tests
 
         #region Deploy Tab
 
-
+        // Bug 7796
         // xi. Can I deploy to my server? (AKA: Can I deploy?)
         [TestMethod]
         public void CanIDeploy()

@@ -1121,6 +1121,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 8803
+        // Bug 7796
         [TestMethod]
         public void DeployNonSavedItem_Expected_ItemIsNotDeployable()
         {
