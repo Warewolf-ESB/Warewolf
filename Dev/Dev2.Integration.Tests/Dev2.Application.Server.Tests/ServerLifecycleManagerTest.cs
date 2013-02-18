@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Management;
+using System.Text;
+using System.Linq;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
@@ -103,7 +106,26 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                         // we have to find the process path by using the title of the window
                         // which for now will work, but will not if we decide to custom name our window title
                         // or, if we have the server run as a service
-                        filePath = serverProcess.MainWindowTitle;
+
+                        // This is not the correct way to search for process information
+
+                        //filePath = serverProcess.MainWindowTitle;
+                        
+                        // This is the correct way to retrieve process information from a 64-bit process using a 32-bit process
+                        int processID = serverProcess.Id;
+
+                        string wmiQueryString = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processID.ToString();
+                        using (var searcher = new ManagementObjectSearcher(wmiQueryString))
+                        {
+                            using (var results = searcher.Get())
+                            {
+                                ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
+                                if (mo != null)
+                                {
+                                    filePath = (string)mo["ExecutablePath"];
+                                }
+                            }
+                        }
 
                         //filePath = serverProcess.MainModule.FileName;
                     }
@@ -223,83 +245,83 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
 
         // Bug 8930 - Sashen To Fix these three tests
-        //[TestMethod]
-        //public void ExternalDependencies_Test()
-        //{
-        //    if (File.Exists(_lifecycleServerConfigFile))
-        //    {
-        //        File.Delete(_lifecycleServerConfigFile);
-        //    }
+        [TestMethod]
+        public void ExternalDependencies_Test()
+        {
+            if (File.Exists(_lifecycleServerConfigFile))
+            {
+                File.Delete(_lifecycleServerConfigFile);
+            }
 
-        //    StringBuilder builder = new StringBuilder();
-        //    // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
-        //    builder.AppendLine("<configuration>");
-        //    builder.AppendLine("\t<AssemblyReferenceGroup>");
+            StringBuilder builder = new StringBuilder();
+            // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
+            builder.AppendLine("<configuration>");
+            builder.AppendLine("\t<AssemblyReferenceGroup>");
 
-        //    builder.AppendLine("\t\t<AssemblyReference>System</AssemblyReference>");
-        //    builder.AppendLine("\t\t<AssemblyReference Path=\"C:\\Test\\Path\">Core</AssemblyReference>");
-        //    builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\">Unlimited</AssemblyReference>");
-        //    builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\" Culture=\"Neutral\">PresentationFramework</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference>System</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference Path=\"C:\\Test\\Path\">Core</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\">Unlimited</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\" Culture=\"Neutral\">PresentationFramework</AssemblyReference>");
 
-        //    builder.AppendLine("\t</AssemblyReferenceGroup>");
-        //    builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
-        //    builder.AppendLine("\t</WorkflowGroup>");
-        //    builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
-        //    builder.AppendLine("\t</WorkflowGroup>");
-        //    builder.AppendLine("</configuration>");
+            builder.AppendLine("\t</AssemblyReferenceGroup>");
+            builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
+            builder.AppendLine("\t</WorkflowGroup>");
+            builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
+            builder.AppendLine("\t</WorkflowGroup>");
+            builder.AppendLine("</configuration>");
 
-        //    string input = builder.ToString();
-        //    int errorCode = ExecuteServer(input);
-        //    Assert.AreEqual(2, errorCode);
-        //}
-
-
-        //[TestMethod]
-        //public void MalformedXML_Test()
-        //{
-        //    StringBuilder builder = new StringBuilder();
-
-        //    // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
-        //    builder.AppendLine("<configuration>");
-        //    builder.AppendLine("\t<AssemblyReferenceGroup>");
-
-        //    builder.AppendLine("\t\t<AssemblyRefaerence>System</AssemblyReference>");
-        //    builder.AppendLine("\t\t<AssemblyReference Path=\"C:\\Test\\Path\">Core</AssemblyReference>");
-        //    builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\">Unlimited</AssemblyReference>");
-        //    builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\" Culture=\"Neutral\">PresentationFramework</AssemblyReference>");
-
-        //    builder.AppendLine("\t</AssemblyReferenceGroup>");
-        //    builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
-        //    builder.AppendLine("\t</WorkflowGroup>");
-        //    builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
-        //    builder.AppendLine("\t</WorkflowGroup>");
-        //    builder.AppendLine("</configuration>");
-
-        //    string input = builder.ToString();
-        //    int errorCode = ExecuteServer(input);
-        //    Assert.AreEqual(1, errorCode);
-        //}
+            string input = builder.ToString();
+            int errorCode = ExecuteServer(input);
+            Assert.AreEqual(2, errorCode);
+        }
 
 
-        //[TestMethod]
-        //public void InvalidWorkflow_Test()
-        //{
-        //    StringBuilder builder = new StringBuilder();
-        //    // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
-        //    builder.AppendLine("<configuration>");
-        //    builder.AppendLine("\t<AssemblyReferenceGroup>");
-        //    builder.AppendLine("\t</AssemblyReferenceGroup>");
-        //    builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
-        //    builder.AppendLine("\t\t<Workflow Name=\"LifeCycleDoesNotExit\"></Workflow>");
-        //    builder.AppendLine("\t</WorkflowGroup>");
-        //    builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
-        //    builder.AppendLine("\t</WorkflowGroup>");
-        //    builder.AppendLine("</configuration>");
+        [TestMethod]
+        public void MalformedXML_Test()
+        {
+            StringBuilder builder = new StringBuilder();
 
-        //    string input = builder.ToString();
-        //    int errorCode = ExecuteServer(input);
-        //    Assert.AreEqual(5, errorCode);
-        //}
+            // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
+            builder.AppendLine("<configuration>");
+            builder.AppendLine("\t<AssemblyReferenceGroup>");
+
+            builder.AppendLine("\t\t<AssemblyRefaerence>System</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference Path=\"C:\\Test\\Path\">Core</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\">Unlimited</AssemblyReference>");
+            builder.AppendLine("\t\t<AssemblyReference Version=\"4.0.0.0\" Culture=\"Neutral\">PresentationFramework</AssemblyReference>");
+
+            builder.AppendLine("\t</AssemblyReferenceGroup>");
+            builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
+            builder.AppendLine("\t</WorkflowGroup>");
+            builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
+            builder.AppendLine("\t</WorkflowGroup>");
+            builder.AppendLine("</configuration>");
+
+            string input = builder.ToString();
+            int errorCode = ExecuteServer(input);
+            Assert.AreEqual(1, errorCode);
+        }
+
+
+        [TestMethod]
+        public void InvalidWorkflow_Test()
+        {
+            StringBuilder builder = new StringBuilder();
+            // This is not in TestResources as it very specific to this particular test and the ServerLifecycleManager
+            builder.AppendLine("<configuration>");
+            builder.AppendLine("\t<AssemblyReferenceGroup>");
+            builder.AppendLine("\t</AssemblyReferenceGroup>");
+            builder.AppendLine("\t<WorkflowGroup Name=\"Initialization\">");
+            builder.AppendLine("\t\t<Workflow Name=\"LifeCycleDoesNotExit\"></Workflow>");
+            builder.AppendLine("\t</WorkflowGroup>");
+            builder.AppendLine("\t<WorkflowGroup Name=\"Cleanup\">");
+            builder.AppendLine("\t</WorkflowGroup>");
+            builder.AppendLine("</configuration>");
+
+            string input = builder.ToString();
+            int errorCode = ExecuteServer(input);
+            Assert.AreEqual(5, errorCode);
+        }
 
 
         [ClassCleanup]
