@@ -1223,7 +1223,9 @@ namespace Dev2.Runtime.InterfaceImplementors
                                 allErrors.MergeErrors(errors);
                                 tmpID = ClientCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
                                                                   formatedPayload, dlShape, out errors);
-                                ClientCompiler.SetParentID(tmpID, req.DataListID);
+                                var parentID = ClientCompiler.FetchParentID(req.DataListID);
+                                //ClientCompiler.SetParentID(tmpID, req.DataListID);
+                                ClientCompiler.SetParentID(tmpID, parentID);
                                 // set parent for merge op in finally...
 
                                 allErrors.MergeErrors(errors);

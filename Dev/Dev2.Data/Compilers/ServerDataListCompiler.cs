@@ -1,5 +1,4 @@
-﻿using System.Web.Script.Serialization;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract;
@@ -1900,6 +1899,17 @@ namespace Dev2.Server.Datalist
                             else if (typeof(T) == typeof(IBinaryDataListEntry))
                             {
                                 evaluatedValue = (IBinaryDataListEntry)frameItem.Value;
+
+                                if (!evaluatedValue.IsRecordset)
+                                {
+                                    string val = evaluatedValue.FetchScalar().TheValue;
+                                    IIntellisenseResult res = tc.ParseTokenForMatch(val, bdl.FetchIntellisenseParts());
+                                    if (res != null && res.Type == enIntellisenseResultType.Selectable)
+                                    {
+                                        evaluatedValue = null;
+                                        break;
+                                    }
+                                }
                             }
 
                             allErrors.MergeErrors(errors);

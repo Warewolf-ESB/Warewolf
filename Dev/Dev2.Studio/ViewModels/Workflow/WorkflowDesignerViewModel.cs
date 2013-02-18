@@ -8,6 +8,7 @@ using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -2341,7 +2342,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         //2013.02.11: Ashley Lewis - Bug 8553
         public void Handle(UpdateResourceMessage message)
         {
-            _workflowModel.Update(message.ResourceModel);
+            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel as IContextualResourceModel, _workflowModel))
+            {
+                _workflowModel.Update(message.ResourceModel);
+            }
         }
 
         /// <summary>

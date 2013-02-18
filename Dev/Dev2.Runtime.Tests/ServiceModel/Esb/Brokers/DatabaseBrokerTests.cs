@@ -1,87 +1,97 @@
-﻿//using Dev2.DynamicServices.Test;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using System;
-//using System.Data;
+﻿using Dev2.DynamicServices.Test;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Data;
 
-//namespace Dev2.Tests.Runtime.ServiceModel.Data
-//{
-//    [TestClass]
-//    public class DataBrokerTests
-//    {
-//        #region Execute Tests
+namespace Dev2.Tests.Runtime.ServiceModel.Data
+{
+    [TestClass]
+    public class DataBrokerTests
+    {
+        //#region Execute Tests
 
-//        [TestMethod]
-//        public void ExecuteCommandWhereNoErrorsExpectedRowProcessorInvocationsEqualToNumberOfRows()
-//        {
-//            int resultRows = 5;
-//            int resultColumns = 3;
-//            var reader = Dev2MockFactory.SetupDataReader(Dev2MockFactory.FakeDataBrokerTestsResults(resultRows, resultColumns));
-//            var command = Dev2MockFactory.SetupDbCommand(reader, Dev2MockFactory.SetupDbConnection());
+        //[TestMethod]
+        //public void ExecuteCommandWhereNoErrorsExpectedRowProcessorInvocationsEqualToNumberOfRows()
+        //{
+        //    int resultRows = 5;
+        //    int resultColumns = 3;
+        //    var reader = Dev2MockFactory.SetupDataReader(Dev2MockFactory.FakeDataBrokerTestsResults(resultRows, resultColumns));
+        //    var command = Dev2MockFactory.SetupDbCommand(reader, Dev2MockFactory.SetupDbConnection());
 
-//            int rowProcessorCount = 0;
-//            Func<IDataReader, bool> rowProcessor = dataReader => 
-//            {
-//                rowProcessorCount++;
-//                return true;
-//            };
-            
-//            var dataBroker = new DataBrokerMock();
-//            dataBroker.ExecuteSelect(command.Object, rowProcessor);
+        //    int rowProcessorCount = 0;
+        //    Func<IDataReader, bool> rowProcessor = dataReader =>
+        //    {
+        //        rowProcessorCount++;
+        //        return true;
+        //    };
 
-//            int expected = resultRows;
-//            int actual = rowProcessorCount;
+        //    var dataBroker = new DataBrokerMock();
+        //    dataBroker.ExecuteSelect(command.Object, rowProcessor);
 
-//            Assert.AreEqual(expected, actual);
-//        }
+        //    int expected = resultRows;
+        //    int actual = rowProcessorCount;
 
-//        [TestMethod]
-//        [ExpectedException(typeof(Exception))]
-//        public void ExecuteCommandWhereProcessorThrowsExceptionAndContinueOnProcessorExceptionIsFalseExpectedException()
-//        {
-//            int resultRows = 5;
-//            int resultColumns = 3;
-//            var reader = Dev2MockFactory.SetupDataReader(Dev2MockFactory.FakeDataBrokerTestsResults(resultRows, resultColumns));
-//            var command = Dev2MockFactory.SetupDbCommand(reader, Dev2MockFactory.SetupDbConnection());
+        //    Assert.AreEqual(expected, actual);
+        //}
 
-//            Func<IDataReader, bool> rowProcessor = dataReader =>
-//            {
-//                throw new Exception();
-//            };
+        //[TestMethod]
+        //[ExpectedException(typeof(Exception))]
+        //public void ExecuteCommandWhereProcessorThrowsExceptionAndContinueOnProcessorExceptionIsFalseExpectedException()
+        //{
+        //    int resultRows = 5;
+        //    int resultColumns = 3;
+        //    var reader = Dev2MockFactory.SetupDataReader(Dev2MockFactory.FakeDataBrokerTestsResults(resultRows, resultColumns));
+        //    var command = Dev2MockFactory.SetupDbCommand(reader, Dev2MockFactory.SetupDbConnection());
 
-//            var dataBroker = new DataBrokerMock();
-//            dataBroker.ExecuteSelect(command.Object, rowProcessor);
-//        }
+        //    Func<IDataReader, bool> rowProcessor = dataReader =>
+        //    {
+        //        throw new Exception();
+        //    };
 
-//        [TestMethod]
-//        public void ExecuteCommandWhereProcessorThowsExceptionOnSomeRowsAndContinueOnProcessorExceptionIsTrueExpectedRowProcessorInvocationsEqualToNumberOfRowsAndNoExcpetions()
-//        {
-//            int resultRows = 5;
-//            int resultColumns = 3;
-//            var reader = Dev2MockFactory.SetupDataReader(Dev2MockFactory.FakeDataBrokerTestsResults(resultRows, resultColumns));
-//            var command = Dev2MockFactory.SetupDbCommand(reader, Dev2MockFactory.SetupDbConnection());
+        //    var dataBroker = new DataBrokerMock();
+        //    dataBroker.ExecuteSelect(command.Object, rowProcessor);
+        //}
 
-//            int rowProcessorCount = 0;
-//            Func<IDataReader, bool> rowProcessor = dataReader =>
-//            {
-//                rowProcessorCount++;
+        //[TestMethod]
+        //public void ExecuteCommandWhereProcessorThowsExceptionOnSomeRowsAndContinueOnProcessorExceptionIsTrueExpectedRowProcessorInvocationsEqualToNumberOfRowsAndNoExcpetions()
+        //{
+        //    int resultRows = 5;
+        //    int resultColumns = 3;
+        //    var reader = Dev2MockFactory.SetupDataReader(Dev2MockFactory.FakeDataBrokerTestsResults(resultRows, resultColumns));
+        //    var command = Dev2MockFactory.SetupDbCommand(reader, Dev2MockFactory.SetupDbConnection());
 
-//                if (rowProcessorCount == 2 || rowProcessorCount == 4)
-//                {
-//                    throw new Exception();
-//                }
-                
-//                return true;    
-//            };
+        //    int rowProcessorCount = 0;
+        //    Func<IDataReader, bool> rowProcessor = dataReader =>
+        //    {
+        //        rowProcessorCount++;
 
-//            var dataBroker = new DataBrokerMock();
-//            dataBroker.ExecuteSelect(command.Object, rowProcessor, true);
+        //        if (rowProcessorCount == 2 || rowProcessorCount == 4)
+        //        {
+        //            throw new Exception();
+        //        }
 
-//            int expected = resultRows;
-//            int actual = rowProcessorCount;
+        //        return true;
+        //    };
 
-//            Assert.AreEqual(expected, actual);
-//        }
+        //    var dataBroker = new DataBrokerMock();
+        //    dataBroker.ExecuteSelect(command.Object, rowProcessor, true);
 
-//        #endregion
-//    }
-//}
+        //    int expected = resultRows;
+        //    int actual = rowProcessorCount;
+
+        //    Assert.AreEqual(expected, actual);
+        //}
+
+        //#endregion
+
+
+        [TestMethod]
+        public void ExecuteCommandWhereNoErrorsExpectedRowProcessorInvocationsEqualToNumberOfRows()
+        {
+            DbSource dbSource = new DbSource();
+            var dataBroker = new DataBrokerMock();
+            dataBroker.GetServiceMethods(dbSource);
+        }
+    }
+}

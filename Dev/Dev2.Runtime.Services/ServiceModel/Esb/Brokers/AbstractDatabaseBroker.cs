@@ -288,6 +288,5 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         protected abstract IDbConnection CreateConnection(string connectionString);
 
         #endregion
-
     }
 }
