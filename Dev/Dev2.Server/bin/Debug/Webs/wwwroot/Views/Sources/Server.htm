@@ -1,4 +1,4 @@
-﻿<div id="container" class="ui-widget-content" style="height: 490px; width: 700px;">
+﻿<div id="container" class="ui-widget-content" style="height: 488px; width: 700px;">
     <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
     </div>
     <div id="body" style="padding: 10px;">
@@ -56,13 +56,13 @@
             <div class="help-text help-text-max ui-widget-content" style="margin-top: 15px;" data-bind="html: helpText, visible: isHelpTextVisible">
             </div>
         </div>
-        <div data-bind="visible: showTestResults" style="clear: both; float:left; padding-top: 5px;">
-            <span class="message-error" data-bind="visible: !testSucceeded()">
+        <div style="clear: both; float:left; padding-top: 5px;" data-bind="visible: showTestResults">
+            <span class="message-error" data-bind="visible: !testSucceeded()">            
                 <span data-bind="text: testError"></span>
             </span>
         </div>
         <div class="button-bar" style="clear: both; margin-top: 393px">
-            <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: testSucceeded">Save Connection</button>
+            <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Connection</button>
             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
     </div>

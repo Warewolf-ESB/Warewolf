@@ -73,7 +73,6 @@
         $("#userName").removeClass("error");
         $("#password").removeClass("error");
 
-        self.testSucceeded = ko.observable(false);
         self.isUserInputVisible(isUser);
     });
 
@@ -88,14 +87,17 @@
     self.testSucceeded = ko.observable(false);
     self.testError = ko.observable("");
     
-    self.isFormTestable = ko.computed(function() {
-        self.testSucceeded(false);
-        self.showTestResults(false);
+    self.isFormTestable = ko.computed(function () {
         var valid = self.data.address() ? true : false;
         if (self.isUserInputVisible()) {
             valid = valid && self.data.userName() && self.data.password();
         }
+        self.showTestResults(false);
         return valid;
+    });
+    
+    self.isFormValid = ko.computed(function () {
+        return  self.isFormTestable() && self.showTestResults() && !self.testError();
     });
     
     self.updateHelpText = function (id) {
@@ -114,15 +116,16 @@
         $testButton.button("option", "disabled", true);
         self.showTestResults(false);
         self.isTestResultsLoading(true);
-
-        var data = $.extend(self.data, self.saveData);
-        var jsonData = ko.toJSON(data);
+        self.testSucceeded(false);
+        
+        var jsonData = ko.toJSON(self.data);
         $.post("Service/Connections/Test" + window.location.search, jsonData, function (result) {
+            console.log(result);
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
             self.showTestResults(true);
-            self.testError(result.ErrorMessage);
             self.testSucceeded(result.IsValid);
+            self.testError(result.ErrorMessage);
         });
     };
     self.save = function () {
