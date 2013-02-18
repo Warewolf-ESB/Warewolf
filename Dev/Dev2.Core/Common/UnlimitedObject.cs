@@ -1358,7 +1358,8 @@ namespace Unlimited.Framework
                 input.IsDataListScoped = parentRequest.IsDataListScoped;
                 input.ParentServiceName = parentRequest.ParentServiceName;
                 input.ParentInstanceID = parentRequest.ParentInstanceID;
-                input.ParentWorkflowInstanceId = parentRequest.ParentWorkflowInstanceId;   
+                input.ParentWorkflowInstanceId = parentRequest.ParentWorkflowInstanceId;
+                input.IsDebug = parentRequest.IsDebug;
             }
 
             return input.XmlString;

@@ -147,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OnBeforeExecute(context);
 
             //Bug 8918 : Added so that debug only runs when executing in debug - Massimo.Guerrera
-            if (dataObject != null) //&& dataObject.IsDebug)
+            if (dataObject != null && dataObject.IsDebug)
             {
                 DispatchDebugState(context, StateType.Before);
             }
@@ -254,7 +254,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 //Bug 8918 : Added so that debug only runs when executing in debug - Massimo.Guerrera
-                if (dataObject != null)// && dataObject.IsDebug)
+                if (dataObject != null && dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.After);
                 }
