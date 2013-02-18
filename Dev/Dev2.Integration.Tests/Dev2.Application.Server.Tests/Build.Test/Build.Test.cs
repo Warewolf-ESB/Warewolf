@@ -168,8 +168,9 @@ namespace Dev2.Integration.Tests.Build.Tests
             // BUG 8593: 2013.02.17 - TWR - changed code to test POST web request
             var urls = new[]
             {
-                "http://localhost:1234/services/%3Ctest%3E/test",
-                "http://localhost:1234/services//"
+                String.Format("{0}{1}", ServerSettings.WebserverURI, "%3Ctest%3E/test"),
+                String.Format("{0}{1}", ServerSettings.WebserverURI, "!@#$%^&*"),
+                String.Format("{0}{1}", ServerSettings.WebserverURI, "/")
             };
 
             var client = new WebClient();
