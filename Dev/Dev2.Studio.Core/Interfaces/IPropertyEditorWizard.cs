@@ -1,13 +1,16 @@
 ﻿using System.Windows;
 
-namespace Dev2.Studio.Core.Interfaces {
+namespace Dev2.Studio.Core.Interfaces
+{
     public delegate void NavigateRequestedEventHandler(string uri);
 
-    public interface IPropertyEditorWizard 
+    public interface IPropertyEditorWizard
     {
         Window Owner { get; set; }
 
         ILayoutObjectViewModel SelectedLayoutObject { get; }
+        void Save(string value);
+        void NavigateTo(string uri, string args, string returnUri);
         void OpenPropertyEditor();
         void Dev2Set(string data, string uri);
         void Dev2SetValue(string value);

@@ -1,7 +1,7 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core
 {
@@ -38,6 +38,22 @@ namespace Dev2.Studio.Core
             Close();
         }
 
+        public void Save(string value)
+        {
+            if(PropertyEditorViewModel != null)
+            {
+                InvokeAction(() => PropertyEditorViewModel.Save(value));
+            }
+        }
+
+        public void NavigateTo(string uri, string args, string returnUri)
+        {
+            if(PropertyEditorViewModel != null)
+            {
+                InvokeAction(() => PropertyEditorViewModel.NavigateTo(uri, args, returnUri));
+            }
+        }
+
         public void OpenPropertyEditor()
         {
             if(PropertyEditorViewModel != null)
@@ -61,7 +77,7 @@ namespace Dev2.Studio.Core
         // Brendon 2012-09-10 : Renamed from Dev2Set to Dev2SetValue because having 2 
         // methods with the same name was causing issues when invoking them from javascript.
         public void Dev2SetValue(string value)
-            {
+        {
             if(PropertyEditorViewModel != null)
             {
                 InvokeAction(() => PropertyEditorViewModel.Dev2SetValue(value));
@@ -124,13 +140,13 @@ namespace Dev2.Studio.Core
             }
         }
 
-        void InvokeAction(Action action)
+        static void InvokeAction(Action action)
         {
             if(action != null)
             {
                 if(!Application.Current.Dispatcher.CheckAccess())
                 {
-                    Application.Current.Dispatcher.BeginInvoke(action);
+                    Application.Current.Dispatcher.Invoke(action);
                 }
                 else
                 {

@@ -1,12 +1,12 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Build.Tests
@@ -136,7 +136,7 @@ namespace Dev2.Integration.Tests.Build.Tests
             dynamic resultingObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
             dynamic wfServices = resultingObject.Service;
-            foreach (var item in wfServices)
+            foreach(var item in wfServices)
             {
                 Assert.IsTrue(item.XmlString.Contains("<Action"));
             }
@@ -155,29 +155,37 @@ namespace Dev2.Integration.Tests.Build.Tests
             dynamic resultingObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
             dynamic wfServices = resultingObject.Source;
-            foreach (var item in wfServices)
+            foreach(var item in wfServices)
             {
                 Assert.IsTrue(item.XmlString.Contains("<Source"));
             }
         }
 
-        // Sashen :25-01-2013 : This test checks that a service returns the correct message
-        // Fails due to bug 8593
         [TestMethod]
         public void Environment_ServiceNotExistsOnService_ExpectedErrorMessageServiceNotExist()
         {
-            string expected = @"<center><h1>404</h1>Error: Service not found in catalog</center>";
-            EnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
-            conn.Connect();
-            string actual = conn.DataChannel.ExecuteCommand(string.Format("<x><Service>{0}</Service></x>", Guid.NewGuid().ToString()), Guid.Empty, Guid.NewGuid());
-            //string actual = _dataChannel.ExecuteCommand(string.Format("<x><Service>{0}</Service></x>", Guid.NewGuid().ToString()), Guid.Empty, Guid.NewGuid());
-            actual = actual.Replace("\r", "").Replace("\n", "");
-            
-            // Uncomment the following line when the bug has been completed.
-            Assert.Inconclusive();
-            //StringAssert.Contains(actual, expected);
+            //// BUG 8593: 2013.02.17 - TWR - changed code to test POST web request
+            //var urls = new[]
+            //{
+            //    "http://localhost:1234/services/%3Ctest%3E/test",
+            //    "http://localhost:1234/services//"
+            //};
 
+            //var client = new WebClient();
+            //foreach(var url in urls)
+            //{
+            //    try
+            //    {
+            //        client.UploadString(url, "hello");
+            //    }
+            //    catch(WebException wex)
+            //    {
+            //        var response = (HttpWebResponse)wex.Response;
+            //        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            //        Assert.AreEqual("Error: Resource not found in catalog", response.StatusDescription);
+            //    }
+            //}
+            Assert.Inconclusive("To be completed");
         }
 
         /// <summary>

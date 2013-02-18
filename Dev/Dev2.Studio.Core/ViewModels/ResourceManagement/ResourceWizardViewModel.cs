@@ -1,16 +1,17 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Xml.Linq;
+using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Xml.Linq;
 
 
-namespace Dev2.Studio.Core.ViewModels {
+namespace Dev2.Studio.Core.ViewModels
+{
     public class ResourceWizardViewModel : SimpleBaseViewModel, IPropertyEditorWizard
     {
         #region Class Members
@@ -39,7 +40,8 @@ namespace Dev2.Studio.Core.ViewModels {
 
         public IPopUp PopupProvider { get; set; }
 
-        public string Title {
+        public string Title
+        {
             get;
             set;
         }
@@ -63,7 +65,8 @@ namespace Dev2.Studio.Core.ViewModels {
 
         #region Methods
 
-        public void Update() {
+        public void Update()
+        {
             base.OnPropertyChanged("SelectedResource");
         }
 
@@ -83,7 +86,7 @@ namespace Dev2.Studio.Core.ViewModels {
             _resource.Category = feedback.Element("Category").Value;
             _resource.Comment = feedback.Element("Comment").Value;
             _resource.Tags = feedback.Element("Tags").Value;
-            _resource.HelpLink = feedback.Element("HelpLink").Value;            
+            _resource.HelpLink = feedback.Element("HelpLink").Value;
             _resource.UpdateIconPath(feedback.Element("IconPath").Value);
         }
 
@@ -99,7 +102,7 @@ namespace Dev2.Studio.Core.ViewModels {
 
         protected virtual void OnNavigateRequested(string uri)
         {
-            if (NavigateRequested != null)
+            if(NavigateRequested != null)
             {
                 NavigateRequested(uri);
             }
@@ -113,7 +116,7 @@ namespace Dev2.Studio.Core.ViewModels {
 
         public ILayoutObjectViewModel SelectedLayoutObject
         {
-            get 
+            get
             {
                 return null;
             }
@@ -123,6 +126,15 @@ namespace Dev2.Studio.Core.ViewModels {
 
         #region Methods
 
+        public void Save(string value)
+        {
+        }
+
+        public void NavigateTo(string uri, string args, string returnUri)
+        {
+
+        }
+
         public void OpenPropertyEditor()
         {
             //Do nothing here as this view model doesn't handle children which need wizzards
@@ -131,9 +143,9 @@ namespace Dev2.Studio.Core.ViewModels {
         public void Dev2Set(string data, string uri)
         {
             Uri postUri;
-            if (!Uri.TryCreate(_resource.Environment.WebServerAddress, uri, out postUri))
+            if(!Uri.TryCreate(_resource.Environment.WebServerAddress, uri, out postUri))
             {
-                if (!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
+                if(!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
                 {
                     throw new Exception("Unable to create the URL to post wizard information to the server.");
                 }
@@ -142,12 +154,12 @@ namespace Dev2.Studio.Core.ViewModels {
             //string postUri = string.Format("{0}{1}", MainViewModel.CurrentWebServer, uri);
 
             IWebCommunicationResponse response = WebCommunication.Post(postUri.AbsoluteUri, data);
-            if (response != null)
+            if(response != null)
             {
-                switch (response.ContentType)
+                switch(response.ContentType)
                 {
                     case "text/html":
-                        if (NavigateRequested != null)
+                        if(NavigateRequested != null)
                         {
                             NavigateRequested(postUri.AbsoluteUri);
                         }
@@ -163,13 +175,13 @@ namespace Dev2.Studio.Core.ViewModels {
                 }
             }
             else
-	        {
+            {
                 PopupProvider.Buttons = MessageBoxButton.OK;
                 PopupProvider.Description = string.Concat("Unexpected result type from '", uri, "'.");
                 PopupProvider.Header = "Unexpected Result";
                 PopupProvider.ImageType = MessageBoxImage.Error;
                 PopupProvider.Show();
-	        }
+            }
         }
 
         public void Dev2SetValue(string value)
@@ -179,13 +191,13 @@ namespace Dev2.Studio.Core.ViewModels {
 
         public void Dev2Done()
         {
-            if (_resource != null && _resource.Environment != null && _resource.Environment.Resources != null)
+            if(_resource != null && _resource.Environment != null && _resource.Environment.Resources != null)
             {
                 try
                 {
                     UpdateModel();
                 }
-                catch (Exception)
+                catch(Exception)
                 {
                     PopupProvider.Buttons = MessageBoxButton.OK;
                     PopupProvider.Description = "Invalid response from wizard.";
@@ -198,13 +210,13 @@ namespace Dev2.Studio.Core.ViewModels {
                 bool savedByWizard = (_resource.ResourceType == ResourceType.Source || _resource.ResourceType == ResourceType.Service);
                 bool newResource = (res == null);
 
-                if (savedByWizard)
+                if(savedByWizard)
                 {
                     //
                     // Reload resource call
                     //
                     List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
-                    foreach (IResourceModel resource in effectedResources)
+                    foreach(IResourceModel resource in effectedResources)
                     {
                         EventAggregator.Publish(new UpdateResourceMessage(resource));
                     }
@@ -213,9 +225,9 @@ namespace Dev2.Studio.Core.ViewModels {
                 {
                     _resource.Environment.Resources.Save(_resource);
                     EventAggregator.Publish(new UpdateResourceMessage(_resource));
-                }    
-                
-                if (newResource && _resource.ResourceType == ResourceType.WorkflowService)
+                }
+
+                if(newResource && _resource.ResourceType == ResourceType.WorkflowService)
                 {
                     Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resource);
                 }
@@ -257,14 +269,14 @@ namespace Dev2.Studio.Core.ViewModels {
         public void Dev2ReloadResource(string resourceName, string resourceType)
         {
             ResourceType parsedResourceType;
-            if (Enum.TryParse<ResourceType>(resourceType, out parsedResourceType) && 
+            if(Enum.TryParse<ResourceType>(resourceType, out parsedResourceType) &&
                 _resource != null && _resource.Environment != null && _resource.Environment.Resources != null)
             {
                 //
                 // Reload resource call
                 //
                 List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(resourceName, parsedResourceType, ResourceModelEqualityComparer.Current);
-                foreach (IResourceModel resource in effectedResources)
+                foreach(IResourceModel resource in effectedResources)
                 {
                     EventAggregator.Publish(new UpdateResourceMessage(resource));
                 }

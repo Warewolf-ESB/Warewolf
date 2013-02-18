@@ -1,4 +1,12 @@
-﻿using CefSharp.Wpf;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml;
+using CefSharp.Wpf;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -8,14 +16,6 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Xml;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.ViewModels
@@ -548,7 +548,7 @@ namespace Dev2.Studio.Core.ViewModels
                 package.Dev2WebsiteName = _resource.ResourceName;
                 var workspaceID = ((IStudioClientContext)_webActivity.ResourceModel.Environment.DsfChannel).AccountID;
                 string result = _webActivity.ResourceModel.Environment.DsfChannel.ExecuteCommand(package.XmlString, workspaceID, GlobalConstants.NullDataListID);
-                if (result == null)
+                if(result == null)
                 {
                     throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, StringResources.Website_BootStrap_Service));
                 }
@@ -748,6 +748,15 @@ namespace Dev2.Studio.Core.ViewModels
                 SetConfigFragment(itemToDelete.WebpartServiceDisplayName, new UnlimitedObject("Empty"));
 
             }
+        }
+
+        public void Save(string value)
+        {
+        }
+
+        public void NavigateTo(string uri, string args, string returnUri)
+        {
+
         }
 
         public void OpenPropertyEditor()

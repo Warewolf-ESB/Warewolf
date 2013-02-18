@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Newtonsoft.Json.Linq;
@@ -18,6 +19,8 @@ namespace Dev2.Studio.Webs.Callbacks
             ImportService.SatisfyImports(this);
         }
 
+        #region Properties
+
         public Window Owner { get; set; }
 
         [Import]
@@ -26,9 +29,21 @@ namespace Dev2.Studio.Webs.Callbacks
         [Import]
         public IEventAggregator EventAggregator { get; set; }
 
-        protected abstract void Save(IEnvironmentModel environmentModel, dynamic jsonObj);
+        #endregion
 
-        protected void ReloadResource(IEnvironmentModel environmentModel, string resourceName, Core.AppResources.Enums.ResourceType resourceType)
+        protected abstract void Save(IEnvironmentModel environmentModel, dynamic jsonArgs);
+
+        #region Navigate
+
+        protected virtual void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
+        {
+        }
+
+        #endregion
+
+        #region ReloadResource
+
+        protected void ReloadResource(IEnvironmentModel environmentModel, string resourceName, ResourceType resourceType)
         {
             if(EventAggregator == null || environmentModel == null || environmentModel.Resources == null)
             {
@@ -41,6 +56,8 @@ namespace Dev2.Studio.Webs.Callbacks
             }
         }
 
+        #endregion
+
         #region Implementation of IPropertyEditorWizard
 
         public ILayoutObjectViewModel SelectedLayoutObject
@@ -51,20 +68,12 @@ namespace Dev2.Studio.Webs.Callbacks
             }
         }
 
-        public void OpenPropertyEditor()
+        public virtual void Save(string value)
         {
+            Save(value, EnvironmentRepository.DefaultEnvironment);
         }
 
-        public void Dev2Set(string data, string uri)
-        {
-        }
-
-        public void Dev2SetValue(string value)
-        {
-            Dev2SetValue(value, EnvironmentRepository.DefaultEnvironment);
-        }
-
-        public void Dev2SetValue(string value, IEnvironmentModel environmentModel)
+        public virtual void Save(string value, IEnvironmentModel environmentModel)
         {
             Close();
 
@@ -76,15 +85,33 @@ namespace Dev2.Studio.Webs.Callbacks
             Save(environmentModel, jsonObj);
         }
 
-        public void Dev2Done()
+        public virtual void NavigateTo(string uri, string args, string returnUri)
+        {
+            dynamic jsonArgs = JObject.Parse(args);
+            Navigate(EnvironmentRepository.DefaultEnvironment, uri, jsonArgs, returnUri);
+        }
+
+        public virtual void OpenPropertyEditor()
         {
         }
 
-        public void Dev2ReloadResource(string resourceName, string resourceType)
+        public virtual void Dev2Set(string data, string uri)
         {
         }
 
-        public void Close()
+        public virtual void Dev2SetValue(string value)
+        {
+        }
+
+        public virtual void Dev2Done()
+        {
+        }
+
+        public virtual void Dev2ReloadResource(string resourceName, string resourceType)
+        {
+        }
+
+        public virtual void Close()
         {
             if(Owner != null)
             {
@@ -92,14 +119,14 @@ namespace Dev2.Studio.Webs.Callbacks
             }
         }
 
-        public void Cancel()
+        public virtual void Cancel()
         {
             Close();
         }
 
         public event NavigateRequestedEventHandler NavigateRequested;
 
-        protected void OnNavigateRequested(string uri)
+        protected void Navigate(string uri)
         {
             if(NavigateRequested != null)
             {

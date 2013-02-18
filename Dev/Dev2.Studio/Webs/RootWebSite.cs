@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.Interfaces;
@@ -92,10 +93,12 @@ namespace Dev2.Studio.Webs
             WebsiteCallbackHandler pageHandler;
             double width;
             double height;
+            var workspaceID = ((IStudioClientContext)environment.DsfChannel).AccountID;
 
             switch(resourceType)
             {
                 case ResourceType.Server:
+                    workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                     pageName = "sources/server";
                     pageHandler = new ConnectCallbackHandler();
                     width = 690;
@@ -111,7 +114,8 @@ namespace Dev2.Studio.Webs
                 default:
                     return false;
             }
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?rid={1}", pageName, resourceID), pageHandler, width, height);
+
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}", pageName, workspaceID, resourceID), pageHandler, width, height);
             return true;
         }
 

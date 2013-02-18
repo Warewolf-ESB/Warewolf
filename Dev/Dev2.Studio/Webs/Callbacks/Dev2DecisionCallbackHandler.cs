@@ -1,6 +1,6 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using System;
+﻿using System;
 using System.Windows;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
@@ -11,6 +11,14 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         public ILayoutObjectViewModel SelectedLayoutObject
         {
             get { return null; }
+        }
+
+        public void Save(string value)
+        {
+        }
+
+        public void NavigateTo(string uri, string args, string returnUri)
+        {
         }
 
         public void OpenPropertyEditor()

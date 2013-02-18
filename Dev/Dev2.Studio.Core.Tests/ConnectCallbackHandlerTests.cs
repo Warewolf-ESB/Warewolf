@@ -70,6 +70,7 @@ namespace Dev2.Core.Tests
         {
             var handler = new ConnectCallbackHandler();
             handler.Save(null, null, null, 0, null);
+            handler.Save(null, null);
         }
 
         [TestMethod]
@@ -133,39 +134,28 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region Dev2SetValue
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming - Unit Tests
-        public void Dev2SetValue_WithNullParameters_Expected_ThrowsArgumentNullException()
-        // ReSharper restore InconsistentNaming - Unit Tests
-        {
-            var handler = new ConnectCallbackHandler();
-            handler.Dev2SetValue(null, null);
-        }
+        #region Save
 
         [TestMethod]
         [ExpectedException(typeof(JsonReaderException))]
         // ReSharper disable InconsistentNaming - Unit Tests
-        public void Dev2SetValue_WithInvalidJson_Expected_ThrowsJsonReaderException()
+        public void Save_WithInvalidJson_Expected_ThrowsJsonReaderException()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var handler = new ConnectCallbackHandler();
-            handler.Dev2SetValue("xxxxx", null);
+            handler.Save("xxxxx", null);
         }
-
 
         [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Tests
-        public void Dev2SetValue_WithValidJson_Expected_InvokesSave()
+        public void Save_WithValidJson_Expected_InvokesSave()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var currentRepository = new Mock<IFrameworkRepository<IEnvironmentModel>>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
 
             var handler = new ConnectCallbackHandler { CurrentEnvironmentRepository = currentRepository.Object };
-            handler.Dev2SetValue(ConnectionJson, null);
+            handler.Save(ConnectionJson, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
             currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s == handler.Server.Environment)));

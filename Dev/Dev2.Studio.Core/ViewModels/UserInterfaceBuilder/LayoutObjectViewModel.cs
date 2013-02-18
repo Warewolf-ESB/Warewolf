@@ -1,18 +1,19 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml.Linq;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Xml.Linq;
 
-namespace Unlimited.Framework {
+namespace Unlimited.Framework
+{
 
-    public class LayoutObjectViewModel : SimpleBaseViewModel, ILayoutObjectViewModel 
+    public class LayoutObjectViewModel : SimpleBaseViewModel, ILayoutObjectViewModel
     {
         #region Locals
 
@@ -43,7 +44,7 @@ namespace Unlimited.Framework {
         private string _xmlConfig = string.Empty;
         private string _displayName = string.Empty;
         private string _webpartServiceDisplayName = string.Empty;
-        
+
         #endregion
 
         #region Events
@@ -53,9 +54,11 @@ namespace Unlimited.Framework {
         public delegate void LayoutObjectChangedEventHandler(LayoutObjectViewModel beforeChange, LayoutObjectViewModel afterChange);
         public event LayoutObjectChangedEventHandler LayoutObjectChanged;
 
-        public void OnLayoutObjectChanged(LayoutObjectViewModel afterchange) {
+        public void OnLayoutObjectChanged(LayoutObjectViewModel afterchange)
+        {
             LayoutObjectChangedEventHandler handler = LayoutObjectChanged;
-            if (handler != null) {
+            if(handler != null)
+            {
                 handler(this, afterchange);
             }
         }
@@ -81,8 +84,10 @@ namespace Unlimited.Framework {
         /// <summary>
         /// The Grid that this cell is bound to
         /// </summary>
-        public ILayoutGridViewModel LayoutObjectGrid {
-            get {
+        public ILayoutGridViewModel LayoutObjectGrid
+        {
+            get
+            {
                 return _layoutViewModel;
             }
         }
@@ -90,8 +95,10 @@ namespace Unlimited.Framework {
         /// <summary>
         /// The Name of this cell
         /// </summary>
-        public string Name {
-            get {
+        public string Name
+        {
+            get
+            {
                 return string.Format("Row {0} Col {1} RowSpan {2} ColSpan {3}", GridRow, GridColumn, GridRowSpan, GridColumnSpan);
             }
         }
@@ -99,31 +106,38 @@ namespace Unlimited.Framework {
         /// <summary>
         /// The xml configuration data for this cell. This data is sent to the webpart at runtime for binding purposes.
         /// </summary>
-        public string XmlConfiguration {
-            get {
+        public string XmlConfiguration
+        {
+            get
+            {
                 return _xmlConfig;
             }
-            set {
+            set
+            {
                 _xmlConfig = value;
 
                 var displayNameNodeMatch =
                     UnlimitedObject.GetStringXmlDataAsUnlimitedObject(value).xmlData as XElement;
-                
+
                 //Attempt to retrieve this layout object (cell) display name from the xml configuration
                 //only if we are dealing with a webpage. 
                 //If we are working with a website then _layoutViewModel will be null
-                if (_layoutViewModel != null) {
+                if(_layoutViewModel != null)
+                {
                     string displayNameNodeName = GetValueByElementName("Dev2elementName", value);
                     DisplayName = string.Format("[[{0}]]", displayNameNodeName);
-                    if (DisplayName == "[[]]") {
+                    if(DisplayName == "[[]]")
+                    {
                         DisplayName = string.Empty;
                     }
 
                     string displayText = GetValueByElementName("displayText", value);
-                    if (!string.IsNullOrEmpty(displayText)) {
+                    if(!string.IsNullOrEmpty(displayText))
+                    {
                         WebpartServiceDisplayName = displayText;
                     }
-                    else {
+                    else
+                    {
                         WebpartServiceDisplayName = WebpartServiceName;
                     }
                 }
@@ -135,34 +149,45 @@ namespace Unlimited.Framework {
             }
         }
 
-        public string WebpartServiceDisplayName {
-            get {
+        public string WebpartServiceDisplayName
+        {
+            get
+            {
                 return _webpartServiceDisplayName;
             }
-            set {
+            set
+            {
                 _webpartServiceDisplayName = value;
                 base.OnPropertyChanged("WebpartServiceDisplayName");
             }
         }
 
-        public string WebpartServiceName {
-            get {
+        public string WebpartServiceName
+        {
+            get
+            {
                 return _webpartServiceName;
             }
-            set {
-                if (!_webpartServiceName.Equals(value)) {
+            set
+            {
+                if(!_webpartServiceName.Equals(value))
+                {
                     _webpartServiceName = value;
                     base.OnPropertyChanged("WebpartServiceName");
                 }
             }
         }
 
-        public string IconPath {
-            get {
+        public string IconPath
+        {
+            get
+            {
                 return _iconPath;
             }
-            set {
-                if (!_iconPath.Equals(value)) {
+            set
+            {
+                if(!_iconPath.Equals(value))
+                {
                     _iconPath = value;
                     base.OnPropertyChanged("IconPath");
                     base.OnPropertyChanged("IconPathObject");
@@ -178,11 +203,14 @@ namespace Unlimited.Framework {
             }
         }
 
-        public int GridColumn {
-            get {
+        public int GridColumn
+        {
+            get
+            {
                 return _gridColumn;
             }
-            set {
+            set
+            {
 
                 _gridColumn = value;
                 base.OnPropertyChanged("GridColumn");
@@ -191,11 +219,14 @@ namespace Unlimited.Framework {
             }
         }
 
-        public int GridRow {
-            get {
+        public int GridRow
+        {
+            get
+            {
                 return _gridRow;
             }
-            set {
+            set
+            {
 
                 _gridRow = value;
                 base.OnPropertyChanged("GridRow");
@@ -203,12 +234,16 @@ namespace Unlimited.Framework {
             }
         }
 
-        public int GridColumnSpan {
-            get {
+        public int GridColumnSpan
+        {
+            get
+            {
                 return _columnSpan;
             }
-            set {
-                if (_columnSpan != value) {
+            set
+            {
+                if(_columnSpan != value)
+                {
                     _columnSpan = value;
                     base.OnPropertyChanged("GridColumnSpan");
                     base.OnPropertyChanged("Name");
@@ -216,12 +251,16 @@ namespace Unlimited.Framework {
             }
         }
 
-        public int GridRowSpan {
-            get {
+        public int GridRowSpan
+        {
+            get
+            {
                 return _rowSpan;
             }
-            set {
-                if (_rowSpan != value) {
+            set
+            {
+                if(_rowSpan != value)
+                {
                     _rowSpan = value;
                     base.OnPropertyChanged("GridRowSpan");
                     base.OnPropertyChanged("Name");
@@ -229,77 +268,101 @@ namespace Unlimited.Framework {
             }
         }
 
-        public double LeftBorderThickness {
-            get {
+        public double LeftBorderThickness
+        {
+            get
+            {
                 return _leftBorderThickness;
             }
-            set {
+            set
+            {
                 _leftBorderThickness = value;
                 base.OnPropertyChanged("LeftBorderThickness");
             }
         }
 
-        public double TopBorderThickness {
-            get {
+        public double TopBorderThickness
+        {
+            get
+            {
                 return _topBorderThickness;
             }
-            set {
+            set
+            {
                 _topBorderThickness = value;
                 base.OnPropertyChanged("TopBorderThickness");
             }
         }
 
-        public double RightBorderThickness {
-            get {
+        public double RightBorderThickness
+        {
+            get
+            {
                 return _rightBorderThickness;
             }
-            set {
+            set
+            {
                 _rightBorderThickness = value;
                 base.OnPropertyChanged("RightBorderThickness");
             }
         }
 
-        public double BottomBorderThickness {
-            get {
+        public double BottomBorderThickness
+        {
+            get
+            {
                 return _bottomBorderThickness;
             }
-            set {
+            set
+            {
                 _bottomBorderThickness = value;
                 base.OnPropertyChanged("BottomBorderThickness");
             }
         }
 
-        public bool HasRowBelow {
-            get {
+        public bool HasRowBelow
+        {
+            get
+            {
                 return _layoutViewModel.LayoutObjects.Count(rows => rows.GridRow > this.GridRow) > 0;
             }
         }
 
-        public bool HasRowAbove {
-            get {
+        public bool HasRowAbove
+        {
+            get
+            {
                 return _layoutViewModel.LayoutObjects.Count(rows => rows.GridRow < this.GridRow) > 0;
             }
         }
 
-        public bool HasColumnLeft {
-            get {
+        public bool HasColumnLeft
+        {
+            get
+            {
                 return _layoutViewModel.LayoutObjects.Count(cols => cols.GridColumn < this.GridColumn) > 0;
             }
         }
 
-        public bool HasColumnRight {
-            get {
+        public bool HasColumnRight
+        {
+            get
+            {
                 return _layoutViewModel.LayoutObjects.Count(cols => cols.GridColumn > this.GridColumn) > 0;
             }
         }
 
-        public bool IsSelected {
-            get {
+        public bool IsSelected
+        {
+            get
+            {
                 return _isSelected;
             }
-            set {
+            set
+            {
                 _isSelected = value;
-                if (LayoutObjectGrid != null) {
+                if(LayoutObjectGrid != null)
+                {
                     LayoutObjectGrid.SetActiveCell(this);
                 }
 
@@ -307,12 +370,15 @@ namespace Unlimited.Framework {
             }
         }
 
-        public ILayoutObjectViewModel CellRight {
-            get {
+        public ILayoutObjectViewModel CellRight
+        {
+            get
+            {
 
                 var cellRight = _layoutViewModel.LayoutObjects
                                     .Where(cols => cols.GridColumn == this.GridColumn + 1 && cols.GridRow == this.GridRow);
-                if (cellRight.Any()) {
+                if(cellRight.Any())
+                {
                     return cellRight.First();
                 }
 
@@ -320,12 +386,15 @@ namespace Unlimited.Framework {
             }
         }
 
-        public ILayoutObjectViewModel CellLeft {
-            get {
+        public ILayoutObjectViewModel CellLeft
+        {
+            get
+            {
 
                 var cellRight = _layoutViewModel.LayoutObjects
                                     .Where(cols => cols.GridColumn == this.GridColumn - 1 && cols.GridRow == this.GridRow);
-                if (cellRight.Any()) {
+                if(cellRight.Any())
+                {
                     return cellRight.First();
                 }
 
@@ -333,12 +402,15 @@ namespace Unlimited.Framework {
             }
         }
 
-        public ILayoutObjectViewModel CellAbove {
-            get {
+        public ILayoutObjectViewModel CellAbove
+        {
+            get
+            {
 
                 var cellRight = _layoutViewModel.LayoutObjects
                                     .Where(cols => cols.GridColumn == this.GridColumn && cols.GridRow == this.GridRow - 1);
-                if (cellRight.Any()) {
+                if(cellRight.Any())
+                {
                     return cellRight.First();
                 }
 
@@ -346,12 +418,15 @@ namespace Unlimited.Framework {
             }
         }
 
-        public ILayoutObjectViewModel CellBelow {
-            get {
+        public ILayoutObjectViewModel CellBelow
+        {
+            get
+            {
 
                 var cellRight = _layoutViewModel.LayoutObjects
                                     .Where(cols => cols.GridColumn == this.GridColumn && cols.GridRow == this.GridRow + 1);
-                if (cellRight.Any()) {
+                if(cellRight.Any())
+                {
                     return cellRight.First();
                 }
 
@@ -359,13 +434,16 @@ namespace Unlimited.Framework {
             }
         }
 
-        public ILayoutObjectViewModel SelectedLayoutObject {
+        public ILayoutObjectViewModel SelectedLayoutObject
+        {
             get { return this; }
 
         }
 
-        public bool HasContent {
-            get {
+        public bool HasContent
+        {
+            get
+            {
                 return !string.IsNullOrEmpty(WebpartServiceName);
             }
         }
@@ -379,10 +457,13 @@ namespace Unlimited.Framework {
 
         #region Commands
 
-        public ICommand ClearAllCommand {
-            get {
+        public ICommand ClearAllCommand
+        {
+            get
+            {
 
-                if (_clearAllCommand == null) {
+                if(_clearAllCommand == null)
+                {
                     _clearAllCommand = new RelayCommand(c => ClearAll());
                 }
 
@@ -390,9 +471,12 @@ namespace Unlimited.Framework {
             }
         }
 
-        public ICommand EditCommand {
-            get {
-                if (_editCommand == null) {
+        public ICommand EditCommand
+        {
+            get
+            {
+                if(_editCommand == null)
+                {
                     _editCommand = new RelayCommand(c => OpenPropertyEditor(), c => !string.IsNullOrEmpty(XmlConfiguration));
                 }
                 return _editCommand;
@@ -400,90 +484,120 @@ namespace Unlimited.Framework {
 
         }
 
-        public ICommand CopyCommand {
-            get {
+        public ICommand CopyCommand
+        {
+            get
+            {
                 return _layoutViewModel.CopyCommand;
             }
         }
 
-        public ICommand PasteCommand {
-            get {
+        public ICommand PasteCommand
+        {
+            get
+            {
                 return _layoutViewModel.PasteCommand;
             }
         }
 
-        public ICommand CutCommand {
-            get {
+        public ICommand CutCommand
+        {
+            get
+            {
                 return _layoutViewModel.CutCommand;
             }
         }
 
-        public ICommand DeleteCommand {
-            get {
-                if (_deleteCommand == null) {
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if(_deleteCommand == null)
+                {
                     _deleteCommand = new RelayCommand(c => _layoutViewModel.LayoutObjects.Remove(this));
                 }
                 return _deleteCommand;
             }
         }
 
-        public ICommand AddRowAboveCommand {
-            get {
-                if (_addRowAboveCommand == null) {
+        public ICommand AddRowAboveCommand
+        {
+            get
+            {
+                if(_addRowAboveCommand == null)
+                {
                     _addRowAboveCommand = new RelayCommand(c => AddRowAbove());
                 }
                 return _addRowAboveCommand;
             }
         }
 
-        public ICommand AddRowBelowCommand {
-            get {
-                if (_addRowBelowCommand == null) {
+        public ICommand AddRowBelowCommand
+        {
+            get
+            {
+                if(_addRowBelowCommand == null)
+                {
                     _addRowBelowCommand = new RelayCommand(c => AddRowBelow());
                 }
                 return _addRowBelowCommand;
             }
         }
 
-        public ICommand AddColumnRightCommand {
-            get {
-                if (_addColumnRightCommand == null) {
+        public ICommand AddColumnRightCommand
+        {
+            get
+            {
+                if(_addColumnRightCommand == null)
+                {
                     _addColumnRightCommand = new RelayCommand(c => AddColumnRight());
                 }
                 return _addColumnRightCommand;
             }
         }
 
-        public ICommand AddColumnLeftCommand {
-            get {
-                if (_addColumnLeftCommand == null) {
+        public ICommand AddColumnLeftCommand
+        {
+            get
+            {
+                if(_addColumnLeftCommand == null)
+                {
                     _addColumnLeftCommand = new RelayCommand(c => AddColumnLeft());
                 }
                 return _addColumnLeftCommand;
             }
         }
 
-        public ICommand DeleteRowCommand {
-            get {
-                if (_deleteRowCommand == null) {
+        public ICommand DeleteRowCommand
+        {
+            get
+            {
+                if(_deleteRowCommand == null)
+                {
                     _deleteRowCommand = new RelayCommand(c => DeleteRow());
                 }
                 return _deleteRowCommand;
             }
         }
 
-        public ICommand DeleteColumnCommand {
-            get {
-                if (_deleteColumnCommand == null) {
+        public ICommand DeleteColumnCommand
+        {
+            get
+            {
+                if(_deleteColumnCommand == null)
+                {
                     _deleteColumnCommand = new RelayCommand(c => DeleteColumn());
                 }
                 return _deleteColumnCommand;
             }
         }
 
-        public ICommand DeleteCellCommand {
-            get {
-                if (_deleteCellCommand == null) {
+        public ICommand DeleteCellCommand
+        {
+            get
+            {
+                if(_deleteCellCommand == null)
+                {
                     _deleteCellCommand = new RelayCommand(c => Delete(true));
                 }
                 return _deleteCellCommand;
@@ -493,29 +607,42 @@ namespace Unlimited.Framework {
         #endregion
 
         #region Public Methods
-        public void OpenPropertyEditor() {
-            if (!string.IsNullOrEmpty(SelectedLayoutObject.WebpartServiceName)) {
+
+        public void Save(string value)
+        {
+        }
+
+        public void NavigateTo(string uri, string args, string returnUri)
+        {
+
+        }
+
+        public void OpenPropertyEditor()
+        {
+            if(!string.IsNullOrEmpty(SelectedLayoutObject.WebpartServiceName))
+            {
                 Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
             }
         }
 
-        public void Dev2Set(string data, string uri) {
+        public void Dev2Set(string data, string uri)
+        {
 
-            if (LayoutObjectGrid != null)
+            if(LayoutObjectGrid != null)
             {
                 Uri postUri;
-                if (!Uri.TryCreate(LayoutObjectGrid.ResourceModel.Environment.WebServerAddress, uri, out postUri))
+                if(!Uri.TryCreate(LayoutObjectGrid.ResourceModel.Environment.WebServerAddress, uri, out postUri))
                 {
-                    if (!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
+                    if(!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
                     {
                         throw new Exception("Unable to create the URL to post wizard information to the server.");
                     }
                 }
 
                 IWebCommunicationResponse response = WebCommunication.Post(postUri.AbsoluteUri, data);
-                if (response != null)
+                if(response != null)
                 {
-                    switch (response.ContentType)
+                    switch(response.ContentType)
                     {
                         case "text/html":
 
@@ -524,7 +651,7 @@ namespace Unlimited.Framework {
                             //    NavigateRequested(html);
                             //}
 
-                            if (NavigateRequested != null)
+                            if(NavigateRequested != null)
                             {
                                 NavigateRequested(postUri.AbsoluteUri);
                             }
@@ -533,7 +660,7 @@ namespace Unlimited.Framework {
                         case "text/xml":
                             UnlimitedObject xmlResult = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(response.Content);
 
-                            if (xmlResult.HasError)
+                            if(xmlResult.HasError)
                             {
                                 //Error in property service
                                 Close();
@@ -553,7 +680,7 @@ namespace Unlimited.Framework {
                                 dynamic xmlData = new UnlimitedObject("Dev2WebpartConfig");
 
                                 // by ADL 
-                                if (xmlResult.ElementExists("ADL"))
+                                if(xmlResult.ElementExists("ADL"))
                                 {
                                     xmlData.AddResponse(xmlResult.GetElement("ADL"));
                                 }
@@ -568,7 +695,7 @@ namespace Unlimited.Framework {
                                 xmlResult = xmlData;
                             }
 
-                            Dev2SetValue(xmlResult.XmlString.Replace("<DataList>","").Replace("</DataList>",""));
+                            Dev2SetValue(xmlResult.XmlString.Replace("<DataList>", "").Replace("</DataList>", ""));
                             Close();
                             break;
                         default:
@@ -578,9 +705,11 @@ namespace Unlimited.Framework {
             }
         }
 
-        public void Dev2SetValue(string value) {
+        public void Dev2SetValue(string value)
+        {
             XmlConfiguration = value;
-            if (LayoutObjectGrid != null) {
+            if(LayoutObjectGrid != null)
+            {
                 LayoutObjectGrid.UpdateModelItem();
             }
 
@@ -596,13 +725,16 @@ namespace Unlimited.Framework {
             throw new NotImplementedException();
         }
 
-        public void Close() {
+        public void Close()
+        {
             Mediator.SendMessage(MediatorMessages.CloseWizard, this);
         }
 
-        public void Cancel() {
+        public void Cancel()
+        {
 
-            if (!string.IsNullOrEmpty(PreviousWebpartServiceName)) {
+            if(!string.IsNullOrEmpty(PreviousWebpartServiceName))
+            {
                 WebpartServiceName = PreviousWebpartServiceName;
                 IconPath = PreviousIconPath;
                 XmlConfiguration = PreviousXmlConfig;
@@ -610,8 +742,10 @@ namespace Unlimited.Framework {
                 ClearPreviousContents();
 
             }
-            else {
-                if (string.IsNullOrEmpty(XmlConfiguration) || XmlConfiguration.ToUpper().Contains("EMPTY")) {
+            else
+            {
+                if(string.IsNullOrEmpty(XmlConfiguration) || XmlConfiguration.ToUpper().Contains("EMPTY"))
+                {
                     ClearCellContent(true);
                 }
             }
@@ -619,52 +753,61 @@ namespace Unlimited.Framework {
             Close();
         }
 
-        public void CopyFrom(ILayoutObjectViewModel copyObj, bool includeCoOrdinates = false) {
+        public void CopyFrom(ILayoutObjectViewModel copyObj, bool includeCoOrdinates = false)
+        {
             IconPath = copyObj.IconPath;
             WebpartServiceName = copyObj.WebpartServiceName;
             XmlConfiguration = copyObj.XmlConfiguration;
             DisplayName = copyObj.DisplayName;
-            if (includeCoOrdinates) {
+            if(includeCoOrdinates)
+            {
                 GridRow = copyObj.GridRow;
                 GridColumn = copyObj.GridColumn;
             }
 
         }
 
-        public void Clear(bool updateModelItem) {
+        public void Clear(bool updateModelItem)
+        {
             ClearCellContent(updateModelItem);
         }
 
-        public void ClearCellContent(bool updateModelItem) {
+        public void ClearCellContent(bool updateModelItem)
+        {
             IconPath = string.Empty;
             WebpartServiceName = string.Empty;
             XmlConfiguration = string.Empty;
             DisplayName = string.Empty;
 
-            if (updateModelItem) {
+            if(updateModelItem)
+            {
                 LayoutObjectGrid.UpdateModelItem();
             }
 
         }
 
-        public void Delete(bool updateModelItem) {
+        public void Delete(bool updateModelItem)
+        {
             var action = new DeleteAction(this, updateModelItem);
             _layoutViewModel.UndoFramework.RecordAction(action);
 
         }
 
-        public void ClearPreviousContents() {
+        public void ClearPreviousContents()
+        {
             PreviousWebpartServiceName = string.Empty;
             PreviousXmlConfig = string.Empty;
             PreviousIconPath = string.Empty;
         }
 
-        public void ClearAll() {
+        public void ClearAll()
+        {
             var clear = new ClearAllAction(_layoutViewModel);
             _layoutViewModel.UndoFramework.RecordAction(clear);
         }
 
-        public void SetGrid(ILayoutGridViewModel grid) {
+        public void SetGrid(ILayoutGridViewModel grid)
+        {
             _layoutViewModel = grid;
         }
         #endregion
@@ -677,13 +820,16 @@ namespace Unlimited.Framework {
         /// <param name="elementName">The name given to the element by the user</param>
         /// <param name="xmlData">The xml configuration data to traverse and extract the configuration for the element.</param>
         /// <returns></returns>
-        private string GetValueByElementName(string elementName, string xmlData) {
+        private string GetValueByElementName(string elementName, string xmlData)
+        {
             string returnValue = string.Empty;
             var displayNameNodeMatch = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmlData).xmlData as XElement;
             string displayNameNodeName = elementName;
-            if (displayNameNodeMatch != null) {
+            if(displayNameNodeMatch != null)
+            {
                 var displayNameNode = displayNameNodeMatch.DescendantsAndSelf().FirstOrDefault(c => c.Name.ToString().ToUpper().Contains(displayNameNodeName.ToUpper()));
-                if (displayNameNode != null) {
+                if(displayNameNode != null)
+                {
                     returnValue = displayNameNode.Value;
                 }
             }
@@ -693,7 +839,8 @@ namespace Unlimited.Framework {
         /// <summary>
         /// Adds a row above this one
         /// </summary>
-        private void AddRowAbove() {
+        private void AddRowAbove()
+        {
             var addRowAbove = new AddRowAboveAction(this);
             _layoutViewModel.UndoFramework.RecordAction(addRowAbove);
         }
@@ -701,7 +848,8 @@ namespace Unlimited.Framework {
         /// <summary>
         /// Adds a row below this one
         /// </summary>
-        private void AddRowBelow() {
+        private void AddRowBelow()
+        {
             var addRowBelow = new AddRowBelowAction(this);
             _layoutViewModel.UndoFramework.RecordAction(addRowBelow);
         }
@@ -709,7 +857,8 @@ namespace Unlimited.Framework {
         /// <summary>
         /// Adds a column to the left of this one
         /// </summary>
-        private void AddColumnLeft() {
+        private void AddColumnLeft()
+        {
             var addColumnLeft = new AddColumnLeftAction(this);
             _layoutViewModel.UndoFramework.RecordAction(addColumnLeft);
         }
@@ -717,7 +866,8 @@ namespace Unlimited.Framework {
         /// <summary>
         /// Adds a columns to the right of this one
         /// </summary>
-        private void AddColumnRight() {
+        private void AddColumnRight()
+        {
             var addColumnRight = new AddColumnRightAction(this);
             _layoutViewModel.UndoFramework.RecordAction(addColumnRight);
         }
@@ -725,7 +875,8 @@ namespace Unlimited.Framework {
         /// <summary>
         /// Deletes this row
         /// </summary>
-        private void DeleteRow() {
+        private void DeleteRow()
+        {
             var deleteRow = new DeleteRowAction(this);
             _layoutViewModel.UndoFramework.RecordAction(deleteRow);
         }
@@ -733,21 +884,26 @@ namespace Unlimited.Framework {
         /// <summary>
         /// Deletes this column
         /// </summary>
-        private void DeleteColumn() {
+        private void DeleteColumn()
+        {
             var deleteColumn = new DeleteColumnAction(this);
             _layoutViewModel.UndoFramework.RecordAction(deleteColumn);
         }
 
-        public void AddLayoutObject(int row, int column) {
+        public void AddLayoutObject(int row, int column)
+        {
             var layoutObject = LayoutObjectViewModelFactory.CreateLayoutObject(_layoutViewModel, column, row);
             _layoutViewModel.LayoutObjects.Add(layoutObject);
         }
 
-        public void RemoveLayoutObject(int row, int column) {
+        public void RemoveLayoutObject(int row, int column)
+        {
             var removeItem = _layoutViewModel.LayoutObjects.FirstOrDefault(c => c.GridRow == row && c.GridColumn == column);
-            if (removeItem != null) {
+            if(removeItem != null)
+            {
                 int idx = _layoutViewModel.LayoutObjects.IndexOf(removeItem);
-                if (idx >= 0) {
+                if(idx >= 0)
+                {
                     _layoutViewModel.LayoutObjects.RemoveAt(idx);
                 }
             }
