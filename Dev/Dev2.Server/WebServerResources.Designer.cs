@@ -61,7 +61,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Service not found in catalog.
+        ///   Looks up a localized string similar to Error: Service not found in the catalog.
         /// </summary>
         internal static string ERROR_404_Message {
             get {

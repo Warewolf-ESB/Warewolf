@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ERROR_404_Message" xml:space="preserve">
-    <value>Error: Service not found in catalog</value>
+    <value>Error: Service not found in the catalog</value>
   </data>
   <data name="LocalServerAddress" xml:space="preserve">
     <value>http://localhost:77/dsf</value>
