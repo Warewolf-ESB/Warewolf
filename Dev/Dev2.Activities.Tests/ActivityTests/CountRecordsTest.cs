@@ -250,7 +250,7 @@ namespace ActivityUnitTests.ActivityTest
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers></ADL>", "<ADL></ADL>", out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers><res></res></ADL>", "<ADL></ADL>", out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].Count);
