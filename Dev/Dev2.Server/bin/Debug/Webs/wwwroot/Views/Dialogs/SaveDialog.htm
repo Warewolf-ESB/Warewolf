@@ -79,7 +79,7 @@
             var jsonData = ko.toJSON(self.data);
             $.post(viewModel.saveUri + window.location.search, jsonData, function (result) {
                 if (!result.IsValid) {
-                    Dev2Awesomium.Dev2SetValue(JSON.stringify(result));
+                    Dev2Awesomium.Save(JSON.stringify(result));
                 }
                 // TODO: ShowError
             });

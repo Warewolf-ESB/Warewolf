@@ -1,4 +1,4 @@
-﻿function DbSerivceViewModel(resourceID) {
+﻿function DbSerivceViewModel(resourceID, sourceName) {
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -91,6 +91,44 @@
         return ko.toJSON(self.data);
     };
 
+    self.selectSource = function (theSource) {
+        var found = utils.IsNullOrEmptyGuid(theSource.ResourceID)
+            ? self.selectSourceByName(theSource.ResourceName)
+            : self.selectSourceByID(theSource.ResourceID);
+        if (!found && sourceName) {
+            self.selectSourceByName(sourceName);
+        }
+    };
+    
+    self.selectSourceByID = function (theID) {
+        theID = theID.toLowerCase();
+        var found = false;
+        $.each(self.sources(), function (index, source) {
+            if (source.ResourceID.toLowerCase() === theID) {
+                found = true;               
+                self.data.source(source); // This will trigger a call to loadMethods
+                return false;
+            }
+            return true;
+        });
+        return found;
+    };
+    self.selectSourceByName = function(theName) {
+        var found = false;
+        if (theName) {
+            theName = theName.toLowerCase();
+            $.each(self.sources(), function(index, source) {
+                if (source.ResourceName.toLowerCase() === theName) {
+                    found = true;
+                    self.data.source(source); // This will trigger a call to loadMethods
+                    return false;
+                }
+                return true;
+            });
+        }
+        return found;
+    };
+
     self.load = function () {
         self.loadSources(
             self.loadService());
@@ -102,29 +140,23 @@
             resourceType: "DbService"
         });
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
+            console.log(result);
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
 
-            var matchOnID = !utils.IsNullOrEmptyGuid(result.Source.ResourceID);
-            $.each(self.sources(), function (index, source) {
-                if ((matchOnID && source.ResourceID.toLowerCase() === result.Source.ResourceID.toLowerCase())
-                    || source.ResourceName.toLowerCase() === result.Source.ResourceName.toLowerCase()) {
-                    
-                    // This will trigger a call to loadMethods
-                    self.data.source(source);
-                    return false;
-                }
-                return true;
-            });            
-           
+            self.selectSource(result.Source);
 
             // MUST set these AFTER setting data.source otherwise they will be blanked!
-            self.data.method.Name(result.Method.Name);
-            self.data.method.Parameters(result.Method.Parameters);            
-            self.data.recordset.Name(result.Recordset.Name);
-            self.data.recordset.Fields(result.Recordset.Fields);
+            if (result.Method) {
+                self.data.method.Name(result.Method.Name);
+                self.data.method.Parameters(result.Method.Parameters);
+            }
+            if (result.Recordset) {
+                self.data.recordset.Name(result.Recordset.Name);
+                self.data.recordset.Fields(result.Recordset.Fields);
+            }
 
             self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
         });
@@ -182,11 +214,13 @@
         var args = ko.toJSON({
             ResourceName: sourceName
         });
-        if (Dev2Awesomium.Show("", args)) {
-            self.load();
-            return true;
-        }
-        return false;
+        var returnUri = "" + window.location;
+        try {
+            Dev2Awesomium.NavigateTo("", args, returnUri);
+        } catch (e) {
+            alert(e);
+        } 
+        return true;
     };
     
     self.editSource = function () {
