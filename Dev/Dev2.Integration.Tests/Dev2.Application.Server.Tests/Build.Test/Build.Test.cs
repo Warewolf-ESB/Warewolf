@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
@@ -164,28 +165,26 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestMethod]
         public void Environment_ServiceNotExistsOnService_ExpectedErrorMessageServiceNotExist()
         {
-            //// BUG 8593: 2013.02.17 - TWR - changed code to test POST web request
-            //var urls = new[]
-            //{
-            //    "http://localhost:1234/services/%3Ctest%3E/test",
-            //    "http://localhost:1234/services//"
-            //};
+            // BUG 8593: 2013.02.17 - TWR - changed code to test POST web request
+            var urls = new[]
+            {
+                "http://localhost:1234/services/%3Ctest%3E/test",
+                "http://localhost:1234/services//"
+            };
 
-            //var client = new WebClient();
-            //foreach(var url in urls)
-            //{
-            //    try
-            //    {
-            //        client.UploadString(url, "hello");
-            //    }
-            //    catch(WebException wex)
-            //    {
-            //        var response = (HttpWebResponse)wex.Response;
-            //        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
-            //        Assert.AreEqual("Error: Resource not found in catalog", response.StatusDescription);
-            //    }
-            //}
-            Assert.Inconclusive("To be completed");
+            var client = new WebClient();
+            foreach(var url in urls)
+            {
+                try
+                {
+                    client.UploadString(url, "hello");
+                }
+                catch(WebException wex)
+                {
+                    var response = (HttpWebResponse)wex.Response;
+                    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+                }
+            }
         }
 
         /// <summary>
