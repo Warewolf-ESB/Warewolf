@@ -101,8 +101,8 @@ namespace Dev2.Studio.Webs
                     workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                     pageName = "sources/server";
                     pageHandler = new ConnectCallbackHandler();
-                    width = 690;
-                    height = 500;
+                    width = 705;
+                    height = 492;
                     break;
 
                 case ResourceType.DbService:
