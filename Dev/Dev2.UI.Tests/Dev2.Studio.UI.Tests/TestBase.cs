@@ -384,7 +384,7 @@ namespace Dev2.CodedUI.Tests
             StringAssert.Contains(varName, "[[pre_varOne_suf]]");
 
             // All good - Clean up!
-            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "PBI8601");
+            //DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "PBI8601");
         }
 
         #endregion New PBI Tests
