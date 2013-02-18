@@ -425,44 +425,11 @@
                         <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}"/>
 
                     </Grid>
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>            
-            
-            <TreeView.ItemContainerStyle>
-                <!-- 
-                    This Style binds a TreeViewItem to a DebugItemViewModel. 
-                -->
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource DebugTreeStyle}">
-                    <Setter Property="HorizontalContentAlignment"  Value="Stretch" />
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                    <Setter Property="FontWeight" Value="Normal" />
-                    <Setter Property="Padding" Value="0,0,0,2.5" />
-                    <Setter Property="Panel.Background" Value="White" />
-                    <Setter Property="AutomationProperties.AutomationId" Value="{Binding Content.Name}" />
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding DataContext.HighlightSimulation, ElementName=DebugOutput}" Value="True" />
-                                <Condition Binding="{Binding Content.IsSimulation}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Panel.Background" Value="LightYellow" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                        
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding DataContext.HighlightError, ElementName=DebugOutput}" Value="True" />
-                                <Condition Binding="{Binding Content.HasError}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Border.Background" Value="{StaticResource ErrorBrush}"/>
-                            </MultiDataTrigger.Setters>
-                    </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TreeView.ItemContainerStyle>
+                </HierarchicalDataTemplate>               
+            </TreeView.Resources> 
+            <TreeView.ItemContainerStyleSelector>
+                <Diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}"></Diagnostics:DebugStyleSelector>
+            </TreeView.ItemContainerStyleSelector>
         </TreeView>
     </Grid>
 </UserControl>
