@@ -210,16 +210,15 @@
         $tabs.tabs("option", "active", tabIndex);
     };
 
-    self.showSource = function(sourceName) {
+    self.showSource = function(theSourceName) {
         var args = ko.toJSON({
-            ResourceName: sourceName
+            ResourceName: theSourceName
         });
+
         var returnUri = "" + window.location;
-        try {
-            Dev2Awesomium.NavigateTo("", args, returnUri);
-        } catch (e) {
-            alert(e);
-        } 
+        returnUri = returnUri.replace(/(sourceName=)[^\&]+/, '$1' + theSourceName);
+
+        Dev2Awesomium.NavigateTo("", args, returnUri);
         return true;
     };
     
