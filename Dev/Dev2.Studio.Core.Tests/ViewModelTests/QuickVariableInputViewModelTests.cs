@@ -202,25 +202,7 @@ Email",
             List<string> expectedCollection = new List<string> { "Fname", "Lname", "TelNo", "Email" };
 
             CollectionAssert.AreEqual(expectedCollection, returnedList);
-        }
-
-        [TestMethod]
-        public void QuickVariableInputViewModelEndWithAllFieldsPopulatedExpectedCorrectResultsReturned()
-        {
-            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(new DsfCaseConvertActivity()), new DsfCaseConvertActivity()))
-            {
-                Suffix = "",
-                Prefix = "Customer().",
-                VariableListString = @"FnameLnameTelNoEmail",
-                SplitType = "End",
-                SplitToken = "",
-                Overwrite = false
-            };
-            List<string> returnedList = viewModel.Split();
-            List<string> expectedCollection = new List<string> { "FnameLnameTelNoEmail" };
-
-            CollectionAssert.AreEqual(expectedCollection, returnedList);
-        }
+        }        
 
         #endregion
 
