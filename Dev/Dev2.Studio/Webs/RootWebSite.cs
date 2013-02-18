@@ -109,7 +109,7 @@ namespace Dev2.Studio.Webs
                     pageName = "services/dbservice";
                     pageHandler = new DbServiceCallbackHandler();
                     width = 941;
-                    height = 570;
+                    height = 562;
                     break;
                 default:
                     return false;

@@ -7,14 +7,8 @@
     ResizeMode="NoResize"
     WindowStartupLocation="CenterOwner"
         >
-        <!--
-    <Border BorderThickness="1">
-        <Border.BorderBrush>
-            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                <GradientStop Color="Transparent" Offset="0.1" />
-                <GradientStop Color="DimGray" Offset="1.0" />
-            </LinearGradientBrush>
-        </Border.BorderBrush>
-    </Border>-->
-    <cs:WebView x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+    <Border BorderThickness="1" BorderBrush="#333333">
+        <cs:WebView x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    </Border>
 </Window>
