@@ -1,7 +1,9 @@
 ﻿using System.Threading;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -390,26 +392,26 @@ namespace Dev2.Core.Tests
         public void ReadFile_With_OneEnvironment_Expected_ReturnsOneEnvironment()
         {
 
-        //    lock(_lock)
-        //    {
-        //        var path = EnvironmentRepository.GetEnvironmentsFilePath();
+            lock (_lock)
+            {
+                var path = EnvironmentRepository.GetEnvironmentsFilePath();
 
-        //        string backPath;
+                string backPath;
 
-        //        backPath = RetryUtility.RetryMethod<string>(() => BackupFile(path), 15, 1000, null);
+                backPath = RetryUtility.RetryMethod<string>(() => BackupFile(path), 15, 1000, null);
 
-        //        var xml = new XElement("Environments", new XElement("Environment", "{A9185F8F-3F57-45A6-B3AB-9E506D1BA1DF}"));
-        //        xml.Save(path);
+                var xml = new XElement("Environments", new XElement("Environment", "{A9185F8F-3F57-45A6-B3AB-9E506D1BA1DF}"));
+                xml.Save(path);
 
-        //        var rep = new EnvironmentRepository();
-        //        var result = rep.ReadFile();
+                var rep = new EnvironmentRepository();
+                var result = rep.ReadFile();
 
-        //        RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
-        //        RetryUtility.RetryAction(() => RestoreFile(path, backPath), 15, 1000);
+                RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
+                RetryUtility.RetryAction(() => RestoreFile(path, backPath), 15, 1000);
 
-        //        Assert.AreEqual(1, result.Count);
-        //    }
-            Assert.Inconclusive();
+                Assert.AreEqual(1, result.Count);
+            }
+            //Assert.Inconclusive();
         }
 
         #endregion
