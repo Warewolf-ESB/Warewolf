@@ -45,7 +45,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string UniqueID { get; set; }
 
         protected string InstanceID;
-        readonly private bool IsDebugByPassed = true; // Bug 7951: TWR - Debug output doesn't show all activities that are executed
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
 
         readonly IDebugDispatcher _debugDispatcher;
@@ -147,7 +146,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             OnBeforeExecute(context);
 
-            if (!IsDebugByPassed)
+            //Bug 8918 : Added so that debug only runs when executing in debug - Massimo.Guerrera
+            if (dataObject != null && dataObject.IsDebug)
             {
                 DispatchDebugState(context, StateType.Before);
             }
@@ -240,7 +240,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region OnExecutedCompleted
 
-        protected void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
+        protected virtual void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
             var dataListExecutionID = DataListExecutionID.Get(context);
             var compiler = context.GetExtension<IDataListCompiler>();
@@ -253,7 +253,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                if (!IsDebugByPassed)
+                //Bug 8918 : Added so that debug only runs when executing in debug - Massimo.Guerrera
+                if (dataObject != null && dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -334,6 +335,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (stateType == StateType.Before)
             {
+                // Bug 8918 - _debugState should only ever be set if debug is requested otherwise it should be null 
                 _debugState = new DebugState
                 {
                     ID = InstanceID,
@@ -690,6 +692,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
             return results;
+        }
+
+        #endregion
+
+        #region Get Debug State
+
+        public IDebugState GetDebugState()
+        {
+            return _debugState;
         }
 
         #endregion

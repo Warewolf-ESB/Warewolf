@@ -426,8 +426,8 @@
 
                     </Grid>
                 </HierarchicalDataTemplate>
-            </TreeView.Resources>
-
+            </TreeView.Resources>            
+            
             <TreeView.ItemContainerStyle>
                 <!-- 
                     This Style binds a TreeViewItem to a DebugItemViewModel. 

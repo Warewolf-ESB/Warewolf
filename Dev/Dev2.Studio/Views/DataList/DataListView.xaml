@@ -146,8 +146,7 @@
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeStyle}">
                     <Setter Property="Focusable" Value="False"/>
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                    <Setter Property="FontWeight" Value="Normal" />
-                    <Setter Property="Visibility" Value="{Binding IsVisable, Converter={StaticResource BoolToVisConverter}}"/>
+                    <Setter Property="FontWeight" Value="Normal" />                    
                     <Setter Property="KeyboardNavigation.TabNavigation" Value="Continue"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">

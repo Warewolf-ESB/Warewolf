@@ -97,15 +97,15 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
             TextBox tb = sender as TextBox;
             if (tb != null)
             {
-                if (!string.IsNullOrWhiteSpace(tb.Text))
-                {
-                    AddBtn.IsEnabled = true;
-                    PreviewBtn.IsEnabled = true;
-                }
-                else
+                if (string.IsNullOrWhiteSpace(TxtVariableList.Text))
                 {
                     AddBtn.IsEnabled = false;
                     PreviewBtn.IsEnabled = false;
+                }
+                else
+                {
+                    AddBtn.IsEnabled = true;
+                    PreviewBtn.IsEnabled = true;
                 }
             }
         }

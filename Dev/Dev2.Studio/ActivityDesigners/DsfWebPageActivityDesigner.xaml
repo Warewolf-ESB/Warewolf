@@ -19,16 +19,7 @@
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
     <Grid>
-        <Border BorderThickness="5,5,5,5" BorderBrush="Orange" x:Name="border" Visibility="Hidden">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsHighlightEnabled}" Value="true">
-                            <Setter Property="BorderBrush" Value="Red"></Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+        <Border BorderThickness="5,5,5,5" BorderBrush="Orange" x:Name="border" Visibility="Hidden">            
         </Border>       
     </Grid>
 </sap:ActivityDesigner>

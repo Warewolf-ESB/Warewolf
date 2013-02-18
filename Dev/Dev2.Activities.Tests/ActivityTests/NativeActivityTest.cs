@@ -14,7 +14,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -182,7 +181,7 @@ namespace ActivityUnitTests.ActivityTests
 
                     ErrorResultTO resultErrors;
                     var resultDataList = compiler.FetchBinaryDataList(dataObject.DataListID, out resultErrors);
-                    if(errors.HasErrors())
+                    if (errors.HasErrors())
                     {
                         Assert.Fail("Errors fetching Binary DataList result");
                     }
@@ -253,7 +252,7 @@ namespace ActivityUnitTests.ActivityTests
 
                     ErrorResultTO resultErrors;
                     var resultDataList = compiler.FetchBinaryDataList(dataObject.DataListID, out resultErrors);
-                    if(errors.HasErrors())
+                    if (errors.HasErrors())
                     {
                         Assert.Fail("Errors fetching Binary DataList result");
                     }
@@ -273,7 +272,7 @@ namespace ActivityUnitTests.ActivityTests
                         })
                     });
                     }
-                    catch(AssertFailedException)
+                    catch (AssertFailedException)
                     {
                         // we know that we could not find the value in the datalist
                         Assert.IsTrue(true);
@@ -284,7 +283,7 @@ namespace ActivityUnitTests.ActivityTests
                     {
                         ValidateScalar(resultDataList, "A", "6");
                     }
-                    catch(AssertFailedException)
+                    catch (AssertFailedException)
                     {
                         // we know that we could not find the value in the datalist
                         Assert.IsTrue(true);
@@ -299,7 +298,7 @@ namespace ActivityUnitTests.ActivityTests
             string error;
             IBinaryDataListEntry entry;
             dataList.TryGetEntry(name, out entry, out error);
-            if(!string.IsNullOrEmpty(error))
+            if (!string.IsNullOrEmpty(error))
             {
                 Assert.Fail("Error fetching scalar '{0}' from Binary DataList", name);
             }
@@ -319,28 +318,28 @@ namespace ActivityUnitTests.ActivityTests
             string error;
             IBinaryDataListEntry entry;
             dataList.TryGetEntry(name, out entry, out error);
-            if(!string.IsNullOrEmpty(error))
+            if (!string.IsNullOrEmpty(error))
             {
                 Assert.Fail("Error fetching RecordSet '{0}' from Binary DataList", name);
             }
             else
             {
                 IIndexIterator idxItr = entry.FetchRecordsetIndexes();
-                while(idxItr.HasMore())
+                while (idxItr.HasMore())
                 {
                     var fields = entry.FetchRecordAt(idxItr.FetchNextIndex(), out error);
-                    if(!string.IsNullOrEmpty(error))
+                    if (!string.IsNullOrEmpty(error))
                     {
                         Assert.Fail("Error fetching RecordSet '{0}' fields", name);
                     }
                     else
                     {
                         var foundCount = 0;
-                        foreach(var field in fields)
+                        foreach (var field in fields)
                         {
-                            foreach(var expectedValue in expectedValues)
+                            foreach (var expectedValue in expectedValues)
                             {
-                                if(field.FieldName == expectedValue.Key && expectedValue.Value.Contains(field.TheValue))
+                                if (field.FieldName == expectedValue.Key && expectedValue.Value.Contains(field.TheValue))
                                 {
                                     foundCount++;
                                 }
@@ -455,7 +454,7 @@ namespace ActivityUnitTests.ActivityTests
         {
             // MUST use WorkflowApplication as it calls CacheMetadata (WorkflowInvoker DOES NOT!)
             var wfApp = new WorkflowApplication(activity);
-            if(dataObject != null)
+            if (dataObject != null)
             {
                 wfApp.Extensions.Add(dataObject);
             }
@@ -483,29 +482,5 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion
-
-        #region IsDebugByPassed
-
-        [TestMethod]
-        public void IsDebugByPassed_Expected_ReadOnly()
-        {
-            const string TypeName = "Unlimited.Applications.BusinessDesignStudio.Activities.DsfNativeActivity`1[[System.String]], Dev2.Activities";
-            var activityType = Type.GetType(TypeName);
-
-            if(activityType != null)
-            {
-                var field = activityType.GetField("IsDebugByPassed", BindingFlags.Instance | BindingFlags.NonPublic);
-                if(field != null)
-                {
-                    Assert.IsTrue(field.IsInitOnly);
-                    return;
-                }
-            }
-            Assert.Fail("DsfNativeActivity.IsDebugByPassed not found.");
-        }
-
-        #endregion
-
-
     }
 }

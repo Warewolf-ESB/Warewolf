@@ -132,7 +132,7 @@ namespace Dev2.Studio.Core.ViewModels
                     _cancelComand = new RelayCommand(param => Cancel(), param => true);
                 }
                 return _cancelComand;
-            }           
+            }
         }
         #endregion Cammands
 
@@ -161,7 +161,7 @@ namespace Dev2.Studio.Core.ViewModels
             SetXMLData();
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
-            if (DebugTO.DataList !=null) Broker.PersistDebugSession(DebugTO); //2013.01.22: Ashley Lewis - Bug 7837
+            if (DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO); //2013.01.22: Ashley Lewis - Bug 7837
 
             RequestClose(ViewModelDialogResults.Cancel);
         }
@@ -251,7 +251,7 @@ namespace Dev2.Studio.Core.ViewModels
                         foreach (IDataListItem item in listToChange)
                         {
                             item.Value = string.Empty;
-                        }                       
+                        }
                         foreach (IDataListItem item in listToRemove)
                         {
                             WorkflowInputs.Remove(item);
@@ -273,9 +273,9 @@ namespace Dev2.Studio.Core.ViewModels
                     foreach (IDataListItem item in listToChange)
                     {
                         item.Value = string.Empty;
-                    }                 
+                    }
                     foreach (IDataListItem item in listToRemove)
-                    {                                           
+                    {
                         WorkflowInputs.Remove(item);
                         if (itemToRemove.RecordsetIndex == item.RecordsetIndex)
                         {
@@ -301,7 +301,7 @@ namespace Dev2.Studio.Core.ViewModels
             CreateDataListObjectFromList();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid dlId = compiler.PushBinaryDataList(DataList.UID,DataList,out errors);
+            Guid dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
             string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
             if (string.IsNullOrEmpty(error))
             {
@@ -333,12 +333,12 @@ namespace Dev2.Studio.Core.ViewModels
         /// Used for just adding a blank row to a recordset
         /// </summary>
         /// <param name="selectedItem">The item that is currently selected</param>
-        public bool AddBlankRow(IDataListItem selectedItem,out int indexToSelect)
+        public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
             bool itemsAdded = false;
             if (selectedItem != null && selectedItem.IsRecordset)
-            {                
+            {
                 string error = "";
                 IBinaryDataListEntry recordset;
                 DataList.TryGetEntry(selectedItem.Recordset, out recordset, out error);
@@ -368,10 +368,10 @@ namespace Dev2.Studio.Core.ViewModels
         private void CreateDataListObjectFromList()
         {
             string error = "";
-            DataList = Broker.DeSerialize(DebugTO.DataList ?? "<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
+            DataList = Broker.DeSerialize( "<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
             foreach (IDataListItem item in WorkflowInputs)
-            {                
-                if (item.IsRecordset)
+            {
+                if (item.IsRecordset && !string.IsNullOrEmpty(item.Value))
                 {
                     DataList.TryCreateRecordsetValue(item.Value, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
                 }
@@ -411,7 +411,7 @@ namespace Dev2.Studio.Core.ViewModels
 
                     IList<IBinaryDataListItem> items = dataListEntry.FetchRecordAt(count + 1, out error);
                     foreach (IBinaryDataListItem item in items)
-                    {                       
+                    {
                         IDataListItem singleRes = new DataListItem();
                         singleRes.IsRecordset = true;
                         singleRes.Recordset = item.Namespace;
@@ -420,7 +420,7 @@ namespace Dev2.Studio.Core.ViewModels
                         singleRes.Value = item.TheValue;
                         singleRes.DisplayValue = item.DisplayValue;
                         var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
-                        if (desc==null)
+                        if (desc == null)
                         {
                             singleRes.Description = null;
                         }

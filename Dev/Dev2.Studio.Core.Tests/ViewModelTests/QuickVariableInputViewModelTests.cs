@@ -281,23 +281,6 @@ Email",
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void QuickVariableInputViewModelAddToActivityWithErrorInVariablesExpectedErrorTextToBeDisplayed()
-        {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
-            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
-            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
-            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
-
-            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LN@ame,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
-
-            viewModel.AddToActivity();
-            string expected = "Some of your variables contains invalid characters";
-            string actual = viewModel.PreviewText;
-            Assert.AreEqual(expected, actual);
-        }
-
         #endregion
 
         #region Validation Tests
@@ -347,7 +330,7 @@ Email",
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Index", SplitToken = "-1", Overwrite = false };
 
             viewModel.Preview();
-            string expected = "Please supply positive value for a Index split";
+            string expected = "Please supply a whole positive number for an Index split";
 
             string actual = viewModel.PreviewText;
             Assert.AreEqual(expected, actual);
@@ -364,7 +347,7 @@ Email",
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Index", SplitToken = "text", Overwrite = false };
 
             viewModel.Preview();
-            string expected = "Please supply numeric value for a Index split";
+            string expected = "Please supply a whole positive number for an Index split";
 
             string actual = viewModel.PreviewText;
             Assert.AreEqual(expected, actual);
@@ -381,7 +364,7 @@ Email",
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = "", Overwrite = false };
 
             viewModel.Preview();
-            string expected = "Please supply value for a Character split";
+            string expected = "Please supply a value for a Character split";
 
             string actual = viewModel.PreviewText;
             Assert.AreEqual(expected, actual);
@@ -399,6 +382,23 @@ Email",
 
             viewModel.Preview();
             string expected = "Variable List String can not be blank/empty";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithFunnyRecordsetNotationInPreffixExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().Other<>text", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Prefix contains invalid characters";
 
             string actual = viewModel.PreviewText;
             Assert.AreEqual(expected, actual);

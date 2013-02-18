@@ -85,7 +85,7 @@
             <NavigationViews:NavigationView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
 
-                    <Border IsHitTestVisible="True" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}">
+                    <Border IsHitTestVisible="True">
                         <Border.ContextMenu>
                             <ContextMenu Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}">
                                 <ContextMenu.Resources>

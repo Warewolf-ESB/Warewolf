@@ -29,13 +29,13 @@
                                 <Image Source="/Images/Split.png" Width="15" Height="15"/>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="[UI_{0}_QuickVariableAddBtn_AutoID]">
-                                        <Binding Path="ServiceName" RelativeSource="{RelativeSource Self}"/>
+                                        <Binding Path="ModelItem.DisplayName"/>
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
                             </Button>
                         </StackPanel>
                         <ContentControl x:Name="resizeContent" MinHeight="100" MinWidth="250" Grid.Row="1" Padding="5" Visibility="{Binding Path=ShowQuickVariableInput, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                            <userInterfaceBuilder:DataGridQuickVariableInputView Loaded="QuickVariableInputControl_OnLoaded" x:Name="quickVariableInputControl" />
+                            <userInterfaceBuilder:DataGridQuickVariableInputView DataContext="{Binding ViewModel}" Loaded="QuickVariableInputControl_OnLoaded" x:Name="quickVariableInputControl" />
                         </ContentControl>
                     </Grid>
                 </DataTemplate>

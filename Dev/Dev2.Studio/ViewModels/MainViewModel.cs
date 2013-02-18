@@ -33,7 +33,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels
 {
-    [Export(typeof (IMainViewModel))]
+    [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class MainViewModel : BaseViewModel, IMainViewModel
     {
@@ -571,10 +571,13 @@ namespace Dev2.Studio.ViewModels
                 Build(resource, showWindow);
 
                 IResourceModel resourceToUpdate = resource.Environment.Resources.FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+                if (resourceToUpdate != null)
+                {
                 resourceToUpdate.Update(resource);
+                }
 
                 var workspaceItem = UserInterfaceLayoutProvider.Value.WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == resource.ResourceName);
-                if(workspaceItem == null)
+                if (workspaceItem == null)
                 {
                     return;
                 }
@@ -619,7 +622,7 @@ namespace Dev2.Studio.ViewModels
             if (resourceModel != null && resourceModel.Environment != null)
             {
                 string relativeUrl = string.Format("/services/{0}?wid={1}", resourceModel.ResourceName,
-                                                   ((IStudioClientContext) resourceModel.Environment.DsfChannel)
+                                                   ((IStudioClientContext)resourceModel.Environment.DsfChannel)
                                                        .AccountID);
                 Uri url;
                 if (!Uri.TryCreate(resourceModel.Environment.WebServerAddress, relativeUrl, out url))
@@ -833,7 +836,7 @@ namespace Dev2.Studio.ViewModels
 
                 dataObject.Service = debugTO.ServiceName;
 
-                var ctx = (IStudioClientContext) environment.DsfChannel;
+                var ctx = (IStudioClientContext)environment.DsfChannel;
                 string msg = environment.DsfChannel.ExecuteCommand(dataObject.XmlString, ctx.AccountID,
                                                                    GlobalConstants.NullDataListID);
                 if (msg == null)

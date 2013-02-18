@@ -152,7 +152,7 @@ namespace ActivityUnitTests.ActivityTest
 
             string expected2 = "1";
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet2 = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex==2).TheValue;
+            string actualSet2 = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 2).TheValue;
 
             if (string.IsNullOrEmpty(error))
             {
@@ -224,7 +224,7 @@ namespace ActivityUnitTests.ActivityTest
         /// Author : Massimo Guerrera Bug 8104 
         /// </summary>
         [TestMethod]
-        public void CountRecordset_Get_Debug_Input_Output_With_Recordset_Expected_Pass()
+        public void CountRecordsetGetDebugInputOutputWithRecordsetExpectedPass()
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
 
@@ -235,6 +235,23 @@ namespace ActivityUnitTests.ActivityTest
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(92, inRes[0].Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].Count);
+        }
+
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8875 
+        /// </summary>
+        [TestMethod]
+        public void CountRecordsetGetDebugInputOutputWithEmptyRecordsetExpectedPass()
+        {
+            DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers></ADL>", "<ADL></ADL>", out inRes, out outRes);
+            Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].Count);
         }

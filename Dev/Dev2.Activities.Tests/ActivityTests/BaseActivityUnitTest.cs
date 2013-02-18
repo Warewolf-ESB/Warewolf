@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Dev2;
+﻿using Dev2;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -15,6 +14,7 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework;
 
@@ -120,7 +120,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess()
+        public dynamic ExecuteProcess(DsfDataObject dataObject = null)
         {
 
             var svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
@@ -143,6 +143,10 @@ namespace ActivityUnitTests
             {
                 Compiler = DataListFactory.CreateDataListCompiler();
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+                if (dataObject != null)
+                {
+                    dataObject.DataListID = ExecutionID;
+                }
             }
             if (errors.HasErrors())
             {
@@ -150,13 +154,16 @@ namespace ActivityUnitTests
 
                 throw new Exception(errorString);
             }
-
-            var dataObject = new DsfDataObject(CurrentDl, ExecutionID)
+            if (dataObject == null)
             {
-                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                //       if this is NOT provided which will cause the tests to fail!
-                ServerID = Guid.NewGuid()
-            };
+                dataObject = new DsfDataObject(CurrentDl, ExecutionID)
+                {
+                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                    //       if this is NOT provided which will cause the tests to fail!
+                    ServerID = Guid.NewGuid()
+                };
+            }
+
             invoker.WorkflowApplication(svc, dataObject, TestData);
             return dataObject;
         }
@@ -197,7 +204,7 @@ namespace ActivityUnitTests
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
-                ServerID = Guid.NewGuid() 
+                ServerID = Guid.NewGuid()
             };
             MockChannel = new Mock<IFrameworkWorkspaceChannel>();
             MockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -307,7 +314,7 @@ namespace ActivityUnitTests
             bdl.TryGetEntry(recordSet, out entry, out error);
 
             IIndexIterator idxItr = entry.FetchRecordsetIndexes();
-            while(idxItr.HasMore())
+            while (idxItr.HasMore())
             {
                 dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, idxItr.FetchNextIndex(), out error));
             }
@@ -316,12 +323,12 @@ namespace ActivityUnitTests
             //    dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, recordSetEntry, out error));
             //}
             result = dLItems;
-            if(!string.IsNullOrEmpty(error))
+            if (!string.IsNullOrEmpty(error))
             {
                 isCool = false;
             }
 
-            return isCool ;
+            return isCool;
         }
 
         protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListId, string recordSetName, string fieldToRetrieve, out string error)

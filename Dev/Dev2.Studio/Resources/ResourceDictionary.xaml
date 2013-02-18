@@ -487,8 +487,7 @@
                     HorizontalAlignment="Stretch"
                     BorderThickness="{TemplateBinding Border.BorderThickness}"
                     BorderBrush="{TemplateBinding Border.BorderBrush}"
-                    Padding="{TemplateBinding Control.Padding}"
-                    Background="{TemplateBinding Panel.Background}"
+                    Padding="{TemplateBinding Control.Padding}"                    
                     SnapsToDevicePixels="True"
                     Grid.Column="1">
                                 <ContentPresenter x:Name="PART_Header"
@@ -1312,9 +1311,9 @@ To="16" Duration="0:0:5"></DoubleAnimation>
             </Trigger>
 
             <!-- To hide it from the menu items in the TabGroupPane's Files List menu: -->
-            <DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
+            <!--<DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
+            </DataTrigger>-->
 
             <!-- To only show it when the tab item is selected: -->
             <DataTrigger Binding="{Binding Path=IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
@@ -1454,9 +1453,9 @@ To="16" Duration="0:0:5"></DoubleAnimation>
             </Trigger>
 
             <!-- To hide it from the menu items in the TabGroupPane's Files List menu: -->
-            <DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
+            <!--<DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
+            </DataTrigger>-->
 
             <!-- To only show it when the tab item is selected: -->
             <DataTrigger Binding="{Binding Path=IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">

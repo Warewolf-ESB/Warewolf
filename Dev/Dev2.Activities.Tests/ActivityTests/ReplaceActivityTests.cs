@@ -267,7 +267,7 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void ReplaceInAllRecordsetFieldsExpectedTwoReplacesSuccess()
         {
-            SetupArguments(ActivityStrings.ReplaceDataListWithData.Replace("f2r2","barney"), ActivityStrings.ReplaceDataListShape, "[[recset1(*)]]", "Barney", "Wallis", "[[res]]", false);
+            SetupArguments(ActivityStrings.ReplaceDataListWithData.Replace("f2r2", "barney"), ActivityStrings.ReplaceDataListShape, "[[recset1(*)]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
             string expected = @"2";

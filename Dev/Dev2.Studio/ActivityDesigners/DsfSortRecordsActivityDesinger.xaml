@@ -52,10 +52,7 @@
                     <MultiBinding StringFormat="UI_{0}_SortFieldtxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
-                </AutomationProperties.AutomationId>
-                <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                    <IIDev2:DefaultIntellisenseProvider FilterCondition="{Binding Path=Text, ElementName=Recordsettxt}" />
-                </Dev2:IntellisenseTextBox.IntellisenseProvider>
+                </AutomationProperties.AutomationId>                
             </Dev2:IntellisenseTextBox>
             <Label Content="Sort Order" Grid.Column="0" Grid.Row="2"/>
             <ComboBox x:Name="Ordercbx" Style="{StaticResource Dev2ComboBoxStyle}" SelectedValue="{Binding Path=ModelItem.SelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"

@@ -28,6 +28,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         private bool _overwrite;
         private string _previewText;
         private bool _showPreview;
+        private bool _canAdd;
 
         private RelayCommand _cancelCommand;
         private RelayCommand _previewCommand;
@@ -41,23 +42,24 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         #region Properties
 
+        public bool CanAdd
+        {
+            get
+            {
+                return _canAdd;
+            }
+            set
+            {
+                _canAdd = value;
+                OnPropertyChanged("CanAdd");
+            }
+        }
+
         public QuickVariableInputModel Model
         {
             get
             {
                 return _model;
-            }
-        }
-
-        public enErrorType Status
-        {
-            get
-            {
-                if (_errorColletion.Count > 0)
-                {
-                    return _errorColletion[0].Key;
-                }
-                return enErrorType.Correct;
             }
         }
 
@@ -190,6 +192,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             VariableListString = string.Empty;
             Prefix = string.Empty;
             Suffix = string.Empty;
+            CanAdd = false;
 
             SplitTypeList = new List<string>();
             SplitTypeList.Add("Index");
@@ -197,7 +200,6 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             SplitTypeList.Add("New Line");
             SplitTypeList.Add("Space");
             SplitTypeList.Add("Tab");
-            SplitTypeList.Add("End");
             _errorColletion = new List<KeyValuePair<enErrorType, string>>();
         }
 
@@ -280,7 +282,6 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             VariableListString = string.Empty;
             ShowPreview = false;
             _errorColletion.Clear();
-            OnPropertyChanged("Status");
             Overwrite = false;
             OnClose();
         }
@@ -293,15 +294,14 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         {
             if (!ValidateFields())
             {
-                OnPropertyChanged("Status");
                 PreviewText = _errorColletion[0].Value;
+                CanAdd = false;
                 ShowPreview = true;
                 return;
             }
             List<string> listToAdd = MakeDataListReady(Split());
             if (_errorColletion.Count > 0)
             {
-                OnPropertyChanged("Status");
                 PreviewText = _errorColletion[0].Value;
                 ShowPreview = true;
                 return;
@@ -323,7 +323,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         {
             if (!ValidateFields())
             {
-                OnPropertyChanged("Status");
+                CanAdd = false;
                 PreviewText = _errorColletion[0].Value;
                 ShowPreview = true;
                 return;
@@ -358,7 +358,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             }
             if (_errorColletion.Count > 0)
             {
-                OnPropertyChanged("Status");
+                CanAdd = false;
                 PreviewText = _errorColletion[0].Value;
                 ShowPreview = true;
             }
@@ -374,25 +374,27 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         public List<string> Split()
         {
             List<string> results = new List<string>();
-
-            IDev2Tokenizer tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
-
-            while (tokenizer.HasMoreOps())
+            try
             {
+                IDev2Tokenizer tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
 
-                string tmp = tokenizer.NextToken();
-                if (!string.IsNullOrEmpty(tmp))
+                while (tokenizer.HasMoreOps())
                 {
-                    if (ValidateName(tmp))
+
+                    string tmp = tokenizer.NextToken();
+                    if (!string.IsNullOrEmpty(tmp))
                     {
                         results.Add(tmp);
                     }
-                    else
-                    {
-                        _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Some of your variables contains invalid characters"));
-                    }
                 }
             }
+            catch (Exception e)
+            {
+                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, e.Message));
+                CanAdd = false;
+            }
+
+
 
             return results;
         }
@@ -434,10 +436,6 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                             dtb.AddIndexOp(indexNum);
                         }
                     }
-                    break;
-
-                case "End":
-                    dtb.AddEoFOp();
                     break;
 
                 case "Space":
@@ -484,13 +482,21 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                 int indexToSplitOn;
                 if (!int.TryParse(SplitToken, out indexToSplitOn))
                 {
-                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply numeric value for a Index split"));
+                    double doubleToSplitOn;
+                    if (double.TryParse(SplitToken, out doubleToSplitOn))
+                    {
+                        _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split"));
+                    }
+                    else
+                    {
+                        _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                    }
                     return false;
                 }
 
                 if (indexToSplitOn < 1)
                 {
-                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply positive value for a Index split"));
+                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
 
@@ -499,7 +505,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             {
                 if (string.IsNullOrEmpty(SplitToken))
                 {
-                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply value for a Character split"));
+                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a value for a Character split"));
                     return false;
                 }
             }
@@ -523,12 +529,12 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                 return false;
             }
 
-            OnPropertyChanged("Status");
             return true;
         }
 
         private bool ValidateRecordsetPrefix(string value)
         {
+
             if (value.Contains("(") && value.Contains(")."))
             {
                 int startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
@@ -544,7 +550,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                 {
                     return false;
                 }
-                value = value.Remove(value.IndexOf("(", StringComparison.Ordinal));
+                value = value.Replace("(" + tmp + ").", string.Empty);
             }
             return ValidateName(value);
         }

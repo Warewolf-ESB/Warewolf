@@ -91,6 +91,7 @@
     <Compile Include="ActivityTests\DataSplitActivityTest_old.cs" />
     <Compile Include="ActivityTests\DateTimeActivityTests.cs" />
     <Compile Include="ActivityTests\DateTimeDifferenceTests.cs" />
+    <Compile Include="ActivityTests\DebugStateTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityAbstractTest.cs" />
     <Compile Include="ActivityTests\DsfFlowNodeTests.cs" />
@@ -127,6 +128,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ActivityStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\TestActivity.cs" />
     <Compile Include="Utils\TestUtil.cs" />

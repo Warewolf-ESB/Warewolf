@@ -6,7 +6,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.ViewModels.QuickVariableInput;
-using Dev2.Studio.Views.UserInterfaceBuilder;
 using Dev2.UI;
 using System;
 using System.Activities.Presentation;
@@ -45,13 +44,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Dependancy Properties
+        #region Properties
+
+        public QuickVariableInputViewModel ViewModel { get; set; }
 
         public bool ShowAdorners
         {
             get { return (bool)GetValue(ShowAdornersProperty); }
             set { SetValue(ShowAdornersProperty, value); }
         }
+
+        #endregion
+
+        #region Dependancy Properties
 
         // Using a DependencyProperty as the backing store for ShowAdorners.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowAdornersProperty =
@@ -112,6 +117,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 parent = parent.Parent;
             }
+
+            ICollectionActivity modelItemActivity = ModelItem.GetCurrentValue() as ICollectionActivity;
+
+            QuickVariableInputModel model = new QuickVariableInputModel(ModelItem, modelItemActivity);
+
+            ViewModel = new QuickVariableInputViewModel(model);
+
+
         }
 
         private void Highlight(IDataListItemModel dataListItemViewModel)
@@ -237,16 +250,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void QuickVariableInputControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            DataGridQuickVariableInputView view = sender as DataGridQuickVariableInputView;
-            ICollectionActivity activity = ModelItem.GetCurrentValue() as ICollectionActivity;
-
-            QuickVariableInputModel model = new QuickVariableInputModel(ModelItem, activity);
-
-            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(model);
-
-            view.DataContext = viewModel;
-
-            viewModel.CloseAdornersRequested += delegate
+            ViewModel.CloseAdornersRequested += delegate
             {
                 ShowQuickVariableInput = false;
             };
