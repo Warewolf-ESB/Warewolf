@@ -1464,9 +1464,13 @@ namespace Dev2.Server.Datalist
                                     RecursiveVals.Add(p.Option.DisplayValue);
                                     if (RecursiveVals.FirstOrDefault(c => c.Equals(val.FetchScalar().TheValue)) == null)
                                     {
+                                        //expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
+                                        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
+                                        expression = expression.StartsWith("{")
+                                                        ? expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue.Replace("\"", "\\\""))
+                                                        : expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
                                         //p.Option.DisplayValue != val.FetchScalar().TheValue
-                                        expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
-                                        
+                                        //expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
                                     }
                                     else
                                     {
@@ -1504,7 +1508,7 @@ namespace Dev2.Server.Datalist
                                             // we want an entry at a set location
 
                                             //2013.02.11: Ashley Lewis - Bug 8725, Task 8794+Task 8835+Task 8830 - TryFetchRecordsetColumnAtIndex effects the datalist item its called on
-                                            IBinaryDataListItem col=Dev2BinaryDataListFactory.CreateBinaryItem("", p.Option.Field);
+                                            IBinaryDataListItem col = Dev2BinaryDataListFactory.CreateBinaryItem("", p.Option.Field);
                                             if (!val.IsEmpty())
                                                 col = val.TryFetchRecordsetColumnAtIndex(p.Option.Field, myIdx, out error);
 
@@ -1537,8 +1541,11 @@ namespace Dev2.Server.Datalist
                                                     subVal = valT.TheValue;
                                                 }
 
-                                                expression = expression.Replace(p.Option.DisplayValue, subVal);
-
+                                                //expression = expression.Replace(p.Option.DisplayValue, subVal);
+                                                //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
+                                                expression = expression.StartsWith("{")
+                                                    ? expression.Replace(p.Option.DisplayValue, subVal.Replace("\"", "\\\""))
+                                                    : expression = expression.Replace(p.Option.DisplayValue, subVal);
                                                 // now evaluate the expression correctly to replace this token
                                                 //expression = expression.Replace(p.Option.DisplayValue, string.Empty);
                                             }

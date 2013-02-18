@@ -735,6 +735,8 @@ namespace ActivityUnitTests.ActivityTest
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
+
+        //2013.02.11: Ashley Lewis - Bug 8725, Task 8794+Task 8835+Task 8830
         [TestMethod]
         public void MutiAssignWithAppendCalculationToSameBlankRecordSetAndStaredIndexExpectedValueInFirst()
         {

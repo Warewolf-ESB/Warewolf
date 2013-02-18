@@ -122,7 +122,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836
+        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836 DONE
         [TestMethod]
         public void BaseConvertScalarNumberToBase64ExpectedStringToBase64()
         {
@@ -145,7 +145,7 @@ namespace ActivityUnitTests.ActivityTests
         {
             SetupArguments(
                             @"<root></root>"
-                          , ActivityStrings.BaseConvert_DLShape.Replace("<ADL>","<ADL><setup/>")
+                          , ActivityStrings.BaseConvert_DLShape.Replace("<ADL>", "<ADL><setup/>")
                           , new List<BaseConvertTO>() { new BaseConvertTO("", "Text", "Binary", "[[setup]]", 1) }
                           );
             IDSFDataObject result = ExecuteProcess();
@@ -228,7 +228,8 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Negative Tests
 
-        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836 - "0001010111010" can be converted to Base64 as text
+        // Ashley.Lewis : 15-02-2013 : This test is incorrect, they assume that text cannot be a representation of any value
+        //                              when it is clear that text can represent binary, base64, hex etc
         //[TestMethod]
         //public void BaseConvert_ScalarToBase64_Expected_ErrorTag()
         //{
@@ -241,7 +242,7 @@ namespace ActivityUnitTests.ActivityTests
         //                  );
 
         //    IDSFDataObject result = ExecuteProcess();
-        //    Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        //    Assert.IsTrue(_compiler.HasErrors(result.DataListID));
         //}
 
         [TestMethod]

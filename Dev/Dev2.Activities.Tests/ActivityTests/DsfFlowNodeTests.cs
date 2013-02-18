@@ -1,5 +1,4 @@
 ﻿using System.Activities.Statements;
-using System.Collections.ObjectModel;
 using System.Data;
 using Dev2;
 using Dev2.Common;
@@ -67,40 +66,38 @@ namespace ActivityUnitTests.ActivityTests
         //
         #endregion
 
+        #region Decision Tests
+
+        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913
+        [TestMethod]
+        public void DecisionWithQuotesInScalarExpectedNoUnhandledExceptions()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[var]]", Col2 = "\"", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
+
+            CurrentDl = "<ADL><var/></ADL>";
+            TestData = "<root><var>\"</var></root>";
+            TestStartNode = new FlowStep
+            {
+                Action = act
+            };
+            IDSFDataObject result = ExecuteProcess();
+
+            IList<string> getDatalistID = new List<string>() { result.DataListID.ToString() };
+            Assert.IsTrue(new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID));
+        }
+
+        #endregion Decision Tests
+
         #region GetDebugInputs/Outputs
 
         #region Decision tests
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        //Bug 8104
-        public void FileRead_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
-
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[CompanyName]]", Col2 = string.Empty, Col3 = "2", EvaluationFn = enDecisionType.IsContains });
-
-            string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
-
-
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
-
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(3, inRes[0].Count);
-            Assert.AreEqual(3, inRes[1].Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(1, outRes[0].Count);
-        }
 
         /// <summary>
         /// Author : Massimo Guerrera Bug 8104
@@ -132,32 +129,6 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].Count);
-        }
-
-        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913
-        [TestMethod]
-        [ExpectedException(typeof(InvalidExpressionException))]
-        public void DecisionWithQuotesInScalarExpectedNoUnhandledExceptions()
-        {
-            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
-
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[var]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsEqual });
-
-            string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-
-
-            CurrentDl = "<ADL><var/></ADL>";
-            TestData = "<root><var>\"</var></root>";
-            TestStartNode = new FlowStep
-            {
-                Action = act
-            };
-            IDSFDataObject result = ExecuteProcess();
-
-            IList<string> getDatalistID = new List<string>(){result.DataListID.ToString()};
-            Assert.IsTrue(new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID));
         }
 
         #endregion
