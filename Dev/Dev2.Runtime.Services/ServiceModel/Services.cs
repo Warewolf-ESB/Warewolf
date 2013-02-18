@@ -180,7 +180,7 @@ namespace Dev2.Runtime.ServiceModel
                 var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? name : path.OutputExpression, Path = path };
 
                 RecordsetField rsField;
-                if(!addFields && (rsField = rsFields.FirstOrDefault(f => f.Path.ActualPath == path.ActualPath)) != null)
+                if(!addFields && (rsField = rsFields.FirstOrDefault(f => f.Path != null ? f.Path.ActualPath == path.ActualPath : f.Name == field.Name)) != null)
                 {
                     field.Alias = rsField.Alias;
                 }
