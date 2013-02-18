@@ -183,7 +183,6 @@
             ResourceName: sourceName
         });
         if (Dev2Awesomium.Show("", args)) {
-            alert("Dev2Awesomium.Show finished");
             self.load();
             return true;
         }
