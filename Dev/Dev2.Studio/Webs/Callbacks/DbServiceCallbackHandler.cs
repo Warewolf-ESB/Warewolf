@@ -74,29 +74,50 @@ namespace Dev2.Studio.Webs.Callbacks
         {
             if(_isEditingSource)
             {
-                _isEditingSource = false;
+                // DB source invokes this
                 var xml = XElement.Parse(value);
                 var sourceName = xml.ElementSafe("ResourceName");
-
-                const string SourceParam = "sourceName=";
-                var uri = _returnUri;
-                var idx = uri.IndexOf(SourceParam, StringComparison.InvariantCultureIgnoreCase);
-                if(idx > 0)
-                {
-                    var start = idx + SourceParam.Length;
-                    var end = uri.IndexOf('&', start);
-                    end = end > 0 ? end : uri.Length;
-                    uri = uri.Remove(start, (end - start));
-                    uri = uri.Insert(start, sourceName);
-                }
-                else
-                {
-                    uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceName;
-                }
-
-                Navigate(uri);
-                ReloadResource(EnvironmentRepository.DefaultEnvironment, sourceName, ResourceType.Source);
+                NavigateBack(sourceName);
             }
         }
+
+        public override void Dev2ReloadResource(string resourceName, string resourceType)
+        {
+            if(_isEditingSource)
+            {
+                // DB source invoked this from new window
+                NavigateBack(resourceName);
+            }
+        }
+
+        #region NavigateBack
+
+        void NavigateBack(string sourceName)
+        {
+            var uri = _returnUri;
+            _isEditingSource = false;
+            _returnUri = null;
+
+            const string SourceParam = "sourceName=";
+            var idx = uri.IndexOf(SourceParam, StringComparison.InvariantCultureIgnoreCase);
+            if(idx > 0)
+            {
+                var start = idx + SourceParam.Length;
+                var end = uri.IndexOf('&', start);
+                end = end > 0 ? end : uri.Length;
+                uri = uri.Remove(start, (end - start));
+                uri = uri.Insert(start, sourceName);
+            }
+            else
+            {
+                uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceName;
+            }
+
+            Navigate(uri);
+            ReloadResource(EnvironmentRepository.DefaultEnvironment, sourceName, ResourceType.Source);
+        }
+
+        #endregion
+
     }
 }
