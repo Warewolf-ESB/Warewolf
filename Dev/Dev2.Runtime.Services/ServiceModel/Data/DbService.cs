@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Dev2.Common.ServiceModel;
+using Dev2.DynamicServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
-using Dev2.DynamicServices;
 using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -122,12 +122,32 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             foreach(var field in Recordset.Fields)
             {
-                var output = new XElement("Output",
-                    new XAttribute("Name", field.Name ?? string.Empty),
-                    new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                    new XAttribute("Value", "[[" + field.Alias + "]]")
-                    );
-                outputs.Add(output);
+                if (DataList.Contract.DataListUtil.IsValueRecordset(field.Alias))
+                {
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", DataList.Contract.DataListUtil.ExtractFieldNameFromValue(field.Alias) ?? string.Empty),
+                        new XAttribute("Value", field.Alias),
+                        new XAttribute("Recordset", DataList.Contract.DataListUtil.ExtractRecordsetNameFromValue(field.Alias))
+                        );
+                    outputs.Add(output);                    
+                }
+                else
+                {
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", DataList.Contract.DataListUtil.ExtractFieldNameFromValue(field.Alias) ?? string.Empty),
+                        new XAttribute("Value", field.Alias)
+                        );
+                    outputs.Add(output);                    
+                }
+
+                //var output = new XElement("Output",
+                //    new XAttribute("Name", field.Name ?? string.Empty),
+                //    new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                //    new XAttribute("Value", "[[" + field.Alias + "]]")
+                //    );
+                //outputs.Add(output);
             }
 
             #endregion
