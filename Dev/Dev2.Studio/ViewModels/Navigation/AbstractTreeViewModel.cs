@@ -740,6 +740,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             Children.Remove(toRemove);
             child.TreeParent = null;
+            
             return true;
         }
 

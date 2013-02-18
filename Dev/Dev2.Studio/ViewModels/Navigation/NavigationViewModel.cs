@@ -153,7 +153,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             var e = _environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
 
-            if (e == null) 
+            if (e == null)
                 return;
 
             LoadEnvironmentResources(e);
@@ -174,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             var environmentNavigationItemViewModel =
                 Find(e, false) as EnvironmentTreeViewModel;
 
-            if (environmentNavigationItemViewModel == null) 
+            if (environmentNavigationItemViewModel == null)
                 return;
             environmentNavigationItemViewModel.Children.Clear();
             environmentNavigationItemViewModel.RaisePropertyChangedForCommands();
@@ -222,7 +222,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void AddEnvironment(IEnvironmentModel environment)
         {
-            if (_environments.Contains(environment, EnvironmentModelEqualityComparer.Current)) 
+            if (_environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
                 return;
 
             _environments.Add(environment);
@@ -234,7 +234,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void RemoveEnvironment(IEnvironmentModel environment)
         {
-            if (!_environments.Remove(environment)) 
+            if (!_environments.Remove(environment))
                 return;
 
             var environmentNavigationItemViewModel =
@@ -269,7 +269,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 RefreshEnvironment(environment);
             }
-            
+
             IsRefreshing = false;
         }
 
@@ -357,32 +357,37 @@ namespace Dev2.Studio.ViewModels.Navigation
             var serviceTypeNode = environmentNode.FindChild(resourceModel.ResourceType);
             if (serviceTypeNode == null) return;
 
-            var resourceNode = environmentNode.FindChild(resourceModel);
-            var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
+            var resourceNode = environmentNode.FindChild(resourceModel) as ResourceTreeViewModel;
 
+            var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
             var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
 
-            if(resourceNode != null)
+            if (resourceNode != null)
             {
-                
+
                 var originalCategoryNode = resourceNode.TreeParent;
 
                 //this means the category has changed
                 if (newCategoryName != originalCategoryNode.DisplayName)
                 {
                     // Remove from old category
-                    originalCategoryNode.Remove(resourceNode);
-
+                    bool test = originalCategoryNode.Remove(resourceNode);
+                    var test1 = test;
                     //delete old category if empty
                     if (originalCategoryNode.ChildrenCount == 0)
+                    {
                         originalCategoryNode.TreeParent.Remove(originalCategoryNode);
+                    }
+                }
+                else //just update the actual resource
+                {
+                    resourceNode.DataContext = resource as IContextualResourceModel;
                 }
             }
             //Means it doesnt exist, therefore create without a parent
             else
             {
-                resourceNode = TreeViewModelFactory.Create(resourceModel, null, WizardEngine.IsWizard(resourceModel));
-
+                resourceNode = TreeViewModelFactory.Create(resourceModel, null, WizardEngine.IsWizard(resourceModel)) as ResourceTreeViewModel;
             }
 
             //if not exist create category
@@ -393,7 +398,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             //add to category
             if (!ReferenceEquals(newCategoryNode, resourceNode.TreeParent)) newCategoryNode.Add(resourceNode);
-          
+
         }
 
         #endregion public methods
@@ -570,7 +575,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             // Add wizard
             //
-            if (WizardEngine.IsResourceWizard(resource)) 
+            if (WizardEngine.IsResourceWizard(resource))
                 return;
 
             var wizardResource = WizardEngine.GetWizard(resource);
@@ -621,9 +626,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     environment.Connect(primaryEnvironment);
                 }
-// ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
-// ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     //TODO show that connection failed.
                 }
