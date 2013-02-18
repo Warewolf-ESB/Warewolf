@@ -1,6 +1,7 @@
 ﻿
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.ErrorHandling;
@@ -480,6 +481,11 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             if (SplitType == "Index")
             {
                 int indexToSplitOn;
+                if (!SplitToken.IsWholeNumber())
+                {
+                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                    return false;
+                }
                 if (!int.TryParse(SplitToken, out indexToSplitOn))
                 {
                     double doubleToSplitOn;
@@ -557,7 +563,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         private bool ValidateName(string value)
         {
-            if (!string.IsNullOrWhiteSpace(value))
+            if (!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
             {
                 try
                 {

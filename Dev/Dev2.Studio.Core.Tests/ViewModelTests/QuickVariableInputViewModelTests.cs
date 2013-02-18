@@ -202,7 +202,7 @@ Email",
             List<string> expectedCollection = new List<string> { "Fname", "Lname", "TelNo", "Email" };
 
             CollectionAssert.AreEqual(expectedCollection, returnedList);
-        }        
+        }
 
         #endregion
 
@@ -268,6 +268,23 @@ Email",
         #region Validation Tests
 
         [TestMethod]
+        public void QuickVariableInputViewModelValidationWithInvalidCharsInPrefixWithTwoDotsExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer()..", VariableListString = "Fname,LName,TelNo", SplitType = "Chars", SplitToken = ",", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Prefix contains invalid characters";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void QuickVariableInputViewModelValidationWithInvalidCharsInPrefixExpectedPreviewTextContainsErrorText()
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
@@ -310,6 +327,23 @@ Email",
             activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
 
             QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Index", SplitToken = "-1", Overwrite = false };
+
+            viewModel.Preview();
+            string expected = "Please supply a whole positive number for an Index split";
+
+            string actual = viewModel.PreviewText;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void QuickVariableInputViewModelValidationWithDecimalNumberForIndexSplitExpectedPreviewTextContainsErrorText()
+        {
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+
+            QuickVariableInputViewModel viewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity)) { Suffix = "", Prefix = "Customer().", VariableListString = "Fname,LName,TelNo", SplitType = "Index", SplitToken = "100.3000", Overwrite = false };
 
             viewModel.Preview();
             string expected = "Please supply a whole positive number for an Index split";
