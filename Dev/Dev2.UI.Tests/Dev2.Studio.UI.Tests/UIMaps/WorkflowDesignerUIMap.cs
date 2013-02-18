@@ -411,6 +411,32 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl qviControl = new UITestControl();
             foreach (UITestControl theControl in assignControlCollection)
             {
+                    if (theControl.FriendlyName == "quickVariableInputControl")
+                    {
+                        qviControl = theControl;
+                        break;
+                    }
+            }
+
+            UITestControlCollection qviChildren = qviControl.GetChildren();
+            UITestControl addBtn = new UITestControl();
+            foreach (UITestControl quickVarInputChildren in qviChildren) {
+                if (quickVarInputChildren.FriendlyName == "Add")
+                {
+                    addBtn = quickVarInputChildren;
+                }
+            }
+            Mouse.Click(addBtn, new Point(5, 5));
+        }
+
+
+        public void AssignControl_QuickVariableInputControl_ClickPreview(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControlCollection assignControlCollection = assignControl.GetChildren();
+            UITestControl qviControl = new UITestControl();
+            foreach (UITestControl theControl in assignControlCollection)
+            {
                 if (theControl.FriendlyName == "quickVariableInputControl")
                 {
                     qviControl = theControl;
@@ -419,7 +445,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
-            Mouse.Click(qviChildren[14], new Point(5, 5));
+            UITestControl previewBtn = new UITestControl();
+            foreach (UITestControl quickVarInputChildren in qviChildren)
+            {
+                if (quickVarInputChildren.FriendlyName == "Preview")
+                {
+                    previewBtn = quickVarInputChildren;
+                }
+            }
+            Mouse.Click(previewBtn, new Point(5, 5));
         }
 
         public void AssignControl_QuickVariableInputControl_ClickCancel(UITestControl theTab, string controlAutomationId)
@@ -436,8 +470,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 }
             }
 
-            UITestControlCollection qviChildren = qviControl.GetChildren();
-            Mouse.Click(qviChildren[15], new Point(5, 5));
+            UITestControl cancelBtn = new UITestControl();
+
+            foreach (UITestControl qviChildren in qviControl.GetChildren())
+            {
+                if (qviChildren.FriendlyName == "Cancel")
+                {
+                    cancelBtn = qviChildren;
+                }
+            }
+            Mouse.Click(cancelBtn, new Point(5, 5));
         }
 
         public string AssignControl_QuickVariableInputControl_GetPreviewData(UITestControl theTab, string controlAutomationId)
@@ -450,11 +492,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 if (theControl.FriendlyName == "quickVariableInputControl")
                 {
                     qviControl = theControl;
-                    break;
+                    //break;
                 }
             }
             UITestControlCollection qviChildren = qviControl.GetChildren();
-            WpfEdit previewBox = (WpfEdit)qviChildren[16];
+            WpfEdit previewBox = (WpfEdit)qviChildren[qviChildren.Count - 1];
             return previewBox.Text;
         }
         #endregion Assign Control

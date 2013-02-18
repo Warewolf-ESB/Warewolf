@@ -48,7 +48,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControlCollection buttonCollection = controlButtons.FindMatchingControls();
             foreach(WpfButton theButton in buttonCollection)
             {
-                if(theButton.FriendlyName == "Quick Variable Input")
+                if (theButton.AutomationId.Contains("QuickVariableAddBtn_AutoID"))
                 {
                     return theButton;
                 }

@@ -349,12 +349,13 @@ namespace Dev2.CodedUI.Tests
         public void QuickVariableInputFromListTest()
         {
             // Create the workflow
-            CreateCustomWorkflow("PBI8601Test");
+            CreateCustomWorkflow("PBI8601Test2");
             Thread.Sleep(2500);
-            // UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601Test");
-            UITestControl theTab = TabManagerUIMap.FindTabByName("RightClickMenuTests");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601Test2");
+            //UITestControl theTab = TabManagerUIMap.FindTabByName("RightClickMenuTests");
 
             // Add an assign control
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
 
             // Click the Adorner button
@@ -372,8 +373,10 @@ namespace Dev2.CodedUI.Tests
 
             // Click cancel, and enter some correct data
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickCancel(theTab, "Assign");
+
             WorkflowDesignerUIMap.AssignControl_ClickQuickVariableInputButton(theTab, "Assign");
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
+
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
             // Check the data
