@@ -38,7 +38,8 @@ namespace Dev2.Integration.Tests.MEF
             });
 
             ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
-
+            IFrameworkSecurityContext securityProvider = new MockSecurityProvider("IntegrationTestSecurity");
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(securityProvider);
             return importServiceContext;
         }
 

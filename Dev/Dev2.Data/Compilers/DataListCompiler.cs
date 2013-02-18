@@ -715,6 +715,7 @@ namespace Dev2.DataList.Contract
                         string errorString;
                         if (entry.IsRecordset)
                         {
+                            if(entry.ColumnIODirection!=enDev2ColumnArgumentDirection.None)
                             foreach (Dev2Column col in entry.Columns)
                             {
                                 newDl.TryCreateScalarTemplate(string.Empty, entry.Namespace + GlobalConstants.RecordsetJoinChar + col.ColumnName, entry.Description, true, out errorString);
@@ -722,9 +723,12 @@ namespace Dev2.DataList.Contract
                         }
                         else
                         {
-                            IBinaryDataListItem scalar = entry.FetchScalar();
-                            newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
-                            entry.FetchScalar();
+                            if(entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
+                            {
+                                IBinaryDataListItem scalar = entry.FetchScalar();
+                                newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
+                                entry.FetchScalar();
+                            }
                         }
                     }
                     Guid newDlId = PushBinaryDataList(newDl.UID, newDl, out errors);

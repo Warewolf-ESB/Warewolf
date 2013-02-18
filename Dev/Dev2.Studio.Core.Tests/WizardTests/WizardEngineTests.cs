@@ -1,43 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Composition;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Wizards;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Studio.Core.Wizards.Interfaces;
-using System.Reflection;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Factories;
-using Moq;
-using Dev2.Studio.Core;
-using System.Xml;
-using System.Xml.Linq;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
-using System.Diagnostics;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Wizards;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
 {
     [TestClass]
     public class WizardEngineTests
     {
-        private Mock<IEnvironmentModel> environment;
-        private IContextualResourceModel resource;
-        private WizardEngine wizEng;
-        private Mock<IContextualResourceModel> mockResource1;
-        private Mock<IContextualResourceModel> mockResource2;
-        private Mock<IContextualResourceModel> mockResource3;
+        Mock<IEnvironmentModel> environment;
+        Mock<IContextualResourceModel> mockResource1;
+        Mock<IContextualResourceModel> mockResource2;
+        Mock<IContextualResourceModel> mockResource3;
+        IContextualResourceModel resource;
+        WizardEngine wizEng;
 
         #region Initialize
 
-        [TestInitialize()]
+        [TestInitialize]
         public void Initialize()
         {
             mockResource1 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestWorkflow1");
@@ -91,18 +82,18 @@ namespace Dev2.Core.Tests
         public void CreateResourceWizard_ForWorkflow_Positive_Expected_New_Workflow()
         {
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
-            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService); 
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
             mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
-	<Host IsEditable=""true"" Description=""""/>
-	<Port IsEditable=""true"" Description=""""/>
-	<From IsEditable=""true"" Description=""""/>
-	<To IsEditable=""true"" Description=""""/>
-	<Subject IsEditable=""true"" Description=""""/>
-	<BodyType IsEditable=""true"" Description=""""/>
-	<Body IsEditable=""true"" Description=""""/>
-	<Attachment IsEditable=""true"" Description=""""/>
-	<FailureMessage IsEditable=""true"" Description=""""/>
-	<Message IsEditable=""true"" Description=""""/>
+	<Host IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+	<Subject IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<BodyType IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<Body IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<Attachment IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<FailureMessage IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<Message IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
 </ADL>");
             MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
             IContextualResourceModel wizResource = null;
@@ -115,11 +106,204 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
         }
 
+        //Bug 7408 - Hagashen Naidu
         [TestMethod]
-        public void CreateResourceWizard_ForService_Positive_Expected_New_Workflow()
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowColumnIoDirectionNoneDoesNotIncludeInDataList()
         {
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
-            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.Service);  
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" ColumnIODirection=""None""/>
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description="""" ColumnIODirection=""None""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+	<Subject IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<BodyType IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<Body IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<Attachment IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<FailureMessage IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<Message IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To><Subject IsEditable=""False""></Subject><BodyType IsEditable=""False""></BodyType><Body IsEditable=""False""></Body><Attachment IsEditable=""False""></Attachment><FailureMessage IsEditable=""False""></FailureMessage><Message IsEditable=""False""></Message></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        //Bug 7408 - Hagashen Naidu
+        [TestMethod]
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowNoColumnIoDirectionSpecifiedDoesNotIncludeInDataList()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" />
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description=""""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+	<Subject IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<BodyType IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<Body IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<Attachment IsEditable=""true"" Description="""" ColumnIODirection=""Output""/>
+	<FailureMessage IsEditable=""true"" Description=""""/>
+	<Message IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To><Subject IsEditable=""False""></Subject><BodyType IsEditable=""False""></BodyType><Body IsEditable=""False""></Body><Attachment IsEditable=""False""></Attachment><Message IsEditable=""False""></Message></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        //Bug 7408 - Hagashen Naidu
+        [TestMethod]
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowNoColumnIoDirectionSpecifiedDoesNotIncludeInDataListRecordSet()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" />
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description=""""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+    <SomeRecords>
+	    <Record1 IsEditable=""true"" Description=""""/>
+	    <Record2 IsEditable=""true"" Description=""""/>
+    </SomeRecords>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        //Bug 7408 - Hagashen Naidu
+        [TestMethod]
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowColumnIoDirectionSpecifiedAsNoneDoesNotIncludeInDataListRecordSet()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" />
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description=""""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+    <SomeRecords ColumnIODirection=""None"">
+	    <Record1 IsEditable=""true"" Description=""""/>
+	    <Record2 IsEditable=""true"" Description=""""/>
+    </SomeRecords>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        //Bug 7408 - Hagashen Naidu
+        [TestMethod]
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowColumnIoDirectionSpecifiedAsBothDoesIncludeInDataListRecordSet()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" />
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description=""""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+    <SomeRecords ColumnIODirection=""Both"">
+	    <Record1 IsEditable=""true"" Description=""""/>
+	    <Record2 IsEditable=""true"" Description=""""/>
+    </SomeRecords>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        //Bug 7408 - Hagashen Naidu
+        [TestMethod]
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowColumnIoDirectionSpecifiedAsInputDoesIncludeInDataListRecordSet()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" />
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description=""""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+    <SomeRecords ColumnIODirection=""Input"">
+	    <Record1 IsEditable=""true"" Description=""""/>
+	    <Record2 IsEditable=""true"" Description=""""/>
+    </SomeRecords>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        //Bug 7408 - Hagashen Naidu
+        [TestMethod]
+        public void CreateResourceWizardForWorkflowPositiveExpectedNewWorkflowColumnIoDirectionSpecifiedAsOutputDoesIncludeInDataListRecordSet()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResource2.Setup(moq => moq.DataList).Returns(@"<ADL>
+	<Host IsEditable=""true"" Description="""" />
+	<Port IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
+	<From IsEditable=""true"" Description=""""/>
+	<To IsEditable=""true"" Description="""" ColumnIODirection=""Both""/>
+    <SomeRecords ColumnIODirection=""Output"">
+	    <Record1 IsEditable=""true"" Description=""""/>
+	    <Record2 IsEditable=""true"" Description=""""/>
+    </SomeRecords>
+</ADL>");
+            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            IContextualResourceModel wizResource = null;
+            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+
+            wizEng.CreateResourceWizard(mockResource2.Object);
+
+            string expectedDataList = @"<DataList><Port IsEditable=""False""></Port><To IsEditable=""False""></To></DataList>";
+
+            Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        [TestMethod]
+        public void CreateResourceWizardForServicePositiveExpectedNewWorkflow()
+        {
+            environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
+            mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.Service);
             mockResource2.Setup(moq => moq.ServiceDefinition).Returns(@"<Service Name=""Email Service"">
   <Actions>
     <Action Name=""EmailService"" Type=""Plugin"" SourceName=""Email Plugin"" SourceMethod=""Send"">
@@ -175,9 +359,9 @@ namespace Dev2.Core.Tests
             wizEng.CreateResourceWizard(mockResource2.Object);
 
             string expectedDataList = @"<DataList><Host Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><Port Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><From Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><To Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><Subject Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><BodyType Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><Body Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><Attachment Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><FailureMessage Description="""" ColumnIODirection=""None"" IsEditable=""False"" /><Message Description="""" ColumnIODirection=""None"" IsEditable=""False"" /></DataList>";
-            XElement.DeepEquals(XElement.Parse(expectedDataList), XElement.Parse(wizResource.DataList));
+            XNode.DeepEquals(XElement.Parse(expectedDataList), XElement.Parse(wizResource.DataList));
             Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz");
-            Assert.IsTrue(XElement.DeepEquals(XElement.Parse(expectedDataList), XElement.Parse(wizResource.DataList)));
+            Assert.IsTrue(XNode.DeepEquals(XElement.Parse(expectedDataList), XElement.Parse(wizResource.DataList)));
         }
 
         [TestMethod]
@@ -185,7 +369,7 @@ namespace Dev2.Core.Tests
         {
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
             mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
-            mockResource2.Setup(moq => moq.DataList).Returns("<DataList></DataList>");        
+            mockResource2.Setup(moq => moq.DataList).Returns("<DataList></DataList>");
             mockResource2.Setup(moq => moq.ServiceDefinition).Returns(@"<Service Name=""Email Service"">
   <Actions>
     <Action Name=""EmailService"" Type=""Plugin"" SourceName=""Email Plugin"" SourceMethod=""Send"">
@@ -326,16 +510,16 @@ namespace Dev2.Core.Tests
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
             mockResource3.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
             mockResource3.Setup(moq => moq.DataList).Returns(@"<ADL>
-	<Host IsEditable=""false"" Description=""""/>
-	<Port IsEditable=""false"" Description=""""/>
-	<From IsEditable=""false"" Description=""""/>
-	<To IsEditable=""false"" Description=""""/>
-	<Subject IsEditable=""false"" Description=""""/>
-	<BodyType IsEditable=""false"" Description=""""/>
-	<Body IsEditable=""false"" Description=""""/>
-	<Attachment IsEditable=""false"" Description=""""/>
-	<FailureMessage IsEditable=""false"" Description=""""/>
-	<Message IsEditable=""false"" Description=""""/>
+	<Host IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<Port IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<From IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<To IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<Subject IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<BodyType IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<Body IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<Attachment IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<FailureMessage IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
+	<Message IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
             MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
             IContextualResourceModel wizResource = null;
@@ -356,19 +540,19 @@ namespace Dev2.Core.Tests
         {
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource3, new List<IResourceModel>());
             mockResource1.Setup(moq => moq.Environment).Returns(environment.Object);
-            mockResource3.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);    
+            mockResource3.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
             mockResource3.Setup(moq => moq.DataList).Returns(@"<ADL>
-	<Host IsEditable=""False"" Description=""""/>
-	<Port IsEditable=""False"" Description=""""/>
-	<From IsEditable=""False"" Description=""""/>
-	<To IsEditable=""False"" Description=""""/>
-	<Subject IsEditable=""False"" Description=""""/>
-	<BodyType IsEditable=""False"" Description=""""/>
-	<Body IsEditable=""False"" Description=""""/>
-	<Attachment IsEditable=""False"" Description=""""/>
-	<FailureMessage IsEditable=""False"" Description=""""/>
-    <RemoveVar IsEditable=""False"" Description=""""/>
-	<Message IsEditable=""False"" Description=""""/>
+	<Host IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<Port IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<From IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<To IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<Subject IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<BodyType IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<Body IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<Attachment IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<FailureMessage IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+    <RemoveVar IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
+	<Message IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
             MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
             IContextualResourceModel wizResource = null;
@@ -384,7 +568,7 @@ namespace Dev2.Core.Tests
 -------------------------------------------------";
 
             Assert.IsTrue(wizResource.ResourceName == "TestWorkflow1.wiz" && (wizEng.Popup.Description == popupMessage));
-        }        
+        }
 
         #endregion EditWizard Tests        
 
@@ -429,7 +613,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         public void IsWizard_ResourceWizard_Expected_True()
-        {            
+        {
             Assert.IsTrue(wizEng.IsWizard(mockResource3.Object));
         }
 
@@ -476,7 +660,7 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(Exception), "Can't get a parent for a resource that is not a wizard. The attempt was made on 'TestWorkflow1'.")]
         public void GetParent_NotResourceWizard_Expected_Exception()
         {
-            IContextualResourceModel parent = wizEng.GetParent(mockResource1.Object);         
+            IContextualResourceModel parent = wizEng.GetParent(mockResource1.Object);
         }
 
         #endregion Get Parent Tests

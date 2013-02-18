@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -84,7 +85,7 @@ namespace Dev2.Studio.Diagnostics
                     string convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
                     if (debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText)) return true;
 
-                    string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
+                    string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null,null));
                     if (debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText)) return true;
                 }
 

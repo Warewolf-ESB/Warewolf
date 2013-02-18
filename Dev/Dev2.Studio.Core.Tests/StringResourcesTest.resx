@@ -122,15 +122,15 @@
   </data>
   <data name="xmlDataList" xml:space="preserve">
     <value>&lt;DataList&gt;
-	&lt;NUD2347 Description=""/&gt;
-	&lt;number Description=""/&gt;
-	&lt;vehicleColor Description=""/&gt;
-	&lt;Fines Description=""&gt;
+	&lt;NUD2347 ColumnIODirection="Both" Description=""/&gt;
+	&lt;number ColumnIODirection="Both" Description=""/&gt;
+	&lt;vehicleColor ColumnIODirection="Both" Description=""/&gt;
+	&lt;Fines ColumnIODirection="Both" Description=""&gt;
 		&lt;Speed Description=""/&gt;
 		&lt;Date Description=""/&gt;
 		&lt;Location Description=""/&gt;
 	&lt;/Fines&gt;
-	&lt;Registrations Description=""&gt;
+	&lt;Registrations ColumnIODirection="Both" Description=""&gt;
 		&lt;Speed Description=""/&gt;
 		&lt;Date Description=""/&gt;
 		&lt;Location Description=""/&gt;

@@ -325,15 +325,15 @@ namespace Dev2.Core.Tests {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;DataList&gt;
-        ///	&lt;NUD2347 Description=&quot;&quot;/&gt;
-        ///	&lt;number Description=&quot;&quot;/&gt;
-        ///	&lt;vehicleColor Description=&quot;&quot;/&gt;
-        ///	&lt;Fines Description=&quot;&quot;&gt;
+        ///	&lt;NUD2347 ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;/&gt;
+        ///	&lt;number ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;/&gt;
+        ///	&lt;vehicleColor ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;/&gt;
+        ///	&lt;Fines ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;&gt;
         ///		&lt;Speed Description=&quot;&quot;/&gt;
         ///		&lt;Date Description=&quot;&quot;/&gt;
         ///		&lt;Location Description=&quot;&quot;/&gt;
         ///	&lt;/Fines&gt;
-        ///	&lt;Registrations Description=&quot;&quot;&gt;
+        ///	&lt;Registrations ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;&gt;
         ///		&lt;Speed Description=&quot;&quot;/&gt;
         ///		&lt;Date Description=&quot;&quot;/&gt;
         ///		&lt;Location Description=&quot;&quot;/&gt;

@@ -23,7 +23,7 @@ namespace Dev2.Studio.Core {
         }
 
         public bool IsUserInRole(string[] roles) {
-            return Roles.Intersect(_allRoles).Any(); 
+            return Roles.Intersect(_allRoles,StringComparer.OrdinalIgnoreCase).Any(); 
         }
 
         public string[] Roles {

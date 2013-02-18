@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -265,6 +266,7 @@ namespace Dev2.Server.DataList.Translators
                     foreach (XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
+                        XmlAttribute columnIODirection = null;
                         if (!DataListUtil.isSystemTag(c.Name))
                         {
                             if (c.HasChildNodes)
@@ -298,10 +300,16 @@ namespace Dev2.Server.DataList.Translators
                                         if (c.Attributes != null)
                                         {
                                             descAttribute = c.Attributes["Description"];
+                                            columnIODirection = c.Attributes["ColumnIODirection"];
                                         }
                                         if (descAttribute != null)
                                         {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
+                                            var columnDirection = enDev2ColumnArgumentDirection.None;
+                                            if (columnIODirection != null)
+                                            {
+                                                Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                            }
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true,false,columnDirection, out myError))
                                             {
                                                 error = myError;
                                             }
@@ -323,10 +331,16 @@ namespace Dev2.Server.DataList.Translators
                                 if (c.Attributes != null)
                                 {
                                     descAttribute = c.Attributes["Description"];
+                                    columnIODirection = c.Attributes["ColumnIODirection"];
                                 }
                                 if (descAttribute != null)
                                 {
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, out error);
+                                    var columnDirection = enDev2ColumnArgumentDirection.None;
+                                    if(columnIODirection != null)
+                                    {
+                                        Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                    }
+                                    result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, false, columnDirection, out error);
                                 }
                                 else
                                 {
