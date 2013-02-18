@@ -94,15 +94,6 @@
         self.data.recordset.ErrorMessage("");
         return ko.toJSON(self.data);
     };
-
-    self.selectSource = function (theSource) {
-        var found = utils.IsNullOrEmptyGuid(theSource.ResourceID)
-            ? self.selectSourceByName(theSource.ResourceName)
-            : self.selectSourceByID(theSource.ResourceID);
-        if (!found && sourceName) {
-            self.selectSourceByName(sourceName);
-        }
-    };
     
     self.selectSourceByID = function (theID) {
         theID = theID.toLowerCase();
@@ -150,8 +141,13 @@
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
 
-            self.selectSource(result.Source);
-
+            var found = sourceName && self.selectSourceByName(sourceName);           
+            if (!found) {
+                utils.IsNullOrEmptyGuid(result.Source.ResourceID)
+                    ? self.selectSourceByName(result.Source.ResourceName)
+                    : self.selectSourceByID(result.Source.ResourceID);
+            }
+            
             // MUST set these AFTER setting data.source otherwise they will be blanked!
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
