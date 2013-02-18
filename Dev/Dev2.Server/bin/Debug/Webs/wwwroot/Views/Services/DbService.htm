@@ -13,7 +13,7 @@
                         <h4>1. Select a source</h4>
                         <div>
                             <select style="vertical-align: middle" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
-                            <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource">...</button>
+                            <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
                             <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
                         </div>
                     </div>

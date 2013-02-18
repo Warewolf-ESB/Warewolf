@@ -51,10 +51,11 @@
     self.hasTestResults = ko.observable(false);    
     self.hasTestResultRecords = ko.observable(false);
     self.isFormValid = ko.computed(function () {
-        // TODO: FIX isFormValid
-        var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
-        //console.log("isRecordsetNameOptional: " + isRecordsetNameOptional);
-        return isRecordsetNameOptional ? true : self.data.recordset.Name !== "";
+        if (self.hasTestResults()) {
+            var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
+            return isRecordsetNameOptional ? true : self.data.recordset.Name() !== "";
+        }
+        return false;
     });
 
     self.isSourceMethodsLoading = ko.observable(false);
@@ -62,11 +63,14 @@
     self.isTestEnabled = ko.computed(function () {
         return self.hasMethod() && !self.isTestResultsLoading();
     });
+    self.isEditSourceEnabled = ko.computed(function () {
+        return self.data.source();
+    });
 
     self.data.source.subscribe(function (newValue) {
         self.loadMethods(newValue);
     });   
-
+    
     self.title = ko.observable("New Service");
     self.title.subscribe(function (newValue) {
         document.title = newValue;
@@ -113,6 +117,7 @@
         });
         return found;
     };
+    
     self.selectSourceByName = function(theName) {
         var found = false;
         if (theName) {
@@ -140,7 +145,6 @@
             resourceType: "DbService"
         });
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
-            console.log(result);
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
