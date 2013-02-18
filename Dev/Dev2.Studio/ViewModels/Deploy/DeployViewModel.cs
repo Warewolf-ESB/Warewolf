@@ -50,6 +50,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private IContextualResourceModel _initialResource;
         private IEnvironmentModel _initialEnvironment;
         private bool _isDeploying;
+        private bool _deploySuccessfull;
         private bool _initialLoad = true;
         private bool _selectingAndExpandingFromNavigationItem;
 
@@ -154,6 +155,22 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 _targetEnvironment = value;
                 NotifyOfPropertyChange(() => TargetEnvironment);
+            }
+        }
+
+        /// <summary>
+        /// Used to indicate a successfull deploy has happened
+        /// </summary>
+        public bool DeploySuccessfull
+        {
+            get
+            {
+                return _deploySuccessfull;
+            }
+            private set
+            {
+                _deploySuccessfull = value;
+                NotifyOfPropertyChange(() => DeploySuccessfull);
             }
         }
 
@@ -313,6 +330,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void CalculateStats()
         {
+            DeploySuccessfull = false;
+
             var items = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
             _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
             _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
@@ -453,15 +472,23 @@ namespace Dev2.Studio.ViewModels.Deploy
             // Deploy the resources
             //
             var deployDTO = new DeployDTO { ResourceModels = resourcesToDeploy };
-            IsDeploying = true;
-            _deployService.Deploy(deployDTO, TargetEnvironment);
-            IsDeploying = false;
 
-            //
-            // Reload the environments resources & update explorer
-            //
-            RefreshEnvironments();
-            Mediator.SendMessage(MediatorMessages.UpdateExplorer, false);
+            try
+            {
+                IsDeploying = true;
+                _deployService.Deploy(deployDTO, TargetEnvironment);
+
+                //
+                // Reload the environments resources & update explorer
+                //
+                RefreshEnvironments();
+                Mediator.SendMessage(MediatorMessages.UpdateExplorer, false);
+                DeploySuccessfull = true;
+            }
+            finally
+            {
+                IsDeploying = false;
+            }
         }
 
         /// <summary>

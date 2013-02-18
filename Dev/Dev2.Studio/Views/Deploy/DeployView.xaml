@@ -341,6 +341,12 @@
             </Grid>
             
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Margin="0,0,5,0" Visibility="{Binding DeploySuccessfull, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                    <Image Grid.Column="0" Grid.Row="2" Style="{StaticResource ImageTickStyle}" />
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="Items deployed successfully" AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                                   VerticalAlignment="Center" Margin="3,0,0,0"/>                    
+                </StackPanel>
+                
                 <customDev2Controls:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="0,0,5,0" 
                                                         Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}"/>
                 <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
