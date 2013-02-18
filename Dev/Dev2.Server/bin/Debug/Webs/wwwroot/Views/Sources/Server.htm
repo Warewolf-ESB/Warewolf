@@ -1,250 +1,81 @@
-﻿<div id="container" class="ui-widget-content" style="height: 490px">
+﻿<div id="container" class="ui-widget-content" style="height: 490px; width: 700px;">
     <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
     </div>
-    <div class="float-left">
+    <div id="body" style="padding: 10px;">
 
-        <div id="body">
-            <form id="mainForm" data-bind="submit: save">
-                <div id="mainFormError" class="error" style="display: none; text-align: right;">
-                    <img src="images/error.png" alt="Error!" width="24" height="24" class="icon" />
-                    <span>You missed some fields. These have been highlighted below.</span>
-                </div>
-                <div class="sources-server-form">
-                    <div>
-                        <div class="field">
-                            <label class="sources-server-form-label" for="address">Address:</label>
-                            <input class="required" tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address" />
-                        </div>
-                        <div class="field">
-                            <label class="sources-server-form-label">Authentication Type:</label>
-                            <span>
-                                <span>
-                                    <input tabindex="2" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
-                                    <label class="radio" for="authenticationTypeWindows">Windows</label>
-                                </span>
-                                <span>
-                                    <input tabindex="3" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
-                                    <label class="radio" for="authenticationTypeUser">User</label>
-                                </span>
-                            </span>
-                        </div>
-                        <div class="field">
-                            <label class="sources-server-form-label" for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
-                            <input tabindex="4" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName" />
-                        </div>
-                        <div class="field">
-                            <label class="sources-server-form-label" for="password" data-bind="visible: isUserInputVisible">Password:</label>
-                            <input tabindex="5" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password" />
-                        </div>
-                        <div style="text-align: right">
-                            <span>
-                                <img class="icon" src="Images/ajax-loader.gif" alt="loading" data-bind="visible: isTestResultsLoading" />
-                                <span data-bind="visible: showTestResults">
-                                    <span class="message-success" data-bind="visible: testSucceeded">
-                                        <img class="icon" src="Images/tick.png" alt="succeeded" />
-                                        <span>Successful</span>
-                                    </span>
-                                    <span class="message-error" data-bind="visible: !testSucceeded()">
-                                        <img class="icon" src="Images/warning.png" alt="error" />
-                                        <span data-bind="text: testError"></span>
-                                    </span>
-                                </span>
-                            </span>
-                            <button tabindex="6" type="button" name="test" id="testButton" data-bind="click: test">Test Connection</button>
-                        </div>
+        <div class="float-left">
+            <div class="sources-server-form">
+                <div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="address">Address:</label>
+                        <input tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address, valueUpdate: 'afterkeydown'" />
                     </div>
-                    <div class="button-bar">
-                        <button tabindex="7" type="submit" name="save" id="saveButton">Save Connection</button>
-                        <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+                    <div class="field">
+                        <label class="sources-server-form-label">Authentication Type:</label>
+                        <span>
+                            <span>
+                                <input tabindex="2" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
+                                <label class="radio" for="authenticationTypeWindows">Windows</label>
+                            </span>
+                            <span>
+                                <input tabindex="3" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
+                                <label class="radio" for="authenticationTypeUser">User</label>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
+                        <input tabindex="4" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName, valueUpdate: 'afterkeydown'" />
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="password" data-bind="visible: isUserInputVisible">Password:</label>
+                        <input tabindex="5" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
                     </div>
                 </div>
-            </form>
+                <div style="text-align: right">
+                    <img class="icon" src="Images/ajax-loader.gif" alt="loading" data-bind="visible: isTestResultsLoading" />
+                    <span data-bind="visible: showTestResults">
+                        <span class="message-success" data-bind="visible: testSucceeded">
+                            <img class="icon" src="Images/tick.png" alt="succeeded" />
+                            <span>Successful</span>
+                        </span>
+                        <span class="message-error" data-bind="visible: !testSucceeded()">
+                            <img class="icon" src="Images/warning.png" alt="error" />
+                            <span>Unsuccessful</span>
+                        </span>
+                    </span>
+                    <button tabindex="6" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
+                </div>
+            </div>
+        </div>
+        <div class="help float-left">
+            <div class="help-show-check" style="margin-top: -43px;">
+                <input type="checkbox" name="showHelp" id="showHelp" data-bind="checked: isHelpTextVisible" />
+                <label class="checkbox" for="showHelp">Show Descriptions</label>
+            </div>
+            <div class="help-text help-text-max ui-widget-content" style="margin-top: 15px;" data-bind="html: helpText, visible: isHelpTextVisible">
+            </div>
+        </div>
+        <div data-bind="visible: showTestResults" style="clear: both; float:left; padding-top: 5px;">
+            <span class="message-error" data-bind="visible: !testSucceeded()">
+                <span data-bind="text: testError"></span>
+            </span>
+        </div>
+        <div class="button-bar" style="clear: both; margin-top: 393px">
+            <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: testSucceeded">Save Connection</button>
+            <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
     </div>
-    <div class="help float-left">
-        <div class="help-show-check">
-            <input type="checkbox" name="showHelp" id="showHelp" data-bind="checked: isHelpTextVisible" />
-            <label class="checkbox" for="showHelp">Show Descriptions</label>
-        </div>
-        <div class="help-text help-text-max ui-widget-content" data-bind="html: helpText, visible: isHelpTextVisible">
-        </div>
-    </div>
+
 </div>
 <div id="saveDialogContainer">
 </div>
 
+<script src="Scripts/Sources/ServerViewModel.js"></script>
+
 <script type="text/javascript">
-    function ViewModel(loadedCallback) {
-        var self = this;
-        var $mainForm = $("#mainForm");
-        var $testButton = $("#testButton");
-        var $errDiv = $("#mainFormError");
-        var $errDivSpan = $("#mainFormError span");
-        var $address = $("#address");
 
-        self.saveUri = "Service/Connections/Save";
-
-        self.data = {
-            resourceID: ko.observable(""),
-            resourceType: ko.observable("Server"),
-            resourceName: ko.observable(""),
-            resourcePath: ko.observable(""),
-
-            address: ko.observable(""),
-            authenticationType: ko.observable("User"),
-            userName: ko.observable(""),
-            password: ko.observable(""),
-            webServerPort: ko.observable(1234)
-        };
-
-        var resourceID = getParameterByName("rid");
-        self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
-        self.data.resourceID(self.isEditing ? resourceID : $.Guid.Empty());
-
-        self.title = ko.observable("New Server");
-        self.title.subscribe(function (newValue) {
-            document.title = newValue;
-        });
-
-        self.saveTitle = ko.computed(function () {
-            return self.data ? "<b>Server:</b> " + self.data.address() : "";
-        });
-
-        $.post("Service/Connections/Get" + window.location.search, self.data.resourceID(), function (result) {
-            self.data.resourceID(result.ResourceID);
-            self.data.resourceType(result.ResourceType);
-            self.data.resourceName(result.ResourceName);
-            self.data.resourcePath(result.ResourcePath);
-
-            self.data.address(result.Address);
-            self.data.authenticationType(result.AuthenticationType);
-            self.data.userName(result.UserName);
-            self.data.password(result.Password);
-            self.data.webServerPort(result.WebServerPort);
-
-            self.title(self.isEditing ? "Edit Server - " + result.ResourceName : "New Server");
-        });
-
-        self.data.authenticationType.subscribe(function (newValue) {
-            var isUser = newValue == "User";
-            if (isUser) {
-                $("#userName").addClass("required");
-                $("#password").addClass("required");
-            }
-            else {
-                $("#userName").removeClass("required");
-                $("#password").removeClass("required");
-            }
-            $("#userName").removeClass("error");
-            $("#password").removeClass("error");
-            $mainForm.validate().form();
-            self.isUserInputVisible(isUser);
-        });
-
-        self.isUserInputVisible = ko.observable(true);
-        self.helpDictionaryID = "Server";
-        self.helpDictionary = {};
-        self.helpText = ko.observable("");
-        self.isHelpTextVisible = ko.observable(true);
-
-        self.isTestResultsLoading = ko.observable(false);
-        self.showTestResults = ko.observable(false);
-        self.testSucceeded = ko.observable(true);
-        self.testError = ko.observable("");
-
-        self.updateHelpText = function (id) {
-            var text = self.helpDictionary[id];
-            text = text ? text : self.helpDictionary.default;
-            text = text ? text : "";
-            self.helpText(text);
-        };
-        self.cancel = function () {
-            Dev2Awesomium.Cancel();
-            return true;
-        };
-        self.test = function () {
-            if (!$mainForm.validate().form()) {
-                return;
-            }
-
-            $testButton.button("option", "disabled", true);
-            self.showTestResults(false);
-            self.isTestResultsLoading(true);
-
-            var data = $.extend(self.data, self.saveData);
-            var jsonData = ko.toJSON(data);
-            $.post("Service/Connections/Test" + window.location.search, jsonData, function (result) {
-                $testButton.button("option", "disabled", false);
-                self.isTestResultsLoading(false);
-                self.showTestResults(true);
-                self.testError(result.ErrorMessage);
-                self.testSucceeded(result.IsValid);
-
-                $(result.ErrorFields).each(function (idx, field) {
-                    if (result.IsValid) {
-                        $("#" + field).removeClass("input-validation-error");
-                    } else {
-                        $("#" + field).addClass("input-validation-error");
-                    }
-                });
-            });
-        };
-        self.save = function () {
-            if ($mainForm.validate().form()) {
-                $("#saveForm").dialog("open");
-            }
-        };
-
-        $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
-            self.helpDictionary = result;
-            self.updateHelpText("default");
-        });
-
-        $(":input").focus(function () {
-            self.updateHelpText(this.id);
-        });
-
-        $("#address").autocomplete({
-            source: function (request, response) {
-                $.post("Service/Connections/Search" + window.location.search, request.term, response);
-            },
-            minLength: 2,
-            select: function (event, ui) {
-                var addr = "http://" + ui.item.value + ":77/dsf";
-                viewModel.data.address(addr);
-                return false;
-            }
-        });
-
-        $mainForm.validate({
-            invalidHandler: function (form, validator) {
-                submitted = true;
-            },
-            showErrors: function (errorMap, errorList) {
-                var errors = this.numberOfInvalids();
-                if (errors == 0) {
-                    $errDiv.hide();
-                }
-                else {
-                    var message = errors == 1
-							? 'You missed 1 field. It has been highlighted below.'
-							: 'You missed ' + errors + ' fields. They have been highlighted below.';
-                    $errDivSpan.html(message);
-                    $errDiv.show();
-                }
-                this.defaultShowErrors();
-            }
-        });
-
-        // inject SaveDialog
-        $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
-            if (loadedCallback) {
-                loadedCallback();
-            }
-        });
-    };
-
-    var viewModel = new ViewModel(function () {
+    var viewModel = new ServerViewModel(function () {
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
     });

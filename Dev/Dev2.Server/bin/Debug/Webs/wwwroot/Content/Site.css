@@ -118,6 +118,7 @@ h5, h6 {
     width: 140px;
     display: inline-block;
     float: none;
+    text-align: left;
     border: 0;
     vertical-align: baseline
 }
@@ -158,8 +159,7 @@ h5, h6 {
     float: left;
     margin-left: 20px;
 }
-.help-show-check {
-    margin-top: -33px;
+.help-show-check {    
     color: white;
 }
 
@@ -172,8 +172,7 @@ h5, h6 {
 }
 
 .help-text-max {
-    width: 200px;
-    margin-top: 25px;
+    width: 200px;   
     padding: 10px 20px;
 }
 
@@ -255,7 +254,6 @@ textarea {
 .message-error {
     clear: both;
     color: red;
-    font-size: 1.1em;
     margin: 20px 0 10px 0;
 }
 
