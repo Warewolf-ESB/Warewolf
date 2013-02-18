@@ -99,13 +99,13 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
             {
                 if (string.IsNullOrWhiteSpace(TxtVariableList.Text))
                 {
-                    AddBtn.IsEnabled = false;
-                    PreviewBtn.IsEnabled = false;
+                    QuickVariableInputAddBtn.IsEnabled = false;
+                    QuickVariableInputPreviewBtn.IsEnabled = false;
                 }
                 else
                 {
-                    AddBtn.IsEnabled = true;
-                    PreviewBtn.IsEnabled = true;
+                    QuickVariableInputAddBtn.IsEnabled = true;
+                    QuickVariableInputPreviewBtn.IsEnabled = true;
                 }
             }
         }
