@@ -155,6 +155,7 @@ namespace Dev2.Runtime.ServiceModel
             //
             var rsFields = new List<RecordsetField>(dbService.Recordset.Fields);
             dbService.Recordset.Fields.Clear();
+            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
 
             for(var i = 0; i < outputDescription.DataSourceShapes[0].Paths.Count; i++)
             {
