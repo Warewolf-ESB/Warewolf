@@ -79,21 +79,22 @@ namespace Dev2.Studio.Webs.Callbacks
                 var sourceName = xml.ElementSafe("ResourceName");
 
                 const string SourceParam = "sourceName=";
-                var idx = _returnUri.IndexOf(SourceParam, StringComparison.InvariantCultureIgnoreCase);
+                var uri = _returnUri;
+                var idx = uri.IndexOf(SourceParam, StringComparison.InvariantCultureIgnoreCase);
                 if(idx > 0)
                 {
                     var start = idx + SourceParam.Length;
-                    var end = _returnUri.IndexOf('&', start);
-                    end = end > 0 ? end : _returnUri.Length;
-                    _returnUri = _returnUri.Remove(start, (end - start));
-                    _returnUri = _returnUri.Insert(start, sourceName);
+                    var end = uri.IndexOf('&', start);
+                    end = end > 0 ? end : uri.Length;
+                    uri = uri.Remove(start, (end - start));
+                    uri = uri.Insert(start, sourceName);
                 }
                 else
                 {
-                    _returnUri += _returnUri.IndexOf('?') > 0 ? "&" : "?" + SourceParam + sourceName;
+                    uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceName;
                 }
 
-                Navigate(_returnUri);
+                Navigate(uri);
                 ReloadResource(EnvironmentRepository.DefaultEnvironment, sourceName, ResourceType.Source);
             }
         }
