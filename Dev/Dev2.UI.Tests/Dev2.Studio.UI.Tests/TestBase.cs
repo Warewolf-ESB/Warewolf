@@ -349,9 +349,9 @@ namespace Dev2.CodedUI.Tests
         public void QuickVariableInputFromListTest()
         {
             // Create the workflow
-            CreateCustomWorkflow("PBI8601Test2");
+            CreateCustomWorkflow("PBI8601");
             Thread.Sleep(2500);
-            UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601Test2");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("PBI8601");
             //UITestControl theTab = TabManagerUIMap.FindTabByName("RightClickMenuTests");
 
             // Add an assign control
@@ -384,10 +384,11 @@ namespace Dev2.CodedUI.Tests
             StringAssert.Contains(varName, "[[pre_varOne_suf]]");
 
             // All good - Clean up!
-            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "PBI8601Test");
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "PBI8601");
         }
 
         #endregion New PBI Tests
+
         #region Bugs
 
         // All bugs have been moved to BugTests.cs
@@ -2256,15 +2257,33 @@ namespace Dev2.CodedUI.Tests
 
         #region Deploy Tab
 
-        /*
+
+        // xi. Can I deploy to my server? (AKA: Can I deploy?)
         [TestMethod]
-        public void DeployTab()
+        public void CanIDeploy()
         {
+            // Open the Explorer tab
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //this.UIMap.somestuff();
-            //this.UIMap.someMethodForDeployTab();
+
+            // Naviate to the Workflow, and Right click it
+            ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+
+            // Wait for the Deploy tab to load!
+            Thread.Sleep(5000);
+
+            // Make sure the correct tab is highlighted
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
+            TabManagerUIMap.Click(theTab);
+
+            // Choose the required servers
+            DeployViewUIMap.SelectServers(theTab, "localhost", "localhost");
+
+            // Make sure the deploy count is correct
+            Assert.IsTrue(DeployViewUIMap.DoSourceAndDestinationCountsMatch(theTab));
+
+            // Click the "Deploy" button
+            DeployViewUIMap.ClickDeploy(theTab); // This currently just mouses over the Deploy Button, since I had no servers to test against
         }
-         */
 
         #endregion Deploy Tab
 
@@ -2415,7 +2434,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         //vii.	Can I drop a workflow service onto the design surface?
-        // TODO!
+        // TODO! -- WHEN?
         [TestMethod]
         public void CanAWorkflowServiceBeDroppedOntoTheDesigner()
         {
@@ -2479,32 +2498,6 @@ namespace Dev2.CodedUI.Tests
 
         // x. Can I connect to another server?
 
-        // xi. Can I deploy to my server? (AKA: Can I deploy?)
-        [TestMethod]
-        public void CanIDeploy()
-        {
-            // Open the Explorer tab
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Naviate to the Workflow, and Right click it
-            ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-
-            // Wait for the Deploy tab to load!
-            Thread.Sleep(5000);
-
-            // Make sure the correct tab is highlighted
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
-            TabManagerUIMap.Click(theTab);
-
-            // Choose the required servers
-            DeployViewUIMap.SelectServers(theTab, "localhost", "localhost");
-
-            // Make sure the deploy count is correct
-            Assert.IsTrue(DeployViewUIMap.DoSourceAndDestinationCountsMatch(theTab));
-
-            // Click the "Deploy" button
-            DeployViewUIMap.ClickDeploy(theTab); // This currently just mouses over the Deploy Button, since I had no servers to test against
-        }
 
         #endregion Tests Requiring Designer access
 

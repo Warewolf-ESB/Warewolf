@@ -25,7 +25,7 @@
             
             foreach (WpfListItem theItem in wpfComboList.Items)
             {
-                if (theItem.AutomationId == "UI_SourceServer_" + serverName + "_AutoID")
+                if (theItem.AutomationId == "U_UI_SourceServer_AutoID" + serverName )
                 {
                     theItem.Select();
                     break;
@@ -37,9 +37,10 @@
         {
             UITestControl destinationServerList = GetDestinationServerList(theTab);
             WpfComboBox wpfComboList = (WpfComboBox)destinationServerList;
+            Mouse.Click(wpfComboList, new Point(5, 5));
             foreach (WpfListItem theItem in wpfComboList.Items)
             {
-                if (theItem.AutomationId == "UI_DestinationServer_" + serverName + "_AutoID")
+                if (theItem.AutomationId == "U_UI_DestinationServercbx_AutoID_" + serverName)
                 {
                     theItem.Select();
                     break;

@@ -22,6 +22,7 @@ using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -1121,10 +1122,10 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 8803
         [TestMethod]
-        public void DeployNonSavedItem_Expected_ItemIsDeployable()
+        public void DeployNonSavedItem_Expected_ItemIsNotDeployable()
         {
             // Create a Workflow
-            myTestBase.CreateCustomWorkflow("Bug8803");
+            myTestBase.CreateCustomWorkflow("Bug8803Temp");
             
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8803");
@@ -1134,6 +1135,8 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner("Calculate", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
             WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(5,10)", "[[myResult]]");
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.UpdateDataList();
 
             // And deploy it (Without saving)
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -1141,7 +1144,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Wait for the deploy tab to open, and make sure something has been chosen to deploy
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
-            Assert.IsTrue(DeployViewUIMap.DoesSourceServerHaveDeployItems(deployTab), "No workflow was set to deploy!");
+            Assert.IsTrue(!(DeployViewUIMap.DoesSourceServerHaveDeployItems(deployTab)), "A workflow was set to deploy!");
 
             // Clean up
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
@@ -1153,6 +1156,8 @@ namespace Dev2.Studio.UI.Tests
         {
             // Click the Deploy button in the Ribbon
             RibbonUIMap.ClickRibbonMenuItem("Home", "Deploy");
+            Thread.Sleep(3000);
+            
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
             
             // Make sure the Deploy button is disabled

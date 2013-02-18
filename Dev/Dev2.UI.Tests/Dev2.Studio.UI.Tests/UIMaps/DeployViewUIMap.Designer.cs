@@ -73,9 +73,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
             foreach (UITestControl theControl in requiredChildren)
             {
-                if (theControl.GetProperty("AutomationId").ToString() == "UI_SourceServercbx_AutoID")
+                if (theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
                 {
-                    return theControl;
+                    foreach (UITestControl tC in theControl.GetChildren())
+                    {
+                        if (tC.GetProperty("AutomationId").ToString() == "UI_SourceServercbx_AutoID")
+                        {
+                            return tC;
+
+                        }
+                    }
+
                 }
             }
             return null;
@@ -118,9 +126,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
             foreach (UITestControl theControl in requiredChildren)
             {
-                if (theControl.GetProperty("AutomationId").ToString() == "UI_DestinationServercbx_AutoID")
+                if (theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
                 {
-                    return theControl;
+                    foreach (UITestControl tC in theControl.GetChildren())
+                    {
+                        if (tC.GetProperty("AutomationId").ToString() == "UI_DestinationServercbx_AutoID")
+                        {
+                            return tC;
+                            
+                        }
+                    }
+                    
                 }
             }
             return null;
