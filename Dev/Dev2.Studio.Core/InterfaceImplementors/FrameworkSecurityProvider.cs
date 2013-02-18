@@ -248,7 +248,7 @@ namespace Dev2.Studio.Core {
 
 
         public bool IsUserInRole(string[] roles) {
-            return Roles.Intersect(roles).Any();
+            return Roles != null && Roles.Intersect(roles).Any();
         }
         #endregion
     }
