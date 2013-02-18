@@ -13,6 +13,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private readonly string _mediatorKey;
         private RelayCommand _connectCommand;
+        private RelayCommand _environmentChangedCommand;
 
         #endregion Class Members
 
@@ -39,6 +40,15 @@ namespace Dev2.Studio.ViewModels.Explorer
         public ICommand ConnectCommand
         {
             get { return _connectCommand ?? (_connectCommand = new RelayCommand(param => Connect(), param => true)); }
+        }
+
+        public ICommand EnvironmentChangedCommand
+        {
+            get 
+            { 
+                ICommand command = _environmentChangedCommand ?? (_environmentChangedCommand = new RelayCommand(param => AddEnvironment((IEnvironmentModel)param), param => true));
+                return command;
+            }
         }
 
         #endregion Commands

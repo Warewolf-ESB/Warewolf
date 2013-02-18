@@ -32,9 +32,9 @@
 
             <Dev2:ConnectControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Margin="0,0,0,5"
                                  LabelText="Connect:" 
+                                 EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
                                  ConnectButtonAutomationID="UI_ExplorerConnectBtn_AutoID"
-                                 ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
-                                 />
+                                 ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"/>
 
             <TextBox Grid.Row="1" Grid.Column="0" Margin="0"  AutomationProperties.AutomationId="UI_txtSearch_AutoID" Name="txtSearch" HorizontalAlignment="Stretch" Text="{Binding Path=NavigationViewModel.SearchFilter, UpdateSourceTrigger=PropertyChanged}" MinWidth="100">
                 <TextBox.Style>

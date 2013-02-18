@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using Dev2.Common.ServiceModel;
-using Dev2.DynamicServices;
+﻿using Dev2.Common.ServiceModel;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Dev2.UI
 {
@@ -25,6 +25,48 @@ namespace Dev2.UI
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
         }
+
+        #endregion
+
+        #region Dependency Properties
+
+        #region Server Changed Command
+
+        public ICommand ServerChangedCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(ServerChangedCommandProperty);
+            }
+            set
+            {
+                SetValue(ServerChangedCommandProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for ServerChangedCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ServerChangedCommandProperty =
+            DependencyProperty.Register("ServerChangedCommand", typeof(ICommand), typeof(ConnectControl), new PropertyMetadata(null));
+
+        #endregion
+
+        #region Environment Changed Command
+
+        public ICommand EnvironmentChangedCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(EnvironmentChangedCommandProperty);
+            }
+            set
+            {
+                SetValue(EnvironmentChangedCommandProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for EnvironmentChangedCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnvironmentChangedCommandProperty =
+            DependencyProperty.Register("EnvironmentChangedCommand", typeof(ICommand), typeof(ConnectControl), new PropertyMetadata(null));
 
         #endregion
 
@@ -58,7 +100,10 @@ namespace Dev2.UI
         public string LabelText
         {
             get { return (string)GetValue(LabelTextProperty); }
-            set { SetValue(LabelTextProperty, value); }
+            set 
+            { 
+                SetValue(LabelTextProperty, value); 
+            }
         }
 
         // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
@@ -80,6 +125,8 @@ namespace Dev2.UI
             DependencyProperty.Register("Servers", typeof(IList<IServer>), typeof(ConnectControl));
 
         #endregion
+
+        #endregion Dependency Properties
 
         #region LoadServers
 
@@ -117,7 +164,16 @@ namespace Dev2.UI
                     {
                         EnvironmentModelFactory.CreateEnvironmentModel(server);
                     }
-                    Mediator.SendMessage(MediatorMessages.AddServerToExplorer, server.Environment);
+                    
+                    if (ServerChangedCommand != null && ServerChangedCommand.CanExecute(server.Environment))
+                    {
+                        ServerChangedCommand.Execute(server);
+                    }
+
+                    if (EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(server.Environment))
+                    {
+                        EnvironmentChangedCommand.Execute(server.Environment);
+                    }
                 }
 
                 // Clear selection
@@ -135,6 +191,5 @@ namespace Dev2.UI
         }
 
         #endregion
-
     }
 }

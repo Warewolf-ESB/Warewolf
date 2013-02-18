@@ -108,6 +108,18 @@ namespace Dev2.Studio.ViewModels.Deploy
             private set;
         }
 
+        public ICommand SourceServerChangedCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand TargetServerChangedCommand
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         #region Properties
@@ -390,6 +402,15 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             DeployCommand = new RelayCommand(o => Deploy(), o => CanDeploy);
             ConnectCommand = new RelayCommand(Connect);
+            SourceServerChangedCommand = new RelayCommand(s =>
+            {
+                SelectedSourceServer = s as IServer;
+            });
+
+            TargetServerChangedCommand = new RelayCommand(s =>
+            {
+                SelectedDestinationServer = s as IServer;
+            });
         }
 
         /// <summary>
