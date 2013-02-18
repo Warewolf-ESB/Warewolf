@@ -140,8 +140,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("05/05/1990", resultsList[2].TheValue);
         }
 
-
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840
+        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 DONE
         [TestMethod]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
@@ -165,6 +164,7 @@ namespace ActivityUnitTests.ActivityTests
             string expected = "2013/02/07 08:38:57.280 PM";
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void DateTimeComplexDateTimeInputsWithTrailingSpacesExpectedDateTimeReturnedCorrectly()
         {

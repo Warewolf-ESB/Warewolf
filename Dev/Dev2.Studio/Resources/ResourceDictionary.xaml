@@ -74,6 +74,7 @@
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
                 <x:Static Member="Dev2Enums:ActivityType.Workflow" />
+                <x:Static Member="Dev2Enums:ActivityType.Service" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>

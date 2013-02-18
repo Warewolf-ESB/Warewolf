@@ -58,7 +58,7 @@
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding DataContext.ShowServer, ElementName=DebugOutput}" Value="True" />
                             <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeWorkflow}}" Value="Visible" />
-                            <Condition Binding="{Binding AddedAsParent}" Value="False" />
+                            <!--<Condition Binding="{Binding AddedAsParent}" Value="False" />-->
                         </MultiDataTrigger.Conditions>
                         <MultiDataTrigger.Setters>
                             <Setter Property="FrameworkElement.Visibility" Value="Visible" />

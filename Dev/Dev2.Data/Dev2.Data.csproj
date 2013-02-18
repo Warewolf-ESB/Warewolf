@@ -321,6 +321,7 @@
     <Compile Include="Util\DataListUtil.cs" />
     <Compile Include="Util\GCWriter.cs" />
     <Compile Include="Util\ValueExtractor.cs" />
+    <Compile Include="Util\XmlHelper.cs" />
     <Compile Include="Value Objects\Dev2DataListEvaluateIterator.cs" />
     <Compile Include="Value Objects\Dev2IteratorCollection.cs" />
     <Compile Include="Value Objects\Dev2RecordsetIndexScope.cs" />

@@ -8,13 +8,14 @@ namespace Dev2.Enums {
         None = 0,
         Before = 1,
         After = 2,
-        All = 3,
-        Append = 4
+        Append = 4,
+        All = 8
     }
 
-    [EnumDisplayString("Workflow", "Step")]
+    [EnumDisplayString("Workflow", "Step", "Service")]
     public enum ActivityType {
         Workflow,
-        Step
+        Step,
+        Service
     }
 }

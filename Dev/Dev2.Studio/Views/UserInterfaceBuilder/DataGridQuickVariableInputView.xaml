@@ -2,9 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-    mc:Ignorable="d" 
+             mc:Ignorable="d" 
              Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"
              Height="Auto"
              Width="300"
@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto" />            
         </Grid.RowDefinitions>
 
-
+        
         <Border Grid.Row="0" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1" >
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>

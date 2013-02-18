@@ -608,7 +608,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!expression.ContainsSafe("[["))
                 {
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = expression });
+                    results.Add(new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Value,
+                        Value = expression
+                    });
                     return results;
                 }
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();

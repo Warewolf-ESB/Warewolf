@@ -133,7 +133,7 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8831
+        //2013.02.12: Ashley Lewis - Bug 8725, Task 8831 DONE
         [TestMethod]
         public void CountTwiceWithEmptyRecsetExpectedOutputToRecsetsSelf()
         {

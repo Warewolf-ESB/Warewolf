@@ -8,7 +8,9 @@
 
 #endregion
 
+using System.Xml.XPath;
 using Dev2.Common;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -56,11 +58,6 @@ using TransactionScope = System.Transactions.TransactionScope;
 
 namespace Dev2.Runtime.InterfaceImplementors
 {
-    #region Using Directives
-
-
-
-    #endregion
 
     #region Dynamic Invocation Class - Invokes Dynamic Endpoint and returns responses to the Caller
 
@@ -94,12 +91,18 @@ namespace Dev2.Runtime.InterfaceImplementors
 
         #endregion
 
-        // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
-
+        #region public properties
         public bool IsLoggingEnabled
         {
             get { return _loggingEnabled; }
         }
+
+        public IDynamicServicesHost Host
+        {
+            get { return _workspace.Host; }
+            set { }
+        }
+        #endregion
 
         #region Constructors
 
@@ -297,6 +300,7 @@ namespace Dev2.Runtime.InterfaceImplementors
                     if(result == GlobalConstants.NullDataListID)
                     {
                         allErrors.AddError("Failed to invoke service");
+                 
                     }
                     
                     if(!ClientCompiler.HasErrors(result))
@@ -346,6 +350,10 @@ namespace Dev2.Runtime.InterfaceImplementors
 
             // set error variable
             errors = allErrors;
+            if(errors.HasErrors())
+            {
+                DispatchDebugState(xmlRequest, dataListId, allErrors);
+            }
 
             return result;
 
@@ -1480,13 +1488,7 @@ namespace Dev2.Runtime.InterfaceImplementors
         #endregion
 
         #endregion
-
-        public IDynamicServicesHost Host
-        {
-            get { return _workspace.Host; }
-            set { }
-        }
-
+        
         #region Management Methods
 
         #region InvokeService
@@ -1522,7 +1524,6 @@ namespace Dev2.Runtime.InterfaceImplementors
         }
 
         #endregion
-
 
         #region FindSourcesByType
 
@@ -3791,6 +3792,59 @@ namespace Dev2.Runtime.InterfaceImplementors
             return serviceData.XmlString;
         }
 
+        /// <summary>
+        /// Dispatches the error state to the client
+        /// </summary>
+        /// <param name="xmlRequest">The XML request.</param>
+        /// <param name="dataListId">The data list id.</param>
+        /// <param name="allErrors">All errors.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/02/18</date>
+        private void DispatchDebugState(dynamic xmlRequest, Guid dataListId, ErrorResultTO allErrors)
+        {
+            var debugState = new DebugState()
+            {
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now,
+                IsSimulation = false,
+                Server = string.Empty,
+                Version = string.Empty,
+                Name = GetType().Name,
+                HasError = true,
+                ActivityType = ActivityType.Service,
+                StateType = StateType.All,
+                ServerID = HostSecurityProvider.Instance.ServerID
+            };
+
+            try
+            {
+                var xmlReader = XmlReader.Create(new StringReader(xmlRequest.XmlString));
+                var xmlDoc = XDocument.Load(xmlReader);
+                var workSpaceID = (from n in xmlDoc.Descendants("wid")
+                                   select n).FirstOrDefault();
+                var invokedService = (from n in xmlDoc.Descendants("Service")
+                                      select n).FirstOrDefault();
+                if (workSpaceID != null)
+                {
+                    debugState.WorkspaceID = Guid.Parse(workSpaceID.Value);
+                }
+                if (invokedService != null)
+                {
+                    debugState.DisplayName = invokedService.Value;
+                }
+
+                //ParentID = dataObject.ParentInstanceID
+            }
+            catch (Exception exception)
+            {
+                //TODO what if not an xmlRequest ? IDSFDataObject dataObject = new DsfDataObject(xmlRequest, dataListId);
+                throw;
+            }
+
+            debugState.ErrorMessage = XmlHelper.MakeErrorsUserReadable(allErrors.MakeDisplayReady());
+
+            DebugDispatcher.Instance.Write(debugState);
+        }
         #endregion Private Methods
     }
 

@@ -419,52 +419,20 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             string error = string.Empty;
             IBinaryDataListEntry entry;
-            StringBuilder result = new StringBuilder();
+            string result = String.Empty;
 
             TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
             if (entry != null)
             {
                 var tag = entry.FetchScalar().TheValue;
 
-                var readerSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
-                TextReader txtreader = new StringReader(tag);
-                try
-                {
-
-                    using(var reader = XmlReader.Create(txtreader, readerSettings))
-                    {
-                        var count = 0;
-
-                        while(reader.Read())
-                        {
-                            using(var fragmentReader = reader.ReadSubtree())
-                            {
-                                if(fragmentReader.Read())
-                                {
-                                    var fragment = XNode.ReadFrom(fragmentReader) as XElement;
-
-                                    if(fragment != null && fragment.Name.LocalName == GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
-                                    {
-                                        count++;
-                                        result.AppendFormat(" {0} ", count);
-                                        result.AppendLine(fragment.Value);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch(Exception e)
-                {
-                    result.Clear();
-                    result.AppendLine("Error is not a valid XML fragment");
-                    result.AppendFormat("Inner error: {0}", e.Message);
-                }
+                result = XmlHelper.MakeErrorsUserReadable(tag);
             }
 
-            return result.ToString();
+            return result;
         }
 
+      
         /// <summary>
         /// Clears the errors.
         /// </summary>

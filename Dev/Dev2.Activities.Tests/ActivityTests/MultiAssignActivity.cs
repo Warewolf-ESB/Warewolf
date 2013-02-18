@@ -631,6 +631,7 @@ namespace ActivityUnitTests.ActivityTest
 
             Assert.AreEqual(2, actual.Count());
         }
+
         [TestMethod]
         public void AssignRecordSetWithAppendRecordAndNoExistingRecordExpectedRecordInFirst()
         {
@@ -654,7 +655,7 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual("New Value", actual[0]);
         }
 
-        //2013.02.07: Ashley Lewis - Bug 8725:Task 8790
+        //2013.02.07: Ashley Lewis - Bug 8725:Task 8790 DONE
         [TestMethod]
         public void MutiAssignWithAddingTenRecSetsExpectedRecordSetAppended()
         {
@@ -684,7 +685,7 @@ namespace ActivityUnitTests.ActivityTest
             //CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
-        //2013.02.08: Ashley Lewis - Bug 8725, Task 8797
+        //2013.02.08: Ashley Lewis - Bug 8725, Task 8797 
         [TestMethod]
         public void MutiAssignWithCalculationOnBlankRecordSetExpectedCalculationReplacesBlankWithZero()
         {

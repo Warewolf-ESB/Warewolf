@@ -151,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
 
                     // set the iteration data ;)
-                    IterateIOMapping(1, context);
+                    //IterateIOMapping(1, context);
 
                     // schedule the func to execute ;)
                     // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -186,158 +186,147 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        /// <summary>
-        /// Iterates the IO mapping.
-        /// </summary>
-        // ReSharper disable InconsistentNaming
-        private void IterateIOMapping(int idx, NativeActivityContext context)
-        // ReSharper restore InconsistentNaming
+        ///// <summary>
+        ///// Iterates the IO mapping.
+        ///// </summary>
+        //// ReSharper disable InconsistentNaming
+        //private void IterateIOMapping(int idx, NativeActivityContext context)
+        //// ReSharper restore InconsistentNaming
+        //{
+        //    string newInputs = string.Empty;
+        //    string newOutputs = string.Empty;
+
+        //    // Now mutate the mappings ;)
+        //    //Bug 8725 do not mutate mappings
+        //    if (operationalData.InnerActivity.OrigInnerInputMapping != null)
+        //    {
+        //        // (*) == ({idx}) ;)
+        //        newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
+        //        newInputs = newInputs.Replace("(*)", "(" + idx + ")");
+        //    }
+        //    else
+        //    {
+        //        // coded activity
+
+        //        #region Coded Activity IO ManIP
+
+        //        var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
+
+        //        string token = "*";
+
+        //        if (idx > 1)
+        //        {
+        //            token = (idx - 1).ToString();
+        //        }
+
+        //        if (tmp != null)
+        //        {
+        //            IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
+        //            IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
+
+
+        //            AmendInputs(idx, data, token, updates);
+
+        //            // push updates for Inputs
+        //            tmp.UpdateForEachInputs(updates, context);
+        //            if (idx == 1)
+        //            {
+        //                operationalData.InnerActivity.OrigCodedInputs = updates;
+        //            }
+
+        //            operationalData.InnerActivity.CurCodedInputs = updates;
+
+
+        //            // Process outputs
+        //            data = tmp.GetForEachOutputs(context);
+        //            updates = new List<Tuple<string, string>>();
+
+        //            AmendInputs(idx, data, token, updates);
+
+        //            // push updates 
+        //            tmp.UpdateForEachOutputs(updates, context);
+        //            if (idx == 1)
+        //            {
+        //                operationalData.InnerActivity.OrigCodedOutputs = updates;
+        //            }
+
+        //            operationalData.InnerActivity.CurCodedOutputs = updates;
+        //        }
+        //        else if (tmp == null)
+        //        {
+        //            var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
+
+        //            if (tmp2 != null && !(tmp2 is DsfForEachActivity))
+        //            {
+        //                IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
+        //                IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
+
+
+        //                AmendInputs(idx, data, token, updates);
+
+        //                // push updates 
+        //                tmp2.UpdateForEachInputs(updates, context);
+        //                if (idx == 1)
+        //                {
+        //                    operationalData.InnerActivity.OrigCodedInputs = updates;
+        //                }
+        //                operationalData.InnerActivity.CurCodedInputs = updates;
+
+        //                // Process outputs
+        //                data = tmp2.GetForEachOutputs(context);
+        //                updates = new List<Tuple<string, string>>();
+
+
+        //                AmendInputs(idx, data, token, updates);
+
+        //                // push updates 
+        //                tmp2.UpdateForEachOutputs(updates, context);
+        //                if (idx == 1)
+        //                {
+        //                    operationalData.InnerActivity.OrigCodedOutputs = updates;
+        //                }
+
+        //                operationalData.InnerActivity.CurCodedOutputs = updates;
+        //            }
+        //        }
+
+        //        #endregion
+
+        //    }
+
+        //        //Bug 8725 do not mutate mappings
+        //    if (operationalData.InnerActivity.OrigInnerOutputMapping != null)
+        //    {
+        //        // (*) == ({idx}) ;)
+        //        newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
+        //        newOutputs = newOutputs.Replace("(*)", "(" + idx + ")");
+        //    }
+
+
+        //    var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
+        //    if (dev2ActivityIoMapping != null)
+        //    {
+        //        dev2ActivityIoMapping.InputMapping = newInputs;
+        //    }
+
+        //    var activityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
+        //    if (activityIoMapping != null)
+        //    {
+        //        activityIoMapping.OutputMapping = newOutputs;
+        //    }
+
+        //}
+
+        static void AmendInputs(int idx, IList<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
         {
-            string newInputs = string.Empty;
-            string newOutputs = string.Empty;
-
-            // Now mutate the mappings ;)
-            if (operationalData.InnerActivity.OrigInnerInputMapping != null)
+            // amend inputs ;)
+            foreach(DsfForEachItem d in data)
             {
-                // (*) == ({idx}) ;)
-                newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
-                newInputs = newInputs.Replace("(*)", "(" + idx + ")");
+                string input = d.Value;
+                input = input.Replace("(" + token + ")", "(" + idx + ")");
+
+                updates.Add(new Tuple<string, string>(d.Value, input));
             }
-            else
-            {
-                // coded activity
-
-                #region Coded Activity IO ManIP
-
-                var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
-
-                string token = "*";
-
-                if (idx > 1)
-                {
-                    token = (idx - 1).ToString();
-                }
-
-                if (tmp != null)
-                {
-                    IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
-                    IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                    // amend inputs ;)
-                    foreach (DsfForEachItem d in data)
-                    {
-                        string input = d.Value;
-                        input = input.Replace("(" + token + ")", "(" + idx + ")");
-
-                        updates.Add(new Tuple<string, string>(d.Value, input));
-                    }
-
-                    // push updates for Inputs
-                    tmp.UpdateForEachInputs(updates, context);
-                    if (idx == 1)
-                    {
-                        operationalData.InnerActivity.OrigCodedInputs = updates;
-                    }
-
-                    operationalData.InnerActivity.CurCodedInputs = updates;
-
-
-                    // Process outputs
-                    data = tmp.GetForEachOutputs(context);
-                    updates = new List<Tuple<string, string>>();
-
-                    // amend inputs ;)
-                    foreach (DsfForEachItem d in data)
-                    {
-                        string input = d.Value;
-                        input = input.Replace("(" + token + ")", "(" + idx + ")");
-
-                        updates.Add(new Tuple<string, string>(d.Value, input));
-                    }
-
-                    // push updates 
-                    tmp.UpdateForEachOutputs(updates, context);
-                    if (idx == 1)
-                    {
-                        operationalData.InnerActivity.OrigCodedOutputs = updates;
-                    }
-
-                    operationalData.InnerActivity.CurCodedOutputs = updates;
-                }
-                else if (tmp == null)
-                {
-                    var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
-
-                    if (tmp2 != null && !(tmp2 is DsfForEachActivity))
-                    {
-                        IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
-                        IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                        // amend inputs ;)
-                        foreach (DsfForEachItem d in data)
-                        {
-                            string output = d.Value;
-                            output = output.Replace("(" + token + ")", "(" + idx + ")");
-
-                            updates.Add(new Tuple<string, string>(d.Value, output));
-                        }
-
-                        // push updates 
-                        tmp2.UpdateForEachInputs(updates, context);
-                        if (idx == 1)
-                        {
-                            operationalData.InnerActivity.OrigCodedInputs = updates;
-                        }
-                        operationalData.InnerActivity.CurCodedInputs = updates;
-
-                        // Process outputs
-                        data = tmp2.GetForEachOutputs(context);
-                        updates = new List<Tuple<string, string>>();
-
-                        // amend inputs ;)
-                        foreach (DsfForEachItem d in data)
-                        {
-                            string input = d.Value;
-                            input = input.Replace("(" + token + ")", "(" + idx + ")");
-
-                            updates.Add(new Tuple<string, string>(d.Value, input));
-                        }
-
-                        // push updates 
-                        tmp2.UpdateForEachOutputs(updates, context);
-                        if (idx == 1)
-                        {
-                            operationalData.InnerActivity.OrigCodedOutputs = updates;
-                        }
-
-                        operationalData.InnerActivity.CurCodedOutputs = updates;
-                    }
-                }
-
-                #endregion
-
-            }
-
-            if (operationalData.InnerActivity.OrigInnerOutputMapping != null)
-            {
-                // (*) == ({idx}) ;)
-                newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
-                newOutputs = newOutputs.Replace("(*)", "(" + idx + ")");
-            }
-
-
-            var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if (dev2ActivityIoMapping != null)
-            {
-                dev2ActivityIoMapping.InputMapping = newInputs;
-            }
-
-            var activityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if (activityIoMapping != null)
-            {
-                activityIoMapping.OutputMapping = newOutputs;
-            }
-
         }
 
         /// <summary>
@@ -394,111 +383,111 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        /// <summary>
-        /// Restores the handler fn.
-        /// </summary>
-        private void RestoreHandlerFn(NativeActivityContext context)
-        {
+        ///// <summary>
+        ///// Restores the handler fn.
+        ///// </summary>
+        //private void RestoreHandlerFn(NativeActivityContext context)
+        //{
 
-            var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
+        //    var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
 
-            if (activity != null)
-            {
+        //    if (activity != null)
+        //    {
 
-                if (operationalData.InnerActivity.OrigCodedInputs != null)
-                {
-                    var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
+        //        if (operationalData.InnerActivity.OrigCodedInputs != null)
+        //        {
+        //            var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
 
-                    int idx = operationalData.IterationCount;
+        //            int idx = operationalData.IterationCount;
 
-                    if (tmp != null)
-                    {
-                        // Restore Inputs ;)
-                        IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
-                        IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
+        //            if (tmp != null)
+        //            {
+        //                // Restore Inputs ;)
+        //                IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
+        //                IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
-                        // amend inputs ;)
-                        foreach (DsfForEachItem d in data)
-                        {
-                            string input = d.Value;
-                            input = input.Replace("(" + idx + ")", "(*)");
+        //                // amend inputs ;)
+        //                foreach (DsfForEachItem d in data)
+        //                {
+        //                    string input = d.Value;
+        //                    input = input.Replace("(" + idx + ")", "(*)");
 
-                            updates.Add(new Tuple<string, string>(d.Value, input));
-                        }
+        //                    updates.Add(new Tuple<string, string>(d.Value, input));
+        //                }
 
-                        // push updates for Inputs
-                        tmp.UpdateForEachInputs(updates, context);
-
-
-                        // Restore Outputs ;)
-                        data = tmp.GetForEachInputs(context);
-                        updates = new List<Tuple<string, string>>();
-
-                        // amend inputs ;)
-                        foreach (DsfForEachItem d in data)
-                        {
-                            string input = d.Value;
-                            input = input.Replace("(" + idx + ")", "(*)");
-
-                            updates.Add(new Tuple<string, string>(d.Value, input));
-                        }
-
-                        // push updates for Inputs
-                        tmp.UpdateForEachOutputs(updates, context);
-
-                    }
-                    else
-                    {
-                        var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
-
-                        // Restore Inputs ;)
-                        if (tmp2 != null)
-                        {
-                            IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
-                            IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
-
-                            // amend inputs ;)
-                            foreach (DsfForEachItem d in data)
-                            {
-                                string input = d.Value;
-                                input = input.Replace("(" + idx + ")", "(*)");
-
-                                updates.Add(new Tuple<string, string>(d.Value, input));
-                            }
-
-                            // push updates for Inputs
-                            tmp2.UpdateForEachInputs(updates, context);
+        //                // push updates for Inputs
+        //                tmp.UpdateForEachInputs(updates, context);
 
 
-                            // Restore Outputs ;)
-                            data = tmp2.GetForEachInputs(context);
-                            updates = new List<Tuple<string, string>>();
+        //                // Restore Outputs ;)
+        //                data = tmp.GetForEachInputs(context);
+        //                updates = new List<Tuple<string, string>>();
 
-                            // amend inputs ;)
-                            foreach (DsfForEachItem d in data)
-                            {
-                                string input = d.Value;
-                                input = input.Replace("(" + idx + ")", "(*)");
+        //                // amend inputs ;)
+        //                foreach (DsfForEachItem d in data)
+        //                {
+        //                    string input = d.Value;
+        //                    input = input.Replace("(" + idx + ")", "(*)");
 
-                                updates.Add(new Tuple<string, string>(d.Value, input));
-                            }
+        //                    updates.Add(new Tuple<string, string>(d.Value, input));
+        //                }
 
-                            // push updates for Inputs
-                            tmp2.UpdateForEachOutputs(updates, context);
-                        }
-                    }
-                }
-                else
-                {
-                    activity.InputMapping = operationalData.InnerActivity.OrigInnerInputMapping;
-                    activity.OutputMapping = operationalData.InnerActivity.OrigInnerOutputMapping;
-                }
-            }
-            else
-            {
-                throw new Exception("DsfForEachActivity - RestoreHandlerFunction has encountered a null Function");
-            }
-        }
+        //                // push updates for Inputs
+        //                tmp.UpdateForEachOutputs(updates, context);
+
+        //            }
+        //            else
+        //            {
+        //                var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
+
+        //                // Restore Inputs ;)
+        //                if (tmp2 != null)
+        //                {
+        //                    IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
+        //                    IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
+
+        //                    // amend inputs ;)
+        //                    foreach (DsfForEachItem d in data)
+        //                    {
+        //                        string input = d.Value;
+        //                        input = input.Replace("(" + idx + ")", "(*)");
+
+        //                        updates.Add(new Tuple<string, string>(d.Value, input));
+        //                    }
+
+        //                    // push updates for Inputs
+        //                    tmp2.UpdateForEachInputs(updates, context);
+
+
+        //                    // Restore Outputs ;)
+        //                    data = tmp2.GetForEachInputs(context);
+        //                    updates = new List<Tuple<string, string>>();
+
+        //                    // amend inputs ;)
+        //                    foreach (DsfForEachItem d in data)
+        //                    {
+        //                        string input = d.Value;
+        //                        input = input.Replace("(" + idx + ")", "(*)");
+
+        //                        updates.Add(new Tuple<string, string>(d.Value, input));
+        //                    }
+
+        //                    // push updates for Inputs
+        //                    tmp2.UpdateForEachOutputs(updates, context);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            activity.InputMapping = operationalData.InnerActivity.OrigInnerInputMapping;
+        //            activity.OutputMapping = operationalData.InnerActivity.OrigInnerOutputMapping;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("DsfForEachActivity - RestoreHandlerFunction has encountered a null Function");
+        //    }
+        //}
 
         private ForEachInnerActivityTO GetInnerActivity(out string error)
         {
@@ -528,7 +517,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (operationalData.HasMoreData())
                 {
                     // Re-jigger the mapping ;)
-                    IterateIOMapping((operationalData.IterationCount + 1), context);
+                    //IterateIOMapping((operationalData.IterationCount + 1), context);
                     IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
                     dataObject.ParentInstanceID = InstanceID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -544,7 +533,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ErrorResultTO errors;
                     var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
                     // return it all to normal
-                    RestoreHandlerFn(context);
+                    //RestoreHandlerFn(context);
                     dataObject.ParentInstanceID = _previousParentID;
 
                 }

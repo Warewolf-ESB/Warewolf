@@ -108,9 +108,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
                     }
-
-                    compiler.Upsert(executionID, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
+                    
+                    // Do not merge in a the case of a scoped datalist(ie, foreach) - Bug 8725
+                    //if (dataObject != null && !dataObject.IsDataListScoped)
+                    //{
+                        compiler.Upsert(executionID, toUpsert, out errors);
+                        allErrors.MergeErrors(errors);
+                    //}
                 }
 
             }
@@ -177,16 +181,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
             int indexCounter = 1;
-            foreach (ActivityDTO activityDto in FieldsCollection.Where(c => !c.CanRemove()))
+            foreach (var activityDto in FieldsCollection.Where(c => !c.CanRemove()))
             {
                 string variable = activityDto.FieldValue;
 
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = activityDto.FieldName });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                var itemToAdd = new DebugItem
+                {
+                    new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Label, 
+                        Value = indexCounter.ToString(CultureInfo.InvariantCulture)
+                    }, 
+                    new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Variable, 
+                        Value = activityDto.FieldName
+                    }, 
+                    new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Label, 
+                        Value = GlobalConstants.EqualsExpression
+                    }
+                };
 
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(variable, dataList))
+                foreach (var debugItemResult in CreateDebugItems(variable, dataList))
                 {
 
                     if (debugItemResult.Type == DebugItemResultType.Variable && debugItemResult.Value.ContainsSafe("!~calculation~!"))
@@ -207,32 +225,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
 
-            foreach (Tuple<string, string> t in updates)
-            {
-                // locate all updates for this tuple
-                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
+            //foreach (Tuple<string, string> t in updates)
+            //{
+            //    // locate all updates for this tuple
+            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
 
-                // issues updates
-                foreach (var a in items)
-                {
-                    a.FieldValue = t.Item2;
-                }
-            }
+            //    // issues updates
+            //    foreach (var a in items)
+            //    {
+            //        a.FieldValue = t.Item2;
+            //    }
+            //}
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
-            {
-                // locate all updates for this tuple
-                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldValue.Equals(t.Item1));
+            //foreach (Tuple<string, string> t in updates)
+            //{
+            //    // locate all updates for this tuple
+            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldValue.Equals(t.Item1));
 
-                // issues updates
-                foreach (var a in items)
-                {
-                    a.FieldName = t.Item2;
-                }
-            }
+            //    // issues updates
+            //    foreach (var a in items)
+            //    {
+            //        a.FieldName = t.Item2;
+            //    }
+            //}
         }
 
 
@@ -240,7 +258,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains("[[")).Select(c => c.FieldValue).ToArray();
             return GetForEachItems(context, StateType.Before, items);
         }

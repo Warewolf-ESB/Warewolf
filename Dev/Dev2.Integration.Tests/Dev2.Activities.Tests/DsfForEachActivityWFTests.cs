@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         {
 
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNestedForEachTest");
-            string expected = @"<newset><newrec>TestVal1</newrec><newrec2>RecVal1</newrec2></newset><newset><newrec>TestVal2</newrec><newrec2>RecVal2</newrec2></newset><newset><newrec></newrec><newrec2>RecVal3</newrec2></newset><newset><newrec></newrec><newrec2>RecVal4</newrec2></newset><newset><newrec></newrec><newrec2>RecVal5</newrec2></newset><newset><newrec>TestVal1</newrec><newrec2>RecVal1</newrec2></newset><newset><newrec>TestVal2</newrec><newrec2>RecVal2</newrec2></newset><newset><newrec></newrec><newrec2>RecVal3</newrec2></newset><newset><newrec></newrec><newrec2>RecVal4</newrec2></newset><newset><newrec></newrec><newrec2>RecVal5</newrec2></newset>";
+            string expected = @"<innerScalar>11</innerScalar><recset><rec></rec></recset><recset><rec></rec></recset><recset><rec></rec></recset><recset><rec></rec></recset><recset><rec>RecVal5</rec></recset><testing><test></test></testing><testing><test>TestVal2</test></testing>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -51,36 +51,12 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         
         #endregion ForEach Behaviour Tests
 
-        #region RecordSet Tests
-
-        [TestMethod]
-        public void ForEachMappingToNewRecset() {
-            string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachMappingToNewRecSetTest");
-            string expected = @"<DataList><Valriable>testScalar</Valriable><recset><rec>RecVal1</rec><rec2>Rec2Val1</rec2></recset><recset><rec>RecVal2</rec><rec2>Rec2Val2</rec2></recset><recset><rec>RecVal3</rec><rec2></rec2></recset><recset><rec>RecVal4</rec><rec2></rec2></recset><recset><rec>RecVal5</rec><rec2></rec2></recset><firstVar></firstVar><testing><test>testVal1</test></testing><testing><test>testVal2</test></testing><newset><newrec>testScalar</newrec><newrec2>RecVal1</newrec2></newset><newset><newrec>testScalar</newrec><newrec2>RecVal2</newrec2></newset><newset><newrec>testScalar</newrec><newrec2>RecVal3</newrec2></newset><newset><newrec>testScalar</newrec><newrec2>RecVal4</newrec2></newset><newset><newrec>testScalar</newrec><newrec2>RecVal5</newrec2></newset>";
-
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
-        }
-
-        [TestMethod]
-        public void ForEachMappingBackToRecset() {
-            string postData = String.Format("{0}{1}", WebserverURI, "NewForEachMappingBackToRecSetTest");
-            string expected = @"<recset><rec>hello</rec><rec2>test1</rec2></recset><recset><rec>hello</rec><rec2>test2</rec2></recset><recset><rec>hello</rec><rec2>test3</rec2></recset><recset><rec>hello</rec><rec2>test4</rec2></recset><recset><rec>hello</rec><rec2>test5</rec2></recset><test>hello</test>";
-
-            string responseData = TestHelper.PostDataToWebserver(postData);
-
-            StringAssert.Contains(responseData, expected);
-        }
-
-        #endregion RecordSet Tests
-
         #region Iteration Number Tests
 
         [TestMethod]
         public void ForEachNumber() {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNumber");
-            string expected = "<var>Static_Scalar</var><resultVar>recVal2</resultVar><recset><rec>recVal1</rec><rec2>rec2Val1.outer</rec2></recset><recset><rec>recVal2</rec><rec2>rec2Val2.outer</rec2></recset><recset><rec>recVal2</rec><rec2>rec2Val2.outer</rec2></recset><recset><rec>recVal4</rec><rec2></rec2></recset><recset><rec>recVal5</rec><rec2></rec2></recset><testing><test>testVal1</test></testing>";
+            string expected = "<Rec><Each>1</Each></Rec><Rec><Each>2</Each></Rec><Rec><Each>4</Each></Rec><Rec><Each>8</Each></Rec><Rec><Each>16</Each></Rec>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
@@ -109,9 +85,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         #region Scalar Tests
 
         [TestMethod]
-        public void ForEachScalar() {          
+        public void ForEachInputOutputMappingTest() {          
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachScalarTest");
-            string expected = @"<var>5</var><recset><rec>recVal1</rec><rec2>rec2Val1</rec2></recset><recset><rec>recVal2</rec><rec2>rec2Val2</rec2></recset><recset><rec>recVal3</rec><rec2></rec2></recset><recset><rec>recVal4</rec><rec2></rec2></recset><recset><rec>recVal5</rec><rec2></rec2></recset><testing><test>testVal1</test></testing><testing><test>testVal2</test></testing><resultVar></resultVar>";
+            string expected = @"<var>5</var><recset><rec2></rec2><rec1>1</rec1></recset><recset><rec2></rec2><rec1>2</rec1></recset><recset><rec2></rec2><rec1>3</rec1></recset><recset><rec2></rec2><rec1>4</rec1></recset><recset><rec2></rec2><rec1>5</rec1></recset><recset><rec2></rec2><rec1>6</rec1></recset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

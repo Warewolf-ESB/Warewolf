@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
     xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls" xmlns:Dev2="clr-namespace:Dev2.UI"
-    Name="DeployUserControl"
+             Name="DeployUserControl"
              ap:UIElementTitleProperty.Title="Deploy">
     <Grid>
         <Grid.RowDefinitions>
@@ -33,7 +33,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
+                
                 <Dev2:ConnectControl Grid.Row="0"  Margin="0,0,0,0"
                                  LabelText="Source Server:" 
                                  ServerChangedCommand="{Binding SourceServerChangedCommand}"
@@ -152,7 +152,7 @@
                         </HierarchicalDataTemplate>
                     </nv:NavigationView.ItemTemplate>
                 </nv:NavigationView>
-            </Grid>
+                            </Grid>
 
             <GridSplitter Width="2.5" />
 
@@ -288,7 +288,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,5,5,0" FontWeight="Bold" >Selected for Deploy:</TextBlock>
-
+                
                 <ItemsControl Grid.Column="0" Grid.Row="1" Grid.IsSharedSizeScope="True" ItemsSource="{Binding SourceStats}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -321,8 +321,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" HorizontalAlignment="Right">
-                                <Run Text="{Binding Name}" />
-                                <Run Text=" : " />
+                                    <Run Text="{Binding Name}" />
+                                    <Run Text=" : " />
                                 </TextBlock>
                                 <TextBlock Grid.Column="1" Text="{Binding Description}" HorizontalAlignment="Left" />
                             </Grid>
@@ -370,7 +370,7 @@
                 <customDev2Controls:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="0,0,5,0" 
                                                         Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}"/>
                 <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
-                    Content="Deploy" HorizontalAlignment="Left" Background="Transparent"
+                    Content="Deploy" HorizontalAlignment="Left" Background="Transparent" 
                     BorderBrush="Transparent" Command="{Binding DeployCommand}" IsEnabled="{Binding CanDeploy}" MaxWidth="50" MinWidth="50" />
             </StackPanel>
         </Grid>                

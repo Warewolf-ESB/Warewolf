@@ -170,6 +170,34 @@ namespace Unlimited.UnitTest.Framework.DataList
             DeleteDir(rootFolder);
         }
 
+        // BUG : Removing field names from datalist does not retain current datalist values
+        [TestMethod]
+        public void PersistSessionWithSavedData_SubtlyChangedDataList_Expect_MergedXmlData()
+        {
+            // bootstrap
+            DebugTO to = new DebugTO();
+            string rootFolder = System.IO.Path.GetTempPath() + Guid.NewGuid();
+            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
+            to.RememberInputs = true;
+            to.BaseSaveDirectory = rootFolder;
+            to.DataList = "<DataList><rs><f1/><f2/></rs></DataList>";
+            to.XmlData = "<DataList><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
+            to.ServiceName = "DummyService";
+            to.WorkflowID = "DummyService";
+            to = broker.InitDebugSession(to);
+            to = broker.PersistDebugSession(to);
+
+            // just ensure the operation worked successfully with no errors
+            to.DataList = "<DataList><rs><f2/></rs></DataList>";
+            to = broker.InitDebugSession(to);
+            Assert.Inconclusive("Bug {ID} has not been fixed!");
+            // Bug is currently not fixed
+            // Recomment the line back in when fixing 
+            //Assert.AreEqual("<DataList><rs><f2>f2Value</f2></rs></DataList>", to.XmlData);
+
+            DeleteDir(rootFolder);
+        }
+
         // Bug
 
         // This test is actually broken - Not just non-thread-safe :p

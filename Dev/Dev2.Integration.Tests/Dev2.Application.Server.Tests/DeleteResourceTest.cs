@@ -163,7 +163,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
                         postData = String.Format("{0}{1}", _serverFactory.ServerAddress, serviceName);
                         actualResult = TestHelper.PostDataToWebserver(postData);
-                        string expectedNotFound = "<center><h1>404</h1>Error: Service not found in catalog</center>";
+                        string expectedNotFound = "Error: Service not found in the catalog";
                         actualResult = actualResult.Replace("\r", "").Replace("\n", "");
                         StringAssert.Contains(actualResult, expectedNotFound);
                     }

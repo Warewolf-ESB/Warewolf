@@ -338,7 +338,7 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         [TestMethod] // - OK
-        public void OutputMapping_UsingRecordSetMappedToScalar_ExpectedSameValueMappedForAllExecutions()
+        public void OutputMapping_UsingRecordSetMappedToScalar_ExpectedForEachValueMappedForAllExecutions()
         {
             string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[var]]");
             SetupArguments(
@@ -351,7 +351,7 @@ namespace ActivityUnitTests.ActivityTest
 
 
             IDSFDataObject result = ExecuteForEachProcess();
-            string expected = "recVal1";
+            string expected = "recVal5";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
@@ -361,7 +361,7 @@ namespace ActivityUnitTests.ActivityTest
 
 
         [TestMethod] // - OK
-        public void OutputMapping_UsingRecordsetWithAnIndex_Expected_SameStaticValuePassedInForAllExecutions()
+        public void OutputMapping_UsingRecordsetWithAnIndex_Expected_ForEachValuePassedInForAllExecutions()
         {
             string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(3).rec2]]");
             SetupArguments(
@@ -373,7 +373,7 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result = ExecuteForEachProcess();
 
-            string expected = "recVal1";
+            string expected = "recVal5";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
