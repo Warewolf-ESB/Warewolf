@@ -254,6 +254,7 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual("0", outRes[0][2].Value);
         }
 
         #endregion
