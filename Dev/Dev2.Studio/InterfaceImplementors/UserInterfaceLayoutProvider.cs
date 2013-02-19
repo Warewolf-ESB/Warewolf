@@ -796,7 +796,7 @@ namespace Dev2.Studio
                         var callBackHandler = new Dev2DecisionCallbackHandler();
                         //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
                         //callBackHandler.Owner.ShowDialog();
-                        WebSites.ShowWebPageDialog(uriString, callBackHandler, 840, 630);
+                        WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
 
                         // Wizard finished...
                         // Now Fetch from DL and push the model into the activityExpression.SetValue();
