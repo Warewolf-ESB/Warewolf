@@ -4,6 +4,7 @@ using Dev2.Common;
 using Dev2.Common.Reflection;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Network;
 using Dev2.DynamicServices.Network.DataList;
@@ -1256,6 +1257,15 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
+                DebugDispatcher.Instance.Shutdown();
+            }
+            catch(Exception)
+            {
+                result = false;
+            }
+
+            try
+            {
                 if(_networkServer != null)
                 {
                     _networkServer.Stop();
@@ -1275,6 +1285,18 @@ namespace Unlimited.Applications.DynamicServicesHost
                 }
             }
             catch(Exception)
+            {
+                result = false;
+            }
+
+            try
+            {
+                if (_dataListChannel != null)
+                {
+                    _dataListChannel.Dispose();
+                }
+            }
+            catch (Exception)
             {
                 result = false;
             }

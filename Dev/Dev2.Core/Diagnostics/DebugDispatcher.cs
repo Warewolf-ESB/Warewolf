@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Dev2.Diagnostics {
-    public class DebugDispatcher : IDebugDispatcher {
+namespace Dev2.Diagnostics
+{
+    public class DebugDispatcher : IDebugDispatcher
+    {
         // The Guid is the workspace ID of the writer
         private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
-        //private static ConcurrentQueue<IDebugState> _writerQueue = new ConcurrentQueue<IDebugState>();
-        //private static Thread _writerThread = new Thread(WriteLoop);
-        //private static ManualResetEventSlim _writeWaithandle = new ManualResetEventSlim(false);
-        //private static object _waitHandleGuard = new object();
+        private static ConcurrentQueue<IDebugState> _writerQueue = new ConcurrentQueue<IDebugState>();
+        private static Thread _writerThread = new Thread(WriteLoop);
+        private static ManualResetEventSlim _writeWaithandle = new ManualResetEventSlim(false);
+        private static object _waitHandleGuard = new object();
+        private static bool _shutdownRequested;
 
         #region Singleton Instance
 
         static DebugDispatcher _instance;
-        public static DebugDispatcher Instance {
-            get {
+        public static DebugDispatcher Instance
+        {
+            get
+            {
                 return _instance ?? (_instance = new DebugDispatcher());
             }
         }
@@ -24,13 +30,13 @@ namespace Dev2.Diagnostics {
 
         #region Initialization
 
-        //static DebugDispatcher()
-        //{
-        //    //_writerThread.Start();
-        //}
+        static DebugDispatcher()
+        {
+            _writerThread.Start();
+        }
 
         // Prevent instantiation
-        DebugDispatcher() 
+        DebugDispatcher()
         {
 
         }
@@ -44,8 +50,10 @@ namespace Dev2.Diagnostics {
         /// <summary>
         /// Gets the number of writers.
         /// </summary>
-        public int Count {
-            get {
+        public int Count
+        {
+            get
+            {
                 return _writers.Count;
             }
         }
@@ -61,8 +69,10 @@ namespace Dev2.Diagnostics {
         /// </summary>
         /// <param name="workspaceID">The ID of the workspace to which the writer belongs.</param>
         /// <param name="writer">The writer to be added.</param>
-        public void Add(Guid workspaceID, IDebugWriter writer) {
-            if (writer == null) {
+        public void Add(Guid workspaceID, IDebugWriter writer)
+        {
+            if (writer == null || _shutdownRequested)
+            {
                 return;
             }
             _writers.TryAdd(workspaceID, writer);
@@ -76,7 +86,8 @@ namespace Dev2.Diagnostics {
         /// Removes the specified workspace from the dispatcher.
         /// </summary>
         /// <param name="workspaceID">The ID of workspace to be removed.</param>
-        public void Remove(Guid workspaceID) {
+        public void Remove(Guid workspaceID)
+        {
             IDebugWriter writer;
             _writers.TryRemove(workspaceID, out writer);
         }
@@ -90,13 +101,32 @@ namespace Dev2.Diagnostics {
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <returns>The <see cref="IDebugWriter"/> with the specified ID, or <code>null</code> if not found.</returns>
-        public IDebugWriter Get(Guid workspaceID) {
+        public IDebugWriter Get(Guid workspaceID)
+        {
             IDebugWriter writer;
             _writers.TryGetValue(workspaceID, out writer);
             return writer;
         }
 
         #endregion
+
+        #region Shutdown
+
+        public void Shutdown()
+        {
+            _shutdownRequested = true;
+            lock (_waitHandleGuard)
+            {
+                IDebugState debugState;
+                while (_writerQueue.Count > 0)
+                {
+                    _writerQueue.TryDequeue(out debugState);
+                }
+                _writeWaithandle.Set();
+            }
+        }
+
+        #endregion Shutdown
 
         #region Write
 
@@ -108,57 +138,61 @@ namespace Dev2.Diagnostics {
         /// </summary>
         /// <param name="debugState">The state to be written.</param>
         /// <returns>The task that was created.</returns>
-        public Task Write(IDebugState debugState) {
-            IDebugWriter writer;
-            if (debugState == null || (writer = Get(debugState.WorkspaceID)) == null)
+        public Task Write(IDebugState debugState)
+        {
+            if (debugState == null)
             {
                 return null;
             }
 
-            return Task.Factory.StartNew(() => debugState.Write(writer));
+            //return Task.Factory.StartNew(() => debugState.Write(writer));
 
-            //lock(_waitHandleGuard)
-            //{
-            //    _writerQueue.Enqueue(debugState);
-            //    _writeWaithandle.Set();                
-            //}
+            lock (_waitHandleGuard)
+            {
+                _writerQueue.Enqueue(debugState);
+                _writeWaithandle.Set();
+            }
 
-            //Task t = new Task(() => { });
-            //t.Start();
-            //return t;
+            Task t = new Task(() => { });
+            t.Start();
+            return t;
         }
 
         #endregion
 
-        //#region WriteLoop
+        #region WriteLoop
 
-        //private static void WriteLoop()
-        //{
-        //    //TODO Monitor app exit and finish loop
-        //    while(true)
-        //    {
-        //        _writeWaithandle.Wait();
+        private static void WriteLoop()
+        {
+            while (true)
+            {
+                _writeWaithandle.Wait();
 
-        //        IDebugState debugState;
-        //        if (_writerQueue.TryDequeue(out debugState))
-        //        {
-        //            IDebugWriter writer;
-        //            if (debugState != null && (writer = Instance.Get(debugState.WorkspaceID)) != null)
-        //            {
-        //                debugState.Write(writer);
-        //            }
-        //        }
+                if (_shutdownRequested)
+                {
+                    return;
+                }
 
-        //        lock (_waitHandleGuard)
-        //        {
-        //            if (_writerQueue.Count == 0)
-        //            {
-        //                _writeWaithandle.Reset();
-        //            }
-        //        }
-        //    }
-        //}
+                IDebugState debugState;
+                if (_writerQueue.TryDequeue(out debugState))
+                {
+                    IDebugWriter writer;
+                    if (debugState != null && (writer = Instance.Get(debugState.WorkspaceID)) != null)
+                    {
+                        debugState.Write(writer);
+                    }
+                }
 
-        //#endregion WriteLoop
+                lock (_waitHandleGuard)
+                {
+                    if (_writerQueue.Count == 0)
+                    {
+                        _writeWaithandle.Reset();
+                    }
+                }
+            }
+        }
+
+        #endregion WriteLoop
     }
 }
