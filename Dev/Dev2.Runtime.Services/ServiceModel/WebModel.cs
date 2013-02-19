@@ -15,7 +15,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Model Save
 
         /// <summary>
-        /// Saves the JSON model.
+        /// Saves the JSON model for decisions from the wizard ;)
         /// </summary>
         /// <param name="args">The args.</param>
         /// <param name="workspaceID">The workspace ID.</param>
@@ -32,7 +32,9 @@ namespace Dev2.Runtime.ServiceModel
 
                 // remove the silly Choose... from the string
                 args = Dev2DecisionStack.RemoveDummyOptionsFromModel(args);
-                
+                // remove [[]], &, !
+                args = Dev2DecisionStack.RemoveNaughtyCharsFromModel(args);
+
                 compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, args, out errors);
 
                 result = "{  \"message\" : \"Saved Model\"} ";
