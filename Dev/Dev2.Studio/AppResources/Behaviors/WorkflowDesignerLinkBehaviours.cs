@@ -54,7 +54,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.Loaded += AssociatedObject_Loaded;
+            AssociatedObject.Loaded += AssociatedObjectLoaded;
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
         }
 
@@ -73,22 +73,32 @@ namespace Dev2.Studio.AppResources.Behaviors
             CleanUp();
         }
 
-        private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
+        private void AssociatedObjectLoaded(object sender, RoutedEventArgs e)
         {
             _expandAllButton = AssociatedObject.FindNameAcrossNamescopes("expandAllButton") as ToggleButton;
             _collapseAllButton = AssociatedObject.FindNameAcrossNamescopes("collapseAllButton") as ToggleButton;
 
-            Binding expandAllBinding = new Binding("IsChecked");
-            expandAllBinding.Source = _expandAllButton;
+            if (_expandAllButton != null)
+            {
+                Binding expandAllBinding = new Binding("IsChecked") 
+                { 
+                    Source = _expandAllButton 
+                };
 
-            Binding CollapseAllBinding = new Binding("IsChecked");
-            CollapseAllBinding.Source = _collapseAllButton;
+                _expandAllButton.Command = ExpandAllCommand;
+                _expandAllButton.SetBinding(ButtonBase.CommandParameterProperty, expandAllBinding);
+            }
 
-            _expandAllButton.Command = ExpandAllCommand;
-            _expandAllButton.SetBinding(ButtonBase.CommandParameterProperty, expandAllBinding);
+            if (_collapseAllButton != null)
+            {
+                Binding collapseAllBinding = new Binding("IsChecked") 
+                { 
+                    Source = _collapseAllButton 
+                };
 
-            _collapseAllButton.Command = CollapseAllCommand;
-            _collapseAllButton.SetBinding(ButtonBase.CommandParameterProperty, CollapseAllBinding);
+                _collapseAllButton.Command = CollapseAllCommand;
+                _collapseAllButton.SetBinding(ButtonBase.CommandParameterProperty, collapseAllBinding);
+            }
         }
 
         #endregion Event Handlers
@@ -97,14 +107,20 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void CleanUp()
         {
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            AssociatedObject.Loaded -= AssociatedObjectLoaded;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
 
-            _expandAllButton.Command = null;
-            _collapseAllButton.Command = null;
+            if (_expandAllButton != null)
+            {
+                _expandAllButton.Command = null;
+                _expandAllButton = null;
+            }
 
-            _expandAllButton = null;
-            _collapseAllButton = null;
+            if (_collapseAllButton != null)
+            {
+                _collapseAllButton.Command = null;
+                _collapseAllButton = null;
+            }
         }
 
         public void Dispose()
