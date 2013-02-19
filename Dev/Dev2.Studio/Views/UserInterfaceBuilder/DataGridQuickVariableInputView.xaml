@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         
-        <Border Grid.Row="0" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1" >
+        <Border Width="300" Grid.Row="0" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1" >
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80"></ColumnDefinition>
@@ -31,7 +31,7 @@
                     <RowDefinition Height="25"></RowDefinition>
                     <RowDefinition Height="25"></RowDefinition>
                     <RowDefinition Height="25"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
+                    <RowDefinition Height="45"></RowDefinition>
                     <RowDefinition Height="26"></RowDefinition>
                     <RowDefinition Height="25"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>                  
@@ -63,7 +63,7 @@
                 <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" Text="{Binding Suffix}" ToolTip="Just like Prefix, but appended after the variable name.&#x0a;Use it or lose it."></TextBox>
 
                 <Label Grid.Column="0" Grid.Row="4" Content="Variable List :"></Label>
-                <TextBox x:Name="TxtVariableList" Grid.Column="1" Grid.Row="4" Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" VerticalAlignment="Top" ToolTip="Copy and paste or type in a list of Variable names&#x0a;that you would like to use. They will be added to &#x0a;the grid in the order that they appear. Any spaces &#x0a;in the variable name will be removed automatically. &#x0a;You do not need to worry about putting the Variable &#x0a;identifiers, &quot;[[&quot; and &quot;]]&quot; in."></TextBox>
+                <TextBox x:Name="TxtVariableList" Grid.Column="1" Grid.Row="4" Style="{StaticResource Dev2TextboxStyle}" Height="42" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" VerticalAlignment="Top" ToolTip="Copy and paste or type in a list of Variable names&#x0a;that you would like to use. They will be added to &#x0a;the grid in the order that they appear. Any spaces &#x0a;in the variable name will be removed automatically. &#x0a;You do not need to worry about putting the Variable &#x0a;identifiers, &quot;[[&quot; and &quot;]]&quot; in."></TextBox>
 
                 <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                     <RadioButton Content="Append" IsChecked="True" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
@@ -83,14 +83,14 @@
             </Grid>
 
         </Border>       
-        <Canvas Margin="0,-1,0,0" Grid.Row="1" Width="298" HorizontalAlignment="Stretch" Visibility="{Binding ShowPreview, Converter={StaticResource BoolToVisConverter}}">
-            <Border Background="White" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1" Canvas.Left="-1">
+        <Canvas Margin="0,-1,0,0" Grid.Row="1" Width="300px" HorizontalAlignment="Stretch" Visibility="{Binding ShowPreview, Converter={StaticResource BoolToVisConverter}}">
+            <Border Background="White" Width="300px" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>                        
                     </Grid.RowDefinitions>                                    
-                    <TextBox TextWrapping="Wrap" IsEnabled="False" Grid.Row="1" Width="288" Text="{Binding PreviewText}"></TextBox>
+                    <TextBox TextWrapping="Wrap" BorderBrush="LightGray" BorderThickness="1" IsEnabled="False" Grid.Row="1" Width="288" Text="{Binding PreviewText}"></TextBox>
                 </Grid>
             </Border>
         </Canvas>    
