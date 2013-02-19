@@ -179,5 +179,22 @@ namespace Dev2.Data.SystemTemplates.Models
 
         }
 
+        /// <summary>
+        /// Removes the naughty chars from model.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        /// <returns></returns>
+        public static string RemoveNaughtyCharsFromModel(string val)
+        {
+            var toReplace = new string[]{"!", "[[]]", "&"};
+
+            foreach(var r in toReplace)
+            {
+                val = val.Replace(r, "");
+            }
+
+            return val;
+        }
+
     }
 }
