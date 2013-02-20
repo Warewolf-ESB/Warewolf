@@ -8,11 +8,15 @@
     var $tabs = $("#tabs");
 
     self.saveUri = "Service/Services/Save";
-        
-    self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);    
+    
+    // TODO: reinstate this check when all resources use an ID 
+    //self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
+    // TODO: remove this check: resourceID is either a GUID or a name to cater for legacy stuff
+    self.isEditing = resourceID ? resourceID !== "" : false;
 
     self.data = {
-        resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
+        resourceID: ko.observable(""),
+        //resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable("DbService"),
         resourceName: ko.observable(""),
         resourcePath: ko.observable(""),
@@ -44,14 +48,21 @@
             return serviceAction.Name.toLowerCase().indexOf(term) !== -1;
         });
     });
-    
+     
+    self.methodNameChanged = ko.observable(false);
     self.hasMethod = ko.computed(function () {
         return self.data.method.Name() !== "";
     });
     self.hasTestResults = ko.observable(false);    
     self.hasTestResultRecords = ko.observable(false);
+    self.hasOutputs = ko.computed(function () {
+        if (self.isEditing) {
+            return !self.methodNameChanged() || self.hasTestResults();
+        }
+        return self.hasTestResults();
+    });
     self.isFormValid = ko.computed(function () {
-        if (self.hasTestResults()) {
+        if (self.hasOutputs()) {
             var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
             return isRecordsetNameOptional ? true : self.data.recordset.Name() !== "";
         }
@@ -67,9 +78,6 @@
         return self.data.source();
     });
 
-    self.data.source.subscribe(function (newValue) {
-        self.loadMethods(newValue);
-    });   
     
     self.title = ko.observable("New Service");
     self.title.subscribe(function (newValue) {
@@ -83,8 +91,6 @@
         self.data.method.Name(selectedItem.Name);
         self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
         self.data.method.Parameters(selectedItem.Parameters);
-
-        self.data.recordset.Name(selectedItem.Name);
     });
 
     self.getJsonData = function () {
@@ -124,6 +130,25 @@
         }
         return found;
     };
+    
+    self.updateRecordset = function (name, fields, records, hasErrors, errorMessage) {
+        self.data.recordset.Name(name ? name.replace(".", "_") : "");
+        self.data.recordset.Fields(fields ? fields : []);
+        self.data.recordset.Records(records ? records : []);
+        self.data.recordset.HasErrors(hasErrors ? hasErrors : false);
+        self.data.recordset.ErrorMessage(errorMessage ? errorMessage : "");        
+    };
+    
+    self.data.source.subscribe(function (newValue) {
+        self.loadMethods(newValue);
+    });
+    
+    self.data.method.Name.subscribe(function (newValue) {
+        self.methodNameChanged(true);
+        self.updateRecordset(newValue);
+        self.hasTestResults(false);
+        self.hasTestResultRecords(false);
+    });
 
     self.load = function () {
         self.loadSources(
@@ -154,10 +179,10 @@
                 self.data.method.Parameters(result.Method.Parameters);
             }
             if (result.Recordset) {
-                self.data.recordset.Name(result.Recordset.Name);
-                self.data.recordset.Fields(result.Recordset.Fields);
+                self.updateRecordset(result.Recordset.Name, result.Recordset.Fields);
             }
 
+            self.methodNameChanged(false); // reset so that we can track user changes!
             self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
         });
     };
@@ -178,9 +203,7 @@
         self.data.method.SourceCode("");
         self.data.method.Parameters([]);
 
-        self.data.recordset.Name("");
-        self.data.recordset.Fields([]);
-        self.data.recordset.Records([]);
+        self.updateRecordset();
 
         self.sourceMethods([]);
         self.sourceMethodSearchTerm("");
@@ -240,11 +263,7 @@
             self.isTestResultsLoading(false);
             self.hasTestResultRecords(result.Records.length > 0);
             self.hasTestResults(!result.HasErrors);
-            self.data.recordset.Name(result.Name);
-            self.data.recordset.Fields(result.Fields);
-            self.data.recordset.Records(result.Records);
-            self.data.recordset.HasErrors(result.HasErrors);
-            self.data.recordset.ErrorMessage(result.ErrorMessage);
+            self.updateRecordset(result.Name, result.Fields, result.Records, result.HasErrors, result.ErrorMessage);
         });
     };
 

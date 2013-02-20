@@ -134,10 +134,10 @@
                         </table>
                     </div>
                     <div class="scrollable-y box-border" style="height: 321px; width: 430px;">
-                        <div style="margin: 10px;" data-bind="visible: !hasTestResults()">
+                        <div style="margin: 10px;" data-bind="visible: !hasOutputs()">
                             <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
                         </div>
-                        <table class="input-param" data-bind="visible: hasTestResults()">
+                        <table class="input-param" data-bind="visible: hasOutputs()">
                             <tbody data-bind="foreach: data.recordset.Fields">
                                 <tr>
                                     <td class="input-param-name" style="width: 155px;" data-bind="text: Name"></td>
