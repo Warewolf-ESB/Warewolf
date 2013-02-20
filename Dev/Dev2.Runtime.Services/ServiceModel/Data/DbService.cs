@@ -1,10 +1,11 @@
-﻿using Dev2.Common.ServiceModel;
-using Dev2.DynamicServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common.ServiceModel;
+using Dev2.DynamicServices;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -27,6 +28,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
+            #region Parse Source
+
             Guid sourceID;
             Guid.TryParse(action.AttributeSafe("SourceID"), out sourceID);
             Source = new DbSource
@@ -34,6 +37,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                 ResourceID = sourceID,
                 ResourceName = action.AttributeSafe("SourceName")
             };
+
+            #endregion
+
+            #region Parse Method
 
             Method = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>() };
             foreach(var input in action.Descendants("Input"))
@@ -49,19 +56,39 @@ namespace Dev2.Runtime.ServiceModel.Data
                 });
             }
 
+            #endregion
+
+            var outputDescriptionStr = action.ElementSafe("OutputDescription");
+            var paths = new List<IPath>();
+            if(!string.IsNullOrEmpty(outputDescriptionStr))
+            {
+                var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+                var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
+                if(description.DataSourceShapes.Count > 0)
+                {
+                    paths = description.DataSourceShapes[0].Paths;
+                }
+            }
+
+            #region Parse Recordset
+
             Recordset = new Recordset { Name = action.AttributeSafe("Name") };
             foreach(var output in action.Descendants("Output"))
             {
                 Recordset.Fields.Add(new RecordsetField
                 {
                     Name = output.AttributeSafe("Name"),
-                    Alias = output.AttributeSafe("MapsTo")
+                    Alias = output.AttributeSafe("MapsTo"),
+                    Path = paths.FirstOrDefault(p => output.AttributeSafe("Value").Equals(p.OutputExpression, StringComparison.InvariantCultureIgnoreCase))
                 });
             }
             if(Recordset.Name == ResourceName)
             {
                 Recordset.Name = Method.Name;
             }
+
+            #endregion
+
         }
 
         #endregion
@@ -87,7 +114,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 if(path != null)
                 {
                     string expressionFormat;
-                    if (isRecordset)
+                    if(isRecordset)
                     {
                         expressionFormat = "[[{0}().{1}]]";
                     }
@@ -131,7 +158,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #region Add recordset fields to outputs
 
-            
+
             foreach(var field in Recordset.Fields)
             {
                 if(isRecordset)
