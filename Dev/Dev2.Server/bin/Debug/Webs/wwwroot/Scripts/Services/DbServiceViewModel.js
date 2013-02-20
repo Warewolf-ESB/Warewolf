@@ -1,12 +1,13 @@
-﻿function DbSerivceViewModel(resourceID, sourceName) {
+﻿function DbServiceViewModel(resourceID, sourceName) {
     var self = this;
-
+    
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
     var $sourceMethodsScrollBoxHeight = 343;
     var $sourceMethods = $("#sourceMethods");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
 
+    self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     self.saveUri = "Service/Services/Save";
     
     // TODO: reinstate this check when all resources use an ID 
@@ -234,15 +235,16 @@
     };
 
     self.showSource = function(theSourceName) {
-        var args = ko.toJSON({
-            ResourceName: theSourceName
-        });
+        $("#dbSourceDialogContainer").dialog("open");
 
-        var returnUri = "" + window.location;
-        returnUri = returnUri.replace(/(sourceName=)[^\&]+/, '$1' + theSourceName);
+        //var args = ko.toJSON({
+        //    ResourceName: theSourceName
+        //});
+        //var returnUri = "" + window.location;
+        //returnUri = returnUri.replace(/(sourceName=)[^\&]+/, '$1' + theSourceName);
 
-        Dev2Awesomium.NavigateTo("", args, returnUri);
-        return true;
+        //Dev2Awesomium.NavigateTo("", args, returnUri);
+        //return true;
     };
     
     self.editSource = function () {
