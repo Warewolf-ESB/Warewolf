@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif !important;
     background-color: #fff;
     color: #333;
     margin: 0;
@@ -509,4 +509,8 @@ a.selectable {
 body,
 .ui-widget {
     font-size: 0.95em !important;
+}
+
+.ui-dialog-titlebar {
+    font-size: 1.2em !important;
 }

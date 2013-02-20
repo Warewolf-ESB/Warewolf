@@ -12,7 +12,7 @@
             </span>
         </div>
         <div class="field">
-            <div id="resourceFoldersScrollBox" class="scrollable-y box-border" style="height: 250px;">
+            <div id="resourceFoldersScrollBox" class="scrollable-y box-border" style="height: 240px;">
                 <ol class="selectable" id="resourceFolders" data-bind="foreach: searchFolderResults">
                     <li class="selectable">
                         <img src="images/folder-open.png" alt="Folder" width="16" height="16" class="icon" /><span style="margin-left: 0.5em" data-bind="html: $data"></span></li>
@@ -35,7 +35,7 @@
         var $errDiv = $("#saveFormError");
         var $errDivSpan = $("#saveFormError span");
         var $resourceFoldersScrollBox = $("#resourceFoldersScrollBox");
-        var $resourceFoldersScrollBoxHeight = 275;
+        var $resourceFoldersScrollBoxHeight = 240;
         var $resourceFolders = $("#resourceFolders");
         var $resourceName = $("#resourceName");
         var $newFolderDialog = $("#newFolderDialog");
@@ -191,9 +191,14 @@
         $saveForm.dialog({
             resizable: false,
             autoOpen: false,
-            height: 460,
+            height: 453,
             width: 600,
             modal: true,
+            position: {
+                my: "left top",
+                at: "left+10px top+10px",
+                of: "#content"
+            },
             open: function(event, ui) {
                 self.enableSaveButton(self.data.resourceName());
                 var resourcePath = self.data.resourcePath();
