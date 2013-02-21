@@ -20,7 +20,7 @@ function DecisionViewModel() {
         /* The data here must match the server's decision functions */
         decisionFunctions: ko.observableArray([
 			/* Not a valid type, here for user friendlyness */
-			{ displayValue: "Choose...", optionValue: "Choose...", columnCount: 0 },
+			{ displayValue: "Choose...", optionValue: "Choose...", columnCount: 1 },
 			/* Start valid types */
             { displayValue: "There Is An Error", optionValue: "IsError", columnCount: 0 },
             { displayValue: "There Is No Error", optionValue: "IsNotError", columnCount: 0 },
@@ -36,6 +36,14 @@ function DecisionViewModel() {
             { displayValue: "Is Not Date", optionValue: "IsNotDate", columnCount: 1 },
             { displayValue: "Is Email", optionValue: "IsEmail", columnCount: 1 },
             { displayValue: "Is Not Email", optionValue: "IsNotEmail", columnCount: 1 },
+            // PBI : 8741
+            { displayValue: "Is Binary", optionValue: "IsBinary", columnCount: 1 },
+            { displayValue: "Is Not Binary", optionValue: "IsNotBinary", columnCount: 1 },
+            { displayValue: "Is Hex", optionValue: "IsHex", columnCount: 1 },
+            { displayValue: "Is Not Hex", optionValue: "IsNotHex", columnCount: 1 },
+            { displayValue: "Is Base64", optionValue: "IsBase64", columnCount: 1 },
+            { displayValue: "Is Not Base64", optionValue: "IsNotBase64", columnCount: 1 },
+
             { displayValue: "Is RegEx", optionValue: "IsRegEx", columnCount: 2 },
             { displayValue: "Is Equal", optionValue: "IsEqual", columnCount: 2 },
             { displayValue: "Is Not Equal", optionValue: "IsNotEqual", columnCount: 2 },
@@ -63,7 +71,7 @@ function DecisionViewModel() {
     self.addRow = function () {
         // Default Row ;)
 		// { displayValue: "Choose...", optionValue: "Choose...", columnCount: 0 },
-        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 0, EvaluationFn: 'Choose...' });
+        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
 
         // Find the element and select it. -- decisionRow
         var $span = $("#decisionRow:last-child");
@@ -122,9 +130,11 @@ function DecisionViewModel() {
         }
 
         var dlID = window.location.search;
+        
+        /* Clean up the decision arm text */
         var jsonData = ko.toJSON(self.data);
 
-        //alert(jsonData);
+        alert(jsonData);
 
         $.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
 
@@ -180,7 +190,7 @@ function DecisionViewModel() {
             } else {
 
                 // Add a decision
-                vm.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 0, EvaluationFn: 'Choose...' });
+                vm.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
             }
         });
 
