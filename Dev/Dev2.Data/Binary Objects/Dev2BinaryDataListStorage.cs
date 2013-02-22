@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -61,6 +60,7 @@ namespace Dev2.Data.Binary_Objects
             while(_keepRunning.WaitOne())
             {
                 MoveItemsIntoMemoryCache();
+                Thread.Sleep(50);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Dev2.Data.Binary_Objects
                     if(Dev2RedisClient.RedisClient != null)
                     {
                         Dev2RedisClient.RedisClient.Set(key, value);
-                        ItemsAddedToRedis = true;
+                        ItemsAddedToRedis = false;
                     }
                     
                 });

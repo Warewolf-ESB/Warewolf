@@ -1,5 +1,4 @@
-﻿using System.Web.Script.Serialization;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract;
@@ -18,8 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json.Bson;
 
 namespace Dev2.Server.Datalist
 {
@@ -727,7 +724,6 @@ namespace Dev2.Server.Datalist
             ErrorResultTO allErrors = new ErrorResultTO();
             errors = new ErrorResultTO();
             string error = string.Empty;
-            string exp = GlobalConstants.SystemTagNamespace + "." + tag;
             IBinaryDataList bdl = TryFetchDataList(curDLID, out error);
 
             Guid result = GlobalConstants.NullDataListID;
@@ -740,12 +736,13 @@ namespace Dev2.Server.Datalist
 
             if (bdl != null)
             {
+                string tt = DataListUtil.BuildSystemTagForDataList(tag, false);
                 allErrors.MergeErrors(errors);
                 IBinaryDataListItem itm = null;
 
                 if (typeof(T) == typeof(string))
                 {
-                    itm = Dev2BinaryDataListFactory.CreateBinaryItem(val.ToString(), exp);
+                    itm = Dev2BinaryDataListFactory.CreateBinaryItem(val.ToString(), tt);
 
                 }
                 else if (typeof(T) == typeof(IBinaryDataListEntry))
@@ -756,9 +753,10 @@ namespace Dev2.Server.Datalist
                 IBinaryDataListEntry et;
                 result = GlobalConstants.NullDataListID;
 
-                if (bdl.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, tag.ToString(), string.Empty, true, out error))
+                
+                if (bdl.TryCreateScalarTemplate(string.Empty, tt, string.Empty, true, out error))
                 {
-                    bdl.TryGetEntry(exp, out et, out error);
+                    bdl.TryGetEntry(tt, out et, out error);
 
                     if (et != null)
                     {

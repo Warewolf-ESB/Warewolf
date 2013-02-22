@@ -445,6 +445,7 @@ namespace Dev2.DataList.Contract
 
         public string EvaluateSystemEntry(Guid curDLID, enSystemTag sysTag, out ErrorResultTO errors)
         {
+            
             return _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors).FetchScalar().TheValue;
         }
 

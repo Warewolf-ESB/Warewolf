@@ -1126,7 +1126,7 @@ namespace Dev2.Studio.UI.Tests
         public void DeployNonSavedItem_Expected_ItemIsNotDeployable()
         {
             // Create a Workflow
-            myTestBase.CreateCustomWorkflow("Bug8803Temp");
+            myTestBase.CreateCustomWorkflow("Bug8803");
             
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8803");

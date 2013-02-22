@@ -141,7 +141,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 }
 
-                                compiler.Upsert(dlID, toUpsert, out errors);
+                                //compiler.Upsert(dlID, toUpsert, out errors);
                                 allErrors.MergeErrors(errors);
                             }
                         }

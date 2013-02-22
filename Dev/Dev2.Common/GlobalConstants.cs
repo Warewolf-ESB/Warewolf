@@ -59,7 +59,7 @@ namespace Dev2.Common
         public const int DefaultDataListCacheSizeLvl1 = 60000;
         public const string DefaultDataListCacheSizeLvlMemoryPercentage = "35";
         public const string DefaultDataListCacheSizeLvlMemoryPollingInterval = "00:00:10";
-        public const string DefaultDataListCacheSizeLvlMegaByteSize = "350";
+        public const string DefaultDataListCacheSizeLvlMegaByteSize = "1024";
         public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
         public const int DefaultDataListMaxCacheSizeLvl1 = 40000;
         public const int DefaultCachePageSizeLvl1 = 1100;

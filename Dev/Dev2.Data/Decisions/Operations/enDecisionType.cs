@@ -93,6 +93,18 @@ namespace Dev2.Data.Decisions.Operations
         [DecisionTypeDisplayValue("Starts With")]
         IsStartsWith,
         [DecisionTypeDisplayValue("Is Between")]
-        IsBetween
+        IsBetween,
+        [DecisionTypeDisplayValue("Is Binary")]
+        IsBinary,
+        [DecisionTypeDisplayValue("Is Not Binary")]
+        IsNotBinary,
+        [DecisionTypeDisplayValue("Is Hex")]
+        IsHex,
+        [DecisionTypeDisplayValue("Is Not Hex")]
+        IsNotHex,
+        [DecisionTypeDisplayValue("Is Base64")]
+        IsBase64,
+        [DecisionTypeDisplayValue("Is Not Base64")]
+        IsNotBase64
     }
 }

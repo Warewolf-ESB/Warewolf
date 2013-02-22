@@ -128,7 +128,9 @@
     <Compile Include="Decisions\Operations\enDecisionType.cs" />
     <Compile Include="Decisions\Operations\IDecisionOperation.cs" />
     <Compile Include="Decisions\Operations\IsAlphanumeric.cs" />
+    <Compile Include="Decisions\Operations\IsBase64.cs" />
     <Compile Include="Decisions\Operations\IsBetween.cs" />
+    <Compile Include="Decisions\Operations\IsBinary.cs" />
     <Compile Include="Decisions\Operations\IsContains.cs" />
     <Compile Include="Decisions\Operations\IsDate.cs" />
     <Compile Include="Decisions\Operations\IsEmail.cs" />
@@ -137,13 +139,17 @@
     <Compile Include="Decisions\Operations\IsError.cs" />
     <Compile Include="Decisions\Operations\IsGreaterThan.cs" />
     <Compile Include="Decisions\Operations\IsGreaterThanOrEqual.cs" />
+    <Compile Include="Decisions\Operations\IsHex.cs" />
     <Compile Include="Decisions\Operations\IsLessThan.cs" />
     <Compile Include="Decisions\Operations\IsLessThanOrEqual.cs" />
     <Compile Include="Decisions\Operations\IsNotAlphanumeric.cs" />
+    <Compile Include="Decisions\Operations\IsNotBase64.cs" />
+    <Compile Include="Decisions\Operations\IsNotBinary.cs" />
     <Compile Include="Decisions\Operations\IsNotDate.cs" />
     <Compile Include="Decisions\Operations\IsNotEmail.cs" />
     <Compile Include="Decisions\Operations\IsNotEqual.cs" />
     <Compile Include="Decisions\Operations\IsNotError.cs" />
+    <Compile Include="Decisions\Operations\IsNotHex.cs" />
     <Compile Include="Decisions\Operations\IsNotNumeric.cs" />
     <Compile Include="Decisions\Operations\IsNotText.cs" />
     <Compile Include="Decisions\Operations\IsNotXml.cs" />
