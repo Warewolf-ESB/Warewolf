@@ -173,6 +173,7 @@
     <Content Include="wwwroot\Scripts\dev2-globals.js" />
     <Content Include="wwwroot\Scripts\dev2-jquery.js" />
     <Content Include="wwwroot\Scripts\dev2-ko.js" />
+    <Content Include="wwwroot\Scripts\Dialogs\SaveViewModel.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.0.custom.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.dataTables.min.js" />

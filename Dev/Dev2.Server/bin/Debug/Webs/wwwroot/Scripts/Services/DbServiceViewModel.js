@@ -1,4 +1,4 @@
-﻿function DbServiceViewModel(resourceID, sourceName) {
+﻿function DbServiceViewModel(saveContainerID, resourceID, sourceName) {
     var self = this;
     
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -8,7 +8,6 @@
     var $tabs = $("#tabs");
 
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
-    self.saveUri = "Service/Services/Save";
     
     // TODO: reinstate this check when all resources use an ID 
     //self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
@@ -274,9 +273,59 @@
         return true;
     };
 
-    self.save = function () {        
-        $("#saveForm").dialog("open");
+    self.saveViewModel = SaveViewModel.create("Service/Services/Save", self, saveContainerID);
+
+    self.save = function () {
+        self.saveViewModel.showDialog();
     };
 
-    self.load();
+    self.load();    
+};
+
+
+DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
+    // apply jquery-ui themes
+    $("button").button();
+    $("#tabs").tabs();
+
+    var dbServiceViewModel = new DbServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"));
+
+    ko.applyBindings(dbServiceViewModel, document.getElementById(dbServiceContainerID));
+    
+
+    $("#actionInspectorDialog").dialog({
+        resizable: false,
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        buttons: {
+            "Close": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    // inject DbSourceDialog
+    dbServiceViewModel.$dbSourceDialogContainer.load("Views/Sources/DbSource.htm", function () {
+        dbServiceViewModel.$dbSourceDialogContainer.dialog({
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            position: {
+                my: "left top",
+                at: "left+10px top+10px",
+                of: "#content"
+            },
+            buttons: {
+                // TODO: hook up to DbSource view model functions...
+                "Ok": function () {
+                    $(this).dialog("close");
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("button").button();
+    });
 };

@@ -1,4 +1,4 @@
-﻿<div id="container" style="margin: 0; width: 937px" class="ui-widget-content">
+﻿<div id="dbServiceContainer" style="margin: 0; width: 937px" class="ui-widget-content">
     <div id="serviceForm">
         <div id="tabs" style="height: 510px; padding: 0; border: 0 none;">
             <ul>
@@ -167,63 +167,15 @@
         </div>
     </div>
 </div>
-<div id="saveDialogContainer">
+<div id="dbServiceSaveDialogContainer">
 </div>
 <div id="dbSourceDialogContainer" title="New Database Source">
 </div>
 
 <script src="Scripts/Services/DbServiceViewModel.js"></script>
+<script src="Scripts/Dialogs/SaveViewModel.js"></script>
+
 <script type="text/javascript">
-    var viewModel = new DbServiceViewModel(getParameterByName("rid"), getParameterByName("sourceName"));
-    
-    $(function () {
-        // apply jquery-ui themes
-        $("button").button();
-        $("#tabs").tabs();
-
-        ko.applyBindings(viewModel, document.getElementById("serviceForm"));
-        
-        $("#actionInspectorDialog").dialog({
-            resizable: false,
-            autoOpen: false,
-            modal: true,
-            width: 700,
-            buttons: {
-                "Close": function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-        // inject SaveDialog
-        $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
-            $("button").button();
-        });
-        
-        // inject DbSourceDialog
-        viewModel.$dbSourceDialogContainer.load("Views/Sources/DbSource.htm", function () {
-            viewModel.$dbSourceDialogContainer.dialog({
-                resizable: false,
-                autoOpen: false,
-                modal: true,
-                position: {
-                    my: "left top",
-                    at: "left+10px top+10px",
-                    of: "#content"
-                },
-                buttons: {
-                    // TODO: hook up to DbSource view model functions...
-                    "Ok": function() {
-                        $(this).dialog("close");
-                    },
-                    "Cancel": function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-            $("button").button();
-        });
-    });
-
+    DbServiceViewModel.create("dbServiceContainer", "dbServiceSaveDialogContainer");
 </script>
 

@@ -1,10 +1,10 @@
-﻿function ServerViewModel(loadedCallback) {
+﻿function ServerViewModel(saveContainerID) {
     var self = this;
     var $testButton = $("#testButton");
     var $address = $("#address");
+    var $userName = $("#userName");
+    var $password = $("#password");
     
-    self.saveUri = "Service/Connections/Save";
-
     self.data = {
         resourceID: ko.observable(""),
         resourceType: ko.observable("Server"),
@@ -63,15 +63,15 @@
     self.data.authenticationType.subscribe(function (newValue) {
         var isUser = newValue == "User";
         if (isUser) {
-            $("#userName").addClass("required");
-            $("#password").addClass("required");
+            $userName.addClass("required");
+            $password.addClass("required");
         }
         else {
-            $("#userName").removeClass("required");
-            $("#password").removeClass("required");
+            $userName.removeClass("required");
+            $password.removeClass("required");
         }
-        $("#userName").removeClass("error");
-        $("#password").removeClass("error");
+        $userName.removeClass("error");
+        $password.removeClass("error");
 
         self.isUserInputVisible(isUser);
     });
@@ -120,16 +120,12 @@
         
         var jsonData = ko.toJSON(self.data);
         $.post("Service/Connections/Test" + window.location.search, jsonData, function (result) {
-            console.log(result);
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);
             self.testError(result.ErrorMessage);
         });
-    };
-    self.save = function () {
-        $("#saveForm").dialog("open");
     };
 
     $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
@@ -140,12 +136,19 @@
     $(":input").focus(function () {
         self.updateHelpText(this.id);
     });
+    
+    self.saveViewModel = SaveViewModel.create("Service/Connections/Save", self, saveContainerID);
+
+    self.save = function () {
+        self.saveViewModel.showDialog();
+    };
+};
 
 
-    // inject SaveDialog
-    $("#saveDialogContainer").load("Views/Dialogs/SaveDialog.htm", function () {
-        if (loadedCallback) {
-            loadedCallback();
-        }
-    });
+ServerViewModel.create = function (serverContainerID, saveContainerID) {
+    // apply jquery-ui themes
+    $("button").button();
+
+    var serverViewModel = new ServerViewModel(saveContainerID);
+    ko.applyBindings(serverViewModel, document.getElementById(serverContainerID));
 };

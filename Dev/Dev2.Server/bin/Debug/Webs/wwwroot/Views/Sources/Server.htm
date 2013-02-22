@@ -1,4 +1,4 @@
-﻿<div id="container" class="ui-widget-content" style="height: 488px; width: 700px;">
+﻿<div id="serverContainer" class="ui-widget-content" style="height: 488px; width: 700px;">
     <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
     </div>
     <div id="body" style="padding: 10px;">
@@ -68,18 +68,14 @@
     </div>
 
 </div>
-<div id="saveDialogContainer">
+<div id="serverSaveDialogContainer">
 </div>
 
+
 <script src="Scripts/Sources/ServerViewModel.js"></script>
+<script src="Scripts/Dialogs/SaveViewModel.js"></script>
 
-<script type="text/javascript">
-
-    var viewModel = new ServerViewModel(function () {
-        // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
-    });
-    ko.applyBindings(viewModel, document.getElementById("container"));
-
+<script type="text/javascript">       
+    ServerViewModel.create("serverContainer", "serverSaveDialogContainer");
 </script>
 
