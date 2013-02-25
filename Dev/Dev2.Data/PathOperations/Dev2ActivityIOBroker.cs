@@ -26,11 +26,15 @@ namespace Dev2.PathOperations
 
             if(!deferredRead)
             {
-                Stream s = path.Get(path.IOPath);
-                byte[] bytes = new byte[s.Length];
-                s.Position = 0;
-                s.Read(bytes, 0, (int)s.Length);
-                s.Close();
+                byte[] bytes;
+                using(Stream s = path.Get(path.IOPath))
+                {
+                    bytes = new byte[s.Length];
+                    s.Position = 0;
+                    s.Read(bytes, 0, (int)s.Length);
+                    s.Close();
+                    s.Dispose();
+                }
 
                 return Encoding.UTF8.GetString(bytes);
             }
@@ -46,6 +50,11 @@ namespace Dev2.PathOperations
             }
         }
 
+        public Stream GetRaw(IActivityIOOperationsEndPoint path)
+        {
+            return path.Get(path.IOPath);
+        }
+
         public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)
         {
 
@@ -59,11 +68,14 @@ namespace Dev2.PathOperations
             {
                 if (args.Append)
                 {
-                    s = dst.Get(dst.IOPath);
-                    File.WriteAllBytes(tmp, s.ToByteArray());
-                    // Convert.FromBase64String(base64FileData);
-                    File.AppendAllText(tmp, args.FileContents);
-                    s.Close();
+                    using(s = dst.Get(dst.IOPath))
+                    {
+                        File.WriteAllBytes(tmp, s.ToByteArray());
+                        // Convert.FromBase64String(base64FileData);
+                        File.AppendAllText(tmp, args.FileContents);
+                        s.Close();
+                        s.Dispose();
+                    }
                 }
                 else
                 {
@@ -104,20 +116,22 @@ namespace Dev2.PathOperations
 
             string result = resultOk;
 
-            s = new MemoryStream(File.ReadAllBytes(tmp));
-            Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(true);
+            using(s = new MemoryStream(File.ReadAllBytes(tmp)))
+            {
+                Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(true);
 
-            //MO : 22-05-2012 : If the file doesnt exisit then create the file
-            if (!dst.PathExist(dst.IOPath))
-            {
-                CreateEndPoint(dst, newArgs, true);
+                //MO : 22-05-2012 : If the file doesnt exisit then create the file
+                if(!dst.PathExist(dst.IOPath))
+                {
+                    CreateEndPoint(dst, newArgs, true);
+                }
+                if(dst.Put(s, dst.IOPath, newArgs) < 0)
+                {
+                    result = resultBad;
+                }
+                s.Close();
+                s.Dispose();
             }
-            if (dst.Put(s, dst.IOPath, newArgs) < 0)
-            {
-                result = resultBad;
-            }
-            s.Close();
-            s.Dispose();
 
             RemoveTmpFile(tmp);
 
@@ -227,15 +241,18 @@ namespace Dev2.PathOperations
                     {
                         // single file fetch
                         String tmp = CreateTmpFile();
-                        Stream s = src.Get(src.IOPath);
-                        File.WriteAllBytes(tmp, s.ToByteArray());
-
-                        if (dst.Put(s, dst.IOPath, args) < 0)
+                        using(Stream s = src.Get(src.IOPath))
                         {
-                            result = resultBad;
-                        }
+                            File.WriteAllBytes(tmp, s.ToByteArray());
 
-                        s.Close();
+                            if(dst.Put(s, dst.IOPath, args) < 0)
+                            {
+                                result = resultBad;
+                            }
+
+                            s.Close();
+                            s.Dispose();
+                        }
                         RemoveTmpFile(tmp);
                     }
                     else
@@ -264,22 +281,25 @@ namespace Dev2.PathOperations
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file
-                        Stream s = src.Get(src.IOPath);
-                        // If dst is a directory, retain the file name
-                        string dstPath = dst.IOPath.Path;
-
-                        if (dst.PathIs(dst.IOPath) == enPathType.Directory)
+                        using(Stream s = src.Get(src.IOPath))
                         {
-                            dstPath += dst.PathSeperator() + Dev2ActivityIOPathUtils.ExtractFileName(src.IOPath.Path);
-                        }
+                            // If dst is a directory, retain the file name
+                            string dstPath = dst.IOPath.Path;
 
-                        IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
+                            if(dst.PathIs(dst.IOPath) == enPathType.Directory)
+                            {
+                                dstPath += dst.PathSeperator() + Dev2ActivityIOPathUtils.ExtractFileName(src.IOPath.Path);
+                            }
 
-                        if (dst.Put(s, tmpDst, args) < 0)
-                        {
-                            result = resultBad;
+                            IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
+
+                            if(dst.Put(s, tmpDst, args) < 0)
+                            {
+                                result = resultBad;
+                            }
+                            s.Close();
+                            s.Dispose();
                         }
-                        s.Close();
                     }
                     else
                     {
@@ -321,10 +341,13 @@ namespace Dev2.PathOperations
                         // If file not present
                         if (args.Overwrite || !dst.PathExist(dst.IOPath))
                         {
-                            Stream s = src.Get(src.IOPath);
-                            //File.WriteAllBytes(tmp, s.ToByteArray());
-                            dst.Put(s, dst.IOPath, args);
-                            s.Close();
+                            using(Stream s = src.Get(src.IOPath))
+                            {
+                                //File.WriteAllBytes(tmp, s.ToByteArray());
+                                dst.Put(s, dst.IOPath, args);
+                                s.Close();
+                                s.Dispose();
+                            }
 
                             // delete original file ;)
                             src.Delete(src.IOPath);
@@ -359,9 +382,12 @@ namespace Dev2.PathOperations
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file
-                        Stream s = src.Get(src.IOPath);
-                        dst.Put(s, dst.IOPath, args);
-                        s.Close();
+                        using(Stream s = src.Get(src.IOPath))
+                        {
+                            dst.Put(s, dst.IOPath, args);
+                            s.Close();
+                            s.Dispose();
+                        }
                         src.Delete(src.IOPath);
                     }
                     else
@@ -513,10 +539,14 @@ namespace Dev2.PathOperations
             if (src.RequiresLocalTmpStorage())
             {
 
-                Stream s = src.Get(src.IOPath);
                 string tmpZip = CreateTmpFile();
-                File.WriteAllBytes(tmpZip, s.ToByteArray());
-                s.Close();
+                using(Stream s = src.Get(src.IOPath))
+                {
+                    
+                    File.WriteAllBytes(tmpZip, s.ToByteArray());
+                    s.Close();
+                    s.Dispose();
+                }
 
                 zipFile = tmpZip;
             }
@@ -691,18 +721,56 @@ namespace Dev2.PathOperations
                         IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))));
                         if (args.Overwrite || !dst.PathExist(cpPath))
                         {
-                            s = src.Get(p);
+                            using(s = src.Get(p))
+                            {
+
+                                // Need to ensure we have a file name on dst
+                                //if (dst.PathIs(dst.IOPath) == enPathType.Directory) {
+                                //string tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
+
+                                //IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
+                                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
+                                IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
+                                // Sashen : 22-08-2012: The dst folder path is being incorrectly set on intial run and this cause all subsequent operations
+                                // to not occur
+                                // So, if there were 2 files or more, only the first file would be copied.
+                                //dst = tmpEP;
+
+                                //}
+                                //else {
+                                //    string tmp = dst.IOPath.Path + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
+
+                                //    IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
+                                //    IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
+                                //    dst = tmpEP;
+                                //}
+
+                                if(tmpEP.Put(s, tmpEP.IOPath, args) < 0)
+                                {
+                                    result = false;
+                                }
+                                s.Close();
+                                s.Dispose();
+                            }
+                            // if move op, delete orig
+                            if (removeSrc)
+                            {
+                                src.Delete(p);
+                            }
+                        }
+                    }
+                    else if (args.Overwrite || !dst.PathExist(dst.IOPath))
+                    {
+                        using(s = src.Get(p))
+                        {
 
                             // Need to ensure we have a file name on dst
                             //if (dst.PathIs(dst.IOPath) == enPathType.Directory) {
-                            //string tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
+                            string tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
 
-                            //IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
-                            IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
+                            IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
                             IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                            // Sashen : 22-08-2012: The dst folder path is being incorrectly set on intial run and this cause all subsequent operations
-                            // to not occur
-                            // So, if there were 2 files or more, only the first file would be copied.
+                            // Sashen : 22-08-2012: The dst folder path is being incorrectly set on intial
                             //dst = tmpEP;
 
                             //}
@@ -714,45 +782,14 @@ namespace Dev2.PathOperations
                             //    dst = tmpEP;
                             //}
 
-                            if (tmpEP.Put(s, tmpEP.IOPath, args) < 0)
+                            if(tmpEP.Put(s, tmpEP.IOPath, args) < 0)
                             {
                                 result = false;
                             }
                             s.Close();
-                            // if move op, delete orig
-                            if (removeSrc)
-                            {
-                                src.Delete(p);
-                            }
+                            s.Dispose();
                         }
-                    }
-                    else if (args.Overwrite || !dst.PathExist(dst.IOPath))
-                    {
-                        s = src.Get(p);
 
-                        // Need to ensure we have a file name on dst
-                        //if (dst.PathIs(dst.IOPath) == enPathType.Directory) {
-                        string tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
-
-                        IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
-                        IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                        // Sashen : 22-08-2012: The dst folder path is being incorrectly set on intial
-                        //dst = tmpEP;
-
-                        //}
-                        //else {
-                        //    string tmp = dst.IOPath.Path + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
-
-                        //    IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
-                        //    IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                        //    dst = tmpEP;
-                        //}
-
-                        if (tmpEP.Put(s, tmpEP.IOPath, args) < 0)
-                        {
-                            result = false;
-                        }
-                        s.Close();
                         // if move op, delete orig
                         if (removeSrc)
                         {

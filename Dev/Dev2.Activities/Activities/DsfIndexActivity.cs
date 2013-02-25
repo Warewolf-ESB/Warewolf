@@ -95,7 +95,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();

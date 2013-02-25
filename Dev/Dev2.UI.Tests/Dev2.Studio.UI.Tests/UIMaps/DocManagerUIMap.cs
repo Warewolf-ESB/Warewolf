@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Windows.Forms;
 
 namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
 {
@@ -21,6 +22,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
             WpfTabPage theTab = FindTabPage(tabName);
             Point p;
             return (theTab.TryGetClickablePoint(out p));
+        }
+
+        public void CloseStudio()
+        {
+            Point p = new Point();
+            this.UIBusinessDesignStudioWindow.SetFocus();
+            SendKeys.SendWait("%{F4}");
         }
     }
 }

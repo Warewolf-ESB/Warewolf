@@ -8,6 +8,7 @@ using Dev2.DataList.Contract.EqualityComparers;
 using Dev2.DataList.Contract.TO;
 using Dev2.Enums;
 using Dev2.Server.Datalist;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 
 namespace Dev2.DataList.Contract
 {
@@ -73,8 +73,7 @@ namespace Dev2.DataList.Contract
         {
             errors = new ErrorResultTO();
 
-            return _svrCompiler.Evaluate(null, curDLID, typeOf, expression, out errors, toRoot);
-
+            return _svrCompiler.Evaluate(null, curDLID, typeOf, expression, out errors, toRoot) ?? DataListConstants.baseEntry;
         }
 
         /// <summary>
@@ -345,11 +344,31 @@ namespace Dev2.DataList.Contract
             errors = new ErrorResultTO();
             byte[] payload = new byte[0];
             BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, bdl);
-            payload = ms.ToArray();
+            using(MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, bdl);
+                payload = ms.ToArray();
+                ms.Close();
+                ms.Dispose();
+            }
 
             return _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._BINARY), payload, string.Empty, out errors);
+        }
+
+        public Guid PushBinaryDataListInServerScope(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            string error;
+
+            if(_svrCompiler.TryPushDataList(bdl, out error))
+            {
+                errors.AddError(error);
+                return bdl.UID;
+            }
+
+            errors.AddError(error);
+
+            return GlobalConstants.NullDataListID;
         }
 
         public string ConvertFrom(Guid curDLID, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors)
@@ -445,8 +464,8 @@ namespace Dev2.DataList.Contract
 
         public string EvaluateSystemEntry(Guid curDLID, enSystemTag sysTag, out ErrorResultTO errors)
         {
-            
-            return _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors).FetchScalar().TheValue;
+            IBinaryDataListEntry binaryDataListEntry = _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors) ?? DataListConstants.baseEntry;
+            return binaryDataListEntry.FetchScalar().TheValue;
         }
 
         public Guid ShapeInput(Guid curDLID, string definitions, out ErrorResultTO errors)

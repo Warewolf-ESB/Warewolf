@@ -11,7 +11,6 @@ using Dev2.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -80,7 +79,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -102,24 +102,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // SourceString
                     int iterNumber = Int32.MaxValue;
 
-                    // TODO : Properly fetch the total number of executions....?
-
                     while (itr.HasMoreRecords())
                     {
                         IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                         foreach (IBinaryDataListItem c in cols)
                         {
-                            if (!string.IsNullOrEmpty(c.TheValue))
+                            // set up live flushing iterator details
+                            if(c.IsDeferredRead)
                             {
-                                IDev2Tokenizer tokenizer = CreateSplitPattern(c.TheValue, ResultsCollection, compiler, dlID);
+                                toUpsert.HasLiveFlushing = true;
+                                toUpsert.LiveFlushingLocation = dlID;
+                            }
+
+                            if(!string.IsNullOrEmpty(c.TheValue))
+                            {
+                                string val = c.TheValue;
+                                IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, compiler, dlID);
                                 int opCnt = 0;
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
 
-                                bool added = false;
-                                while (tokenizer.HasMoreOps() && opCnt < iterNumber)
+                                while(tokenizer.HasMoreOps() && opCnt < iterNumber)
                                 {
-
                                     string tmp = tokenizer.NextToken();
 
                                     if (!string.IsNullOrEmpty(ResultsCollection[pos].OutputVariable))
@@ -128,7 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
 
                                     // Per pass
-                                    if (pos == end)
+                                    if(pos == end)
                                     {
                                         pos = 0;
                                         opCnt++;
@@ -138,14 +142,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         pos++;
                                     }
-
                                 }
 
-                                //compiler.Upsert(dlID, toUpsert, out errors);
+                                if (toUpsert.HasLiveFlushing)
+                                {
+                                    try
+                                    {
+                                        toUpsert.FlushIterationFrame();
+                                        toUpsert = null;
+                                        //toUpsert.PublishLiveIterationData();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        allErrors.AddError(e.Message);
+                                    }
+                                }
+                                else
+                                {
+                                    compiler.Upsert(dlID, toUpsert, out errors);
                                 allErrors.MergeErrors(errors);
                             }
                         }
                     }
+                }
                 }
 
             }
@@ -159,8 +178,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfDataSplitActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfDataSplitActivity", allErrors);
+                    compiler.UpsertSystemTag(dlID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
         }
@@ -168,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Private Methods
 
 
-        private IDev2Tokenizer CreateSplitPattern(string StringToSplit, IList<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID)
+        private IDev2Tokenizer CreateSplitPattern(ref string StringToSplit, IList<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID)
         {
             Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
             ErrorResultTO errors = new ErrorResultTO();

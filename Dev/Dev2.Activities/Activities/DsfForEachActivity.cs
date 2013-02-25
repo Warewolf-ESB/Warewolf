@@ -124,7 +124,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             dataObject.ParentInstanceID = InstanceID;
 
@@ -529,7 +530,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // that is all she wrote ;)
                     IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
                     dataObject.IsDataListScoped = false;
-                    var compiler = context.GetExtension<IDataListCompiler>();
+                    //var compiler = context.GetExtension<IDataListCompiler>();
+                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
                     ErrorResultTO errors;
                     var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
                     // return it all to normal

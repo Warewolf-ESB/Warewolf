@@ -2152,16 +2152,32 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _wdMeta.Register();
 
-            _modelService = _wd.Context.Services.GetService<ModelService>();
-            _modelService.ModelChanged += new EventHandler<ModelChangedEventArgs>(ModelServiceModelChanged);
+            _wd.Context.Services.Subscribe<ModelService>(instance =>
+            {
+                _modelService = instance;
+                _modelService.ModelChanged += new EventHandler<ModelChangedEventArgs>(ModelServiceModelChanged);
+            });
 
-            _viewstateService = _wd.Context.Services.GetService<ViewStateService>();
+            //_modelService = _wd.Context.Services.GetService<ModelService>();
+            //_modelService.ModelChanged += new EventHandler<ModelChangedEventArgs>(ModelServiceModelChanged);
+
+            _wd.Context.Services.Subscribe<ViewStateService>(instance =>
+            {
+                _viewstateService = instance;
+            });
+
+            //_viewstateService = _wd.Context.Services.GetService<ViewStateService>();
 
             _wd.View.PreviewDrop += new DragEventHandler(ViewPreviewDrop);
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
             _wd.View.LayoutUpdated += ViewOnLayoutUpdated;
 
-            _wd.Context.Services.GetService<DesignerView>().WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom;
+            _wd.Context.Services.Subscribe<DesignerView>(instance =>
+            {
+                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom;
+            });
+
+            //_wd.Context.Services.GetService<DesignerView>().WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom;
             _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
 
             _wd.Context.Services.Publish(_designerManagementService);

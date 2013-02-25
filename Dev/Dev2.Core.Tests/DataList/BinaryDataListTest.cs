@@ -22,7 +22,6 @@ namespace Unlimited.UnitTest.Framework.DataList
 
         private IBinaryDataList dlWithBankScalar;
         private IBinaryDataList dlWithPopulatedScalar;
-        static Process _redisProcess;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -63,10 +62,10 @@ namespace Unlimited.UnitTest.Framework.DataList
         [ClassCleanup()]
         public static void BaseActivityUnitTestCleanup()
         {
-            if (_redisProcess != null)
-            {
-                _redisProcess.Kill();
-            }
+            //if (_redisProcess != null)
+            //{
+            //    _redisProcess.Kill();
+            //}
         }
 
 

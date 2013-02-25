@@ -448,6 +448,16 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         bool SetParentID(Guid curDLID, Guid newParent);
 
+
+        /// <summary>
+        /// Pushes the binary data list in server scope.
+        /// </summary>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="bdl">The BDL.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid PushBinaryDataListInServerScope(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors);
+
         #endregion
 
         #region Studio Method

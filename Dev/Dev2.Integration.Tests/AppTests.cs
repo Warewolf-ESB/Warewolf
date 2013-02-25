@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests
                 Mutex.OpenExisting("Dev2.Studio");
                 studioAlreadyRunning = true;
             }
-            catch(Exception)
+            catch (Exception)
             {
             }
 

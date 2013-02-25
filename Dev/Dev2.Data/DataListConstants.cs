@@ -1,5 +1,4 @@
-﻿using System;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -17,5 +16,11 @@ namespace Dev2.Data.SystemTemplates
         public static readonly Dev2Switch DefaultCase = new Dev2Switch() { SwitchVariable = "" };
 
         public static readonly IBinaryDataListEntry baseEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty);
+        public static readonly IBinaryDataListItem baseItem = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
+        public static readonly IBinaryDataListItem emptyItem = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
+
+        public static readonly int EmptyRowStartIdx = -1;
+        public static readonly double RowGrowthFactor = 1.50;
+        public static readonly int MinRowSize = 50;
     }
 }

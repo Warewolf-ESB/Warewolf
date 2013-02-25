@@ -39,7 +39,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -85,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
                                             deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
                                             allErrors.AddError(error);
-;                                           toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
+                                            toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
                                         }
                                     }
 

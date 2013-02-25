@@ -1,5 +1,4 @@
 ﻿using Dev2;
-using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -19,12 +18,6 @@ namespace ActivityUnitTests.ActivityTest
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
         string Source = ActivityStrings.DataSplit_SourceString;
-        public DataSplitActivityTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
 
         private TestContext testContextInstance;
 
@@ -106,7 +99,7 @@ namespace ActivityUnitTests.ActivityTest
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
             List<string> actualRet = new List<string>();
             actual.Where(c => c.ItemCollectionIndex >= 3).ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new ActivityUnitTests.Utils.StringComparer();
+            var comparer = new Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
 

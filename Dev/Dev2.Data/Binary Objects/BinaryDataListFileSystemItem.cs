@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Text;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
 using Dev2.PathOperations;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
+    [Serializable]
     public class BinaryDataListFileSystemItem : IBinaryDataListItem
     {
         #region Internal Struct
 
-        private SBinaryDataListItem _internalObj = new SBinaryDataListItem();
+        private SBinaryDataListItem _internalObj ;
+
         private string _fileData;
         private string _filePath;
+
 
         #endregion
 
@@ -23,11 +29,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
             
             get
             {
-                if(string.IsNullOrEmpty(_fileData))
+                if (string.IsNullOrEmpty(_fileData))
                 {
                     // Use File Broker ;)
                     BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
                     IActivityIOOperationsEndPoint endPoint = bdlUtil.DeserializeDeferredItem<IActivityIOOperationsEndPoint>(_internalObj.TheValue);
+                    
                     IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                     _fileData = broker.Get(endPoint, false);
                 }
@@ -65,7 +72,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public bool IsDeferredRead { get { return true; } }
+        public bool IsDeferredRead { get { return true; } set { throw new NotImplementedException(); } }
 
         #endregion Properties
 
@@ -74,7 +81,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         internal BinaryDataListFileSystemItem(string base64Obj, string filePath, string ns, string field, string idx)
         {
             _internalObj.TheValue = base64Obj;
-            _internalObj.Namespace = ns;
+            _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
             _internalObj.FieldName = field;
             _filePath = filePath;
             int tmp;
@@ -92,7 +99,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             _internalObj.TheValue = base64Obj;
             _filePath = filePath;
-            _internalObj.Namespace = ns;
+            _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
             _internalObj.FieldName = field;
             _internalObj.ItemCollectionIndex = idx;
         }
@@ -101,10 +108,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             _internalObj.TheValue = base64Obj;
             _filePath = filePath;
-            _internalObj.Namespace = string.Empty;
+            _internalObj.Namespace = GlobalConstants.NullEntryNamespace;
             _internalObj.FieldName = fieldName;
             _internalObj.ItemCollectionIndex = -1;
             _internalObj.DisplayValue = fieldName;
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
         }
 
         public IBinaryDataListItem Clone()
@@ -158,5 +170,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         #endregion Internal Methods
+
+
+        public void ToClear()
+        {
+            // Do nothing...
+        }
     }
 }

@@ -92,7 +92,7 @@ namespace Dev2.DynamicServices
 
             wfApp.Extensions.Add(dataTransferObject);
             wfApp.Extensions.Add(binder);
-            wfApp.Extensions.Add(compiler);
+            //wfApp.Extensions.Add(compiler);
             wfApp.Extensions.Add(parser);
 
             using(ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
@@ -298,7 +298,7 @@ namespace Dev2.DynamicServices
             private void OnCompleted(WorkflowApplicationCompletedEventArgs args)
             {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
-                IDataListCompiler compiler = args.GetInstanceExtensions<IDataListCompiler>().First();
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(); // args.GetInstanceExtensions<IDataListCompiler>().First();
                 // PBI : 5376 Removed line below
                 //_result.XmlData = _result.XmlData.Replace("&", "&amp;");
 

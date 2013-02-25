@@ -1,14 +1,14 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Reflection;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
@@ -124,6 +124,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
                             // Send out a message to update the current data mapping
                             //
                             Mediator.SendMessage(MediatorMessages.UpdateDataMapping, null);
+                            compiler.ForceDeleteDataListByID(wizardDataList.UID);
                         }
                     }
                 }

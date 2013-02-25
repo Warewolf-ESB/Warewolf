@@ -5,6 +5,10 @@ namespace Dev2.Common
 {
     public static class GlobalConstants
     {
+
+        // WF Constants
+        public const int _xamlPoolSize = 5;
+
         //Network
         public const int NetworkTimeOut = 10000; //Bug 8796
         public const string NetworkCommunicationErrorTextFormat = "An error occured while executing the '{0}' command";
@@ -56,12 +60,13 @@ namespace Dev2.Common
         public const string AllColumns = null;
         public const string NaughtyTextNode = "#text";
         public const char EvaluationToken = '[';
-        public const int DefaultDataListCacheSizeLvl1 = 60000;
-        public const string DefaultDataListCacheSizeLvlMemoryPercentage = "35";
-        public const string DefaultDataListCacheSizeLvlMemoryPollingInterval = "00:00:10";
-        public const string DefaultDataListCacheSizeLvlMegaByteSize = "1024";
+        
+        public const string DefaultDataListCacheSizeLvl2MemoryPercentage = "85";
+        public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = "00:00:05";
+        public const string DefaultDataListCacheSizeLvl2MegaByteSize = "2048";
         public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
-        public const int DefaultDataListMaxCacheSizeLvl1 = 40000;
+        public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 40k rows in the 0 tier cache ;)
+        public const int DefaultDataListCreateCacheSizeLvl1 = 30000;
         public const int DefaultCachePageSizeLvl1 = 1100;
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultIntellisenseCacheLvl1 = 100;
@@ -108,6 +113,7 @@ namespace Dev2.Common
         // Internal Fixed DataList types
         public const string _JSON = "JSON";
         public const string _XML = "XML";
+        public const string _XML_DEBUG = "XML_DEBUG";
         public const string _XML_Without_SystemTags = "XMLWithoutSysTags";
         public const string _Studio_XML = "StudioXML";
         public const string _BINARY = "Binary";

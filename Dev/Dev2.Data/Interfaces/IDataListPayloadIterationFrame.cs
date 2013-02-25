@@ -32,5 +32,7 @@ namespace Dev2.DataList.Contract.Interfaces
         /// </returns>
         bool HasData();
 
+
+
     }
 }

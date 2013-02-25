@@ -74,10 +74,10 @@ namespace ActivityUnitTests.ActivityTest
         [ClassCleanup()]
         public static void BaseActivityUnitTestCleanup()
         {
-            if(_redisProcess != null)
-            {
-                _redisProcess.Kill();
-            }
+            //if(_redisProcess != null)
+            //{
+            //    _redisProcess.Kill();
+            //}
         }
 
         #endregion

@@ -18,6 +18,11 @@ namespace Dev2.Common {
             return false;
         }
 
+        public bool CanUseEnumerator(bool isReversed)
+        {
+            return (isReversed != true && _tokenParts.Length == 1);
+        }
+
         public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {
 
             StringBuilder result = new StringBuilder();
@@ -72,6 +77,88 @@ namespace Dev2.Common {
 
         }
 
+        public string ExecuteOperation(CharEnumerator canidate, int startIdx, bool isReversed)
+        {
+
+            StringBuilder result = new StringBuilder();
+            char[] multTokenMatch = null;
+
+            if (!isReversed)
+            {
+                if (_tokenParts.Length == 1)
+                {
+                    char tmp;
+
+                    // fetch next value while 
+                    while (canidate.MoveNext() && (tmp = canidate.Current) != _tokenParts[0])
+                    {
+                        result.Append(tmp);
+                    }
+                }
+                else
+                {
+                    int pos = startIdx;
+                    CharEnumerator clonedCandiate = canidate.Clone() as CharEnumerator;
+                    multTokenMatch = new char[_tokenParts.Length];
+                    // now move forward the required number of chars ;)
+                    for(int i = 0; i < multTokenMatch.Length; i++)
+                    {
+                        multTokenMatch[i] = clonedCandiate.Current;
+                        clonedCandiate.MoveNext();
+                    }
+                    
+                    while (canidate.MoveNext() && !IsMultiTokenMatch(multTokenMatch, pos, isReversed))
+                    {
+                        result.Append(multTokenMatch[pos]);
+                        pos++;
+                    }
+                }
+
+                // did the user want the token included?
+                multTokenMatch = canidate.ToString().ToCharArray();
+
+                if (_include && (result.Length + startIdx) < multTokenMatch.Length)
+                {
+                    result.Append(_tokenParts);
+                }
+            }
+            else
+            { // reverse order
+                multTokenMatch = canidate.ToString().ToCharArray();
+                if (_tokenParts.Length == 1)
+                {
+                    int pos = startIdx;
+                    if (pos > multTokenMatch.Length)
+                    {
+                        pos = multTokenMatch.Length - 1;
+                    }
+                    while (pos >= 0 && multTokenMatch[pos] != _tokenParts[0])
+                    {
+                        result.Insert(0, multTokenMatch[pos]);
+                        pos--;
+                    }
+                }
+                else
+                {
+                    int pos = startIdx;
+                    multTokenMatch = canidate.ToString().ToCharArray();
+                    while (pos >= 0 && !IsMultiTokenMatch(multTokenMatch, pos, isReversed))
+                    {
+                        result.Insert(0, multTokenMatch[pos]);
+                        pos--;
+                    }
+                }
+
+                if (_include && (startIdx - result.Length) >= 0)
+                {
+                    result.Insert(0, _tokenParts);
+                }
+            }
+
+            return result.ToString();
+
+        }
+
         public int OpLength() {
             int result = _tokenParts.Length;
             
@@ -83,33 +170,41 @@ namespace Dev2.Common {
         }
 
         #region Private Method
-        private bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed) {
+        private bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
+        {
             bool result = true;
 
             int cnt = 0;
             int canidateIdx = fromIndex;
 
-            if (isReversed) {
+            if (isReversed)
+            {
                 cnt = _tokenParts.Length - 1;
             }
 
-            if ( ((canidateIdx - (_tokenParts.Length-1)) >= 0 && isReversed) || !isReversed) {
-                while ( ((cnt < _tokenParts.Length) && (cnt >= 0) ) && (canidateIdx >= 0 && canidateIdx < canidate.Length) && result) {
-                    if (canidate[canidateIdx] != _tokenParts[cnt]) {
+            if (((canidateIdx - (_tokenParts.Length - 1)) >= 0 && isReversed) || !isReversed)
+            {
+                while (((cnt < _tokenParts.Length) && (cnt >= 0)) && (canidateIdx >= 0 && canidateIdx < canidate.Length) && result)
+                {
+                    if (canidate[canidateIdx] != _tokenParts[cnt])
+                    {
                         result = false;
                     }
-                    if (!isReversed) {
+                    if (!isReversed)
+                    {
                         canidateIdx++;
                         cnt++;
                     }
-                    else {
+                    else
+                    {
                         canidateIdx--;
                         cnt--;
                     }
-                    
+
                 }
             }
-            else {
+            else
+            {
                 result = false; // no way we can match, not enough chars ;)
             }
 

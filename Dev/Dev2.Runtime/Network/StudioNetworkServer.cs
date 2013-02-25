@@ -7,9 +7,6 @@ using Dev2.DynamicServices.Network.Auxiliary;
 using Dev2.Network;
 using Dev2.Network.Messages;
 using Dev2.Network.Messaging.Messages;
-using System;
-using System.Collections.Generic;
-using System.Network;
 
 namespace Dev2.DynamicServices {
     public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession> {

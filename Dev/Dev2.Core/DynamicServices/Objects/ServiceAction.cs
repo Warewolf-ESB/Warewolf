@@ -1,33 +1,17 @@
-﻿#region Change Log
-//  Author:         Sameer Chunilall
-//  Date:           2010-01-24
-//  Log No:         9299
-//  Description:    The Service Action type represents an action which is a single unit of work within a Dynamic Service.
-//                  An action is an act of doing and as such makes up core of the Dynamic Service Engine - where
-//                  actions are executed
-//                  
-//                  
-//                  
-#endregion
-
-using System.Xaml;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.Util;
+using System;
+using System.Activities;
+using System.Activities.XamlIntegration;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Dev2.DynamicServices {
-    #region Using Directives
-    using Dev2.Common;
-    using Dev2.DataList.Contract;
-    using Dev2.Util;
-    using System;
-    using System.Activities;
-    using System.Activities.XamlIntegration;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Xml;
-    #endregion
 
     #region Service Action Class - Represents a single action within a service
     /// <summary>
@@ -116,7 +100,7 @@ namespace Dev2.DynamicServices {
 
                     _generation++;
 
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < GlobalConstants._xamlPoolSize; i++)
                     {
                         Activity activity = ActivityXamlServices.Load(_xamlStream);
                         _xamlStream.Seek(0, SeekOrigin.Begin);

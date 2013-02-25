@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Dev2.PathOperations
 {
@@ -16,6 +17,13 @@ namespace Dev2.PathOperations
         /// <param name="deferredRead">if set to <c>true</c> [deferred read].</param>
         /// <returns></returns>
         string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false);
+
+        /// <summary>
+        /// Gets the raw.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
+        Stream GetRaw(IActivityIOOperationsEndPoint path);
 
         /// <summary>
         /// Dump a payload to a location as per the value of args

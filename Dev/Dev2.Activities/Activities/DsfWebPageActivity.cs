@@ -131,11 +131,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             List<LayoutObject> layoutObjects = new List<LayoutObject>();
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
+
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             if(IsPreview)
             {

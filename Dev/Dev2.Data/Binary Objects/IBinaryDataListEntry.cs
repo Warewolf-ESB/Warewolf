@@ -97,6 +97,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         void TryPutRecordItemAtIndex(IBinaryDataListItem item, int idx, out string error);
 
         /// <summary>
+        /// Tries the put record row at.
+        /// </summary>
+        /// <param name="itms">The itms.</param>
+        /// <param name="idx">The idx.</param>
+        /// <param name="error">The error.</param>
+        void TryPutRecordRowAt(IList<IBinaryDataListItem> itms, int idx, out string error);
+
+
+        /// <summary>
         /// Append a column value at an recordset index
         /// </summary>
         /// <param name="item"></param>
@@ -224,6 +233,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="index">The index.</param>
         /// <returns></returns>
         bool TryDeleteRows(string index);
+
+        /// <summary>
+        /// Internals the index of the fetch column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns></returns>
+        int InternalFetchColumnIndex(string column);
 
         #endregion
 

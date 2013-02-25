@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.Core.AppResources.Browsers;
+﻿using Dev2.Data;
+using Dev2.Diagnostics;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Factory;
 using System;
 using System.Diagnostics;
@@ -25,7 +27,7 @@ namespace Dev2.Studio
                 _processGuard = localprocessGuard;
             }
             else
-            {              
+            {
                 Environment.Exit(Environment.ExitCode);
             }
             InitializeComponent();
@@ -37,7 +39,7 @@ namespace Dev2.Studio
             get
             {
                 return true;
-            }           
+            }
         }
 #else
 
@@ -62,6 +64,8 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
+            DebugDispatcher.Instance.Shutdown();
+           // BackgroundDispatcher.Instance.Shutdown();
             Browser.Shutdown();
             base.OnExit(e);
         }

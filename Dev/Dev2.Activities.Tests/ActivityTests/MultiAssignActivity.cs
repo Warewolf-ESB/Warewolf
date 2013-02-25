@@ -555,7 +555,7 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error);
 
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
         }
 
         [TestMethod]

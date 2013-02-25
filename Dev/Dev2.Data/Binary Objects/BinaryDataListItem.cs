@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract.Binary_Objects.Structs;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects.Structs;
 using System;
 
 namespace Dev2.DataList.Contract.Binary_Objects
@@ -14,7 +15,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #region Properties
 
-        public string TheValue { get { return _internalObj.TheValue; } private set { _internalObj.TheValue = value; } }
+        public string TheValue { get { return _internalObj.TheValue; } set { _internalObj.TheValue = value; } }
 
         public int ItemCollectionIndex { get { return _internalObj.ItemCollectionIndex; } private set { _internalObj.ItemCollectionIndex = value; } }
 
@@ -27,7 +28,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public string DisplayValue { 
             get
             {
-                if (_internalObj.ItemCollectionIndex >= 0 && _internalObj.DisplayValue == null)
+                if (_internalObj.ItemCollectionIndex >= 0 && (_internalObj.DisplayValue == null || _internalObj.DisplayValue == string.Empty))
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
@@ -41,7 +42,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public bool IsDeferredRead { get { return false; } }
+        public bool IsDeferredRead { get; set; }
 
         #endregion Properties
 
@@ -50,7 +51,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         internal BinaryDataListItem(string val, string ns, string field, string idx) 
         {
             _internalObj.TheValue = val;
-            _internalObj.Namespace = ns;
+            _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
             _internalObj.FieldName = field;
             int tmp;
             if (Int32.TryParse(idx, out tmp))
@@ -66,7 +67,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         internal BinaryDataListItem(string val, string ns, string field, int idx)
         {
             _internalObj.TheValue = val;
-            _internalObj.Namespace = ns;
+            _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace:ns;
             _internalObj.FieldName = field;
             _internalObj.ItemCollectionIndex = idx;
             // Travis.Frisinger
@@ -78,18 +79,40 @@ namespace Dev2.DataList.Contract.Binary_Objects
         internal BinaryDataListItem(string val, string fieldName)
         {
             _internalObj.TheValue = val;
-            _internalObj.Namespace = string.Empty;
+            _internalObj.Namespace = GlobalConstants.NullEntryNamespace;
             _internalObj.FieldName = fieldName;
             _internalObj.ItemCollectionIndex = -1;
             _internalObj.DisplayValue = fieldName;
+        }
+
+
+        public void Clear()
+        {
+            _internalObj.TheValue = string.Empty;
+            _internalObj.Namespace = string.Empty;
+            _internalObj.FieldName = string.Empty;
+            _internalObj.ItemCollectionIndex = -1;
+            _internalObj.DisplayValue = string.Empty;
+        }
+
+        public void ToClear()
+        {
+            _internalObj.TheValue = string.Empty;
+            _internalObj.ItemCollectionIndex = -1;
         }
 
         public IBinaryDataListItem Clone()
         {
             IBinaryDataListItem result;
 
+            if (string.IsNullOrEmpty(_internalObj.TheValue) && string.IsNullOrEmpty(_internalObj.Namespace) && string.IsNullOrEmpty(_internalObj.FieldName))
+            {
+                return this;
+            }
+
             if (_internalObj.ItemCollectionIndex > 0)
             {
+
                 result = new BinaryDataListItem(_internalObj.TheValue, _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
             }
             else

@@ -41,8 +41,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             //DataObject = context.GetExtension<IDSFDataObject>();
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();

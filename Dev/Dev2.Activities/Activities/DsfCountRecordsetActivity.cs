@@ -15,7 +15,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         private string _recordsetName;
         private string _countNumber;
-        IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
         /// <summary>
         /// Gets or sets the name of the recordset.
@@ -80,10 +79,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IList<OutputTO> outputs = new List<OutputTO>();
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -97,40 +97,57 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!string.IsNullOrWhiteSpace(RecordsetName))
                 {
-                    IBinaryDataListEntry recset = compiler.Evaluate(executionId, enActionType.User, RecordsetName, false, out errors);
-                    if (errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
-                    }
 
-                    if (recset != null && recset.Columns != null && CountNumber != string.Empty)
+
+                    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
+                    allErrors.MergeErrors(errors);
+
+                    string err;
+                    IBinaryDataListEntry recset;
+
+                    string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+
+                    bdl.TryGetEntry(rs, out recset, out err);
+                    allErrors.AddError(err);
+
+                    //if(entry != null)
+                    //{
+                        
+                    //}
+
+                    //IBinaryDataListEntry recset = compiler.Evaluate(executionId, enActionType.User, RecordsetName, false, out errors);
+                    if(recset != null)
                     {
-                        string error;
-                        // Travis.Frisinger - Re-did work for bug 7853 
-                        if (recset.IsEmpty())
+
+                        allErrors.MergeErrors(errors);
+
+                        if(recset.Columns != null && CountNumber != string.Empty)
                         {
-                            compiler.Upsert(executionId, CountNumber, "0", out errors);
+                            string error;
+                            // Travis.Frisinger - Re-did work for bug 7853 
+                            if(recset.IsEmpty())
+                            {
+                                compiler.Upsert(executionId, CountNumber, "0", out errors);
+                            }
+                            else if(recset.FetchRecordAt(1, out error).Count > 0)
+                            {
+                                compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(), out errors);
+                            }
+
+                            allErrors.MergeErrors(errors);
                         }
-                        else if (recset.FetchRecordAt(1, out error).Count > 0)
+                        else if(recset.Columns == null)
                         {
-                            compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(), out errors);
+                            allErrors.AddError(RecordsetName + " is not a recordset");
+                        }
+                        else if(CountNumber == string.Empty)
+                        {
+                            allErrors.AddError("Blank result variable");
                         }
 
+                        //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
                         allErrors.MergeErrors(errors);
-                    }
-                    else if (recset == null || recset.Columns == null)
-                    {
-                        allErrors.AddError(RecordsetName + " is not a recordset");
-                    }
-                    else if (CountNumber == string.Empty)
-                    {
-                        allErrors.AddError("Blank result variable");
-                    }
 
-                    //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
-                    if(errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
                     }
                 }
                 else
@@ -141,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // now delete executionID
-                compiler.DeleteDataListByID(executionId);
+                //compiler.DeleteDataListByID(executionId);
 
                 // Handle Errors
                 if (allErrors.HasErrors())

@@ -87,9 +87,11 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedDataWithInfinateEvals));          
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
             IBinaryDataList dl = sdlc.FetchBinaryDataList(null,dlID,out errors);
+
+
             dl.FetchAllEntries();
             sdlc.UpsertSystemTag(dlID, enSystemTag.Dev2DesignTimeBinding, "true", out errors);
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, Dev2.DataList.Contract.enActionType.User, "[[scalar1]]", out errors);
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[scalar1]]", out errors);
 
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("[[scalar1]]", result.FetchScalar().TheValue);
@@ -170,6 +172,14 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
+
+
+            string myDate = sdlc.ConvertFrom(null, dlID, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._XML), out errors).FetchAsString();
+
+            if(myDate != string.Empty)
+            {
+                Console.WriteLine(myDate);
+            }
 
             IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");

@@ -63,8 +63,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
@@ -99,24 +100,68 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         // process result information
                         while (itr.HasMoreRecords())
                         {
+
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                             foreach (IBinaryDataListItem c in cols)
                             {
+
+                                // set up live flushing iterator details
+                                if (c.IsDeferredRead)
+                                {
+                                    toUpsert.HasLiveFlushing = true;
+                                    toUpsert.LiveFlushingLocation = executionId;
+                                }
+
                                 indexToUpsertTo = c.ItemCollectionIndex;//2013.02.13: Ashley Lewis - Bug 8725, Task 8836
                                 string val = broker.Convert(c.TheValue);
                                 string expression = item.ToExpression;
 
                                 if (DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
                                 {
-                                    expression = item.ToExpression.Replace(GlobalConstants.StarExpression,
-                                                                           indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                                    expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
 
                                 toUpsert.Add(expression, val);
+
+
+                                if (toUpsert.HasLiveFlushing)
+                                {
+                                    try
+                                    {
+                                        toUpsert.FlushIterationFrame();
+                                        toUpsert = null;
+                                        //toUpsert.PublishLiveIterationData();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        allErrors.AddError(e.Message);
+                                    }
+                                }
                             }
-                            compiler.Upsert(executionId, toUpsert, out errors);
-                            allErrors.MergeErrors(errors);
+
+
+                            if (toUpsert.HasLiveFlushing)
+                            {
+                                try
+                                {
+                                    toUpsert.FlushIterationFrame(true);
+                                    toUpsert = null;
+                                    //toUpsert.PublishLiveIterationData();
+                                }
+                                catch (Exception e)
+                                {
+                                    allErrors.AddError(e.Message);
+                                }
+                            }
+                            else
+                            {
+                                compiler.Upsert(executionId, toUpsert, out errors);
+                                allErrors.MergeErrors(errors);
+                            }
+
+                            //compiler.Upsert(executionId, toUpsert, out errors);
+                            //allErrors.MergeErrors(errors);
                             toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                             // Upsert the entire payload                            
                         }
@@ -132,8 +177,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
         }

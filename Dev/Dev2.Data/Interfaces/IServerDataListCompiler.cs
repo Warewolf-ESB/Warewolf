@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -169,6 +167,14 @@ namespace Dev2.Server.Datalist {
         /// </summary>
         /// <returns></returns>
         IList<DataListFormat> FetchTranslatorTypes();
+
+        /// <summary>
+        /// Tries the push data list.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <param name="error">The error.</param>
+        /// <returns></returns>
+        bool TryPushDataList(IBinaryDataList payload, out string error);
 
         #endregion
 

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Dev2.Server.DataList;
-using Dev2.Server.DataList.Translators;
-using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
+using Dev2.Server.DataList;
+using Dev2.Server.DataList.Translators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.DynamicServices.Test {
     /// <summary>
@@ -26,6 +23,7 @@ namespace Dev2.DynamicServices.Test {
 
         private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
         private static readonly string _dataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
+        private static readonly string _dataListWellformedDataWithIllegalCharacters = "<DataList><scalar1>&s1</scalar1><rs1><f1>&f1.1</f1></rs1><rs1><f1>&f1.2</f1></rs1><scalar2/></DataList>";
         private static readonly string _dataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
         //private static readonly string _dataListWellformedMultData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2/></DataList>";
         private static readonly string _dataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
@@ -35,7 +33,7 @@ namespace Dev2.DynamicServices.Test {
         
         
         private TestContext testContextInstance;
-        static Process _redisProcess;
+        //static Process _redisProcess;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -70,10 +68,10 @@ namespace Dev2.DynamicServices.Test {
         [ClassCleanup()]
         public static void BaseActivityUnitTestCleanup()
         {
-            if(_redisProcess != null)
-            {
-                _redisProcess.Kill();
-            }
+            //if(_redisProcess != null)
+            //{
+            //    _redisProcess.Kill();
+            //}
         }
         //
         // Use ClassCleanup to run code after all tests in a class have run
@@ -279,6 +277,28 @@ namespace Dev2.DynamicServices.Test {
 
                 Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
             
+        }
+
+        [TestMethod]
+        public void DeserializeToXMLFromBinaryDataListWhereDataListContainsInvalidXMLCharactersExpectedInvalidCharactersAreEscaped()
+        {
+            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+
+            using (dl1)
+            {
+                string error;
+                dl1.TryCreateScalarTemplate(string.Empty, "cake", "", false, true, enDev2ColumnArgumentDirection.Both, out error);
+                dl1.TryCreateScalarValue("Travis Is \"Cool\"&>'nstuff'<", "cake", out error);
+
+                ErrorResultTO errors;
+                var payload = xmlConverter.ConvertFrom(dl1, out errors);
+
+                string actual = payload.FetchAsString();
+                string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
+
+                StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
+            }
         }
         #endregion
 

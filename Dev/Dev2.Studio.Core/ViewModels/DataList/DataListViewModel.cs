@@ -490,6 +490,7 @@ namespace Dev2.Studio.Core.ViewModels.DataList
                 _resource.DataList = result;
                 // Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
             }
+            _compiler.ForceDeleteDataListByID(postDl.UID);
             if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
@@ -675,6 +676,7 @@ namespace Dev2.Studio.Core.ViewModels.DataList
                     }
                     throw new Exception(errorMessage);
                 }
+                _compiler.ForceDeleteDataListByID(binarnyDL.UID);
             }
             else
             {
@@ -717,13 +719,12 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             if (!errors.HasErrors())
             {
                 result = _compiler.FetchBinaryDataList(dlGuid, out errors);
-                _compiler.ForceDeleteDataListByID(dlGuid);
-
                 if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
                 }
             }
+            _compiler.ForceDeleteDataListByID(dlGuid);
             return result;
         }
 

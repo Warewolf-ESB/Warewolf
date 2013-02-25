@@ -337,7 +337,7 @@ namespace Dev2.Studio
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, request.Service));
             }
-            
+
             return UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
         }
 
@@ -1303,7 +1303,7 @@ namespace Dev2.Studio
             // PBI: 801
             // BUG: 8477
             //
-            if(RootWebSite.ShowDialog(resourceModel))
+            if (RootWebSite.ShowDialog(resourceModel))
             {
                 return;
             }
@@ -1349,7 +1349,7 @@ namespace Dev2.Studio
 
             var resourceModelToEdit = resourceModel as IContextualResourceModel;
 
-            if(RootWebSite.ShowDialog(resourceModelToEdit))
+            if (RootWebSite.ShowDialog(resourceModelToEdit))
             {
                 return;
             }

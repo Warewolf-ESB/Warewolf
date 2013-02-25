@@ -123,11 +123,14 @@ namespace Dev2.PathOperations {
                     }
 
                     request.ContentLength = src.Length;
-                    Stream requestStream = request.GetRequestStream();
-                    byte[] payload = src.ToByteArray();
-                    int writeLen = payload.Length;
-                    requestStream.Write(payload, 0, writeLen);
-                    requestStream.Close();
+                    using(Stream requestStream = request.GetRequestStream())
+                    {
+                        byte[] payload = src.ToByteArray();
+                        int writeLen = payload.Length;
+                        requestStream.Write(payload, 0, writeLen);
+                        requestStream.Close();
+                        requestStream.Dispose();
+                    }
 
                     result = (int)request.ContentLength;
 
@@ -199,12 +202,23 @@ namespace Dev2.PathOperations {
 
                 response = (FtpWebResponse)request.GetResponse();
 
-                Stream responseStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(responseStream);
+                using(Stream responseStream = response.GetResponseStream())
+                {
+                    using(StreamReader reader = new StreamReader(responseStream))
+                    {
 
-                while (!reader.EndOfStream) {
-                    string uri = string.Format("{0}{1}", src.Path, reader.ReadLine());
-                    result.Add(ActivityIOFactory.CreatePathFromString(uri));                    
+                        while(!reader.EndOfStream)
+                        {
+                            string uri = string.Format("{0}{1}", src.Path, reader.ReadLine());
+                            result.Add(ActivityIOFactory.CreatePathFromString(uri));
+                        }
+
+                        reader.Close();
+                        reader.Dispose();
+                    }
+
+                    responseStream.Close();
+                    responseStream.Dispose();
                 }
             }
             catch (WebException webEx) {
@@ -415,19 +429,22 @@ namespace Dev2.PathOperations {
 
                 resp = (FtpWebResponse)req.GetResponse();
 
-                Stream ios = resp.GetResponseStream();
-
-                int bufLen = 2048; // read 2k at a time
-                byte[] data = new byte[bufLen];
-                int len = ios.Read(data, 0, bufLen);
-
-                while (len != 0)
+                using(Stream ios = resp.GetResponseStream())
                 {
-                    result.Append(Encoding.UTF8.GetString(data));
-                    len = ios.Read(data, 0, bufLen);
-                }
 
-                ios.Close();
+                    int bufLen = 2048; // read 2k at a time
+                    byte[] data = new byte[bufLen];
+                    int len = ios.Read(data, 0, bufLen);
+
+                    while(len != 0)
+                    {
+                        result.Append(Encoding.UTF8.GetString(data));
+                        len = ios.Read(data, 0, bufLen);
+                    }
+
+                    ios.Close();
+                    ios.Dispose();
+                }
             }
             catch (Exception e)
             {
@@ -583,14 +600,17 @@ namespace Dev2.PathOperations {
 
                 response = (FtpWebResponse)request.GetResponse();
 
-                Stream responseStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(responseStream);
-
-                if (reader.EndOfStream)
+                using(Stream responseStream = response.GetResponseStream())
                 {
-                    // just check for exception, slow I know, but not sure how else to tackle this                  
+                    StreamReader reader = new StreamReader(responseStream);
+
+                    if(reader.EndOfStream)
+                    {
+                        // just check for exception, slow I know, but not sure how else to tackle this                  
+                    }
+                    reader.Close();
+                    reader.Dispose();
                 }
-                reader.Close();
 
                 // exception will be thrown if not present
                 isAlive = true;
@@ -641,14 +661,17 @@ namespace Dev2.PathOperations {
 
                 response = (FtpWebResponse)request.GetResponse();
 
-                Stream responseStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(responseStream);
-
-                if (reader.EndOfStream)
+                using(Stream responseStream = response.GetResponseStream())
                 {
-                    // just check for exception, slow I know, but not sure how else to tackle this                  
+                    StreamReader reader = new StreamReader(responseStream);
+
+                    if(reader.EndOfStream)
+                    {
+                        // just check for exception, slow I know, but not sure how else to tackle this                  
+                    }
+                    reader.Close();
+                    reader.Dispose();
                 }
-                reader.Close();
 
                 // exception will be thrown if not present
                 isAlive = true;

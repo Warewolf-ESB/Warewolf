@@ -56,7 +56,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             IDataListBinder binder = context.GetExtension<IDataListBinder>();
 
             // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO errors = new ErrorResultTO();

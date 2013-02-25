@@ -115,7 +115,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isOnDemandSimulation = false;
 
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = context.GetExtension<IDataListCompiler>();
+            //var compiler = context.GetExtension<IDataListCompiler>();
+
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
 
             if (dataObject != null && compiler != null)
@@ -212,7 +214,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (result != null && result.Value != null)
             {
                 var dataListExecutionID = context.GetValue(DataListExecutionID);
-                var compiler = context.GetExtension<IDataListCompiler>();
+                //var compiler = context.GetExtension<IDataListCompiler>();
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
                 var dataObject = context.GetExtension<IDSFDataObject>();
 
                 if (compiler != null && dataObject != null)
@@ -243,7 +247,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
             var dataListExecutionID = DataListExecutionID.Get(context);
-            var compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var dataObject = context.GetExtension<IDSFDataObject>();
 
             if (dataListExecutionID == GlobalConstants.NullDataListID)
@@ -295,7 +300,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected static IBinaryDataList GetDataList(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = context.GetExtension<IDataListCompiler>();
+            //var compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
             ErrorResultTO errors;
             return compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
         }
@@ -321,7 +328,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DispatchDebugState(NativeActivityContext context, StateType stateType)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = context.GetExtension<IDataListCompiler>();
+            //var compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
 
@@ -543,7 +551,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = new List<DsfForEachItem>();
 
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = context.GetExtension<IDataListCompiler>();
+            //var compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
             ErrorResultTO errors;
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
             if (dataList == null)

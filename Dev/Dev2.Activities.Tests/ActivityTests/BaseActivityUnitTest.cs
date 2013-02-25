@@ -158,6 +158,7 @@ namespace ActivityUnitTests
 
                 throw new Exception(errorString);
             }
+
             if (dataObject == null)
             {
                 dataObject = new DsfDataObject(CurrentDl, ExecutionID)
@@ -168,6 +169,7 @@ namespace ActivityUnitTests
                 };
             }
 
+            
             invoker.WorkflowApplication(svc, dataObject, TestData);
             return dataObject;
         }
@@ -226,7 +228,7 @@ namespace ActivityUnitTests
 
         // return for the callback
         string _result = "<error>nop</error>";
-        protected static Process _redisProcess;
+        //protected static Process _redisProcess;
 
         /*
          * After much fing around it appears the mock is staticly evaluated and the result cannot be changed for a callback return value
@@ -322,7 +324,7 @@ namespace ActivityUnitTests
             while (idxItr.HasMore())
             {
                 var fetchNextIndex = idxItr.FetchNextIndex();
-                dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, fetchNextIndex, out error));
+                dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, fetchNextIndex, out error).Clone());
 
             }
 

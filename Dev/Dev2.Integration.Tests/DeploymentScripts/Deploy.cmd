@@ -13,6 +13,3 @@ if not exist %targetdir% (cmd /c mkdir %targetdir%)
 REM copy build to the deployment directory
 robocopy %buildlocation% %targetdir% /E
 robocopy %svndirectory% %targetdir% /E
-
-REM Install the server
-C:\Deploy\Dev2.Server.exe -i

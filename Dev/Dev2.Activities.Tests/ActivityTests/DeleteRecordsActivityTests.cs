@@ -75,7 +75,7 @@ namespace ActivityUnitTests.ActivityTest
         [ClassCleanup()]
         public static void BaseActivityUnitTestCleanup()
         {
-            _redisProcess.Kill();
+            //_redisProcess.Kill();
         }
         #endregion
 

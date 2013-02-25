@@ -9,10 +9,32 @@ namespace Dev2.DataList.Contract.Builders
     public interface IDev2DataListUpsertPayloadBuilder<T>
     {
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has live flushing.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has live flushing; otherwise, <c>false</c>.
+        /// </value>
+        bool HasLiveFlushing { get; set; }
+
+        /// <summary>
+        /// Gets or sets the live flushing location.
+        /// </summary>
+        /// <value>
+        /// The live flushing location.
+        /// </value>
+        Guid LiveFlushingLocation { get; set; }
+
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Flushes the iteration frame.
         /// </summary>
-        void FlushIterationFrame();
+        /// <param name="finalFlush">if set to <c>true</c> [final flush].</param>
+        void FlushIterationFrame(bool finalFlush = true);
 
         /// <summary>
         /// Adds the expression.
@@ -43,5 +65,12 @@ namespace Dev2.DataList.Contract.Builders
         ///   <c>true</c> if [is iterative payload]; otherwise, <c>false</c>.
         /// </returns>
         bool IsIterativePayload();
+
+        /// <summary>
+        /// Flushes the live iteration data.
+        /// </summary>
+        void PublishLiveIterationData();
+
+        #endregion
     }
 }

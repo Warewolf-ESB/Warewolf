@@ -86,9 +86,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value) {
 
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
             IDSFDataObject myDO = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO tmpErrors = new ErrorResultTO();
             Guid executionID = myDO.DataListID;
@@ -122,9 +122,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     errors.MergeErrors(tmpErrors);
 
                     // set parent instanceID
-
-
-
                     myDO.DataListID = executionID; // reset the DataListID accordingly
 
                     if (shapeID != executionID) {

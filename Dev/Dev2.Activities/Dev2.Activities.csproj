@@ -76,7 +76,6 @@
     <Compile Include="Activities\CommentActivity.cs" />
     <Compile Include="Activities\DsfDataMergeActivity.cs" />
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
-    <Compile Include="Activities\DsfForEachActivity_old.cs" />
     <Compile Include="Activities\DsfBaseConvertActivity.cs" />
     <Compile Include="Activities\DsfCalculateActivity.cs" />
     <Compile Include="Activities\DsfCaseConvertActivity.cs" />

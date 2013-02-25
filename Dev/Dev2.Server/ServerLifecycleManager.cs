@@ -2,6 +2,7 @@
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Reflection;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -251,7 +252,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         private DateTime _nextForcedCollection;
         private Thread _gcmThread;
         private ThreadStart _gcmThreadStart;
-        Process _redisProcess;
+        //Process _redisProcess;
         // END OF GC MANAGEMENT
         #endregion
 
@@ -385,7 +386,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         private int Stop(bool didBreak, int result)
         {
-            Dev2RedisClient.StopRedis();
+            //Dev2RedisClient.StopRedis();
             //if(!ExecuteWorkflowGroup("Cleanup"))
             //{
             //    didBreak = true;
@@ -1258,6 +1259,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             try
             {
                 DebugDispatcher.Instance.Shutdown();
+                BackgroundDispatcher.Instance.Shutdown();
             }
             catch(Exception)
             {
@@ -1470,17 +1472,17 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if(disposing)
             {
-                if(_redisProcess != null)
-                {
-                    _redisProcess.Kill();
-                    _redisProcess.Dispose();
-                }
+                //if(_redisProcess != null)
+                //{
+                //    _redisProcess.Kill();
+                //    _redisProcess.Dispose();
+                //}
                 CleanupServer();
             }
             _webserver = null;
             _dynamicEndpoint = null;
             _executionChannel = null;
-            _redisProcess = null;
+            //_redisProcess = null;
         }
         #endregion
 
@@ -1563,9 +1565,17 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             // PBI : 5376 - Create instance of the Server compiler
             Write("Starting DataList Server...  ");
-            var pathToRedis = Path.Combine(Environment.CurrentDirectory, "redis-server.exe");
-            _redisProcess = Process.Start(pathToRedis);
-            Dev2RedisClient.StartRedis();
+            //var pathToRedis = Path.Combine(Environment.CurrentDirectory, "redis-server.exe");
+
+            //ProcessStartInfo startInfo = new ProcessStartInfo();
+            //startInfo.FileName = pathToRedis;
+            //startInfo.UseShellExecute = false;
+            //startInfo.RedirectStandardOutput = true;
+
+            ////_redisProcess = new Process();
+            //_redisProcess = Process.Start(startInfo);
+            //_redisProcess = Process.Start(pathToRedis);
+            //Dev2RedisClient.StartRedis();
             DataListFactory.CreateServerDataListCompiler();
             Write("done.");
             WriteLine("");

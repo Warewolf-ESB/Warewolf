@@ -15,6 +15,11 @@ namespace Dev2.Common {
             return 0;
         }
 
+        public bool CanUseEnumerator(bool isReversed)
+        {
+            return (isReversed != true);
+        }
+
         public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {
             StringBuilder result = new StringBuilder();
 
@@ -32,5 +37,33 @@ namespace Dev2.Common {
 
             return result.ToString();
         }
+
+        public string ExecuteOperation(CharEnumerator candidate, int startIdx, bool isReversed)
+        {
+            StringBuilder result = new StringBuilder();
+
+
+            while(candidate.MoveNext())
+            {
+                result.Append(candidate.Current);
+            }
+
+            //int start = startIdx;
+            //int end = canidate.Length;
+
+            //if (isReversed)
+            //{
+            //    start = 0;
+            //    end = startIdx + 1;
+            //}
+
+            //for (int i = start; i < end; i++)
+            //{
+            //    result.Append(canidate[i]);
+            //}
+
+            return result.ToString();
+        }
+    
     }
 }

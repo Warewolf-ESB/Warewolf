@@ -6,7 +6,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
     public struct SBinaryDataListItem
     {
 
-        public string TheValue { get; set;  }
+        public string TheValue { get; set; }
 
         public int ItemCollectionIndex { get; set; }
 

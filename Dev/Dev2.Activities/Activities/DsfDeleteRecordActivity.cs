@@ -64,7 +64,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             Guid executionID = dataObject.DataListID;
             
 

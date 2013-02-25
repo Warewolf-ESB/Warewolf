@@ -15,7 +15,7 @@ namespace Dev2.Server.DataList.Translators
     /// <summary>
     /// The standard DataList translator used in the system
     /// </summary>
-    internal sealed class DataListXMLTranslator : IDataListTranslator
+    internal sealed class DataListXMLTranslatorDebug : IDataListTranslator
     {
         private static readonly string _rootTag = "DataList";
         private DataListFormat _format;
@@ -25,9 +25,9 @@ namespace Dev2.Server.DataList.Translators
         public DataListFormat Format { get { return _format; } }
         public Encoding TextEncoding { get { return _encoding; } }
 
-        public DataListXMLTranslator()
+        public DataListXMLTranslatorDebug()
         {
-            _format = DataListFormat.CreateFormat(GlobalConstants._XML);
+            _format = DataListFormat.CreateFormat(GlobalConstants._XML_DEBUG);
             _encoding = Encoding.UTF8;
         }
 

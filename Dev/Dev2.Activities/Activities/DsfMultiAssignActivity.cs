@@ -69,11 +69,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListBinder binder = context.GetExtension<IDataListBinder>();
             // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
 
             ErrorResultTO errors = new ErrorResultTO();

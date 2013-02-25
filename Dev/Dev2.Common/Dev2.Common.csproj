@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="ServiceModel\ResourceType.cs" />
@@ -63,11 +64,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\GAC.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
-    <Compile Include="StringTokenizer\Dev2Tokenizer.cs" />
+    <Compile Include="StringTokenizer\Dev2Tokenizer_EnumeratorMods.cs" />
     <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
-    <Compile Include="StringTokenizer\StringTokenizerOld.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />

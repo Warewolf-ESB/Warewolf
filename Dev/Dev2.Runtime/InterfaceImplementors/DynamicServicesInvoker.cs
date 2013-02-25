@@ -1,15 +1,4 @@
-﻿#region Change Log
-
-//  Author:         Sameer Chunilall
-//  Date:           2010-01-24
-//  Log No:         9299
-//  Description:    The data layer of the Dynamic Service Engine
-//                  This is where all actions get executed.
-
-#endregion
-
-using System.Xml.XPath;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -716,13 +705,8 @@ namespace Dev2.Runtime.InterfaceImplementors
 
             try
             {
-                //
-                // TODO: Figure out why DsfFlowNodeActivity doesn't pick up AmbientDataList when wrapping call in DsfWorkflowActivity
-                //
-                //var wfActivity = new DsfWorkflowActivity(activity.Value, action.ServiceName);
-                //data = wf.InvokeWorkflow(wfActivity, dataObj, new List<object>() { _dsfChannel }, instanceId, _workspace, bookmark, dataObj.IsDebug);
-                data = _wf.InvokeWorkflow(activity.Value, dataObj, new List<object> { _dsfChannel }, instanceId, _workspace,
-                                         bookmark, dataObj.IsDebug);
+
+                data = _wf.InvokeWorkflow(activity.Value, dataObj, new List<object> { _dsfChannel }, instanceId, _workspace, bookmark, dataObj.IsDebug);
             }
             catch(Exception ex)
             {

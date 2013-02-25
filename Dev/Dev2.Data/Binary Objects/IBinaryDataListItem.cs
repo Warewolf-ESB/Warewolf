@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Dev2.DataList.Contract.Binary_Objects
+﻿namespace Dev2.DataList.Contract.Binary_Objects
 {
     public interface IBinaryDataListItem
     {
@@ -14,7 +9,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <value>
         /// The value.
         /// </value>
-        string TheValue { get; }
+        string TheValue { get; set; }
 
         /// <summary>
         /// Gets the index of the item collection.
@@ -54,7 +49,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <value>
         /// <c>true</c> if this instance is deferred read; otherwise, <c>false</c>.
         /// </value>
-        bool IsDeferredRead { get; }
+        bool IsDeferredRead { get; set; }
 
         /// <summary>
         /// Clones this instance.
@@ -96,6 +91,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         /// <returns></returns>
         string FetchDeferredLocation();
+
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// To the clear.
+        /// </summary>
+        void ToClear();
 
 
     }

@@ -151,7 +151,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //IDynamicServicesInvoker executionEngine = context.GetExtension<IDynamicServicesInvoker>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListBinder binder = context.GetExtension<IDataListBinder>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 

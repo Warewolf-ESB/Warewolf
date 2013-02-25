@@ -86,7 +86,7 @@ namespace Dev2.CodedUI.Tests
             // If it's set to true it closes all open tabs, and all instances of IE before each test is run
             // Whilst debugging a Coded UI Test, you might want to keep the Workflow Designer as is
             // In this case, you should set it to false
-// ReSharper disable ReplaceWithSingleAssignment.False
+            // ReSharper disable ReplaceWithSingleAssignment.False
             bool toCheck = true;
 
             // On the test box, all test initialisations should always run
@@ -94,7 +94,7 @@ namespace Dev2.CodedUI.Tests
             {
                 toCheck = true;
             }
-// ReSharper restore ReplaceWithSingleAssignment.False
+            // ReSharper restore ReplaceWithSingleAssignment.False
 
             // Useful when creating / debugging tests
             if (toCheck)
@@ -135,7 +135,7 @@ namespace Dev2.CodedUI.Tests
                 try
                 {
                     // Make sure the Studio has started
-                    var findDev2Studios =  Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Studio"));
+                    var findDev2Studios = Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Studio"));
                     int studioCounter = findDev2Studios.Count();
                     if (studioCounter != 1)
                     {
@@ -2501,6 +2501,31 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Tests Requiring Designer access
 
+
+        #region Studio Window Tests
+
+        // BUG 9078
+        [TestMethod]
+        public void StudioExit_Give_TabOpened_Expected_AllRunningProcessStop()
+        {
+            ProcessManager procMan = new ProcessManager("Dev2.Studio");
+
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            if (procMan.IsProcessRunning())
+            {
+                // Exit the Studio
+                DocManagerUIMap.CloseStudio();
+                // Wait For the Studio to exit
+                Thread.Sleep(3000);
+                Assert.IsFalse(procMan.IsProcessRunning());
+            }
+            procMan.StartProcess();
+            Thread.Sleep(5000);
+        }
+
+        #endregion Studio Window Tests
+
         #region Additional test attributes
 
 
@@ -2655,7 +2680,7 @@ namespace Dev2.CodedUI.Tests
                 DocManagerUIMap.ClickOpenTabPage("Explorer");
                 ExplorerUIMap.RightClickDeleteProject(server, serviceType, category, workflowName);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // Log it so the UI Test still passes...
                 Trace.WriteLine(e.Message);
