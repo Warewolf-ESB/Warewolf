@@ -281,6 +281,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Test Requiring Implementation\TestsRequireImplementation.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Test utils\MediatorRecieverDeregistration.cs" />
@@ -408,6 +409,10 @@
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
       <Name>Dev2.Server</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Sql\Dev2.Sql.csproj">
+      <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
+      <Name>Dev2.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
@@ -444,8 +449,9 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>del "$(TargetDir)Warewolf.Sql.*"
+
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

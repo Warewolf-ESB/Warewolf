@@ -2,8 +2,9 @@
 <TestSettings name="Parallel Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="Binaries\redis-server.exe" />
     <DeploymentItem filename="Binaries\CefSharp\" />
+    <DeploymentItem filename="Binaries\redis-server.exe" />
+    <DeploymentItem filename="Dev2.Sql\bin\Debug\Deploy\" />
   </Deployment>
   <Execution parallelTestCount="0">
     <TestTypeSpecific>
