@@ -304,6 +304,9 @@
     <Compile Include="Custom Dev2 Controls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Custom Dev2 Controls\Dev2FilterTextBox.xaml.cs">
+      <DependentUpon>Dev2FilterTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Diagnostics\DebugLineGroup.cs" />
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
@@ -691,6 +694,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Custom Dev2 Controls\Dev2FilterTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Custom Dev2 Controls\Intellisense\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -893,6 +900,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\erase.png" />
     <Resource Include="Images\FormatNumber.png" />
     <Resource Include="Images\record.png" />
     <Resource Include="Images\FeedbackSpeaker.png" />

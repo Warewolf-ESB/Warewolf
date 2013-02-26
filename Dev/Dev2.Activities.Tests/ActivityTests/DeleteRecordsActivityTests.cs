@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using Dev2;
+﻿using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -76,7 +73,7 @@ namespace ActivityUnitTests.ActivityTest
         public static void BaseActivityUnitTestCleanup()
         {
             //_redisProcess.Kill();
-        }
+        }        
         #endregion
 
         #region Delete Using Index

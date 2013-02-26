@@ -13,8 +13,9 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
-    x:Name="DsfMultiAssignAct">
-    <i:Interaction.Behaviors>
+    x:Name="DsfMultiAssignAct"
+                      >
+    <i:Interaction.Behaviors>        
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=DsfMultiAssignAct}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=DsfMultiAssignAct}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>
                 <DataTemplate>

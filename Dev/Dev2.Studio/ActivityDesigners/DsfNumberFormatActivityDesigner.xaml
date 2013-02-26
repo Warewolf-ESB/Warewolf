@@ -91,7 +91,7 @@
         </TextBox>-->
 
         <Label Content="Result" Name="LblResult" Grid.Column="0" Grid.Row="3"/>
-        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"  x:Name="TxtResult" DefaultText="[[Result]]" FilterType="All"  
+        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" WrapInBrackets="True" x:Name="TxtResult" DefaultText="[[Result]]" FilterType="All"  
                                   Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>

@@ -54,6 +54,8 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
+
+
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             WriteToResourceModel();
@@ -96,5 +98,28 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion Private Methods
+
+        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            if (vm != null)
+            {
+
+                Button btn = sender as Button;
+                if (btn != null)
+                {
+                    IDataListItemModel itemThatChanged = btn.DataContext as IDataListItemModel;
+                    vm.RemoveDataListItem(itemThatChanged);
+                    WriteToResourceModel();
+                }
+            }
+
+        }
+
+        void ClearFilter_OnClick(object sender, RoutedEventArgs e)
+        {
+            Filtertxt.Clear();
+            Filtertxt.Focus();
+        }
     }
 }

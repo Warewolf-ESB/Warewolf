@@ -151,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         toUpsert.FlushIterationFrame();
                                         toUpsert = null;
                                         //toUpsert.PublishLiveIterationData();
-                                    }
+                                }
                                     catch (Exception e)
                                     {
                                         allErrors.AddError(e.Message);

@@ -2,9 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
-             xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors">    
+             xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"             
+             >    
     <Grid>
-        <ContentControl Name="Designer" Content="{Binding Path=DesignerView}" AutomationProperties.AutomationId="{Binding Path=DesignerText}">
+        <ContentControl LostKeyboardFocus="Designer_OnLostKeyboardFocus" Name="Designer" Content="{Binding Path=DesignerView}" AutomationProperties.AutomationId="{Binding Path=DesignerText}">
             <i:Interaction.Behaviors>
                 <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}" ExpandAllCommand="{Binding ExpandAllCommand}" />
             </i:Interaction.Behaviors>

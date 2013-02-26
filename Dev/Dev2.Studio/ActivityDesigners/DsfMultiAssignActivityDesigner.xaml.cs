@@ -348,7 +348,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             HideAdorners();
         }
-
         void SelectionChanged(Selection item)
         {
             _workflowDesignerSelection = item;

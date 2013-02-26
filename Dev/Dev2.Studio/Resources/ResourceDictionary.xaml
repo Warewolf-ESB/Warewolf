@@ -59,6 +59,8 @@
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="devFeedbackActions:RecorderFeedbackAction" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="devFeedbackActions:RecorderFeedbackAction" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
+    <converters:FilterStringToVisibilityConvert x:Key="FilterStringToVisibilityConvert"></converters:FilterStringToVisibilityConvert>
+    
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
@@ -422,7 +424,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
     <Style x:Key="DebugStateStyle" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource DebugTreeStyle}">
         <Setter Property="HorizontalContentAlignment"  Value="Stretch" />
         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -676,7 +678,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
         </VisualBrush.Transform>
         <VisualBrush.Visual>
             <Grid>
-                <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Black" Opacity="0.3" Text="Search"/>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Black" Opacity="0.3" Text="Filter"/>
             </Grid>
         </VisualBrush.Visual>
     </VisualBrush>

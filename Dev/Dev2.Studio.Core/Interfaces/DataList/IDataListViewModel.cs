@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
@@ -15,6 +12,22 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         OptomizedObservableCollection<IDataListItemModel> RecsetCollection { get; set; }
 
         OptomizedObservableCollection<IDataListItemModel> DataList { get; }
+
+        /// <summary>
+        /// Removes the data list item.
+        /// </summary>
+        /// <param name="itemToRemove">The item to remove.</param>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2/21/2013</date>
+        void RemoveDataListItem(IDataListItemModel itemToRemove);
+
+        /// <summary>
+        /// Sets the unused data list items.
+        /// </summary>
+        /// <param name="parts">The parts.</param>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2/20/2013</date>
+        void SetUnusedDataListItems(IList<IDataListVerifyPart> parts);
 
         /// <summary>
         /// Initializes the data list view model.

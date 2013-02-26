@@ -2,7 +2,6 @@
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Interfaces.DataList;
-using System.Linq;
 using System.Xml;
 
 namespace Dev2.Studio.Core.Models.DataList
@@ -19,6 +18,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isVisable;
         private bool _isSelected;
         private string _lastIndexedName;
+        private bool _isUsed;
         private enDev2ColumnArgumentDirection _columnIODir;
 
         #endregion Fields
@@ -42,6 +42,7 @@ namespace Dev2.Studio.Core.Models.DataList
             IsSelected = isSelected;
             IsExpanded = isExpanded;
             LastIndexedName = Name;
+            IsUsed = true;
             ColumnIODirection = dev2ColumnArgumentDirection;
         }
 
@@ -52,6 +53,19 @@ namespace Dev2.Studio.Core.Models.DataList
         public bool UpdatingChildren { get; private set; }
 
         public IDataListValidator Validator { get; set; }
+
+        public bool IsUsed
+        {
+            get
+            {
+                return _isUsed;
+            }
+            set
+            {
+                _isUsed = value;
+                OnPropertyChanged("IsUsed");
+            }
+        }
 
         public string LastIndexedName
         {
@@ -163,7 +177,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 OnPropertyChanged("Output");
 
                 //SetChildColumnIODirectionValues(value);
-            }  
+            }
         }
 
         //public bool? RecordsetInput
@@ -217,7 +231,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                return (_columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Input);   
+                return (_columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Input);
             }
             set
             {
@@ -229,7 +243,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 //{
                 //    parent.UpdateRecordsetInputOutput();
                 //}
-        }
+            }
         }
 
         public bool Output

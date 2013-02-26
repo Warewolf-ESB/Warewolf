@@ -46,7 +46,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>, IHandle<AddStringListToDataListMessage>
+    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>, IHandle<AddStringListToDataListMessage>, IHandle<AddMissingAndFindUnusedDataListItemsMessage>
     {
         #region Fields
 
@@ -530,48 +530,51 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             DataListVerifyPartDuplicationParser DataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
             _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>(DataPartVerifyDuplicates);
-            var modelService = wfDesigner.Context.Services.GetService<ModelService>();
-            var flowNodes = modelService.Find(modelService.Root, typeof(FlowNode));
-
-            foreach (var flowNode in flowNodes)
+            if (wfDesigner != null)
             {
-                List<string> workflowFields = new List<string>();
-                try
+                var modelService = wfDesigner.Context.Services.GetService<ModelService>();
+                var flowNodes = modelService.Find(modelService.Root, typeof(FlowNode));
+
+                foreach (var flowNode in flowNodes)
                 {
-                    var activity = flowNode.Properties["Action"].ComputedValue;
-                    var activityType = GetActivityType(activity);
-                    if (activityType != null)
-                    {
-                        workflowFields = GetActivityElements(activity, activityType);
-                    }
-                }
-                catch (Exception)
-                {
+                    List<string> workflowFields = new List<string>();
                     try
                     {
-                        string propertyName = string.Empty;
-                        if (flowNode.ItemType.Name == "FlowDecision")
+                        var activity = flowNode.Properties["Action"].ComputedValue;
+                        var activityType = GetActivityType(activity);
+                        if (activityType != null)
                         {
-                            propertyName = "Condition";
-                        }
-                        else if (flowNode.ItemType.Name == "FlowSwitch`1")
-                        {
-                            propertyName = "Expression";
-                        }
-                        var activity = flowNode.Properties[propertyName].ComputedValue;
-                        if (activity != null)
-                        {
-                            workflowFields = GetDecisionElements(activity);
+                            workflowFields = GetActivityElements(activity, activityType);
                         }
                     }
                     catch (Exception)
                     {
+                        try
+                        {
+                            string propertyName = string.Empty;
+                            if (flowNode.ItemType.Name == "FlowDecision")
+                            {
+                                propertyName = "Condition";
+                            }
+                            else if (flowNode.ItemType.Name == "FlowSwitch`1")
+                            {
+                                propertyName = "Expression";
+                            }
+                            var activity = flowNode.Properties[propertyName].ComputedValue;
+                            if (activity != null)
+                            {
+                                workflowFields = GetDecisionElements(activity);
+                            }
+                        }
+                        catch (Exception)
+                        {
 
+                        }
                     }
-                }
-                foreach (var field in workflowFields)
-                {
-                    BuildDataPart(field);
+                    foreach (var field in workflowFields)
+                    {
+                        BuildDataPart(field);
+                    }
                 }
             }
             var flattenedList = _uniqueWorkflowParts.Keys.ToList();
@@ -884,10 +887,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     string match = GetValueFromUnlimitedObject(activityDefinition, "SearchCriteria");
                     string result = GetValueFromUnlimitedObject(activityDefinition, "Result");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
                     foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
                     {
                         if (!item.Contains("xpath("))
@@ -919,10 +918,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     string find = GetValueFromUnlimitedObject(activityDefinition, "Find");
                     string replaceVal = GetValueFromUnlimitedObject(activityDefinition, "ReplaceWith");
                     result = GetValueFromUnlimitedObject(activityDefinition, "Result");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
                     foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
                     {
                         if (!item.Contains("xpath("))
@@ -1072,6 +1067,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 case ("DsfNumberFormatActivity"):
                     string expression = GetValueFromUnlimitedObject(activityDefinition, "Expression");
                     activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
+                    string decimalPlacesToShow = GetValueFromUnlimitedObject(activityDefinition, "DecimalPlacesToShow");
+                    string roundingPlaces = GetValueFromUnlimitedObject(activityDefinition, "RoundingDecimalPlaces");
 
                     foreach (string item in (FormatDsfActivityField(expression)))
                     {
@@ -1081,6 +1078,20 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                     foreach (string item in (FormatDsfActivityField(activityResultField)))
+                    {
+                        if (!item.Contains("xpath("))
+                        {
+                            ActivityFields.Add(item);
+                        }
+                    }
+                    foreach (string item in (FormatDsfActivityField(decimalPlacesToShow)))
+                    {
+                        if (!item.Contains("xpath("))
+                        {
+                            ActivityFields.Add(item);
+                        }
+                    }
+                    foreach (string item in (FormatDsfActivityField(roundingPlaces)))
                     {
                         if (!item.Contains("xpath("))
                         {
@@ -1621,15 +1632,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (!string.IsNullOrEmpty(nameList[i].InnerText))
                         {
                             stringContainerDSFActivity = nameList[i].InnerText;
-                            if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
+                            if (stringContainerDSFActivity.StartsWith("[[") && stringContainerDSFActivity.EndsWith("]]"))
                             {
-                                stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                            }
-                            foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                            {
-                                if (!item.Contains("xpath("))
+                                foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
                                 {
-                                    ActivityFields.Add(item);
+                                    if (!item.Contains("xpath("))
+                                    {
+                                        ActivityFields.Add(item);
+                                    }
                                 }
                             }
                         }
@@ -1648,15 +1658,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (!string.IsNullOrEmpty(nameList[i].InnerText))
                         {
                             stringContainerDSFActivity = nameList[i].InnerText;
-                            if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
+                            if (stringContainerDSFActivity.StartsWith("[[") && stringContainerDSFActivity.EndsWith("]]"))
                             {
-                                stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                            }
-                            foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                            {
-                                if (!item.Contains("xpath("))
+                                foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
                                 {
-                                    ActivityFields.Add(item);
+                                    if (!item.Contains("xpath("))
+                                    {
+                                        ActivityFields.Add(item);
+                                    }
                                 }
                             }
                         }
@@ -1710,12 +1719,15 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     DsfForEachActivity forEachActivity = activity as DsfForEachActivity;
                     InnerActivity = forEachActivity.DataFunc.Handler;
-                    InnerActivityType = GetActivityType(InnerActivity);
-                    foreach (string item in (GetActivityElements(InnerActivity, InnerActivityType)))
+                    if (InnerActivity != null)
                     {
-                        if (!item.Contains("xpath("))
+                        InnerActivityType = GetActivityType(InnerActivity);
+                        foreach (string item in (GetActivityElements(InnerActivity, InnerActivityType)))
                         {
-                            ActivityFields.Add(item);
+                            if (!item.Contains("xpath("))
+                            {
+                                ActivityFields.Add(item);
+                            }
                         }
                     }
                     break;
@@ -1867,18 +1879,28 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     else if (activityDefinition.RootName.Equals("dsfwebpageactivity", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        // Sashen: Must be a better way - using the exact element name does make it awful.
-                        string sanitizedWebpageObject = activityDefinition.GetElement("XMLConfiguration").XmlString.Replace("&gt;", ">").Replace("&lt;", "<");
-                        XElement element = XElement.Parse(sanitizedWebpageObject);
-                        string webpageData = DataListFactory.GenerateMappingFromWebpage(sanitizedWebpageObject, "", enDev2ArgumentType.Input);
-                        XElement webpageElements = XElement.Parse(webpageData);
-                        webpageElements.Elements().ToList().ForEach(c => ActivityFields.Add(c.Attribute("Name").Value));
+
                     }
 
                     break;
+
+                #endregion
+
+                #region DsfWebPageActivity
+
+                case ("DsfWebPageActivity"):
+                    // Sashen: Must be a better way - using the exact element name does make it awful.
+                    string sanitizedWebpageObject = activityDefinition.GetElement("XMLConfiguration").XmlString.Replace("&gt;", ">").Replace("&lt;", "<");
+                    string webpageData = DataListFactory.GenerateMappingFromWebpage(sanitizedWebpageObject, "", enDev2ArgumentType.Input);
+                    XElement webpageElements = XElement.Parse(webpageData);
+                    webpageElements.Elements().ToList().ForEach(c => ActivityFields.Add(c.Attribute("Name").Value));
+                    break;
+
+                #endregion
+
                 default:
                     break;
-                #endregion DsfActivity
+
             }
             return ActivityFields;
         }
@@ -1895,13 +1917,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (!(part.IsScalar))
                 {
-                    if (DataListSingleton.ActiveDataList.DataList.Count(c => c.Name == part.Recordset && c.IsRecordset) == 0)
+                    var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
+                    if (!recset.Any())
                     {
                         MissingDataParts.Add(part);
                     }
                     else
                     {
-                        if (DataListSingleton.ActiveDataList.DataList.First(c => c.Name == part.Recordset && c.IsRecordset).Children.Count(c => c.Name == part.Field) == 0)
+                        if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
                         {
                             MissingDataParts.Add(part);
                         }
@@ -2110,7 +2133,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void InitializeDesigner(IDictionary<Type, Type> designerAttributes)
         {
             //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.AddRemoveDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.AddRemoveDataListItems, input => AddRemoveDataListItems(input as IDataListViewModel)));
+            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.AddRemoveDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.AddRemoveDataListItems, input => RemoveAllUnusedDataListItems(input as IDataListViewModel)));
 
             MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindMissingDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindMissingDataListItems, input =>
             {
@@ -2344,14 +2367,67 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         }
 
-        public void AddMissingOnlyWithNoPopUp(IDataListViewModel dataListViewModel)
+        public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
+        {
+
+            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+            IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
+            _filteredDataListParts = MissingDataListParts(workflowFields);
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (eventAggregator != null)
+            {
+                eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(_removeParts, ResourceModel));
+            }
+
+
+
+            if (eventAggregator != null)
+            {
+                eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+            }
+        }
+
+        public void FindUnusedDataListItems()
+        {
+            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+            IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
+
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (eventAggregator != null)
+            {
+                eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(_removeParts, ResourceModel));
+            }
+        }
+
+        public void RemoveAllUnusedDataListItems(IDataListViewModel dataListViewModel)
         {
             if (dataListViewModel != null && ResourceModel == dataListViewModel.Resource)
             {
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+                IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
 
-                _filteredDataListParts = MissingDataListParts(workflowFields);
+                dataListViewModel.RemoveUnusedDataListItems(_removeParts);
+            }
+        }
+
+        public void AddMissingOnlyWithNoPopUp(IDataListViewModel dataListViewModel)
+        {
+            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+            _filteredDataListParts = MissingDataListParts(workflowFields);
+            if (dataListViewModel != null && ResourceModel == dataListViewModel.Resource)
+            {
                 dataListViewModel.AddMissingDataListItems(_filteredDataListParts);
+            }
+            else
+            {
+                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+                if (eventAggregator != null)
+                {
+                    eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                }
             }
         }
 
@@ -2386,6 +2462,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
         }
+
+        /// <summary>
+        /// Handles the adding of the missing variables to the datalist and also sets the unused datalist items
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2013/02/06</date>
+        public void Handle(AddMissingAndFindUnusedDataListItemsMessage message)
+        {
+            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+        }
+
         #endregion
 
         #region Event Handlers

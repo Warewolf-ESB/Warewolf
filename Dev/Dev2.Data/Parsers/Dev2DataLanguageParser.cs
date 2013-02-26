@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Dev2.DataList.Contract.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2.Data.LanguageValidation;
-using Dev2.DataList.Contract.Interfaces;
 
 namespace Dev2.DataList.Contract
 {
@@ -25,14 +24,15 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
-        public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts) {
+        public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts)
+        {
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
 
             result = PartsGeneration(expression, dataListParts, true);
 
             return result;
         }
-        
+
         /// <summary>
         /// Used to extract intellisense options, and validate closed regions
         /// </summary>
@@ -133,7 +133,8 @@ namespace Dev2.DataList.Contract
 
         #region Private Methods
 
-        private IList<IIntellisenseResult> PartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts) {
+        private IList<IIntellisenseResult> PartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts)
+        {
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
             try
             {
@@ -195,7 +196,7 @@ namespace Dev2.DataList.Contract
                         .ForEach(evalPart =>
                         {
                             IList<IIntellisenseResult> tmp = ExtractIntellisenseOptions(evalPart, parts, addCompleteParts);
-                            if (tmp != null) 
+                            if (tmp != null)
                             {
                                 result = result.Union(tmp).ToList();
                             }
@@ -370,7 +371,7 @@ namespace Dev2.DataList.Contract
                                 .ForEach(child =>
                                 {
                                     //19.09.2012: massimo.guerrera - Added the desciption for the data list item
-                                    tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, child.Name, child.Description);                                    
+                                    tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, child.Name, child.Description);
                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, part.Description + Environment.NewLine + child.Description));
                                 });
                         }
@@ -553,7 +554,8 @@ namespace Dev2.DataList.Contract
 
                                                 // hanging RS with closed idx
                                                 bool isHangingChild = false;
-                                                if (payload.Child != null && payload.Child.HangingOpen) {
+                                                if (payload.Child != null && payload.Child.HangingOpen)
+                                                {
                                                     isHangingChild = true;
                                                 }
 
@@ -577,15 +579,17 @@ namespace Dev2.DataList.Contract
                                                     {
                                                         rs = rs.Substring(0, end);
                                                     }
-                                                    
+
                                                     IDataListVerifyPart prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, "", " / Select a specific row", indx);
 
                                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
 
                                                     // now add all fields to collection too ;)
-                                                    if(refParts[i].Children != null){
+                                                    if (refParts[i].Children != null)
+                                                    {
                                                         IList<IDev2DataLanguageIntellisensePart> cParts = refParts[i].Children;
-                                                        for(int q = 0; q < cParts.Count; q++){
+                                                        for (int q = 0; q < cParts.Count; q++)
+                                                        {
 
                                                             prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, cParts[q].Name, " / Select a specific row", indx);
                                                             result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
@@ -594,12 +598,15 @@ namespace Dev2.DataList.Contract
                                                 }
                                                 else
                                                 {
-                                                    if (isRS && payload.Child == null) {
+                                                    if (isRS && payload.Child == null)
+                                                    {
                                                         // allow the user to 
                                                         IDataListVerifyPart prt;
-                                                        for (int j = 0; j < refParts.Count; j++) {
+                                                        for (int j = 0; j < refParts.Count; j++)
+                                                        {
                                                             // add closed recordset
-                                                            if (refParts[j].Children == null) {
+                                                            if (refParts[j].Children == null)
+                                                            {
                                                                 // add index via scalar option
                                                                 prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(search, "", " / Select a specific row", "[[" + refParts[j].Name + "]]");
                                                                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
@@ -610,7 +617,7 @@ namespace Dev2.DataList.Contract
                                                         prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(search, "", " / Reference all rows in the Recordset ", "*");
                                                         result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
                                                     }
-                                                    
+
                                                     emptyOk = true;
                                                 }
                                             }
@@ -754,17 +761,7 @@ namespace Dev2.DataList.Contract
                                 result.Add(AddErrorToResults(isRS, parts[0], e, (!payload.HangingOpen)));
                             }
 
-                            // return all fields for recordset
-                            try
-                            {
-                                recordsetPart = refParts.FirstOrDefault(c => c.Name.ToLower() == search && c.Children != null);
-
-                            }
-                            catch
-                            {
-                                throw;
-                            }
-
+                            recordsetPart = refParts.FirstOrDefault(c => c.Name.ToLower() == search && c.Children != null);
 
                             string display = parts[0];
                             string partName = parts[0];
@@ -898,64 +895,84 @@ namespace Dev2.DataList.Contract
             int end = raw.IndexOf(")");
 
             // for ranges
-            if (raw.IndexOf(":") > 0) {
+            if (raw.IndexOf(":") > 0)
+            {
                 result = true;
             }
-            else if (raw.IndexOf(",") > 0) {
+            else if (raw.IndexOf(",") > 0)
+            {
                 result = true; // added for calc operations
             }
-            else {
+            else
+            {
 
                 // no index
-                if ((end - start) == 1) {
+                if ((end - start) == 1)
+                {
                     result = true;
                 }
-                else if ((start > 0 && end < 0) && ((raw.Length - 1) == start)) { // another no index case
+                else if ((start > 0 && end < 0) && ((raw.Length - 1) == start))
+                { // another no index case
                     result = true;
                 }
-                else {
-                    if (start > 0 && end < 0) {
+                else
+                {
+                    if (start > 0 && end < 0)
+                    {
                         // we have index, just no )
                         string part = raw.Substring((start + 1), (raw.Length - (start + 1)));
 
-                        if (part.Contains("[[")) {
+                        if (part.Contains("[["))
+                        {
                             result = true;
                         }
-                        else {
+                        else
+                        {
                             int partAsInt;
-                            if (int.TryParse(part, out partAsInt)) {
-                                if (partAsInt >= 1) {
+                            if (int.TryParse(part, out partAsInt))
+                            {
+                                if (partAsInt >= 1)
+                                {
                                     result = true;
                                 }
-                                else {
+                                else
+                                {
                                     throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 string message = "Recordset index [ " + part + " ] is not numeric";
                                 throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
                             }
                         }
                     }
-                    else if (start > 0 && end > start) {
+                    else if (start > 0 && end > start)
+                    {
                         // we have index with ( and )
                         start += 1;
                         string part = raw.Substring(start, (raw.Length - (start + 1)));
 
-                        if (part.Contains("[[") || part == "*") {
+                        if (part.Contains("[[") || part == "*")
+                        {
                             result = true;
                         }
-                        else {
+                        else
+                        {
                             int partAsInt;
-                            if (int.TryParse(part, out partAsInt)) {
-                                if (partAsInt >= 1) {
+                            if (int.TryParse(part, out partAsInt))
+                            {
+                                if (partAsInt >= 1)
+                                {
                                     result = true;
                                 }
-                                else {
+                                else
+                                {
                                     throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 string message = "Recordset index [ " + part + " ] is not numeric";
                                 throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
                             }

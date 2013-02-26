@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -6,6 +7,7 @@ using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
@@ -15,7 +17,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.Core.ViewModels.DataList
 {
-    public class DataListViewModel : SimpleBaseViewModel, IDataListViewModel
+    public class DataListViewModel : SimpleBaseViewModel, IDataListViewModel, IHandle<ShowUnusedDataListVariablesMessage>, IHandle<AddMissingDataListItems>
     {
         #region Fields
 
@@ -110,6 +112,15 @@ namespace Dev2.Studio.Core.ViewModels.DataList
         }
 
         #endregion Properties
+
+        #region Ctor
+
+        public DataListViewModel()
+        {
+            Validator = new DataListValidator();
+        }
+
+        #endregion
 
         #region Commands
 
@@ -219,6 +230,9 @@ namespace Dev2.Studio.Core.ViewModels.DataList
 
             WriteToResourceModel();
             Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+            RemoveBlankScalars();
+            RemoveBlankRecordsets();
+            RemoveBlankRecordsetFields();
         }
 
         public void RemoveUnusedDataListItems(IList<IDataListVerifyPart> parts)
@@ -337,6 +351,66 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             return results;
         }
 
+        public void SetUnusedDataListItems(IList<IDataListVerifyPart> parts)
+        {
+            foreach (IDataListItemModel dataListItemModel in ScalarCollection)
+            {
+                dataListItemModel.IsUsed = true;
+            }
+
+            foreach (IDataListItemModel dataListItemModel in RecsetCollection)
+            {
+                dataListItemModel.IsUsed = true;
+                foreach (IDataListItemModel listItemModel in dataListItemModel.Children)
+                {
+                    listItemModel.IsUsed = true;
+                }
+            }
+
+            IList<IDataListItemModel> tmpRecsets = new List<IDataListItemModel>();
+            foreach (IDataListVerifyPart part in parts)
+            {
+                if (part.IsScalar)
+                {
+                    IDataListItemModel scalarToRemove = ScalarCollection.FirstOrDefault(c => c.Name == part.Field);
+                    if (scalarToRemove != null)
+                    {
+                        scalarToRemove.IsUsed = false;
+                    }
+                }
+                else
+                {
+                    IDataListItemModel recsetToRemove = RecsetCollection.FirstOrDefault(c => c.Name == part.Recordset && c.IsRecordset);
+                    if (string.IsNullOrEmpty(part.Field))
+                    {
+                        if (recsetToRemove != null)
+                        {
+                            recsetToRemove.IsUsed = false;
+                        }
+                    }
+                    else
+                    {
+                        if (recsetToRemove != null)
+                        {
+                            IDataListItemModel childToRemove = recsetToRemove.Children.FirstOrDefault(c => c.Name == part.Field && c.IsField);
+                            if (childToRemove != null)
+                            {
+                                childToRemove.IsUsed = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (IDataListItemModel item in tmpRecsets)
+            {
+                RecsetCollection.Remove(item);
+                Validator.Remove(item);
+            }
+            WriteToResourceModel();
+            Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+        }
+
         #endregion Add/Remove Missing Methods
 
         #region Methods
@@ -443,37 +517,76 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             {
                 if (!item.IsRecordset && !item.IsField)
                 {
-                    IList<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-                    if (blankList.Count > 1)
-                    {
-                        ScalarCollection.Remove(blankList.First());
-                        Validator.Remove(blankList.First());
-                    }
+                    RemoveBlankScalars();
                 }
                 else if (item.IsRecordset)
                 {
-                    IList<IDataListItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-                    if (blankList.Count > 1)
-                    {
-                        RecsetCollection.Remove(blankList.First());
-                        Validator.Remove(blankList.First());
-                    }
+                    RemoveBlankRecordsets();
+                }
+                else
+                {
+                    RemoveBlankRecordsetFields();
+                }
+            }
+        }
+
+        public void RemoveBlankRecordsets()
+        {
+            IList<IDataListItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
+            if (blankList.Count > 1)
+            {
+                RecsetCollection.Remove(blankList.First());
+                Validator.Remove(blankList.First());
+            }
+        }
+
+        public void RemoveBlankScalars()
+        {
+            IList<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
+            if (blankList.Count > 1)
+            {
+                ScalarCollection.Remove(blankList.First());
+                Validator.Remove(blankList.First());
+            }
+        }
+
+        public void RemoveBlankRecordsetFields()
+        {
+            foreach (IDataListItemModel recset in RecsetCollection)
+            {
+                IList<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
+
+                if (blankChildList.Count > 1)
+                {
+                    recset.Children.Remove(blankChildList.First());
+                    recset.Validator.Remove(blankChildList.First());
+                }
+            }
+        }
+
+        public void RemoveDataListItem(IDataListItemModel itemToRemove)
+        {
+            if (itemToRemove != null)
+            {
+                if (!itemToRemove.IsRecordset && !itemToRemove.IsField)
+                {
+                    ScalarCollection.Remove(itemToRemove);
+                    Validator.Remove(itemToRemove);
+                }
+                else if (itemToRemove.IsRecordset)
+                {
+                    RecsetCollection.Remove(itemToRemove);
+                    Validator.Remove(itemToRemove);
                 }
                 else
                 {
                     foreach (IDataListItemModel recset in RecsetCollection)
                     {
-                        IList<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-
-                        if (blankChildList.Count > 1)
-                        {
-                            recset.Children.Remove(blankChildList.First());
-                            recset.Validator.Remove(blankChildList.First());
-                        }
+                        recset.Children.Remove(itemToRemove);
+                        recset.Validator.Remove(itemToRemove);
                     }
                 }
             }
-
         }
 
         public string WriteToResourceModel()
@@ -680,7 +793,7 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             }
             else
             {
-                Validator = new DataListValidator();
+
                 RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
                 AddRecordSet();
                 ScalarCollection = new OptomizedObservableCollection<IDataListItemModel>();
@@ -754,7 +867,6 @@ namespace Dev2.Studio.Core.ViewModels.DataList
         private void ConvertBinaryDataListToListOfIDataListItemModels(IBinaryDataList dataListToConvert, out string errorString)
         {
             errorString = string.Empty;
-            Validator = new DataListValidator();
             RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             ScalarCollection = new OptomizedObservableCollection<IDataListItemModel>();
 
@@ -834,5 +946,29 @@ namespace Dev2.Studio.Core.ViewModels.DataList
         }
 
         #endregion Override Methods
+
+        #region Implementation of IHandle<ShowUnusedDataListVariablesMessage>
+
+        public void Handle(ShowUnusedDataListVariablesMessage message)
+        {
+            if (message.ResourceModel == Resource)
+            {
+                SetUnusedDataListItems(message.ListOfUnused);
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<AddMissingDataListItems>
+
+        public void Handle(AddMissingDataListItems message)
+        {
+            if (message.ResourceModel == Resource)
+            {
+                AddMissingDataListItems(message.ListToAdd);
+            }
+        }
+
+        #endregion
     }
 }

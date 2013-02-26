@@ -1,11 +1,8 @@
 ﻿
-using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.ErrorHandling;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
@@ -310,12 +307,12 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             if (listToAdd != null && listToAdd.Count > 0)
             {
                 _model.AddListToCollection(listToAdd, Overwrite);
-                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                //IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
-                if (eventAggregator != null)
-                {
-                    eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
-                }
+                //if (eventAggregator != null)
+                //{
+                //    eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
+                //}
             }
             ClearData();
         }

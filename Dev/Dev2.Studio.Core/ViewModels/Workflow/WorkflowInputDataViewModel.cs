@@ -27,9 +27,10 @@ namespace Dev2.Studio.Core.ViewModels
         #region Ctor
         public WorkflowInputDataViewModel(DebugTO debugTO)
         {
-            //2012.10.11: massimo.guerrera - Added for PBI 5781
+            //2012.10.11: massimo.guerrera - Added for PBI 5781           
             _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
             DebugTO = debugTO;
+
         }
         #endregion Ctor
 
@@ -368,7 +369,7 @@ namespace Dev2.Studio.Core.ViewModels
         private void CreateDataListObjectFromList()
         {
             string error = "";
-            DataList = Broker.DeSerialize( "<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
+            DataList = Broker.DeSerialize("<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
             foreach (IDataListItem item in WorkflowInputs)
             {
                 if (item.IsRecordset && !string.IsNullOrEmpty(item.Value))

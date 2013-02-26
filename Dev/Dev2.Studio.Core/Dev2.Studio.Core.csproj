@@ -126,6 +126,7 @@
     <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
+    <Compile Include="AppResources\Converters\FilterStringToVisibilityConvert.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CountToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeToStringConverter.cs" />
@@ -253,6 +254,8 @@
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AbstractTabMessage.cs" />
+    <Compile Include="Messages\AddMissingAndFindUnusedDataListItemsMessage.cs" />
+    <Compile Include="Messages\AddMissingDataListItems.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\ResourceCheckedMessage.cs" />
@@ -262,6 +265,7 @@
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
+    <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />

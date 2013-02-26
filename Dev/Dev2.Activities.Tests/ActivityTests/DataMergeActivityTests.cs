@@ -356,7 +356,7 @@ Wallis0000Buchan
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(7, inRes[0].Count);
+            Assert.AreEqual(8, inRes[0].Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].Count);
         }
@@ -376,7 +376,7 @@ Wallis0000Buchan
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(34, inRes[0].Count);
+            Assert.AreEqual(35, inRes[0].Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].Count);
         }

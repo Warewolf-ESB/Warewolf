@@ -1,4 +1,5 @@
-﻿using CircularDependencyTool;
+﻿using Caliburn.Micro;
+using CircularDependencyTool;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates;
@@ -16,6 +17,7 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Administration;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -58,6 +60,7 @@ using Unlimited.Applications.BusinessDesignStudio.Views;
 using Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder;
 using Unlimited.Framework;
 using Unlimited.Framework.Workspaces;
+using Action = System.Action;
 
 namespace Dev2.Studio
 {
@@ -82,6 +85,7 @@ namespace Dev2.Studio
 
         private WebPropertyEditorWindow _win;
         private ObservableCollection<FrameworkElement> _tabs;
+        private bool _isStartUp;
 
         #endregion Class Members
 
@@ -620,6 +624,7 @@ namespace Dev2.Studio
 
         internal void TabContextChanged(object input)
         {
+            RemoveDataList();
             if (input == null)
                 return;
 
@@ -635,6 +640,10 @@ namespace Dev2.Studio
                     {
                         (PropertyPane as dynamic).Content = workflowVm.PropertyView;
                     }
+                }
+                if (workflowVm != null)
+                {
+                    workflowVm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
                 }
             }
             else
@@ -1213,6 +1222,14 @@ namespace Dev2.Studio
 
         public ViewModelDialogResults GetServiceInputDataFromUser(IServiceDebugInfoModel input, out DebugTO debugTO)
         {
+
+            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (eventAggregator != null)
+            {
+                eventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage());
+            }
+
             var inputData = new WorkflowInputDataWindow();
 
             debugTO = new DebugTO
@@ -1489,8 +1506,10 @@ namespace Dev2.Studio
         internal void AddWorkflowDesigner(object resourceModel)
         {
             var resource = resourceModel as IContextualResourceModel;
-            AddDataListView(resource);
-
+            //if (!_isStartUp)
+            //{
+            //    AddDataListView(resource);
+            //}
             if (resource != null)
             {
 
@@ -1821,7 +1840,9 @@ namespace Dev2.Studio
 
                     if (resource.ResourceType == ResourceType.WorkflowService)
                     {
+                        _isStartUp = true;
                         AddWorkflowDesigner(resource);
+                        _isStartUp = false;
                     }
                 }
             }

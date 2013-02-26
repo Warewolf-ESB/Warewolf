@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
@@ -10,6 +6,8 @@ namespace Dev2.Studio.Core.Interfaces.DataList
     {
 
         #region Properties
+
+        bool IsUsed { get; set; }
 
         IDataListValidator Validator { get; set; }
 

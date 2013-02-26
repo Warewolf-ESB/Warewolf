@@ -302,7 +302,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "With" });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = dataMergeDto.MergeType });
-                if (string.IsNullOrEmpty(dataMergeDto.At))
+                if (!string.IsNullOrEmpty(dataMergeDto.At))
                 {
                     foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataMergeDto.At, dataList))
                     {
