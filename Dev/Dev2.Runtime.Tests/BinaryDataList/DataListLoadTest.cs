@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using Dev2.Data.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Unlimited.UnitTest.Framework
 {
@@ -51,7 +49,7 @@ namespace Unlimited.UnitTest.Framework
         [ClassCleanup()]
         public static void BaseActivityUnitTestCleanup()
         {
-            if(_redisProcess != null)
+            if (_redisProcess != null)
             {
                 _redisProcess.Kill();
             }
@@ -83,7 +81,7 @@ namespace Unlimited.UnitTest.Framework
             dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
   
 
-                for(int i = 0; i < r; i++)
+            for (int i = 0; i < r; i++)
                 {
                     dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);
                     dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", (i + 1), out error);
@@ -129,7 +127,7 @@ namespace Unlimited.UnitTest.Framework
             double result1;
             int r = 50;
             int runs = 10000;
-            using(dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID))
+            using (dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID))
             {
 
                 IList<Dev2Column> cols = new List<Dev2Column>();
@@ -143,7 +141,7 @@ namespace Unlimited.UnitTest.Framework
 
                 dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
 
-                for(int i = 0; i < r; i++)
+                for (int i = 0; i < r; i++)
                 {
                     dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);
                     dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", (i + 1), out error);
@@ -157,10 +155,10 @@ namespace Unlimited.UnitTest.Framework
                 IBinaryDataListEntry val;
                 IBinaryDataListEntry res;
                 bool tryGetEntry = dl1.TryGetEntry("recset", out val, out er);
-                for(int q = 0; q < runs; q++)
+                for (int q = 0; q < runs; q++)
                 {
 
-                    if(tryGetEntry)
+                    if (tryGetEntry)
                     {
                         res = val.Clone(enTranslationDepth.Data, out er);
                     }
@@ -202,7 +200,7 @@ namespace Unlimited.UnitTest.Framework
             dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
  
                 DateTime start1 = DateTime.Now;
-                for(int i = 0; i < runs; i++)
+            for (int i = 0; i < runs; i++)
                 {
                     dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);
                     dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", (i + 1), out error);
@@ -248,7 +246,7 @@ namespace Unlimited.UnitTest.Framework
 
 
                 DateTime start1 = DateTime.Now;
-                for(int i = 0; i < runs; i++)
+            for (int i = 0; i < runs; i++)
                 {
                     dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);
                     dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", (i + 1), out error);
