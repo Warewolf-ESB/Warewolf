@@ -185,11 +185,13 @@
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Scripts\Services\DbServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\dev2-utils.js" />
+    <Content Include="wwwroot\Scripts\Sources\DbSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServerViewModel.js" />
     <Content Include="wwwroot\Views\Services\DatabaseStep2.htm" />
     <Content Include="wwwroot\Views\Services\General.htm" />
     <Content Include="wwwroot\Views\Services\DbService.htm" />
     <Content Include="wwwroot\Views\Sources\Database.htm" />
+    <Content Include="wwwroot\Views\Sources\DbSource.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Scripts\Switch\DragModel.js" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />

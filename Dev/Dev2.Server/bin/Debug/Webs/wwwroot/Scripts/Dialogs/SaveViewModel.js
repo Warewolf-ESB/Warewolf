@@ -48,9 +48,12 @@
         var jsonData = ko.toJSON(self.data);
         $.post(saveUri + window.location.search, jsonData, function (result) {
             if (!result.IsValid) {
+                Dev2Awesomium.Cancel();
                 Dev2Awesomium.Save(JSON.stringify(result));
+                console.log(JSON.stringify(result) + "\nSAVED!");
+            } else {
+            // TODO: ShowError use $errDiv?
             }
-            // TODO: ShowError
         });
     };
 

@@ -169,12 +169,12 @@
 </div>
 <div id="dbServiceSaveDialogContainer">
 </div>
-<div id="dbSourceDialogContainer" title="New Database Source">
+<div id="dbSourceDialogContainer" data-bind="title: title">
 </div>
 
 <script src="Scripts/Services/DbServiceViewModel.js"></script>
 <script src="Scripts/Dialogs/SaveViewModel.js"></script>
-
+    
 <script type="text/javascript">
     DbServiceViewModel.create("dbServiceContainer", "dbServiceSaveDialogContainer");
 </script>

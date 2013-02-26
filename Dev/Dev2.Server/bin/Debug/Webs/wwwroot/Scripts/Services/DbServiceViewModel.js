@@ -232,19 +232,6 @@
     self.showTab = function (tabIndex) {
         $tabs.tabs("option", "active", tabIndex);
     };
-
-    self.showSource = function(theSourceName) {
-        $("#dbSourceDialogContainer").dialog("open");
-
-        //var args = ko.toJSON({
-        //    ResourceName: theSourceName
-        //});
-        //var returnUri = "" + window.location;
-        //returnUri = returnUri.replace(/(sourceName=)[^\&]+/, '$1' + theSourceName);
-
-        //Dev2Awesomium.NavigateTo("", args, returnUri);
-        //return true;
-    };
     
     self.editSource = function () {
         return self.showSource(self.data.source().ResourceName);
@@ -277,8 +264,15 @@
 
     self.save = function () {
         self.saveViewModel.showDialog();
-    };
+    };    
 
+    self.showSource = function (theSourceName) {
+        // 
+        // dbSourceViewModel is a global variable instantiated in DbSource.htm
+        //
+        dbSourceViewModel.showDialog(theSourceName);
+    };
+    
     self.load();    
 };
 
@@ -307,25 +301,10 @@ DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
 
     // inject DbSourceDialog
     dbServiceViewModel.$dbSourceDialogContainer.load("Views/Sources/DbSource.htm", function () {
-        dbServiceViewModel.$dbSourceDialogContainer.dialog({
-            resizable: false,
-            autoOpen: false,
-            modal: true,
-            position: {
-                my: "left top",
-                at: "left+10px top+10px",
-                of: "#content"
-            },
-            buttons: {
-                // TODO: hook up to DbSource view model functions...
-                "Ok": function () {
-                    $(this).dialog("close");
-                },
-                "Cancel": function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-        $("button").button();
+        // 
+        // dbSourceViewModel is a global variable instantiated in DbSource.htm
+        //
+        dbSourceViewModel.createDialog(dbServiceViewModel.$dbSourceDialogContainer);
     });
+    return dbServiceViewModel;
 };

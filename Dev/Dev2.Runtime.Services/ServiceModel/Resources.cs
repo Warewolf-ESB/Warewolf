@@ -270,7 +270,14 @@ namespace Dev2.Runtime.ServiceModel
                 case ResourceType.DbSource:
                     delimiter = new Delimiter { ID = 1, Start = " ConnectionString=\"", End = "\" " };
                     delimiter.TryGetValue(content, out delimiterValue);
-                    return new DbSource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath, ConnectionString = delimiterValue };
+                    return new DbSource
+                    {
+                        ResourceID = resourceID, 
+                        ResourceType = resourceType, 
+                        ResourceName = resourceName, 
+                        ResourcePath = resourcePath, 
+                        ConnectionString = delimiterValue
+                    };
             }
 
             return new Resource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath };

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
+    <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
     <Compile Include="Diagnostics\ValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Security\ISecureConfig.cs" />
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
+    <Compile Include="ServiceModel\DbSources.cs" />
     <Compile Include="ServiceModel\Data\Recordset.cs" />
     <Compile Include="ServiceModel\Data\RecordsetCell.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecord.cs" />
