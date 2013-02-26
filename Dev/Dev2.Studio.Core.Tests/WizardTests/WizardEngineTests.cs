@@ -31,6 +31,8 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Initialize()
         {
+            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
+
             mockResource1 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestWorkflow1");
             mockResource2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestWorkflow2");
             mockResource3 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestWorkflow1.wiz");
@@ -39,7 +41,6 @@ namespace Dev2.Core.Tests
             resource.ResourceName = "TestName";
             resource.DisplayName = "TestName";
 
-            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
             wizEng = new WizardEngine();
 
             ImportService.SatisfyImports(wizEng);

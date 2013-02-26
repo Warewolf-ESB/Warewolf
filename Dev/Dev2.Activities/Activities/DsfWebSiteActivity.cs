@@ -171,33 +171,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             }  
         }
 
-        private string InsertKeywords(string metatags) {
-            string returnValue = Html;
+        //private string InsertKeywords(string metatags) {
+        //    string returnValue = Html;
 
-            if (!string.IsNullOrEmpty(Html)) {
-                try {
-                    var data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(Html);
+        //    if (!string.IsNullOrEmpty(Html)) {
+        //        try {
+        //            var data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(Html);
 
-                    var head = data.head;
+        //            var head = data.head;
 
-                    if (head is UnlimitedObject) {
+        //            if (head is UnlimitedObject) {
 
-                            string metaKeyword = string.Format(@"<meta name=""keywords"" content=""{0}"" />", metatags);
+        //                    string metaKeyword = string.Format(@"<meta name=""keywords"" content=""{0}"" />", metatags);
 
-                            head.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(metaKeyword));
+        //                    head.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(metaKeyword));
 
-                            returnValue = data.XmlString;
+        //                    returnValue = data.XmlString;
 
-                    }
+        //            }
 
-                }
-                catch { }
+        //        }
+        //        catch { }
                 
 
-            }
+        //    }
 
-            return returnValue;
-        }
+        //    return returnValue;
+        //}
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

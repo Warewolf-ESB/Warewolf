@@ -9,7 +9,7 @@ using Dev2.Studio.Core.Interfaces;
 
 #endregion
 
-namespace Dev2.Studio.ViewModels.Navigation
+namespace Dev2.Studio.Core.ViewModels.Navigation
 {
     /// <summary>
     /// Implemented by all treenodes in the explorer and deploy tabs
@@ -27,6 +27,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool IsFiltered { get; set; }
         bool IsExpanded { get; set; }
         bool IsSelected { get; set; }
+        string FilterText { get; set; }
         bool IsConnected { get; }
         string DisplayName { get; set; }
         ICollectionView FilteredChildren { get; } 
@@ -39,6 +40,18 @@ namespace Dev2.Studio.ViewModels.Navigation
         void SetIsChecked(bool? value, bool updateChildren, bool updateParent, bool sendMessage);
         void SetFilter(string value);
         IEnumerable<ITreeNode> GetChildren(Func<ITreeNode, bool> predicate);
+        void UpdateFilteredNodeExpansionStates();
 
+    }
+
+    /// <summary>
+    /// Interface providing strongly typed access to treenode datacontext
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <author>Jurie.smit</author>
+    /// <date>2/26/2013</date>
+    public interface ITreeNode<T> : ITreeNode
+    {
+        T DataContext { get; set; }
     }
 }

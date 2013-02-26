@@ -57,7 +57,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
         private IList<IDataListVerifyPart> _filteredDataListParts;
 
-        private readonly IContextualResourceModel _workflowModel;
+        private IContextualResourceModel _workflowModel;
         private readonly IDesignerManagementService _designerManagementService;
 
         private RelayCommand _newWorkflowCommand;
@@ -147,6 +147,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return _workflowModel;
             }
+            set { _workflowModel = value; }
         }
 
         public string WorkflowName
@@ -2746,5 +2747,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #endregion Dispose
+
+        public IEnvironmentModel EnvironmentModel
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

@@ -8,6 +8,7 @@
                       MouseLeave="DsfActivityDesigner_OnMouseLeave"
                       xmlns:dev2="clr-namespace:Dev2.UI"
                       xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
+                      xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       MinWidth="250">
     <i:Interaction.Behaviors>
         <local:ActivityDesignerAugmentationBehavior SupressConnectorNodes="{Binding ShowMapping}">
@@ -123,7 +124,7 @@
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>
-                                    <customDev2Controls:SimpleGridSplitter Background="LightGray" Margin="0,2,0,0" Height="7" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                                    <customControls:SimpleGridSplitter Background="LightGray" Margin="0,2,0,0" Height="7" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
                                     <Grid Grid.Column="1" Grid.Row="2">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>

@@ -6,6 +6,7 @@ using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;

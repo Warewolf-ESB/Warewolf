@@ -13,5 +13,6 @@ namespace Dev2.DataList.Contract.Network
         IBinaryDataList ReadDatalist(Guid datalistID, ErrorResultTO errors);
         void DeleteDataList(Guid id, bool onlyIfNotPersisted);
         bool PersistChildChain(Guid id);
+        Guid ServerID { get; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Composition;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -49,6 +50,7 @@ namespace Dev2.Core.Tests
 
         void Run()
         {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Resources.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
             envMock.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");

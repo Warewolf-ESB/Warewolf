@@ -20,44 +20,12 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.ColumnSpan="2" Margin="5">          
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="25"/>
-            </Grid.ColumnDefinitions>
 
-            <Dev2:ConnectControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Margin="0,0,0,5"
+            <Dev2:ConnectControl Grid.ColumnSpan="2" Margin="5"
                                  LabelText="Connect:" 
                                  EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
                                  ConnectButtonAutomationID="UI_ExplorerConnectBtn_AutoID"
                                  ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"/>
-
-            <TextBox Grid.Row="1" Grid.Column="0" Margin="0"  AutomationProperties.AutomationId="UI_txtSearch_AutoID" Name="txtSearch" HorizontalAlignment="Stretch" Text="{Binding Path=NavigationViewModel.SearchFilter, UpdateSourceTrigger=PropertyChanged}" MinWidth="100">
-                <TextBox.Style>
-                    <Style TargetType="TextBox">
-                        <Style.Triggers>
-                            <Trigger Property="Text" Value="">
-                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-
-            <customDev2Controls:CircularProgressBar Grid.Row="1" Grid.Column="1" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    Visibility="{Binding NavigationViewModel.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
-            <Button Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" AutomationProperties.AutomationId="UI_btnRefresh_AutoID" 
-                    Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Command="{Binding Path=NavigationViewModel.RefreshMenuCommand}"
-                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                    Visibility="{Binding NavigationViewModel.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
-            </Button>
-        </Grid>
 
         <NavigationViews:NavigationView x:Name="TheNavigationView" DataContext="{Binding NavigationViewModel}" Grid.Row="1" Grid.ColumnSpan="2">
             <NavigationViews:NavigationView.ItemContainerStyle>

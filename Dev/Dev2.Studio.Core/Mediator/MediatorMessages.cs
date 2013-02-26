@@ -78,8 +78,6 @@ namespace Dev2.Studio.Core
         AddWorkflowDesigner,
         AddWebpageDesigner,
         AddResourceDocument,
-
-        UpdateResourceDesigner,
         WorkflowActivitySelected,
 
         ShowDependencyGraph,

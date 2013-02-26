@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using System.Diagnostics;
+using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Studio.Core;
@@ -382,6 +383,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion
 
+        #region public methods
+        public void OpenMoreLink(DebugLineItem item)
+        {
+            if (!string.IsNullOrEmpty(item.MoreLink))
+            {
+                Process.Start(new ProcessStartInfo(item.MoreLink));
+            }
+        }
+
+        public bool CanOpenMoreLink(DebugLineItem item)
+        {
+            return !string.IsNullOrEmpty(item.MoreLink);
+        }
+        #endregion public methods
+
         #region Commands
 
         public ICommand OpenItemCommand
@@ -431,6 +447,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion
+
+        
 
         #region Private Methods
 

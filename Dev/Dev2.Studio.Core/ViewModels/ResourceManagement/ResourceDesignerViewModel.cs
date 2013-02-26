@@ -6,51 +6,52 @@ using System;
 using System.Text;
 
 namespace Dev2.Studio.Core.ViewModels {
-    public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IResourceDesignerViewModel 
+    public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IDesignerViewModel 
     {
         #region Class Members
 
-        private IEnvironmentModel _resourceEnvironment = null;
-        private IResourceModel _resourceModel;
+        private IEnvironmentModel _environmentModel = null;
+        private IContextualResourceModel _contexttualResourceModel;
 
         #endregion Class Members
 
         #region Ctor
 
-        public ResourceDesignerViewModel(IResourceModel model, IEnvironmentModel environment) {
-            _resourceModel = model;
-            _resourceEnvironment = environment;
+        public ResourceDesignerViewModel(IContextualResourceModel model, IEnvironmentModel environmentModel)
+        {
+            _contexttualResourceModel = model;
+            _environmentModel = environmentModel;
         }
 
         #endregion
 
         #region Properties
 
-        public IEnvironmentModel ResourceEnvironment {
+        public IEnvironmentModel EnvironmentModel {
             get{
-                return _resourceEnvironment;
+                return _environmentModel;
             }
         }
 
         public string ServiceDefinition {
             get {
-                if (string.IsNullOrEmpty(_resourceModel.ServiceDefinition)) {
-                    _resourceModel.ServiceDefinition = DefaultDefinition();
+                if (string.IsNullOrEmpty(_contexttualResourceModel.ServiceDefinition)) {
+                    _contexttualResourceModel.ServiceDefinition = DefaultDefinition();
                 }
 
-                return _resourceModel.ServiceDefinition;
+                return _contexttualResourceModel.ServiceDefinition;
             }
             set {
-                _resourceModel.ServiceDefinition = value;
+                _contexttualResourceModel.ServiceDefinition = value;
                 base.OnPropertyChanged("ServiceDefinition");
             }
 
         }
 
-        public IResourceModel ResourceModel {
+        public IContextualResourceModel ResourceModel {
             
-            get { return _resourceModel; }
-            set { _resourceModel = value; }
+            get { return _contexttualResourceModel; }
+            set { _contexttualResourceModel = value; }
         }
 
         #endregion
@@ -70,10 +71,10 @@ namespace Dev2.Studio.Core.ViewModels {
 
             var sb = new StringBuilder();
 
-            switch (_resourceModel.ResourceType) {
+            switch (_contexttualResourceModel.ResourceType) {
                 case ResourceType.Service:
                 sb.Append(string.Format("<Service Name=\"{0}\">", 
-                _resourceModel.ResourceName));
+                _contexttualResourceModel.ResourceName));
                 sb.Append("\r\n\t\t");
                 sb.Append("<Actions>");
                 sb.Append("\r\n\t\t\t");
@@ -94,7 +95,7 @@ namespace Dev2.Studio.Core.ViewModels {
                 break;
 
                 case ResourceType.Source:
-                sb.Append(string.Format("<Source Name=\"{0}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ", _resourceModel.ResourceName));
+                sb.Append(string.Format("<Source Name=\"{0}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ", _contexttualResourceModel.ResourceName));
                 break;
 
                 default:

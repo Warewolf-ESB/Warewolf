@@ -54,6 +54,7 @@ namespace Dev2.DynamicServices.Network.DataList
             _messageBroker = messageBroker;
             _messageAggregator = messageAggregator;
             _datalistServer = datalistServer;
+            ServerID = Guid.Empty;
 
             Initialize();
         }
@@ -107,21 +108,6 @@ namespace Dev2.DynamicServices.Network.DataList
                 return Guid.Empty;
             }
         }
-
-        /// <summary>
-        /// Gets the server ID.
-        /// </summary>
-        /// <value>
-        /// The server ID.
-        /// </value>
-        public Guid ServerID
-        {
-            get
-            {
-                return Guid.Empty;
-            }
-        }
-
         #endregion Properties
 
         #region Methods
@@ -182,6 +168,8 @@ namespace Dev2.DynamicServices.Network.DataList
 
             return _datalistServer.PersistChildChain(id);
         }
+
+        public Guid ServerID { get; private set; }
 
         #endregion Methods
 

@@ -10,6 +10,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Workspaces;
@@ -401,6 +402,17 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         }
 
+        /// <summary>
+        /// Called after the specified delay after a key is pressed in the search box, to filter treeview and expand items acordingly.
+        /// </summary>
+        /// <author>Jurie.smit</author>
+        /// <date>2/25/2013</date>
+        public void OnDelayedKeyDown()
+        {
+            UpdateSearchFilter();
+            Root.UpdateFilteredNodeExpansionStates();
+        }
+
         #endregion public methods
 
         #region private methods
@@ -455,7 +467,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void UpdateSearchFilter()
         {
-            Root.SetFilter(SearchFilter);
+            Root.FilterText = SearchFilter;
         }
 
         /// <summary>

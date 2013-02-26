@@ -4,9 +4,56 @@
              xmlns:bds="clr-namespace:Unlimited.Applications.BusinessDesignStudio" 
              xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
              xmlns:ViewModels="clr-namespace:Dev2.Studio.Core.ViewModels;assembly=Dev2.Studio.Core"
+             xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:trigger="clr-namespace:Dev2.Studio.Core.AppResources.Trigger;assembly=Dev2.Studio.Core"
+             xmlns:ei="clr-namespace:Dev2.Studio"
+             xmlns:core="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              Name="NavigationViewUserControl"
              ap:UIElementTitleProperty.Title="Navigation">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Margin="0,5,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="25" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox AutomationProperties.AutomationId="UI_SourceServerSearchtxt_AutoID" 
+                             Name="TxtSearch" Grid.Column="0" HorizontalAlignment="Stretch" 
+                             Text="{Binding Path=SearchFilter, UpdateSourceTrigger=PropertyChanged}">
+                
+                <i:Interaction.Triggers>
+                    <trigger:DelayKeydownEventTrigger DelayInMilliSeconds="500">
+                        <core:CallMethodAction  MethodName="OnDelayedKeyDown" TargetObject="{Binding .}"/>
+                    </trigger:DelayKeydownEventTrigger>
+                </i:Interaction.Triggers>
+                
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <customDev2Controls:CircularProgressBar Grid.Column="1" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
+            <Button AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" 
+                            Command="{Binding Path=RefreshMenuCommand}"
+                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
+            </Button>
+        </Grid>
         <TreeView AllowDrop="True" ItemsSource="{Binding Path=Root.Children}" Name="tvExplorer" Grid.Row="1" Grid.ColumnSpan="2"
                   ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
                   ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}">

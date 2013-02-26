@@ -9,6 +9,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 #endregion
 
@@ -19,7 +20,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public class ResourceTreeViewModel : AbstractTreeViewModel
+    public class ResourceTreeViewModel : AbstractTreeViewModel<IContextualResourceModel>
     {
         #region private fields
 
@@ -119,7 +120,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public IContextualResourceModel DataContext
+        public override sealed IContextualResourceModel DataContext
         {
             get { return _dataContext; }
             set
@@ -269,9 +270,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return DataContext != null &&
-                       DataContext.ResourceType == ResourceType.WorkflowService &&
-                       DataContext.ResourceType == ResourceType.Service;
+                return DataContext != null && (
+                       DataContext.ResourceType == ResourceType.WorkflowService ||
+                       DataContext.ResourceType == ResourceType.Service);
             }
         }
 

@@ -1,16 +1,16 @@
 ﻿<UserControl x:Class="Dev2.Studio.Views.Diagnostics.DebugOutputView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
              xmlns:b="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-             xmlns:Diagnostics="clr-namespace:Dev2.Studio.Diagnostics"
-             xmlns:Converters="clr-namespace:Dev2.Studio.AppResources.Converters"
-             xmlns:LocalDiagnostics="clr-namespace:Dev2.Studio.ViewModels.Diagnostics"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-    Name="DebugOutput">
-    <Grid>
+             xmlns:diagnostics="clr-namespace:Dev2.Studio.Diagnostics"
+             xmlns:localDiagnostics="clr-namespace:Dev2.Studio.ViewModels.Diagnostics"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d"
+             Name="DebugOutput">
+    <Grid cal:Bind.Model="{Binding .}">
         <Grid.Resources>
             <Style x:Key="SimulationModeVisibility">
                 <Style.Setters>
@@ -283,11 +283,13 @@
                 <b:TreeviewScrollToEndOnNewContent />
             </i:Interaction.Behaviors>
             <TreeView.Resources>
-                <Diagnostics:MoreLinkCommand x:Key="MoreLinkCommand" />
                 <DataTemplate x:Key="DebugLineItemTemplate">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
-                        <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="15" Command="{StaticResource MoreLinkCommand}" CommandParameter="{Binding MoreLink}" Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
+                        <Button VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                Width="15" 
+                                cal:Message.Attach="OpenMoreLink($dataContext)"
+                                Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
                             <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
                         </Button>
                     </StackPanel>
@@ -315,7 +317,7 @@
                     </StackPanel>
                 </DataTemplate>
 
-                <Diagnostics:DebugLineTemplateSelector x:Key="DebugLineTemplateSelector" ItemTemplate="{StaticResource DebugLineItemTemplate}" GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
+                <diagnostics:DebugLineTemplateSelector x:Key="DebugLineTemplateSelector" ItemTemplate="{StaticResource DebugLineItemTemplate}" GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
                 
                 <DataTemplate x:Key="DebugLinesTemplate">
                     <Grid>
@@ -329,11 +331,11 @@
                     </Grid>
                 </DataTemplate>
                                                
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type LocalDiagnostics:DebugStringTreeViewItemViewModel}">
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type localDiagnostics:DebugStringTreeViewItemViewModel}">
                     <TextBlock Text="{Binding Content}" HorizontalAlignment="Stretch"/>
                 </HierarchicalDataTemplate>
 
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type LocalDiagnostics:DebugStateTreeViewItemViewModel}">
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type localDiagnostics:DebugStateTreeViewItemViewModel}">
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -428,7 +430,7 @@
                 </HierarchicalDataTemplate>               
             </TreeView.Resources> 
             <TreeView.ItemContainerStyleSelector>
-                <Diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}"></Diagnostics:DebugStyleSelector>
+                <diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}"></diagnostics:DebugStyleSelector>
             </TreeView.ItemContainerStyleSelector>
         </TreeView>
     </Grid>

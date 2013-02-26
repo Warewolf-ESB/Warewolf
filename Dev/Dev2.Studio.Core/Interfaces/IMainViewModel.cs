@@ -15,7 +15,6 @@ namespace Dev2.Studio.Core.Interfaces
         IDataListViewModel ActiveDataList { get; set; }
         string Title { get; }
         string OutputMessage { get; set; }
-        dynamic SelectedTab { get; set; }
         bool CanSave { get; }
         bool CanDebug { get; }
 

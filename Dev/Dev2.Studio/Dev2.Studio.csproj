@@ -272,6 +272,7 @@
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfZipDesigner.xaml.cs">
       <DependentUpon>DsfZipDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppResources\AttachedProperties\AttachedPropertyHelper.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditAutocompleteBehaviour.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
@@ -301,11 +302,8 @@
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
-    <Compile Include="Custom Dev2 Controls\CircularProgressBar.xaml.cs">
+    <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Custom Dev2 Controls\Dev2FilterTextBox.xaml.cs">
-      <DependentUpon>Dev2FilterTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Diagnostics\DebugLineGroup.cs" />
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
@@ -315,6 +313,8 @@
     <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
+    <Compile Include="Factory\DeployViewModelFactory.cs" />
+    <Compile Include="ViewModels\ContextViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
@@ -354,16 +354,16 @@
     <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Webs\Callbacks\ConnectCallbackHandler.cs" />
-    <Compile Include="Custom Dev2 Controls\SimpleGridSplitter.cs" />
-    <Compile Include="Custom Dev2 Controls\Connections\ConnectControl.xaml.cs">
+    <Compile Include="CustomControls\SimpleGridSplitter.cs" />
+    <Compile Include="CustomControls\Connections\ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
     <Compile Include="Diagnostics\DebugOutputTreeGenerationStrategy.cs" />
-    <Compile Include="Custom Dev2 Controls\Dev2DataGrid.xaml.cs">
+    <Compile Include="CustomControls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBox.cs" />
+    <Compile Include="CustomControls\Intellisense\IntellisenseTextBox.cs" />
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\FeedbackFactory.cs" />
@@ -391,7 +391,7 @@
     <Compile Include="StartupResources\SplashScreen.cs" />
     <Compile Include="Deploy\DeployStatsTO.cs" />
     <Compile Include="ViewModels\Deploy\DeployViewModel.cs" />
-    <Compile Include="Custom Dev2 Controls\Connections\ConnectViewModel.cs" />
+    <Compile Include="CustomControls\Connections\ConnectViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\ExceptionViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\IExceptionViewModel.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
@@ -400,7 +400,6 @@
     <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\EnvironmentTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\IContextCommands.cs" />
-    <Compile Include="ViewModels\Navigation\ITreeNode.cs" />
     <Compile Include="ViewModels\Navigation\AbstractTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\NavigationViewModel.cs" />
     <Compile Include="ViewModels\Navigation\ResourceTreeViewModel.cs" />
@@ -460,7 +459,7 @@
       <DependentUpon>DebugOutputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModel.cs" />
-    <Compile Include="Custom Dev2 Controls\Connections\ConnectView.xaml.cs">
+    <Compile Include="CustomControls\Connections\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Explorer\ExplorerView.xaml.cs">
@@ -682,25 +681,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Custom Dev2 Controls\CircularProgressBar.xaml">
+    <Page Include="CustomControls\CircularProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Custom Dev2 Controls\Connections\ConnectControl.xaml">
+    <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Custom Dev2 Controls\Dev2DataGrid.xaml">
+    <Page Include="CustomControls\Dev2DataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Custom Dev2 Controls\Dev2FilterTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Custom Dev2 Controls\Intellisense\Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -770,7 +761,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Custom Dev2 Controls\Connections\ConnectView.xaml">
+    <Page Include="CustomControls\Connections\ConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

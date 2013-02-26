@@ -16,123 +16,64 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         #region Properties
 
-        public bool AllowCategoryEditing { 
-            get { return _allowCategoryEditing; } 
-            set { _allowCategoryEditing = value; }
-        }
+        public Guid ID { get; set; }
 
-        public string AuthorRoles {
-            get { return _authorRoles; }
-            set { _authorRoles = value; }
-        }
+        public bool AllowCategoryEditing { get; set; }
 
-        public string Category {
-            get { return _category; }
-            set { _category = value; }
-        }
+        public string AuthorRoles { get; set; }
 
-        public string Comment {
-            get { return _comment; }
-            set { _comment = value; }
-        }
+        public string Category { get; set; }
 
-        public string DataTags {
-            get { return _dataTags; }
-            set { _dataTags = value; }
-        }
+        public string Comment { get; set; }
 
-        public string DisplayName {
-            get { return _displayName; }
-            set { _displayName = value;}
-        }
+        public string DataTags { get; set; }
 
-        public string Error {
-            get { return _error; }
-        }
+        public string DisplayName { get; set; }
 
-        public bool HasErrors {
-            get { return _hasErrors; }
-        }
+        public string Error { get; private set; }
 
-        public string HelpLink {
-            get { return _helpLink; }
-            set { _helpLink = value; }
-        }
+        public bool HasErrors { get; private set; }
 
-        public string IconPath {
-            get { return _iconPath; }
-            set { _iconPath = value; }
-        }
+        public string HelpLink { get; set; }
 
-        public bool IsDebugMode {
-            get { return _isDebugMode; }
-            set { _isDebugMode = value; }
-        }
+        public string IconPath { get; set; }
 
-        public bool RequiresSignOff {
-            get { return _requiresSignOff; }
-            set { _requiresSignOff = value; }
-        }
+        public bool IsDebugMode { get; set; }
 
-        public string ResourceName {
-            get { return _resourceName; }
-            set { _resourceName = value; }
-        }
+        public bool RequiresSignOff { get; set; }
 
-        public ResourceType ResourceType
-        {
-            get { return _resourceType; }
-            set { _resourceType = value; }
-        }
+        public string ResourceName { get; set; }
 
-        public string ServiceDefinition {
-            get { return _serviceDefinition; }
-            set { _serviceDefinition = value; }
-        }
+        public ResourceType ResourceType { get; set; }
 
-        public string WorkflowXaml {
-            get { return _workflowXaml; }
-            set { _workflowXaml = value; }
-        }
+        public string ServiceDefinition { get; set; }
 
-        public List<string> TagList {
-            get { return _tagList; }
-        }
+        public string WorkflowXaml { get; set; }
 
-        public string Tags {
-            get { return _tags; }
-            set { _tags = value; }
-        }
+        public List<string> TagList { get; private set; }
+
+        public string Tags { get; set; }
+
         public new string this[string columnName] {
             get { throw new NotImplementedException(); }
         }
 
-        public string UnitTestTargetWorkflowService {
-            get { return _unitTestTargetWorkflowService; }
-            set { _unitTestTargetWorkflowService = value; }
-        }
+        public string UnitTestTargetWorkflowService { get; set; }
 
-        public string DataList {
-            get { return _dataList; }
-            set { _dataList = value; }
-        }
+        public string DataList { get; set; }
 
-        public System.Activities.Activity WorkflowActivity {
-            get { return _workflowActivity; }
-        }
+        public Activity WorkflowActivity { get; private set; }
 
-        public bool IsDatabaseService {
-            get { return _isDatabaseServer; }
-            set { _isDatabaseServer = value; }
-        }
+        public bool IsDatabaseService { get; set; }
 
-        public bool IsResourceService {
-            get { return _isResourceService; }
-            set { _isResourceService = value; }
-        }
+        public bool IsResourceService { get; set; }
 
-        public IEnvironmentModel Environment {
-            get { return _environment; }
+        public IEnvironmentModel Environment { get; private set; }
+
+        private readonly Guid _serverID ;
+        public Guid ServerID
+        {
+            get { return _serverID; }
         }
 
         #endregion Properties
@@ -168,42 +109,27 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         #region Locals
 
-        private bool _allowCategoryEditing;
-        private string _authorRoles;
-        private string _category;
-        private string _comment;
-        private string _dataTags;
-        private string _displayName;
-        private string _error = "";
-        private bool _hasErrors = false;
-        private string _helpLink;
-        private string _iconPath;
-        private bool _isDebugMode;
-        private bool _requiresSignOff;
-        private string _resourceName;
-        private ResourceType _resourceType;
-        private string _serviceDefinition;
-        private string _workflowXaml;
-        private List<string> _tagList = new List<string>();
-        private string _tags;
-
-        private string _unitTestTargetWorkflowService;
-        private string _dataList;
-        private Activity _workflowActivity = null;
-        private bool _isDatabaseServer;
-        private bool _isResourceService;
-        private IEnvironmentModel _environment;
-
         #endregion Locals
 
         #region CTOR
 
-        public TestResourceModel() {
-            
+        public TestResourceModel()
+        {
+            _serverID = Guid.Empty;
+            WorkflowActivity = null;
+            TagList = new List<string>();
+            Error = "";
+            HasErrors = false;
         }
 
-        public TestResourceModel(IEnvironmentModel environmentModel) {
-            _environment = environmentModel;
+        public TestResourceModel(IEnvironmentModel environmentModel, Guid serverID)
+        {
+            WorkflowActivity = null;
+            TagList = new List<string>();
+            Error = "";
+            HasErrors = false;
+            Environment = environmentModel;
+            _serverID = serverID;
         }
 
         #endregion CTOR

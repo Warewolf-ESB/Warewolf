@@ -2,6 +2,7 @@
 
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

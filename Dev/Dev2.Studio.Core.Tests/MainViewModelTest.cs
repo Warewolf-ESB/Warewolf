@@ -335,10 +335,9 @@ namespace Dev2.Core.Tests {
             mockContextualResourceModel.SetupGet(uL => uL.Environment.IsConnected).Returns(true);
             var lazyProvider = new Lazy<IUserInterfaceLayoutProvider>(() => mockUserInterfaceLayoutProvider.Object);
             mockUserInterfaceLayoutProvider.SetupGet(uL => uL.ActiveDocumentDataContext).Returns(mockWorkflowDesignerVM.Object);
-            mockUserInterfaceLayoutProvider.Setup(uL => uL.GetContextualResourceModel(It.IsAny<object>())).Returns(mockContextualResourceModel.Object);
-           
+            mockWorkflowDesignerVM.SetupGet(o => o.ResourceModel).Returns(mockContextualResourceModel.Object);
+          
             _mainViewModel.UserInterfaceLayoutProvider = lazyProvider;
-
             // Environment is now "Valid" - It should be able to save
             Assert.IsTrue(_mainViewModel.CanSave);
         }

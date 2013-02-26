@@ -160,6 +160,23 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
+        internal static ImportServiceContext InitializeResourceWizardViewModelTests()
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
+            ImportService.AddExportedValueToContainer<IPopUp>(new MoqPopup());
+            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+
+            //IMainViewModel mainViewModel = new MainViewModel();
+            //ImportService.AddExportedValueToContainer<IMainViewModel>(mainViewModel);
+            //ImportService.SatisfyImports(mainViewModel);
+
+            return importServiceContext;
+        }
         internal static ImportServiceContext ExplorerViewModelTest()
         {
             var importServiceContext = new ImportServiceContext();

@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests.MockUtils
 
                 return mock;
             }
-            catch (NullReferenceException nex)
+            catch (NullReferenceException)
             {
                 return mock;
             }
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests.MockUtils
                 }
                 return mock;
             }
-            catch (NullReferenceException nex)
+            catch (NullReferenceException)
             {
                 return mock;
             }

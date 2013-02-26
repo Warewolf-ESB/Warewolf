@@ -69,7 +69,6 @@ namespace Dev2.Studio.ViewModels
         private string _outputMessage;
         private RelayCommand _runCommand;
         private RelayCommand _saveCommand;
-        private dynamic _selectedTab;
         private ICommand _startFeedbackCommand;
         private ICommand _startStopRecordedFeedbackCommand;
         private RelayCommand _viewInBrowserCommand;
@@ -156,7 +155,7 @@ namespace Dev2.Studio.ViewModels
                 if (UserInterfaceLayoutProvider != null && UserInterfaceLayoutProvider.Value != null &&
                     UserInterfaceLayoutProvider.Value.ActiveDocumentDataContext != null)
                 {
-                    return UserInterfaceLayoutProvider.Value.GetContextualResourceModel(CurrentViewModel);
+                    return ResourceHelper.GetContextualResourceModel(CurrentViewModel);
                 }
                 return null;
             }
@@ -182,16 +181,6 @@ namespace Dev2.Studio.ViewModels
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
         public IDataListViewModel ActiveDataList { get; set; }
-
-        public dynamic SelectedTab
-        {
-            get { return _selectedTab; }
-            set
-            {
-                _selectedTab = value;
-                base.OnPropertyChanged("SelectedTab");
-            }
-        }
 
         public ILayoutGridViewModel ActivePage
         {
@@ -220,7 +209,7 @@ namespace Dev2.Studio.ViewModels
                         return IsActiveEnvironmentConnected();
                     }
 
-                    viewModel = CurrentViewModel as IResourceDesignerViewModel;
+                    viewModel = CurrentViewModel as IDesignerViewModel;
                     if (viewModel != null)
                     {
                         return IsActiveEnvironmentConnected();
@@ -257,6 +246,38 @@ namespace Dev2.Studio.ViewModels
             {
                 _outputMessage = value;
                 base.OnPropertyChanged("OutputMessage");
+            }
+        }
+
+        private BindableCollection<ContextViewModel> _contexts;
+        public BindableCollection<ContextViewModel> Contexts
+        {
+            get
+            {
+                return _contexts;
+            }
+            set
+            {
+                if (_contexts == value) return;
+
+                _contexts = value;
+                NotifyOfPropertyChange(() => Contexts);
+            }
+        }
+        
+        private ContextViewModel _activeContext;
+        public ContextViewModel ActiveContext
+        {
+            get
+            {
+                return _activeContext;
+            }
+            set
+            {
+                if (_activeContext == value) return;
+
+                _activeContext = value;
+                NotifyOfPropertyChange(() => ActiveContext);
             }
         }
 

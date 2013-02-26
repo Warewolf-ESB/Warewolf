@@ -1,6 +1,7 @@
 ﻿#region
 
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 #endregion
 

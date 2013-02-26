@@ -1,11 +1,13 @@
-﻿using Dev2.Studio.Core.AppResources.Enums;
+﻿using System;
+using Dev2.Studio.Core.AppResources.Enums;
 using System.Activities;
 using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Interfaces 
 {
-    public interface IResourceModel 
+    public interface IResourceModel
     {
+        Guid ID { get; set; }
         bool AllowCategoryEditing { get; set; }
         string AuthorRoles { get; set; }
         string Category { get; set; }

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
 using Dev2.Studio.AppResources.ExtensionMethods;
 
-namespace Dev2.Studio.Custom_Dev2_Controls
+namespace Dev2.Studio.CustomControls
 {
     [TemplatePart(Name = PART_Thumb, Type = typeof(Thumb))]
     public class SimpleGridSplitter : Control

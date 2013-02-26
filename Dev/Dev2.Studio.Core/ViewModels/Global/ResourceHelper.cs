@@ -3,9 +3,12 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition;
 using System.Xml;
+using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 namespace Dev2.Studio.Core {
     public static class ResourceHelper {
@@ -271,6 +274,22 @@ namespace Dev2.Studio.Core {
             return retVal;
         }
 
+
+        public static IContextualResourceModel GetContextualResourceModel(object dataContext)
+        {
+            IContextualResourceModel resourceModel = null;
+
+            TypeSwitch.Do(
+                dataContext,
+                TypeSwitch.Case<IContextualResourceModel>(x => resourceModel = x),
+                TypeSwitch.Case<IWorkflowDesignerViewModel>(x => resourceModel = x.ResourceModel),
+                TypeSwitch.Case<IServiceDebugInfoModel>(x => resourceModel = x.ResourceModel),
+                TypeSwitch.Case<ITreeNode<IContextualResourceModel>>(x => resourceModel = x.DataContext),
+                TypeSwitch.Case<ILayoutGridViewModel>(x => resourceModel = x.ResourceModel),
+                TypeSwitch.Case<IWebActivity>(x => resourceModel = x.ResourceModel));
+
+            return resourceModel;
+        }
 
     }
 }

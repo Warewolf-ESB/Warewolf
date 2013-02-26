@@ -12,23 +12,22 @@ namespace Dev2.Studio.Core.Interfaces
     {
         bool RemoveDocument(object document);
         void SetActiveTab(IResourceModel resourceModel);
-        object FindTabByResourceModel(IResourceModel resource);
+        FrameworkElement FindTabByResourceModel(IResourceModel resource);
         bool TabExists(IResourceModel resource);
         void PersistTabs();
-        IContextualResourceModel GetContextualResourceModel(object dataContext);
         List<IContextualResourceModel> GetOpenContextualResourceModels();
         void PersistTabs(ItemCollection tabcollection);
         ViewModelDialogResults GetServiceInputDataFromUser(IServiceDebugInfoModel input, out DebugTO debugTO);
         void StartDebuggingSession(DebugTO input, IEnvironmentModel environment);
-        object Manager { get; set; }
-        object ActiveDocument { get; }
+        TabControl Manager { get; set; }
+        FrameworkElement ActiveDocument { get; }
         object ActiveDocumentDataContext { get; }
         ObservableCollection<FrameworkElement> Tabs { get; set; }
-        object PropertyPane { get; set; }
-        object OutputPane { get; set; }
-        object NavigationPane { get; set; }
-        object DataMappingPane { get; set; }
-        object DataListPane { get; set; }
+        ContentControl PropertyPane { get; set; }
+        ContentControl OutputPane { get; set; }
+        ContentControl NavigationPane { get; set; }
+        ContentControl DataMappingPane { get; set; }
+        ContentControl DataListPane { get; set; }
 
         IList<IWorkspaceItem> WorkspaceItems { get; }
     }

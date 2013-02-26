@@ -3,6 +3,7 @@
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using System;

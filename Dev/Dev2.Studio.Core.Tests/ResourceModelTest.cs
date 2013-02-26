@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -19,7 +20,10 @@ namespace Dev2.Core.Tests {
         #region Test Initialization
 
         [TestInitialize]
-        public void Init() {
+        public void Init()
+        {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+
             Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
             _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 

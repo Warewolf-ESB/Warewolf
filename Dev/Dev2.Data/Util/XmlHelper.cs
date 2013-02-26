@@ -48,5 +48,20 @@ namespace Dev2.Data.Util
             return result.ToString();
         }
 
+        public static bool IsValidXElement(string toParse)
+        {
+            try
+            {
+                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                XElement.Parse(toParse);
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }

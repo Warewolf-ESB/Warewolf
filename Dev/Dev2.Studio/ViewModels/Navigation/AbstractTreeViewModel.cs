@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
-using Dev2.Composition;
 
 #endregion
 
@@ -40,14 +41,16 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool _isSelected;
         ITreeNode _treeParent;
         ICollectionView _filteredChildren;
-
+        private bool _unfilteredExpandState;
+        private bool _hasUnfilteredExpandStateBeenSet;
+        private string _filterText;
         #endregion
 
         #region ctor + init
 
         protected AbstractTreeViewModel(ITreeNode parent)
         {
-            if(parent != null)
+            if (parent != null)
             {
                 parent.Add(this);
             }
@@ -72,10 +75,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         public IWizardEngine WizardEngine { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is connected, by walking the tree to the environment node.
+        ///     Gets a value indicating whether this instance is connected, by walking the tree to the environment node.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is connected; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is connected; otherwise, <c>false</c>.
         /// </value>
         /// <author>Jurie.Smit</author>
         /// <date>2013/01/28</date>
@@ -94,27 +97,21 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public bool IsFiltered
         {
-            get
-            {
-                return _isFiltered;
-            }
+            get { return _isFiltered; }
             set
             {
-                if(_isFiltered == value)
+                if (_isFiltered == value)
                 {
                     return;
                 }
                 _isFiltered = value;
                 NotifyOfPropertyChange(() => IsFiltered);
 
-                if(TreeParent == null)
+                if (TreeParent == null)
                 {
                     return;
                 }
 
-                //
-                //Juries 2013/01/21 Do not remove - to use in combination with filteredcollection when needed
-                //
                 TreeParent.FilteredChildren.Refresh();
                 TreeParent.NotifyOfPropertyChange("ChildrenCount");
             }
@@ -130,13 +127,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
+            get { return _isSelected; }
             set
             {
-                if(_isSelected == value)
+                if (_isSelected == value)
                 {
                     return;
                 }
@@ -156,13 +150,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public ITreeNode TreeParent
         {
-            get
-            {
-                return _treeParent;
-            }
+            get { return _treeParent; }
             set
             {
-                if(_treeParent == value)
+                if (_treeParent == value)
                 {
                     return;
                 }
@@ -170,6 +161,20 @@ namespace Dev2.Studio.ViewModels.Navigation
                 _treeParent = value;
                 NotifyOfPropertyChange(() => TreeParent);
                 NotifyOfPropertyChange(() => ChildrenCount);
+            }
+        }
+
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+            set
+            {
+                _filterText = value;
+                NotifyOfPropertyChange(() => FilterText);
+                SetFilter(_filterText);
             }
         }
 
@@ -185,7 +190,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if(_children == null)
+                if (_children == null)
                 {
                     _children = new ObservableCollection<ITreeNode>();
                     _children.CollectionChanged += ChildrenOnCollectionChanged;
@@ -207,7 +212,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 var childCount = Children.Where(c => !c.IsFiltered)
-                                         .Count(c => c.GetType() == typeof(ResourceTreeViewModel));
+                                         .Count(c => c.GetType() == typeof (ResourceTreeViewModel));
 
                 return childCount
                        + Children.Where(c => !c.IsFiltered).Sum(c => c.ChildrenCount);
@@ -226,15 +231,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         public bool? IsChecked
         {
-            get
-            {
-                return _isChecked;
+            get { return _isChecked; }
+            set { SetIsChecked(value, true, true, true); }
             }
-            set
-            {
-                SetIsChecked(value, true, true, true);
-            }
-        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is expanded in the tree.
@@ -247,20 +246,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public bool IsExpanded
         {
-            get
-            {
-                return _isExpanded;
-            }
+            get { return _isExpanded; }
             set
             {
-                if(_isExpanded != value)
+                if (_isExpanded != value)
                 {
                     _isExpanded = value;
                     NotifyOfPropertyChange(() => IsExpanded);
                 }
 
                 // Expand all the way up to the root.
-                if(value && TreeParent != null)
+                if (value && TreeParent != null)
                 {
                     TreeParent.IsExpanded = true;
                 }
@@ -273,141 +269,90 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual bool HasExecutableCommands
         {
-            get
-            {
-                return CanDeploy;
+            get { return CanDeploy; }
             }
-        }
 
         public virtual bool CanBuild
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanDebug
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanEdit
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanManualEdit
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanRun
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanDelete
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanHelp
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanShowDependencies
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanShowProperties
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanCreateWizard
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanEditWizard
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanDeploy
         {
-            get
-            {
-                return EnvironmentModel != null && EnvironmentModel.IsConnected;
+            get { return EnvironmentModel != null && EnvironmentModel.IsConnected; }
             }
-        }
 
         public virtual bool CanRemove
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanDisconnect
         {
-            get
-            {
-                return false;
+            get { return false; }
             }
-        }
 
         public virtual bool CanConnect
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public virtual string IconPath
         {
-            get
-            {
-                return _iconPath;
-            }
+            get { return _iconPath; }
             set
             {
-                if(_iconPath == value)
+                if (_iconPath == value)
                 {
                     return;
                 }
@@ -431,90 +376,57 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual ICommand BuildCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand DebugCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand EditCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand ManualEditCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand RunCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand DeleteCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand HelpCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand ShowDependenciesCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand ShowPropertiesCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand CreateWizardCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand EditWizardCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand DeployCommand
@@ -530,26 +442,17 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual ICommand RemoveCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand DisconnectCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public virtual ICommand ConnectCommand
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         #endregion Commands
@@ -560,11 +463,16 @@ namespace Dev2.Studio.ViewModels.Navigation
         ///     Sets the filter text used to set The IsFilteredProperty.
         /// </summary>
         /// <param name="filterText">The filter text.</param>
-        /// <author>Jurie.smit</author>
+        /// <param name="updateProperty">
+        ///     if set to <c>true</c> [update property].
+        /// </param>
         /// <date>2013/01/23</date>
+        /// <author>
+        ///     Jurie.smit
+        /// </author>
         public void SetFilter(string filterText)
         {
-            if(GetType() == typeof(ResourceTreeViewModel))
+            if (GetType() == typeof (ResourceTreeViewModel))
             {
                 IsFiltered = !DisplayName.ToUpper().Contains(filterText.ToUpper()) &&
                              IsChecked.HasValue &&
@@ -572,7 +480,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             else
             {
-                Children.ToList().ForEach(c => c.SetFilter(filterText));
+                Children.ToList().ForEach(c => c.FilterText = filterText);
                 IsFiltered = Children.All(c => c.IsFiltered);
             }
 
@@ -598,27 +506,27 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void SetIsChecked(bool? value, bool updateChildren, bool updateParent, bool sendMessage)
         {
-            if(value == _isChecked)
+            if (value == _isChecked)
             {
                 return;
             }
 
             _isChecked = value;
 
-            if(updateChildren && _isChecked.HasValue)
+            if (updateChildren && _isChecked.HasValue)
             {
                 //Do not check filtered children
                 Children.Where(c => !c.IsFiltered).ToList()
                     .ForEach(c => c.SetIsChecked(_isChecked, true, false, false));
             }
 
-            if(updateParent && _treeParent != null)
+            if (updateParent && _treeParent != null)
             {
                 TreeParent.VerifyCheckState();
             }
 
             NotifyOfPropertyChange(() => IsChecked);
-            if(sendMessage)
+            if (sendMessage)
             {
                 //Message to update count totals
                 EventAggregator.Publish(new ResourceCheckedMessage());
@@ -633,14 +541,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void VerifyCheckState()
         {
             bool? state = null;
-            for(var i = 0; i < FilteredChildren.OfType<ITreeNode>().Count(); ++i)
+            for (int i = 0; i < FilteredChildren.OfType<ITreeNode>().Count(); ++i)
             {
-                var current = FilteredChildren.OfType<ITreeNode>().ToArray()[i].IsChecked;
-                if(i == 0)
+                bool? current = FilteredChildren.OfType<ITreeNode>().ToArray()[i].IsChecked;
+                if (i == 0)
                 {
                     state = current;
                 }
-                else if(state != current)
+                else if (state != current)
                 {
                     state = null;
                     break;
@@ -654,19 +562,57 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public IEnumerable<ITreeNode> GetChildren(Func<ITreeNode, bool> predicate)
         {
-            if(predicate == null)
+            if (predicate == null)
             {
                 predicate = n => true;
             }
 
             var children = new List<ITreeNode>(Children.Where(predicate));
 
-            foreach(var child in Children)
+            foreach (ITreeNode child in Children)
             {
                 children.AddRange(child.GetChildren(predicate));
             }
 
             return children;
+        }
+
+        /// <summary>
+        /// Updates the node's expansion states according to the current filter.
+        /// </summary>
+        /// <author>Jurie.smit</author>
+        /// <date>2/25/2013</date>
+        public void UpdateFilteredNodeExpansionStates()
+        {
+            //If no filter set unfiltered state
+            if (string.IsNullOrWhiteSpace(FilterText))
+            {
+                this.IsExpanded = _unfilteredExpandState;
+                _hasUnfilteredExpandStateBeenSet = false;
+                foreach (var treeNode in Children)
+                {
+                    treeNode.UpdateFilteredNodeExpansionStates();
+                }
+
+                return;
+            }
+
+            //toggle boolean indicating wheter unfiltered state has been set
+            if (!_hasUnfilteredExpandStateBeenSet)
+            {
+                _unfilteredExpandState = this.IsExpanded;
+                _hasUnfilteredExpandStateBeenSet = true;
+            }
+
+            //set expanded state according to current filter
+            if (this.Children.Any(c => !c.IsFiltered))
+            {
+                IsExpanded = true;
+            }
+            foreach (var treeNode in Children)
+            {
+                treeNode.UpdateFilteredNodeExpansionStates();
+            }
         }
 
         /// <summary>
@@ -694,15 +640,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public ITreeNode FindChild(ITreeNode childToFind)
         {
-            var toFind = Children.FirstOrDefault(c => ReferenceEquals(childToFind, c));
-            if(toFind != null)
+            ITreeNode toFind = Children.FirstOrDefault(c => ReferenceEquals(childToFind, c));
+            if (toFind != null)
             {
                 return toFind;
             }
-            foreach(var child in Children)
+            foreach (ITreeNode child in Children)
             {
                 toFind = child.FindChild(childToFind);
-                if(toFind == null)
+                if (toFind == null)
                 {
                     continue;
                 }
@@ -732,8 +678,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public bool Remove(ITreeNode child)
         {
-            var toRemove = FindChild(child);
-            if(toRemove == null)
+            ITreeNode toRemove = FindChild(child);
+            if (toRemove == null)
             {
                 return false;
             }
@@ -771,13 +717,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         protected void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             NotifyOfPropertyChange(() => ChildrenCount);
-            if(args.NewItems != null && args.NewItems.Count > 0)
+            if (args.NewItems != null && args.NewItems.Count > 0)
             {
                 args.NewItems.Cast<ITreeNode>()
                     .ToList()
                     .ForEach(c => c.PropertyChanged += ChildPropertyChanged);
             }
-            if(args.OldItems != null && args.OldItems.Count > 0)
+            if (args.OldItems != null && args.OldItems.Count > 0)
             {
                 args.OldItems.Cast<ITreeNode>()
                     .ToList()
@@ -794,10 +740,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        void ChildPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ChildPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //Specifically used switch for extensibility - propertyName is a magic string
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "ChildrenCount":
                     NotifyOfPropertyChange("ChildrenCount");
@@ -832,7 +778,6 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #endregion
 
-
         public ICollectionView FilteredChildren
         {
             get
@@ -852,6 +797,28 @@ namespace Dev2.Studio.ViewModels.Navigation
             if (vm == null) return false;
             if (!vm.IsFiltered) return true;
             return false;
+        }
+    }
+
+    public abstract class AbstractTreeViewModel<T> : AbstractTreeViewModel, ITreeNode<T>
+    {
+        private T _dataContext;
+
+        protected AbstractTreeViewModel(ITreeNode parent) : base(parent)
+        {
+        }
+
+        public virtual T DataContext
+        {
+            get { return _dataContext; }
+            set
+            {
+                if (value.Equals(_dataContext))
+                    return;
+
+                _dataContext = value;
+                NotifyOfPropertyChange(() => DataContext);
+            }
         }
     }
 }

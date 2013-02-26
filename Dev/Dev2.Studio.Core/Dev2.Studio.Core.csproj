@@ -48,14 +48,16 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp">
-      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CefSharp.Wpf">
-      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp, Version=0.12.4596.50, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Wpf, Version=0.12.4596.54, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,8 +76,17 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Reactive">
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Binaries\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -85,6 +96,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -167,12 +179,14 @@
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppResources\Trigger\DelayKeydownEventTrigger.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="ErrorHandling\enErrorType.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
+    <Compile Include="Helpers\TypeSwitch.cs" />
     <Compile Include="Interfaces\DataList\IDataListValidator.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="Factories\DataListViewModelFactory.cs" />
@@ -267,6 +281,7 @@
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
+    <Compile Include="Messages\UpdateResourceDesignerMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
@@ -353,6 +368,7 @@
     <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
+    <Compile Include="ViewModels\Navigation\ITreeNode.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceWizardViewModel.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
@@ -461,7 +477,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\UserInterfaceBuilder\" />
-    <Folder Include="ViewModels\Navigation\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

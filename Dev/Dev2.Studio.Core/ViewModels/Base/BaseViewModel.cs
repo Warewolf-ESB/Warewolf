@@ -14,7 +14,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// It provides support for property change notifications 
     /// and has a DisplayName property.  This class is abstract.
     /// </summary>
-    public abstract class BaseViewModel : SimpleBaseViewModel, IDisposable
+    public abstract class BaseViewModel : SimpleBaseViewModel
     {
         #region Constructor
 
@@ -24,28 +24,6 @@ namespace Dev2.Studio.Core.ViewModels.Base
         }
 
         #endregion // Constructor
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Invoked when this object is being removed from the application
-        /// and will be subject to garbage collection.
-        /// </summary>
-        public void Dispose()
-        {
-            OnDispose();
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Child classes can override this method to perform 
-        /// clean-up logic, such as removing event handlers.
-        /// </summary>
-        protected virtual void OnDispose()
-        {
-        }
-
-        #endregion // IDisposable Members
 
         #region Protected Virtual Methods
 

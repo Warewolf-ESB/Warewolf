@@ -7,6 +7,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using System;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 #endregion
 

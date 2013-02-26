@@ -23,7 +23,8 @@ namespace Dev2.UI
         #region Static Constructor
         static IntellisenseTextBox()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntellisenseTextBox), new FrameworkPropertyMetadata(typeof(IntellisenseTextBox)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntellisenseTextBox), 
+                new FrameworkPropertyMetadata(typeof(IntellisenseTextBox)));
         }
         #endregion Static Constructor
 
@@ -551,6 +552,7 @@ namespace Dev2.UI
         #region Constructor
         public IntellisenseTextBox()
         {
+            DefaultStyleKey = typeof(IntellisenseTextBox);
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
             Unloaded += OnUnloaded;
         }

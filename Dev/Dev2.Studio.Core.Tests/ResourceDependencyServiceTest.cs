@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Composition;
 using Dev2.Core.Tests.XML;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -31,6 +32,8 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void TestInitialize()
         {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+
             _testEnvironmentModel = new Mock<IEnvironmentModel>();
 
             _testDependencyGraph = XmlResource.Fetch("DependenciesGraphUniqueTest");

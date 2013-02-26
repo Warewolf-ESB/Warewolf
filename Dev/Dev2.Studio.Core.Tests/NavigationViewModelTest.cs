@@ -8,6 +8,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,7 +27,6 @@ namespace Dev2.Core.Tests
         #region Test Variables
 
         Mock<IEnvironmentModel> mockEnvironmentModel;
-        Mock<IContextualResourceModel> mockEnvironmentModelmockResourceModel;
         Mock<IContextualResourceModel> mockResourceModel;
         Mock<IContextualResourceModel> mockResourceModel1;
         Mock<IContextualResourceModel> mockResourceModel2;

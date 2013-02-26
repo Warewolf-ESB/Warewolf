@@ -67,11 +67,11 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
-            Mock<IResourceModel> m = new Mock<IResourceModel>();
+            var m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.ServiceDefinition).Returns("result");
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
 
-            IResourceModel model = m.Object;
+            IContextualResourceModel model = m.Object;
             IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
             target = new ResourceDesignerViewModel(model, environment);
         }
@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DefaultDefinition_ServiceType_Expected_ServiceDefinitionBuiltForService()
         {
-            Mock<IResourceModel> m = new Mock<IResourceModel>();
+            Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.ServiceDefinition).Returns(string.Empty).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
             IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests
         ///</summary>
         [TestMethod]
         public void DefaultDefinition_SourceType_Expected_ServiceDefinitionBuiltForService() {
-            Mock<IResourceModel> m = new Mock<IResourceModel>();
+            Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.ServiceDefinition).Returns(string.Empty).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Source);
             IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value

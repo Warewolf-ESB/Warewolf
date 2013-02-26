@@ -1,4 +1,5 @@
 ﻿using Dev2.Studio.Core;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
 using System.Windows;
 using System.Windows.Input;

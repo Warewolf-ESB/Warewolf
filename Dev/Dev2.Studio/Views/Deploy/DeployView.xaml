@@ -30,7 +30,6 @@
             <Grid Grid.Column="0" Margin="0,0,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 
@@ -40,66 +39,8 @@
                                  ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"/>
 
-                <!--<Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Grid.Column="0" Text="Source Server" />
-                    <ComboBox AutomationProperties.AutomationId="UI_SourceServercbx_AutoID" Grid.Column="1" 
-                              ItemsSource="{Binding Servers}" SelectedItem="{Binding SelectedSourceServer}" 
-                              Margin="5,0,0,0" DisplayMemberPath="Alias" Height="22" VerticalAlignment="Bottom">
-                        <ComboBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="AutomationProperties.AutomationId">
-                                    <Setter.Value>
-                                        <MultiBinding StringFormat="UI_SourceServer_{0}_AutoID">
-                                            <Binding Path="Alias" />
-                                        </MultiBinding>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ComboBox.ItemContainerStyle>
-                    </ComboBox>
-                    <Button AutomationProperties.AutomationId="UI_SourceServerConnectbtn_AutoID" 
-                            Grid.Column="2" Content="..." Margin="5,0,0,0" Command="{Binding ConnectCommand}" 
-                            CommandParameter="{Binding DataContext, ElementName=SourceNavigationView}" />
-                </Grid>-->
 
-                <Grid Grid.Row="1" Margin="0,5,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="25" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox AutomationProperties.AutomationId="UI_SourceServerSearchtxt_AutoID" 
-                             Name="TxtSearch" Grid.Column="0" HorizontalAlignment="Stretch" 
-                             Text="{Binding Path=Source.SearchFilter, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="">
-                                        <Setter Property="Background" Value="{StaticResource SearchHint}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <customDev2Controls:CircularProgressBar Grid.Column="1" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    Visibility="{Binding Source.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
-                    <Button AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
-                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" 
-                            Command="{Binding Path=Source.RefreshMenuCommand}"
-                            Visibility="{Binding Source.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                        <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
-                    </Button>
-                </Grid>
-
-                <nv:NavigationView Grid.Row="2" DataContext="{Binding Source}" x:Name="SourceNavigationView">
+                <nv:NavigationView Grid.Row="1" DataContext="{Binding Source}" x:Name="SourceNavigationView">
                     <nv:NavigationView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -168,69 +109,6 @@
                                  ServerChangedCommand="{Binding TargetServerChangedCommand}"
                                  ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"/>
-
-                <!--<Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="6*"/>
-                        <RowDefinition Height="5*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text="Destination Server" Grid.RowSpan="2" />
-                    <ComboBox AutomationProperties.AutomationId="UI_DestinationServercbx_AutoID" Grid.Column="1" 
-                              ItemsSource="{Binding Servers}" SelectedItem="{Binding SelectedDestinationServer}" 
-                              Margin="5,0,0,0" DisplayMemberPath="Alias" Grid.RowSpan="2">
-                        <ComboBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="AutomationProperties.AutomationId">
-                                    <Setter.Value>
-                                        <MultiBinding StringFormat="UI_DestinationServer_{0}_AutoID">
-                                            <Binding Path="Alias" />
-                                        </MultiBinding>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ComboBox.ItemContainerStyle>
-                    </ComboBox>
-                    <Button AutomationProperties.AutomationId="UI_DestinationServerConnectbtn_AutoID" 
-                            Grid.Column="2" Content="..." Margin="5,0,0,0" Command="{Binding ConnectCommand}" 
-                            CommandParameter="{Binding DataContext, ElementName=TargetNavigationView}" Grid.RowSpan="2" />
-                </Grid>-->
-
-                <Grid Grid.Row="1" Margin="0,5,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="25" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox AutomationProperties.AutomationId="UI_DestinationServerSearchtxt_AutoID" 
-                             Grid.Column="0" HorizontalAlignment="Stretch" 
-                             Text="{Binding Path=Target.SearchFilter, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="">
-                                        <Setter Property="Background" Value="{StaticResource SearchHint}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <customDev2Controls:CircularProgressBar Grid.Column="1" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    Visibility="{Binding Target.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>                    
-                    <Button AutomationProperties.AutomationId="UI_DestinationServerRefreshbtn_AutoID" 
-                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" 
-                            Grid.Column="1" Command="{Binding Path=Target.RefreshMenuCommand}"
-                            Visibility="{Binding Target.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                        <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
-                    </Button>
-                </Grid>
 
                 <nv:NavigationView Grid.Row="2" DataContext="{Binding Target}" x:Name="TargetNavigationView">
                     <nv:NavigationView.ItemContainerStyle>

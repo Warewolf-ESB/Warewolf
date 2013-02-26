@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.IO;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -369,7 +370,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.ServiceDefinition = data.XmlString;
                 }
             }
+
             resource.DataList = data.GetValue("DataList");
+            resource.ID = Guid.Parse(data.GetValue("ID"));
+
+            if (resource.ID == Guid.NewGuid())
+                throw new InvalidDataException("Resource doesnt have a valid id, needs to be updated");
 
             if (string.IsNullOrEmpty(resource.ServiceDefinition))
             {

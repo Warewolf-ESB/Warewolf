@@ -2,7 +2,7 @@
 
 namespace Dev2.Studio.AppResources.AttachedProperties
 {
-    public enum TabActionContexts
+    public enum TabActionContext
     {
         Unknown,
         Workflow,
@@ -32,17 +32,17 @@ namespace Dev2.Studio.AppResources.AttachedProperties
 
     public static class UIElementTabActionContext
     {
-        public static void SetTabActionContext(UIElement element, TabActionContexts value)
+        public static void SetTabActionContext(UIElement element, TabActionContext value)
         {
             element.SetValue(tabActionContextProperty, value);
         }
 
-        public static TabActionContexts GetTabActionContext(UIElement element)
+        public static TabActionContext GetTabActionContext(UIElement element)
         {
-            return (TabActionContexts)element.GetValue(tabActionContextProperty);
+            return (TabActionContext)element.GetValue(tabActionContextProperty);
         }
 
         public static readonly DependencyProperty tabActionContextProperty =
-            DependencyProperty.RegisterAttached("TabActionContext", typeof(TabActionContexts), typeof(UIElementTabActionContext), new PropertyMetadata(TabActionContexts.Unknown));
+            DependencyProperty.RegisterAttached("TabActionContext", typeof(TabActionContext), typeof(UIElementTabActionContext), new PropertyMetadata(TabActionContext.Unknown));
     }
 }

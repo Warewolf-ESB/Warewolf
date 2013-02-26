@@ -26,7 +26,6 @@ namespace Dev2.Studio.Core.Network.DataList
         private ThreadLocal<object> _threadSpecificContext = new ThreadLocal<object>();
         private ConcurrentDictionary<long, DispatcherFrameToken<INetworkMessage>> _pendingMessages = new ConcurrentDictionary<long, DispatcherFrameToken<INetworkMessage>>();
         
-        private Guid _serverID;
         private Guid _accountID;
         private TCPDispatchedClient _client;
         private ServerMessaging _serverMessaging;
@@ -50,7 +49,7 @@ namespace Dev2.Studio.Core.Network.DataList
             }
 
             _client = client;
-            _serverID = client.ServerID;
+            ServerID = client.ServerID;
             _accountID = client.AccountID;
 
             Initialize();
@@ -89,20 +88,6 @@ namespace Dev2.Studio.Core.Network.DataList
             get
             {
                 return _accountID;
-            }
-        }
-
-        /// <summary>
-        /// Gets the server ID.
-        /// </summary>
-        /// <value>
-        /// The server ID.
-        /// </value>
-        public Guid ServerID 
-        {
-            get
-            {
-                return _serverID;
             }
         }
 
@@ -272,6 +257,8 @@ namespace Dev2.Studio.Core.Network.DataList
 
             return result;
         }
+
+        public Guid ServerID { get; private set; }
 
         #endregion Methods
 

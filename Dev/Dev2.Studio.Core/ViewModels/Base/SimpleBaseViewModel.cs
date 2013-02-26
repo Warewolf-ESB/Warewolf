@@ -75,7 +75,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// Invoked when this object is being removed from the application
         /// and will be subject to garbage collection.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             OnDispose();
             GC.SuppressFinalize(this);
