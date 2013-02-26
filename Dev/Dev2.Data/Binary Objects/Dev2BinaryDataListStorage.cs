@@ -62,7 +62,7 @@ namespace Dev2.Data.Binary_Objects
                 BackgroundWorker.WorkerSupportsCancellation = true;
                 BackgroundWorker.WorkerReportsProgress = false;
                 BackgroundWorker.DoWork += MoveItemsIntoMemoryCacheBackground;
-                BackgroundWorker.RunWorkerAsync();
+                if(!BackgroundWorker.IsBusy) BackgroundWorker.RunWorkerAsync();
             }
 //            if(BackgroundWorker.CancellationPending)
 //            {

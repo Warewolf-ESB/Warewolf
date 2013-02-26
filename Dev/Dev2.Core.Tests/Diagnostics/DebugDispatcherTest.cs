@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -11,6 +12,19 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
     {
         
         static object l = new object();
+
+        object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
 
         #region Add
 

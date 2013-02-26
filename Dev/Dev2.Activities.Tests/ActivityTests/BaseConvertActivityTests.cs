@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Threading;
+using Dev2;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -64,6 +65,19 @@ namespace ActivityUnitTests.ActivityTests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+        object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
+
         #endregion
 
         #region Base Convert Cases

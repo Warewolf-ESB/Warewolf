@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
@@ -18,6 +19,19 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class ServicesTests
     {
+        static object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
+
+
         #region Save
 
         [TestMethod]

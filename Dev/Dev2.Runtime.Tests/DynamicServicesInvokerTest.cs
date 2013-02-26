@@ -24,18 +24,20 @@ namespace Dev2.DynamicServices.Test
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
+           
             DynamicServicesHostTests.ClassInitialize(testContext);
         }
 
         [ClassCleanup]
         public static void MyClassCleanup()
         {
+            
         }
 
         [TestInitialize]
         public void TestInit()
         {
-            Monitor.Enter(_testGuard);
+            Monitor.Enter(_testGuard); 
         }
 
         [TestCleanup]

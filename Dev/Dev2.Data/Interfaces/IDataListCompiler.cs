@@ -9,7 +9,7 @@ using Dev2.Enums;
 
 namespace Dev2.DataList.Contract
 {
-    public interface IDataListCompiler
+    public interface IDataListCompiler: IDisposable
     {
 
         // Travis.Frisinger : 29.10.2012 - Amend Compiler Interface for refactoring

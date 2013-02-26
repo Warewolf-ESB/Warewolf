@@ -55,6 +55,8 @@ namespace Dev2.DynamicServices
         public List<string> compilerErrorList = new List<string>();
         // ReSharper restore InconsistentNaming
         readonly IFrameworkDuplexDataChannel _managementChannel;
+        object _lockForFileRead = new object();
+
         #endregion
 
         #region Public Properties
@@ -544,14 +546,18 @@ namespace Dev2.DynamicServices
             //             Refactored to enable unit testing
             var resourceIndex = new Dictionary<string, string>();
             var resources = new List<DynamicServiceObjectBase>();
+            
             foreach(string fileName in filePaths)
             {
                 string fileContent;
-                using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Delete))
+                lock(_lockForFileRead)
                 {
-                    using (var textReader = new StreamReader(fileStream))
+                    using(var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Delete))
                     {
-                        fileContent = textReader.ReadToEnd();
+                        using(var textReader = new StreamReader(fileStream))
+                        {
+                            fileContent = textReader.ReadToEnd();
+                        }
                     }
                 }
 

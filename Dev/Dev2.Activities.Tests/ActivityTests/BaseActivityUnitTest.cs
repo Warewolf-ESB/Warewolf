@@ -146,11 +146,13 @@ namespace ActivityUnitTests
             if (ExecutionID == Guid.Empty)
             {
                 Compiler = DataListFactory.CreateDataListCompiler();
+
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-                if (dataObject != null)
-                {
-                    dataObject.DataListID = ExecutionID;
-                }
+                    if(dataObject != null)
+                    {
+                        dataObject.DataListID = ExecutionID;
+                    }
+                
             }
             if (errors.HasErrors())
             {

@@ -12,7 +12,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.Base
     {
 
         private static Dev2BaseConversionFactory fac = new Dev2BaseConversionFactory();
-
+        public static object _testGuard = new object();
         private TestContext testContextInstance;
 
         /// <summary>
@@ -52,7 +52,17 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.Base
         // public void MyTestCleanup() { }
         //
         #endregion
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
 
 
         [TestMethod]

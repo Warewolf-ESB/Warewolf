@@ -21,7 +21,7 @@ using System.Xml.Linq;
 
 namespace Dev2.DataList.Contract
 {
-    internal class DataListCompiler : IDataListCompiler, IDisposable
+    internal class DataListCompiler : IDataListCompiler
     {
         #region Attributes
 

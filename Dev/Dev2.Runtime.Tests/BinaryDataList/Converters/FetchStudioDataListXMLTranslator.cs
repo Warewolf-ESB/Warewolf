@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -11,6 +12,17 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
     [TestClass]
     public class FetchStudioDataListXMLTranslator
     {
+        object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
 
         private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
 
@@ -33,7 +45,7 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
             dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true,true, dir, out error);
 
             dl1.TryCreateScalarTemplate(string.Empty, "myScalar", string.Empty, true, true,dir, out error);
-
+            dl1.Dispose();
             return (_compiler.PushBinaryDataList(dl1.UID, dl1, out errors));
 
         }

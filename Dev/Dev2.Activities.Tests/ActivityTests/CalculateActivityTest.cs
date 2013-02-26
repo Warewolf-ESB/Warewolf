@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using Dev2;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -78,6 +79,18 @@ namespace ActivityUnitTests.ActivityTest
             //{
             //    _redisProcess.Kill();
             //}
+        }
+
+        object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
         }
 
         #endregion
