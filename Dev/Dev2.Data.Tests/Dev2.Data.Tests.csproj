@@ -73,6 +73,7 @@
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
     <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
     <Compile Include="Operations\Dev2ReplaceOperationTests.cs" />
+    <Compile Include="Persistence\PersistedDictionaryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTemplates\DecisionTest.cs" />
     <Compile Include="TestStrings.Designer.cs">

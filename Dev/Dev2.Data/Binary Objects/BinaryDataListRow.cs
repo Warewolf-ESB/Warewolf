@@ -51,7 +51,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool IsDeferredRead(int idx)
         {
-            if(idx < _startIdx.Length)
+            if(idx < _startIdx.Length && idx >= 0)
             {
                 return _deferedColumns[idx];
             }

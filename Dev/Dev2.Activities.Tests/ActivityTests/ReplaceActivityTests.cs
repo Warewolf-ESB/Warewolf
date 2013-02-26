@@ -322,7 +322,7 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(ActivityStrings.ReplaceDataListShape, ActivityStrings.ReplaceDataListWithData, "[[recset1(0).field1]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = @"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError><InnerError>Index [ 0 ] is out of bounds</InnerError>";
+            string expected = @"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>";
             string actual = string.Empty;
             List<string> recsetData = new List<string>();
             string error = string.Empty;

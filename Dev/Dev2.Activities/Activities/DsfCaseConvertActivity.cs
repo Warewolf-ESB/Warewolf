@@ -79,6 +79,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach (ICaseConvertTO item in ConvertCollection)
                 {
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
+                    allErrors.MergeErrors(errors);
+
 
                     if (tmp != null)
                     {

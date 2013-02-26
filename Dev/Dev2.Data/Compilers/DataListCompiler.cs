@@ -209,7 +209,7 @@ namespace Dev2.DataList.Contract
         public string ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
         {
 
-            ErrorResultTO allErrors = new ErrorResultTO(); 
+            ErrorResultTO allErrors = new ErrorResultTO();
             string dataList = DataListUtil.ShapeDefinitionsToDataList(definitions, defType, out errors);
             allErrors.MergeErrors(errors);
             errors.ClearErrors();
@@ -344,7 +344,7 @@ namespace Dev2.DataList.Contract
             errors = new ErrorResultTO();
             byte[] payload = new byte[0];
             BinaryFormatter bf = new BinaryFormatter();
-            using(MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 bf.Serialize(ms, bdl);
                 payload = ms.ToArray();
@@ -360,7 +360,7 @@ namespace Dev2.DataList.Contract
             errors = new ErrorResultTO();
             string error;
 
-            if(_svrCompiler.TryPushDataList(bdl, out error))
+            if (_svrCompiler.TryPushDataList(bdl, out error))
             {
                 errors.AddError(error);
                 return bdl.UID;
@@ -404,7 +404,7 @@ namespace Dev2.DataList.Contract
             // Serialize the model first ;)
             string jsonModel = ConvertModelToJson(model);
             ErrorResultTO allErrors = new ErrorResultTO();
-            
+
             // Create a new DL if need be
             Guid pushID = dlID;
             if (pushID == GlobalConstants.NullDataListID)
@@ -439,14 +439,14 @@ namespace Dev2.DataList.Contract
             }
             else
             {
-                
+
                 errors.AddError("Failed to locate model!");
             }
 
             return obj;
         }
 
-        public string FetchSystemModelAsWebModel<T>(Guid dlID, out ErrorResultTO errors )
+        public string FetchSystemModelAsWebModel<T>(Guid dlID, out ErrorResultTO errors)
         {
             T model = FetchSystemModelFromDataList<T>(dlID, out errors);
             string result = "{}"; // empty data set for injection ;)
@@ -538,7 +538,7 @@ namespace Dev2.DataList.Contract
         {
             ErrorResultTO errors = new ErrorResultTO();
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
-            if(binaryDatalist != null) return (binaryDatalist.HasErrors());
+            if (binaryDatalist != null) return (binaryDatalist.HasErrors());
             else
             {
                 errors.AddError("No binary datalist found");
@@ -555,8 +555,8 @@ namespace Dev2.DataList.Contract
             {
                 var sb = new StringBuilder();
                 var count = 1;
-                var errorList =  errors.FetchErrors();
-                foreach(var error in errorList)
+                var errorList = errors.FetchErrors();
+                foreach (var error in errorList)
                 {
                     sb.AppendFormat("{0} {1}", count, error);
                     count++;
@@ -575,7 +575,7 @@ namespace Dev2.DataList.Contract
         {
             ErrorResultTO errors = new ErrorResultTO();
             var list = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
-            if (list != null) 
+            if (list != null)
                 list.ClearErrors();
         }
 
@@ -735,18 +735,18 @@ namespace Dev2.DataList.Contract
                         string errorString;
                         if (entry.IsRecordset)
                         {
-                            if(entry.ColumnIODirection!=enDev2ColumnArgumentDirection.None)
-                            foreach (Dev2Column col in entry.Columns)
-                            {
-                                newDl.TryCreateScalarTemplate(string.Empty, entry.Namespace + GlobalConstants.RecordsetJoinChar + col.ColumnName, entry.Description, true, out errorString);
-                            }
+                            if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
+                                foreach (Dev2Column col in entry.Columns)
+                                {
+                                    newDl.TryCreateScalarTemplate(string.Empty, entry.Namespace + GlobalConstants.RecordsetJoinChar + col.ColumnName, entry.Description, true, out errorString);
+                                }
                         }
                         else
                         {
-                            if(entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
+                            if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
                             {
                                 IBinaryDataListItem scalar = entry.FetchScalar();
-                                newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
+                                newDl.TryCreateScalarTemplate(string.Empty, scalar.Namespace, entry.Description, true, out errorString);
                                 entry.FetchScalar();
                             }
                         }

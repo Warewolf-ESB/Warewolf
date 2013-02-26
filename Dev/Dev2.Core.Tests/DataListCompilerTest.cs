@@ -1,19 +1,19 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.TO;
 using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.TO;
-using Dev2.DataList.Contract.Binary_Objects;
+using System;
+using System.Collections.Generic;
 
-namespace Unlimited.UnitTest.Framework {
+namespace Unlimited.UnitTest.Framework
+{
     /// <summary>
     /// Summary description for DataListCompilerTest
     /// </summary>
     [TestClass]
-    public class DataListCompilerTest {
+    public class DataListCompilerTest
+    {
 
 
         private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
@@ -24,161 +24,167 @@ namespace Unlimited.UnitTest.Framework {
         private string error;
         private IBinaryDataListEntry entry;
 
-        public DataListCompilerTest() {
+        public DataListCompilerTest()
+        {
         }
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
 
         #region Additional test attributes
         //Use TestInitialize to run code before running each test 
-         [TestInitialize()]
-         public void MyTestInitialize() {
-             string error = string.Empty;
+        [TestInitialize()]
+        public void MyTestInitialize()
+        {
+            string error = string.Empty;
 
-             dl1 = Dev2BinaryDataListFactory.CreateDataList();
-             dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
-             dl1.TryCreateScalarValue("[[otherScalar]]", "myScalar", out error);
+            dl1 = Dev2BinaryDataListFactory.CreateDataList();
+            dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
+            dl1.TryCreateScalarValue("[[otherScalar]]", "myScalar", out error);
 
-             dl1.TryCreateScalarTemplate(string.Empty, "otherScalar", "A scalar", true, out error);
-             dl1.TryCreateScalarValue("testRegion", "otherScalar", out error);
+            dl1.TryCreateScalarTemplate(string.Empty, "otherScalar", "A scalar", true, out error);
+            dl1.TryCreateScalarValue("testRegion", "otherScalar", out error);
 
-             dl1.TryCreateScalarTemplate(string.Empty, "scalar1", "A scalar", true, out error);
-             dl1.TryCreateScalarValue("foobar", "scalar1", out error);
+            dl1.TryCreateScalarTemplate(string.Empty, "scalar1", "A scalar", true, out error);
+            dl1.TryCreateScalarValue("foobar", "scalar1", out error);
 
-             IList<Dev2Column> cols = new List<Dev2Column>();
-             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
-             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
-             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
 
-             dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
 
-             dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
-             dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
-             dl1.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
 
-             dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
-             dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
-             dl1.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
-             // skip 3 ;)
+            // skip 3 ;)
 
-             dl1.TryCreateRecordsetValue("r4.f1.value", "f1", "recset", 4, out error);
-             dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
-             dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
+            dl1.TryCreateRecordsetValue("r4.f1.value", "f1", "recset", 4, out error);
+            dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
+            dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
 
-             _compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
-             _compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
+            _compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+            _compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
 
-             /*  list 2 */
-             dl2 = Dev2BinaryDataListFactory.CreateDataList();
-             dl2.TryCreateScalarTemplate(string.Empty, "idx", "A scalar", true, out error);
-             dl2.TryCreateScalarValue("1", "idx", out error);
+            /*  list 2 */
+            dl2 = Dev2BinaryDataListFactory.CreateDataList();
+            dl2.TryCreateScalarTemplate(string.Empty, "idx", "A scalar", true, out error);
+            dl2.TryCreateScalarValue("1", "idx", out error);
 
-             dl2.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl2.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
 
-             dl2.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
-             dl2.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
-             dl2.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
+            dl2.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl2.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl2.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
 
-             dl2.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
-             dl2.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
-             dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
+            dl2.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl2.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+            dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
-             _compiler.PushBinaryDataList(dl2.UID, dl2, out errors);
-             _compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
-         }
+            _compiler.PushBinaryDataList(dl2.UID, dl2, out errors);
+            _compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
+        }
 
         #endregion
 
         // Created by Michael for Bug 8597
-         [TestMethod]
-         public void HasErrors_Passed_Empty_GUID_Expected_No_NullReferenceException()
-         {
-             Guid id = Guid.Empty;
-             try
-             {
-                 _compiler.HasErrors(id);
-             }
-             catch (NullReferenceException)
-             {
-                 Assert.Inconclusive("No NullReferenceException should be thrown.");
-             }
-         }
+        [TestMethod]
+        public void HasErrors_Passed_Empty_GUID_Expected_No_NullReferenceException()
+        {
+            Guid id = Guid.Empty;
+            try
+            {
+                _compiler.HasErrors(id);
+            }
+            catch (NullReferenceException)
+            {
+                Assert.Inconclusive("No NullReferenceException should be thrown.");
+            }
+        }
 
-         [TestMethod]
-         public void Iteration_Evaluation_Expect_Evaluation_For_1_Iteration()
-         {
-             // Iteration evaluation is tested via the shape method ;)
-             string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>";;
-             Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
+        [TestMethod]
+        public void Iteration_Evaluation_Expect_Evaluation_For_1_Iteration()
+        {
+            // Iteration evaluation is tested via the shape method ;)
+            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>"; ;
+            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
 
-             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-             bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out error);
 
-             Assert.AreEqual("[[otherScalar]]", entry.FetchScalar().TheValue);
+            Assert.AreEqual("[[otherScalar]]", entry.FetchScalar().TheValue);
 
-         }
+        }
 
-         [TestMethod]
-         public void Iteration_Evaluation_Expect_Evaluation_For_2_Iterations()
-         {
-             // Iteration evaluation is tested via the shape method ;)
-             string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>"; ;
-             Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
+        [TestMethod]
+        public void Iteration_Evaluation_Expect_Evaluation_For_2_Iterations()
+        {
+            // Iteration evaluation is tested via the shape method ;)
+            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>"; ;
+            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
 
-             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-             bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out error);
 
-             Assert.AreEqual("[[testRegion]]", entry.FetchScalar().TheValue);
+            Assert.AreEqual("[[testRegion]]", entry.FetchScalar().TheValue);
 
-         }
+        }
 
-         [TestMethod]
-         public void Iteration_Evaluation_Expect_Evaluation_For_0_Iterations()
-         {
-             // Iteration evaluation is tested via the shape method ;)
-             string defs = @"<Inputs><Input Name=""scalar1"" Source=""foobar"" /></Inputs>"; ;
-             Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
+        [TestMethod]
+        public void Iteration_Evaluation_Expect_Evaluation_For_0_Iterations()
+        {
+            // Iteration evaluation is tested via the shape method ;)
+            string defs = @"<Inputs><Input Name=""scalar1"" Source=""foobar"" /></Inputs>"; ;
+            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
 
-             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-             bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out error);
 
-             Assert.AreEqual("foobar", entry.FetchScalar().TheValue);
+            Assert.AreEqual("foobar", entry.FetchScalar().TheValue);
 
-         }
+        }
 
-         [TestMethod]
-         public void Iteration_Evaluation_Recordset_Expect_Evaluation_For_2_Iterations()
-         {
-             // Iteration evaluation is tested via the shape method ;)
-             string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[recset([[idx]]).f1]]"" /></Inputs>"; ;
-             Guid id = _compiler.Shape(dl2.UID, enDev2ArgumentType.Input, defs, out errors);
+        [TestMethod]
+        public void Iteration_Evaluation_Recordset_Expect_Evaluation_For_2_Iterations()
+        {
+            // Iteration evaluation is tested via the shape method ;)
+            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[recset([[idx]]).f1]]"" /></Inputs>"; ;
+            Guid id = _compiler.Shape(dl2.UID, enDev2ArgumentType.Input, defs, out errors);
 
-             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-             bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out error);
 
-             Assert.AreEqual("r1.f1.value", entry.FetchScalar().TheValue);
+            Assert.AreEqual("r1.f1.value", entry.FetchScalar().TheValue);
 
-         }
+        }
 
         #region FixedWizardTest
         [TestMethod]
-        public void FixedWizardScalar_Converter_Expected_FixedDataListPortion() {
+        public void FixedWizardScalar_Converter_Expected_FixedDataListPortion()
+        {
             string wizDL = @"<DataList>
        <TestVar IsEditable=""False"" Description=""""/>
        <Port IsEditable=""False"" Description=""""/>
@@ -210,12 +216,13 @@ namespace Unlimited.UnitTest.Framework {
             WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
             Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().DisplayValue);
-            Assert.AreEqual("TestVar", result.RemovedRegions[0].FetchScalar().DisplayValue);
+            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().Namespace);
+            Assert.AreEqual("TestVar", result.RemovedRegions[0].FetchScalar().Namespace);
         }
 
         [TestMethod]
-        public void FixedWizardRecordset_Converter_Expected_FixedDataListPortion() {
+        public void FixedWizardRecordset_Converter_Expected_FixedDataListPortion()
+        {
             string wizDL = @"<DataList>
        <Port IsEditable=""False"" Description=""""/>
        <From IsEditable=""False"" Description=""""/>
@@ -250,7 +257,7 @@ namespace Unlimited.UnitTest.Framework {
             WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
             Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().DisplayValue);
+            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().Namespace);
             Assert.AreEqual("Recordset", (result.AddedRegions[1].FetchRecordAt(1, out error))[0].Namespace);
             Assert.AreEqual(0, result.RemovedRegions.Count);
         }
@@ -272,18 +279,18 @@ namespace Unlimited.UnitTest.Framework {
 
         #region Generate DataList From Defs Tests
 
-        [TestMethod]        
+        [TestMethod]
         public void GenerateWizardDataListFromDefs_Outputs_Expected_Correct_DataList()
         {
             string defstring = ParserStrings.dlOutputMappingOutMapping;
             ErrorResultTO errors;
-            string acctual = _compiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors, true);            
+            string acctual = _compiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors, true);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><required></required><validationClass></validationClass><cssClass>[[cssClass]]</cssClass><Dev2customStyle></Dev2customStyle>
 </ADL>"));
         }
 
-        [TestMethod]        
+        [TestMethod]
         public void GenerateWizardDataListFromDefs_Inputs_Expected_Correct_DataList()
         {
             string defstring = ParserStrings.dlInputMapping;
@@ -294,7 +301,7 @@ namespace Unlimited.UnitTest.Framework {
 </ADL>"));
         }
 
-        [TestMethod]       
+        [TestMethod]
         public void GenerateDataListFromDefs_Outputs_Expected_Correct_DataList()
         {
             string defstring = ParserStrings.dlOutputMappingOutMapping;
@@ -305,7 +312,7 @@ namespace Unlimited.UnitTest.Framework {
 </ADL>"));
         }
 
-        [TestMethod]        
+        [TestMethod]
         public void GenerateDataListFromDefs_Inputs_Expected_Correct_DataList()
         {
             string defstring = ParserStrings.dlInputMapping;

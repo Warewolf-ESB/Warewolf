@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using Dev2.Common;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
 using System;
 using System.Collections.Generic;
-using Dev2.Data.SystemTemplates;
+using System.Linq;
 
 namespace Dev2.DataList.Contract.Binary_Objects.Structs
 {
@@ -40,7 +38,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         // Travis Mods ;) - Build the row TO for fetching as per the tooling ;)
         IList<IBinaryDataListItem> _internalReturnValue;
 
-        IDictionary<int, IList<IBinaryDataListItem>> _deferedReads; 
+        IDictionary<int, IList<IBinaryDataListItem>> _deferedReads;
 
         public IList<IBinaryDataListItem> this[int key]
         {
@@ -53,7 +51,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                 bool deferedRead = _deferedReads.TryGetValue(key, out tmpFetch);
 
-                if(key >= 0 && binaryDataListRow != null && !deferedRead)
+                if (key >= 0 && binaryDataListRow != null && !deferedRead)
                 {
                     ScrubInternalTO();
 
@@ -63,20 +61,20 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     }
 
                     // Convert to _internalReturnValue format ;)
-                    if(Columns != null)
+                    if (Columns != null)
                     {
-                        for(int i = 0; i < Columns.Count; i++)
+                        for (int i = 0; i < Columns.Count; i++)
                         {
                             IBinaryDataListItem tmp = _internalReturnValue[i];
 
-                            
+
                             // normal object build
                             tmp.UpdateValue(binaryDataListRow.FetchValue(i));
-                            if(key > 0)
+                            if (key > 0)
                             {
                                 tmp.UpdateIndex(key);
                             }
-                            
+
                         }
                     }
                     else
@@ -89,10 +87,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     return _internalReturnValue;
 
                 }
-                else if(key >= 0 && binaryDataListRow == null)
+                else if (key >= 0 && binaryDataListRow == null)
                 {
                     // miss, add it ;)
-                }else if(deferedRead)
+                }
+                else if (deferedRead)
                 {
                     return tmpFetch;
                 }
@@ -114,18 +113,18 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                     IBinaryDataListRow row;
 
-                    if(_items.TryGetValue(key, cols, out row))
+                    if (_items.TryGetValue(key, cols, out row))
                     {
                         // we got the row object, now update it ;)
-                        foreach(IBinaryDataListItem itm in value)
+                        foreach (IBinaryDataListItem itm in value)
                         {
                             int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
-                            if(idx == -1)
+                            if (idx == -1)
                             {
                                 idx = 0; // adjust for scalar
                             }
 
-                            if(!itm.IsDeferredRead)
+                            if (!itm.IsDeferredRead)
                             {
                                 row.UpdateValue(itm.TheValue, idx);
                                 _items[key] = row;
@@ -138,7 +137,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                 _deferedReads[key] = value;
                             }
 
-                            
+
                         }
                     }
                     else
@@ -172,15 +171,15 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void Init(int colCnt)
         {
             //_items = new Dictionary<int, IList<IBinaryDataListItem>>();
-            _items = new Dev2BinaryDataListStorage(Namespace,DataListKey);
+            _items = new Dev2BinaryDataListStorage(Namespace, DataListKey);
             _isEmpty = true;
             _internalReturnValue = new List<IBinaryDataListItem>(colCnt); // build the object we require to return data in ;)
 
-            for(int i = 0; i < colCnt; i++)
+            for (int i = 0; i < colCnt; i++)
             {
                 _internalReturnValue.Add(new BinaryDataListItem(string.Empty, string.Empty));
                 _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
-                if(Columns != null)
+                if (Columns != null)
                 {
                     _internalReturnValue[i].UpdateField(Columns[i].ColumnName); // always the same column for this entry ;)
                 }
@@ -190,7 +189,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             // boot strap column cache ;)
             int cnt = 1;
-            if(Columns != null)
+            if (Columns != null)
             {
                 cnt = Columns.Count;
             }
@@ -205,7 +204,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             ScrubInternalTO();
             return _internalReturnValue;
-        } 
+        }
 
         public int InternalFetchColumnIndex(string column)
         {
@@ -254,18 +253,18 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             _items.TryGetValue(idx, _internalReturnValue.Count, out row);
             bool res = (row != null);
 
-            if(res)
+            if (res)
             {
-                if(!row.IsDeferredRead(idx))
+                if (!row.IsDeferredRead(idx))
                 {
 
-                    if(Columns != null)
+                    if (Columns != null)
                     {
                         // Change to index look up ;)
-                        for(int i = 0; i < Columns.Count; i++)
+                        for (int i = 0; i < Columns.Count; i++)
                         {
                             int fetchIdx = InternalFetchColumnIndex(Columns[i].ColumnName);
-                            
+
                             IBinaryDataListItem tmp = _internalReturnValue[fetchIdx];
                             tmp.UpdateValue(row.FetchValue(fetchIdx));
                             tmp.UpdateIndex(idx);
@@ -299,7 +298,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             IBinaryDataListRow row = new BinaryDataListRow(cols.Count);
 
-            foreach(IBinaryDataListItem itm in cols)
+            foreach (IBinaryDataListItem itm in cols)
             {
                 row.UpdateValue(itm.TheValue, idx);
             }
@@ -328,11 +327,12 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 IBinaryDataListRow row = _items[i];
 
 
-                if(payload.TryGetValue(i, out cols))
+                if (payload.TryGetValue(i, out cols))
                 {
-                    foreach(IBinaryDataListItem c in cols)
+                    foreach (IBinaryDataListItem c in cols)
                     {
-                        row.UpdateValue(c.TheValue, i);
+                        int idx = InternalFetchColumnIndex(c.FieldName);
+                        row.UpdateValue(c.TheValue, idx);
                     }
 
                     _items[i] = row;
@@ -352,9 +352,9 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 int next = ii.FetchNextIndex();
                 if (_items.TryGetValue(next, Columns.Count, out row))
                 {
-                    for(int i = 0; i < Columns.Count; i++)
+                    for (int i = 0; i < Columns.Count; i++)
                     {
-                        tmp.Add(new BinaryDataListItem(row.FetchValue(i), Namespace, Columns[i].ColumnName, next ));
+                        tmp.Add(new BinaryDataListItem(row.FetchValue(i), Namespace, Columns[i].ColumnName, next));
                     }
 
                     result[next] = tmp;
@@ -386,11 +386,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// </summary>
         private void ScrubInternalTO()
         {
-            if(_internalReturnValue == null)
+            if (_internalReturnValue == null)
             {
                 int cnt = 1;
 
-                if(Columns != null)
+                if (Columns != null)
                 {
                     cnt = Columns.Count;
                 }
@@ -398,7 +398,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 _internalReturnValue = new List<IBinaryDataListItem>(cnt);
             }
 
-            foreach(IBinaryDataListItem t in _internalReturnValue)
+            foreach (IBinaryDataListItem t in _internalReturnValue)
             {
                 t.ToClear();
             }

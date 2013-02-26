@@ -1401,6 +1401,8 @@ namespace Dev2.Server.Datalist
                 //string result = string.Empty;
                 //IBinaryDataListEntry lastFetch = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty,bdl.UID);
                 IBinaryDataListEntry lastFetch = null;
+                ErrorResultTO allErrors = new ErrorResultTO();
+                
                 errors = new ErrorResultTO();
                 string error = string.Empty;
                 IDictionary<int, bool> deferedReads = new Dictionary<int, bool>(10);
@@ -1457,7 +1459,7 @@ namespace Dev2.Server.Datalist
                             if (p.Type == enIntellisenseResultType.Error)
                             {
                                 hasError = true;
-                                errors.AddError(p.Message);
+                                allErrors.AddError(p.Message);
                                 // attempt to remove the fragement not found if outside of design mode
                                 if (!designTimeBinding)
                                 {
@@ -1473,22 +1475,24 @@ namespace Dev2.Server.Datalist
                                 if (p.Option.IsScalar)
                                 {
                                     fetchOk = bdl.TryGetEntry(p.Option.Field, out val, out error);
+                                    allErrors.AddError(error);
                                 }
                                 else
                                 {
                                     fetchOk = bdl.TryGetEntry(p.Option.Recordset, out val, out error);
+                                    allErrors.AddError(error);
                                 }
 
                                 if (!fetchOk)
                                 {
-                                    errors.AddError(error);
+                                    allErrors.AddError(error);
                                 }
                                 else
                                 {
                                     matchCnt++;
                                     foundMatch = true;
                                     lastFetch = val.Clone(enTranslationDepth.Data, out error); // clone to avoid mutation issues
-                                    errors.AddError(error);
+                                    allErrors.AddError(error);
 
 
                                 }
@@ -1565,7 +1569,7 @@ namespace Dev2.Server.Datalist
                                             {
                                                 hasError = true;
                                                 matchCnt--;
-                                                errors.AddError(error);
+                                                allErrors.AddError(error);
                                                 lastFetch = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty); // set a blank match too ;)
                                                 expression = expression.Replace(p.Option.DisplayValue, string.Empty); // blank the match to avoid looping ;)
                                             }
@@ -1574,14 +1578,7 @@ namespace Dev2.Server.Datalist
                                                 lastFetch2 = lastFetch.TryFetchRecordsetColumnAtIndex(fieldName, myIdx, out error).TheValue;
                                                 // build up the result, via a strip all but method?
                                                 lastFetch.MakeRecordsetEvaluateReady(myIdx, fieldName, out error);
-                                                    errors.AddError(error);
-
-                                                string data = ConvertFrom(null, bdl.UID, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._XML), out errors).FetchAsString();
-
-                                                if(data != string.Empty)
-                                                {
-                                                    Console.WriteLine(data);
-                                                }
+                                                allErrors.AddError(error);
 
                                                 // Travis.Frisinger - Bug 8608
                                                 //IBinaryDataListItem valT = lastFetch.TryFetchRecordsetColumnAtIndex(fieldName, myIdx, out error);
@@ -1597,10 +1594,8 @@ namespace Dev2.Server.Datalist
                                                     }
                                                     else
                                                     {
-                                                    subVal = valT.TheValue;
-                                                }
-
-                                                    
+                                                        subVal = valT.TheValue;
+                                                    }
                                                 }
 
                                                 //expression = expression.Replace(p.Option.DisplayValue, subVal);
@@ -1621,10 +1616,7 @@ namespace Dev2.Server.Datalist
                                             if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
                                             {
                                                 lastFetch.MakeRecordsetEvaluateReady(myIdx, GlobalConstants.AllColumns, out error);
-                                                if (error != string.Empty)
-                                                {
-                                                    errors.AddError(error);
-                                                }
+                                                allErrors.AddError(error);
                                             }
                                             // else already handled because we fetched it all ;)
 
@@ -1633,7 +1625,7 @@ namespace Dev2.Server.Datalist
                                     else if (idxType == enRecordsetIndexType.Error)
                                     {
                                         // we all it all
-                                        errors.AddError("Invalid Recordset Index");
+                                        allErrors.AddError("Invalid Recordset Index");
                                         foundMatch = false;
                                     }
                                     else if (idxType == enRecordsetIndexType.Star)
@@ -1648,10 +1640,7 @@ namespace Dev2.Server.Datalist
                                                 field = GlobalConstants.AllColumns;
                                             }
                                             lastFetch.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, field, out error);
-                                            if (error != string.Empty)
-                                            {
-                                                errors.AddError(error);
-                                            }
+                                            allErrors.AddError(error);
                                         } // else we need a column match to process by evaluate
 
                                         expression = expression.Replace(p.Option.DisplayValue, string.Empty);
@@ -1659,7 +1648,7 @@ namespace Dev2.Server.Datalist
                                         {
                                             hasError = true;
                                             matchCnt--;
-                                            errors.AddError("Attempt to use Recordset with * in a complex expression");
+                                            allErrors.AddError("Attempt to use Recordset with * in a complex expression");
                                         }
                                     }
                                 }
@@ -1800,6 +1789,8 @@ namespace Dev2.Server.Datalist
                 {
                     UpsertSystemTag(bdl.UID, enSystemTag.EvaluateIteration, "false", out errors);
                 }
+
+                errors = allErrors;
 
                 return lastFetch;
             }

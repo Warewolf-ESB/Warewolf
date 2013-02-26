@@ -290,7 +290,7 @@ Wallis0000Buchan
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
 
-            Assert.AreEqual(@"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError><InnerError>Index [ 0 ] is out of bounds</InnerError>", actual);
+            Assert.AreEqual(@"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>", actual);
         }
 
         [TestMethod]

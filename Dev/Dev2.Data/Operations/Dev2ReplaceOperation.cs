@@ -34,8 +34,9 @@ namespace Dev2.Data.Operations
             errors = new ErrorResultTO();
             // ReSharper restore RedundantAssignment
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IBinaryDataListEntry entryToReplaceIn = compiler.Evaluate(exIdx, enActionType.User, expression, false,
-                                                                      out errors);
+            IBinaryDataListEntry entryToReplaceIn = compiler.Evaluate(exIdx, enActionType.User, expression, false, out errors);
+            allErrors.MergeErrors(errors);
+
             if (entryToReplaceIn != null)
             {
                 RegexOptions regexOptions;
@@ -54,22 +55,23 @@ namespace Dev2.Data.Operations
                 while (itr.HasMoreRecords())
                 {
                     IList<IBinaryDataListItem> rowList = itr.FetchNextRowData();
-                    foreach (IBinaryDataListItem binaryDataListItem in rowList)
+                    if(rowList != null)
                     {
-                        int tmpCount = ReplaceCount;
-                        ReplaceCount += regex.Matches(binaryDataListItem.TheValue).Count;
-                        if (ReplaceCount > tmpCount)
+                        foreach(IBinaryDataListItem binaryDataListItem in rowList)
                         {
-                            if (entryToReplaceIn.IsRecordset)
+                            int tmpCount = ReplaceCount;
+                            ReplaceCount += regex.Matches(binaryDataListItem.TheValue).Count;
+                            if(ReplaceCount > tmpCount)
                             {
-                                string recsetDisplayValue =
-                                    DataListUtil.CreateRecordsetDisplayValue(entryToReplaceIn.Namespace,
-                                                                             binaryDataListItem.FieldName,
-                                                                             binaryDataListItem.ItemCollectionIndex.ToString());
-                                expression = string.Concat("[[", recsetDisplayValue, "]]");
-                            }
+                                if(entryToReplaceIn.IsRecordset)
+                                {
+                                    string recsetDisplayValue =
+                                    DataListUtil.CreateRecordsetDisplayValue(entryToReplaceIn.Namespace,binaryDataListItem.FieldName,binaryDataListItem.ItemCollectionIndex.ToString());
+                                    expression = string.Concat("[[", recsetDisplayValue, "]]");
+                                }
 
-                            payloadBuilder.Add(expression, regex.Replace(binaryDataListItem.TheValue, newString));
+                                payloadBuilder.Add(expression, regex.Replace(binaryDataListItem.TheValue, newString));
+                            }
                         }
                     }
                 }
@@ -77,8 +79,11 @@ namespace Dev2.Data.Operations
             }
             else
             {
-                errors.AddError("DataList entry is null.");
+                allErrors.AddError("DataList entry is null.");
             }
+
+            errors = allErrors;
+
             return payloadBuilder;
         }
 

@@ -28,17 +28,20 @@ namespace Dev2.DataList.Contract.Value_Objects
                 if (_itrCollection[idx].HasMoreRecords())
                 {
                     tmp = _itrCollection[idx].FetchNextRowData();
-                    if (tmp.Count == 1)
+                    if(tmp != null)
                     {
-                        result = tmp[0];
-                    }
-                    else if (tmp.Count == 0)
-                    {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
-                    }
-                    else if (tmp.Count > 1)
-                    {
-                        throw new Exception("Invalid use, iterator collection may only return a single column per row");
+                        if(tmp.Count == 1)
+                        {
+                            result = tmp[0];
+                        }
+                        else if(tmp.Count == 0)
+                        {
+                            result = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
+                        }
+                        else if(tmp.Count > 1)
+                        {
+                            throw new Exception("Invalid use, iterator collection may only return a single column per row");
+                        }
                     }
                 }
                 else

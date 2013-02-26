@@ -217,7 +217,7 @@ namespace ActivityUnitTests.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1(0).field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            string expected = "<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError><InnerError>Index [ 0 ] is out of bounds</InnerError>";
+            string expected = "<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>";
 
             string actual = string.Empty;
             string error = string.Empty;

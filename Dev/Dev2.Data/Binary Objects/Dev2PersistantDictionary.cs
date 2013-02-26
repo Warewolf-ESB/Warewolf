@@ -1,25 +1,20 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace Dev2.Data.Binary_Objects
 {
-    public class Dev2PersistantDictionary<T>
-        where T : class
+    public class Dev2PersistantDictionary<T> where T : class
     {
         #region Fields
 
         private readonly string _completeFilename = @"C:\persist.dic";
         private FileStream _file;
-        //private readonly string _indexFile = string.Empty;
         private readonly ConcurrentDictionary<string, string> _lstIndexes = new ConcurrentDictionary<string, string>();
-        private JsonSerializerSettings _settings;
         private object _opsLock = new object();
         private static readonly long _compactThresholdSize = 500 * 1024 * 1024;
         private long _lastCompactSize;
@@ -35,12 +30,8 @@ namespace Dev2.Data.Binary_Objects
             {
                 _completeFilename = filename;
             }
-            //_indexFile = _completeFilename + ".idx";
+
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            _settings = new JsonSerializerSettings();
-            _settings.TypeNameHandling = TypeNameHandling.Objects;
-            
-            //Init();
         }
 
         #endregion Constructors
@@ -107,10 +98,11 @@ namespace Dev2.Data.Binary_Objects
                     return null;
                 }
 
-                string val = Encoding.UTF8.GetString(rawData);
-                var convertFromJsonTo = ConvertFromJsonTo(val);
+                //string val = Encoding.UTF8.GetString(rawData);
+                //var convertFromJsonTo = ConvertFromJsonTo(val);
+                var fromBytes = ConvertFromBytes(rawData);
 
-                return convertFromJsonTo;
+                return fromBytes;
             }
         }
 
@@ -249,40 +241,6 @@ namespace Dev2.Data.Binary_Objects
             return convertFromBytes;
         }
 
-        private T ConvertFromJsonTo(string payload)
-        {
-
-            try
-            {
-                T obj = JsonConvert.DeserializeObject<T>(payload, _settings);
-                return obj;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            //            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            //            var serializationStream = new MemoryStream();
-            //            serializationStream.Read(payload, 0, payload.Length);
-            //            var deserialize = binaryFormatter.Deserialize(serializationStream);
-            return null;
-        }
-
-        private string ConvertToJson(T payload)
-        {
-            // TODO : Fix this, it keeps bombing out ?!
-            try
-            {
-                string result = JsonConvert.SerializeObject(payload, _settings);
-                return result;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            return null;
-        }
-
         private MemoryStream ConvertToStream(T payload)
         {
             // TODO : Fix this, it keeps bombing out ?!
@@ -300,7 +258,6 @@ namespace Dev2.Data.Binary_Objects
 
             ms.Position = 0;
             return ms;
-
         }
 
         private void GetPositionLength(string key, out long position, out int length)
@@ -315,34 +272,6 @@ namespace Dev2.Data.Binary_Objects
             length = Convert.ToInt32(tmp.Split(new[] { '|' })[1]);
         }
 
-        //private void Close()
-        //{
-        //    if (_lstIndexes == null || _lstIndexes.Count == 0)
-        //    {
-        //        return;
-        //    }
-
-        //    using (FileStream fs = new FileStream(_indexFile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-        //    {
-        //        BinaryFormatter bin = new BinaryFormatter();
-        //        bin.Serialize(fs, _lstIndexes);
-        //    }
-        //}
-
-        //private void Init()
-        //{
-        //    using (FileStream fs = new FileStream(_indexFile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-        //    {
-        //        if (fs.Length < 1)
-        //        {
-        //            return;
-        //        }
-
-        //        BinaryFormatter bin = new BinaryFormatter();
-        //        _lstIndexes = bin.Deserialize(fs) as Dictionary<string, string>;
-        //    }
-        //}
-
         #endregion
 
         #region Public Methods
@@ -356,22 +285,26 @@ namespace Dev2.Data.Binary_Objects
                     Compact();
                 }
 
-                var convertToJson = ConvertToJson(objToAdd);
+                //var convertToJson = ConvertToJson(objToAdd);
+                byte[] data = null;
+                using (MemoryStream ms = ConvertToStream(objToAdd))
+                {
+                    data = new byte[ms.Length];
+                    ms.Read(data, 0, (int)ms.Length);
+                    ms.Close();
+                }
 
                 string tmp;
                 if(_lstIndexes.TryGetValue(key, out tmp))
                 {
-                    _file.Seek(0, SeekOrigin.End);
-                    _lstIndexes[key] = _file.Position + "|" + convertToJson.Length;
-                    _file.Write(Encoding.ASCII.GetBytes(convertToJson.ToCharArray()), 0, convertToJson.Length);
+                    _lstIndexes[key] = _file.Position + "|" + data.Length;
                 }
                 else
                 {
-                    _file.Seek(0, SeekOrigin.End);
-                    var length = convertToJson.Length;
-                    _lstIndexes.TryAdd(key, _file.Position + "|" + convertToJson.Length.ToString());
-                    _file.Write(Encoding.ASCII.GetBytes(convertToJson.ToCharArray()), 0, length);
+                    _lstIndexes.TryAdd(key, _file.Position + "|" + data.Length);
                 }
+
+                _file.Write(data, 0, data.Length);
             }
         }
 
@@ -393,7 +326,22 @@ namespace Dev2.Data.Binary_Objects
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        ~Dev2PersistantDictionary()
+        {
+            Dispose(false);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            _file.Close();
+            _file.Dispose();
+        }
+
 
         #endregion
     }

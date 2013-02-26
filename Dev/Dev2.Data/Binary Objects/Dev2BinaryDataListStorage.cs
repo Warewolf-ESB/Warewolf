@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Configuration;
+using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using System;
 using System.Collections.Concurrent;
@@ -20,8 +21,10 @@ namespace Dev2.Data.Binary_Objects
         //[NonSerialized]
         //static readonly NameValueCollection MemoryCacheConfiguration = new NameValueCollection { { "PhysicalMemoryLimitPercentage", GlobalConstants.DefaultDataListCacheSizeLvl2MemoryPercentage }, { "PollingInterval", GlobalConstants.DefaultDataListCacheSizeLvl2MemoryPollingInterval } };
 
+        // static readonly NameValueCollection MemoryCacheConfiguration = new NameValueCollection { { "CacheMemoryLimit", GlobalConstants.DefaultDataListCacheSizeLvl2MegaByteSize }, { "PollingInterval", GlobalConstants.DefaultDataListCacheSizeLvl2MemoryPollingInterval } };
+
         [NonSerialized]
-        static readonly NameValueCollection MemoryCacheConfiguration = new NameValueCollection { { "CacheMemoryLimit", GlobalConstants.DefaultDataListCacheSizeLvl2MegaByteSize }, { "PollingInterval", GlobalConstants.DefaultDataListCacheSizeLvl2MemoryPollingInterval } };
+        static readonly NameValueCollection MemoryCacheConfiguration = new NameValueCollection { { "CacheMemoryLimit", ConfigurationManager.AppSettings["DataListLvl2CacheCapacity"] }, { "PollingInterval", ConfigurationManager.AppSettings["DataListLvl2CachePollInterval"] } };
 
         [NonSerialized]
         static readonly MemoryCache LevelTwoCache = new MemoryCache("DataList",MemoryCacheConfiguration);

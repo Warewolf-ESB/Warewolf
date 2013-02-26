@@ -123,12 +123,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         int pos = 0;
                         foreach (IDev2DataListEvaluateIterator iterator in listOfIterators)
                         {
-                            string value = iteratorCollection.FetchNextRow(iterator).TheValue;
 
-                            _mergeOperations.Merge(value, MergeCollection[pos].MergeType, MergeCollection[pos].At,
-                                                   MergeCollection[pos].Padding,
-                                                   MergeCollection[pos].Alignment);
-                            pos++;
+                            var val = iteratorCollection.FetchNextRow(iterator);
+
+                            if(val != null)
+                            {
+                                string value = val.TheValue;
+
+                                _mergeOperations.Merge(value, MergeCollection[pos].MergeType, MergeCollection[pos].At,
+                                    MergeCollection[pos].Padding,
+                                    MergeCollection[pos].Alignment);
+                                pos++;
+                            }
                         }
                     }
 

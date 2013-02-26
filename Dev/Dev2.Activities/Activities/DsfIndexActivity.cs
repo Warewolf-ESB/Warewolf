@@ -125,6 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
                     allErrors.MergeErrors(errors);
+                    errors.ClearErrors();
                     IDev2DataListEvaluateIterator itrInField = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     innerIteratorCollection.AddIterator(itrInField);
 
@@ -133,14 +134,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
-                            IEnumerable<int> returedData = indexFinder.FindIndex(innerIteratorCollection.FetchNextRow(itrInField).TheValue, Index,
-                                                               chars,
-                                                               Direction, MatchCase, StartIndex);
+                            var val = innerIteratorCollection.FetchNextRow(itrInField);
+                            if(val != null)
+                            {
+                                IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
 
-                            result = string.Join(",", returedData);
 
-                            toUpsert.Add(Result, result);
-                            toUpsert.FlushIterationFrame();
+                                result = string.Join(",", returedData);
+
+                                toUpsert.Add(Result, result);
+                                toUpsert.FlushIterationFrame();
+                            }
                         }
                     }
                 }

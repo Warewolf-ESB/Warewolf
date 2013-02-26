@@ -560,6 +560,7 @@ namespace Dev2.Studio
         public object Manager { get; set; }
 
         private object _activeDocument;
+
         public object ActiveDocument
         {
             get

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 
 namespace Dev2.Common
@@ -62,8 +63,13 @@ namespace Dev2.Common
         public const char EvaluationToken = '[';
         
         public const string DefaultDataListCacheSizeLvl2MemoryPercentage = "85";
-        public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = "00:00:05";
-        public const string DefaultDataListCacheSizeLvl2MegaByteSize = "2048";
+        //public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = "00:00:05";
+        //public const string DefaultDataListCacheSizeLvl2MegaByteSize = "2048";
+
+        // Read Memory limit from config file ;)
+        //public const string DefaultDataListCacheSizeLvl2MegaByteSize = ConfigurationManager.AppSettings["DataListLvl2CacheCapacity"];
+        //public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = ConfigurationManager.AppSettings["DataListLvl2CachePollInterval"];
+
         public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
         public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 40k rows in the 0 tier cache ;)
         public const int DefaultDataListCreateCacheSizeLvl1 = 30000;
