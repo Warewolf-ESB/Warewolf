@@ -1,18 +1,10 @@
-﻿using Dev2.Studio.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Moq;
-using Unlimited.Framework;
+﻿using System;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Reflection;
-using Dev2.Studio;
-using Dev2.Composition;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
+using Dev2.Studio.Core.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests
 {
@@ -21,15 +13,15 @@ namespace Dev2.Core.Tests
     ///to contain all EnvironmentModelTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class EnvironmentModelTest 
+    public class EnvironmentModelTest
     {
-        private TestContext testContextInstance; 
+        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext 
+        public TestContext TestContext
         {
             get { return testContextInstance; }
             set { testContextInstance = value; }
@@ -49,7 +41,7 @@ namespace Dev2.Core.Tests
         //    env.Name = "result";
         //    env.WebServerPort = 1234;
 
-            
+
         //    Mock<IEnvironmentConnection> envConnection = CreateFakeEnvironmentConnection();
         //    env.EnvironmentConnection = envConnection.Object;
         //    env.Connect();
@@ -58,5 +50,31 @@ namespace Dev2.Core.Tests
         //}
 
         #endregion Connect Tests
+
+        #region ToSourceDefinition
+
+        [TestMethod]
+        public void ToSourceDefinitionExpectedCategoryIsNotServers()
+        {
+            // BUG: 8786 - TWR - 2013.02.20
+            var eventAggregator = new Mock<IEventAggregator>();
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            var environmentConnection = new Mock<IEnvironmentConnection>();
+            environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
+
+            var envModel = new EnvironmentModel(eventAggregator.Object, securityContext.Object, environmentConnection.Object)
+            {
+                ID = Guid.NewGuid(),
+                DsfAddress = new Uri("http://localhost:1234/dsf"),
+                WebServerPort = 77,
+            };
+            var sourceDef = envModel.ToSourceDefinition();
+            var sourceXml = XElement.Parse(sourceDef);
+            var category = sourceXml.ElementSafe("Category").ToUpper();
+            Assert.AreNotEqual("SERVERS", category);
+        }
+
+        #endregion
+
     }
 }

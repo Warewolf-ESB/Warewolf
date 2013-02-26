@@ -2,7 +2,7 @@
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 
-namespace Dev2.Studio.Core.Interfaces 
+namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentModel : IEquatable<IEnvironmentModel>
     {
@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Interfaces
         string Name { get; set; }
         bool IsConnected { get; }
         Uri DsfAddress { get; set; }
-        IFrameworkDataChannel DsfChannel { get;  }
+        IFrameworkDataChannel DsfChannel { get; }
         INetworkExecutionChannel ExecutionChannel { get; }
         INetworkDataListChannel DataListChannel { get; }
         IEnvironmentConnection EnvironmentConnection { get; set; }
@@ -22,6 +22,9 @@ namespace Dev2.Studio.Core.Interfaces
         void Disconnect();
         void Connect(IEnvironmentModel model);
         void LoadResources();
+
+        // BUG: 8786 - TWR - 2013.02.20 - Added category
+        string Category { get; set; }
 
         string ToSourceDefinition();
     }

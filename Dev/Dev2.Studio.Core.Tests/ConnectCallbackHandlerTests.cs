@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -6,9 +9,6 @@ using Dev2.Studio.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 
 namespace Dev2.Core.Tests
 {
@@ -17,11 +17,12 @@ namespace Dev2.Core.Tests
     // 
     // Saving with Invalid connection
     // Dev2 Set with invalid environment connection
-    
+
     [TestClass]
     public class ConnectCallbackHandlerTests
     {
         const string ConnectionID = "1478649D-CF54-4D0D-8E26-CA9B81454B66";
+        const string ConnectionCategory = "TestCategory";
         const string ConnectionName = "TestConnection";
         const string ConnectionAddress = "http://RSAKLFBRANDONPA:77/dsf";
         const int ConnectionWebServerPort = 1234;
@@ -69,7 +70,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var handler = new ConnectCallbackHandler();
-            handler.Save(null, null, null, 0, null);
+            handler.Save(null, null, null, null, 0, null);
             handler.Save(null, null);
         }
 
@@ -80,7 +81,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var handler = new ConnectCallbackHandler();
-            handler.Save(ConnectionID, "xxx", "xxx", 0, null);
+            handler.Save(ConnectionID, "xxx", "xxx", "xxx", 0, null);
         }
 
         [TestMethod]
@@ -90,7 +91,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var handler = new ConnectCallbackHandler();
-            handler.Save("xxx", "xxx", "xxx", 0, null);
+            handler.Save("xxx", "xxx", "xxx", "xxx", 0, null);
         }
 
         [TestMethod]
@@ -106,7 +107,7 @@ namespace Dev2.Core.Tests
             targetEnv.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
 
             var handler = new ConnectCallbackHandler();
-            handler.Save(ConnectionID, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
+            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
 
             dsfChannel.Verify(c => c.ExecuteCommand(
                 It.Is<string>(xml =>
@@ -125,12 +126,31 @@ namespace Dev2.Core.Tests
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
 
             var handler = new ConnectCallbackHandler { CurrentEnvironmentRepository = currentRepository.Object };
-            handler.Save(ConnectionID, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
             currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s == handler.Server.Environment)));
             // ReSharper restore PossibleUnintendedReferenceComparison
         }
+
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming - Unit Tests
+        public void Save_WithValidConnection_Expected_InvokesSaveEnvironmentWithCategory()
+        // ReSharper restore InconsistentNaming - Unit Tests
+        {
+            // BUG: 8786 - TWR - 2013.02.20
+            var currentRepository = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+
+            var handler = new ConnectCallbackHandler { CurrentEnvironmentRepository = currentRepository.Object };
+            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+
+            // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
+            currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s.Category == ConnectionCategory)));
+            // ReSharper restore PossibleUnintendedReferenceComparison
+        }
+
 
         #endregion
 

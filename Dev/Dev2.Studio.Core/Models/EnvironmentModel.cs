@@ -1,4 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Network;
+using System.Windows;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Factories;
@@ -6,10 +10,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network.DataList;
 using Dev2.Studio.Core.Network.Execution;
-using System;
-using System.Network;
-using System.Windows;
-using System.Xml.Linq;
 using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
@@ -39,6 +39,9 @@ namespace Dev2.Studio.Core.Models
         #region Properties
 
         public Guid ID { get; set; }
+
+        // BUG: 8786 - TWR - 2013.02.20 - Added category
+        public string Category { get; set; }
 
         public IEventAggregator EventAggregator { get; private set; }
 
@@ -254,7 +257,7 @@ namespace Dev2.Studio.Core.Models
         {
             var xml = new XElement("Source",
                 new XAttribute("ID", ID),
-                new XAttribute("Name", Name),
+                new XAttribute("Name", Name ?? ""),
                 new XAttribute("Type", "Dev2Server"),
                 new XAttribute("ConnectionString", string.Join(";",
                     string.Format("AppServerUri={0}", DsfAddress),
@@ -262,7 +265,7 @@ namespace Dev2.Studio.Core.Models
                     )),
                 new XElement("TypeOf", "Dev2Server"),
                 new XElement("DisplayName", Name),
-                new XElement("Category", "SERVERS")
+                new XElement("Category", Category ?? "") // BUG: 8786 - TWR - 2013.02.20 - Changed to use category
                 );
 
             return xml.ToString();
@@ -286,7 +289,7 @@ namespace Dev2.Studio.Core.Models
             // If auxilliry connection then do nothing
             //
             WrappedEnvironmentConnection connection = EnvironmentConnection as WrappedEnvironmentConnection;
-            if (connection != null && connection.IsAuxiliry)
+            if(connection != null && connection.IsAuxiliry)
             {
                 return;
             }

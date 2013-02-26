@@ -27,7 +27,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            Save(jsonObj.ResourceID.Value, jsonObj.Address.Value, jsonObj.ResourceName.Value, (int)jsonObj.WebServerPort.Value, environmentModel);
+            Save(jsonObj.ResourceID.Value, jsonObj.ResourcePath.Value, jsonObj.Address.Value, jsonObj.ResourceName.Value, (int)jsonObj.WebServerPort.Value, environmentModel);
         }
 
         #region Save
@@ -36,15 +36,21 @@ namespace Dev2.Studio.Webs.Callbacks
         /// Saves the specified connection - method provided for testing.
         /// </summary>
         /// <param name="connectionID">The connection ID.</param>
+        /// <param name="category">The category.</param>
         /// <param name="connectionUri">The connection URI.</param>
         /// <param name="connectionName">The name of the connection.</param>
         /// <param name="webServerPort">The web server port.</param>
-        /// <param name="defaultEnvironment">The environment where the connection will be saved - must ALWAYS be <see cref="EnvironmentRepository.DefaultEnvironment"/>.</param>
-        public void Save(string connectionID, string connectionUri, string connectionName, int webServerPort, IEnvironmentModel defaultEnvironment)
+        /// <param name="defaultEnvironment">The environment where the connection will be saved - must ALWAYS be <see cref="EnvironmentRepository.DefaultEnvironment" />.</param>
+        /// <exception cref="System.ArgumentNullException">connectionID</exception>
+        public void Save(string connectionID, string category, string connectionUri, string connectionName, int webServerPort, IEnvironmentModel defaultEnvironment)
         {
             if(string.IsNullOrEmpty(connectionID))
             {
                 throw new ArgumentNullException("connectionID");
+            }
+            if(string.IsNullOrEmpty(category))
+            {
+                throw new ArgumentNullException("category");
             }
             if(string.IsNullOrEmpty(connectionUri))
             {
@@ -75,6 +81,7 @@ namespace Dev2.Studio.Webs.Callbacks
             #endregion
 
             Server.Environment = EnvironmentModelFactory.CreateEnvironmentModel(Server);
+            Server.Environment.Category = category;
 
             if(defaultEnvironment != null)
             {
