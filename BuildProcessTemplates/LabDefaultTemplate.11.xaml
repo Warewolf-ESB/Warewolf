@@ -136,9 +136,6 @@
         <Sequence DisplayName="Do deployment" sap2010:WorkflowViewState.IdRef="Sequence_6">
           <mtlwa:ReserveEnvironmentForDeployment DisplayName="Reserve Environment For Deployment" sap2010:WorkflowViewState.IdRef="ReserveEnvironmentForDeployment_1" LabEnvironmentUri="[LabEnvironmentUri]" />
           <TryCatch DisplayName="Deploy Build on Environment" sap2010:WorkflowViewState.IdRef="TryCatch_1">
-            <TryCatch.Finally>
-              <mtlwa:ReleaseEnvironmentFromDeployment DisplayName="Release Environment From Deployment" sap2010:WorkflowViewState.IdRef="ReleaseEnvironmentFromDeployment_1" LabEnvironmentUri="[LabEnvironmentUri]" />
-            </TryCatch.Finally>
             <TryCatch.Try>
               <Sequence DisplayName="Deploying Build" sap2010:WorkflowViewState.IdRef="Sequence_4">
                 <ForEach x:TypeArguments="x:String" DisplayName="Run Deployment scripts" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[LabWorkflowParameters.DeploymentDetails.Scripts]">
@@ -151,6 +148,20 @@
                 </ForEach>
               </Sequence>
             </TryCatch.Try>
+            <TryCatch.Catches>
+              <Catch x:TypeArguments="s:Exception">
+                <ActivityAction x:TypeArguments="s:Exception">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                  </ActivityAction.Argument>
+                  <mtbwa:WriteBuildError Message="[exception.StackTrace]" sap2010:WorkflowViewState.IdRef="WriteBuildError_1" />
+                </ActivityAction>
+                <sap2010:WorkflowViewState.IdRef>Catch`1_1</sap2010:WorkflowViewState.IdRef>
+              </Catch>
+            </TryCatch.Catches>
+            <TryCatch.Finally>
+              <mtlwa:ReleaseEnvironmentFromDeployment DisplayName="Release Environment From Deployment" sap2010:WorkflowViewState.IdRef="ReleaseEnvironmentFromDeployment_1" LabEnvironmentUri="[LabEnvironmentUri]" />
+            </TryCatch.Finally>
           </TryCatch>
           <mtlwa:WriteDeploymentInformation DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Application Deployment Succeeded" sap2010:WorkflowViewState.IdRef="WriteDeploymentInformation_3" Message="[String.Format(&quot;The application was deployed successfully from the following build location:&quot;)]" Url="[BuildLocation]" />
           <If Condition="[LabWorkflowParameters.DeploymentDetails.TakePostDeploymentSnapshot = True]" DisplayName="Post Deployment Snapshot" sap2010:WorkflowViewState.IdRef="If_8">
@@ -229,7 +240,7 @@
       </If.Then>
     </If>
     <mtbwa:SetBuildProperties DisplayName="Set build status" sap2010:WorkflowViewState.IdRef="SetBuildProperties_1" PropertiesToSet="Status" Status="[BuildStatus]" />
-    <sads:DebugSymbol.Symbol>d1JDOlxEZXZlbG9wbWVudFxERVYyIFNDUlVNIFByb2plY3RcQnVpbGRQcm9jZXNzVGVtcGxhdGVzXExhYkRlZmF1bHRUZW1wbGF0ZS4xMS54YW1slAEB9gEBtgIBBQGRAQHdAQEEAZUEAZgEAQMB1wIBlgMBAjUD6QEOAgEBPDw8ewIBAkIFQqABAwHoAUMFQ4cBAwHlAUQFUwoDAccBVAVU/gIDAcMBVQVVsQIDAboBVgVhCgMBqAFiBWYKAwGjAWcFbg4DAZ4BbwVvugEDAZkBcAWAAQoDAYIBgQEFhQEKAgF6hgEFwAEKAgEuwQEF5gEKAgEG5wEF5wGnAQIBA0IwQkUDAekBQ3VDhAEDAeYBRBNEkgEDAcgBRglRFAMBywFUiwJU+wIDAcUBVFBUmwEDAcQBVZcCVa4CAwHBAVX3AVWIAgMBvwFVa1V6AwG9AVU4VV4DAbsBVhNWUgMBqQFYCV8SAwGrAWITYpIBAwGkAWQJZI4CAwGmAWwwbHcDAaEBaTFpRAMBnwFvpQFvtwEDAZwBb4gBb50BAwGaAXATcFcDAYMBcgl1FAMBjAF4CX4UAwGFAYEBE4EBjQECAXuDAQmDAe0BAgF+hgEThgFWAgEviAEJvgEUAgExwQETwQFKAgEHwwEJ5AEUAgEJ5wGVAecBpAECAQRHC0e2AgMB3gFIC0j1AwMB0QFJC1AUAwHMAV00XZ4FAwGuAVo1WkQDAawBZDdk4QEDAacBcwtzmAIDAZIBdAt02AEDAY0BeQt9EAMBhgGDAccBgwHqAQMBgQGDAaUBgwG6AQIBf4kBC4kB0QECAXeKAQuaARYCAWObAQubAY0DAgFenAELvQEQAgEyxwFJxwGVAQIBCskBC8kB5QQCAR3KAQvjARACAQtHZkegAQMB4wFHowJHswIDAeEBR4ACR5sCAwHfAUiEA0iUAwMB3AFI0wJI2AIDAdsBSOUCSPYCAwHaAUjsA0jyAwMB2QFIpQNIxwMDAdgBSM8DSN4DAwHWAUhTSGcDAdQBSD9IRQMB0wFI1QFInAIDAdIBTjNOSQMBzwFLNEthAwHNAXPcAXOVAgMBlwFzwAFzzgEDAZUBc6MBc7gBAwGTAXTHAXTVAQMBkAF0pgF0uwEDAY4BeRl5kAEDAYcBew97mwMDAYkBiQG5AYkBzgECAXiPAQ+YARoCAWeMAQ+MAdgBAgFkmwGJApsB9AICAWKbAfkCmwGKAwIBYJsBR5sBkgECAV+cARmcAWYCATOeAQ+yARoCATy1AQ+7ARoCATXJAfkCyQH+AgIBLckB1wPJAegDAgEryQFuyQGoAQIBKckBjwPJAbEDAgEoyQG5A8kByAMCASbJAbUByQHEAQIBJMkBrQLJAcICAgEiyQH4A8kBoAQCASDJAacEyQHiBAIBHsoBGcoBpwECAQzMAQ/hARQCARB7mQJ7mAMDAYsBe1p7pQEDAYoBkAERlwEbAgFojAHAAYwB1QECAWWhAUChAaEBAgE9owERrgEWAgFRrwERrwGgAgIBSrABEbABnAMCAUaxARGxAfECAgFAtgERugEWAgE2zAEdzAHjAQIBEc4BE9UBHAIBGdgBE98BHAIBFZABjwGQAcIBAgF1lQEVlQG8AwIBaaMBH6MBgwECAVKlARWsAR4CAVSvAf8BrwGdAgIBT68B0AGvAfEBAgFNrwGqAa8BvwECAUuwAZcCsAGZAwIBSLABXLABpwECAUexAZ8CsQG9AgIBRLEBwgKxAe4CAgFCsQFNsQGjAQIBQbYBH7YBlgECATe4ARW4Ab8DAgE50wFG0wGMAQIBHNABR9ABVAIBGt0BRt0BgAECARjaAUfaAVQCARaVAfkClQG5AwIBc5UBkgKVAc8CAgFxlQHdApUB4wICAXCVATyVAU0CAW6VAfABlQGFAgIBbJUBZpUBhQECAWqqAUCqAf0CAgFXpwFBpwFdAgFVuAGoArgBvAMCATu4AWC4AasBAgE6</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -276,7 +287,6 @@
       <sap2010:ViewStateData Id="WaitForEnvironmentReady_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="1144,208" />
       <sap2010:ViewStateData Id="ReserveEnvironmentForDeployment_1" sap:VirtualizedContainerService.HintSize="997,22" />
-      <sap2010:ViewStateData Id="ReleaseEnvironmentFromDeployment_1" sap:VirtualizedContainerService.HintSize="711,22" />
       <sap2010:ViewStateData Id="RunDeploymentTask_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,208" />
       <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="309,332">
@@ -286,7 +296,17 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="997,537" />
+      <sap2010:ViewStateData Id="WriteBuildError_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="400,108">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ReleaseEnvironmentFromDeployment_1" sap:VirtualizedContainerService.HintSize="711,22" />
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="997,270" />
       <sap2010:ViewStateData Id="WriteDeploymentInformation_3" sap:VirtualizedContainerService.HintSize="997,22" />
       <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="464,208" />
@@ -310,14 +330,14 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="997,666" />
-      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="1019,1491">
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="1019,1224">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="1144,1639" />
+      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="1144,1372" />
       <sap2010:ViewStateData Id="ExecuteRemoteTestRun2_1" sap:VirtualizedContainerService.HintSize="634,22" />
       <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="242,60" />
@@ -332,14 +352,14 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="1144,690" />
       <sap2010:ViewStateData Id="SetBuildProperties_1" sap:VirtualizedContainerService.HintSize="1144,22" />
-      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="1166,4725">
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="1166,4458">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1206,4805" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1206,4538" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
