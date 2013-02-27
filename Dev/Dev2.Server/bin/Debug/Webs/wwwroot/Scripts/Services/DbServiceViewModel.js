@@ -12,7 +12,7 @@
     // TODO: reinstate this check when all resources use an ID 
     //self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     // TODO: remove this check: resourceID is either a GUID or a name to cater for legacy stuff
-    self.isEditing = resourceID ? resourceID !== "" : false;
+    self.isEditing = resourceID ? !(resourceID === "" || $.Guid.IsEmpty(resourceID)) : false;
 
     self.data = {
         resourceID: ko.observable(""),
@@ -215,7 +215,7 @@
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
             var methodName = self.data.method.Name();
-            if (methodName !== "") {
+            if (methodName !== "" && result.length > 0) {
                 utils.selectAndScrollToListItem(methodName, $sourceMethodsScrollBox, $sourceMethodsScrollBoxHeight);
 
                 $.each(self.sourceMethods(), function (index, method) {
