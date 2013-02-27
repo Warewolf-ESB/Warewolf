@@ -21,6 +21,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Session;
+ using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.AppResources.AttachedProperties;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
@@ -114,16 +115,16 @@ namespace Dev2.Studio
         [Import]
         public IEventAggregator EventAggregator { get; set; }
 
-        public TabActionContext ActiveDocumentTabAction
+        public WorkSurfaceContext ActiveDocumentTabAction
         {
             get
             {
                 if (ActiveDocument == null)
-                    return TabActionContext.Unknown;
+                    return WorkSurfaceContext.Unknown;
 
                 var uielement = ActiveDocument as UIElement;
                 return uielement == null
-                           ? TabActionContext.Unknown
+                           ? WorkSurfaceContext.Unknown
                            : UIElementTabActionContext.GetTabActionContext(uielement);
             }
         }
@@ -635,7 +636,7 @@ namespace Dev2.Studio
             while ((resourceTab = FindTabByResourceModel(model)) != null)
             {
                 Tabs.Remove(resourceTab);
-                }
+            }
 
             var vm = navItemVM as AbstractTreeViewModel;
 
@@ -710,69 +711,21 @@ namespace Dev2.Studio
                 if (string.IsNullOrEmpty(resource.IconPath))
                 {
                     iconPath = ResourceType.WorkflowService.GetIconLocation();
-                        }
+                }
                 else if (!resource.IconPath.Contains(StringResources.Pack_Uri_Application_Image))
-                        {
+                {
                     var imageUriConverter = new ContextualResourceModelToImageConverter();
                     var iconUri = imageUriConverter.Convert(resource, null, null, null) as Uri;
                     if (iconUri != null) iconPath = iconUri.ToString();
-                    }
                 }
-                else
-                {
+            }
+            else
+            {
                 iconPath = string.IsNullOrEmpty(resource.IconPath)
                                ? StringResources.Navigation_UnitTest_Icon_Pack_Uri
                                : resource.IconPath;
             }
             return iconPath;
-        }
-
-        private static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm)
-            {
-            var designerAttributes = new Dictionary<Type, Type>
-            {
-                    {typeof (DsfActivity), typeof (DsfActivityDesigner)},
-                    {typeof (DsfCommentActivity), typeof (DsfCommentActivityDesigner)},
-                    {typeof (CommentActivity), typeof (DsfCommentActivityDesigner)},
-                    {typeof (DsfAssignActivity), typeof (DsfAssignActivityDesigner)},
-                    {typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
-                    {typeof (DsfForEachActivity), typeof (DsfForEachActivityDesigner)},
-                    {typeof (DsfWebPageActivity), typeof (DsfWebPageActivityDesigner)},
-                    {typeof (DsfWebSiteActivity), typeof (DsfWebSiteActivityDesigner)},
-                    {typeof (DsfCountRecordsetActivity), typeof (DsfCountRecordsetActivityDesigner)},
-                    {typeof (DsfSortRecordsActivity), typeof (DsfSortRecordsActivityDesigner)},
-                    {typeof (DsfMultiAssignActivity), typeof (DsfMultiAssignActivityDesigner)},
-                    {typeof (DsfDataSplitActivity), typeof (DsfDataSplitActivityDesigner)},
-                    {typeof (DsfPathCreate), typeof (DsfPathCreateDesigner)},
-                    {typeof (DsfFileRead), typeof (DsfFileReadDesigner)},
-                    {typeof (DsfFileWrite), typeof (DsfFileWriteDesigner)},
-                    {typeof (DsfFolderRead), typeof (DsfFolderReadDesigner)},
-                    {typeof (DsfPathCopy), typeof (DsfPathCopyDesigner)},
-                    {typeof (DsfPathDelete), typeof (DsfPathDeleteDesigner)},
-                    {typeof (DsfPathMove), typeof (DsfPathMoveDesigner)},
-                    {typeof (DsfPathRename), typeof (DsfPathRenameDesigner)},
-                    {typeof (DsfZip), typeof (DsfZipDesigner)},
-                    {typeof (DsfUnZip), typeof (DsfUnzipDesigner)},
-                    {typeof (DsfDateTimeActivity), typeof (DsfDateTimeActivityDesigner)},
-                    {typeof (DsfCalculateActivity), typeof (DsfCalculateActivityDesigner)},
-                    {typeof (DsfDateTimeDifferenceActivity), typeof (DsfDateTimeDifferenceActivityDesigner)},
-                    {typeof (DsfCaseConvertActivity), typeof (DsfCaseConvertActivityDesigner)},
-                    {typeof (DsfBaseConvertActivity), typeof (DsfBaseConvertActivityDesigner)},
-                    {typeof (DsfReplaceActivity), typeof (DsfReplaceActivityDesigner)},
-                    {typeof (DsfIndexActivity), typeof (DsfIndexActivityDesigner)},
-                    {typeof (DsfDeleteRecordActivity), typeof (DsfDeleteRecordActivityDesigner)},
-                    {typeof (DsfDataMergeActivity), typeof (DsfDataMergeActivityDesigner)},
-                    {typeof (DsfRemoveActivity), typeof (DsfRemoveActivityDesigner)},
-                    {typeof (DsfTagCountActivity), typeof (DsfTagCountActivityDesigner)},
-                    {typeof (AssertActivity), typeof (DsfAssertActivityDesigner)},
-                    {typeof (DsfFileForEachActivity), typeof (DsfFileForEachActivityDesigner)},
-                    {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
-                    {typeof (DsfFindRecordsActivity), typeof (DsfFindRecordsActivityDesigner)},
-                    {typeof (DsfNumberFormatActivity), typeof (DsfNumberFormatActivityDesigner)}
-                    // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
-                };
-
-            workflowVm.InitializeDesigner(designerAttributes);
         }
 
         private static bool IsWebpage(IContextualResourceModel resource)
@@ -786,19 +739,19 @@ namespace Dev2.Studio
         }
 
         private static Type GetUserInterfaceType(IContextualResourceModel resource)
-            {
+        {
             Type userInterfaceType = null;
 
             if (resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
                 || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase))
-                {
+            {
                 userInterfaceType = typeof (DsfWebPageActivity);
             }
 
             if (resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase))
             {
                 userInterfaceType = typeof (DsfWebSiteActivity);
-        }
+            }
 
             return userInterfaceType;
         }
@@ -811,15 +764,15 @@ namespace Dev2.Studio
             if (Tabs == null) return;
 
             foreach (FrameworkElement item in Tabs)
-        {
+            {
                 IContextualResourceModel resource = ResourceHelper.GetContextualResourceModel(item.DataContext);
 
                 if (resource != null)
-        {
+                {
                     MainViewModel.Save(resource, false);
+                }
+            }
         }
-            }
-            }
 
         //private List<Node> GetDependencies(IContextualResourceModel resource)
         //{
@@ -857,10 +810,10 @@ namespace Dev2.Studio
                         PropertyPane.Content = workflowVm.PropertyView;
                 }
                 if (workflowVm != null)
-                    {
+                {
                     workflowVm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-                    }
                 }
+            }
             else
             {
                 HideDataList();
@@ -947,145 +900,145 @@ namespace Dev2.Studio
             {
                 string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
-                ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
+            ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
 
-                ErrorResultTO errors;
-                Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
-                    out errors); // fake it to get the ID
+            ErrorResultTO errors;
+            Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
+                                                           out errors); // fake it to get the ID
 
                 if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
-                {
-                    // Bad things happened... Tell the user
-                    PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading,
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                    // Stop configuring!!!
-                    return;
-                }
+            {
+                // Bad things happened... Tell the user
+                PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading,
+                                   MessageBoxButton.OK, MessageBoxImage.Error);
+                // Stop configuring!!!
+                return;
+            }
 
-                // Push the correct data to the server ;)
+            // Push the correct data to the server ;)
                 if(activityExpression != null && activityExpression.Value == null)
-                {
-                    // Its all new, push the empty model
-                    compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
-                }
+            {
+                // Its all new, push the empty model
+                compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
+            }
                 else if(activityExpression != null && activityExpression.Value != null)
-                {
-                    //we got a model, push it in to the Model region ;)
-                    // but first, strip and extract the model data ;)
+            {
+                //we got a model, push it in to the Model region ;)
+                // but first, strip and extract the model data ;)
 
                     val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
 
                     if(!string.IsNullOrEmpty(val))
+                {
+                    try
                     {
-                        try
-                        {
                             //compiler.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                            // Valid model... roll with it ;)
+                        // Valid model... roll with it ;)
                             //compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, val, out errors);
                             //val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
-                        }
-                        catch
-                        {
-                            // An old model, time to push an empty model ;)
+                    }
+                    catch
+                    {
+                        // An old model, time to push an empty model ;)
                             //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack,
                             //                                       out errors);
 
                             val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
                             //val = DataListConstants.DefaultStack;
-                        }
                     }
-                    else
-                    {
-                        // Its all invalid   
+                }
+                else
+                {
+                    // Its all invalid   
                         //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
 
                         val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
-                    }
                 }
+            }
 
-                // Now invoke the Wizard ;)
-                Uri requestUri;
+            // Now invoke the Wizard ;)
+            Uri requestUri;
                 if(Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
-                {
-                    string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-                    //var resourceViewModel = new ResourceWizardViewModel(decisionActivity);
+            {
+                string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
+                //var resourceViewModel = new ResourceWizardViewModel(decisionActivity);
 
 
                     callBackHandler.ModelData = val; // set the model data
 
-                    //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
-                    //callBackHandler.Owner.ShowDialog();
-                    WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
+                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
+                //callBackHandler.Owner.ShowDialog();
+                WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
 
-                    // Wizard finished...
-                    // Now Fetch from DL and push the model into the activityExpression.SetValue();
-                    try
-                    {
+                // Wizard finished...
+                // Now Fetch from DL and push the model into the activityExpression.SetValue();
+                try
+                {
                         //Dev2DecisionStack dds = compiler.FetchSystemModelFromDataList<Dev2DecisionStack>(dataListID, out errors);
 
                         Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(callBackHandler.ModelData);
 
                         if(dds != null)
-                        {
-                            // Empty check the arms ;)
+                    {
+                        // Empty check the arms ;)
                             if(string.IsNullOrEmpty(dds.TrueArmText.Trim()))
-                            {
-                                dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
-                            }
+                        {
+                            dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
+                        }
 
                             if(string.IsNullOrEmpty(dds.FalseArmText.Trim()))
-                            {
-                                dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
-                            }
+                        {
+                            dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
+                        }
 
-                            // Update the decision node on the workflow ;)
-                            string modelData = dds.ToVBPersistableModel();
+                        // Update the decision node on the workflow ;)
+                        string modelData = dds.ToVBPersistableModel();
 
-                            // build up our injected expression handler ;)
-                            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
-                                modelData, "\",",
-                                GlobalConstants.InjectedDecisionDataListVariable, ")");
+                        // build up our injected expression handler ;)
+                        string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
+                                                                modelData, "\",",
+                                                                GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                             if(activityExpression != null)
-                            {
-                                activityExpression.SetValue(expressionToInject);
-                            }
+                        {
+                            activityExpression.SetValue(expressionToInject);
+                        }
 
-                            // now set arms ;)
-                            ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
+                        // now set arms ;)
+                        ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
                             if(tArm != null)
-                            {
-                                tArm.SetValue(dds.TrueArmText);
-                            }
+                        {
+                            tArm.SetValue(dds.TrueArmText);
+                        }
 
-                            ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
+                        ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
                             if(fArm != null)
-                            {
-                                fArm.SetValue(dds.FalseArmText);
-                            }
+                        {
+                            fArm.SetValue(dds.FalseArmText);
                         }
                     }
-                    catch
-                    {
-                        // Bad things happened... Tell the user
-                        //PopupProvider.Show("", "")
-                        PopupProvider.Buttons = MessageBoxButton.OK;
-                        PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
-                        PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
-                        PopupProvider.ImageType = MessageBoxImage.Error;
-                        PopupProvider.Show();
-                    }
-                    finally
-                    {
-                        // clean up ;)
-                        compiler.DeleteDataListByID(dataListID);
-                    }
+                }
+                catch
+                {
+                    // Bad things happened... Tell the user
+                    //PopupProvider.Show("", "")
+                    PopupProvider.Buttons = MessageBoxButton.OK;
+                    PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
+                    PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
+                    PopupProvider.ImageType = MessageBoxImage.Error;
+                    PopupProvider.Show();
+                }
+                finally
+                {
+                    // clean up ;)
+                    compiler.DeleteDataListByID(dataListID);
                 }
             }
+        }
         }
 
         internal void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
@@ -1458,7 +1411,7 @@ namespace Dev2.Studio
                 {
                     var help = new HelpWindow(helpResource.HelpLink);
                     UIElementTitleProperty.SetTitle(help, helpResource.ResourceName + "*Help");
-                    UIElementTabActionContext.SetTabActionContext(help, TabActionContext.HelpSearch);
+                    UIElementTabActionContext.SetTabActionContext(help, WorkSurfaceContext.HelpSearch);
                     Tabs.Add(help);
                     SetActiveDocument(help);
                 }
@@ -1526,7 +1479,7 @@ namespace Dev2.Studio
                 }
                 catch
                 {
-            }
+                }
             }
             else
             {
@@ -1594,7 +1547,7 @@ namespace Dev2.Studio
                 }
                 catch
                 {
-            }
+                }
             }
             else
             {
@@ -1712,38 +1665,38 @@ namespace Dev2.Studio
             foreach (
                 FrameworkElement item in
                     Tabs.Where(item => UIElementTitleProperty.GetTitle(item) == resource.ResourceName))
-                {
-                    SetActiveDocument(item);
-                    return;
-                }
+            {
+                SetActiveDocument(item);
+                return;
+            }
 
-                AddWorkspaceItem(resource);
+            AddWorkspaceItem(resource);
 
-                var workflowDesignerWindow = new WorkflowDesignerWindow();
+            var workflowDesignerWindow = new WorkflowDesignerWindow();
             string iconPath = GetIconPath(resource);
-                var workflowVm = new WorkflowDesignerViewModel(resource);
+            var workflowVm = new WorkflowDesignerViewModel(resource);
 
             AttachedPropertyHelper.SetAttachedProperties(workflowDesignerWindow, resource, iconPath);
-            AddDesignerAttributes(workflowVm);
-                workflowDesignerWindow.DataContext = workflowVm;
+            ActivityDesignerHelper.AddDesignerAttributes(workflowVm);
+            workflowDesignerWindow.DataContext = workflowVm;
             if (PropertyPane != null)
                 PropertyPane.Content = workflowVm.PropertyView;
 
-                Tabs.Add(workflowDesignerWindow);
-                SetActiveDocument(workflowDesignerWindow);
+            Tabs.Add(workflowDesignerWindow);
+            SetActiveDocument(workflowDesignerWindow);
 
-                if (resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
-                    || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase)
-                    || resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase)
-                    )
-                {
-                    AddUserInterfaceWorkflow(resource, workflowVm);
-                }
+            if (resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
+                || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase)
+                || resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase)
+                )
+            {
+                AddUserInterfaceWorkflow(resource, workflowVm);
             }
+        }
 
         internal void AddUserInterfaceWorkflow(IContextualResourceModel resource,
                                                IWorkflowDesignerViewModel workflowViemModel)
-            {
+        {
             bool isWebpage = IsWebpage(resource);
             Type userInterfaceType = GetUserInterfaceType(resource);
             if (userInterfaceType == null) return;
@@ -1849,7 +1802,7 @@ namespace Dev2.Studio
             var editor = new WebsiteEditorWindow(viewModel);
             UIElementTitleProperty.SetTitle(editor, string.Format("{0}.website", webActivity.ResourceModel.ResourceName));
             UIElementImageProperty.SetImage(editor, "pack://application:,,,/Images/webpagebuilder.png");
-            UIElementTabActionContext.SetTabActionContext(editor, TabActionContext.Website);
+            UIElementTabActionContext.SetTabActionContext(editor, WorkSurfaceContext.Website);
 
             Tabs.Add(editor);
             SetActiveDocument(editor);
@@ -1878,7 +1831,7 @@ namespace Dev2.Studio
                                             string.Format("{0}/{1}.ui", webActivity.ResourceModel.ResourceName,
                                                           (webActivity.WebActivityObject as dynamic).DisplayName));
             UIElementImageProperty.SetImage(layoutGrid, "pack://application:,,,/Images/User.png");
-            UIElementTabActionContext.SetTabActionContext(layoutGrid, TabActionContext.Webpage);
+            UIElementTabActionContext.SetTabActionContext(layoutGrid, WorkSurfaceContext.Webpage);
             //Set the active page to signal user interface transitions.
             if (l.LayoutObjects.Any())
             {
@@ -1900,7 +1853,7 @@ namespace Dev2.Studio
 
         internal void SetActiveDocument(FrameworkElement document)
             //, string documentName, enResourceType resourceType = enResourceType.Unknown)
-            {
+        {
             Dispatcher.CurrentDispatcher.Invoke(new Action(() => { ActiveDocument = document; }));
 
             //var workspaceID = Guid.NewGuid();
@@ -1985,15 +1938,15 @@ namespace Dev2.Studio
                                                           StringResources.CurrentVersion), packUri,
                                             StringResources.About_Description_Header);
             var dev2Dialog = new Dev2Dialogue
-            {
-                Owner = Application.Current.MainWindow,
-                DataContext = dialogueViewModel
-            };
+                {
+                    Owner = Application.Current.MainWindow,
+                    DataContext = dialogueViewModel
+                };
             dialogueViewModel.OnOkClick += (e, f) =>
-            {
-                dev2Dialog.Close();
-                dialogueViewModel.Dispose();
-            };
+                {
+                    dev2Dialog.Close();
+                    dialogueViewModel.Dispose();
+                };
             dev2Dialog.ShowDialog();
         }
 
@@ -2091,8 +2044,8 @@ namespace Dev2.Studio
             if (itemToRemove == null) return;
 
             WorkspaceItems.Remove(itemToRemove);
-                SaveWorkspaceItems();
-            }
+            SaveWorkspaceItems();
+        }
 
         #endregion
 

@@ -249,35 +249,35 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private BindableCollection<ContextViewModel> _contexts;
-        public BindableCollection<ContextViewModel> Contexts
+        private BindableCollection<WorkSurfaceContextViewModel> _workSurfaceContexts;
+        public BindableCollection<WorkSurfaceContextViewModel> WorkSurfaceContexts
         {
             get
             {
-                return _contexts;
+                return _workSurfaceContexts;
             }
             set
             {
-                if (_contexts == value) return;
+                if (_workSurfaceContexts == value) return;
 
-                _contexts = value;
-                NotifyOfPropertyChange(() => Contexts);
+                _workSurfaceContexts = value;
+                NotifyOfPropertyChange(() => WorkSurfaceContexts);
             }
         }
-        
-        private ContextViewModel _activeContext;
-        public ContextViewModel ActiveContext
+
+        private WorkSurfaceContextViewModel _activeWorkSurfaceContext;
+        public WorkSurfaceContextViewModel ActiveWorkSurfaceContext
         {
             get
             {
-                return _activeContext;
+                return _activeWorkSurfaceContext;
             }
             set
             {
-                if (_activeContext == value) return;
+                if (_activeWorkSurfaceContext == value) return;
 
-                _activeContext = value;
-                NotifyOfPropertyChange(() => ActiveContext);
+                _activeWorkSurfaceContext = value;
+                NotifyOfPropertyChange(() => ActiveWorkSurfaceContext);
             }
         }
 

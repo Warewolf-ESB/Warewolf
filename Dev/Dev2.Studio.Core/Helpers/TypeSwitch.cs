@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Data;
+using System.Linq;
+using System.ServiceModel;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -13,10 +16,21 @@ namespace Dev2.Studio.Core.Helpers
 
         public static void Do(object source, params CaseInfo[] cases)
         {
-            var type = source.GetType();
-            foreach (var entry in cases)
+            if (source == null)
             {
-                if (entry.IsDefault || entry.Target.IsAssignableFrom(type))
+                if (!cases.ToList().Any(c => c.IsDefault))
+                    throw new Exception("Can not do switch on null type argument if no default implementation provided");
+                
+                foreach (var entry in cases.Where(entry => entry.IsDefault))
+                {
+                    entry.Action(null);
+                    break;
+                }
+            }
+            else
+            {
+                var type = source.GetType();
+                foreach (var entry in cases.Where(entry => entry.IsDefault || entry.Target.IsAssignableFrom(type)))
                 {
                     entry.Action(source);
                     break;

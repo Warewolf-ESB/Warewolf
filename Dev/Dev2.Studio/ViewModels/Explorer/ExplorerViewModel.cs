@@ -54,7 +54,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         #endregion Commands
 
         #region Properties
-
         [Import]
         public IFilePersistenceProvider FilePersistenceProvider { get; set; }
 

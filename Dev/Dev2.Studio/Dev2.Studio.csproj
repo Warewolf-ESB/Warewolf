@@ -158,6 +158,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
     <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -315,8 +316,10 @@
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
-    <Compile Include="ViewModels\ContextViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\AbstractWorkSurfaceViewModel.cs" />
+    <Compile Include="ViewModels\WorkSurfaceContextViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\IWorkSurfaceViewModel.cs" />
     <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>

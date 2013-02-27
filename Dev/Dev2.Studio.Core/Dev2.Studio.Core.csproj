@@ -160,6 +160,7 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
+    <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
     <Compile Include="AppResources\Exceptions\WebResourceRemoveFailedException.cs" />
     <Compile Include="AppResources\Exceptions\WebResourceUploadFailedException.cs" />

@@ -86,24 +86,23 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public IWizardEngine WizardEngine { get; set; }
 
-        /// <summary>
-        /// Gets or sets the filter to filter tree items by.
-        /// </summary>
-        /// <value>
-        /// The search filter.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public string SearchFilter
-        {
-            get { return _searchFilter; }
-            set
-            {
-                _searchFilter = value;
-                UpdateSearchFilter();
-                NotifyOfPropertyChange(() => SearchFilter);
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets the filter to filter tree items by.
+        ///// </summary>
+        ///// <value>
+        ///// The search filter.
+        ///// </value>
+        ///// <author>Jurie.smit</author>
+        ///// <date>2013/01/23</date>
+        //public string SearchFilter
+        //{
+        //    get { return _searchFilter; }
+        //    set
+        //    {
+        //        _searchFilter = value;
+        //        NotifyOfPropertyChange(() => SearchFilter);
+        //    }
+        //}
 
         /// <summary>
         /// Gets the root node of the tree.
@@ -403,16 +402,27 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Called after the specified delay after a key is pressed in the search box, to filter treeview and expand items acordingly.
+        /// Called to filter the root treendode
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2/25/2013</date>
-        public void OnDelayedKeyDown()
+        public void UpdateSearchFilter(string searhFilter)
         {
-            UpdateSearchFilter();
+            _searchFilter = searhFilter;
+            Root.FilterText = _searchFilter;
             Root.UpdateFilteredNodeExpansionStates();
         }
 
+        ///// <summary>
+        ///// Called after the specified delay after a key is pressed in the search box, to filter treeview and expand items acordingly.
+        ///// </summary>
+        ///// <author>Jurie.smit</author>
+        ///// <date>2/25/2013</date>
+        //public void UpdateSearchFilter(object searhFilter)
+        //{
+        //    if (searhFilter == null || !(searhFilter is string)) return;
+        //    UpdateSearchFilter((string)searhFilter);
+        //}
         #endregion public methods
 
         #region private methods
@@ -461,16 +471,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Updates the search filter, by setting it on the root node, from there it filters down.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        private void UpdateSearchFilter()
-        {
-            Root.FilterText = SearchFilter;
-        }
-
-        /// <summary>
         /// Clears the children.
         /// </summary>
         /// <param name="node">The node.</param>
@@ -508,7 +508,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                               resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
             BuildCategoryTree(ResourceType.Service, environmentVM,
                               resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
-            UpdateSearchFilter();
+            UpdateSearchFilter(_searchFilter);
         }
 
         /// <summary>

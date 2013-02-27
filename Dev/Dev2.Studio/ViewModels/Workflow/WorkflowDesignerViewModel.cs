@@ -11,6 +11,7 @@ using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -46,7 +47,11 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : SimpleBaseViewModel, IWorkflowDesignerViewModel, IDisposable, IHandle<UpdateResourceMessage>, IHandle<AddStringListToDataListMessage>, IHandle<AddMissingAndFindUnusedDataListItemsMessage>
+    public class WorkflowDesignerViewModel : AbstractWorkSurfaceViewModel, 
+        IWorkflowDesignerViewModel, IDisposable,
+        IHandle<UpdateResourceMessage>, 
+        IHandle<AddStringListToDataListMessage>, 
+        IHandle<AddMissingAndFindUnusedDataListItemsMessage>
     {
         #region Fields
 
@@ -2751,6 +2756,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IEnvironmentModel EnvironmentModel
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override WorkSurfaceContext WorkSurfaceContext
+        {
+            get
+            {
+                return (ResourceModel == null)
+                           ? WorkSurfaceContext.Unknown
+                           : ResourceModel.ResourceType.ToWorkSurfaceContext();
+            }
         }
     }
 }

@@ -280,8 +280,8 @@ namespace Dev2.Core.Tests
 
             Assert.IsTrue(vm.Root.ChildrenCount == 3);
             Assert.IsTrue(resourceVM.IsFiltered == false);
-
-            vm.SearchFilter = "Mock2";
+             
+            vm.UpdateSearchFilter("Mock2");
             Assert.IsTrue(vm.Root.ChildrenCount == 2);
             Assert.IsTrue(resourceVM.IsFiltered == true);
 
@@ -290,8 +290,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(vm.Root.ChildrenCount == 2);
             Assert.IsTrue(resourceVM.IsFiltered == true);
 
-
-            vm.SearchFilter = "Mock";
+            vm.UpdateSearchFilter("Mock");
             Assert.IsTrue(vm.Root.ChildrenCount == 3);
             Assert.IsTrue(resourceVM.IsFiltered == false);
         }

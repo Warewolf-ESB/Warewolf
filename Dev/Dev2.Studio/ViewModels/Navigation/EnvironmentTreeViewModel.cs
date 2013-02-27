@@ -47,6 +47,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             : base(null)
         {
             EnvironmentModel = environmentModel;
+            IsExpanded = true;
             if (parent != null)
             {
                 parent.Add(this);

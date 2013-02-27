@@ -15,11 +15,14 @@ namespace Dev2.Studio.Factory
         {
             DeployViewModel deployViewModel = null;
             
-            TypeSwitch.Do(input,
-                TypeSwitch.Case<AbstractTreeViewModel>(x => deployViewModel = new DeployViewModel(x)),
-                TypeSwitch.Case<IContextualResourceModel>(x => deployViewModel = new DeployViewModel(x)),
-                TypeSwitch.Case<IEnvironmentModel>(x => deployViewModel = new DeployViewModel(x)),
-                TypeSwitch.Default(() => deployViewModel = new DeployViewModel()));
+            if (input != null)
+                TypeSwitch.Do(input,
+                    TypeSwitch.Case<AbstractTreeViewModel>(x => deployViewModel = new DeployViewModel(x)),
+                    TypeSwitch.Case<IContextualResourceModel>(x => deployViewModel = new DeployViewModel(x)),
+                    TypeSwitch.Case<IEnvironmentModel>(x => deployViewModel = new DeployViewModel(x)),
+                    TypeSwitch.Default(() => deployViewModel = new DeployViewModel()));
+            else 
+                deployViewModel = new DeployViewModel();
 
             return deployViewModel;
         }

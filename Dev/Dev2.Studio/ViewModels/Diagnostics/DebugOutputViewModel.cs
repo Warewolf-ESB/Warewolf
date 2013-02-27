@@ -446,9 +446,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        #endregion
-
-        
+        #endregion       
 
         #region Private Methods
 

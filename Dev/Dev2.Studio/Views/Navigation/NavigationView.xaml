@@ -10,7 +10,8 @@
              xmlns:ei="clr-namespace:Dev2.Studio"
              xmlns:core="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-    Name="NavigationViewUserControl"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             Name="NavigationViewUserControl"
              ap:UIElementTitleProperty.Title="Navigation">
     <Grid>
         <Grid.RowDefinitions>
@@ -24,10 +25,14 @@
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
 
-            <customControls:Dev2FilterTextBox Grid.Column="0" SearchText="{Binding Path=Source.SearchFilter, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+            <customControls:Dev2FilterTextBox x:Name="FilterTextBox" 
+                                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                              Grid.Column="0">
                 <i:Interaction.Triggers>
                     <trigger:DelayKeydownEventTrigger DelayInMilliSeconds="500">
-                        <core:CallMethodAction  MethodName="OnDelayedKeyDown" TargetObject="{Binding .}"/>
+                        <cal:ActionMessage MethodName="UpdateSearchFilter">
+                            <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
+                        </cal:ActionMessage>
                     </trigger:DelayKeydownEventTrigger>
                 </i:Interaction.Triggers>
             </customControls:Dev2FilterTextBox>

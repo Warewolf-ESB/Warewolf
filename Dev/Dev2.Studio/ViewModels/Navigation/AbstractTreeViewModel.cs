@@ -41,7 +41,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool _isSelected;
         ITreeNode _treeParent;
         ICollectionView _filteredChildren;
-        private bool _unfilteredExpandState;
+        private bool? _unfilteredExpandState;
         private bool _hasUnfilteredExpandStateBeenSet;
         private string _filterText;
         #endregion
@@ -587,7 +587,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             //If no filter set unfiltered state
             if (string.IsNullOrWhiteSpace(FilterText))
             {
-                this.IsExpanded = _unfilteredExpandState;
+                if (_unfilteredExpandState != null)
+                    IsExpanded = _unfilteredExpandState.Value;
                 _hasUnfilteredExpandStateBeenSet = false;
                 foreach (var treeNode in Children)
                 {
