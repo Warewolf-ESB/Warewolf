@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.IO;
 using System.Xml;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -56,7 +56,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
         {
             IOutputDescription outputDescription = null;
 
-            if (data != null)
+            if (!string.IsNullOrWhiteSpace(data))
             {
                 data = data.Replace("<![CDATA[", "");
                 data = data.Replace("]]>", "");

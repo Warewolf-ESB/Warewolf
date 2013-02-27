@@ -82,8 +82,6 @@
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
-    <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerMock.cs" />
-    <Compile Include="ServiceModel\Esb\Brokers\DatabaseBrokerTests.cs" />
     <Compile Include="ServiceModel\ServicesMock.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
@@ -182,9 +180,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\InternallySigned.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServiceModel\Esb\Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="..\Binaries\redis-server.exe">
       <Link>redis-server.exe</Link>

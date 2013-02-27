@@ -122,7 +122,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
             path.ActualPath += path.CreatePathSegment(element).ToString();
             path.DisplayPath += path.CreatePathSegment(element).ToString();
-            path.SampleData += GetSampleData(root, path);
+            //path.SampleData += GetSampleData(root, path);
+            path.SampleData += "";
 
             return path;
         }

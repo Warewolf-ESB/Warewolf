@@ -160,10 +160,10 @@ namespace Dev2.Runtime.ServiceModel
             for(var i = 0; i < outputDescription.DataSourceShapes[0].Paths.Count; i++)
             {
                 var path = outputDescription.DataSourceShapes[0].Paths[i];
-                if(string.IsNullOrEmpty(path.SampleData))
-                {
-                    continue;
-                }
+                //if(string.IsNullOrEmpty(path.SampleData))
+                //{
+                //    continue;
+                //}
 
                 // Remove bogus names and dots
                 var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "");

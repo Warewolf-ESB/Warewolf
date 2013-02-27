@@ -1,4 +1,15 @@
-﻿using Dev2.Common;
+﻿#region Change Log
+
+//  Author:         Sameer Chunilall
+//  Date:           2010-01-24
+//  Log No:         9299
+//  Description:    The data layer of the Dynamic Service Engine
+//                  This is where all actions get executed.
+
+#endregion
+
+using System.Xml.XPath;
+using Dev2.Common;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -1107,6 +1118,155 @@ namespace Dev2.Runtime.InterfaceImplementors
         /// <returns>
         /// UnlimitedObject
         /// </returns>
+        //public dynamic SqlDatabaseCommand(ServiceAction serviceAction, IDSFDataObject req)
+        //{
+        //    Guid result = GlobalConstants.NullDataListID;
+        //    Guid tmpID = GlobalConstants.NullDataListID;
+
+        //    var errors = new ErrorResultTO();
+        //    var allErrors = new ErrorResultTO();
+
+        //    using(var cn = new SqlConnection(serviceAction.Source.ConnectionString))
+        //    {
+        //        var dataset = new DataSet();
+        //        try
+        //        {
+        //            //Create a SqlCommand to execute at the source
+        //            var cmd = new SqlCommand();
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Connection = cn;
+        //            cmd.CommandText = serviceAction.SourceMethod;
+        //            cmd.CommandTimeout = serviceAction.CommandTimeout;
+
+        //            //Add the parameters to the SqlCommand
+        //            if(serviceAction.ServiceActionInputs.Count() > 0)
+        //            {
+        //                foreach(ServiceActionInput sai in serviceAction.ServiceActionInputs)
+        //                {
+        //                    var injectVal = (string)sai.Value;
+
+        //                    // 16.10.2012 : Travis.Frisinger - Convert empty to null
+        //                    if(sai.EmptyToNull && injectVal == AppServerStrings.NullConstant)
+        //                    {
+        //                        cmd.Parameters.AddWithValue(sai.Source, DBNull.Value);
+        //                    }
+        //                    else
+        //                    {
+        //                        cmd.Parameters.AddWithValue(sai.Source, sai.Value);
+        //                    }
+        //                }
+        //            }
+
+        //            cn.Open();
+        //            var xmlDbResponse = new StringBuilder();
+
+        //            var adapter = new SqlDataAdapter(cmd);
+        //            adapter.Fill(dataset);
+
+        //            string res =
+        //                DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL)
+        //                                    .SanitizePayload(dataset.GetXml());
+
+        //            xmlDbResponse.Append(res);
+
+        //            cn.Close();
+
+        //            //Alert the caller that request returned no data
+        //            if(string.IsNullOrEmpty(xmlDbResponse.ToString()))
+        //            {
+        //                // handle any errors that might have occured
+        //                IBinaryDataListEntry be = Dev2BinaryDataListFactory.CreateEntry(enSystemTag.Error.ToString(),
+        //                                                                                string.Empty);
+        //                string error;
+        //                be.TryPutScalar(
+        //                    Dev2BinaryDataListFactory.CreateBinaryItem(
+        //                        "The request yielded no response from the data store.", enSystemTag.Error.ToString()),
+        //                    out error);
+        //                if(error != string.Empty)
+        //                {
+        //                    errors.AddError(error);
+        //                }
+        //                SvrCompiler.Upsert(null, req.DataListID,
+        //                                    DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, true), be,
+        //                                    out errors);
+        //            }
+        //            else
+        //            {
+        //                string tmpData = xmlDbResponse.ToString();
+        //                string od = serviceAction.OutputDescription;
+
+        //                od = od.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "");
+
+        //                if(!string.IsNullOrWhiteSpace(od))
+        //                {
+        //                    IOutputDescriptionSerializationService outputDescriptionSerializationService =
+        //                        OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService
+        //                            ();
+        //                    IOutputDescription outputDescriptionInstance =
+        //                        outputDescriptionSerializationService.Deserialize(od);
+
+        //                    if(outputDescriptionInstance != null)
+        //                    {
+        //                        IOutputFormatter outputFormatter =
+        //                            OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
+        //                        string formatedPayload = outputFormatter.Format(tmpData).ToString();
+        //                        // TODO : Now create a new dataList and merge the result into the current dataList ;)
+        //                        string dlShape =
+        //                            ClientCompiler.ShapeDev2DefinitionsToDataList(serviceAction.ServiceActionOutputs,
+        //                                                                           enDev2ArgumentType.Output, false,
+        //                                                                           out errors);
+        //                        allErrors.MergeErrors(errors);
+        //                        tmpID = ClientCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+        //                                                          formatedPayload, dlShape, out errors);
+        //                        var parentID = ClientCompiler.FetchParentID(req.DataListID);
+        //                        //ClientCompiler.SetParentID(tmpID, req.DataListID);
+        //                        ClientCompiler.SetParentID(tmpID, parentID);
+        //                        // set parent for merge op in finally...
+
+        //                        allErrors.MergeErrors(errors);
+        //                    }
+        //                }
+        //            }
+
+        //            cmd.Dispose();
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            allErrors.AddError(ex.Message);
+        //        }
+        //        finally
+        //        {
+        //            // handle any errors that might have occured
+        //            IBinaryDataListEntry be = Dev2BinaryDataListFactory.CreateEntry(enSystemTag.Error.ToString(),
+        //                                                                            string.Empty);
+        //            string error;
+        //            be.TryPutScalar(
+        //                Dev2BinaryDataListFactory.CreateBinaryItem(allErrors.MakeDataListReady(),
+        //                                                           enSystemTag.Error.ToString()), out error);
+        //            if(error != string.Empty)
+        //            {
+        //                errors.AddError(error);
+        //            }
+        //            SvrCompiler.Upsert(null, req.DataListID,
+        //                                DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, true), be, out errors);
+
+        //            // now merge and delete tmp
+        //            if(tmpID != GlobalConstants.NullDataListID)
+        //            {
+        //                ClientCompiler.Shape(tmpID, enDev2ArgumentType.Output, serviceAction.ServiceActionOutputs,
+        //                                      out errors);
+        //                ClientCompiler.DeleteDataListByID(tmpID);
+        //                result = req.DataListID;
+        //            }
+
+        //            //ExceptionHandling.WriteEventLogEntry("Application", string.Format("{0}.{1}", this.GetType().Name, "SqlDatabaseCommand"), string.Format("Exception:{0}\r\nInputData:{1}", xmlResponse.XmlString, xmlRequest.XmlString), EventLogEntryType.Error);
+        //        }
+
+
+        //        return result;
+        //    }
+        //}
+
         public dynamic SqlDatabaseCommand(ServiceAction serviceAction, IDSFDataObject req)
         {
             Guid result = GlobalConstants.NullDataListID;
@@ -1115,146 +1275,68 @@ namespace Dev2.Runtime.InterfaceImplementors
             var errors = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
 
-            using(var cn = new SqlConnection(serviceAction.Source.ConnectionString))
-            {
-                var dataset = new DataSet();
                 try
                 {
-                    //Create a SqlCommand to execute at the source
-                    var cmd = new SqlCommand();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Connection = cn;
-                    cmd.CommandText = serviceAction.SourceMethod;
-                    cmd.CommandTimeout = serviceAction.CommandTimeout;
+                // Get XAML data from service action
+                string xmlDbResponse = GetXmlDataFromSqlServiceAction(serviceAction);
 
-                    //Add the parameters to the SqlCommand
-                    if(serviceAction.ServiceActionInputs.Count() > 0)
+                if (string.IsNullOrEmpty(xmlDbResponse))
                     {
-                        foreach(ServiceActionInput sai in serviceAction.ServiceActionInputs)
-                        {
-                            var injectVal = (string)sai.Value;
-
-                            // 16.10.2012 : Travis.Frisinger - Convert empty to null
-                            if(sai.EmptyToNull && injectVal == AppServerStrings.NullConstant)
-                            {
-                                cmd.Parameters.AddWithValue(sai.Source, DBNull.Value);
+                    // If there was no data returned add error
+                    allErrors.AddError("The request yielded no response from the data store.");
                             }
                             else
                             {
-                                cmd.Parameters.AddWithValue(sai.Source, sai.Value);
-                            }
-                        }
-                    }
-
-                    cn.Open();
-                    var xmlDbResponse = new StringBuilder();
-
-                    var adapter = new SqlDataAdapter(cmd);
-                    adapter.Fill(dataset);
-
-                    string res =
-                        DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL)
-                                            .SanitizePayload(dataset.GetXml());
-
-                    xmlDbResponse.Append(res);
-
-                    cn.Close();
-
-                    //Alert the caller that request returned no data
-                    if(string.IsNullOrEmpty(xmlDbResponse.ToString()))
-                    {
-                        // handle any errors that might have occured
-                        IBinaryDataListEntry be = Dev2BinaryDataListFactory.CreateEntry(enSystemTag.Error.ToString(),
-                                                                                        string.Empty);
-                        string error;
-                        be.TryPutScalar(
-                            Dev2BinaryDataListFactory.CreateBinaryItem(
-                                "The request yielded no response from the data store.", enSystemTag.Error.ToString()),
-                            out error);
-                        if(error != string.Empty)
+                    // Get the output formatter from the service action
+                    IOutputFormatter outputFormatter = GetOutputFormatterFromServiceAction(serviceAction);
+                    if (outputFormatter == null)
                         {
-                            errors.AddError(error);
-                        }
-                        SvrCompiler.Upsert(null, req.DataListID,
-                                            DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, true), be,
-                                            out errors);
+                        // If there was an error getting the output formatter from the service action
+                        allErrors.AddError(string.Format("Output format in service action {0} is invalid.", serviceAction.Name));
                     }
                     else
                     {
-                        string tmpData = xmlDbResponse.ToString();
-                        string od = serviceAction.OutputDescription;
+                        // Format the XML data
+                        string formatedPayload = outputFormatter.Format(xmlDbResponse).ToString();
 
-                        od = od.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "");
+                        // Create a shape from the service action outputs
+                        string dlShape = ClientCompiler.ShapeDev2DefinitionsToDataList(serviceAction.ServiceActionOutputs, enDev2ArgumentType.Output, false, out errors);
+                        allErrors.MergeErrors(errors);
 
-                        if(!string.IsNullOrWhiteSpace(od))
-                        {
-                            IOutputDescriptionSerializationService outputDescriptionSerializationService =
-                                OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService
-                                    ();
-                            IOutputDescription outputDescriptionInstance =
-                                outputDescriptionSerializationService.Deserialize(od);
-
-                            if(outputDescriptionInstance != null)
-                            {
-                                IOutputFormatter outputFormatter =
-                                    OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
-                                string formatedPayload = outputFormatter.Format(tmpData).ToString();
-                                // TODO : Now create a new dataList and merge the result into the current dataList ;)
-                                string dlShape =
-                                    ClientCompiler.ShapeDev2DefinitionsToDataList(serviceAction.ServiceActionOutputs,
-                                                                                   enDev2ArgumentType.Output, false,
-                                                                                   out errors);
+                        // Push formatted data into a datalist using the shape from the service action outputs
+                        tmpID = ClientCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formatedPayload, dlShape, out errors);
                                 allErrors.MergeErrors(errors);
-                                tmpID = ClientCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                                                                  formatedPayload, dlShape, out errors);
+
+                        // Attach a parent ID to the newly created datalist
                                 var parentID = ClientCompiler.FetchParentID(req.DataListID);
-                                //ClientCompiler.SetParentID(tmpID, req.DataListID);
                                 ClientCompiler.SetParentID(tmpID, parentID);
-                                // set parent for merge op in finally...
-
-                                allErrors.MergeErrors(errors);
-                            }
                         }
                     }
-
-                    cmd.Dispose();
                 }
-                catch(Exception ex)
+            catch (Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }
                 finally
                 {
-                    // handle any errors that might have occured
-                    IBinaryDataListEntry be = Dev2BinaryDataListFactory.CreateEntry(enSystemTag.Error.ToString(),
-                                                                                    string.Empty);
-                    string error;
-                    be.TryPutScalar(
-                        Dev2BinaryDataListFactory.CreateBinaryItem(allErrors.MakeDataListReady(),
-                                                                   enSystemTag.Error.ToString()), out error);
-                    if(error != string.Empty)
+                // If a datalist was ceated
+                if (tmpID != GlobalConstants.NullDataListID)
                     {
-                        errors.AddError(error);
-                    }
-                    SvrCompiler.Upsert(null, req.DataListID,
-                                        DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, true), be, out errors);
+                    // Merge into it's parent
+                    ClientCompiler.Shape(tmpID, enDev2ArgumentType.Output, serviceAction.ServiceActionOutputs, out errors);
+                    allErrors.MergeErrors(errors);
 
-                    // now merge and delete tmp
-                    if(tmpID != GlobalConstants.NullDataListID)
-                    {
-                        ClientCompiler.Shape(tmpID, enDev2ArgumentType.Output, serviceAction.ServiceActionOutputs,
-                                              out errors);
+                    // Delete data list
                         ClientCompiler.DeleteDataListByID(tmpID);
                         result = req.DataListID;
                     }
 
-                    //ExceptionHandling.WriteEventLogEntry("Application", string.Format("{0}.{1}", this.GetType().Name, "SqlDatabaseCommand"), string.Format("Exception:{0}\r\nInputData:{1}", xmlResponse.XmlString, xmlRequest.XmlString), EventLogEntryType.Error);
+                // Add any errors that occured to the datalist
+                AddErrorsToDataList(allErrors, req.DataListID);
                 }
-
 
                 return result;
             }
-        }
 
         #endregion
 
@@ -3669,6 +3751,103 @@ namespace Dev2.Runtime.InterfaceImplementors
         #endregion
 
         #region Private Methods
+
+        private SqlCommand CreateSqlCommand(SqlConnection connection, ServiceAction serviceAction)
+        {
+            var cmd = connection.CreateCommand();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = serviceAction.SourceMethod;
+            cmd.CommandTimeout = serviceAction.CommandTimeout;
+
+            //Add the parameters to the SqlCommand
+            if (serviceAction.ServiceActionInputs.Any())
+            {
+                foreach (ServiceActionInput sai in serviceAction.ServiceActionInputs)
+                {
+                    var injectVal = (string)sai.Value;
+
+                    // 16.10.2012 : Travis.Frisinger - Convert empty to null
+                    if (sai.EmptyToNull && injectVal == AppServerStrings.NullConstant)
+                    {
+                        cmd.Parameters.AddWithValue(sai.Source, DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(sai.Source, sai.Value);
+                    }
+                }
+            }
+
+            return cmd;
+        }
+
+        private string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction)
+        {
+            string xmlData;
+
+            using (var dataset = new DataSet())
+            {
+                using (var connection = new SqlConnection(serviceAction.Source.ConnectionString))
+                {
+                    var cmd = CreateSqlCommand(connection, serviceAction);
+                    connection.Open();
+
+                    using (cmd)
+                    {
+                        using (var adapter = new SqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(dataset);
+                        }
+                    }
+                    connection.Close();
+                }
+                xmlData = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataset.GetXml());
+            }
+
+            return xmlData;
+        }
+
+        private IOutputFormatter GetOutputFormatterFromServiceAction(ServiceAction serviceAction)
+        {
+            string outputDescription = serviceAction.OutputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "");
+
+            IOutputDescriptionSerializationService outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+
+            if (outputDescriptionSerializationService == null)
+            {
+                return null;
+            }
+
+            IOutputDescription outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(outputDescription);
+
+            if (outputDescriptionInstance == null)
+            {
+                return null;
+            }
+
+            return OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
+        }
+
+        private void AddErrorsToDataList(ErrorResultTO errors, Guid dataListID)
+        {
+            // Upsert any errors that might have occured into the datalist
+            IBinaryDataListEntry be = Dev2BinaryDataListFactory.CreateEntry(enSystemTag.Error.ToString(), string.Empty);
+            string error;
+            be.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(errors.MakeDataListReady(), enSystemTag.Error.ToString()), out error);
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                //At this point there was an error while trying to handle errors so we throw an exception
+                throw new Exception(string.Format("The error '{0}' occured while creating the error entry for the following errors: {1}", error, errors.MakeDisplayReady()));
+            }
+
+            var upsertErrors = new ErrorResultTO();
+            SvrCompiler.Upsert(null, dataListID, DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, true), be, out upsertErrors);
+            if (upsertErrors.HasErrors())
+            {
+                //At this point there was an error while trying to handle errors so we throw an exception
+                throw new Exception(string.Format("The error '{0}' occured while upserting the following errors to the datalist: {1}", errors.MakeDisplayReady(), errors.MakeDisplayReady()));
+            }
+        }
 
         //Author: Zuko Mgwili
         //Date: 18/06/2012
