@@ -338,8 +338,8 @@ namespace Dev2.Core.Tests
             workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
             workflowDesigner.AddMissingOnlyWithNoPopUp(null);
-            Assert.IsTrue(75 == dataListViewModel.ScalarCollection.Count);
-            Assert.IsTrue(1 == dataListViewModel.RecsetCollection.Count);
+            Assert.IsTrue(76 == dataListViewModel.ScalarCollection.Count);
+            Assert.IsTrue(2 == dataListViewModel.RecsetCollection.Count);
         }
 
         #endregion

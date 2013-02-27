@@ -93,7 +93,7 @@ namespace Dev2.Core.Tests
             mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
-            Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 2].IsRecordset);
+            Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace Dev2.Core.Tests
             parts.Add(part.Object);
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 2);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 3);
         }
 
         //massimo.guerrera - Commented out till bug 5024 is done

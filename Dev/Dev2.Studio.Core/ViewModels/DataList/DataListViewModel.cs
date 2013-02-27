@@ -233,6 +233,7 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
+            AddBlankRow(null);
         }
 
         public void RemoveUnusedDataListItems(IList<IDataListVerifyPart> parts)
@@ -478,35 +479,48 @@ namespace Dev2.Studio.Core.ViewModels.DataList
             {
                 if (!item.IsRecordset && !item.IsField)
                 {
-                    IList<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-                    if (blankList.Count == 0)
-                    {
-                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(string.Empty);
-                        ScalarCollection.Add(scalar);
-                        Validator.Add(scalar);
-                    }
-                }
-                else if (item.IsRecordset)
-                {
-                    IList<IDataListItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-                    if (blankList.Count == 0)
-                    {
-                        AddRecordSet();
-                    }
+                    AddRowToScalars();
                 }
                 else
                 {
-                    foreach (IDataListItemModel recset in RecsetCollection)
-                    {
-                        IList<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-                        if (blankChildList.Count == 0)
-                        {
-                            IDataListItemModel newChild = DataListItemModelFactory.CreateDataListModel(string.Empty);
-                            newChild.Parent = recset;
-                            recset.Children.Add(newChild);
-                            recset.Validator.Add(newChild);
-                        }
-                    }
+                    AddRowToRecordsets();
+                }
+            }
+            else
+            {
+                AddRowToScalars();
+                AddRowToRecordsets();
+            }
+        }
+
+        private void AddRowToScalars()
+        {
+            IList<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
+            if (blankList.Count == 0)
+            {
+                IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(string.Empty);
+                ScalarCollection.Add(scalar);
+                Validator.Add(scalar);
+            }
+        }
+
+        private void AddRowToRecordsets()
+        {
+            IList<IDataListItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
+            if (blankList.Count == 0)
+            {
+                AddRecordSet();
+            }
+
+            foreach (IDataListItemModel recset in RecsetCollection)
+            {
+                IList<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
+                if (blankChildList.Count == 0)
+                {
+                    IDataListItemModel newChild = DataListItemModelFactory.CreateDataListModel(string.Empty);
+                    newChild.Parent = recset;
+                    recset.Children.Add(newChild);
+                    recset.Validator.Add(newChild);
                 }
             }
         }
