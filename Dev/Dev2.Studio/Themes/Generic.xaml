@@ -3,7 +3,7 @@
                     xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
                     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls" xmlns:local="clr-namespace:Dev2.UI"
     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core">
-   <!--<ResourceDictionary.MergedDictionaries>
+    <!--<ResourceDictionary.MergedDictionaries>
       <ResourceDictionary Source="/CustomControls/Intellisense/Themes/Generic.xaml" />
    </ResourceDictionary.MergedDictionaries>-->
     <LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
@@ -192,8 +192,8 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>                       
-    
+    </Style>
+
     <converters:FilterStringToVisibilityConverter x:Key="FilterStringToVisibilityConverter"></converters:FilterStringToVisibilityConverter>
 
     <VisualBrush x:Key="SearchHint" TileMode="None" Stretch="None" AlignmentX="Left">
@@ -215,48 +215,73 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="1"/>
-        
+
     </Style>
 
     <Style TargetType="customControls:Dev2FilterTextBox">
-        <Setter Property="SearchText" Value=""/>  
+        <Setter Property="SearchText" Value=""/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                        <TextBox Margin="2" 
-                                 x:Name="FilterTextBox" 
-                                 BorderBrush="#ccc" Text="{Binding Path=SearchText,Mode=TwoWay, 
+                    <Border BorderBrush="#ccc" BorderThickness="1" Margin="5,0,5,0">
+                        <Grid ShowGridLines="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="22"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="FilterTextBox" 
+                                 Grid.Column="0"
+                                 BorderBrush="Transparent"
+                                 
+                                 Text="{Binding Path=SearchText,Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
                                  HorizontalAlignment="Stretch">
-                            <TextBox.Style>
-                                <Style TargetType="TextBox">
-                                    <Setter Property="AutomationProperties.AutomationId" Value="UI_DataListSearchtxt_AutoID"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="Text" Value="">
-                                            <Setter Property="Background" Value="{StaticResource SearchHint}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                        
-                        <Button x:Name="FilterButton" 
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="AutomationProperties.AutomationId" Value="UI_DataListSearchtxt_AutoID"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="BorderThickness" Value="0"></Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsFocused" Value="True">
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="BorderThickness" Value="0"></Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="BorderThickness" Value="0"></Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="BorderThickness" Value="0"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+
+                            <Button x:Name="FilterButton" 
+                                Grid.Column="1"                                
                                 HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                Height="22" Width="22"
-                                Margin="2"
+                                Height="22" Width="22"                               
                                 Visibility="{Binding ElementName=FilterTextBox,Path=Text,Converter={StaticResource FilterStringToVisibilityConverter}}"
                                 Style="{StaticResource Dev2ToolBarButtonStyle}">
-                            <Image Source="/images/GreyCrossIcon.png" Height="15" Width="15"></Image>
-                        </Button>
-                    </Grid>
+                                <Image Source="/images/GreyCrossIcon.png" Height="15" Width="15"></Image>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </ControlTemplate>
-            </Setter.Value>            
+            </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="customControls:SimpleGridSplitter">
         <Setter Property="Orientation" Value="Vertical"/>
         <Setter Property="Height" Value="7"/>
@@ -276,5 +301,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>
