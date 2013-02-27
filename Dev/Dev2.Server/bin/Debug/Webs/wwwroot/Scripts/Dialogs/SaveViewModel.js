@@ -193,6 +193,8 @@
         $saveForm.dialog("open");
     };
 
+    var parentContainerID = $('div[id*=Container]').attr("id");
+    console.log("parentContainerID: " + parentContainerID);
     $saveForm.dialog({
         resizable: false,
         autoOpen: false,
@@ -200,9 +202,8 @@
         width: 600,
         modal: true,
         position: {
-            my: "left top",
-            at: "left+10px top+10px",
-            of: "#content"
+            my: "center center",
+            of: "#" + parentContainerID
         },
         open: function (event, ui) {
             self.enableSaveButton(self.data.resourceName());
