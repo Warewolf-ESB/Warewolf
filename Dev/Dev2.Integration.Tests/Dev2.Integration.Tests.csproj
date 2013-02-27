@@ -221,6 +221,7 @@
     <Compile Include="Dev2.Activities.Tests\PathOperationsWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
+    <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromComplexType.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromJson.cs" />
