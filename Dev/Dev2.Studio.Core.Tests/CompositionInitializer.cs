@@ -470,6 +470,21 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
+        public static ImportServiceContext InitializeEmptyWithMockEventAggregator(Mock<IEventAggregator> mockEventAggregator)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                //new FullTestAggregateCatalog()
+            });
+
+            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
+            ImportService.AddExportedValueToContainer<IPopUp>(new MoqPopup(MessageBoxResult.OK));
+            return importServiceContext;
+        }
+
         internal static ImportServiceContext InitializeTreeViewModelTests(Mock<IWizardEngine> wizardEngine)
         {
             var importServiceContext = new ImportServiceContext();

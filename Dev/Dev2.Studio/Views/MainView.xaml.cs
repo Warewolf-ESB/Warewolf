@@ -11,6 +11,7 @@ using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Views.Diagnostics;
 using Infragistics.Windows.DockManager.Events;
+using Unlimited.Applications.BusinessDesignStudio.Views;
 
 namespace Dev2.Studio.Views
 {
@@ -53,6 +54,8 @@ namespace Dev2.Studio.Views
             var dataContext = DataContext as IMainViewModel;
 
             if (dataContext == null) return;
+
+            Toolbox.Content = new ToolboxUserControl();
 
             //Push up dependencies to the ViewModel
             //dataContext.UserInterfaceLayoutProvider.Manager = dockManager;

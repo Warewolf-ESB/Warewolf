@@ -1,18 +1,15 @@
 ﻿//5559 Update these tests
 
-using Dev2.Studio.Core.AppResources;
+using Dev2.Common;
+using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Dev2.Studio.Core.Interfaces;
 using Moq;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.ViewModels;
+using System;
 using System.Collections.Generic;
-using Dev2.Composition;
-using Dev2.Studio;
-using Dev2.Common;
 //using System.Windows.Media.Imaging;
 
 namespace Dev2.Core.Tests {
@@ -457,6 +454,5 @@ namespace Dev2.Core.Tests {
         }
 
         #endregion Methods used by tests
-
     }
 }

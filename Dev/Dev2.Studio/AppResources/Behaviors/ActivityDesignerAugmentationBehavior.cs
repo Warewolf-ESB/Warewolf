@@ -129,7 +129,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void RemoveConnectorNodeAdorners()
         {
             UIElement uIElement = AssociatedObject.Parent as UIElement;
-            if (uIElement == null)
+            if (uIElement == null || _rootAdornerLayer == null)
             {
                 return;
             }

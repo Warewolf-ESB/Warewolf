@@ -72,6 +72,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _startFeedbackCommand;
         private ICommand _startStopRecordedFeedbackCommand;
         private RelayCommand _viewInBrowserCommand;
+        private RelayCommand _resetLayoutCommand;
 
         #endregion
 
@@ -115,6 +116,16 @@ namespace Dev2.Studio.ViewModels
         #endregion
 
         #region Private Methods
+
+        private void TryBringOutputWindowIntoView()
+        {
+            if (UserInterfaceLayoutProvider.Value == null || UserInterfaceLayoutProvider.Value.OutputPane == null)
+            {
+                return;
+            }
+
+            UserInterfaceLayoutProvider.Value.OutputPane.BringIntoView();
+        }
 
         #endregion Private Methods
 
@@ -163,7 +174,7 @@ namespace Dev2.Studio.ViewModels
 
         #endregion Private Properties
 
-        #region Properties
+        #region Properties  
 
         [Import]
         public IDev2WindowManager WindowNavigation { get; set; }
@@ -185,12 +196,12 @@ namespace Dev2.Studio.ViewModels
         public ILayoutGridViewModel ActivePage
         {
             get { return _activePage; }
-        }
+            }
 
         public ILayoutObjectViewModel ActiveCell
         {
             get { return _activeCell; }
-        }
+            }
 
         public string Title
         {
@@ -308,12 +319,12 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 if (_notImplementedCommand == null)
-                {
+                    {
                     _notImplementedCommand = new RelayCommand(param => { MessageBox.Show("Please Implement Me!"); });
-                }
+                        }
                 return _notImplementedCommand;
+                    }
             }
-        }
 
         public ICommand AddStudioShortcutsPageCommand
         {
@@ -322,7 +333,7 @@ namespace Dev2.Studio.ViewModels
                 if (_addStudioShortcutsPageCommand == null)
                 {
                     _addStudioShortcutsPageCommand = new RelayCommand(param => { AddStudioShortcutKeysPage(); });
-                }
+        }
                 return _addStudioShortcutsPageCommand;
             }
         }
@@ -338,7 +349,7 @@ namespace Dev2.Studio.ViewModels
                 return _displayAboutDialogueCommand;
             }
         }
-
+        
         public ICommand StartFeedbackCommand
         {
             get
@@ -376,15 +387,15 @@ namespace Dev2.Studio.ViewModels
                             if (CurrentResourceModel != null && CurrentResourceModel.Environment != null)
                             {
                                 payload = CurrentResourceModel.Environment;
-                            }
+                }
                             else if (ActiveEnvironment != null)
                             {
                                 payload = ActiveEnvironment;
-                            }
+            }
 
                             Mediator.SendMessage(MediatorMessages.DeployResources, payload);
                         });
-                }
+        }
                 return _deployAllCommand;
             }
         }
@@ -396,23 +407,23 @@ namespace Dev2.Studio.ViewModels
                 return _openWebsiteCommand ??
                        (_openWebsiteCommand = new RelayCommand<string>((c) =>
                 {
-                    IEnumerable<IResourceModel> match =
-                        ActiveEnvironment.Resources.All()
-                                         .Where(
-                                             res =>
-                                             res.ResourceName.Equals(c,
-                                                                     StringComparison
-                                                                         .InvariantCultureIgnoreCase));
-                    if (match.Any())
-                    {
-                        AddWorkflowDocument(match.First());
-                    }
+                               IEnumerable<IResourceModel> match =
+                                   ActiveEnvironment.Resources.All()
+                                                    .Where(
+                                                        res =>
+                                                        res.ResourceName.Equals(c,
+                                                                                StringComparison
+                                                                                    .InvariantCultureIgnoreCase));
+                               if (match.Any())
+                               {
+                                   AddWorkflowDocument(match.First());
                 }
+            }
                                                                        ,
                                                                        c =>
                                                                        IsActiveEnvironmentConnected
                                                                            ()));
-            }
+        }
         }
 
         public ICommand ViewInBrowserCommand
@@ -559,6 +570,18 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public ICommand ResetLayoutCommand
+        {
+            get
+            {
+                if (_resetLayoutCommand == null)
+                {
+                    _resetLayoutCommand = new RelayCommand(param => EventAggregator.Publish(new ResetLayoutMessage(param as FrameworkElement)), param => true);
+                }
+                return _resetLayoutCommand;
+            }
+        }
+
         public bool IsChosenEnvironmentConnected()
         {
             // Used for enabling / disabling basic server commands (Eg: Creating a new Workflow)
@@ -604,7 +627,7 @@ namespace Dev2.Studio.ViewModels
                 IResourceModel resourceToUpdate = resource.Environment.Resources.FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
                 if (resourceToUpdate != null)
                 {
-                    resourceToUpdate.Update(resource);
+                resourceToUpdate.Update(resource);
                 }
 
                 var workspaceItem = UserInterfaceLayoutProvider.Value.WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == resource.ResourceName);
@@ -732,6 +755,9 @@ namespace Dev2.Studio.ViewModels
 
             if (viewModelDialogResults == ViewModelDialogResults.Okay)
             {
+                // Try show the output window
+                TryBringOutputWindowIntoView();
+
                 var clientContext = resourceModel.Environment.DsfChannel as IStudioClientContext;
                 if (clientContext != null)
                 {
@@ -748,14 +774,14 @@ namespace Dev2.Studio.ViewModels
                     //                              Previously, everytime the debug method was invoked it would add a debug writer to the clientcontext and
                     //                              this would never be removed
 
-                    Action<UploadStringCompletedEventArgs> webserverCallback = asyncCallback => clientContext.RemoveDebugWriter(_debugWriter);
-
+                    Action<UploadStringCompletedEventArgs> webserverCallback = asyncCallback => clientContext.RemoveDebugWriter(_debugWriter); 
+                    
                     WebServer.SendAsync(WebServerMethod.POST, resourceModel, dataList.ToString(), webserverCallback);
-
-
+                    
+                    
                 }
             }
-
+            
         }
 
         public void Build(IContextualResourceModel model, bool showWindow = true, bool deploy = true)
@@ -812,7 +838,7 @@ namespace Dev2.Studio.ViewModels
                 result = string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
             }
 
-            sb.AppendLine(result);
+            sb.AppendLine(result);      
             sb.AppendLine(String.Format("</Build>"));
             OutputMessage += sb.ToString();
             DisplayOutput(OutputMessage, showWindow);
@@ -897,11 +923,11 @@ namespace Dev2.Studio.ViewModels
         {
             var emailFeedbackAction = new EmailFeedbackAction();
             ImportService.SatisfyImports(emailFeedbackAction);
-
+            
             var recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
-            FeedbackInvoker.InvokeFeedback(emailFeedbackAction, recorderFeedbackAction);
+            FeedbackInvoker.InvokeFeedback(emailFeedbackAction, recorderFeedbackAction); 
         }
 
         private void StartStopRecordedFeedback()
@@ -924,7 +950,7 @@ namespace Dev2.Studio.ViewModels
                 recorderFeedbackAction.FinishFeedBack();
             }
         }
-
+        
         #endregion
 
         #region Protected Methods

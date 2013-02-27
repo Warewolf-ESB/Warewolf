@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.Core.Models;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Infragistics.Windows.DockManager;
 using System;
 using System.IO;
@@ -8,13 +11,30 @@ using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
-    public class XamlDockManagerLayoutPersistenceBehavior : Behavior<XamDockManager>
+    public class XamlDockManagerLayoutPersistenceBehavior : Behavior<XamDockManager>, IHandle<IResetLayoutMessage>
     {
         #region Class Members
 
         private UserInterfaceLayoutModel _userInterfaceLayoutModel;
+        private readonly IEventAggregator _eventAggregator;
 
         #endregion Class Members
+
+        #region Constructors
+
+        public XamlDockManagerLayoutPersistenceBehavior()
+        {
+            _eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            if (_eventAggregator == null)
+            {
+                throw new NullReferenceException("Unable to get an instance of the event aggregator.");
+            }
+
+            _eventAggregator.Subscribe(this);
+        }
+
+        #endregion Constructors
 
         #region Override Methods
 
@@ -113,11 +133,29 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion Dependency Properties
 
+        #region Static Properties
+
+        public byte[] OriginalLayout { get; private set; }
+
+        #endregion Static Properties
+
         #region Private Methods
 
         private void LoadLayout(string layoutName)
         {
-            if (UserInterfaceLayoutRepository == null || AssociatedObject == null) return;
+            if (AssociatedObject == null) return;
+
+            if (OriginalLayout == null)
+            {
+                MemoryStream originalLayoutData = new MemoryStream();
+                AssociatedObject.SaveLayout(originalLayoutData);
+
+                originalLayoutData.Seek(0, SeekOrigin.Begin);
+                BinaryReader reader = new BinaryReader(originalLayoutData);
+                OriginalLayout = reader.ReadBytes((int)originalLayoutData.Length);
+            }
+
+            if (UserInterfaceLayoutRepository == null) return;
 
             _userInterfaceLayoutModel = UserInterfaceLayoutRepository.FindSingle(model => model.LayoutName == layoutName);
             if (_userInterfaceLayoutModel == null) return;
@@ -175,5 +213,19 @@ namespace Dev2.Studio.AppResources.Behaviors
         }
 
         #endregion Event Handlers
+
+        #region Event Aggregator Handlers
+
+        public void Handle(IResetLayoutMessage message)
+        {
+            if (!AssociatedObject.Equals(message.Context))
+            {
+                return;
+            }
+
+            AssociatedObject.LoadLayout(new MemoryStream(OriginalLayout));
+        }
+
+        #endregion
     }
 }

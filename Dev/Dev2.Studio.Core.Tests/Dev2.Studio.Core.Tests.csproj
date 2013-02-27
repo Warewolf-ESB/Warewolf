@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="Account\UserAccountProviderTests.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
+    <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AutoMappingInputActionTest.cs" />
     <Compile Include="AutoMappingOutputActionTest.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="MainViewModelTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainViewTests.cs" />
     <Compile Include="MediatorTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />

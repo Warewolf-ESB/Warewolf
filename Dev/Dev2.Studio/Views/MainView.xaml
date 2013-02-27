@@ -3,14 +3,15 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
                      xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
-                     xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
+                     xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"                     
                      xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                      xmlns:igDock="http://infragistics.com/DockManager"
-                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
                      xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
                      Loaded="RibbonWindowLoaded" Closing="RibbonWindow_Closing" WindowState="Maximized"
                      Title="{Binding Title}"
-                     Icon="pack://application:,,,/Dev2.Studio;component/Images/Network.png">
+                     Icon="pack://application:,,,/Dev2.Studio;component/Images/Network.png"
+                     Name="MainViewWindow">                   
     <ribbon:RibbonWindow.InputBindings>
         <!--<KeyBinding Command="{Binding Path=NewResourceCommand}" Key="N" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
@@ -19,7 +20,7 @@
         <KeyBinding Command="{Binding Path=DebugCommand}" Key="F5" />
         <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Alt" />
+        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Alt" />        
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="S" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="A" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="L" Modifiers="Alt" />
@@ -54,7 +55,7 @@
     <Grid>
         <DockPanel AutomationProperties.AutomationId="MainWindow">
 
-            <ItemsControl Name="WorkflowActions" Visibility="Collapsed">
+            <ItemsControl Name="WorkflowActions" Visibility="Collapsed">                
                 <ribbon:RibbonButton Label="Save"
                                      LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
                                      Command="{Binding Path=SaveCommand}" />
@@ -163,7 +164,7 @@
                                      LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png"
                                      Command="{Binding Path=NotImplementedCommand}" />
             </ItemsControl>
-
+            
             <ItemsControl Name="ScheduleManagerActions" Visibility="Collapsed">
                 <ribbon:RibbonButton Label="New Schedule"
                                      LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png"
@@ -244,7 +245,7 @@
 
             <ItemsControl Name="DeployActions" Visibility="Collapsed">
             </ItemsControl>
-
+            
             <ribbon:Ribbon x:Name="ribbon" ShowQuickAccessToolBarOnTop="True" IsCollapsed="False" DockPanel.Dock="Top">
                 <ribbon:Ribbon.Resources>
                     <Style TargetType="ribbon:RibbonButton">
@@ -256,10 +257,10 @@
                     </Style>
                     <Style TargetType="ribbon:RibbonTab">
                         <Setter Property="ContextMenu" Value="{x:Null}"></Setter>
-
+                        
                         <!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"> -->
                     </Style>
-
+                    
                     <Style TargetType="ribbon:Ribbon">
                         <Setter Property="ContextMenu" Value="{x:Null}"></Setter>
                         <!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"></Setter> -->
@@ -419,17 +420,14 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-
+                                     
                 </ribbon:Ribbon.Resources>
 
                 <ribbon:Ribbon.ApplicationMenu>
                     <ribbon:RibbonApplicationMenu AutomationProperties.AutomationId="UI_RibbonApplicationMenu">
-                        <ribbon:RibbonApplicationMenuItem Header="New..." Command="{Binding Path=NewResourceCommand}"
-                                                          CommandParameter="Unknown"
-                                                          AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
-                        <ribbon:RibbonApplicationMenuItem Header="Close"
-                                                          ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png"
-                                                          Command="{Binding ExitCommand}" />
+                        <ribbon:RibbonApplicationMenuItem Header="Reset Layout" Command="{Binding ResetLayoutCommand}" CommandParameter="{Binding ElementName=dockManager}"/>
+                        <ribbon:RibbonApplicationMenuItem Header="New..." Command="{Binding Path=NewResourceCommand}" CommandParameter="Unknown" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New"/>
+                        <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" Command="{Binding ExitCommand}"/>
                     </ribbon:RibbonApplicationMenu>
                 </ribbon:Ribbon.ApplicationMenu>
 
@@ -473,10 +471,10 @@
                         <ribbon:RibbonButton Label="Deploy"
                                              LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png"
                                              Command="{Binding Path=DeployCommand}" />
-                    </ribbon:RibbonGroup>
+                    </ribbon:RibbonGroup>                    
                 </ribbon:RibbonTab>
-
-
+               
+                
                 <!--
                 TODO PBIs 800, 5656, 6599, 798, 797, 1027, 4443, 5503, 1018
                 <ribbon:RibbonTab Header="Manage">
@@ -561,7 +559,7 @@
                         <ribbon:RibbonButton Label="About"
                                              LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Network.png"
                                              Command="{Binding Path=DisplayAboutDialogueCommand}" />
-                    </ribbon:RibbonGroup>
+                        </ribbon:RibbonGroup>
                 </ribbon:RibbonTab>
             </ribbon:Ribbon>
 
@@ -569,7 +567,7 @@
                 <i:Interaction.Behaviors>
                     <local:XamlDockManagerLayoutPersistenceBehavior
                         UserInterfaceLayoutRepository="{Binding DataContext.UserInterfaceLayoutRepository, ElementName=dockManager}"
-                        LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
+                                                                    LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
                 </i:Interaction.Behaviors>
                 <igDock:DocumentContentHost x:Name="DocumentHost"
                                             AutomationProperties.AutomationId="UI_DocumentHost_AutoID">
@@ -585,7 +583,7 @@
                                 <local:TabGroupPaneBindingBehavior
                                     ItemsSource="{Binding DataContext.UserInterfaceLayoutProvider.Value.Tabs, ElementName=DocumentHost}"
                                     DocumentHost="{Binding ElementName=DocumentHost}"
-                                    SelectedItem="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocument, Mode=TwoWay, ElementName=DocumentHost}">
+                                                                   SelectedItem="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocument, Mode=TwoWay, ElementName=DocumentHost}">
                                     <local:TabGroupPaneBindingBehavior.ItemTemplate>
                                         <DataTemplate>
                                             <igDock:ContentPane
@@ -598,7 +596,7 @@
                                                 Closing="ContentPane_Closing"
                                                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                                 AutomationProperties.AutomationId="splurt" />
-
+                                            
                                         </DataTemplate>
                                     </local:TabGroupPaneBindingBehavior.ItemTemplate>
                                 </local:TabGroupPaneBindingBehavior>
@@ -608,29 +606,22 @@
                 </igDock:DocumentContentHost>
 
                 <igDock:XamDockManager.Panes>
-                    <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
-                        <igDock:TabGroupPane>
-                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
-                                                IsPinned="False" AllowClose="False">
-                            </igDock:ContentPane>
-                        </igDock:TabGroupPane>
-                    </igDock:SplitPane>
-
                     <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedLeft" Width="300">
-                        <igDock:TabGroupPane>
-                            <igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False"
-                                                AllowInDocumentHost="False" IsPinned="False"
-                                                AutomationProperties.AutomationId="UI_ExplorerPane_AutoID" />
-                            <igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False"
-                                                AllowInDocumentHost="False" IsPinned="False"
-                                                AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
-                                <bdsviews:ToolboxUserControl />
+                        <igDock:SplitPane SplitterOrientation="Horizontal">
+                            <igDock:ContentPane x:Name="Variables" Header="Variables" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
+                            <igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
+                                <!--<bdsviews:ToolboxUserControl/>-->
                             </igDock:ContentPane>
                             <!-- TODO PBI 8291 
-                            <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="False" />
-                            <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="False" />-->
-                            <igDock:ContentPane x:Name="Variables" Header="Variables" AllowClose="False"
-                                                AllowInDocumentHost="False" IsPinned="False" />
+                            <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
+                            <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />-->
+                        </igDock:SplitPane>
+                    </igDock:SplitPane>
+
+                    <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedRight" Width="300">
+                        <igDock:TabGroupPane>
+                            <igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" AutomationProperties.AutomationId="UI_ExplorerPane_AutoID"/>
+                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowClose="False" AllowInDocumentHost="False" IsPinned="True"/>
                         </igDock:TabGroupPane>
                     </igDock:SplitPane>
                 </igDock:XamDockManager.Panes>
