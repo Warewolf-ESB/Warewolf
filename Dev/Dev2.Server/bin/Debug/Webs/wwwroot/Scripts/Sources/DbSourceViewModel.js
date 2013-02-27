@@ -157,7 +157,7 @@
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-            console.log(result);
+
             self.data.server(result.Server);
             self.data.serverType(result.ServerType);
             self.data.authenticationType(result.AuthenticationType);
@@ -239,7 +239,6 @@
     };
 
     if (!$dialogContainerID) {
-        console.log(resourceID);
         self.load(resourceID);
     }
 };

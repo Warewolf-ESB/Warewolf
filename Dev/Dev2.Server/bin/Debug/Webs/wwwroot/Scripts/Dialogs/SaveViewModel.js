@@ -50,7 +50,6 @@
             if (!result.IsValid) {
                 Dev2Awesomium.Cancel();
                 Dev2Awesomium.Save(JSON.stringify(result));
-                console.log(JSON.stringify(result) + "\nSAVED!");
             } else {
             // TODO: ShowError use $errDiv?
             }
