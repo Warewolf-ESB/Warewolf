@@ -388,7 +388,7 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
             if (!Equals(_textBox, context.TextBox)) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results;
-
+            string inputText = context.InputText;
             if (context.CaretPosition > context.InputText.Length || context.CaretPosition < 0)
             {
                 return new List<IntellisenseProviderResult>();
@@ -400,11 +400,11 @@ namespace Dev2.Studio.InterfaceImplementors
                 var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
                 var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
                 context.CaretPosition -= preComma;
-                context.InputText = context.InputText.Substring(preComma, postComma - preComma);
+                inputText = inputText.Substring(preComma, postComma - preComma);
             }
 
             int originalCaretPosition = context.CaretPosition;
-            string input = context.InputText;
+            //string input = context.InputText;
             enIntellisensePartType filterType = context.FilterType;
             IntellisenseDesiredResultSet desiredResultSet = context.DesiredResultSet;
 
@@ -414,24 +414,24 @@ namespace Dev2.Studio.InterfaceImplementors
                 default:
                     {
                         int newPos;
-                        input = CleanupInput(input, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
+                        inputText = CleanupInput(inputText, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
                         context.CaretPosition = newPos;
-                        if (context.CaretPosition > 0 && context.InputText.Length > 0 && context.CaretPosition < context.InputText.Length)
+                        if (context.CaretPosition > 0 && inputText.Length > 0 && context.CaretPosition < inputText.Length)
                         {
                             char letter = context.InputText[context.CaretPosition];
 
                             if (char.IsWhiteSpace(letter))
                             {
-                                results = GetIntellisenseResultsImpl(input.Substring(0, context.CaretPosition), filterType);
+                                results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
                             }
                             else
                             {
-                                results = GetIntellisenseResultsImpl(input, filterType);
+                                results = GetIntellisenseResultsImpl(inputText, filterType);
                             }
                         }
                         else
                         {
-                            results = GetIntellisenseResultsImpl(input, filterType);
+                            results = GetIntellisenseResultsImpl(inputText, filterType);
                         }
 
                         if (results == null || results.Count == 0 && HandlesResultInsertion)
@@ -475,8 +475,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
                             if (!String.IsNullOrEmpty(appendText))
                             {
-                                input = "[[" + appendText;
-                                results = GetIntellisenseResultsImpl(input, filterType);
+                                inputText = "[[" + appendText;
+                                results = GetIntellisenseResultsImpl(inputText, filterType);
 
                                 if (results != null)
                                 {

@@ -307,8 +307,8 @@ namespace Dev2.Studio.InterfaceImplementors
             for (int i = 0; i < _intellisenseResult.Count; i++)
                 if (String.Equals(methodName, _intellisenseResult[i].Name, StringComparison.Ordinal))
                 {
-                    templateResult = _intellisenseResult[i];
-                    break;
+                        templateResult = _intellisenseResult[i];
+                        break;
                 }
 
             bool result = true;
@@ -323,7 +323,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 int minArguments = -1;
                 int maxArguments = -1;
 
-                if (templateResult.Arguments != null)
+                if (templateResult.Arguments != null && templateResult.Arguments.Count() > 0)
                 {
                     for (int i = 0; i < templateResult.Arguments.Length; i++)
                     {
@@ -352,6 +352,14 @@ namespace Dev2.Studio.InterfaceImplementors
                         }
                     }
                 }
+                else
+                {
+                    if (mNode.Parameters.Items.Length > 0)
+                    {
+                        minArguments = -1;
+                    }
+
+                }
 
                 if (minArguments != -1)
                 {
@@ -360,14 +368,16 @@ namespace Dev2.Studio.InterfaceImplementors
                         _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs at least " + minArguments.ToString() + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
                         result = false;
                     }
-                    else
+                    else if (maxArguments == -1 && paramCount != minArguments)
                     {
-                        if (maxArguments == -1 && paramCount != minArguments)
-                        {
                             _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs exactly " + minArguments.ToString() + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
                             result = false;
-                        }
                     }
+                }
+                else if (paramCount > 0 && minArguments == -1)
+                {
+                    _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function must be called without arguments", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
+                    result = false;
                 }
             }
 

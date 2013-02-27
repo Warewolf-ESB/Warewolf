@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Core.Interfaces.DataList;
+using System.Xml;
+using System.IO;
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -31,7 +33,10 @@ namespace Dev2.Studio.Core.DataList
 
             IList<IDataListItemModel> matchingList = null;
 
+            //if (!string.IsNullOrEmpty(itemToMove.LastIndexedName))
+
             IndexedDataList.TryGetValue(itemToMove.LastIndexedName, out matchingList);
+
 
             if (matchingList != null)
             {
@@ -45,6 +50,13 @@ namespace Dev2.Studio.Core.DataList
                 Add(itemToMove);
                 itemToMove.LastIndexedName = itemToMove.Name;
             }
+
+            // Sashen.Naidoo
+            // BUG 8556: The current datalist item was never being checked for validation after 
+            //           it was added to the datalistValidator, this is merely to check if the current item
+            //           has any duplicates and ammend the error status accordingly.
+
+            UpdateValidationErrorsOnEntry(itemToMove);
 
             if (itemToMove.IsField)
                 ValidateRecordSetChildren(itemToMove.Parent);
@@ -92,6 +104,7 @@ namespace Dev2.Studio.Core.DataList
                 {
                     IndexedDataList.Remove(itemToRemove.Name);
                 }
+                UpdateValidationErrorsOnEntry(itemToRemove);
             }
 
             if (itemToRemove.IsField)
@@ -120,7 +133,11 @@ namespace Dev2.Studio.Core.DataList
                     {
                         item.RemoveError();
                     }
-                    item.DisplayName = item.DisplayName;
+                    else if (item.HasError && !item.ErrorMessage.Equals(StringResources.ErrorMessageDuplicateValue))
+                    {
+                        item.RemoveError();
+                    }
+                    //item.DisplayName = item.DisplayName;
                 }
             }
         }
@@ -149,6 +166,32 @@ namespace Dev2.Studio.Core.DataList
             else
             {
                 parent.RemoveError();
+            }
+        }
+
+        // Sashen.Naidoo
+        // BUG 8556: The current datalist item was never being checked for validation after 
+        //           it was added to the datalistValidator, this is merely to check if the current item
+        //           has any duplicates and ammend the error status accordingly.
+        private void UpdateValidationErrorsOnEntry(IDataListItemModel candidateEntry)
+        {
+            IList<IDataListItemModel> matches;
+            IndexedDataList.TryGetValue(candidateEntry.Name, out matches);
+            if (matches != null)
+            {
+                ValidateDuplicats(matches);
+            }
+            else if (candidateEntry.HasError && candidateEntry.ErrorMessage.Equals(StringResources.ErrorMessageDuplicateValue))
+            {
+                candidateEntry.RemoveError();
+            }
+            try
+            {
+                XmlConvert.VerifyName(candidateEntry.Name);
+            }
+            catch (XmlException xex)
+            {
+                candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
             }
         }
         #endregion Private Methods

@@ -1,4 +1,5 @@
 ﻿using Dev2.Composition;
+using Dev2.MathOperations;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -9,6 +10,7 @@ using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Dev2.Core.Tests
@@ -112,7 +114,9 @@ namespace Dev2.Core.Tests
 
         //BUG 8755
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void GetIntellisenseResultsWithOpenRegionAndStarIndexExpectedNoResults()
+        // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
             { 
@@ -127,7 +131,9 @@ namespace Dev2.Core.Tests
         }
 
         //BUG 8755
+        // ReSharper disable InconsistentNaming
         [TestMethod]
+        // ReSharper restore InconsistentNaming
         public void GetIntellisenseResultsWithOpenRegionAndOpenRegionStarIndexExpectedNoResults()
         {
             var context = new IntellisenseProviderContext
@@ -1380,5 +1386,83 @@ namespace Dev2.Core.Tests
         #endregion
 
         #endregion
+
+        #region CalculateIntellisenseProvider Tests
+
+        [TestMethod]
+        public void GetIntellisenseResults_PartialMethodMatch_Expected_ClosestMatchesReturned()
+        {
+            IntellisenseProviderContext context = new IntellisenseProviderContext
+            {
+                CaretPosition = 2,
+                InputText = "su",
+                IsInCalculateMode = true,
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+            };
+
+            var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
+            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+
+            Assert.AreEqual(2, results.Count);
+        }
+
+        [TestMethod]
+        public void GetIntellisenseResults_FullMethodMatch_GivenMethodWithParams_Expected_AllAvailableFunctionsReturned()
+        {
+            string intellisenseText = "sum(10,20,30)";
+            IntellisenseProviderContext context = new IntellisenseProviderContext
+            {
+                CaretPosition = intellisenseText.Length,
+                InputText = intellisenseText,
+                IsInCalculateMode = true,
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+            };
+
+            var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
+            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            // Create function repo as all the functions will be available here
+            IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
+            functionRepo.Load();
+            Assert.AreEqual(functionRepo.All().Count, results.Count);
+        }
+
+
+        // BUG 7858
+        [TestMethod]
+        public void GetIntellisenseResult_MethodExpectingNoParams_Given_NoParams_Expected_NoErrorInResultSet()
+        {
+            string intellisenseText = "pi()";
+            IntellisenseProviderContext context = new IntellisenseProviderContext
+            {
+                CaretPosition = intellisenseText.Length,
+                InputText = intellisenseText,
+                IsInCalculateMode = true,
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+            };
+
+            var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
+            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            Assert.IsFalse(results[0].IsError);
+        }
+
+        // BUG 7858
+        [TestMethod]
+        public void GetIntellisenseResult_MethodExpectingNoParams_Given_Params_Expected_ErrorInResultSet()
+        {
+            string intellisenseText = "pi(1)";
+            IntellisenseProviderContext context = new IntellisenseProviderContext
+            {
+                CaretPosition = intellisenseText.Length,
+                InputText = intellisenseText,
+                IsInCalculateMode = true,
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+            };
+
+            var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
+            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            Assert.IsTrue(results[0].IsError);
+        }
+
+        #endregion CalculateIntellisenseProvider Tests
     }
 }

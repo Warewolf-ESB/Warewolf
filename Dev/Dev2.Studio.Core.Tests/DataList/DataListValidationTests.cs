@@ -121,7 +121,7 @@ namespace Dev2.Core.Tests.DataList
         }
 
         [TestMethod]
-        public void RemoveTest_Remove_Duplicate_Item_With_Invalid_Chars_Expected_Item_HasError_True()
+        public void RemoveTest_RemoveDuplicateItem_WithInvalidChars_Expected_ItemHasErrorTrue()
         {
             IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar@");
             IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar@");
@@ -165,6 +165,42 @@ namespace Dev2.Core.Tests.DataList
             Validator.Move(newItem1);
 
             Assert.IsFalse(newItem1.HasError && newItem2.HasError);
+        }
+
+        // Sashen.Naidoo
+        // BUG 8556 : Tests that when changing the name of a duplicate item, the datalist updates the error state
+        //            of the newly changed item and it's previous matching duplicate
+        [TestMethod]
+        public void MoveTest_Move_ItemThatHasBeenChangedFromPreviousDuplicateState_Expected_ItemHasErrorFalse()
+        {
+            IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar5");
+            newItem1.LastIndexedName = "TestScalar1";
+
+            IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            Validator.Add(newItem2);
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar2"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar3"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar4"));
+            Validator.Move(newItem1);
+
+            Assert.IsFalse(newItem1.HasError && newItem2.HasError);
+        }
+
+        // Sashen.Naidoo
+        // BUG 8556 : Tests the integrity of the previous duplicate checking functionality.
+        [TestMethod]
+        public void MoveTest_Move_DuplicateItem_Expected_ItemHasErrorTrue()
+        {
+            IDataListItemModel newItem1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+
+            IDataListItemModel newItem2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            Validator.Add(newItem2);
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar2"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar3"));
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar4"));
+            Validator.Move(newItem1);
+
+            Assert.IsTrue(newItem1.HasError && newItem2.HasError);
         }
 
         #endregion Move Tests

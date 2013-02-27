@@ -48,24 +48,24 @@
                                   WrapInBrackets="False" Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
-                <Binding StringFormat="UI_{0}_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
+                <Binding StringFormat="UI_{0}_Number_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>
 
         <Label Content="Rounding" Name="LblAddTime" Grid.Column="0" Grid.Row="1"/>
         <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" x:Name="CboRounding" ItemsSource="{Binding RoundingTypes, ElementName=NumberFormatActivityDesigner}"
                   Grid.Column="1" Grid.Row="1" Width="Auto" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
-                  SelectedValue="{Binding Path=ModelItem.RoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                  SelectedValue="{Binding Path=ModelItem.RoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" DropDownClosed="CboRounding_DropDownClosed">
             <AutomationProperties.AutomationId>
-                <Binding StringFormat="UI_{0}_AddTimeTypecbx_AutoID" Path="ModelItem.AutomationID"/>
+                <Binding StringFormat="UI_{0}_Rounding_ComboBox_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </ComboBox>
         <dev2:IntellisenseTextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"  x:Name="TxtRounding" FilterType="All"  
-                                  WrapInBrackets="False" Text="{Binding Path=ModelItem.RoundingDecimalPlaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  WrapInBrackets="False"  Text="{Binding Path=ModelItem.RoundingDecimalPlaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                   IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}">
             <AutomationProperties.AutomationId>
-                <Binding StringFormat="UI_{0}_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
+                <Binding StringFormat="UI_{0}_Rounding_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>        
         <!--<TextBox x:Name="TxtRounding" Text="{Binding ModelItem.RoundingDecimalPlaces,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -80,7 +80,7 @@
                                   WrapInBrackets="False" Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
-                <Binding StringFormat="UI_{0}_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
+                <Binding StringFormat="UI_{0}_DecimalsToShow_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>        
         <!--<TextBox x:Name="TxtDecimalsToShow" Text="{Binding ModelItem.DecimalPlacesToShow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -95,7 +95,7 @@
                                   Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
-                <Binding StringFormat="UI_{0}_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
+                <Binding StringFormat="UI_{0}_Result_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>
     </Grid>

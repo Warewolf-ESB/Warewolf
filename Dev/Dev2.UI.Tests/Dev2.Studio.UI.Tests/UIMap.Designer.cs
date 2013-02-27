@@ -1359,6 +1359,19 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(uIExplorerCustom.AutomationId, "Test123");
         }
         
+        /// <summary>
+        /// selectUpInFormatNumbercbbx - Use 'selectUpInFormatNumbercbbxParams' to pass parameters into this method.
+        /// </summary>
+        public void selectUpInFormatNumbercbbx()
+        {
+            #region Variable Declarations
+            WpfComboBox uIUI__Rounding_ComboBoComboBox = this.UIBusinessDesignStudioWindow2.UIFlowchartCustom.UIDsfNumberFormatActivCustom.UIUI__Rounding_ComboBoComboBox;
+            #endregion
+
+            // Select 'Up' in 'UI__Rounding_ComboBox_AutoID' combo box
+            uIUI__Rounding_ComboBoComboBox.SelectedItem = this.selectUpInFormatNumbercbbxParams.UIUI__Rounding_ComboBoComboBoxSelectedItem;
+        }
+        
         #region Properties
         public virtual Environment_Wizards_Workflow_StartParams Environment_Wizards_Workflow_StartParams
         {
@@ -1513,6 +1526,18 @@ namespace Dev2.Studio.UI.Tests
                     this.mIEContainsTestExpectedValues = new IEContainsTestExpectedValues();
                 }
                 return this.mIEContainsTestExpectedValues;
+            }
+        }
+        
+        public virtual selectUpInFormatNumbercbbxParams selectUpInFormatNumbercbbxParams
+        {
+            get
+            {
+                if ((this.mselectUpInFormatNumbercbbxParams == null))
+                {
+                    this.mselectUpInFormatNumbercbbxParams = new selectUpInFormatNumbercbbxParams();
+                }
+                return this.mselectUpInFormatNumbercbbxParams;
             }
         }
         
@@ -1687,6 +1712,8 @@ namespace Dev2.Studio.UI.Tests
         private somestuffMethodNameParams msomestuffMethodNameParams;
         
         private IEContainsTestExpectedValues mIEContainsTestExpectedValues;
+        
+        private selectUpInFormatNumbercbbxParams mselectUpInFormatNumbercbbxParams;
         
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         
@@ -2011,6 +2038,21 @@ namespace Dev2.Studio.UI.Tests
   <Dev2System.EvaluateIteration /> 
   <Dev2System.SubstituteTokens /> 
   </DataList>";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'selectUpInFormatNumbercbbx'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class selectUpInFormatNumbercbbxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'Up' in 'UI__Rounding_ComboBox_AutoID' combo box
+        /// </summary>
+        public string UIUI__Rounding_ComboBoComboBoxSelectedItem = "Up";
         #endregion
     }
     
@@ -4176,6 +4218,18 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICAKE10Custom;
             }
         }
+        
+        public UIFlowchartCustom3 UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new UIFlowchartCustom3(this);
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -4210,6 +4264,8 @@ namespace Dev2.Studio.UI.Tests
         private UICAKE1Custom2 mUICAKE1Custom;
         
         private UICAKE10Custom1 mUICAKE10Custom;
+        
+        private UIFlowchartCustom3 mUIFlowchartCustom;
         #endregion
     }
     
@@ -6194,6 +6250,76 @@ namespace Dev2.Studio.UI.Tests
         
         #region Fields
         private WpfCustom mUIDsfBaseConvertActiviCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIFlowchartCustom3 : WpfCustom
+    {
+        
+        public UIFlowchartCustom3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties["AutomationId"] = "Flowchart(FlowchartDesigner)";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfNumberFormatActivCustom UIDsfNumberFormatActivCustom
+        {
+            get
+            {
+                if ((this.mUIDsfNumberFormatActivCustom == null))
+                {
+                    this.mUIDsfNumberFormatActivCustom = new UIDsfNumberFormatActivCustom(this);
+                }
+                return this.mUIDsfNumberFormatActivCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfNumberFormatActivCustom mUIDsfNumberFormatActivCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIDsfNumberFormatActivCustom : WpfCustom
+    {
+        
+        public UIDsfNumberFormatActivCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfNumberFormatActivityDesigner";
+            this.SearchProperties["AutomationId"] = "Format Number(DsfNumberFormatActivityDesigner)";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox UIUI__Rounding_ComboBoComboBox
+        {
+            get
+            {
+                if ((this.mUIUI__Rounding_ComboBoComboBox == null))
+                {
+                    this.mUIUI__Rounding_ComboBoComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mUIUI__Rounding_ComboBoComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Rounding_ComboBox_AutoID";
+                    this.mUIUI__Rounding_ComboBoComboBox.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
+                    #endregion
+                }
+                return this.mUIUI__Rounding_ComboBoComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mUIUI__Rounding_ComboBoComboBox;
         #endregion
     }
     

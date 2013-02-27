@@ -1856,6 +1856,20 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.UIBusinessDesignStudioWindow2.UIFlowchartCustom.UIDsfNumberFormatActivCustom.UIUI__Rounding_ComboBoComboBox">
+      <ParameterName />
+      <Value Encoded="false">Up</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="selectUpInFormatNumbercbbx">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -4013,6 +4027,46 @@
                         <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                         <PropertyCondition Name="ClassName">Uia.DsfBaseConvertActivityDesigner</PropertyCondition>
                         <PropertyCondition Name="AutomationId">Base Conversion (1)(DsfBaseConvertActivityDesigner)</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Business Design Studio (DEV2\Sashen.Naidoo)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                <PropertyCondition Name="AutomationId">Flowchart(FlowchartDesigner)</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Custom" Id="UIDsfNumberFormatActivCustom" FriendlyName="DsfNumberFormatActivity" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Business Design Studio (DEV2\Sashen.Naidoo)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.DsfNumberFormatActivityDesigner</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Format Number(DsfNumberFormatActivityDesigner)</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="ComboBox" Id="UIUI__Rounding_ComboBoComboBox" FriendlyName="UI__Rounding_ComboBox_AutoID" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Business Design Studio (DEV2\Sashen.Naidoo)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI__Rounding_ComboBox_AutoID</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants />
