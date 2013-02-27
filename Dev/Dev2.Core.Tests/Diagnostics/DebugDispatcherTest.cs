@@ -33,11 +33,11 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var countBefore = DebugDispatcher.Instance.Count;
-            DebugDispatcher.Instance.Add(workspaceID, null);
-            Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
-        }
+                var workspaceID = Guid.NewGuid();
+                var countBefore = DebugDispatcher.Instance.Count;
+                DebugDispatcher.Instance.Add(workspaceID, null);
+                Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
+            }
         }
 
         [TestMethod]
@@ -45,14 +45,14 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
+                var workspaceID = Guid.NewGuid();
+                var writer = new Mock<IDebugWriter>();
 
-            var countBefore = DebugDispatcher.Instance.Count;
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
-            IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
-            Assert.AreEqual(writer.Object, theWriter);
-        }
+                var countBefore = DebugDispatcher.Instance.Count;
+                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+                IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
+                Assert.AreEqual(writer.Object, theWriter);
+            }
         }
 
         #endregion
@@ -64,14 +64,14 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+                var workspaceID = Guid.NewGuid();
+                var writer = new Mock<IDebugWriter>();
+                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-            var countBefore = DebugDispatcher.Instance.Count;
-            DebugDispatcher.Instance.Remove(Guid.NewGuid());
-            Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
-        }
+                var countBefore = DebugDispatcher.Instance.Count;
+                DebugDispatcher.Instance.Remove(Guid.NewGuid());
+                Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
+            }
         }
 
         [TestMethod]
@@ -79,15 +79,15 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+                var workspaceID = Guid.NewGuid();
+                var writer = new Mock<IDebugWriter>();
+                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-            var countBefore = DebugDispatcher.Instance.Count;
-            DebugDispatcher.Instance.Remove(workspaceID);
-            IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
-            Assert.IsNull(theWriter);
-        }
+                var countBefore = DebugDispatcher.Instance.Count;
+                DebugDispatcher.Instance.Remove(workspaceID);
+                IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
+                Assert.IsNull(theWriter);
+            }
         }
 
         #endregion
@@ -99,13 +99,13 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+                var workspaceID = Guid.NewGuid();
+                var writer = new Mock<IDebugWriter>();
+                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-            var result = DebugDispatcher.Instance.Get(Guid.NewGuid());
-            Assert.IsNull(result);
-        }
+                var result = DebugDispatcher.Instance.Get(Guid.NewGuid());
+                Assert.IsNull(result);
+            }
         }
 
         [TestMethod]
@@ -113,13 +113,13 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+                var workspaceID = Guid.NewGuid();
+                var writer = new Mock<IDebugWriter>();
+                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-            var result = DebugDispatcher.Instance.Get(workspaceID);
-            Assert.AreSame(writer.Object, result);
-        }
+                var result = DebugDispatcher.Instance.Get(workspaceID);
+                Assert.AreSame(writer.Object, result);
+            }
         }
 
         #endregion
@@ -131,9 +131,9 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var task = DebugDispatcher.Instance.Write(null);
-            Assert.IsNull(task);
-        }
+                var task = DebugDispatcher.Instance.Write(null);
+                Assert.IsNull(task);
+            }
         }
 
         [TestMethod]
@@ -141,17 +141,17 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         {
             lock (l)
             {
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+                var workspaceID = Guid.NewGuid();
+                var writer = new Mock<IDebugWriter>();
+                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-            var state = new Mock<IDebugState>();
-            state.Setup(s => s.WorkspaceID).Returns(workspaceID);
-            state.Setup(s => s.Write(writer.Object)).Verifiable();
-            var task = DebugDispatcher.Instance.Write(state.Object);
+                var state = new Mock<IDebugState>();
+                state.Setup(s => s.WorkspaceID).Returns(workspaceID);
+                state.Setup(s => s.Write(writer.Object)).Verifiable();
+                var task = DebugDispatcher.Instance.Write(state.Object);
                 Task.WaitAll(new[] {task});
-            state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
-        }
+                state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
+            }
         }
 
         #endregion

@@ -66,7 +66,7 @@ namespace Dev2.Core.Tests
             mockResourceModel1 = new Mock<IContextualResourceModel>();
             mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
-            mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock2");
+            mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
             mockResourceModel1.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
 
             mockResourceModel2 = new Mock<IContextualResourceModel>();
@@ -282,12 +282,12 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(resourceVM.IsFiltered == false);
              
             vm.UpdateSearchFilter("Mock2");
-            Assert.IsTrue(vm.Root.ChildrenCount == 2);
+            Assert.IsTrue(vm.Root.ChildrenCount == 1);
             Assert.IsTrue(resourceVM.IsFiltered == true);
 
             vm.LoadEnvironmentResources(mockEnvironmentModel.Object);
             resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            Assert.IsTrue(vm.Root.ChildrenCount == 2);
+            Assert.IsTrue(vm.Root.ChildrenCount == 1);
             Assert.IsTrue(resourceVM.IsFiltered == true);
 
             vm.UpdateSearchFilter("Mock");
@@ -295,6 +295,68 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(resourceVM.IsFiltered == false);
         }
 
+        [TestMethod]
+        public void FilteredNavigationViewModel_WhereResourceNodeNotFiltered_Expects_CategoryExpanded()
+        {
+            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+
+            Assert.IsTrue(resourceVM.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+
+            vm.UpdateSearchFilter("Mock2");
+            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded);
+        }
+
+        [TestMethod]
+        public void FilteredNavigationViewModel_WhereResourceNodeFiltered_Expects_CategoryCollapsed()
+        {
+            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+
+            Assert.IsTrue(resourceVM.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+
+            vm.UpdateSearchFilter("Mock2");
+            Assert.IsTrue(resourceVM.IsFiltered);
+            Assert.IsTrue(!resourceVM.TreeParent.IsExpanded);
+        }
+
+        [TestMethod]
+        public void FilteredNavigationViewModel_WhereFilterReset_Expects_OriginalExpandState()
+        {
+            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+
+            Assert.IsTrue(resourceVM.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+
+            vm.UpdateSearchFilter("Mock2");
+
+            vm.UpdateSearchFilter("");
+            Assert.IsTrue(resourceVM.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+        }
         #endregion Filtering
 
         #region disconnect

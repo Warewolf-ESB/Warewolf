@@ -153,7 +153,7 @@ namespace Dev2.Diagnostics
                 _writeWaithandle.Set();
             }
 
-            Task t = new Task(() => { });
+            var t = new Task(() => { });
             t.Start();
             return t;
         }
