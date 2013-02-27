@@ -29,8 +29,8 @@
                         </span>
                     </div>
                     <div class="field">
-                        <label class="sources-server-form-label" for="dbSourceUserName" data-bind="visible: isUserInputVisible">User Name:</label>
-                        <input tabindex="5" type="text" name="dbSourceUserName" id="dbSourceUserName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName, valueUpdate: 'afterkeydown'" />
+                        <label class="sources-server-form-label" for="dbSourceUserID" data-bind="visible: isUserInputVisible">User Name:</label>
+                        <input tabindex="5" type="text" name="dbSourceUserID" id="dbSourceUserID" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userID, valueUpdate: 'afterkeydown'" />
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourcePassword" data-bind="visible: isUserInputVisible">Password:</label>
@@ -67,7 +67,7 @@
             </span>
             <div id="field">
                 <label data-bind="visible: testSucceeded()" class="sources-server-form-label" for="dbSourceDatabase">Database:</label>
-                <select tabindex="8" id="dbSourceDatabase" name="dbSourceDatabase" data-bind="value: data.sourceDatabase, options: dataSources, optionsCaption: 'Choose...', visible: testSucceeded()" style="width: 260px" />
+                <select tabindex="8" id="dbSourceDatabase" name="dbSourceDatabase" data-bind="value: data.databaseName, options: dataSources, optionsCaption: 'Choose...', visible: testSucceeded()" style="width: 260px" />
             </div>
         </div>
         <div class="button-bar" style="clear: both; margin-top: 300px">

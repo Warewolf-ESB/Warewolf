@@ -347,7 +347,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     ResourceType = ResourceType.DbSource,
                     ResourcePath = "Test",
                     Server = "RSAKLFSVRGENDEV",
-                    SourceDatabase = "Cities",
+                    DatabaseName = "Cities",
                     AuthenticationType = AuthenticationType.Windows,
                 }
             };

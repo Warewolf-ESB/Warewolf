@@ -21,7 +21,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = ResourceType.DbSource;
-            Server = xml.AttributeSafe("Server");
 
             // Setup type include default port
             switch(xml.AttributeSafe("ServerType"))
@@ -38,24 +37,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     break;
             }
 
-            SourceDatabase = xml.AttributeSafe("SourceDatabase");
             ConnectionString = xml.AttributeSafe("ConnectionString");
-            Port = int.Parse(xml.AttributeSafe("Port"));
-            switch(xml.AttributeSafe("AuthenticationType"))
-            {
-                case "User":
-                    AuthenticationType = AuthenticationType.User;
-                    break;
-                case "Windows":
-                    AuthenticationType = AuthenticationType.Windows;
-                    break;
-                default:
-                    AuthenticationType = AuthenticationType.Windows;
-                    break;
-            }
-            UserName = xml.AttributeSafe("UserName");
-            Password = xml.AttributeSafe("Password");
-
         }
 
         #endregion
@@ -67,18 +49,19 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string Server { get; set; }
 
-        public string SourceDatabase { get; set; }
+        public string DatabaseName { get; set; }
 
         public int Port { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
-        public string UserName { get; set; }
+        public string UserID { get; set; }
 
         public string Password { get; set; }
 
         #endregion
+
 
         #region ConnectionString
 
@@ -92,22 +75,71 @@ namespace Dev2.Runtime.ServiceModel.Data
                 switch(ServerType)
                 {
                     case enSourceType.SqlDatabase:
-                        return string.Format("Data Source={0};{1}{2}", Server, SourceDatabase==null?null:"Initial Catalog="+SourceDatabase+";",
-                            //(Port > 0 ? ":" + Port : string.Empty),
+                        return string.Format("Data Source={0}{2};Initial Catalog={1};{3}", Server, DatabaseName,
+                            (Port > 0 ? "," + Port : string.Empty),
                             AuthenticationType == AuthenticationType.Windows
                                 ? "Integrated Security=SSPI;"
-                                : string.Format("User ID={0};Password={1};", UserName, Password));
+                                : string.Format("User ID={0};Password={1};", UserID, Password));
 
                     case enSourceType.MySqlDatabase:
                         return string.Format("Server={0};{4}Database={1};Uid={2};Pwd={3};",
-                            Server, SourceDatabase, UserName, Password,
+                            Server, DatabaseName, UserID, Password,
                             (Port > 0 ? string.Format("Port={0};", Port) : string.Empty));
                 }
                 return string.Empty;
             }
+
             set
             {
-            } 
+                if(string.IsNullOrEmpty(value))
+                {
+                    return;
+                }
+
+                AuthenticationType = AuthenticationType.Windows;
+
+                foreach(var prm in value.Split(';').Select(p => p.Split('=')))
+                {
+                    int port;
+                    switch(prm[0].ToLowerInvariant())
+                    {
+                        case "server":
+                        case "data source":
+                            var arr = prm[1].Split(','); // may include port number after comma
+                            Server = arr[0];
+                            if(arr.Length > 1)
+                            {
+                                if(Int32.TryParse(arr[1], out port))
+                                {
+                                    Port = port;
+                                }
+                            }
+                            break;
+                        case "port":
+                            if(Int32.TryParse(prm[1], out port))
+                            {
+                                Port = port;
+                            }
+                            break;
+                        case "database":
+                        case "initial catalog":
+                            DatabaseName = prm[1];
+                            break;
+                        case "integrated security":
+                            AuthenticationType = AuthenticationType.Windows;
+                            break;
+                        case "user id":
+                        case "uid":
+                            AuthenticationType = AuthenticationType.User;
+                            UserID = prm[1];
+                            break;
+                        case "password":
+                        case "pwd":
+                            Password = prm[1];
+                            break;
+                    }
+                }
+            }
         }
 
         #endregion
@@ -117,15 +149,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override XElement ToXml()
         {
             var result = base.ToXml();
-            result.Add(new XAttribute("ConnectionString", ConnectionString ?? string.Empty));
-            result.Add(new XAttribute("Server", Server ?? string.Empty));
             result.Add(new XAttribute("ServerType", ServerType));
-            result.Add(new XAttribute("SourceDatabase", SourceDatabase ?? string.Empty));
-            result.Add(new XAttribute("Port", Port));
-            result.Add(new XAttribute("AuthenticationType", AuthenticationType));
-            result.Add(new XAttribute("UserName", UserName ?? string.Empty));
-            result.Add(new XAttribute("Password", Password ?? string.Empty));
-
+            result.Add(new XAttribute("ConnectionString", ConnectionString ?? string.Empty));
             return result;
         }
 

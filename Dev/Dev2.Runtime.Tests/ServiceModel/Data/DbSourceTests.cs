@@ -129,15 +129,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var testDbSource = new DbSource
             {
-                Server = "someServerIMadeUpToTest", 
-                Port = 420, 
-                AuthenticationType = AuthenticationType.Windows, 
-                UserName = @"Domain\User", 
-                Password = "secret", 
-                SourceDatabase = "someDatabaseNameIMadeUpToTest",
-                ResourceID = Guid.NewGuid(), 
-                ResourceName = "TestResourceIMadeUp", 
-                ResourcePath = @"host\Server", 
+                Server = "someServerIMadeUpToTest",
+                Port = 420,
+                AuthenticationType = AuthenticationType.Windows,
+                UserID = @"Domain\User",
+                Password = "secret",
+                DatabaseName = "someDatabaseNameIMadeUpToTest",
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "TestResourceIMadeUp",
+                ResourcePath = @"host\Server",
                 ResourceType = ResourceType.DbSource
             };
 

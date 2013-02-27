@@ -16,16 +16,22 @@
 
         server: ko.observable(""),
         serverType: ko.observable(""),
-        sourceDatabase: ko.observable(""),
+        databaseName: ko.observable(""),
         authenticationType: ko.observable("Windows"),
-        userName: ko.observable(""),
+        userID: ko.observable(""),
         password: ko.observable(""),
         port: ko.observable()
     };
 
     var resourceID = getParameterByName("rid");
-    self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
-    self.data.resourceID(self.isEditing ? resourceID : $.Guid.Empty());
+    //self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
+    //self.data.resourceID(self.isEditing ? resourceID : $.Guid.Empty());
+
+    // TODO: reinstate this check when all resources use an ID 
+    //self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
+    // TODO: remove this check: resourceID is either a GUID or a name to cater for legacy stuff
+    self.isEditing = resourceID ? resourceID !== "" : false;
+
 
     self.title = ko.observable("New Database Source");
     self.title.subscribe(function (newValue) {
@@ -82,15 +88,15 @@
     self.isFormTestable = ko.computed(function () {
         var valid = ((self.data.server() ? true : false) && (self.data.serverType() ? true : false));
         if (self.isUserInputVisible()) {
-            valid = valid && (self.data.userName() ? true : false) && (self.data.password() ? true : false);
+            valid = valid && (self.data.userID() ? true : false) && (self.data.password() ? true : false);
         }
         self.showTestResults(false);
-        self.data.sourceDatabase("");
+        self.data.databaseName("");
         return valid;
     });
  
     self.isFormValid = ko.computed(function () {
-        var isValid = self.isFormTestable() && (self.data.sourceDatabase() ? true : false);
+        var isValid = self.isFormTestable() && (self.data.databaseName() ? true : false);
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
@@ -123,7 +129,7 @@
             self.testSucceeded(result.IsValid);
             if (self.testSucceeded) {
                 self.dataSources(result.DatabaseList);
-                self.data.sourceDatabase(selectVal);
+                self.data.databaseName(selectVal);
             } else {
                 self.testError(result.ErrorMessage);
             }
@@ -151,17 +157,17 @@
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-
+            console.log(result);
             self.data.server(result.Server);
             self.data.serverType(result.ServerType);
             self.data.authenticationType(result.AuthenticationType);
-            self.data.userName(result.UserName);
+            self.data.userID(result.UserID);
             self.data.password(result.Password);
             self.data.port(result.Port);
             self.isEditing = result.ResourceName != null;
             
             if (self.isEditing) {
-                self.test(result.SourceDatabase);
+                self.test(result.DatabaseName);
             }
 
             self.title(self.isEditing ? "Edit Database Source - " + result.ResourceName : "New Database Source");
@@ -231,6 +237,11 @@
         $("button").button();
         $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Connection')");
     };
+
+    if (!$dialogContainerID) {
+        console.log(resourceID);
+        self.load(resourceID);
+    }
 };
 
 
