@@ -124,6 +124,7 @@
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="AutoMappingInputActionTest.cs" />
     <Compile Include="AutoMappingOutputActionTest.cs" />
+    <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="DataListClientChannelTests.cs" />
     <Compile Include="CompositionInitializer.cs" />

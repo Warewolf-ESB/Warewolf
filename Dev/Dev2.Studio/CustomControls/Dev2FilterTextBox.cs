@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -18,13 +17,25 @@ namespace Dev2.Studio.CustomControls
         private ButtonBase _button;
         private TextBox _textBox;
 
+        public ButtonBase FilterButton
+        {
+            get
+            {
+                return _button;
+            }
+        }
+        public TextBox FilterTextBox
+        {
+            get
+            {
+                return _textBox;
+            }
+        }
+
         public string SearchText
         {
             get { return (string)GetValue(SearchTextProperty); }
-            set
-            {
-                SetValue(SearchTextProperty, value);               
-            }
+            set { SetValue(SearchTextProperty, value); }
         }
 
         public static readonly DependencyProperty SearchTextProperty =
@@ -56,6 +67,6 @@ namespace Dev2.Studio.CustomControls
                 _textBox.Text = "";
                 _textBox.Focus();
             }
-        }       
+        }
     }
 }

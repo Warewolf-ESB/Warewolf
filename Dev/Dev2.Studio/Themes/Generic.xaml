@@ -245,16 +245,15 @@
                         
                         <Button x:Name="FilterButton" 
                                 HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                Height="25" Width="25"
+                                Height="22" Width="22"
                                 Margin="2"
                                 Visibility="{Binding ElementName=FilterTextBox,Path=Text,Converter={StaticResource FilterStringToVisibilityConverter}}"
                                 Style="{StaticResource Dev2ToolBarButtonStyle}">
-                            <Image Source="/images/clearLeftIcon.png" Height="20" Width="20"></Image>
+                            <Image Source="/images/GreyCrossIcon.png" Height="15" Width="15"></Image>
                         </Button>
                     </Grid>
                 </ControlTemplate>
-            </Setter.Value>
-            
+            </Setter.Value>            
         </Setter>
     </Style>
     

@@ -895,6 +895,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\GreyCrossIcon.png" />
     <Resource Include="Images\clearLeftIcon.png" />
     <Resource Include="Images\erase.png" />
     <Resource Include="Images\FormatNumber.png" />
