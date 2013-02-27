@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-    public class FilterStringToVisibilityConvert : IValueConverter
+    public class FilterStringToVisibilityConverter : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

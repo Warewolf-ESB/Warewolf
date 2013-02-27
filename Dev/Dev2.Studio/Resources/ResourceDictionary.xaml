@@ -59,7 +59,7 @@
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="devFeedbackActions:RecorderFeedbackAction" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="devFeedbackActions:RecorderFeedbackAction" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
-    <converters:FilterStringToVisibilityConvert x:Key="FilterStringToVisibilityConvert"></converters:FilterStringToVisibilityConvert>
+    <converters:FilterStringToVisibilityConverter x:Key="FilterStringToVisibilityConverter"></converters:FilterStringToVisibilityConverter>
     
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">

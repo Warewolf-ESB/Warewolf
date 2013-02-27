@@ -4,9 +4,11 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:Models="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+             xmlns:dev2="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties" 
              xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-             ap:UIElementTitleProperty.Title="Data List View"        
+    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+    ap:UIElementTitleProperty.Title="Data List View"        
              LostKeyboardFocus="UserControl_LostKeyboardFocus">
     <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour/>
@@ -16,7 +18,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="2" />
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -25,24 +27,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>       
-            <TextBox x:Name="Filtertxt" Grid.Column="0" BorderBrush="#ccc" Text="{Binding Path=SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     HorizontalAlignment="Stretch">
-                <TextBox.Style>
-                    <Style TargetType="TextBox">
-                        <Setter Property="AutomationProperties.AutomationId" Value="UI_DataListSearchtxt_AutoID"/>
-                        <Style.Triggers>
-                            <Trigger Property="Text" Value="">
-                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-            <!--<Button Grid.Column="0" Click="ClearFilter_OnClick" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25" Width="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Visibility="{Binding ElementName=Filtertxt,Path=Text,Converter={StaticResource FilterStringToVisibilityConvert}}">
-                <Image Source="/images/erase.png" Height="15" Width="15"></Image>
-            </Button>-->
-
+            </Grid.ColumnDefinitions>
+            <customControls:Dev2FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls:Dev2FilterTextBox>            
             <Button Grid.Column="1" AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID" Command="{Binding FindUnusedAndMissingCommand}" ToolTip="Removes all unused variables from the variable list" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                     Margin="5,0,0,0">
                 <Image Source="/images/erase.png" Height="15" Width="15" />
@@ -56,7 +42,7 @@
 
         </StackPanel>
         <Rectangle Grid.Row="1" Fill="LightGray"/>
-        <TreeView Grid.Row="2" AllowDrop="True" KeyboardNavigation.TabNavigation="Cycle" IsTabStop="False" ItemsSource="{Binding Path=BaseCollection}" 
+        <TreeView Grid.Row="2" AllowDrop="True" KeyboardNavigation.TabNavigation="Cycle" IsTabStop="False" ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}" 
                   Name="scalarExplorer" BorderThickness="0" HorizontalContentAlignment="Left" Grid.IsSharedSizeScope="True">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListItemModel}" ItemsSource="{Binding Path=Children}">
@@ -152,6 +138,7 @@
                     <Setter Property="Focusable" Value="False"/>
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                     <Setter Property="FontWeight" Value="Normal" />
+                    <Setter Property="Visibility" Value="{Binding IsVisable, Converter={StaticResource BoolToVisConverter}}"/>
                     <Setter Property="KeyboardNavigation.TabNavigation" Value="Continue"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">

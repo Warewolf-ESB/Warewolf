@@ -116,10 +116,6 @@ namespace Dev2.Studio.Views.DataList
 
         }
 
-        void ClearFilter_OnClick(object sender, RoutedEventArgs e)
-        {
-            Filtertxt.Clear();
-            Filtertxt.Focus();
-        }
+        
     }
 }

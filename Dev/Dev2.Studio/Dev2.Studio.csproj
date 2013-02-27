@@ -305,6 +305,7 @@
     <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\Dev2FilterTextBox.cs" />
     <Compile Include="Diagnostics\DebugLineGroup.cs" />
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
@@ -891,6 +892,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\clearLeftIcon.png" />
     <Resource Include="Images\erase.png" />
     <Resource Include="Images\FormatNumber.png" />
     <Resource Include="Images\record.png" />
