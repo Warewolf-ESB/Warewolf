@@ -25,15 +25,15 @@
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
 
-            <customControls:Dev2FilterTextBox x:Name="FilterTextBox" 
+            <customControls:Dev2FilterTextBox x:Name="FilterTextBox"
                                               Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                               Grid.Column="0">
                 <i:Interaction.Triggers>
-                    <trigger:DelayKeydownEventTrigger DelayInMilliSeconds="500">
+                    <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="500">
                         <cal:ActionMessage MethodName="UpdateSearchFilter">
                             <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
                         </cal:ActionMessage>
-                    </trigger:DelayKeydownEventTrigger>
+                    </trigger:DelayTextChangedEventTrigger>
                 </i:Interaction.Triggers>
             </customControls:Dev2FilterTextBox>
             

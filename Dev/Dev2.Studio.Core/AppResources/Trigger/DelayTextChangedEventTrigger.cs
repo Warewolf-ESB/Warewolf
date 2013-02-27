@@ -12,7 +12,7 @@ using System.Windows.Threading;
 
 namespace Dev2.Studio.Core.AppResources.Trigger
 {
-    public class DelayKeydownEventTrigger : TriggerBase<TextBox>
+    public class DelayTextChangedEventTrigger : TriggerBase<TextBox>
     {
         private IDisposable _subscription;
 
@@ -24,13 +24,13 @@ namespace Dev2.Studio.Core.AppResources.Trigger
 
         // Using a DependencyProperty as the backing store for DelayInMilliSeconds.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DelayInMilliSecondsProperty =
-            DependencyProperty.Register("DelayInMilliSeconds", typeof(long), typeof(DelayKeydownEventTrigger), new PropertyMetadata(1000L));      
+            DependencyProperty.Register("DelayInMilliSeconds", typeof(long), typeof(DelayTextChangedEventTrigger), new PropertyMetadata(1000L));      
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            var observable = Observable.FromEventPattern(AssociatedObject, "KeyUp")
+            var observable = Observable.FromEventPattern(AssociatedObject, "TextChanged")
                               .Throttle(TimeSpan.FromMilliseconds(DelayInMilliSeconds))
                               .ObserveOn(new SynchronizationContext());
 

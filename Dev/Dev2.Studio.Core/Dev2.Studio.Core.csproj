@@ -180,7 +180,7 @@
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppResources\Trigger\DelayKeydownEventTrigger.cs" />
+    <Compile Include="AppResources\Trigger\DelayTextChangedEventTrigger.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="ErrorHandling\enErrorType.cs" />

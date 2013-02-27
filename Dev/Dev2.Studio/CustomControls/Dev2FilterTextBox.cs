@@ -53,7 +53,7 @@ namespace Dev2.Studio.CustomControls
         {
             if (_textBox != null)
             {
-                _textBox.Clear();
+                _textBox.Text = "";
                 _textBox.Focus();
             }
         }       
