@@ -112,7 +112,8 @@ namespace Dev2.Server.DataList.Translators
                             // Travis.Frisinger 04.02.2013
                             if(!val.IsDeferredRead)
                             {
-                                if (!entry.IsManagmentServicePayload)
+                                // Dev2System.FormView is our html region, pass it by
+                                if (!entry.IsManagmentServicePayload && !entry.Namespace.Equals("Dev2System.FormView"))
                                 {
                                     result.Append(CleanForEmit(val.TheValue));
                                 }
@@ -274,7 +275,7 @@ namespace Dev2.Server.DataList.Translators
             // >      &gt;
             // &      &amp;
 
-            return val.Replace("&", "&amp;"); //.Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+            return val.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
         }
 
         /// <summary>
