@@ -1187,8 +1187,6 @@ namespace Dev2.Studio
                     {
                         string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
-                        var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-
                         //var callBackHandler = new Dev2DecisionCallbackHandler();
                         //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
                         //callBackHandler.Owner.ShowDialog();
@@ -1266,8 +1264,6 @@ namespace Dev2.Studio
                               UriKind.Absolute, out requestUri))
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-
-                var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                 //var callBackHandler = new Dev2DecisionCallbackHandler();
                 //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
