@@ -187,7 +187,11 @@ namespace Dev2.Studio.Core.DataList
             }
             try
             {
-                XmlConvert.VerifyName(candidateEntry.Name);
+                if(!string.IsNullOrEmpty(candidateEntry.Name))
+                {
+                    XmlConvert.VerifyName(candidateEntry.Name);    
+                }
+                
             }
             catch (XmlException xex)
             {

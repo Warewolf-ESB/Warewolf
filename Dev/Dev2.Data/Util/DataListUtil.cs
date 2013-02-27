@@ -189,7 +189,7 @@ namespace Dev2.DataList.Contract
                 result = result.Replace("<Dev2WebpartConfig>", "").Replace("</Dev2WebpartConfig>", "");
             }
 
-            return result.ToString();
+            return result;
         }
 
         /// <summary>

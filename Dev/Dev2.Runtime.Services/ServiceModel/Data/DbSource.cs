@@ -28,13 +28,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "SqlDatabase":
                     ServerType = enSourceType.SqlDatabase;
                     Port = 1433;
-                    break;
+                break;
                 case "MySqlDatabase":
                     ServerType = enSourceType.MySqlDatabase;
-                    break;
+                break;
                 default:
                     ServerType = enSourceType.Unknown;
-                    break;
+                break;
             }
 
             ConnectionString = xml.AttributeSafe("ConnectionString");

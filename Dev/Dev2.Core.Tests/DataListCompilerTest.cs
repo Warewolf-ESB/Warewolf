@@ -216,8 +216,8 @@ namespace Unlimited.UnitTest.Framework
             WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
             Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().Namespace);
-            Assert.AreEqual("TestVar", result.RemovedRegions[0].FetchScalar().Namespace);
+            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().FieldName);
+            Assert.AreEqual("TestVar", result.RemovedRegions[0].FetchScalar().FieldName);
         }
 
         [TestMethod]
@@ -257,7 +257,7 @@ namespace Unlimited.UnitTest.Framework
             WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
             Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().Namespace);
+            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().FieldName);
             Assert.AreEqual("Recordset", (result.AddedRegions[1].FetchRecordAt(1, out error))[0].Namespace);
             Assert.AreEqual(0, result.RemovedRegions.Count);
         }

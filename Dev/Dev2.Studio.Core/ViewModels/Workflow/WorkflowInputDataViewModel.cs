@@ -442,7 +442,7 @@ namespace Dev2.Studio.Core.ViewModels
                     IDataListItem singleRes = new DataListItem();
                     singleRes.IsRecordset = false;
                     singleRes.Field = item.FieldName;
-                    singleRes.DisplayValue = item.DisplayValue;
+                    singleRes.DisplayValue = item.FieldName;
                     singleRes.Value = item.TheValue;
                     string desc = dataListEntry.Description;
                     if (string.IsNullOrWhiteSpace(desc))

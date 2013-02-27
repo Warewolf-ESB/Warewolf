@@ -746,7 +746,7 @@ namespace Dev2.DataList.Contract
                             if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
                             {
                                 IBinaryDataListItem scalar = entry.FetchScalar();
-                                newDl.TryCreateScalarTemplate(string.Empty, scalar.Namespace, entry.Description, true, out errorString);
+                                newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
                                 entry.FetchScalar();
                             }
                         }

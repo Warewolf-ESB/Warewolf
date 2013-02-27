@@ -12,6 +12,10 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public int _appendIndex;
         IDictionary<string, int> _strToColIdx;
         bool _isEmpty;
+        // Travis Mods ;) - Build the row TO for fetching as per the tooling ;)
+        IList<IBinaryDataListItem> _internalReturnValue;
+
+        IDictionary<int, IList<IBinaryDataListItem>> _deferedReads;
 
         #region Properties
 
@@ -34,11 +38,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public string Description { get; set; }
 
         public int Count { get { return _items.Count; } }
-
-        // Travis Mods ;) - Build the row TO for fetching as per the tooling ;)
-        IList<IBinaryDataListItem> _internalReturnValue;
-
-        IDictionary<int, IList<IBinaryDataListItem>> _deferedReads;
 
         public IList<IBinaryDataListItem> this[int key]
         {
@@ -178,10 +177,18 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             for (int i = 0; i < colCnt; i++)
             {
                 _internalReturnValue.Add(new BinaryDataListItem(string.Empty, string.Empty));
-                _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
-                if (Columns != null)
+
+               
+                if(Columns != null)
                 {
+                    // Handle recordsets properly
+                    _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
                     _internalReturnValue[i].UpdateField(Columns[i].ColumnName); // always the same column for this entry ;)
+                }
+                else
+                {
+                    // Handle scalars properly
+                    _internalReturnValue[i].UpdateField(Namespace);
                 }
             }
 
