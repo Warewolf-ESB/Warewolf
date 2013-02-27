@@ -117,6 +117,17 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public string FetchData(string args)
+        {
+            if (PropertyEditorViewModel != null)
+            {
+                return (string)InvokeFunction(() => PropertyEditorViewModel.FetchData(args));
+            }
+
+            return string.Empty;
+        }
+
+
         public ILayoutObjectViewModel SelectedLayoutObject
         {
             get
@@ -154,5 +165,15 @@ namespace Dev2.Studio.Core
                 }
             }
         }
+
+        static object InvokeFunction(Func<string> action)
+        {
+            if (action != null)
+            {
+                return !Application.Current.Dispatcher.CheckAccess() ? Application.Current.Dispatcher.Invoke(action) : action();
+            }
+            return null;
+        }
+
     }
 }

@@ -43,6 +43,11 @@ namespace Dev2.Studio.Core.ViewModels
         private ILayoutObjectViewModel[] previous;
         private ILayoutObjectViewModel[] lastGood;
 
+        public string FetchData(string args)
+        {
+            return null;
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         protected void OnNavigateRequested(string uri)

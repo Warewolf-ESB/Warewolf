@@ -49,6 +49,11 @@ namespace Unlimited.Framework
 
         #region Events
 
+        public string FetchData(string args)
+        {
+            return null;
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         public delegate void LayoutObjectChangedEventHandler(LayoutObjectViewModel beforeChange, LayoutObjectViewModel afterChange);

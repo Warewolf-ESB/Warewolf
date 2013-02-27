@@ -129,21 +129,19 @@ function DecisionViewModel() {
             return;
         }
 
-        var dlID = window.location.search;
-        
-        /* Clean up the decision arm text */
+        //var dlID = window.location.search;
         var jsonData = ko.toJSON(self.data);
 
-        alert(jsonData);
+        Dev2Awesomium.Dev2SetValue(jsonData);
 
-        $.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
+        //$.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
 
-            $("#Dev2Msg").html(result.message);
+        //    $("#Dev2Msg").html(result.message);
 
-            Dev2Awesomium.Close();
-            return true;
+        //    Dev2Awesomium.Close();
+        //    return true;
 
-        });
+        //});
     };
 
     self.cancel = function () {
@@ -158,14 +156,18 @@ function DecisionViewModel() {
     }
 
     self.Load = function () {
-        var dlID = window.location.search; //.replace("postdlid", "dlid");
+        //var dlID = window.location.search; //.replace("postdlid", "dlid");
 
-        var request = $.ajax({
-            url: "Service/WebModel/FetchDecisionModel" + dlID,
-            type: "post"
-        });
+        //var request = $.ajax({
+        //    url: "Service/WebModel/FetchDecisionModel" + dlID,
+        //    type: "post"
+        //});
 
-        request.done(function (response, textStatus, json) {
+        //request.done(function (response, textStatus, json) {
+
+        var data = Dev2Awesomium.FetchData("");
+        var response = $.parseJSON(data);
+
 
             if (response.TheStack != undefined) {
                 // load decisions
@@ -192,10 +194,11 @@ function DecisionViewModel() {
                 // Add a decision
                 vm.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
             }
-        });
+        
+        //});
 
-        request.fail(function (response, textStatus, json) {
-            alert("An error occured : " + JSON.stringify(response));
-        });
+        //request.fail(function (response, textStatus, json) {
+        //    alert("An error occured : " + JSON.stringify(response));
+        //});
     }
 }

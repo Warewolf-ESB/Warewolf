@@ -98,6 +98,11 @@ namespace Dev2.Studio.Core.ViewModels
 
         #region NavigateRequested
 
+        public string FetchData(string args)
+        {
+            return null;
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         protected virtual void OnNavigateRequested(string uri)

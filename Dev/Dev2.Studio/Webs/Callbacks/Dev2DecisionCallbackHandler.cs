@@ -8,6 +8,8 @@ namespace Dev2.Studio.Core.AppResources.Browsers
     {
         public Window Owner { get; set; }
 
+        public string ModelData { get; set; }
+
         public ILayoutObjectViewModel SelectedLayoutObject
         {
             get { return null; }
@@ -33,7 +35,8 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public void Dev2SetValue(string value)
         {
-            throw new NotImplementedException();
+            ModelData = value;
+            Close();
         }
 
         public void Dev2Done()
@@ -68,6 +71,11 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             {
                 NavigateRequested(uri);
             }
+        }
+
+        public string FetchData(string args)
+        {
+            return ModelData;
         }
     }
 }

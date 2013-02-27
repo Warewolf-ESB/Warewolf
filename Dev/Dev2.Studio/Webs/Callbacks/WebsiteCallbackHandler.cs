@@ -124,6 +124,11 @@ namespace Dev2.Studio.Webs.Callbacks
             Close();
         }
 
+        public string FetchData(string args)
+        {
+            return null;
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         protected void Navigate(string uri)

@@ -18,6 +18,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Dev2ReloadResource(string resourceName, string resourceType);
         void Close();
         void Cancel();
+        string FetchData(string args);
         event NavigateRequestedEventHandler NavigateRequested;
     }
 }

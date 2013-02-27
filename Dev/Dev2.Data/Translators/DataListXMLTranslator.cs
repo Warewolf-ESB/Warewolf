@@ -274,7 +274,7 @@ namespace Dev2.Server.DataList.Translators
             // >      &gt;
             // &      &amp;
 
-            return val.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+            return val.Replace("&", "&amp;"); //.Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
         }
 
         /// <summary>

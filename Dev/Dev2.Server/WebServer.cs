@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DynamicServices;
+using Dev2.Runtime;
+using Dev2.Runtime.Diagnostics;
+using DEV2.MultiPartFormPasser;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -7,14 +14,8 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Xml;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DynamicServices;
-using Dev2.Runtime;
-using Dev2.Runtime.Diagnostics;
-using DEV2.MultiPartFormPasser;
 using Unlimited.Applications.DynamicServicesHost;
 using Unlimited.Applications.WebServer;
 using Unlimited.Applications.WebServer.Responses;
@@ -32,7 +33,7 @@ namespace Dev2
         {
             get
             {
-                if(_location == null)
+                if (_location == null)
                 {
                     _location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 }
@@ -49,7 +50,7 @@ namespace Dev2
         static string GetQueryStringValue(ICommunicationContext ctx, string key)
         {
             var item = ctx.Request.QueryString[key];
-            if(item != null)
+            if (item != null)
             {
                 return item.Value;
             }
@@ -86,27 +87,27 @@ namespace Dev2
             }
              */
 
-            if(!isXmlData)
+            if (!isXmlData)
             {
-                if(ctx.Request.QueryString != HttpFramework.HttpInput.Empty)
+                if (ctx.Request.QueryString != HttpFramework.HttpInput.Empty)
                 {
-                    foreach(HttpFramework.HttpInputItem item in ctx.Request.QueryString)
+                    foreach (HttpFramework.HttpInputItem item in ctx.Request.QueryString)
                     {
                         formData.CreateElement(item.Name).SetValue(item.Value);
                     }
                 }
 
-                if((!string.IsNullOrEmpty(ctx.Request.ContentType)) && ctx.Request.ContentType.ToUpper().Contains("MULTIPART"))
+                if ((!string.IsNullOrEmpty(ctx.Request.ContentType)) && ctx.Request.ContentType.ToUpper().Contains("MULTIPART"))
                 {
                     var parser = new MultipartDataParser(ctx.Request.InputStream, ctx.Request.ContentType, ctx.Request.ContentEncoding);
                     var results = parser.ParseStream();
 
                     results.ForEach(result =>
                     {
-                        if(result.FormValue is TextObj)
+                        if (result.FormValue is TextObj)
                         {
                             var textObj = result.FormValue as TextObj;
-                            if(textObj != null)
+                            if (textObj != null)
                             {
 
                                 formData.CreateElement(result.FormKey).SetValue(textObj.ValueVar);
@@ -115,9 +116,9 @@ namespace Dev2
                         else
                         {
                             var fileObj = result.FormValue as FileObj;
-                            if(fileObj != null)
+                            if (fileObj != null)
                             {
-                                if(fileObj.ValueVar.LongLength > 0)
+                                if (fileObj.ValueVar.LongLength > 0)
                                 {
                                     //var newFile = formData.CreateElement("File");
                                     formData.CreateElement(result.FormKey).SetValue(Convert.ToBase64String(fileObj.ValueVar));
@@ -131,7 +132,7 @@ namespace Dev2
                 else
                 {
                     string data;
-                    if(postDataListID != null && new Guid(postDataListID) != Guid.Empty)
+                    if (postDataListID != null && new Guid(postDataListID) != Guid.Empty)
                     {
                         //TrevorCake
                         Guid dlid = new Guid(postDataListID);
@@ -146,13 +147,13 @@ namespace Dev2
                     }
                     else
                     {
-                        using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
+                        using (var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
                         {
                             try
                             {
                                 data = reader.ReadToEnd();
                             }
-                            catch(Exception)
+                            catch (Exception)
                             {
                                 data = "";
                             }
@@ -161,11 +162,11 @@ namespace Dev2
 
                     try
                     {
-                        if(DataListUtil.IsXml(data))
+                        if (DataListUtil.IsXml(data))
                         {
                             formData.Add(new UnlimitedObject(XElement.Parse(data)));
                         }
-                        else if(data.StartsWith("{") && data.EndsWith("}")) // very simple JSON check!!!
+                        else if (data.StartsWith("{") && data.EndsWith("}")) // very simple JSON check!!!
                         {
                             formData.CreateElement("Args").SetValue(data);
                         }
@@ -173,14 +174,13 @@ namespace Dev2
                         {
                             var keyValuePairs = data.Split(new string[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                            foreach(string keyValuePair in keyValuePairs)
+                            foreach (string keyValuePair in keyValuePairs)
                             {
                                 var keyValue = keyValuePair.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
                                 string formFieldValue = string.Empty;
-                                if(keyValue.Length > 1)
+                                if (keyValue.Length > 1)
                                 {
                                     formFieldValue = HttpUtility.UrlDecode(keyValue[1]);
-                                    // 6th Feb 2013: Check with Travis if you want to alter this try / catch (Michael)
                                     try
                                     {
                                         formFieldValue = XElement.Parse(formFieldValue).ToString();
@@ -220,6 +220,7 @@ namespace Dev2
             html = html.Replace("&amp;amp;amp;lt;", "<").Replace("&amp;amp;amp;gt;", ">");
             html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
             html = html.Replace("&<", "<").Replace("&>", ">");
+            html = html.Replace("&quot;", "\"");
             // Travis : Remove the CDATA region so we can render this on the screen
             //html = DataListUtil.CDATAUnwrapHTML(html);
 
@@ -287,6 +288,7 @@ namespace Dev2
 
         private void MapContextToDirectoryStructure()
         {
+            //TrevorCake
             //_server.AddHandler("GET", "/services/{servicename}?postdlid={dlid}", GET_CLIENT_SERVICES_Handler);
             //_server.AddHandler("GET", "/services/{servicename}?wid={clientid}", GET_CLIENT_SERVICES_Handler);
             _server.AddHandler("GET", "/services/{servicename}", GET_POST_CLIENT_SERVICES_Handler);
@@ -313,6 +315,7 @@ namespace Dev2
 
             _server.AddHandler("POST", "/{website}/{path}/service/{name}/save", PostServiceSaveHandler);
             _server.AddHandler("POST", "/{website}/{path}/service/{name}/{action}", PostServiceHandler);
+
         }
 
         #endregion
@@ -323,55 +326,56 @@ namespace Dev2
 
         void GetResourceHandler(HttpServer sender, ICommunicationContext ctx)
         {
-            // BUG 8593: 2013.02.17 - TWR - added try/catch to return 404 on error
-            try
+            var uriString = ctx.Request.Uri.OriginalString;
+
+
+            if(uriString.IndexOf("wwwroot") < 0)
             {
-                var uriString = ctx.Request.Uri.OriginalString;
-                var website = ctx.Request.BoundVariables["website"];
-                var path = ctx.Request.BoundVariables["path"];
-                var extension = Path.GetExtension(uriString);
+                // http://127.0.0.1:1234/services/"/themes/system/js/json2.js"
 
-                if(string.IsNullOrEmpty(extension))
-                {
-                    //
-                    // REST request e.g. http://localhost:1234/wwwroot/sources/server
-                    //
-                    const string ContentToken = "getParameterByName(\"content\")";
-
-                    var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
-                    var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
-
-                    ctx.Send(new DynamicFileCommunicationResponseWriter(layoutFilePath, ContentToken, contentPath));
-                    return;
-                }
-
-                // Should get url's with the following signatures
-                //
-                // http://localhost:1234/wwwroot/sources/Scripts/jquery-1.7.1.js
-                // http://localhost:1234/wwwroot/sources/Content/Site.css
-                // http://localhost:1234/wwwroot/sources/images/error.png
-                // http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
-                // http://localhost:1234/wwwroot/views/sources/server.htm
-                //
-                // We support only 1 level below the Views folder 
-                // If path is a string without a backslash then we are processing the following request
-                //       http://localhost:1234/wwwroot/views/sources/server.htm
-                // If path is a string with a backslash then we are processing the following request
-                //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
-                //
-                if(!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
-                {
-                    uriString = uriString.Replace(path, "");
-                }
-                var result = GetFileFromPath(new Uri(uriString));
-
-                ctx.Send(result);
+                GET_POST_CLIENT_SERVICES_Handler(sender, ctx);
+                return;
             }
-            catch
+
+            var website = ctx.Request.BoundVariables["website"];
+            var path = ctx.Request.BoundVariables["path"];
+            var extension = Path.GetExtension(uriString);
+
+            if (string.IsNullOrEmpty(extension))
             {
-                ctx.Response.Reason = "Error: Resource not found in catalog";
-                ctx.Response.Status = (HttpStatusCode)404;
+                //
+                // REST request e.g. http://localhost:1234/wwwroot/sources/server
+                //
+                const string ContentToken = "getParameterByName(\"content\")";
+
+                var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
+                var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
+
+                ctx.Send(new DynamicFileCommunicationResponseWriter(layoutFilePath, ContentToken, contentPath));
+                return;
             }
+
+            // Should get url's with the following signatures
+            //
+            // http://localhost:1234/wwwroot/sources/Scripts/jquery-1.7.1.js
+            // http://localhost:1234/wwwroot/sources/Content/Site.css
+            // http://localhost:1234/wwwroot/sources/images/error.png
+            // http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
+            // http://localhost:1234/wwwroot/views/sources/server.htm
+            //
+            // We support only 1 level below the Views folder 
+            // If path is a string without a backslash then we are processing the following request
+            //       http://localhost:1234/wwwroot/views/sources/server.htm
+            // If path is a string with a backslash then we are processing the following request
+            //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
+            //
+            if (!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
+            {
+                uriString = uriString.Replace(path, "");
+            }
+            var result = GetFileFromPath(new Uri(uriString));
+
+            ctx.Send(result);
         }
 
         #endregion
@@ -400,7 +404,7 @@ namespace Dev2
         {
             // Read post data which is expected to be JSON
             string args;
-            using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
+            using (var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
             {
                 args = reader.ReadToEnd();
             }
@@ -423,21 +427,11 @@ namespace Dev2
                 //
                 result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result = new ValidationResult
                 {
-                    IsValid = false,
                     ErrorMessage = ex.Message
-                };
-            }
-
-            if(result == null)
-            {
-                result = new ValidationResult
-                {
-                    IsValid = false,
-                    ErrorMessage = "Method not found"
                 };
             }
             ctx.Send(new StringCommunicationResponseWriter(result.ToString(), "application/json"));
@@ -455,17 +449,17 @@ namespace Dev2
             string postdlid = string.Empty;
             string wid = string.Empty;
 
-            if(ctx.Request.QueryString[GlobalConstants.DLID] != null)
+            if (ctx.Request.QueryString[GlobalConstants.DLID] != null)
             {
                 postdlid = ctx.Request.QueryString[GlobalConstants.DLID].Value;
             }
 
-            if(ctx.Request.QueryString["wid"] != null)
+            if (ctx.Request.QueryString["wid"] != null)
             {
                 wid = ctx.Request.QueryString["wid"].Value;
             }
 
-            if(postdlid != null)
+            if (postdlid != null)
             {
                 ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"], string.Empty, string.Empty, wid, postdlid));
             }
@@ -547,55 +541,55 @@ namespace Dev2
         {
             _dsf = _network.Channel;
 
-            if(endpointAddresses == null || endpointAddresses.Count == 0)
+            if (endpointAddresses == null || endpointAddresses.Count == 0)
             {
                 throw new ArgumentException("No TCP Addresses configured for application server");
             }
 
             var entries = endpointAddresses.Where(s => !string.IsNullOrWhiteSpace(s)).Select(a =>
+            {
+                int port;
+                IPHostEntry entry;
+
+                try
                 {
-                    int port;
-                    IPHostEntry entry;
+                    Uri uri = new Uri(a);
+                    string dns = uri.DnsSafeHost;
+                    port = uri.Port;
+                    entry = Dns.GetHostEntry(dns);
+                }
+                catch
+                {
+                    port = 0;
+                    entry = null;
+                }
 
-                    try
-                    {
-                        Uri uri = new Uri(a);
-                        string dns = uri.DnsSafeHost;
-                        port = uri.Port;
-                        entry = Dns.GetHostEntry(dns);
-                    }
-                    catch
-                    {
-                        port = 0;
-                        entry = null;
-                    }
+                if (entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
+                {
+                    ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
+                    return null;
+                }
 
-                    if(entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
-                    {
-                        ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
-                        return null;
-                    }
+                return new Tuple<IPHostEntry, int>(entry, port);
 
-                    return new Tuple<IPHostEntry, int>(entry, port);
-
-                }).Where(e => e != null).ToList();
+            }).Where(e => e != null).ToList();
 
 
-            if(!entries.Any())
+            if (!entries.Any())
             {
                 throw new ArgumentException("No vailid TCP Addresses configured for application server");
             }
 
             List<IPAddress> startedIPAddresses = new List<IPAddress>();
-            foreach(var entry in entries)
+            foreach (var entry in entries)
             {
-                for(int i = 0; i < entry.Item1.AddressList.Length; i++)
+                for (int i = 0; i < entry.Item1.AddressList.Length; i++)
                 {
                     IPAddress current = entry.Item1.AddressList[i];
 
-                    if(current.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !startedIPAddresses.Contains(current))
+                    if (current.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !startedIPAddresses.Contains(current))
                     {
-                        if(_network.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
+                        if (_network.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
                         {
                             ServerLifecycleManager.WriteLine(string.Format("{0} listening on {1}", _network, current + ":" + entry.Item2.ToString()));
                             startedIPAddresses.Add(current);
@@ -604,7 +598,7 @@ namespace Dev2
                 }
             }
 
-            if(startedIPAddresses.Count == 0)
+            if (startedIPAddresses.Count == 0)
             {
                 ServerLifecycleManager.WriteLine(string.Format("{0} failed to start on {1}", _network, _endpointAddress));
             }
@@ -618,13 +612,11 @@ namespace Dev2
             string correctedURI = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
             string executePayload = null;
 
-            DateTime startTS = DateTime.Now;
-
-            if(clientID != null)
+            if (clientID != null)
             {
                 Guid clientGuid;
 
-                if(Guid.TryParse(clientID, out clientGuid))
+                if (Guid.TryParse(clientID, out clientGuid))
                 {
                     executePayload = _dsf.ExecuteCommand(correctedURI, Workspaces.WorkspaceRepository.Instance.Get(clientGuid) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace, GlobalConstants.NullDataListID);
                 }
@@ -636,8 +628,9 @@ namespace Dev2
                 executePayload = _dsf.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
             }
 
+
             // Travis.Frisinger - 404 hack
-            if(executePayload.IndexOf("<InnerError>", StringComparison.Ordinal) > 0 && executePayload.IndexOf("' Not Found", StringComparison.Ordinal) > 0)
+            if (executePayload.IndexOf("<InnerError>", StringComparison.Ordinal) > 0 && executePayload.IndexOf("' Not Found", StringComparison.Ordinal) > 0)
             {
 
                 string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
@@ -648,12 +641,12 @@ namespace Dev2
             // TODO : Allow return type to be specified as a parameter... Default to XML
             string result = executePayload;
 
-            if(executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) >= 0)
+            if (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) >= 0)
             {
                 int start = (executePayload.IndexOf("<Dev2System.FormView>") + 21);
                 int end = (executePayload.IndexOf("</Dev2System.FormView>"));
                 int len = (end - start);
-                if(len > 0)
+                if (len > 0)
                 {
                     string tmp = executePayload.Substring(start, (end - start));
                     result = CleanupHtml(tmp);
@@ -663,11 +656,10 @@ namespace Dev2
                 }
                 else
                 {
-                    // Travis.Frisinger - 04.02.2013 Bug 8579
-                    return new BufferedStringResponse(result, "text/xml");
+                    return new StringCommunicationResponseWriter(result, "text/xml");
                 }
             }
-            else if(executePayload.IndexOf("</JSON>") >= 0)
+            else if (executePayload.IndexOf("</JSON>") >= 0)
             {
                 // we have a JSON payload, quite a silly way to do this...
                 //json = json.Replace("\r\n", string.Empty).Replace(",])", "])");
@@ -676,7 +668,7 @@ namespace Dev2
                 //json = json.Replace("\r\n", string.Empty).Replace(",])", "])");
 
                 int start = result.IndexOf(GlobalConstants.OpenJSON);
-                if(start >= 0)
+                if (start >= 0)
                 {
                     int end = result.IndexOf(GlobalConstants.CloseJSON);
                     start += GlobalConstants.OpenJSON.Length;
@@ -684,13 +676,11 @@ namespace Dev2
                     result = CleanupHtml(result.Substring(start, (end - start)));
                 }
 
-                // Travis.Frisinger - 04.02.2013 Bug 8579
-                return new BufferedStringResponse(result, "application/json");
+                return new StringCommunicationResponseWriter(result, "application/json");
             }
             else
             {
-                // Travis.Frisinger - 04.02.2013 Bug 8579
-                return new BufferedStringResponse(result, "text/xml");
+                return new StringCommunicationResponseWriter(result, "text/xml");
             }
         }
         #endregion
@@ -706,7 +696,7 @@ namespace Dev2
 
             string data = GetPostData(ctx, d, Guid.Empty.ToString());
 
-            if(!string.IsNullOrEmpty(data))
+            if (!string.IsNullOrEmpty(data))
             {
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
@@ -725,7 +715,7 @@ namespace Dev2
 
             string data = GetPostData(ctx, d, Guid.Empty.ToString());
 
-            if(!string.IsNullOrEmpty(data))
+            if (!string.IsNullOrEmpty(data))
             {
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
@@ -759,7 +749,7 @@ namespace Dev2
 
             string xml = GetPostData(ctx, d, postDataListID);
 
-            if(!string.IsNullOrEmpty(xml))
+            if (!string.IsNullOrEmpty(xml))
             {
                 formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
             }
@@ -769,7 +759,7 @@ namespace Dev2
             d.Bookmark = bookmark;
             d.WebServerUrl = ctx.Request.Uri.ToString();
             d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-            if(formData != null)
+            if (formData != null)
             {
                 d.AddResponse(formData);
             }
@@ -785,7 +775,7 @@ namespace Dev2
 
             directory = directory.Replace("\\list\\", "\\");
 
-            if(Directory.Exists(directory))
+            if (Directory.Exists(directory))
             {
                 var files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).ToList();
                 List<string> prunedFiles = new List<string>();
@@ -812,16 +802,16 @@ namespace Dev2
 
             StringBuilder result = new StringBuilder("[{\"title\":\"icons\", \"isFolder\": true, \"key\":\"icons\", \"children\":[");
 
-            if(Directory.Exists(directory))
+            if (Directory.Exists(directory))
             {
                 string[] files = Directory.GetFiles(directory, "*.*", SearchOption.TopDirectoryOnly);
 
-                foreach(string f in files)
+                foreach (string f in files)
                 {
                     result.Append("{ \"title\": ");
                     result.Append("\"");
                     int start = f.LastIndexOf("\\");
-                    if(start > 0)
+                    if (start > 0)
                     {
                         string toAdd = f.Substring((start + 1));
                         result.Append(toAdd);
@@ -884,15 +874,15 @@ namespace Dev2
                 .ToList()
                 .Where(supportedExtension => supportedExtension.Trim().Equals(ext, StringComparison.InvariantCultureIgnoreCase));
 
-            if(string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
+            if (string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
             {
                 return new NotFoundCommunicationResponseWriter();
             }
 
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 var contentType = "text/html";
-                switch(ext.ToLower())
+                switch (ext.ToLower())
                 {
                     case ".js":
                         contentType = "text/javascript";
@@ -947,7 +937,7 @@ namespace Dev2
 
         private CommunicationResponseWriter GetFile(ICommunicationContext ctx, string uri, string contentType)
         {
-            if(File.Exists(uri))
+            if (File.Exists(uri))
             {
                 return new StaticFileCommunicationResponseWriter(uri, contentType);
             }
