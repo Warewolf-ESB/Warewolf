@@ -44,7 +44,7 @@ namespace Dev2.Studio.UI.Tests
                     }
                 }
                 processToRemove.ForEach(c => processToRetrieve = processToRetrieve.Where(d => d.Id != c.Id));
-                
+
                 if (processToRetrieve.Count() > 1)
                 {
                     throw new Exception(string.Format("Error - more than 1 process of {0} is running", processName));
@@ -54,7 +54,7 @@ namespace Dev2.Studio.UI.Tests
             else
             {
                 processWeReallyWant = processToRetrieve.First();
-                
+
             }
 
             string wMIQuery = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processWeReallyWant.Id.ToString();
@@ -76,10 +76,10 @@ namespace Dev2.Studio.UI.Tests
                         //                This could either be done or a popup will be displayed prompting the user to restart 
                         //                their debug session then continue running tests
 
-                        if (_processFilePath.Contains("vshost")) 
-                            _processFilePath = _processFilePath.Substring(0, _processFilePath.IndexOf("vshost") - 1) 
-                                                        + _processFilePath.Substring(_processFilePath.IndexOf("vshost") 
-                                                                                        + "vshost".Length, _processFilePath.Length 
+                        if (_processFilePath.Contains("vshost"))
+                            _processFilePath = _processFilePath.Substring(0, _processFilePath.IndexOf("vshost") - 1)
+                                                        + _processFilePath.Substring(_processFilePath.IndexOf("vshost")
+                                                                                        + "vshost".Length, _processFilePath.Length
                                                                                         - (_processFilePath.IndexOf("vshost") + "vshost".Length));
                         Int32.TryParse(processInfo["ProcessId"].ToString(), out _processIdentifier);
                         _processFolder = _processFilePath.Substring(0, _processFilePath.LastIndexOf(@"\") + 1);
