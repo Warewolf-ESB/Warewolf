@@ -1,11 +1,11 @@
-﻿using System.Configuration;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -48,13 +48,13 @@ namespace Dev2.Data.Binary_Objects
         [NonSerialized]
         static readonly BackgroundWorker BackgroundWorker = new BackgroundWorker();
         [NonSerialized]
-        readonly ManualResetEvent _keepRunning = new ManualResetEvent(true);
+        readonly static ManualResetEvent _keepRunning = new ManualResetEvent(true);
         private static object _lockDictionaryGuard = new object();
         readonly String _uniqueIdentifierGuid;
+        private bool _disposed;
 
 
         // New Row Based Junk
-
         public Dev2BinaryDataListStorage(string uniqueIndex, Guid uniqueIdentifier)
         {
             if (!BackgroundWorker.IsBusy)
@@ -76,10 +76,14 @@ namespace Dev2.Data.Binary_Objects
 
         void MoveItemsIntoMemoryCacheBackground(object sender, DoWorkEventArgs e)
         {
-            while (_keepRunning.WaitOne())
+            while (!_disposed)
             {
-                MoveItemsIntoMemoryCache();
-               // Thread.Sleep(150); // sleep for a little bit ;)
+                _keepRunning.WaitOne();
+                if (!_disposed)
+                {
+                    MoveItemsIntoMemoryCache();
+                }
+               _keepRunning.Reset();
             }
         }
 
@@ -222,6 +226,7 @@ namespace Dev2.Data.Binary_Objects
             if(!row.IsEmpty)
             {
                 LevelOneCache.AddOrUpdate(uniqueKey, row, (s, r) => row);
+                _keepRunning.Set();
             }
         }
 
@@ -265,6 +270,7 @@ namespace Dev2.Data.Binary_Objects
         public void Add(int key, IBinaryDataListRow value)
         {
             this[key] = value;
+            _keepRunning.Set();
         }
 
         public bool ContainsKey(int key)
@@ -309,7 +315,18 @@ namespace Dev2.Data.Binary_Objects
 
         void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (_disposed)
+            {
+                return;
+            }
+            
+            _disposed = true;
+
+            if (!disposing)
+            {
+                return;
+            }
+
             DisposeWaitHandle();
             DisposeBackgroundWorker();
             RemoveCachePolicyEvent();

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
@@ -13,6 +7,12 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -325,6 +325,13 @@ namespace Dev2.Runtime.ServiceModel
                 var count = Directory.GetFiles(versionDirectory, String.Format("{0}*.xml", resourceName)).Count();
 
                 File.Copy(fileName, String.Format("{0}\\{1}.V{2}.xml", versionDirectory, resourceName, (count + 1).ToString(CultureInfo.InvariantCulture)), true);
+
+                // Remove readonly attribute if it is set
+                FileAttributes attributes = File.GetAttributes(fileName);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(fileName, attributes ^ FileAttributes.ReadOnly);
+                }
             }
 
             var signedXml = HostSecurityProvider.Instance.SignXml(resourceXml);

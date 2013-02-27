@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Xml;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
+using System.Xml;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -37,6 +37,33 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml").Contains("This is the text of the root element"));
             //Cleanup
             if(Directory.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave)) DeleteDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
+        }
+
+        [TestMethod]
+        public void SaveExistsAndReadonly_Expected_ResourceSaved()
+        {
+            //Initialization
+            var threadSave = Guid.NewGuid();
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
+            string path = Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml";
+            StreamWriter testResource = File.CreateText(path);
+            testResource.Write("<?xml version=\"1.0\"?><Root>Originally the root node looks like this</Root>");
+            testResource.Close();
+
+            FileAttributes attributes = File.GetAttributes(path);
+            if ((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
+            {
+                File.SetAttributes(path, attributes ^ FileAttributes.ReadOnly);
+            }
+
+            //Test
+            string directoryName = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\" + threadSave).Name;
+            string workspacePath = Directory.GetParent(Directory.GetCurrentDirectory() + @"\" + threadSave).ToString();
+            Dev2.Runtime.ServiceModel.Resources.Save(workspacePath, directoryName, "testResource",
+                           "<?xml version=\"1.0\"?><Root>This is the text of the root element</Root>");
+            Assert.IsTrue(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + threadSave + @"\testResource.xml").Contains("This is the text of the root element"));
+            //Cleanup
+            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\" + threadSave)) DeleteDirectory(Directory.GetCurrentDirectory() + @"\" + threadSave);
         }
 
         [TestMethod]
