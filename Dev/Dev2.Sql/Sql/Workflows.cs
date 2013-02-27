@@ -82,8 +82,10 @@ namespace Warewolf.Sql
             {
                 SqlDataRecord dataRecord = null;
 
+                var hasRecords = false;
                 foreach(var node in xml.Elements(recordsetName))
                 {
+                    hasRecords = true;
                     var record = AddRecord(dt, node);
                     if(dataRecord == null)
                     {
@@ -91,7 +93,10 @@ namespace Warewolf.Sql
                     }
                     sqlCtx.SendRow(dataRecord, record.ItemArray);
                 }
-                sqlCtx.SendEnd();
+                if(hasRecords)
+                {
+                    sqlCtx.SendEnd();
+                }
             }
             else
             {
@@ -150,12 +155,15 @@ namespace Warewolf.Sql
 
                 #endregion
 
-                var dataRecord = sqlCtx.SendStart(dt);
-                foreach(DataRow record in dt.Rows)
+                if(dt.Rows.Count > 0)
                 {
-                    sqlCtx.SendRow(dataRecord, record.ItemArray);
+                    var dataRecord = sqlCtx.SendStart(dt);
+                    foreach(DataRow record in dt.Rows)
+                    {
+                        sqlCtx.SendRow(dataRecord, record.ItemArray);
+                    }
+                    sqlCtx.SendEnd();
                 }
-                sqlCtx.SendEnd();
             }
 
             return dt;

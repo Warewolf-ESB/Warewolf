@@ -1,6 +1,9 @@
 Install
 -------
 1. Copy the contents of this folder to a folder on the SQL server that the SQL service account has permissions on.
+2. Edit the following files and replace the database name AdventureWorks2008R2 with the relevant one:
+		- \Warewolf\Install.sql
+		- \Warewolf\Uninstall.sql
 2. Login to the SQL Server and run install.cmd from the folder in step 1.
 3. Open Samples.sql in SQL Management Studio to see examples of running workflows from SQL Server.
 
