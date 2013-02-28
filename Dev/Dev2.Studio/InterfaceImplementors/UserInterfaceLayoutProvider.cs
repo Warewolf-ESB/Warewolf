@@ -1076,7 +1076,7 @@ namespace Dev2.Studio
                     if (activityExpression != null && activityExpression.Value == null)
                     {
                         // Its all new, push the default model
-                        compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultSwitch, out errors);
+                        //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultSwitch, out errors);
                     }
                     else
                     {
@@ -1292,7 +1292,7 @@ namespace Dev2.Studio
 
                 modelData = JsonConvert.SerializeObject(new Dev2Switch() { SwitchVariable = val });
 
-                compiler.PushSystemModelToDataList(dataListID, new Dev2Switch() { SwitchVariable = val }, out errors);
+                //compiler.PushSystemModelToDataList(dataListID, new Dev2Switch() { SwitchVariable = val }, out errors);
             }
             else
             {
