@@ -209,7 +209,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
-            Guid upsertID = sdlc.Upsert(null, dlID, "[[[[scalar1]]]]", upsertEntry, out errors);
+            Guid upsertID = sdlc.Upsert(null , dlID, "[[[[scalar1]]]]", upsertEntry, out errors);
 
             Assert.AreEqual(upsertID, dlID);
             Assert.IsFalse(errors.HasErrors());

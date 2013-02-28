@@ -11,11 +11,11 @@ namespace Dev2.Integration.Tests.Internal_Services
     /// Summary description for SystemServices
     /// </summary>
     [TestClass]
-    public class SystemServices
+    public class SystemServicesTest
     {
         private string _webServerURI = ServerSettings.WebserverURI;
 
-        public SystemServices()
+        public SystemServicesTest()
         {
             //
             // TODO: Add constructor logic here
