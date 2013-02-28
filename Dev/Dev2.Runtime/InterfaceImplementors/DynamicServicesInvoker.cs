@@ -2095,18 +2095,6 @@ namespace Dev2.Runtime.InterfaceImplementors
 
                 reverseDependencies.ToList().ForEach(c => { reverseDependencyList.Add(c.Name); });
 
-                Host.LockServices();
-
-                try
-                {
-                    reverseDependencies =
-                        Host.Services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0);
-                }
-                finally
-                {
-                    Host.UnlockServices();
-                }
-
                 reverseDependencies.ToList().ForEach(c =>
                 {
                     c.Actions.ForEach(e =>
