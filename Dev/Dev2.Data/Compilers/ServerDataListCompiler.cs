@@ -1646,8 +1646,11 @@ namespace Dev2.Server.Datalist
                                         expression = expression.Replace(p.Option.DisplayValue, string.Empty);
 
                                         // Bug 7835
-                                        //lastFetch = EvaluateComplexExpression(lastFetch, expression, out errors);
-                                        //allErrors.MergeErrors(errors);
+                                        if(!string.IsNullOrEmpty(expression))
+                                        {
+                                            lastFetch = EvaluateComplexExpression(lastFetch, expression, out errors);
+                                            allErrors.MergeErrors(errors);
+                                        }
 
                                         if (expression != string.Empty && expression != " ") //Bug 7836
                                         {
@@ -1763,7 +1766,7 @@ namespace Dev2.Server.Datalist
                     //if (lastFetch != null && lastFetch.IsRecordset)
                     //{
 
-                    //    // TODO : Perform the same for Recordsets
+                        // TODO : Perform the same for Recordsets
 
                     //    var binaryDataListItem = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
                     //    binaryDataListItem.UpdateValue(expression);
