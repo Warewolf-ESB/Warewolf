@@ -254,6 +254,7 @@
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
     <Compile Include="Helpers\AssemblyResolver.cs" />
+    <Compile Include="Internal Services\SystemServices.cs" />
     <Compile Include="Load Tests\LoadTest.cs" />
     <Compile Include="MEF\CompositionInitializer.cs" />
     <Compile Include="Helpers\MefImportHelper.cs" />
