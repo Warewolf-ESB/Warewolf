@@ -132,6 +132,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public void UpdateValue(string val)
         {
+            IsDeferredRead = false; // If the value is ever updated then turn off deffered read
             TheValue = val;
         }
 

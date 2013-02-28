@@ -1760,16 +1760,19 @@ namespace Dev2.Server.Datalist
                 if (expression != string.Empty && expression != " ") //Bug 7836
                 {
 
-                    if (lastFetch != null && lastFetch.IsRecordset)
-                    {
+                    //if (lastFetch != null && lastFetch.IsRecordset)
+                    //{
 
-                        // TODO : Perform the same for Recordsets
+                    //    // TODO : Perform the same for Recordsets
 
-                        var binaryDataListItem = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
-                        binaryDataListItem.UpdateValue(expression);
-                    }
-                    else
-                    {
+                    //    var binaryDataListItem = lastFetch.TryFetchLastIndexedRecordsetUpsertPayload(out error);
+                    //    binaryDataListItem.UpdateValue(expression);
+
+                    //    lastFetch.TryPutRecordItemAtIndex(binaryDataListItem, lastFetch.FetchLastRecordsetIndex(), out error);
+
+                    //}
+                    //else
+                    //{
                         // we just need to return the expression as is in a IBinaryDataListEntry, but respect the defered read action
                         string fieldName = GlobalConstants.NullEntryNamespace+Guid.NewGuid().ToString();
                         IBinaryDataListEntry tmp = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty, bdl.UID);
@@ -1786,7 +1789,7 @@ namespace Dev2.Server.Datalist
 
                         tmp.TryPutScalar(itm, out error);
                         lastFetch = tmp; // return the expression as the result now ;)
-                    }
+                    //}
                 }
 
                 // super finally, remove the iteration evaluation since this is a wizard specific feature ;)
@@ -2011,6 +2014,8 @@ namespace Dev2.Server.Datalist
                                             tmpI.UpdateField(part.Option.Field);
                                             entry.TryPutScalar(tmpI, out error);
                                             allErrors.AddError(error);
+
+                                            //bdl
                                         }
                                         else
                                         {

@@ -87,7 +87,15 @@ namespace Dev2.Server.DataList.Translators
                                 else
                                 {
                                     // deferred read, just print the location
-                                    result.Append(col.FetchDeferredLocation());
+                                    if(!string.IsNullOrEmpty(col.TheValue))
+                                    {
+                                        result.Append(col.FetchDeferredLocation());
+                                    }
+                                    else
+                                    {
+                                        result.Append(string.Empty);
+                                    }
+                                    
                                     
                                 }
                                 result.Append("</");
@@ -259,10 +267,9 @@ namespace Dev2.Server.DataList.Translators
                     }
                 }
             }
-
-            return result;
-            
+            return result;    
         }
+
         #region Private Methods
 
 
@@ -275,7 +282,7 @@ namespace Dev2.Server.DataList.Translators
             // >      &gt;
             // &      &amp;
 
-            return val.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+            return val.Replace("&", "&amp;"); //.Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
         }
 
         /// <summary>

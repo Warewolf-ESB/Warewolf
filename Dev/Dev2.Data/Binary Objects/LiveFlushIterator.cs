@@ -61,6 +61,7 @@ namespace Dev2.DataList.Contract.Builders
                 Dev2TokenConverter tc = new Dev2TokenConverter();
                 enRecordsetIndexType idxType = enRecordsetIndexType.Error;
 
+                bool amendedData = false;
                 // We do not care about data language in these cases, skip all the junk and get it done son ;)
                 
                 while (_scopedFrame.HasData())
@@ -92,6 +93,7 @@ namespace Dev2.DataList.Contract.Builders
 
                                 // push the exising version of the DataList on change ;)
                                 c.PushBinaryDataListInServerScope(liveFlushingLocation, bdl, out errors);
+                                amendedData = false;
                             }
      
                             bdl.TryGetEntry(rs, out entry, out error);
@@ -109,8 +111,9 @@ namespace Dev2.DataList.Contract.Builders
                             InitRowBuffer(cnt);
                         }
 
-                        
- 
+                        // set commit flag ;)
+                        amendedData = true;
+
                         if (!token.Option.IsScalar)
                         {
 
@@ -128,7 +131,7 @@ namespace Dev2.DataList.Contract.Builders
                                 Int32.TryParse(idx, out upsertIdx);
                             }
 
-                            itm.UpdateRecordset(rs);
+                            //itm.UpdateRecordset(rs);
                             itm.UpdateIndex(upsertIdx);
                             itm.UpdateField(field);
                             itm.UpdateValue(val);
@@ -163,7 +166,7 @@ namespace Dev2.DataList.Contract.Builders
                 }
 
                 // flush the rowData out ;)
-                if(entry.IsRecordset)
+                if(entry.IsRecordset && amendedData)
                 {
                     error = string.Empty;
                     entry.TryPutRecordRowAt(rowData, upsertIdx, out error);
@@ -190,7 +193,9 @@ namespace Dev2.DataList.Contract.Builders
             {
                 for(int i = 0; i < cnt; i++)
                 {
-                    rowData.Add(DataListConstants.baseItem.Clone());
+                    IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
+                    itm.UpdateRecordset(lastRs);
+                    rowData.Add(itm);
                 }
             }
         }
@@ -201,7 +206,7 @@ namespace Dev2.DataList.Contract.Builders
             {
                 foreach(IBinaryDataListItem t in rowData)
                 {
-                    t.Clear();
+                    t.ToClear();
                 }
             }
         }

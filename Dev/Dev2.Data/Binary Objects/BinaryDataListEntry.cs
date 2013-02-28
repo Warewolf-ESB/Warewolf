@@ -347,6 +347,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     IsManagmentServicePayload = false;
                 }
 
+                if (!item.IsDeferredRead)
+                {
+                    _internalObj.RemoveDeferedRead(item);
+                }
+
                 _internalObj[0] = new List<IBinaryDataListItem>() { item };
 
                 error = string.Empty;
@@ -584,9 +589,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error)
         {
-            //            error = string.Empty;
-            //            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
-            // in this case there is a single row, with a single column's data to extract
+
             int idx = FetchLastRecordsetIndex();
 
             return InternalFetchIndexedRecordsetUpsertPayload(idx, out error);
@@ -594,9 +597,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public IBinaryDataListItem TryFetchIndexedRecordsetUpsertPayload(int idx, out string error)
         {
-            //            error = string.Empty;
-            //            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
-
             return InternalFetchIndexedRecordsetUpsertPayload(idx, out error);
         }
 
@@ -611,8 +611,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 if(cc != null)
                 {
-                    int colIdx = Columns.IndexOf(cc);
-
                     while(ii.HasMore())
                     {
                         int next = ii.FetchNextIndex();
@@ -788,29 +786,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public int InternalFetchColumnIndex(string column)
         {
-
             return _internalObj.InternalFetchColumnIndex(column);
-
-            //int result = -1;
-            //if(IsRecordset)
-            //{
-            //    if(!_strToColIdx.TryGetValue(column, out result))
-            //    {
-            //        Dev2Column colToFind = Columns.FirstOrDefault(c => c.ColumnName == column);
-
-            //        if(colToFind != null)
-            //        {
-            //            result = Columns.IndexOf(colToFind);
-            //            _strToColIdx[column] = result; // save to cache ;)
-            //        }
-            //        else
-            //        {
-            //            result = -1; // it failed, default back to non-valid index
-            //        }
-            //    }
-            //}
-
-            //return result;
         }
 
         #endregion Methods
@@ -919,15 +895,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 var data = toSort.OrderBy(x =>
                 {
-                    int val;
+                    long val;
                     string tmpVal = x.Value[colIdx].TheValue;
                     if(string.IsNullOrWhiteSpace(tmpVal))
                     {
-                        val = int.MinValue;
+                        val = long.MinValue;
                     }
                     else
                     {
-                        if(!int.TryParse(tmpVal, out val))
+                        if(!long.TryParse(tmpVal, out val))
                         {
                             throw new Exception();
                         }
@@ -945,15 +921,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 var data = toSort.OrderByDescending(x =>
                 {
-                    int val;
+                    long val;
                     string tmpVal = x.Value[colIdx].TheValue;
                     if(string.IsNullOrWhiteSpace(tmpVal))
                     {
-                        val = int.MinValue;
+                        val = long.MinValue;
                     }
                     else
                     {
-                        if(!int.TryParse(tmpVal, out val))
+                        if(!long.TryParse(tmpVal, out val))
                         {
                             throw new Exception();
                         }
@@ -1065,13 +1041,53 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </param>
         IDictionary<int, IList<IBinaryDataListItem>> StringSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, string field, int colIdx, bool desc)
         {
+            //IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
+
+            //if(!desc)
+            //{
+            //    var data = toSort.OrderBy(x => x.Value[colIdx].TheValue).ToList();
+            //    int idx = 1;
+            //    foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+            //    {
+            //        _toSwap[idx] = tmp.Value;
+            //        idx++;
+            //    }
+            //}
+            //else
+            //{
+            //    var data = toSort.OrderByDescending(x => x.Value[colIdx].TheValue).ToList();
+            //    int idx = 1;
+            //    foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+            //    {
+            //        _toSwap[idx] = tmp.Value;
+            //        idx++;
+            //    }
+            //}
+
+            //toSort.Clear();
+
+            //// make the swap
+            //foreach(int k in _toSwap.Keys)
+            //{
+            //    toSort[k] = (IList<IBinaryDataListItem>)_toSwap[k];
+            //}
+
+            //return toSort;
+
             IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
-            if(!desc)
+            if (!desc)
             {
-                var data = toSort.OrderBy(x => x.Value[colIdx].TheValue).ToList();
+                var data = toSort.OrderBy(x =>
+                {
+                    string val = x.Value[colIdx].TheValue;
+                   
+                    return val;
+                }).ToList();
+
                 int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+
+                foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
                     _toSwap[idx] = tmp.Value;
                     idx++;
@@ -1079,9 +1095,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
             else
             {
-                var data = toSort.OrderByDescending(x => x.Value[colIdx].TheValue).ToList();
+                var data = toSort.OrderByDescending(x =>
+                {
+                    string val = x.Value[colIdx].TheValue;
+                    return val;
+                }).ToList();
+
                 int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+                foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
                     _toSwap[idx] = tmp.Value;
                     idx++;
@@ -1091,12 +1112,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
             toSort.Clear();
 
             // make the swap
-            foreach(int k in _toSwap.Keys)
+            foreach (int k in _toSwap.Keys)
             {
                 toSort[k] = (IList<IBinaryDataListItem>)_toSwap[k];
             }
 
             return toSort;
+
         }
 
         /// <summary>
@@ -1157,7 +1179,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         #endregion Private Methods
-
 
         public void Dispose()
         {

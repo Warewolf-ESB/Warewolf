@@ -293,7 +293,14 @@ namespace Dev2.Studio.Core
             {
                 if (_client == null) return;
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
-                _client.RemoveDebugWriter(writer);
+                try
+                {
+                    _client.RemoveDebugWriter(writer);
+                }
+                catch
+                {
+                    // Empty catch because we want to avoid hanging sessions causing an exception
+                }
             }
 
             public void RemoveDebugWriter(Guid writerID)

@@ -14,7 +14,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         bool _isEmpty;
         // Travis Mods ;) - Build the row TO for fetching as per the tooling ;)
         IList<IBinaryDataListItem> _internalReturnValue;
-
         IDictionary<int, IList<IBinaryDataListItem>> _deferedReads;
 
         #region Properties
@@ -118,17 +117,17 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         foreach (IBinaryDataListItem itm in value)
                         {
                             int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
-                            if (idx == -1)
+                            if (idx == -1 && !IsRecordset)
                             {
                                 idx = 0; // adjust for scalar
                             }
 
-                            if (!itm.IsDeferredRead)
+                            if (!itm.IsDeferredRead && idx >= 0)
                             {
                                 row.UpdateValue(itm.TheValue, idx);
                                 _items[key] = row;
                             }
-                            else
+                            else if(itm.IsDeferredRead && idx >= 0)
                             {
                                 row.IsDeferredRead(idx);
 
@@ -164,6 +163,23 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         #region Public Methods
 
+        public void RemoveDeferedRead(IBinaryDataListItem binaryDataListItem)
+        {
+            foreach (var deferedEntry in _deferedReads.ToList())
+            {
+                var itemsToRemove = deferedEntry.Value.Where(b => string.CompareOrdinal(b.FieldName, binaryDataListItem.FieldName) == 0).ToList();
+                foreach (var item in itemsToRemove)
+                {
+                    deferedEntry.Value.Remove(item);
+                }
+
+                if (deferedEntry.Value.Count == 0)
+                {
+                    _deferedReads.Remove(deferedEntry);
+                }
+            }
+        }
+
         /// <summary>
         /// Inits this instance.
         /// </summary>
@@ -177,18 +193,17 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             for (int i = 0; i < colCnt; i++)
             {
                 _internalReturnValue.Add(new BinaryDataListItem(string.Empty, string.Empty));
-
-               
+                
                 if(Columns != null)
                 {
-                    // Handle recordsets properly
-                    _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
+                    // Handle recordset
+                _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
                     _internalReturnValue[i].UpdateField(Columns[i].ColumnName); // always the same column for this entry ;)
                 }
                 else
                 {
-                    // Handle scalars properly
-                    _internalReturnValue[i].UpdateField(Namespace);
+                    // Handle scalars
+                    _internalReturnValue[i].UpdateField(Namespace); // always the same namespace ;)
                 }
             }
 
@@ -201,6 +216,9 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 cnt = Columns.Count;
             }
             _strToColIdx = new Dictionary<string, int>(cnt);
+
+            // set the number of columns for storage hints ;)
+            _items.ColumnSize = cnt;
 
             //Added by Mo always need to be set to true on init unless specified
             //IsEditable = true;
@@ -327,7 +345,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void ApplySortAction(IDictionary<int, IList<IBinaryDataListItem>> payload)
         {
             // Apply IDic back into my object ;)
-            _items.Clear();
+            //_items.Clear();
             IList<IBinaryDataListItem> cols;
             foreach (int i in payload.Keys)
             {
@@ -352,20 +370,23 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             IDictionary<int, IList<IBinaryDataListItem>> result = new Dictionary<int, IList<IBinaryDataListItem>>(Count);
             IIndexIterator ii = Keys;
-            while (ii.HasMore())
+            if(IsRecordset)
+            {
+                while(ii.HasMore())
             {
                 IList<IBinaryDataListItem> tmp = new List<IBinaryDataListItem>(Columns.Count);
                 IBinaryDataListRow row;
                 int next = ii.FetchNextIndex();
-                if (_items.TryGetValue(next, Columns.Count, out row))
+                    if(_items.TryGetValue(next, Columns.Count, out row))
                 {
-                    for (int i = 0; i < Columns.Count; i++)
+                        for(int i = 0; i < Columns.Count; i++)
                     {
                         tmp.Add(new BinaryDataListItem(row.FetchValue(i), Namespace, Columns[i].ColumnName, next));
                     }
 
                     result[next] = tmp;
                 }
+            }
             }
 
             return result;
@@ -384,7 +405,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         }
 
         #endregion
-
 
         #region Private Methods
 

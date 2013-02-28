@@ -81,10 +81,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         }
                                         else
                                         {
+                                            //string entryNamespace = "";
+                                            //string entryDescription = "";
+                                            
+                                            string recordsetName = DataListUtil.ExtractRecordsetNameFromValue(output.OutPutDescription);
+                                            //string fieldName = DataListUtil.ExtractFieldNameFromValue(output.OutPutDescription);
+                                            //if (!string.IsNullOrWhiteSpace(fieldName))
+                                            //{
+                                            //    entryNamespace = recordsetName;
+                                            //    entryDescription = fieldName;
+                                            //}
+                                            //else
+                                            //{
+                                            //    entryDescription = recordsetName;
+                                            //}
+
+
                                             // deferred read ;)
                                             string error;
-                                            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
-                                            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
+                                            //IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
+                                            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(recordsetName, string.Empty);
+                                            //deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
+                                            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value, _deferredLoc, recordsetName), out error);
                                             allErrors.AddError(error);
                                             toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
                                         }

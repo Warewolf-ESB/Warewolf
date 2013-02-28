@@ -295,11 +295,11 @@ namespace Dev2.DynamicServices.Test {
                 var payload = xmlConverter.ConvertFrom(dl1, out errors);
 
                 string actual = payload.FetchAsString();
-                string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
+                string expected = "Travis Is \"Cool\"&amp;>'nstuff'<";
 
-                //StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
+                StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
 
-                Assert.Inconclusive("This test passing will break existing old wizards!");
+                //Assert.Inconclusive("& only in use");
             }
         }
         #endregion

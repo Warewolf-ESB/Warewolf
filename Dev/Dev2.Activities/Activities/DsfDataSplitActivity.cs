@@ -99,9 +99,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
-                    // SourceString
-                    int iterNumber = Int32.MaxValue;
-
                     while (itr.HasMoreRecords())
                     {
                         IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
@@ -122,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
 
-                                while(tokenizer.HasMoreOps() && opCnt < iterNumber)
+                                while(tokenizer.HasMoreOps())
                                 {
                                     string tmp = tokenizer.NextToken();
 
@@ -148,7 +145,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     try
                                     {
-                                        toUpsert.FlushIterationFrame();
+                                        toUpsert.FlushIterationFrame(true);
                                         toUpsert = null;
                                         //toUpsert.PublishLiveIterationData();
                                 }

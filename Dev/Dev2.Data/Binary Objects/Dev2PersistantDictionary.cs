@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-
+//T-Ravis is cool ;D
 namespace Dev2.Data.Binary_Objects
 {
     public class Dev2PersistantDictionary<T> where T : class
@@ -129,7 +129,7 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        private void Compact()
+        public void Compact()
         {
             if (!_hasBeenRemoveSinceLastCompact)
             {

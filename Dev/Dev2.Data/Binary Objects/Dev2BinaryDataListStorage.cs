@@ -51,8 +51,10 @@ namespace Dev2.Data.Binary_Objects
         readonly static ManualResetEvent _keepRunning = new ManualResetEvent(true);
         private static object _lockDictionaryGuard = new object();
         readonly String _uniqueIdentifierGuid;
-        private bool _disposed;
+        bool _disposed = false;
 
+
+        public int ColumnSize { get; set; }
 
         // New Row Based Junk
         public Dev2BinaryDataListStorage(string uniqueIndex, Guid uniqueIdentifier)
@@ -79,11 +81,8 @@ namespace Dev2.Data.Binary_Objects
             while (!_disposed)
             {
                 _keepRunning.WaitOne();
-                if (!_disposed)
-                {
-                    MoveItemsIntoMemoryCache();
-                }
-               _keepRunning.Reset();
+                MoveItemsIntoMemoryCache();
+                _keepRunning.Reset(); // reset the waitone event
             }
         }
 
@@ -121,12 +120,13 @@ namespace Dev2.Data.Binary_Objects
             get
             {
                 IBinaryDataListRow v;
-                TryGetValue(key, 100, out v); // TODO : Replace
+                TryGetValue(key, ColumnSize, out v); // TODO : Replace
                 return v;
             }
             set
             {
                 var uniqueKey = GetUniqueKey(key);
+                Remove(uniqueKey); // ensure we clear it out of the other caches ;)
                 AddToLevelOneCache(uniqueKey, value);
                 _populatedKeys.SetMaxValue(key);
             }
@@ -228,6 +228,10 @@ namespace Dev2.Data.Binary_Objects
                 LevelOneCache.AddOrUpdate(uniqueKey, row, (s, r) => row);
                 _keepRunning.Set();
             }
+            else
+            {
+                Remove(uniqueKey);
+        }
         }
 
         bool TryGetValueOutOfCaches(out IBinaryDataListRow value, string uniqueKey)
@@ -281,16 +285,25 @@ namespace Dev2.Data.Binary_Objects
         public bool Remove(int key)
         {
             string uniqueKey = GetUniqueKey(key);
+            Remove(uniqueKey);
+            _populatedKeys.AddGap(key);
+            return true;
+        }
+
+        public static bool Remove(string uniqueKey)
+        {
             IBinaryDataListRow list;
-            LevelOneCache.TryRemove(uniqueKey, out list);
+            //LevelOneCache.TryRemove(uniqueKey, out list);
             LevelTwoCache.Remove(uniqueKey);
             if (ItemsAddedToLevelThreeCache)
             {
                 LevelThreeCache.Remove(uniqueKey);
             }
-            _populatedKeys.AddGap(key);
+            //_populatedKeys.AddGap(key);
             return true;
         }
+
+
 
         public void Clear()
         {
