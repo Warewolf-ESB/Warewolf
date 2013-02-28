@@ -1644,6 +1644,11 @@ namespace Dev2.Server.Datalist
                                         } // else we need a column match to process by evaluate
 
                                         expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+
+                                        // Bug 7835
+                                        //lastFetch = EvaluateComplexExpression(lastFetch, expression, out errors);
+                                        //allErrors.MergeErrors(errors);
+
                                         if (expression != string.Empty && expression != " ") //Bug 7836
                                         {
                                             hasError = true;
@@ -1809,34 +1814,49 @@ namespace Dev2.Server.Datalist
         }
 
         /// <summary>
-        /// Determines whether [is recursive op] [the specified expression].
+        /// Evaluates the complex expression.
         /// </summary>
+        /// <param name="payload">The payload.</param>
         /// <param name="expression">The expression.</param>
-        /// <returns>
-        ///   <c>true</c> if [is recursive op] [the specified expression]; otherwise, <c>false</c>.
-        /// </returns>
-        private bool isRecursiveOp(string expression)
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        private IBinaryDataListEntry EvaluateComplexExpression(IBinaryDataListEntry payload, string expression, out ErrorResultTO errors)
         {
-            bool result = false;
-
-            if (expression.Contains("[["))
+            errors = new ErrorResultTO();
+            if (!IsEvaluated(expression))
             {
-                int start = expression.IndexOf("[[");
-                if (expression.Contains("[[]]"))
+                string error;
+                if (payload.IsRecordset)
                 {
-                    int startNaughty = expression.IndexOf("[[]]");
-                    if (start != startNaughty)
+                    IIndexIterator idxItr = payload.FetchRecordsetIndexes();
+                    while (idxItr.HasMore())
                     {
-                        result = true;
+                        int next = idxItr.FetchNextIndex();
+                        IList<IBinaryDataListItem> itms = payload.FetchRecordAt(next, out error);
+                        errors.AddError(error);
+                        if (itms != null)
+                        {
+                            foreach (IBinaryDataListItem itm in itms)
+                            {
+                                IBinaryDataListItem tmp = itm.Clone();
+                                tmp.UpdateValue(itm.TheValue + expression);
+                                payload.TryPutRecordItemAtIndex(tmp, next, out error);
+                            }
+
+                            errors.AddError(error);
+                        }
                     }
                 }
                 else
                 {
-                    result = true;
+                    IBinaryDataListItem itm = payload.FetchScalar();
+                    itm.UpdateValue(itm.TheValue + expression);
+                    payload.TryPutScalar(itm, out error);
+                    errors.AddError(error);
                 }
             }
 
-            return result;
+            return payload;
         }
 
         /// <summary>
