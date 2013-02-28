@@ -185,18 +185,21 @@ namespace Dev2.Studio.Core.DataList
             {
                 candidateEntry.RemoveError();
             }
+            if (!string.IsNullOrEmpty(candidateEntry.Name))
+            {
             try
             {
                 if(!string.IsNullOrEmpty(candidateEntry.Name))
                 {
-                    XmlConvert.VerifyName(candidateEntry.Name);    
-                }
+                XmlConvert.VerifyName(candidateEntry.Name);
+            }
                 
             }
             catch (XmlException xex)
             {
                 candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
             }
+        }
         }
         #endregion Private Methods
     }
