@@ -28,7 +28,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public string DisplayValue { 
             get
             {
-                if (_internalObj.ItemCollectionIndex >= 0 && (_internalObj.DisplayValue == null || _internalObj.DisplayValue == string.Empty))
+                // Sashen.Naidoo
+                // BUG 9144 : Check is too stringent, was not allowing DisplayValues to be reset on change of instance.
+                if (_internalObj.ItemCollectionIndex >= 0)
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
@@ -146,6 +148,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public void UpdateIndex(int idx)
         {
             ItemCollectionIndex = idx;
+            // BUG 9144
+            _internalObj.ItemCollectionIndex = idx;
         }
 
         public string FetchDeferredLocation()

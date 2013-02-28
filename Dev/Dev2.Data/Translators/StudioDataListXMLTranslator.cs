@@ -164,7 +164,20 @@ namespace Dev2.Server.DataList.Translators
                                             }
                                             else
                                             {
-                                                idx = 1; //re-set idx on cache miss ;)
+                                                // 28-02-2013 - Sashen.Naidoo
+                                                // BUG 9144
+                                                // A cache miss does not necessary mean there is nothing in the record set,
+                                                // it just means the value isn't in the record set.
+                                                if (indexCache.Count == 0)
+                                                {
+                                                    idx = 1;
+                                                }
+                                                else
+                                                {
+                                                    idx = indexCache.Count;
+                                                }
+                                                
+                                                //idx = 1; //re-set idx on cache miss ;)
                                             }
                                             // process recordset
                                             XmlNodeList nl = c.ChildNodes;
@@ -178,9 +191,11 @@ namespace Dev2.Server.DataList.Translators
                                                     {
                                                         errors.AddError(error);
                                                     }
+                                                    // update this recordset index
+                                                    
                                                 }
-                                                // update this recordset index
                                                 indexCache[c.Name] = ++idx;
+
                                             }
 
                                         }
