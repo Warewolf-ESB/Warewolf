@@ -907,7 +907,7 @@ namespace Dev2.Studio
             Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
                                                            out errors); // fake it to get the ID
 
-                if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
+            if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
             {
                 // Bad things happened... Tell the user
                 PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading,
@@ -917,56 +917,37 @@ namespace Dev2.Studio
             }
 
             // Push the correct data to the server ;)
-                if(activityExpression != null && activityExpression.Value == null)
+            if(activityExpression != null && activityExpression.Value == null)
             {
                 // Its all new, push the empty model
                 compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
             }
-                else if(activityExpression != null && activityExpression.Value != null)
+            else if(activityExpression != null && activityExpression.Value != null)
             {
                 //we got a model, push it in to the Model region ;)
                 // but first, strip and extract the model data ;)
 
-                    val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
+                val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
 
-                    if(!string.IsNullOrEmpty(val))
-                {
-                    try
-                    {
-                            //compiler.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                        // Valid model... roll with it ;)
-                            //compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, val, out errors);
-                            //val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
-                    }
-                    catch
-                    {
-                        // An old model, time to push an empty model ;)
-                            //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack,
-                            //                                       out errors);
+                if(!string.IsNullOrEmpty(val)){
 
-                            val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                    val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
-                            //val = DataListConstants.DefaultStack;
-                    }
                 }
                 else
                 {
-                    // Its all invalid   
-                        //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
-
-                        val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                    // its all invalid
+                    val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
                 }
             }
 
             // Now invoke the Wizard ;)
             Uri requestUri;
-                if(Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
+            if(Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-                //var resourceViewModel = new ResourceWizardViewModel(decisionActivity);
 
-
-                    callBackHandler.ModelData = val; // set the model data
+                callBackHandler.ModelData = val; // set the model data
 
                 //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
                 //callBackHandler.Owner.ShowDialog();
@@ -976,22 +957,20 @@ namespace Dev2.Studio
                 // Now Fetch from DL and push the model into the activityExpression.SetValue();
                 try
                 {
-                        //Dev2DecisionStack dds = compiler.FetchSystemModelFromDataList<Dev2DecisionStack>(dataListID, out errors);
-
                         Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(callBackHandler.ModelData);
 
                         if(dds != null)
-                    {
+                        {
                         // Empty check the arms ;)
                             if(string.IsNullOrEmpty(dds.TrueArmText.Trim()))
-                        {
-                            dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
-                        }
+                            {
+                                dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
+                            }
 
                             if(string.IsNullOrEmpty(dds.FalseArmText.Trim()))
-                        {
-                            dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
-                        }
+                            {
+                                dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
+                            }
 
                         // Update the decision node on the workflow ;)
                         string modelData = dds.ToVBPersistableModel();
@@ -1002,24 +981,24 @@ namespace Dev2.Studio
                                                                 GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                             if(activityExpression != null)
-                        {
-                            activityExpression.SetValue(expressionToInject);
-                        }
+                            {
+                                activityExpression.SetValue(expressionToInject);
+                            }
 
                         // now set arms ;)
                         ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
                             if(tArm != null)
-                        {
-                            tArm.SetValue(dds.TrueArmText);
-                        }
+                            {
+                                tArm.SetValue(dds.TrueArmText);
+                            }
 
                         ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
                             if(fArm != null)
-                        {
-                            fArm.SetValue(dds.FalseArmText);
-                        }
+                            {
+                                fArm.SetValue(dds.FalseArmText);
+                            }
                     }
                 }
                 catch
@@ -1104,28 +1083,12 @@ namespace Dev2.Studio
 
                                             if (!string.IsNullOrEmpty(val))
                                             {
-                                                try
-                                                {
-                                                    var ds = new Dev2Switch {SwitchVariable = val};
 
-                                                    webModel = JsonConvert.SerializeObject(ds);
+                                                var ds = new Dev2Switch {SwitchVariable = val};
+                                                webModel = JsonConvert.SerializeObject(ds);
 
-                                                    //webModel = compiler.ConvertModelToJson(ds);
-
-                                                    // Valid model... roll with it ;)
-                                                    //compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, webModel, out errors);
-                                                }
-                                                catch
-                                                {
-                                                    // An old model, time to push an empty model ;)
-                                                    //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultSwitch, out errors);
-                                                }
                                             }
-                                            else
-                                            {
-                                                // Its all invalid   
-                                                //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultSwitch, out errors);
-                                            }
+
                                         }
                                     }
                                 }
@@ -1140,9 +1103,6 @@ namespace Dev2.Studio
                     {
                         string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
-                        //var callBackHandler = new Dev2DecisionCallbackHandler();
-                        //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
-                        //callBackHandler.Owner.ShowDialog();
                         callBackHandler.ModelData = webModel;
                         WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
 
@@ -1152,8 +1112,6 @@ namespace Dev2.Studio
                         try
                         {
                             Dev2Switch ds = JsonConvert.DeserializeObject<Dev2Switch>(callBackHandler.ModelData);
-
-                            //Dev2Switch ds = compiler.FetchSystemModelFromDataList<Dev2Switch>(dataListID, out errors);
 
                             if (ds != null)
                             {
@@ -1207,20 +1165,12 @@ namespace Dev2.Studio
                 return;
             }
 
-            // Always a new Switch, push empty model ;)
-            //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultCase, out errors);
-
-
             // now invoke the wizard ;)
             Uri requestUri;
             if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),
                               UriKind.Absolute, out requestUri))
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-
-                //var callBackHandler = new Dev2DecisionCallbackHandler();
-                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
-                //callBackHandler.Owner.ShowDialog();
                 callBackHandler.ModelData = modelData;
 
                 WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
@@ -1307,9 +1257,6 @@ namespace Dev2.Studio
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
-                //var callBackHandler = new Dev2DecisionCallbackHandler();
-                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
-                //callBackHandler.Owner.ShowDialog();
                 callBackHandler.ModelData = modelData;
                 WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
 
