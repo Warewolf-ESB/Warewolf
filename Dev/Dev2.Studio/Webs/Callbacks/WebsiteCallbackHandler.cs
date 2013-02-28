@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
@@ -8,6 +9,7 @@ using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.InterfaceImplementors;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Studio.Webs.Callbacks
@@ -129,6 +131,11 @@ namespace Dev2.Studio.Webs.Callbacks
             return null;
         }
 
+        public string GetIntellisenseResults(string searchTerm, int caretPosition)
+        {
+            return GetJsonIntellisenseResults(searchTerm, caretPosition);
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         protected void Navigate(string uri)
@@ -140,5 +147,25 @@ namespace Dev2.Studio.Webs.Callbacks
         }
 
         #endregion
+
+        #region GetJsonIntellisenseResults
+
+        public static string GetJsonIntellisenseResults(string searchTerm, int caretPosition)
+        {
+            var provider = new DefaultIntellisenseProvider();
+            var context = new IntellisenseProviderContext { InputText = searchTerm, CaretPosition = caretPosition };
+
+            return "[" + string.Join(",", provider.GetIntellisenseResults(context).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
+
+            //var results = provider.GetIntellisenseResults(context).Aggregate("[", (current, result) => current + ("\"" + result.ToString() + "\","));
+            //results = results.Remove(results.Length - 1);
+            //results += "]";
+            //return "{\"IntellisenseResults\":" + results + "}";
+        }
+
+        #endregion
+
+
+
     }
 }

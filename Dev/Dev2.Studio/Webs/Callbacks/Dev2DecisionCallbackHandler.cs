@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Webs.Callbacks;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
@@ -61,6 +62,11 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         public void Cancel()
         {
             Close();
+        }
+
+        public string GetIntellisenseResults(string searchTerm, int caretPosition)
+        {
+            return WebsiteCallbackHandler.GetJsonIntellisenseResults(searchTerm, caretPosition);
         }
 
         public event NavigateRequestedEventHandler NavigateRequested;

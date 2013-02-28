@@ -64,8 +64,15 @@
         //    alert("An error occured : " + JSON.stringify(response));
         //});
 
-        var data = Dev2Awesomium.FetchData("");
-        var response = $.parseJSON(data);
+
+        //BUG 8377 Add intellisense
+        var dai = utils.GetDataAndIntellisense();
+        self.intellisenseOptions = dai.intellisenseOptions;
+        var response = dai.data;
+
+        $("#SwitchVariable").autocomplete({
+            source: self.intellisenseOptions
+        });
 
         if (response.SwitchVariable != undefined) {
             self.data.SwitchVariable(response.SwitchVariable);

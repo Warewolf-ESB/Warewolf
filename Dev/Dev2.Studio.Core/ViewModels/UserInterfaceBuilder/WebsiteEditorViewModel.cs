@@ -48,6 +48,11 @@ namespace Dev2.Studio.Core.ViewModels
             return null;
         }
 
+        public string GetIntellisenseResults(string searchTerm, int caretPosition)
+        {
+            return null;
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         protected void OnNavigateRequested(string uri)

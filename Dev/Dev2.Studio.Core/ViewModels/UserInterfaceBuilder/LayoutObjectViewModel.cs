@@ -54,6 +54,11 @@ namespace Unlimited.Framework
             return null;
         }
 
+        public string GetIntellisenseResults(string searchTerm, int caretPosition)
+        {
+            return null;
+        }
+
         public event NavigateRequestedEventHandler NavigateRequested;
 
         public delegate void LayoutObjectChangedEventHandler(LayoutObjectViewModel beforeChange, LayoutObjectViewModel afterChange);

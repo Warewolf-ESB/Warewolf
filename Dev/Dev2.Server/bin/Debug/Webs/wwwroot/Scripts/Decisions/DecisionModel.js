@@ -6,7 +6,6 @@ function DecisionViewModel() {
 
     // set title
     document.title = "Decision Flow";
-
     self.data = {
         /* Injected Data */
         Mode: ko.observable("AND"),
@@ -58,6 +57,8 @@ function DecisionViewModel() {
         ])
     };
     
+    self.intellisenseOptions = [];
+
     self.ShowDelete = function (idx) {
         var result = false;
 
@@ -153,9 +154,21 @@ function DecisionViewModel() {
         self.data.TheStack.push(data);
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
-    }
+    };
 
-    self.Load = function () {
+    self.afterRowAdd = function (element, index, data) {
+        $(element).filter("input").autocomplete({
+            source: self.intellisenseOptions
+        });
+    };
+
+    self.afterRowRender = function (elements) {
+        $(elements[1]).find("input").autocomplete({
+            source: self.intellisenseOptions
+        });
+    };
+    
+    self.Load = function() {
         //var dlID = window.location.search; //.replace("postdlid", "dlid");
 
         //var request = $.ajax({
@@ -165,40 +178,40 @@ function DecisionViewModel() {
 
         //request.done(function (response, textStatus, json) {
 
-        var data = Dev2Awesomium.FetchData("");
-        var response = $.parseJSON(data);
+        //BUG 8377 Add intellisense
+        var dai = utils.GetDataAndIntellisense();
+        self.intellisenseOptions = dai.intellisenseOptions;
+        var response = dai.data;
 
-
-            if (response.TheStack != undefined) {
-                // load decisions
-                for (var i = 0; i < response.TheStack.length; i++) {
-                    vm.AddDecision({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2, Col3: response.TheStack[i].Col3, PopulatedColumnCnt: response.TheStack[i].PopulatedColumnCount, EvaluationFn: response.TheStack[i].EvaluationFn });
-                }
-
-                // set Stack data
-                self.data.Mode(response.Mode);
-
-                if (response.Mode == "AND") {
-                    self.data.IsAnd(true);
-                } else {
-                    self.data.IsAnd(false);
-                }
-
-                // set the arms
-                self.data.TrueArmText(response.TrueArmText);
-
-                self.data.FalseArmText(response.FalseArmText);
-
-            } else {
-
-                // Add a decision
-                vm.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
+        if (response.TheStack != undefined) {
+            // load decisions
+            for (var i = 0; i < response.TheStack.length; i++) {
+                self.AddDecision({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2, Col3: response.TheStack[i].Col3, PopulatedColumnCnt: response.TheStack[i].PopulatedColumnCount, EvaluationFn: response.TheStack[i].EvaluationFn });
             }
-        
+
+            // set Stack data
+            self.data.Mode(response.Mode);
+
+            if (response.Mode == "AND") {
+                self.data.IsAnd(true);
+            } else {
+                self.data.IsAnd(false);
+            }
+
+            // set the arms
+            self.data.TrueArmText(response.TrueArmText);
+
+            self.data.FalseArmText(response.FalseArmText);
+
+        } else {
+            // Add a decision
+            self.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
+        }
+
         //});
 
         //request.fail(function (response, textStatus, json) {
         //    alert("An error occured : " + JSON.stringify(response));
         //});
-    }
+    };
 }

@@ -41,3 +41,42 @@ utils.toHtml = function (str) {
 utils.IsNullOrEmptyGuid = function (str) {
     return !$.Guid.IsValid(str) || $.Guid.IsEmpty(str);
 };
+
+utils.GetDataAndIntellisense = function () {
+    var result = {
+        data: {},
+        intellisenseOptions: []
+    };
+    
+    var data = "";
+    var intellisenseData = "";
+    
+    if (typeof Dev2Awesomium != 'undefined') {
+        data = Dev2Awesomium.FetchData("");
+        intellisenseData = Dev2Awesomium.GetIntellisenseResults("[[", 0);
+    }
+    //else {
+    //    // Some test data
+    //    data = '{"TheStack":[{"Col1":"[[ResultType]]","Col2":"Managers","Col3":"","PopulatedColumnCount":2,"EvaluationFn":"IsEqual"}],"TotalDecisions":1,"ModelName":"Dev2DecisionStack","Mode":"AND","TrueArmText":"Managers","FalseArmText":"Employees"}';
+    //    intellisenseData = '["[[SplitChar]]", "[[StringToSplit]]", "[[ResultType]]", "[[Employees()]]", "[[Employees().Number]]", "[[Employees().Title]]", "[[Employees().FirstName]]", "[[Employees().LastName]]", "[[Employees().JobTitle]]", "[[Employees().Tel]]"]';
+    //}
+
+    if (data !== '')
+    {
+        result.data = $.parseJSON(data);
+    }
+    if (intellisenseData !== '') {
+        result.intellisenseOptions = $.parseJSON(intellisenseData);
+    }
+
+    // remove invalid selections
+    $.each(result.intellisenseOptions, function (index, value) {
+        if (typeof value != 'undefined' && value != null) {
+            if (value.indexOf("()]]") != -1) {
+                result.intellisenseOptions.splice(index, 1);
+            }
+        }
+    });
+
+    return result;
+};

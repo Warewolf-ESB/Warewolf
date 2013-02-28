@@ -119,7 +119,7 @@ namespace Dev2.Studio.Core
 
         public string FetchData(string args)
         {
-            if (PropertyEditorViewModel != null)
+            if(PropertyEditorViewModel != null)
             {
                 return (string)InvokeFunction(() => PropertyEditorViewModel.FetchData(args));
             }
@@ -127,6 +127,14 @@ namespace Dev2.Studio.Core
             return string.Empty;
         }
 
+        public string GetIntellisenseResults(string searchTerm, int caretPosition)
+        {
+            if(PropertyEditorViewModel != null)
+            {
+                return (string)InvokeFunction(() => PropertyEditorViewModel.GetIntellisenseResults(searchTerm, caretPosition));
+            }
+            return string.Empty;
+        }
 
         public ILayoutObjectViewModel SelectedLayoutObject
         {
@@ -168,7 +176,7 @@ namespace Dev2.Studio.Core
 
         static object InvokeFunction(Func<string> action)
         {
-            if (action != null)
+            if(action != null)
             {
                 return !Application.Current.Dispatcher.CheckAccess() ? Application.Current.Dispatcher.Invoke(action) : action();
             }
