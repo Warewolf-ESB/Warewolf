@@ -1,18 +1,19 @@
-﻿using Dev2.Common;
-using Dev2.Common.ServiceModel;
-using Dev2.DynamicServices;
-using Dev2.Runtime.Collections;
-using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
+using Dev2.Common.ServiceModel;
+using Dev2.DynamicServices;
+using Dev2.Runtime.Collections;
+using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -75,7 +76,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     names.Add("localhost"); // auto-added to studio on startup
                 }
-                ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+                ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
                 {
                     string value;
                     if(iteratorResult.Values.TryGetValue(1, out value))
@@ -87,12 +88,12 @@ namespace Dev2.Runtime.ServiceModel
                         paths.Add(value);
                     }
                     return true;
-                }, new Delimiter
+                }, new ResourceDelimiter
                 {
                     ID = 1,
                     Start = " Name=\"",
                     End = "\" "
-                }, new Delimiter
+                }, new ResourceDelimiter
                 {
                     ID = 2,
                     Start = "<Category>",
@@ -113,7 +114,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             var result = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            ResourceIterator.Iterate(RootFolders.Values.Distinct(), workspaceID, iteratorResult =>
+            ResourceIterator.Instance.IterateAll(workspaceID, iteratorResult =>
             {
                 string value;
                 if(iteratorResult.Values.TryGetValue(1, out value))
@@ -121,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel
                     result.Add(value);
                 }
                 return true;
-            }, new Delimiter
+            }, new ResourceDelimiter
             {
                 ID = 1,
                 Start = "<Category>",
@@ -145,7 +146,7 @@ namespace Dev2.Runtime.ServiceModel
             var resources = new ResourceList();
             var resourceTypeStr = resourceType.ToString();
 
-            ResourceIterator.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+            ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
             {
                 var isResourceType = false;
                 string value;
@@ -199,27 +200,27 @@ namespace Dev2.Runtime.ServiceModel
                     resources.Add(ReadResource(resourceID, resourceType, resourceName, resourcePath, iteratorResult.Content));
                 }
                 return true;
-            }, new Delimiter
+            }, new ResourceDelimiter
             {
                 ID = 1,
                 Start = " ResourceType=\"",
                 End = "\" "
-            }, new Delimiter
+            }, new ResourceDelimiter
             {
                 ID = 2,
                 Start = " ID=\"",
                 End = "\" "
-            }, new Delimiter
+            }, new ResourceDelimiter
             {
                 ID = 3,
                 Start = " Name=\"",
                 End = "\" "
-            }, new Delimiter
+            }, new ResourceDelimiter
             {
                 ID = 4,
                 Start = "<Category>",
                 End = "</Category>"
-            }, new Delimiter
+            }, new ResourceDelimiter
             {
                 ID = 5,
                 Start = " Type=\"",
@@ -243,7 +244,7 @@ namespace Dev2.Runtime.ServiceModel
             Guid id;
             var delimiterStart = Guid.TryParse(resourceID, out id) ? " ID=\"" : " Name=\"";
 
-            ResourceIterator.Iterate(new[] { directoryName }, workspaceID, iteratorResult =>
+            ResourceIterator.Instance.Iterate(new[] { directoryName }, workspaceID, iteratorResult =>
             {
                 string value;
                 if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
@@ -252,7 +253,7 @@ namespace Dev2.Runtime.ServiceModel
                     return false;
                 }
                 return true;
-            }, new Delimiter { ID = 1, Start = delimiterStart, End = "\" " });
+            }, new ResourceDelimiter { ID = 1, Start = delimiterStart, End = "\" " });
             return result;
         }
 
@@ -262,20 +263,20 @@ namespace Dev2.Runtime.ServiceModel
 
         static Resource ReadResource(Guid resourceID, ResourceType resourceType, string resourceName, string resourcePath, string content)
         {
-            Delimiter delimiter;
+            ResourceDelimiter delimiter;
             string delimiterValue;
 
             switch(resourceType)
             {
                 case ResourceType.DbSource:
-                    delimiter = new Delimiter { ID = 1, Start = " ConnectionString=\"", End = "\" " };
+                    delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\" " };
                     delimiter.TryGetValue(content, out delimiterValue);
                     return new DbSource
                     {
-                        ResourceID = resourceID, 
-                        ResourceType = resourceType, 
-                        ResourceName = resourceName, 
-                        ResourcePath = resourcePath, 
+                        ResourceID = resourceID,
+                        ResourceType = resourceType,
+                        ResourceName = resourceName,
+                        ResourcePath = resourcePath,
                         ConnectionString = delimiterValue
                     };
             }
@@ -284,7 +285,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
 
         #region Save
 
@@ -328,7 +328,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 // Remove readonly attribute if it is set
                 FileAttributes attributes = File.GetAttributes(fileName);
-                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                 {
                     File.SetAttributes(fileName, attributes ^ FileAttributes.ReadOnly);
                 }

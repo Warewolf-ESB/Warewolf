@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Dev2.Runtime.ServiceModel.Data
+namespace Dev2.Runtime.Hosting
 {
-    internal class ResourceIteratorResult
+    public class ResourceIteratorResult
     {
         public ResourceIteratorResult()
         {
