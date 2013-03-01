@@ -498,13 +498,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     _editResourceCommand = new RelayCommand(param => Edit(),
                                                             param =>
-                                                            (SecurityContext.IsUserInRole(new[]
-                {
-                                                                    StringResources.BDSAdminRole,
-                                                                    StringResources.BDSDeveloperRole,
-                                                                    StringResources.BDSTestingRole
-                                                                }) &&
-                                                             IsActiveEnvironmentConnected()));
+                                                            IsActiveEnvironmentConnected());
                 }
                 return _editResourceCommand;
             }

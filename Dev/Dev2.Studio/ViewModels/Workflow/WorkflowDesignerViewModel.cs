@@ -2494,12 +2494,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dcontxt = (e.Source as dynamic).DataContext;
             var vm = dcontxt as WorkflowDesignerViewModel;
 
-            if (!SecurityContext.IsUserInRole(new string[] { StringResources.BDSAdminRole, StringResources.BDSDeveloperRole, StringResources.BDSTestingRole }))
-            {
-                e.Handled = true;
-                return;
-            }
-
             if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
             {
                 DesignerView designerView = e.Source as DesignerView;

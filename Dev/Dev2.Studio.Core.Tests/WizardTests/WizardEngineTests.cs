@@ -1,8 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
@@ -12,6 +8,10 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Wizards;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
@@ -530,7 +530,7 @@ namespace Dev2.Core.Tests
 
             string popupMessage = @"The following items have changed on the Data List of TestWorkflow1: 
  
- Added: NUD2347, number, vehicleColor, Fines_Speed, Fines_Date, Fines_Location, Registrations_Speed, Registrations_Date, Registrations_Location
+ Added: NUD2347, number, vehicleColor, Fines().Speed, Fines().Date, Fines().Location, Registrations().Speed, Registrations().Date, Registrations().Location
 -------------------------------------------------";
 
             //Assert.IsTrue(wizResource.ResourceName == "TestWorkflow1.wiz" && (wizEng.Popup.Description == popupMessage));
@@ -564,7 +564,7 @@ namespace Dev2.Core.Tests
 
             string popupMessage = @"The following items have changed on the Data List of TestWorkflow1: 
  
- Added: NUD2347, number, vehicleColor, Fines_Speed, Fines_Date, Fines_Location, Registrations_Speed, Registrations_Date, Registrations_Location
+ Added: NUD2347, number, vehicleColor, Fines().Speed, Fines().Date, Fines().Location, Registrations().Speed, Registrations().Date, Registrations().Location
 ------------------------------------------------- 
  Removed: Host, Port, From, To, Subject, BodyType, Body, Attachment, FailureMessage, RemoveVar, Message
 -------------------------------------------------";

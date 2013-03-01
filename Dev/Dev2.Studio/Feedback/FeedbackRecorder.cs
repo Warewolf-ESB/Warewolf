@@ -125,7 +125,7 @@ namespace Dev2.Studio.Feedback
             if (!CheckIfProcessIsRunning()) //2013.02.06: Ashley Lewis - Bug 8611
             {
                 throw new FeedbackRecordingProcessFailedToStartException("Feedback recorder is unable to start at this time.");
-        }
+            }
         }
 
         /// <summary>

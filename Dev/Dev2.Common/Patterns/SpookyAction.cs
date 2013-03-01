@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dev2.Common
 {
@@ -14,6 +13,7 @@ namespace Dev2.Common
     public class SpookyAction<T> where T : ISpookyLoadable
     {
         private static readonly ConcurrentDictionary<Enum, T> _options = new ConcurrentDictionary<Enum, T>();
+        private static bool _inited;
 
         /// <summary>
         /// Private method for intitailizing the list of options
@@ -45,21 +45,19 @@ namespace Dev2.Common
         /// <returns></returns>
         public T FindMatch(Enum typeOf)
         {
-            if (_options.Count == 0)
-            {
-                lock (_options)
-                {
-                    if (_options.Count == 0)
-                    {
-                        Bootstrap();
-                    }
-                }
-            }
-
             T result;
             if (!_options.TryGetValue(typeOf, out result))
             {
-                result = default(T);
+                lock (_options)
+                {
+                    if (!_inited)
+                    {
+                        Bootstrap();
+                        _inited = true;
+                    }
+
+                    _options.TryGetValue(typeOf, out result);
+                }
             }
 
             return result;

@@ -72,31 +72,6 @@ namespace Dev2.Studio.Core
         [Import]
         public IFrameworkSecurityContext SecurityContext { get; set; }
 
-        public string AllowedRoles
-        {
-            get { return _allowedRoles; }
-            set { _allowedRoles = value; }
-        }
-
-        public bool HasAccess
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(AllowedRoles))
-                {
-                    return false;
-                }
-
-                if (SecurityContext == null)
-                {
-                    return false;
-                }
-
-                return
-                    SecurityContext.IsUserInRole(AllowedRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries));
-            }
-        }
-
         #endregion Properties
 
         #region Constructor

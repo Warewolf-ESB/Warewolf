@@ -265,12 +265,17 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             IsRefreshing = true;
 
-            foreach (var environment in _environments)
+            try
             {
-                RefreshEnvironment(environment);
+                foreach (var environment in _environments)
+                {
+                    RefreshEnvironment(environment);
+                }
             }
-
-            IsRefreshing = false;
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
 
         /// <summary>
@@ -285,12 +290,17 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             IsRefreshing = true;
 
-            foreach (var environment in _environments)
+            try
             {
-                UpdateWorkspace(environment, UserInterfaceLayoutProvider.WorkspaceItems);
+                foreach (var environment in _environments)
+                {
+                    UpdateWorkspace(environment, UserInterfaceLayoutProvider.WorkspaceItems);
+                }
             }
-
-            IsRefreshing = false;
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
 
         /// <summary>

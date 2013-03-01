@@ -1,5 +1,7 @@
-﻿using Dev2.DataList.Contract;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -105,6 +107,64 @@ namespace Unlimited.UnitTest.Framework
         }
 
         #endregion
+
+        [TestMethod]
+        public void UpdatingADeferedEntryWithANormalValueExpectedDeferedStatusIsRemoved()
+        {
+            string fieldName = "filedata";
+            string newFieldValue = "cake";
+            ErrorResultTO localErrors = new ErrorResultTO();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
+
+            // Create datalist
+            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            string creationError;
+            dataList.TryCreateScalarTemplate(string.Empty, fieldName, string.Empty, true, out creationError);
+
+            if (!string.IsNullOrEmpty(creationError))
+            {
+                Assert.Fail("There was an error creating the datalist.");
+            }
+            
+            // Push datalist
+            compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
+
+            if (localErrors.HasErrors())
+            {
+                Assert.Fail("There was an error pushing the datalist to the server.");
+            }
+
+            // Add defered entry
+            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty);
+            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem("", "", GlobalConstants.EvalautionScalar), out error);
+            toUpsertDeferred.Add(DataListUtil.AddBracketsToValueIfNotExist(fieldName), deferredEntry);
+            compiler.Upsert(dataList.UID, toUpsertDeferred, out localErrors);
+
+            if (localErrors.HasErrors())
+            {
+                Assert.Fail("There was an error upserting the defered entry into the datalist.");
+            }
+
+            // Assign a new value to the defered entry
+            toUpsert.Add(DataListUtil.AddBracketsToValueIfNotExist(fieldName), newFieldValue);
+            compiler.Upsert(dataList.UID, toUpsert, out localErrors);
+
+            if (localErrors.HasErrors())
+            {
+                Assert.Fail("There was an error upserting the defered entry into the datalist.");
+            }
+
+            // Check the info in the datalist is correct
+            IList<IBinaryDataListEntry> entries = dataList.FetchAllEntries();
+            Assert.AreEqual(1, entries.Count, "There should be only one entry at this point.");
+
+            IBinaryDataListItem item = entries[0].FetchScalar();
+            Assert.IsNotNull(item, "Unable to fetch scalar value from the entry.");
+            Assert.AreEqual(false, item.IsDeferredRead, "The entry is still set as defered.");
+            Assert.AreEqual(newFieldValue, item.TheValue, "The value wasn't assigned correctly.");
+        }
 
         // Created by Michael for Bug 8597
         [TestMethod]

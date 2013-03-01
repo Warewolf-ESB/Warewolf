@@ -769,11 +769,11 @@ namespace Dev2.DynamicServices
 
                 if(wd != null)
                 {
-                    if(!activity.IsUserInRole(roles, activity.AuthorRoles))
-                    {
-                        returnData.Error = string.Format("Activity '{0}' failed compilation: {1}", activity.Name, "Access Violation: you are attempting to overwrite an activity that you do not have rights to");
-                        return returnData;
-                    }
+                    //if(!activity.IsUserInRole(roles, activity.AuthorRoles))
+                    //{
+                    //    returnData.Error = string.Format("Activity '{0}' failed compilation: {1}", activity.Name, "Access Violation: you are attempting to overwrite an activity that you do not have rights to");
+                    //    return returnData;
+                    //}
 
                     _activityLock.EnterWriteLock();
 
@@ -938,11 +938,11 @@ namespace Dev2.DynamicServices
 
                 if(ds != null)
                 {
-                    if(!dynamicService.IsUserInRole(roles, dynamicService.AuthorRoles))
-                    {
-                        returnData.Error = string.Format("Service '{0}' failed compilation: {1}", dynamicService.Name, "Access Violation: you are attempting to overwrite a service that you do not have rights to");
-                        return returnData;
-                    }
+                    //if(!dynamicService.IsUserInRole(roles, dynamicService.AuthorRoles))
+                    //{
+                    //    returnData.Error = string.Format("Service '{0}' failed compilation: {1}", dynamicService.Name, "Access Violation: you are attempting to overwrite a service that you do not have rights to");
+                    //    return returnData;
+                    //}
 
                     dynamicService.VersionNo = ds.VersionNo;
                     _serviceLock.EnterWriteLock();
@@ -1048,11 +1048,11 @@ namespace Dev2.DynamicServices
 
                 if(src != null)
                 {
-                    if(!source.IsUserInRole(roles, source.AuthorRoles))
-                    {
-                        returnData.Error = string.Format("Source '{0}' failed compilation: {1}", source.Name, "Access Violation: you are attempting to overwrite a source that you do not have rights to");
-                        return returnData;
-                    }
+                    //if(!source.IsUserInRole(roles, source.AuthorRoles))
+                    //{
+                    //    returnData.Error = string.Format("Source '{0}' failed compilation: {1}", source.Name, "Access Violation: you are attempting to overwrite a source that you do not have rights to");
+                    //    return returnData;
+                    //}
                     source.VersionNo = src.VersionNo;
 
                     _sourceLock.EnterWriteLock();
@@ -1161,11 +1161,11 @@ namespace Dev2.DynamicServices
                 return returnData;
             }
 
-            if(!dynamicService.IsUserInRole(roles, dynamicService.AuthorRoles))
-            {
-                returnData.Error = string.Format("Service '{0}' failed deletion: {1}", dynamicService.Name, "Access Violation: you are attempting to delete a service that you do not have rights to");
-                return returnData;
-            }
+            //if(!dynamicService.IsUserInRole(roles, dynamicService.AuthorRoles))
+            //{
+            //    returnData.Error = string.Format("Service '{0}' failed deletion: {1}", dynamicService.Name, "Access Violation: you are attempting to delete a service that you do not have rights to");
+            //    return returnData;
+            //}
 
             _serviceLock.EnterWriteLock();
 
@@ -1227,11 +1227,11 @@ namespace Dev2.DynamicServices
                 return returnData;
             }
 
-            if(!source.IsUserInRole(roles, source.AuthorRoles))
-            {
-                returnData.Error = string.Format("Source '{0}' failed deletion: {1}", source.Name, "Access Violation: you are attempting to delete a source that you do not have rights to");
-                return returnData;
-            }
+            //if(!source.IsUserInRole(roles, source.AuthorRoles))
+            //{
+            //    returnData.Error = string.Format("Source '{0}' failed deletion: {1}", source.Name, "Access Violation: you are attempting to delete a source that you do not have rights to");
+            //    return returnData;
+            //}
 
             _sourceLock.EnterWriteLock();
 

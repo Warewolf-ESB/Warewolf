@@ -736,18 +736,27 @@ namespace Dev2.DataList.Contract
                         if (entry.IsRecordset)
                         {
                             if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
-                                foreach (Dev2Column col in entry.Columns)
                                 {
-                                    newDl.TryCreateScalarTemplate(string.Empty, entry.Namespace + GlobalConstants.RecordsetJoinChar + col.ColumnName, entry.Description, true, out errorString);
+                                string tmpError;
+                                newDl.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, true, out tmpError);
+
+                                //foreach (Dev2Column col in entry.Columns)
+                                //{
+                                //    newDl.TryCreateScalarTemplate(string.Empty, entry.Namespace + GlobalConstants.RecordsetJoinChar + col.ColumnName, entry.Description, true, out errorString);
+                                //}
                                 }
                         }
                         else
                         {
                             if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
                             {
+                                string tmpError;
                                 IBinaryDataListItem scalar = entry.FetchScalar();
-                                newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
-                                entry.FetchScalar();
+                                newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out tmpError);
+
+                                //IBinaryDataListItem scalar = entry.FetchScalar();
+                                //newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
+                                //entry.FetchScalar();
                             }
                         }
                     }

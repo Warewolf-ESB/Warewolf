@@ -562,7 +562,7 @@ namespace Dev2.Studio.Core.Wizards
                 {
                     if (!entry.IsRecordset)
                     {
-                        result.Add(entry.FetchScalar().Namespace);
+                        result.Add(entry.FetchScalar().FieldName);
                     }
                     else
                     {

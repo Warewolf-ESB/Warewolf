@@ -229,7 +229,6 @@
     <Compile Include="InterfaceImplementors\EnvironmentConnection.cs" />
     <Compile Include="InterfaceImplementors\MockSecurityProvider.cs" />
     <Compile Include="Factories\WebResourceRepositoryFactory.cs" />
-    <Compile Include="InterfaceImplementors\FrameworkDataChannelImpl.cs" />
     <Compile Include="InterfaceImplementors\FrameworkSecurityProvider.cs" />
     <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />

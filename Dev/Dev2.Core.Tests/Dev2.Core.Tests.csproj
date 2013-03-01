@@ -194,10 +194,6 @@
     <Compile Include="UnlimitedObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Binaries\redis-server.exe">
-      <Link>redis-server.exe</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>

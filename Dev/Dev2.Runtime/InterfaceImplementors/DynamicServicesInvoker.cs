@@ -1864,11 +1864,15 @@ namespace Dev2.Runtime.InterfaceImplementors
                                 Host.UnlockServices();
                             }
 
+                            //IEnumerable<DynamicService> workflowServices =
+                            //    services.Where(
+                            //        c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
+                            //            .Where(
+                            //                c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+
                             IEnumerable<DynamicService> workflowServices =
                                 services.Where(
-                                    c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
-                                        .Where(
-                                            c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                    c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Any());
                             List<DynamicService> match = workflowServices.ToList();
 
                             if(match.Count != 1)
@@ -1912,10 +1916,10 @@ namespace Dev2.Runtime.InterfaceImplementors
                             IEnumerable<DynamicService> svcs =
                                 // ReSharper disable UseMethodAny.0
                                 // ReSharper disable ReplaceWithSingleCallToCount
-                                svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0)
+                                svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0);
                                 // ReSharper restore ReplaceWithSingleCallToCount
                                 // ReSharper restore UseMethodAny.0
-                                   .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                   //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                             List<DynamicService> match = svcs.ToList();
 
                             if(match.Count != 1)
@@ -1951,9 +1955,9 @@ namespace Dev2.Runtime.InterfaceImplementors
                                 //Juries - Bug cant delete resources when more than one contains the name
                                 //Shoot me if everything uses a fuzzy lookup.
                                 sources =
-                                    Host.Sources.Where(c => c.Name.Equals(resourceName, StringComparison.CurrentCultureIgnoreCase))
-                                        .Where(
-                                            c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                    Host.Sources.Where(c => c.Name.Equals(resourceName, StringComparison.CurrentCultureIgnoreCase));
+                                        //.Where(
+                                            //c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                             }
                             finally
                             {
@@ -2346,8 +2350,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> workflowServices =
-                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0);
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
 
                         workflowServices.ToList()
                                         .ForEach(
@@ -2373,12 +2377,12 @@ namespace Dev2.Runtime.InterfaceImplementors
 
 
                         IEnumerable<DynamicService> svcs =
-                        // ReSharper disable UseMethodAny.0
-                        // ReSharper disable ReplaceWithSingleCallToCount
-                        svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0)
+                            // ReSharper disable UseMethodAny.0
+                            // ReSharper disable ReplaceWithSingleCallToCount
+                        svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0);
                         // ReSharper restore ReplaceWithSingleCallToCount
                         // ReSharper restore UseMethodAny.0
-                               .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                               //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         svcs.ToList()
                             .ForEach(
                                 c =>
@@ -2432,9 +2436,9 @@ namespace Dev2.Runtime.InterfaceImplementors
 
                         IEnumerable<DynamicService> workflowServices =
                             // ReSharper disable UseMethodAny.0
-                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
+                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0);
                             // ReSharper restore UseMethodAny.0
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         workflowServices.ToList()
                                         .ForEach(
                                             c =>
@@ -2458,8 +2462,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> svcs =
-                            svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0)
-                               .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                            svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0);
+                               //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         svcs.ToList()
                             .ForEach(
                                 c =>
@@ -2476,8 +2480,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             sources =
-                                Host.Sources.Where(c => c.Name == resourceName)
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                Host.Sources.Where(c => c.Name == resourceName);
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         }
                         finally
                         {
@@ -2500,8 +2504,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             activitydefs =
-                                Host.WorkflowActivityDefs.Where(c => c.Name == resourceName)
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                Host.WorkflowActivityDefs.Where(c => c.Name == resourceName);
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         }
                         finally
                         {
@@ -2568,8 +2572,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> workflowServices =
-                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0);
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         workflowServices.ToList()
                                         .ForEach(
                                             c =>
@@ -2593,8 +2597,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> svcs =
-                            svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0)
-                               .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                            svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0);
+                               //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         svcs.ToList()
                             .ForEach(
                                 c =>
@@ -2611,8 +2615,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             sources =
-                                Host.Sources.Where(c => c.Name.Contains(resourceName))
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                Host.Sources.Where(c => c.Name.Contains(resourceName));
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         }
                         finally
                         {
@@ -2636,8 +2640,8 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             activitydefs =
-                                Host.WorkflowActivityDefs.Where(c => c.Name.Contains(resourceName))
-                                    .Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
+                                Host.WorkflowActivityDefs.Where(c => c.Name.Contains(resourceName));
+                                    //.Where(c => c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins"));
                         }
                         finally
                         {
@@ -2703,11 +2707,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> workflowServices =
-                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
-                                    .Where(
-                                        c =>
-                                        c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                        roles == "*");
+                            services.Where(c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0);
+                                    //.Where(
+                                        //c =>
+                                        //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                        //roles == "*");
                         workflowServices.ToList()
                                         .ForEach(
                                             c =>
@@ -2731,11 +2735,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> svcs =
-                            svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0)
-                               .Where(
-                                   c =>
-                                   c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                   roles == "*");
+                            svc.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0);
+                               //.Where(
+                                   //c =>
+                                   //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                   //roles == "*");
                         svcs.ToList()
                             .ForEach(
                                 c =>
@@ -2752,11 +2756,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             sources =
-                                Host.Sources.Where(c => c.Name.Contains(resourceName))
-                                    .Where(
-                                        c =>
-                                        c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                        roles == "*");
+                                Host.Sources.Where(c => c.Name.Contains(resourceName));
+                                    //.Where(
+                                        //c =>
+                                        //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                        //roles == "*");
                         }
                         finally
                         {
@@ -2779,11 +2783,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             activitydefs =
-                                Host.WorkflowActivityDefs.Where(c => c.Name.Contains(resourceName))
-                                    .Where(
-                                        c =>
-                                        c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                        roles == "*");
+                                Host.WorkflowActivityDefs.Where(c => c.Name.Contains(resourceName));
+                                    //.Where(
+                                        //c =>
+                                        //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                        //roles == "*");
                         }
                         finally
                         {
@@ -2807,11 +2811,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             resources =
-                                Host.Sources.Where(c => c.Name.Contains(resourceName))
-                                    .Where(
-                                        c =>
-                                        c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                        roles == "*");
+                                Host.Sources.Where(c => c.Name.Contains(resourceName));
+                                    //.Where(
+                                        //c =>
+                                        //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                        //roles == "*");
                         }
                         finally
                         {
@@ -2838,11 +2842,11 @@ namespace Dev2.Runtime.InterfaceImplementors
 
                         IEnumerable<DynamicService> workflows =
                             wfservices.Where(
-                                c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0)
-                                      .Where(
-                                          c =>
-                                          c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                          roles == "*");
+                                c => c.Actions.Where(d => d.ActionType == enActionType.Workflow).Count() > 0);
+                                      //.Where(
+                                          //c =>
+                                          //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                          //roles == "*");
                         workflows.ToList()
                                  .ForEach(
                                      c =>
@@ -2863,11 +2867,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         }
 
                         IEnumerable<DynamicService> svcs2 =
-                            svc2.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0)
-                                .Where(
-                                    c =>
-                                    c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                    roles == "*");
+                            svc2.Where(c => c.Actions.Where(d => d.ActionType != enActionType.Workflow).Count() > 0);
+                                //.Where(
+                                    //c =>
+                                    //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                    //roles == "*");
                         svcs2.ToList()
                              .ForEach(
                                  c =>
@@ -2889,11 +2893,11 @@ namespace Dev2.Runtime.InterfaceImplementors
                         try
                         {
                             activityinfo =
-                                Host.WorkflowActivityDefs.Where(c => c.Name.Contains(resourceName))
-                                    .Where(
-                                        c =>
-                                        c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
-                                        roles == "*");
+                                Host.WorkflowActivityDefs.Where(c => c.Name.Contains(resourceName));
+                                    //.Where(
+                                        //c =>
+                                        //c.IsUserInRole(roles, c.AuthorRoles) || roles.Contains("Domain Admins") ||
+                                        //roles == "*");
                         }
                         finally
                         {
