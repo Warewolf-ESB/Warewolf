@@ -191,7 +191,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Assert.AreEqual("f1.2 some cool static data ;) even more static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
 
         }
-
+         
         [TestMethod]
         public void EvaluateRecordsetWithStarIndexAndStaticDataAndScalarPreFixExpectStaticDataAppendedToAllRecordsetEntries()
         {
