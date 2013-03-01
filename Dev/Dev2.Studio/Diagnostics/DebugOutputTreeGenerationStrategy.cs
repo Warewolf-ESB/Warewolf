@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using System;
@@ -50,7 +49,7 @@ namespace Dev2.Studio.Diagnostics
         {
             int operationDepth = 0;
             var parentItem = FindParent(rootItems, debugState, ref operationDepth);
-            if(parentItem is DebugStateTreeViewItemViewModel)
+            if (parentItem is DebugStateTreeViewItemViewModel)
             {
                 var debugStateParent = (DebugStateTreeViewItemViewModel)parentItem;
                 debugStateParent.AppendError(debugState.ErrorMessage);
@@ -70,30 +69,30 @@ namespace Dev2.Studio.Diagnostics
             //
             // Check if content should be placed in the tree
             //
-            if(!string.IsNullOrWhiteSpace(filterText) && !_debugOutputFilterStrategy.Filter(newContent, filterText)) return null;
+            if (!string.IsNullOrWhiteSpace(filterText) && !_debugOutputFilterStrategy.Filter(newContent, filterText)) return null;
 
             DebugTreeViewItemViewModel newItem = null;
             IDebugState debugState = newContent as IDebugState;
 
-            if(debugState != null)
+            if (debugState != null)
             {
                 //
                 // Find the node which to add the item to
                 //
                 DebugTreeViewItemViewModel parentItem = null;
-                if(!addedAsParent)
+                if (!addedAsParent)
                 {
                     parentItem = FindParent(rootItems, debugState, ref operationDepth);
                 }
-                    
-                if(parentItem == null)
+
+                if (parentItem == null)
                 {
                     parentItem = AddMissingParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
                 }
 
-                if(depthLimit <= 0 || operationDepth < depthLimit)
+                if (depthLimit <= 0 || operationDepth < depthLimit)
                 {
-                    if(parentItem == null)
+                    if (parentItem == null)
                     {
                         //
                         // Add as root node
@@ -110,19 +109,22 @@ namespace Dev2.Studio.Diagnostics
                     }
                 }
             }
-            else if(newContent is string && !string.IsNullOrWhiteSpace(newContent.ToString()))
+            else if (newContent is string && !string.IsNullOrWhiteSpace(newContent.ToString()))
             {
                 newItem = new DebugStringTreeViewItemViewModel(newContent as string, null, true, false, addedAsParent);
                 AddOrInsertItem(rootItems, existingContent, newContent, newItem, addedAsParent);
                 return newItem;
             }
+            //newItem = new DebugProcessingIconViewModel(true);
 
+            //AddOrInsertItem(rootItems, existingContent, newContent, newItem, addedAsParent);
+            //return newItem;
             return null;
         }
 
         void SetError(object content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
         {
-            if((content is IDebugState) && !addedAsParent)
+            if ((content is IDebugState) && !addedAsParent)
             {
                 if (((IDebugState)content).HasError)
                 {
@@ -144,7 +146,7 @@ namespace Dev2.Studio.Diagnostics
         private void AddOrInsertItem(IList<DebugTreeViewItemViewModel> destinationCollection, List<object> existingContent,
             object content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
         {
-            if(!addedAsParent)
+            if (!addedAsParent)
             {
                 destinationCollection.Add(treeviewItem);
             }
@@ -152,16 +154,16 @@ namespace Dev2.Studio.Diagnostics
             {
                 int originalIndex = existingContent.IndexOf(content);
 
-                if(originalIndex < 0)
+                if (originalIndex < 0)
                 {
                     throw new Exception("Content not found in original list.");
                 }
 
                 bool insterted = false;
-                for(int i = 0; i < destinationCollection.Count; i++)
+                for (int i = 0; i < destinationCollection.Count; i++)
                 {
                     int itemIndex = existingContent.IndexOf(destinationCollection[i]);
-                    if(itemIndex > originalIndex)
+                    if (itemIndex > originalIndex)
                     {
                         insterted = true;
                         destinationCollection.Insert(i, treeviewItem);
@@ -169,7 +171,7 @@ namespace Dev2.Studio.Diagnostics
                     }
                 }
 
-                if(!insterted)
+                if (!insterted)
                 {
                     destinationCollection.Add(treeviewItem);
                 }
@@ -189,12 +191,12 @@ namespace Dev2.Studio.Diagnostics
                 return null;
             }
 
-            foreach(DebugTreeViewItemViewModel item in rootItems)
+            foreach (DebugTreeViewItemViewModel item in rootItems)
             {
                 DebugTreeViewItemViewModel match = item.FindSelfOrChild(n =>
                 {
                     DebugStateTreeViewItemViewModel debugStateTreeViewItemViewModel = n as DebugStateTreeViewItemViewModel;
-                    if(debugStateTreeViewItemViewModel == null)
+                    if (debugStateTreeViewItemViewModel == null)
                     {
                         return false;
                     }
@@ -202,7 +204,7 @@ namespace Dev2.Studio.Diagnostics
                     return debugStateTreeViewItemViewModel.Content.ID == debugState.ParentID;
                 });
 
-                if(match != null)
+                if (match != null)
                 {
                     operationDepth = match.GetDepth() + 1;
                     return match;

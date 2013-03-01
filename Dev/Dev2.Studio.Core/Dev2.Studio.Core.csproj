@@ -138,7 +138,7 @@
     <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
-    <Compile Include="AppResources\Converters\FilterStringToVisibilityConvert.cs" />
+    <Compile Include="AppResources\Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CountToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeToStringConverter.cs" />
@@ -272,6 +272,7 @@
     <Compile Include="Messages\AddMissingAndFindUnusedDataListItemsMessage.cs" />
     <Compile Include="Messages\AddMissingDataListItems.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
+    <Compile Include="Messages\DebugStatusMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />

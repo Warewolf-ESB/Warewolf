@@ -4,9 +4,6 @@ using System.Windows.Controls.Primitives;
 
 namespace Dev2.Studio.CustomControls
 {
-    /// <summary>
-    /// Interaction logic for Dev2FilterTextBox.xaml
-    /// </summary>
     [TemplatePart(Name = PART_ButtonBase, Type = typeof(ButtonBase))]
     [TemplatePart(Name = PART_TextBox, Type = typeof(TextBox))]
     public class Dev2FilterTextBox : TextBox

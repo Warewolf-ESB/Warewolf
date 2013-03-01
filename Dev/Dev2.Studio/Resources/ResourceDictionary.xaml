@@ -11,19 +11,19 @@
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core">
+    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Brushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
+
     <!--Fix For the annoying binding issue that would cause studio to hang in debug, it has to be here to apply to menu items globally-->
-    <Style TargetType="MenuItem">
+    <Style TargetType="{x:Type MenuItem}">
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
-    <Style TargetType="ComboBoxItem">
+    <Style TargetType="{x:Type ComboBoxItem}">
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
@@ -47,7 +47,7 @@
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:BoolToDisabledFontColorConverter x:Key="BoolToDisabledFontColorConverter" />
-    <converters3:IntToVisibilityConverter x:Key="IntToVisibilityConverter" /> 
+    <converters3:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <converters:StringToAutomationIdConverter x:Key="StringToAutomationIdConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"  />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter"  />
@@ -57,11 +57,9 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters:Dev2ErrorTypeToImageConverter x:Key="Dev2ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
-    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="devFeedbackActions:RecorderFeedbackAction" />
-    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="devFeedbackActions:RecorderFeedbackAction" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
-    <converters:FilterStringToVisibilityConverter x:Key="FilterStringToVisibilityConverter"></converters:FilterStringToVisibilityConverter>
-    
-    
+    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
+    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
+
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
             <converters:EnumCollection>
@@ -113,10 +111,10 @@
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
 
-    <ribbon:RibbonContextMenu x:Key="DefaultContextMenu" Visibility="Hidden" IsOpen="False">
+    <ribbon:RibbonContextMenu x:Key="DefaultContextMenu" Visibility="Hidden">
         <ribbon:RibbonMenuButton Label="Minimize the ribbon" >
             <ribbon:RibbonMenuButton.ItemContainerStyle >
-                <Style TargetType="MenuItem" >
+                <Style TargetType="{x:Type MenuItem}" >
                     <Setter Property="Command" Value="{Binding RegionChangeCommand}" />
                 </Style>
             </ribbon:RibbonMenuButton.ItemContainerStyle>
@@ -132,27 +130,25 @@
                                                          Duration="0:0:1"/>
     </Storyboard>
 
-    <Style x:Key="ImageTickStyle" TargetType="Image">
+    <Style x:Key="ImageTickStyle" TargetType="{x:Type Image}">
         <Setter Property="Height" Value="15" />
         <Setter Property="Width" Value="15" />
         <Setter Property="Source" Value="/Images/tickIcon.png" />
     </Style>
 
-    <Style x:Key="FlashingFrameworkElement" TargetType="FrameworkElement">
+    <Style x:Key="FlashingFrameworkElement" TargetType="{x:Type FrameworkElement}">
         <Style.Triggers>
             <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                <EventTrigger.Actions>
-                    <BeginStoryboard Storyboard="{StaticResource FlashingAnimationStoryBoard}" />
-                </EventTrigger.Actions>
+                <BeginStoryboard Storyboard="{StaticResource FlashingAnimationStoryBoard}" />
             </EventTrigger>
         </Style.Triggers>
-    </Style>    
-    
-    <Style x:Key="BottomRightResizeThumbStyle" TargetType="Thumb">
+    </Style>
+
+    <Style x:Key="BottomRightResizeThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Cursor" Value="SizeNWSE" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Thumb">
+                <ControlTemplate TargetType="{x:Type Thumb}">
                     <Image Source="/Images/Resize_Grip.png" />
                 </ControlTemplate>
             </Setter.Value>
@@ -160,7 +156,7 @@
     </Style>
 
 
-    <Style x:Key="DesignSurfaceDataGrid" TargetType="DataGrid">
+    <Style x:Key="DesignSurfaceDataGrid" TargetType="{x:Type DataGrid}">
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="BorderThickness" Value="0,1,0,0"/>
@@ -181,14 +177,14 @@
         </Setter>
         <Setter Property="CellStyle">
             <Setter.Value>
-                <Style TargetType="DataGridCell">
+                <Style TargetType="{x:Type DataGridCell}">
                     <Setter Property="IsTabStop" Value="False"/>
                 </Style>
             </Setter.Value>
-        </Setter>        
+        </Setter>
     </Style>
 
-    <Style x:Key="ActivityDataGridStyle" TargetType="DataGrid">      
+    <Style x:Key="ActivityDataGridStyle" TargetType="{x:Type DataGrid}">
         <Setter Property="HeadersVisibility" Value="None"/>
         <Setter Property="Height" Value="52"/>
         <Setter Property="Width" Value="Auto"/>
@@ -201,7 +197,7 @@
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="CellStyle">
             <Setter.Value>
-                <Style TargetType="DataGridCell">
+                <Style TargetType="{x:Type DataGridCell}">
                     <Setter Property="IsTabStop" Value="False"/>
                     <Setter Property="Height" Value="25"/>
                     <Setter Property="BorderBrush" Value="LightGray"/>
@@ -209,40 +205,40 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="Dev2ComboBoxStyle" TargetType="ComboBox">
+
+    <Style x:Key="Dev2ComboBoxStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="Height" Value="21"/>
-        <Setter Property="Background" Value="White"/>        
+        <Setter Property="Background" Value="White"/>
         <Setter Property="IsEditable" Value="False"/>
-        <Setter Property="BorderBrush" Value="LightGray"/>                
+        <Setter Property="BorderBrush" Value="LightGray"/>
     </Style>
 
-    <Style x:Key="Dev2ComboBoxInDataGridStyle" TargetType="ComboBox">
+    <Style x:Key="Dev2ComboBoxInDataGridStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="Height" Value="23"/>
         <Setter Property="Background" Value="White"/>
         <Setter Property="IsEditable" Value="False"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
     </Style>
 
-    <Style x:Key="Dev2TextboxStyle" TargetType="TextBox">        
+    <Style x:Key="Dev2TextboxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Margin" Value="1"/>
         <Setter Property="Height" Value="21"/>
     </Style>
-    
-    <Style x:Key="Dev2HeadingLabelStyle" TargetType="Label">
+
+    <Style x:Key="Dev2HeadingLabelStyle" TargetType="{x:Type Label}">
         <Setter Property="FontStretch" Value="Medium"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="Gray"/>         
+        <Setter Property="Foreground" Value="Gray"/>
     </Style>
 
-    <Style x:Key="LinkButton" TargetType="Button">
+    <Style x:Key="LinkButton" TargetType="{x:Type Button}">
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="Blue"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
+                <ControlTemplate TargetType="{x:Type Button}">
                     <TextBlock Text="{TemplateBinding Content}" Background="{TemplateBinding Background}"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
@@ -254,13 +250,13 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ContentLinkButton" TargetType="Button">
+    <Style x:Key="ContentLinkButton" TargetType="{x:Type Button}">
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="Blue"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
+                <ControlTemplate TargetType="{x:Type Button}">
                     <ContentControl Content="{TemplateBinding Content}" Background="{TemplateBinding Background}"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
@@ -273,7 +269,7 @@
     </Style>
 
     <ControlTemplate x:Key="DefaultErrorTemplate">
-        <DockPanel DataContext="{Binding ElementName=adorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}">
+        <DockPanel DataContext="{Binding AdornedElement.(Validation.Errors)/ErrorContent, ElementName=adorner}">
             <Ellipse x:Name="Ellipse" DockPanel.Dock="Right" Margin="2,0,2,0" Width="14" Height="14"                             VerticalAlignment="Center" 
                             Stroke="#40000000" StrokeThickness="2" Fill="Red">
                 <Ellipse.ToolTip>
@@ -286,38 +282,38 @@
                 <Border.Background>
                     <SolidColorBrush Color="Red" Opacity="0.2"/>
                 </Border.Background>
-                <AdornedElementPlaceholder Margin="-2" Name="adorner"/>
+                <AdornedElementPlaceholder Margin="-2" x:Name="adorner"/>
             </Border>
         </DockPanel>
-    </ControlTemplate>    
+    </ControlTemplate>
 
-    <Style x:Key="DebugTreeStyle" TargetType="TreeViewItem">
+    <Style x:Key="DebugTreeStyle" TargetType="{x:Type TreeViewItem}">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TreeViewItem">
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <StackPanel x:Name="stackPanel">
                         <i:Interaction.Behaviors>
                             <local:PreventHorizontalScrollWhenFocusedTreeViewItemBehavior/>
                         </i:Interaction.Behaviors>
 
                         <VisualStateManager.VisualStateGroups>
-                    		<VisualStateGroup x:Name="CommonStates"/>
-                    		<VisualStateGroup x:Name="FocusStates"/>
-                    		<VisualStateGroup x:Name="SelectionStates"/>
-                    		<VisualStateGroup x:Name="ExpansionStates">
-                    			<VisualState x:Name="Expanded"/>
-                    			<VisualState x:Name="Collapsed">
-                    				<Storyboard>
-                    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ItemsHost">
-                    						<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}"/>
-                    					</ObjectAnimationUsingKeyFrames>
-                    				</Storyboard>
-                    			</VisualState>
-                    		</VisualStateGroup>
-                    		<VisualStateGroup x:Name="HasItemsStates"/>
-                    		<VisualStateGroup x:Name="ValidationStates"/>
-                    	</VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates"/>
+                            <VisualStateGroup x:Name="FocusStates"/>
+                            <VisualStateGroup x:Name="SelectionStates"/>
+                            <VisualStateGroup x:Name="ExpansionStates">
+                                <VisualState x:Name="Expanded"/>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ItemsHost">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="HasItemsStates"/>
+                            <VisualStateGroup x:Name="ValidationStates"/>
+                        </VisualStateManager.VisualStateGroups>
                         <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" Margin="0,2.5,0,2.5" />
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -329,22 +325,22 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <Border x:Name="Bd" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Padding="{TemplateBinding Control.Padding}" SnapsToDevicePixels="True"
+                            <Border x:Name="Bd" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True"
                                 BorderThickness="{TemplateBinding Border.BorderThickness}" BorderBrush="{TemplateBinding Border.BorderBrush}" Background="{TemplateBinding Panel.Background}" />
 
-                            <TextBlock Name="NodeIndicator" Text="-" Visibility="Hidden" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                            <ToggleButton IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Name="Expander">
+                            <TextBlock x:Name="NodeIndicator" Text="-" Visibility="Hidden" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                            <ToggleButton IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" x:Name="Expander">
                                 <ToggleButton.Style>
-                                    <Style TargetType="ToggleButton">
+                                    <Style TargetType="{x:Type ToggleButton}">
                                         <Setter Property="VerticalAlignment" Value="Top" />
-                                        <Setter Property="UIElement.Focusable" Value="false" />
-                                        <Setter Property="FrameworkElement.Width" Value="16" />
-                                        <Setter Property="FrameworkElement.Height" Value="16" />
-                                        <Setter Property="Control.Template">
+                                        <Setter Property="Focusable" Value="false" />
+                                        <Setter Property="Width" Value="16" />
+                                        <Setter Property="Height" Value="16" />
+                                        <Setter Property="Template">
                                             <Setter.Value>
-                                                <ControlTemplate TargetType="ToggleButton">
+                                                <ControlTemplate TargetType="{x:Type ToggleButton}">
                                                     <Border Padding="5,5,5,5" Background="#00FFFFFF" Width="16" Height="16">
-                                                        <Path Fill="#00FFFFFF" Stroke="#FF989898" Name="ExpandPath">
+                                                        <Path Fill="#00FFFFFF" Stroke="#FF989898" x:Name="ExpandPath">
                                                             <Path.Data>
                                                                 <PathGeometry Figures="M0,0L0,6L6,0z" />
                                                             </Path.Data>
@@ -354,18 +350,18 @@
                                                         </Path>
                                                     </Border>
                                                     <ControlTemplate.Triggers>
-                                                        <Trigger Property="UIElement.IsMouseOver" Value="True">
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Stroke" Value="#FF1BBBFA" />
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Fill" Value="#00FFFFFF" />
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="ExpandPath" Property="Stroke" Value="#FF1BBBFA" />
+                                                            <Setter TargetName="ExpandPath" Property="Fill" Value="#00FFFFFF" />
                                                         </Trigger>
-                                                        <Trigger Property="ToggleButton.IsChecked" Value="True">
-                                                            <Setter TargetName="ExpandPath" Property="UIElement.RenderTransform">
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter TargetName="ExpandPath" Property="RenderTransform">
                                                                 <Setter.Value>
                                                                     <RotateTransform Angle="180" CenterX="3" CenterY="3" />
                                                                 </Setter.Value>
                                                             </Setter>
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Fill" Value="#FF595959" />
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Stroke" Value="#FF262626" />
+                                                            <Setter TargetName="ExpandPath" Property="Fill" Value="#FF595959" />
+                                                            <Setter TargetName="ExpandPath" Property="Stroke" Value="#FF262626" />
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
@@ -375,15 +371,15 @@
                                 </ToggleButton.Style>
                             </ToggleButton>
 
-                            <Border HorizontalAlignment="Stretch" Padding="{TemplateBinding Control.Padding}" SnapsToDevicePixels="True" Grid.Column="1" Background="Transparent">
-                                <ContentPresenter x:Name="PART_Header" Content="{TemplateBinding HeaderedContentControl.Header}" ContentTemplate="{TemplateBinding HeaderedContentControl.HeaderTemplate}" ContentStringFormat="{TemplateBinding HeaderedItemsControl.HeaderStringFormat}" ContentTemplateSelector="{TemplateBinding HeaderedItemsControl.HeaderTemplateSelector}" ContentSource="Header" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                            <Border HorizontalAlignment="Stretch" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True" Grid.Column="1" Background="Transparent">
+                                <ContentPresenter x:Name="PART_Header" Content="{TemplateBinding HeaderedContentControl.Header}" ContentTemplate="{TemplateBinding HeaderedContentControl.HeaderTemplate}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                             <ItemsPresenter x:Name="ItemsHost" Grid.Column="1" Grid.Row="1" />
                         </Grid>
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                		<!--<Trigger Property="IsExpanded" Value="True">
+                        <!--<Trigger Property="IsExpanded" Value="True">
                 			<Trigger.EnterActions>
                 				<BeginStoryboard x:Name="Storyboard2_BeginStoryboard" Storyboard="{StaticResource Storyboard2}"/>
                 			</Trigger.EnterActions>
@@ -393,38 +389,38 @@
                 				<BeginStoryboard Storyboard="{StaticResource Storyboard1}"/>
                 			</Trigger.EnterActions>
                 		</Trigger>-->
-                		<Trigger Property="IsExpanded" Value="False"/>
-                		<Trigger Property="HasItems" Value="False">
-                			<Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
-                			<Setter TargetName="NodeIndicator" Property="Visibility" Value="Visible" />
-                		</Trigger>
-                		<Trigger Property="IsSelected" Value="True">
-                			<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                			<Setter TargetName="Bd" Property="BorderThickness" Value="1" />
-                			<Setter TargetName="Bd" Property="Margin" Value="1,0,0,0" />
-                			<!--<Setter TargetName="Bd" Property="Panel.Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />-->
-                			<!--<Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />-->
-                		</Trigger>
-                		<MultiTrigger>
-                			<MultiTrigger.Conditions>
-                				<Condition Property="IsSelected" Value="True" />
-                				<Condition Property="Selector.IsSelectionActive" Value="False" />
-                			</MultiTrigger.Conditions>
-                			<!--<Setter TargetName="Bd" Property="Panel.Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                        <Trigger Property="IsExpanded" Value="False"/>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="NodeIndicator" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="Bd" Property="Margin" Value="1,0,0,0" />
+                            <!--<Setter TargetName="Bd" Property="Panel.Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />-->
+                            <!--<Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />-->
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <!--<Setter TargetName="Bd" Property="Panel.Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
                             <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />-->
-                			<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                			<Setter TargetName="Bd" Property="BorderThickness" Value="1" />
-                			<Setter TargetName="Bd" Property="Margin" Value="1,0,0,0" />
-                		</MultiTrigger>
-                		<Trigger Property="IsEnabled" Value="False">
-                			<Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                		</Trigger>
-                	</ControlTemplate.Triggers>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="Bd" Property="Margin" Value="1,0,0,0" />
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="DebugStateStyle" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource DebugTreeStyle}">
         <Setter Property="HorizontalContentAlignment"  Value="Stretch" />
         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -439,9 +435,7 @@
                     <Condition Binding="{Binding DataContext.HighlightSimulation, ElementName=DebugOutput}" Value="True" />
                     <Condition Binding="{Binding Content.IsSimulation}" Value="True" />
                 </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Panel.Background" Value="LightYellow" />
-                </MultiDataTrigger.Setters>
+                <Setter Property="Panel.Background" Value="LightYellow" />
             </MultiDataTrigger>
 
             <MultiDataTrigger>
@@ -449,9 +443,7 @@
                     <Condition Binding="{Binding DataContext.HighlightError, ElementName=DebugOutput}" Value="True" />
                     <Condition Binding="{Binding Content.HasError}" Value="True" />
                 </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Border.Background" Value="{StaticResource ErrorBrush}"/>
-                </MultiDataTrigger.Setters>
+                <Setter Property="Border.Background" Value="{StaticResource ErrorBrush}"/>
             </MultiDataTrigger>
         </Style.Triggers>
     </Style>
@@ -466,11 +458,11 @@
         <Setter Property="AutomationProperties.AutomationId" Value="{Binding Content}" />
     </Style>
 
-    <Style x:Key="TreeStyle" TargetType="TreeViewItem">
+    <Style x:Key="TreeStyle" TargetType="{x:Type TreeViewItem}">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TreeViewItem">
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -487,17 +479,17 @@
                              <ToggleButton IsChecked="{TemplateBinding Property=IsExpanded}" ClickMode="Press" Name="Expander">
                              <ToggleButton IsChecked="{TemplateBinding Path=IsExpanded}" ClickMode="Press" Name="Expander">
                         -->
-                            <ToggleButton IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Name="Expander">
+                            <ToggleButton IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" x:Name="Expander">
                                 <ToggleButton.Style>
-                                    <Style TargetType="ToggleButton">
-                                        <Setter Property="UIElement.Focusable" Value="false" />
-                                        <Setter Property="FrameworkElement.Width" Value="16" />
-                                        <Setter Property="FrameworkElement.Height" Value="16" />
-                                        <Setter Property="Control.Template">
+                                    <Style TargetType="{x:Type ToggleButton}">
+                                        <Setter Property="Focusable" Value="false" />
+                                        <Setter Property="Width" Value="16" />
+                                        <Setter Property="Height" Value="16" />
+                                        <Setter Property="Template">
                                             <Setter.Value>
-                                                <ControlTemplate TargetType="ToggleButton">
+                                                <ControlTemplate TargetType="{x:Type ToggleButton}">
                                                     <Border Padding="5,5,5,5" Background="#00FFFFFF" Width="16" Height="16">
-                                                        <Path Fill="#00FFFFFF" Stroke="#FF989898" Name="ExpandPath">
+                                                        <Path Fill="#00FFFFFF" Stroke="#FF989898" x:Name="ExpandPath">
                                                             <Path.Data>
                                                                 <PathGeometry Figures="M0,0L0,6L6,0z" />
                                                             </Path.Data>
@@ -507,41 +499,41 @@
                                                         </Path>
                                                     </Border>
                                                     <ControlTemplate.Triggers>
-                                                        <Trigger Property="UIElement.IsMouseOver" Value="True">
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Stroke" Value="#FF1BBBFA" />
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Fill" Value="#00FFFFFF" />
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="ExpandPath" Property="Stroke" Value="#FF1BBBFA" />
+                                                            <Setter TargetName="ExpandPath" Property="Fill" Value="#00FFFFFF" />
                                                         </Trigger>
-                                                        <Trigger Property="ToggleButton.IsChecked" Value="True">
-                                                            <Setter TargetName="ExpandPath" Property="UIElement.RenderTransform">
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter TargetName="ExpandPath" Property="RenderTransform">
                                                                 <Setter.Value>
                                                                     <RotateTransform Angle="180" CenterX="3" CenterY="3" />
                                                                 </Setter.Value>
                                                             </Setter>
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Fill" Value="#FF595959" />
-                                                            <Setter TargetName="ExpandPath" Property="Shape.Stroke" Value="#FF262626" />
+                                                            <Setter TargetName="ExpandPath" Property="Fill" Value="#FF595959" />
+                                                            <Setter TargetName="ExpandPath" Property="Stroke" Value="#FF262626" />
                                                         </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
                                 </ToggleButton.Style>
                             </ToggleButton>
                             <Border x:Name="Bd"
                     HorizontalAlignment="Stretch"
                     BorderThickness="{TemplateBinding Border.BorderThickness}"
                     BorderBrush="{TemplateBinding Border.BorderBrush}"
-                    Padding="{TemplateBinding Control.Padding}"                    
+                    Padding="{TemplateBinding Padding}"                    
                     SnapsToDevicePixels="True"
                     Grid.Column="1">
                                 <ContentPresenter x:Name="PART_Header"
                                 Content="{TemplateBinding HeaderedContentControl.Header}"
                                 ContentTemplate="{TemplateBinding HeaderedContentControl.HeaderTemplate}"
-                                ContentStringFormat="{TemplateBinding HeaderedItemsControl.HeaderStringFormat}"
-                                ContentTemplateSelector="{TemplateBinding HeaderedItemsControl.HeaderTemplateSelector}"
+                                ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
                                 ContentSource="Header"
-                                HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
-                                SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                             <ItemsPresenter x:Name="ItemsHost"
                             Grid.Column="1"
@@ -549,19 +541,19 @@
                         </Grid>
                     </StackPanel>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="TreeViewItem.IsExpanded"
+                        <Trigger Property="IsExpanded"
                    Value="False">
                             <Setter TargetName="ItemsHost"
-                    Property="UIElement.Visibility"
+                    Property="Visibility"
                     Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="ItemsControl.HasItems"
+                        <Trigger Property="HasItems"
                    Value="False">
                             <Setter TargetName="Expander"
-                    Property="UIElement.Visibility"
+                    Property="Visibility"
                     Value="Hidden" />
                         </Trigger>
-                        <Trigger Property="TreeViewItem.IsSelected"
+                        <Trigger Property="IsSelected"
                    Value="True">
                             <Setter TargetName="Bd"
                     Property="Panel.Background"
@@ -571,7 +563,7 @@
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="TreeViewItem.IsSelected"
+                                <Condition Property="IsSelected"
                          Value="True" />
                                 <Condition Property="Selector.IsSelectionActive"
                          Value="False" />
@@ -582,7 +574,7 @@
                             <Setter Property="TextElement.Foreground"
                     Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
                         </MultiTrigger>
-                        <Trigger Property="UIElement.IsEnabled"
+                        <Trigger Property="IsEnabled"
                    Value="False">
                             <Setter Property="TextElement.Foreground"
                     Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
@@ -593,19 +585,19 @@
         </Setter>
     </Style>
 
-    <Style x:Key="DataGridCellNotFocusable" TargetType="DataGridCell">
+    <Style x:Key="DataGridCellNotFocusable" TargetType="{x:Type DataGridCell}">
         <Setter Property="IsTabStop" Value="False"/>
     </Style>
 
     <Style x:Key="ContextMenuItemStyle">
-        <Setter Property="MenuItem.Header" Value="{Binding Text}"/>
+        <Setter Property="HeaderedItemsControl.Header" Value="{Binding Text}"/>
         <Setter Property="MenuItem.Command" Value="{Binding Command}" />
     </Style>
 
     <Style TargetType="{x:Type Image}">
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.3"></Setter>
+                <Setter Property="Opacity" Value="0.3"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="True">
                 <Setter Property="Opacity" Value="1.0" />
@@ -616,28 +608,24 @@
     <Style x:Key="TextFontResizeAnimation">
         <Style.Triggers>
             <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                Duration="0:0:0.2"
-                                Storyboard.TargetProperty="FontSize"
-                                To="22" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+            				Duration="0:0:0.2"
+            				Storyboard.TargetProperty="FontSize"
+            				To="22" />
+                    </Storyboard>
+                </BeginStoryboard>
             </EventTrigger>
             <EventTrigger RoutedEvent="Mouse.MouseLeave">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                Duration="0:0:0.2"
-                                Storyboard.TargetProperty="FontSize"
-                                To="12" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+            				Duration="0:0:0.2"
+            				Storyboard.TargetProperty="FontSize"
+            				To="12" />
+                    </Storyboard>
+                </BeginStoryboard>
             </EventTrigger>
         </Style.Triggers>
     </Style>
@@ -645,28 +633,24 @@
     <Style x:Key="IconResizeAnimation">
         <Style.Triggers>
             <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Width"
-To="50" Duration="0:0:5"></DoubleAnimation>
-                            <DoubleAnimation Storyboard.TargetProperty="Height"
-To="50" Duration="0:0:5"></DoubleAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="Width"
+            				To="50" Duration="0:0:5"/>
+                        <DoubleAnimation Storyboard.TargetProperty="Height"
+            				To="50" Duration="0:0:5"/>
+                    </Storyboard>
+                </BeginStoryboard>
             </EventTrigger>
             <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Width"
-To="16" Duration="0:0:5"></DoubleAnimation>
-                            <DoubleAnimation Storyboard.TargetProperty="Height"
-To="16" Duration="0:0:5"></DoubleAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="Width"
+            				To="16" Duration="0:0:5"/>
+                        <DoubleAnimation Storyboard.TargetProperty="Height"
+            				To="16" Duration="0:0:5"/>
+                    </Storyboard>
+                </BeginStoryboard>
             </EventTrigger>
         </Style.Triggers>
 
@@ -733,14 +717,14 @@ To="16" Duration="0:0:5"></DoubleAnimation>
 
     <DataTemplate DataType="{x:Type bdsm:OperatorType}">
         <StackPanel Orientation="Horizontal" Margin="10">
-            <RadioButton GroupName="Test" IsChecked="{Binding Path=Selected}" Margin="10" />
+            <RadioButton GroupName="Test" IsChecked="{Binding Selected}" Margin="10" />
             <Label Content="Value Of" />
-            <TextBox Text="{Binding Path=TagName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" MinWidth="100" />
-            <Label Content="{Binding Path=FriendlyName}" />
-            <TextBox Text="{Binding Path=Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" MinWidth="100">
+            <TextBox Text="{Binding TagName, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100" />
+            <Label Content="{Binding FriendlyName}" />
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100">
                 <TextBox.Style>
 
-                    <Style TargetType="TextBox">
+                    <Style TargetType="{x:Type TextBox}">
 
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ShowEndValue}" Value="True">
@@ -758,13 +742,13 @@ To="16" Duration="0:0:5"></DoubleAnimation>
 
     <DataTemplate DataType="{x:Type bdsm:BetweenOperatorType}">
         <StackPanel Orientation="Horizontal" Margin="10">
-            <RadioButton GroupName="Test" IsChecked="{Binding Path=Selected}" Margin="10"   />
+            <RadioButton GroupName="Test" IsChecked="{Binding Selected}" Margin="10"   />
             <Label Content="Value Of" />
-            <TextBox Text="{Binding Path=TagName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" MinWidth="100" />
-            <Label Content="{Binding Path=FriendlyName}" />
-            <TextBox Text="{Binding Path=Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" MinWidth="100" />
-            <TextBlock Margin="5">And</TextBlock>
-            <TextBox Text="{Binding Path=EndValue, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" MinWidth="100" />
+            <TextBox Text="{Binding TagName, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100" />
+            <Label Content="{Binding FriendlyName}" />
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100" />
+            <TextBlock Margin="5"><Run Text="And"/></TextBlock>
+            <TextBox Text="{Binding EndValue, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100" />
 
         </StackPanel>
     </DataTemplate>
@@ -884,18 +868,18 @@ To="16" Duration="0:0:5"></DoubleAnimation>
 					Padding="{TemplateBinding Padding}">
                     <DockPanel x:Name="contentPanel">
                         <igWindows:AutoDisabledImage x:Name="image"
-                            Visibility="{Binding Path=Pane.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+                            Visibility="{Binding Pane.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                             DockPanel.Dock="Left"
                             Margin="0,5,5,0"
                             Stretch="Uniform"
-                            Source="{Binding Path=Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Height="16" Width="16" />
+                            Source="{Binding Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Height="16" Width="16" />
                         <ContentPresenter 
                             x:Name="contentHeader"
 							ContentSource="Header" 
 							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
 							RecognizesAccessKey="true" 
-							HorizontalAlignment="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
-							VerticalAlignment="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+							HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+							VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
 						    igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
 							igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
                             igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igDock:XamDockManager.ToolTipStyleKey}"
@@ -903,7 +887,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
                         <Button x:Name="closeBtn" DockPanel.Dock="Right"
                                 Visibility="Collapsed"
                                 Margin="3,5,0,3" Command="{x:Static igDock:ContentPaneCommands.Close}"
-                                CommandTarget="{Binding Path=Pane,RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
+                                CommandTarget="{Binding Pane, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
                     Style="{StaticResource {x:Static igDock:TabGroupPane.DocumentCloseButtonStyleKey}}" />
                     </DockPanel>
                 </Border>
@@ -1308,11 +1292,11 @@ To="16" Duration="0:0:5"></DoubleAnimation>
                 <Border x:Name="Content" Grid.Column="1"
 							BorderThickness="{TemplateBinding BorderThickness}" >
                     <DockPanel x:Name="ContentDock" Margin="-8,1,6,0" VerticalAlignment="Bottom">
-                        <igWindows:AutoDisabledImage Visibility="{Binding Path=Pane.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+                        <igWindows:AutoDisabledImage Visibility="{Binding Pane.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                 DockPanel.Dock="Left"
                                 Margin="0,5,5,0"
                                 Stretch="Uniform"
-                                Source="{Binding Path=Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Height="16" Width="16" />
+                                Source="{Binding Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Height="16" Width="16" />
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="gdContent">
                             <ContentPresenter x:Name="NormalContent"
                         		ContentSource="Header" 
@@ -1342,7 +1326,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
                         <Button x:Name="closeBtn" DockPanel.Dock="Right"
                                 Visibility="Collapsed"
                                 Margin="3,5,0,3" Command="{x:Static igDock:ContentPaneCommands.Close}"
-                                CommandTarget="{Binding Path=Pane,RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
+                                CommandTarget="{Binding Pane, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
                                 Style="{StaticResource {x:Static igDock:TabGroupPane.DocumentCloseButtonStyleKey}}" />
                     </DockPanel>
                 </Border>
@@ -1360,7 +1344,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
             </DataTrigger>-->
 
             <!-- To only show it when the tab item is selected: -->
-            <DataTrigger Binding="{Binding Path=IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
+            <DataTrigger Binding="{Binding IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
 
@@ -1410,7 +1394,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
                 <Setter Property="Foreground" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackTextFillKey}}" />
             </MultiTrigger>
 
-            <DataTrigger Binding="{Binding Path=Pane.IsActiveDocument, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+            <DataTrigger Binding="{Binding Pane.IsActiveDocument, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
                 <Setter Property="Visibility" TargetName="NormalContent" Value="Hidden" />
                 <Setter Property="Visibility" TargetName="NormalContentBold" Value="Visible" />
             </DataTrigger>
@@ -1464,18 +1448,18 @@ To="16" Duration="0:0:5"></DoubleAnimation>
 						BorderThickness="{TemplateBinding BorderThickness}" 
 						Padding="{TemplateBinding Padding}">
                     <DockPanel>
-                        <igWindows:AutoDisabledImage Visibility="{Binding Path=Pane.HasImage, RelativeSource={x:Static RelativeSource.TemplatedParent}, Converter={StaticResource BoolToVisConverter}}"
+                        <igWindows:AutoDisabledImage Visibility="{Binding Pane.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                             DockPanel.Dock="Left"
                             Margin="0,5,5,0"
                             Stretch="Uniform"
-                            Source="{Binding Path=Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Height="16" Width="16" />
+                            Source="{Binding Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Height="16" Width="16" />
                         <ContentPresenter
                             x:Name="contentHeader"
 							ContentSource="Header" 
 							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
 							RecognizesAccessKey="true" 
-							HorizontalAlignment="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
-							VerticalAlignment="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+							HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+							VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
 							igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
 							igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
                             igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igDock:XamDockManager.ToolTipStyleKey}"
@@ -1484,7 +1468,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
                         <Button x:Name="closeBtn" DockPanel.Dock="Right"
                                 Visibility="Collapsed"
                                 Margin="3,5,0,3" Command="{x:Static igDock:ContentPaneCommands.Close}"
-                                CommandTarget="{Binding Path=Pane,RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
+                                CommandTarget="{Binding Pane, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
                                 Style="{StaticResource {x:Static igDock:TabGroupPane.DocumentCloseButtonStyleKey}}" />
                     </DockPanel>
                 </Border>
@@ -1502,7 +1486,7 @@ To="16" Duration="0:0:5"></DoubleAnimation>
             </DataTrigger>-->
 
             <!-- To only show it when the tab item is selected: -->
-            <DataTrigger Binding="{Binding Path=IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
+            <DataTrigger Binding="{Binding IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
 
@@ -1635,4 +1619,13 @@ To="16" Duration="0:0:5"></DoubleAnimation>
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <Style x:Key="ButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>        
 </ResourceDictionary>

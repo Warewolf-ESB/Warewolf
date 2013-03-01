@@ -1,7 +1,10 @@
-﻿using Dev2.DataList.Contract.Network;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Account;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network.DataList;
 using Dev2.Studio.Core.Network.Execution;
 using System;
@@ -295,8 +298,15 @@ namespace Dev2.Studio.Core
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 try
                 {
-                    _client.RemoveDebugWriter(writer);
+                _client.RemoveDebugWriter(writer);
+
+                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+                if (eventAggregator != null)
+                {
+                    eventAggregator.Publish(new DebugStatusMessage(false));
                 }
+            }
                 catch
                 {
                     // Empty catch because we want to avoid hanging sessions causing an exception

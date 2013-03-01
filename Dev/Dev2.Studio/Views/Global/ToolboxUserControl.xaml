@@ -8,7 +8,7 @@
              xmlns:sadt="clr-namespace:System.Activities.Presentation.Toolbox;assembly=System.Activities.Presentation"
              >
     <Grid>
-        <sadt:ToolboxControl x:Name="tools" >            
+        <sadt:ToolboxControl x:Name="tools">            
             <sadt:ToolboxControl.ToolTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

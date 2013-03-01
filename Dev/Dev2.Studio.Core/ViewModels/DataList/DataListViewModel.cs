@@ -753,9 +753,9 @@ namespace Dev2.Studio.Core.ViewModels.DataList
         /// </summary>
         private void SortScalars()
         {
-            IList<IDataListItemModel> newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName).ToList();
+            IList<IDataListItemModel> newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
             ScalarCollection.Clear();
-            foreach (IDataListItemModel item in newScalarCollection.Where(c => !c.IsBlank))
+            foreach (IDataListItemModel item in newScalarCollection)
             {
                 ScalarCollection.Add(item);
             }

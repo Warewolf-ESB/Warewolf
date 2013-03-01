@@ -1,14 +1,16 @@
-﻿using System.Diagnostics;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -21,7 +23,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// for the TreeView (the RootItems property), a bindable
     /// SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : SimpleBaseViewModel
+    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>
     {
         #region Fields
 
@@ -44,6 +46,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _showOutputs = true;
         private bool _highlightSimulation = true;
         private bool _highlightError = true;
+
+        private bool _showProcessingIcon = false;
 
         private bool _showOptions = false;
         private bool _skipOptionsCommandExecute = false;
@@ -76,6 +80,27 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Properties
 
         /// <summary>
+        /// Gets or sets a value indicating whether [show processing icon].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show processing icon]; otherwise, <c>false</c>.
+        /// </value>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2/28/2013</date>
+        public bool ShowProcessingIcon
+        {
+            get
+            {
+                return _showProcessingIcon;
+            }
+            set
+            {
+                _showProcessingIcon = value;
+                OnPropertyChanged("ShowProcessingIcon");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the environment repository, this property is imported via MEF.
         /// </summary>
         /// <value>
@@ -97,7 +122,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if(_depthLimit != value)
+                if (_depthLimit != value)
                 {
                     _depthLimit = value;
                     OnPropertyChanged("DepthLimit");
@@ -369,7 +394,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if(value == _searchText)
+                if (value == _searchText)
                 {
                     return;
                 }
@@ -404,7 +429,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_openItemCommand == null)
+                if (_openItemCommand == null)
                 {
                     _openItemCommand = new RelayCommand(OpenItem, c => true);
                 }
@@ -416,7 +441,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_expandAllCommand == null)
+                if (_expandAllCommand == null)
                 {
                     _expandAllCommand = new RelayCommand(ExpandAll, c => true);
                 }
@@ -428,11 +453,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_showOptionsCommand == null)
+                if (_showOptionsCommand == null)
                 {
                     _showOptionsCommand = new RelayCommand(o =>
                         {
-                            if(SkipOptionsCommandExecute)
+                            if (SkipOptionsCommandExecute)
                             {
                                 SkipOptionsCommandExecute = false;
                             }
@@ -446,7 +471,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        #endregion       
+        #endregion
 
         #region Private Methods
 
@@ -470,9 +495,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //
             // If no node is passed in then call for all root nodes
             //
-            if(node == null)
+            if (node == null)
             {
-                foreach(DebugTreeViewItemViewModel rootNode in RootItems)
+                foreach (DebugTreeViewItemViewModel rootNode in RootItems)
                 {
                     ExpandAll(rootNode);
                 }
@@ -489,7 +514,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // Expand node and call for all children
             //
             node.IsExpanded = ExpandAllMode;
-            foreach(DebugTreeViewItemViewModel childNode in node.Children)
+            foreach (DebugTreeViewItemViewModel childNode in node.Children)
             {
                 ExpandAll(childNode);
             }
@@ -503,18 +528,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             IDebugState debugState = payload as IDebugState;
 
-            if(debugState == null)
+            if (debugState == null)
             {
                 return;
             }
 
-            if(debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
+            if (debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
             {
                 IEnvironmentModel environment = EnvironmentRepository.All().FirstOrDefault(e =>
                 {
                     IStudioClientContext studioClientContext = e.DsfChannel as IStudioClientContext;
 
-                    if(studioClientContext == null)
+                    if (studioClientContext == null)
                     {
                         return false;
                     }
@@ -522,14 +547,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     return studioClientContext.ServerID == debugState.ServerID;
                 });
 
-                if(environment == null || !environment.IsConnected)
+                if (environment == null || !environment.IsConnected)
                 {
                     return;
                 }
 
                 IResourceModel resource = environment.Resources.FindSingle(r => r.ResourceName == debugState.DisplayName);
 
-                if(resource == null)
+                if (resource == null)
                 {
                     return;
                 }
@@ -604,24 +629,36 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </summary>
         private void RebuildTree()
         {
-            lock(_syncContext)
+            lock (_syncContext)
             {
                 _isRebuildingTree = true;
             }
 
             RootItems.Clear();
 
-            foreach(object content in _contentItems)
+            foreach (object content in _contentItems)
             {
                 _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText, false, DepthLimit);
             }
 
-            lock(_syncContext)
+            lock (_syncContext)
             {
                 _isRebuildingTree = false;
             }
         }
 
         #endregion Private Methods
+
+        #region Implementation of IHandle<DebugStatusMessage>
+
+        public void Handle(DebugStatusMessage message)
+        {
+            if (message != null)
+            {
+                ShowProcessingIcon = message.DebugStatus;
+            }
+        }
+
+        #endregion
     }
 }

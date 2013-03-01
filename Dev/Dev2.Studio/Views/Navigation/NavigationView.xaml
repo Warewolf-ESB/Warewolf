@@ -25,8 +25,7 @@
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
 
-            <customControls:Dev2FilterTextBox x:Name="FilterTextBox"
-                                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+            <customControls:Dev2FilterTextBox x:Name="FilterTextBox"                                              
                                               Grid.Column="0">
                 <i:Interaction.Triggers>
                     <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="500">
