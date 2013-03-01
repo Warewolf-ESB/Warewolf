@@ -111,7 +111,7 @@
     };
 
     self.cancel = function () {
-        Dev2Awesomium.Cancel();
+        studio.cancel();
         return true;
     };
 
@@ -148,7 +148,12 @@
     self.saveViewModel = SaveViewModel.create("Service/DbSources/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog();
+        var isWindowClosedOnSave = $dialogContainerID ? false : true;
+        self.saveViewModel.showDialog(isWindowClosedOnSave, function () {            
+            if (!isWindowClosedOnSave) {
+                $dialogContainerID.dialog("close");
+            };
+        });
     };
 
     self.load = function (theResourceID) {
@@ -178,8 +183,9 @@
         });
     };
 
-    self.showDialog = function(sourceName) {
+    self.showDialog = function (sourceName) {
         // NOTE: Should only be invoked from DbService form!
+
         self.load(sourceName);
 
         // remove our title bar
@@ -221,7 +227,7 @@
             autoOpen: false,
             modal: true,
             width: 730,
-            position: utils.GetDialogPosition(),
+            position: utils.getDialogPosition(),
             buttons: {
                 "Save Connection": function () {
                     self.save();

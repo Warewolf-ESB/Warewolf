@@ -38,11 +38,11 @@ namespace Dev2.Studio.Core
             Close();
         }
 
-        public void Save(string value)
+        public void Save(string value, bool closeBrowserWindow = true)
         {
             if(PropertyEditorViewModel != null)
             {
-                InvokeAction(() => PropertyEditorViewModel.Save(value));
+                InvokeActionAsync(() => PropertyEditorViewModel.Save(value, closeBrowserWindow));
             }
         }
 
@@ -166,6 +166,22 @@ namespace Dev2.Studio.Core
                 if(!Application.Current.Dispatcher.CheckAccess())
                 {
                     Application.Current.Dispatcher.Invoke(action);
+                }
+                else
+                {
+                    action();
+                }
+            }
+        }
+
+
+        static void InvokeActionAsync(Action action)
+        {
+            if(action != null)
+            {
+                if(!Application.Current.Dispatcher.CheckAccess())
+                {
+                    Application.Current.Dispatcher.BeginInvoke(action);
                 }
                 else
                 {

@@ -189,14 +189,14 @@
 				
 				$("#Dev2Msg").html(result.message);
 
-				Dev2Awesomium.Close();
+				studio.close();
 				return true;
 				
             });
 		};
 		
 		self.cancel = function () {
-            Dev2Awesomium.Cancel();
+		    studio.cancel();
             return true;
         };
 		

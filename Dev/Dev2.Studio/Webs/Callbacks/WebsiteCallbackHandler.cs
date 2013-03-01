@@ -70,14 +70,17 @@ namespace Dev2.Studio.Webs.Callbacks
             }
         }
 
-        public virtual void Save(string value)
+        public virtual void Save(string value, bool closeBrowserWindow = true)
         {
-            Save(value, EnvironmentRepository.DefaultEnvironment);
+            Save(value, EnvironmentRepository.DefaultEnvironment, closeBrowserWindow);
         }
 
-        public virtual void Save(string value, IEnvironmentModel environmentModel)
+        public virtual void Save(string value, IEnvironmentModel environmentModel, bool closeBrowserWindow = true)
         {
-            Close();
+            if(closeBrowserWindow)
+            {
+                Close();
+            }
 
             if(string.IsNullOrEmpty(value))
             {
@@ -156,11 +159,6 @@ namespace Dev2.Studio.Webs.Callbacks
             var context = new IntellisenseProviderContext { InputText = searchTerm, CaretPosition = caretPosition };
 
             return "[" + string.Join(",", provider.GetIntellisenseResults(context).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
-
-            //var results = provider.GetIntellisenseResults(context).Aggregate("[", (current, result) => current + ("\"" + result.ToString() + "\","));
-            //results = results.Remove(results.Length - 1);
-            //results += "]";
-            //return "{\"IntellisenseResults\":" + results + "}";
         }
 
         #endregion

@@ -133,20 +133,20 @@ function DecisionViewModel() {
         //var dlID = window.location.search;
         var jsonData = ko.toJSON(self.data);
 
-        Dev2Awesomium.Dev2SetValue(jsonData);
+        studio.setValue(jsonData);
 
         //$.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
 
         //    $("#Dev2Msg").html(result.message);
 
-        //    Dev2Awesomium.Close();
+        //    studio.close();
         //    return true;
 
         //});
     };
 
     self.cancel = function () {
-        Dev2Awesomium.Cancel();
+        studio.cancel();
         return true;
     };
 
@@ -179,7 +179,7 @@ function DecisionViewModel() {
         //request.done(function (response, textStatus, json) {
 
         //BUG 8377 Add intellisense
-        var dai = utils.GetDataAndIntellisense();
+        var dai = studio.getDataAndIntellisense();
         self.intellisenseOptions = dai.intellisenseOptions;
         var response = dai.data;
 

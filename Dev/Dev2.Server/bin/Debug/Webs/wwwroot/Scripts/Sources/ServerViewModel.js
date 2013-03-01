@@ -108,7 +108,7 @@
     };
     
     self.cancel = function () {
-        Dev2Awesomium.Cancel();
+        studio.cancel();
         return true;
     };
     
@@ -140,7 +140,7 @@
     self.saveViewModel = SaveViewModel.create("Service/Connections/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog();
+        self.saveViewModel.showDialog(true);
     };
 };
 

@@ -10,6 +10,8 @@
     var $newFolderDialog = $("#newFolderDialog");
     var $newFolderName = $("#newFolderName");
 
+    self.onSaveCompleted = null;
+    self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
     self.data = baseViewModel.data;
     self.isEditing = baseViewModel.isEditing;
@@ -34,7 +36,6 @@
         });
     });
 
-
     self.isValidName = function (name) {
         var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
         return result;
@@ -48,10 +49,15 @@
         var jsonData = ko.toJSON(self.data);
         $.post(saveUri + window.location.search, jsonData, function (result) {
             if (!result.IsValid) {
-                Dev2Awesomium.Cancel();
-                Dev2Awesomium.Save(JSON.stringify(result));
-            } else {
-            // TODO: ShowError use $errDiv?
+                $saveForm.dialog("close");
+                if (self.onSaveCompleted != null) {
+                    self.onSaveCompleted();
+                }
+                if (self.isWindowClosedOnSave) {
+                    studio.saveAndClose(result);
+                } else {
+                    studio.save(result);
+                }
             }
         });
     };
@@ -163,7 +169,7 @@
         resizable: false,
         autoOpen: false,
         modal: true,
-        position: utils.GetDialogPosition(),
+        position: utils.getDialogPosition(),
         buttons: {
             "Add Folder": function () {
                 self.addNewFolder();
@@ -190,7 +196,9 @@
         self.validate();
     });
 
-    self.showDialog = function () {
+    self.showDialog = function (isWindowClosedOnSave, onSaveCompleted) {        
+        self.isWindowClosedOnSave = isWindowClosedOnSave;
+        self.onSaveCompleted = onSaveCompleted;
         $saveForm.dialog("open");
     };
 
@@ -200,7 +208,7 @@
         height: 453,
         width: 600,
         modal: true,
-        position: utils.GetDialogPosition(),
+        position: utils.getDialogPosition(),
         open: function (event, ui) {
             self.enableSaveButton(self.data.resourceName());
             var resourcePath = self.data.resourcePath();

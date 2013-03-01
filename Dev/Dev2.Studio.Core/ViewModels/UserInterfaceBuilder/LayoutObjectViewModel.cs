@@ -618,7 +618,7 @@ namespace Unlimited.Framework
 
         #region Public Methods
 
-        public void Save(string value)
+        public void Save(string value, bool closeBrowserWindow = true)
         {
         }
 

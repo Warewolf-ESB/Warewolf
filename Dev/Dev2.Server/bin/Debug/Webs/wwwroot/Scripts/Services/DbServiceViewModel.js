@@ -256,14 +256,14 @@
     };
 
     self.cancel = function () {
-        Dev2Awesomium.Cancel();
+        studio.cancel();
         return true;
     };
 
     self.saveViewModel = SaveViewModel.create("Service/Services/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog();
+        self.saveViewModel.showDialog(true);
     };    
 
     self.showSource = function (theSourceName) {
@@ -291,7 +291,7 @@ DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
         resizable: false,
         autoOpen: false,
         modal: true,
-        position: utils.GetDialogPosition(),
+        position: utils.getDialogPosition(),
         width: 700,
         buttons: {
             "Close": function () {

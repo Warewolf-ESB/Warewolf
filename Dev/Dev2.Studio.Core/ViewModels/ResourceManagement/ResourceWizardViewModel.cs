@@ -136,7 +136,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         #region Methods
 
-        public void Save(string value)
+        public void Save(string value, bool closeBrowserWindow = true)
         {
         }
 

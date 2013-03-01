@@ -26,7 +26,7 @@
 
         var jsonData = ko.toJSON(self.data);
 
-        Dev2Awesomium.Dev2SetValue(jsonData);
+        studio.setValue(jsonData);
 
         ////alert(jsonData);
 
@@ -34,14 +34,14 @@
 
         //    $("#Dev2Msg").html(result.message);
 
-        //    Dev2Awesomium.Close();
+        //    studio.close();
         //    return true;
 
         //});
     };
 
     self.cancel = function () {
-        Dev2Awesomium.Cancel();
+        studio.cancel();
         return true;
     };
 
@@ -66,7 +66,7 @@
 
 
         //BUG 8377 Add intellisense
-        var dai = utils.GetDataAndIntellisense();
+        var dai = studio.getDataAndIntellisense();
         self.intellisenseOptions = dai.intellisenseOptions;
         var response = dai.data;
 

@@ -16,7 +16,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             get { return null; }
         }
 
-        public void Save(string value)
+        public void Save(string value, bool closeBrowserWindow = true)
         {
         }
 

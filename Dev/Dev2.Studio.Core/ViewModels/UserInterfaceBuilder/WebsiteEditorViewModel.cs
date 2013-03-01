@@ -760,7 +760,7 @@ namespace Dev2.Studio.Core.ViewModels
             }
         }
 
-        public void Save(string value)
+        public void Save(string value, bool closeBrowserWindow = true)
         {
         }
 

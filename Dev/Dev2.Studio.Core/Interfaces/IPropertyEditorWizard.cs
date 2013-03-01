@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         ILayoutObjectViewModel SelectedLayoutObject { get; }
 
-        void Save(string value);
+        void Save(string value, bool closeBrowserWindow = true);
 
         void NavigateTo(string uri, string args, string returnUri);
 
