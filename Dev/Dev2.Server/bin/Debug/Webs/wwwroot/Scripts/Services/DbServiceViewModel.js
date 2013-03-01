@@ -291,6 +291,7 @@ DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
         resizable: false,
         autoOpen: false,
         modal: true,
+        position: utils.GetDialogPosition(),
         width: 700,
         buttons: {
             "Close": function () {

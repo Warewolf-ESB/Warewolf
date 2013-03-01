@@ -221,10 +221,7 @@
             autoOpen: false,
             modal: true,
             width: 730,
-            position: {
-                my: "left top",
-                at: "left+10px top+10px",
-            },
+            position: utils.GetDialogPosition(),
             buttons: {
                 "Save Connection": function () {
                     self.save();

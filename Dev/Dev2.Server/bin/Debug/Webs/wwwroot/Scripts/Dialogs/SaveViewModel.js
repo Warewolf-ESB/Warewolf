@@ -163,6 +163,7 @@
         resizable: false,
         autoOpen: false,
         modal: true,
+        position: utils.GetDialogPosition(),
         buttons: {
             "Add Folder": function () {
                 self.addNewFolder();
@@ -193,18 +194,13 @@
         $saveForm.dialog("open");
     };
 
-    var parentContainerID = $('div[id*=Container]').attr("id");
-    console.log("parentContainerID: " + parentContainerID);
     $saveForm.dialog({
         resizable: false,
         autoOpen: false,
         height: 453,
         width: 600,
         modal: true,
-        position: {
-            my: "center center",
-            of: "#" + parentContainerID
-        },
+        position: utils.GetDialogPosition(),
         open: function (event, ui) {
             self.enableSaveButton(self.data.resourceName());
             var resourcePath = self.data.resourcePath();

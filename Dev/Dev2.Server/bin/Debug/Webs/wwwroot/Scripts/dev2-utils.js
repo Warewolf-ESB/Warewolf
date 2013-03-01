@@ -80,3 +80,12 @@ utils.GetDataAndIntellisense = function () {
 
     return result;
 };
+
+
+utils.GetDialogPosition = function () {
+    var parentContainerID = $('div[id*=Container]').attr("id");
+    return {
+        my: "center center",
+        of: "#" + parentContainerID
+    };
+};
