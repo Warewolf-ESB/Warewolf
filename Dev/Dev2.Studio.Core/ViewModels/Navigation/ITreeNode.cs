@@ -38,10 +38,10 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         ITreeNode FindChild<T>(T resourceToFind);
         void VerifyCheckState();
         void SetIsChecked(bool? value, bool updateChildren, bool updateParent, bool sendMessage);
-        void SetFilter(string value);
         IEnumerable<ITreeNode> GetChildren(Func<ITreeNode, bool> predicate);
-        void UpdateFilteredNodeExpansionStates();
-
+        void UpdateFilteredNodeExpansionStates(string filterText);
+        //void VerifyFilterState(string filterText);
+        void SetFilter(string filterText, bool updateChildren);
     }
 
     /// <summary>

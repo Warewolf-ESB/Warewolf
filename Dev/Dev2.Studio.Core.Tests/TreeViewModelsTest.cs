@@ -204,7 +204,7 @@ namespace Dev2.Core.Tests
                     Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "Match").Object,
                     parent, false);
 
-            parent.SetFilter("Match");
+            parent.FilterText = ("Match");
 
             Assert.IsTrue(nonMatchingNode.IsFiltered);
             Assert.IsFalse(checkedNonMatchingNode.IsFiltered);
@@ -228,7 +228,7 @@ namespace Dev2.Core.Tests
             resourceVM1.IsChecked = false;
             resourceVM2.IsChecked = false;
 
-            categoryVM.SetFilter("Match");
+            categoryVM.FilterText = ("Match");
 
             Assert.IsTrue(resourceVM1.IsFiltered);
             Assert.IsTrue(resourceVM2.IsFiltered);
@@ -236,7 +236,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void TestFiler_Were_AllNodesCheckedAndFilter_Expected_CheckedNodesAndParentCategoriestNotFiltered_()
+        public void TestFilter_Were_AllNodesCheckedAndFilter_Expected_CheckedNodesAndParentCategoriestNotFiltered()
         {
             var rootVM = TreeViewModelFactory.Create() as RootTreeViewModel;
             var environmentVM = TreeViewModelFactory.Create(mockEnvironmentModel.Object, rootVM) as EnvironmentTreeViewModel;
@@ -251,7 +251,7 @@ namespace Dev2.Core.Tests
             resourceVM1.IsChecked = false;
             resourceVM2.IsChecked = false;
 
-            categoryVM.SetFilter("cake");
+            categoryVM.FilterText = "cake";
 
             Assert.IsFalse(resourceVM1.IsFiltered);
             Assert.IsFalse(resourceVM2.IsFiltered);
@@ -398,8 +398,7 @@ namespace Dev2.Core.Tests
         {
             var childCount = categoryVM.ChildrenCount;
             Assert.IsTrue(childCount == 1);
-        }
-
+        }    
         #endregion Category
 
         #region Resource
@@ -676,7 +675,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(categoryVM2.Children.Count(c => c.IsChecked == true) == 2);
 
             categoryVM2.IsChecked = false;
-            rootVM.SetFilter("Mock3");
+            rootVM.FilterText = "Mock3";
             categoryVM2.IsChecked = true;
 
             Assert.IsTrue(categoryVM2.Children.Count(c => c.IsChecked == true) == 1);
@@ -690,16 +689,19 @@ namespace Dev2.Core.Tests
         {
             var mockResource3 = new Mock<IContextualResourceModel>();
             mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
-            mockResource3.Setup(r => r.Category).Returns("Testing3");
+            mockResource3.Setup(r => r.Category).Returns("Testing2");
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
             var toAdd = TreeViewModelFactory.Create(mockResource3.Object, categoryVM2, false);
 
+            Assert.IsTrue(categoryVM2.ChildrenCount == 2);
+
             toAdd.IsChecked = true;
-            rootVM.SetFilter("Mock3");
+
+            rootVM.FilterText = "Mock3";
 
             Assert.IsTrue(categoryVM2.IsChecked == true);
 
-            rootVM.SetFilter("");
+            rootVM.FilterText = "";
 
             Assert.IsTrue(categoryVM2.IsChecked == null);
         }

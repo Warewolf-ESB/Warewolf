@@ -95,15 +95,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public bool IsFiltered
+        public virtual bool IsFiltered
         {
             get { return _isFiltered; }
             set
             {
-                if (_isFiltered == value)
-                {
-                    return;
-                }
                 _isFiltered = value;
                 NotifyOfPropertyChange(() => IsFiltered);
 
@@ -173,8 +169,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             set
             {
                 _filterText = value;
-                NotifyOfPropertyChange(() => FilterText);
-                SetFilter(_filterText);
+                SetFilter(_filterText, true);
             }
         }
 
@@ -244,7 +239,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public bool IsExpanded
+        public virtual bool IsExpanded
         {
             get { return _isExpanded; }
             set
@@ -470,23 +465,59 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>
         ///     Jurie.smit
         /// </author>
-        public void SetFilter(string filterText)
+        public void SetFilter(string filterText, bool updateChildren)
         {
-            if (GetType() == typeof (ResourceTreeViewModel))
+            var originalFilter = IsFiltered;
+
+            if (GetType() == typeof(ResourceTreeViewModel))
             {
-                IsFiltered = !DisplayName.ToUpper().Contains(filterText.ToUpper()) &&
-                             IsChecked.HasValue &&
-                             !IsChecked.Value;
+                IsFiltered = GetIsFiltered(filterText);
+            }
+            else if (GetType() == typeof(CategoryTreeViewModel))
+            {
+                if (updateChildren)
+                {
+                    IsFiltered = !DisplayName.ToUpper().Contains(filterText.ToUpper());
+                    if (!IsFiltered)
+                    {
+                        Children.ToList().ForEach(c =>
+                            { c.IsFiltered = false; });
+                    }
+                    else
+                    {
+                        Children.ToList().ForEach(c => c.SetFilter(filterText, false));
+                        IsFiltered = Children.All(c => c.IsFiltered);
+                    }
+                    VerifyCheckState();
+                }
             }
             else
             {
-                Children.ToList().ForEach(c => c.FilterText = filterText);
+                Children.ToList().ForEach(c => c.SetFilter(filterText, true));
                 IsFiltered = Children.All(c => c.IsFiltered);
             }
+       
+            //Notify parent to verify filterstate
+            if (TreeParent != null && originalFilter != IsFiltered)
+            {
+                TreeParent.SetFilter(filterText, false);
+            }
+
+            NotifyOfPropertyChange(() => FilterText);
 
             //Notify parent to update check status
             if (TreeParent != null)
+            {
                 TreeParent.VerifyCheckState();
+            }
+
+        }
+
+        private bool GetIsFiltered(string filterText)
+        {
+            return !(DisplayName.ToUpper().Contains(filterText.ToUpper()) ||
+                     IsChecked.HasValue &&
+                     IsChecked.Value);
         }
 
         /// <summary>
@@ -540,6 +571,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void VerifyCheckState()
         {
+            if (GetType() == typeof(ResourceTreeViewModel)) return;
+
+            if (!FilteredChildren.OfType<ITreeNode>().Any())
+            {
+                SetIsChecked(false, false, true, false);
+                return;
+            }
+
             bool? state = null;
             for (int i = 0; i < FilteredChildren.OfType<ITreeNode>().Count(); ++i)
             {
@@ -582,19 +621,20 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2/25/2013</date>
-        public void UpdateFilteredNodeExpansionStates()
+        public void UpdateFilteredNodeExpansionStates(string filterText)
         {
             //If no filter set unfiltered state
-            if (string.IsNullOrWhiteSpace(FilterText))
+            if (string.IsNullOrWhiteSpace(filterText))
             {
                 if (_unfilteredExpandState != null)
                     IsExpanded = _unfilteredExpandState.Value;
                 _hasUnfilteredExpandStateBeenSet = false;
                 foreach (var treeNode in Children)
                 {
-                    treeNode.UpdateFilteredNodeExpansionStates();
+                    treeNode.UpdateFilteredNodeExpansionStates(filterText);
                 }
 
+                VerifyCheckState();
                 return;
             }
 
@@ -606,14 +646,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             //set expanded state according to current filter
-            if (this.Children.Any(c => !c.IsFiltered))
+            if (!IsFiltered || Children.Any(c => !c.IsFiltered))
             {
                 IsExpanded = true;
             }
             foreach (var treeNode in Children)
             {
-                treeNode.UpdateFilteredNodeExpansionStates();
+                treeNode.UpdateFilteredNodeExpansionStates(filterText);
             }
+
+            VerifyCheckState();
         }
 
         /// <summary>

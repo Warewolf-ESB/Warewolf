@@ -18,7 +18,6 @@ namespace Dev2.Studio.ViewModels.Navigation
     public class RootTreeViewModel : AbstractTreeViewModel
     {
         #region ctor + init
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RootTreeViewModel" /> class.
         /// </summary>
@@ -27,10 +26,51 @@ namespace Dev2.Studio.ViewModels.Navigation
         public RootTreeViewModel()
             : base(null)
         {
-            IsExpanded = true;
         }
 
         #endregion ctor + init
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is filtered from the tree.
+        ///     Always false for root node
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is filtered; otherwise, <c>false</c>.
+        /// </value>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/01/23</date>
+        public override bool IsFiltered
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                //Do Nothing
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is expanded in the tree, always true for rootnode
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is expanded; otherwise, <c>false</c>.
+        /// </value>
+        /// <date>2013/01/23</date>
+        /// <author>Jurie.smit</author>
+        /// <date>3/1/2013</date>
+        public override bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+                //Do nothing - cant collapse root node
+            }
+        }
 
         #region public properties
 

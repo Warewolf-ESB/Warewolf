@@ -22,7 +22,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public class EnvironmentTreeViewModel : AbstractTreeViewModel
+    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel
     {
         #region private fields
 
@@ -253,6 +253,27 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion Commands
 
         #region public methods
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is filtered from the tree.
+        ///     Always false for environment node
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is filtered; otherwise, <c>false</c>.
+        /// </value>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/01/23</date>
+        public override bool IsFiltered
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                //Do Nothing
+            }
+        }
 
         /// <summary>
         ///     Raises the property changed for the commands.

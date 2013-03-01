@@ -410,7 +410,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             _searchFilter = searhFilter;
             Root.FilterText = _searchFilter;
-            Root.UpdateFilteredNodeExpansionStates();
+            Root.UpdateFilteredNodeExpansionStates(searhFilter);
         }
 
         ///// <summary>

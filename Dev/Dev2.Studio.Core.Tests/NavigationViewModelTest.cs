@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -356,6 +357,75 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
             Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
             Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+        }
+
+        [TestMethod]
+        public void FilteredNavigationViewModel_WhereNoContent_Expects_RootAndEnvironmentNotFiltered()
+        {
+            vm.UpdateSearchFilter("ZD");
+            Assert.IsTrue(vm.Root.IsFiltered == false);
+            Assert.IsTrue(vm.Root.IsExpanded == true);
+            Assert.IsTrue(vm.Root.Children.ToList().All(c => c.IsFiltered == false));
+        }
+
+        [TestMethod]
+        public void NavigationViewModel_WhereNoContent_Expects_RootAndEnvironmentNotFiltered()
+        {
+            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+
+            resourceVM.TreeParent.Remove(resourceVM);
+            resourceVM2_1.TreeParent.Remove(resourceVM2_1);
+            resourceVM2_2.TreeParent.Remove(resourceVM2_2);
+
+            vm.UpdateSearchFilter("");
+            Assert.IsTrue(vm.Root.ChildrenCount == 0);
+            Assert.IsTrue(vm.Root.IsFiltered == false);
+            Assert.IsTrue(vm.Root.IsExpanded == true);
+            Assert.IsTrue(vm.Root.Children.ToList().All(c => c.IsFiltered == false));
+            Assert.IsTrue(vm.Root.Children.ToList().All(c => c.ChildrenCount == 0));
+        }
+
+        [TestMethod]
+        public void Filter_Expects_FilteredCategories_WithNoResources_IsFiltered()
+        {
+            vm.UpdateSearchFilter("zd");
+
+            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+
+            Assert.IsTrue(resourceVM.TreeParent.IsFiltered);
+            Assert.IsTrue(resourceVM2_1.TreeParent.IsFiltered);
+            Assert.IsTrue(resourceVM2_2.TreeParent.IsFiltered);
+        }
+
+        [TestMethod]
+        public void Filter_Expects_FilteredCategories_WithResources_IsNotFiltered_AndExpanded()
+        {
+            var nonMatchingNode1 = vm.Root.FindChild(mockResourceModel.Object);
+            var nonMatchingNode2 = vm.Root.FindChild(mockResourceModel1.Object);
+            var matchingNode = vm.Root.FindChild(mockResourceModel2.Object);
+
+            vm.UpdateSearchFilter("Mock2");
+
+            Assert.IsTrue(nonMatchingNode1.IsFiltered);
+            Assert.IsTrue(matchingNode.IsFiltered == false);
+            Assert.IsTrue(matchingNode.TreeParent.IsExpanded == true);
+        }
+
+        [TestMethod]
+        public void Filter_Expects_UnFilteredCategories_NotFiltered_AndExpanded()
+        {
+            var nonMatchingCategory = vm.Root.FindChild(mockResourceModel.Object).TreeParent;
+            var matchingCategory = vm.Root.FindChild(mockResourceModel1.Object).TreeParent;
+
+            vm.UpdateSearchFilter("Testing2");
+
+            Assert.IsTrue(nonMatchingCategory.IsFiltered == true);
+            Assert.IsTrue(matchingCategory.IsFiltered == false);
+            Assert.IsTrue(matchingCategory.IsExpanded == true);
         }
         #endregion Filtering
 
