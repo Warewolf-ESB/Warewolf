@@ -19,13 +19,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
-        //private readonly static int _EndOfData = int.MaxValue;
-        //IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
-        //IDataListCompiler dlcomp = DataListFactory.CreateDataListCompiler();
-        //IRecordsetScopingObject scopingObj;
-        //StringTokenizerOld stok = new StringTokenizerOld();
+
         string _sourceString;
-        //bool endOfFile = false;
 
         private IList<DataSplitDTO> _resultsCollection;
         public IList<DataSplitDTO> ResultsCollection
@@ -89,7 +84,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-
                 CleanArguments(ResultsCollection);
 
                 if (ResultsCollection.Count > 0)
@@ -148,7 +142,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         toUpsert.FlushIterationFrame(true);
                                         toUpsert = null;
                                         //toUpsert.PublishLiveIterationData();
-                                }
+                                    }
                                     catch (Exception e)
                                     {
                                         allErrors.AddError(e.Message);
@@ -157,11 +151,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 else
                                 {
                                     compiler.Upsert(dlID, toUpsert, out errors);
-                                allErrors.MergeErrors(errors);
+                                    allErrors.MergeErrors(errors);
+                                }
                             }
                         }
                     }
-                }
                 }
 
             }
@@ -171,7 +165,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {

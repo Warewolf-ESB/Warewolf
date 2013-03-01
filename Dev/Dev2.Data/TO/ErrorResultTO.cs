@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Dev2.Common;
 
@@ -18,7 +17,7 @@ namespace Dev2.DataList.Contract
         /// <param name="msg">The MSG.</param>
         public void AddError(string msg)
         {
-            if (msg != null && msg != string.Empty)
+            if (!string.IsNullOrEmpty(msg))
             {
                 _errorList.Add(msg);
             }
@@ -95,7 +94,9 @@ namespace Dev2.DataList.Contract
             {
                 result.Append(e);
                 if(_errorList.IndexOf(e) + 1 < _errorList.Count)
+                {
                     result.AppendLine();
+                }
             }
 
             return result.ToString();
