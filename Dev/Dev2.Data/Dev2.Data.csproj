@@ -87,7 +87,6 @@
     <Compile Include="Binary Objects\BinaryDataListUtil.cs" />
     <Compile Include="Binary Objects\DataListItem.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListStorage.cs" />
-    <Compile Include="Binary Objects\Dev2BinaryDataListEntryStorage.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListFactory.cs" />
     <Compile Include="Binary Objects\Dev2BinaryRecsetTO.cs" />
     <Compile Include="Binary Objects\Dev2Column.cs" />
