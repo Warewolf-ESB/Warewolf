@@ -52,12 +52,14 @@ namespace Dev2.DataList.Contract.TO {
 
             if (_payloadB != null)
             {
-                Stream streamWrite = new MemoryStream(_payloadB);
-                BinaryFormatter binaryWrite = new BinaryFormatter();
-                streamWrite.Seek(0, SeekOrigin.Begin);
-                obj = binaryWrite.Deserialize(streamWrite);
-                streamWrite.Close();
-                streamWrite.Dispose();
+                using(Stream streamWrite = new MemoryStream(_payloadB))
+                {
+                    BinaryFormatter binaryWrite = new BinaryFormatter();
+                    streamWrite.Seek(0, SeekOrigin.Begin);
+                    obj = binaryWrite.Deserialize(streamWrite);
+                    streamWrite.Close();
+                    streamWrite.Dispose();
+                }
             }
 
             return obj;

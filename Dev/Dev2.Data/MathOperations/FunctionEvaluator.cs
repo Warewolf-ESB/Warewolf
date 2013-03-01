@@ -12,10 +12,6 @@ namespace Dev2.MathOperations {
     public class FunctionEvaluator : IFunctionEvaluator {
 
         #region Private Members
-
-        private static IDev2DataLanguageParser _parser = DataListFactory.CreateLanguageParser(); 
-        private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
-        private static string _mathsFnDataList = string.Empty;
         private static IDev2CalculationManager _manager;
 
         //private static string _emptyADL = "<ADL></ADL>";
@@ -23,12 +19,6 @@ namespace Dev2.MathOperations {
         #endregion Private Members
 
         #region Ctor
-
-        internal FunctionEvaluator(string expression) {
-            // The evaluation Manager is instantiated here.
-            // This will in-turn create an expression which will parse out the expression 
-            // to determine the execution of the operation path the expression will take
-        }
 
         internal FunctionEvaluator() {
             _manager = new Dev2CalculationManager();
@@ -46,13 +36,13 @@ namespace Dev2.MathOperations {
         /// <returns></returns>
         public string EvaluateFunction(IEvaluationFunction expressionTO, Guid curDLID, out ErrorResultTO errors) {
             string expression = expressionTO.Function;
-
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
             ErrorResultTO allErrors = new ErrorResultTO();
             
 
             // Travis.Frisinger : 31.01.2013 - Hi-jack this and evaluate all our internal 
-            IBinaryDataListEntry bde = _compiler.Evaluate(curDLID, enActionType.CalculateSubstitution, expression, false, out errors);
+            IBinaryDataListEntry bde = compiler.Evaluate(curDLID, enActionType.CalculateSubstitution, expression, false, out errors);
             allErrors.MergeErrors(errors);
             if (bde != null)
             {
@@ -103,7 +93,7 @@ namespace Dev2.MathOperations {
 
 
                             // this way we fetch the correct field with the data...
-                            IBinaryDataListEntry e = _compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
+                            IBinaryDataListEntry e = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
                             allErrors.MergeErrors(errors);
                             string error = string.Empty;
                             refNode.EvaluatedValue = e.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;;
@@ -121,7 +111,7 @@ namespace Dev2.MathOperations {
                                 evaluateRecordLeft = evaluateRecordLeft.Substring(2, evaluateRecordLeft.IndexOf('(') - 2);
 
                                 int totalRecords = 0;
-                                IBinaryDataList bdl = _compiler.FetchBinaryDataList(curDLID, out errors);
+                                IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
                                 IBinaryDataListEntry entry;
                                 if (bdl.TryGetEntry(evaluateRecordLeft, out entry, out error)) {
                                     totalRecords = entry.FetchLastRecordsetIndex();
@@ -135,7 +125,7 @@ namespace Dev2.MathOperations {
                             
                         } else if (allNodes[i] is DatalistReferenceNode) {
                             DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
-                            IBinaryDataListEntry entry = _compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
+                            IBinaryDataListEntry entry = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
                             allErrors.MergeErrors(errors);
                             string error = string.Empty;
 
@@ -188,7 +178,7 @@ namespace Dev2.MathOperations {
                             }
 
                             int totalRecords = 0;
-                            IBinaryDataList bdl = _compiler.FetchBinaryDataList(curDLID, out errors);
+                            IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
                             string error = string.Empty;
                             IBinaryDataListEntry entry;
                             if (bdl.TryGetEntry(evaluateRecordLeft, out entry, out error)) {

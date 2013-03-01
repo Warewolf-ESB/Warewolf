@@ -41,13 +41,15 @@ namespace Dev2.Server.DataList.Translators
                 errors.AddError("Null input argument");
                 throw new ArgumentNullException("input");
             }
-            
 
+            DataListTranslatedPayloadTO resultTO = null;
             BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, input);
+            using(MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, input);
 
-            DataListTranslatedPayloadTO resultTO = new DataListTranslatedPayloadTO(ms.ToArray());
+                resultTO = new DataListTranslatedPayloadTO(ms.ToArray());
+            }
 
             return resultTO;
         }
@@ -73,10 +75,12 @@ namespace Dev2.Server.DataList.Translators
            
             IBinaryDataList result;
 
-            MemoryStream ms = new MemoryStream(input);
-            BinaryFormatter bf = new BinaryFormatter();
-            ms.Position = 0;
-            result = (IBinaryDataList)bf.Deserialize(ms);
+            using(MemoryStream ms = new MemoryStream(input))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                ms.Position = 0;
+                result = (IBinaryDataList)bf.Deserialize(ms);
+            }
 
             return result;
         }

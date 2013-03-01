@@ -20,7 +20,7 @@ namespace Dev2.DynamicServices {
     /// data store or a webservice call or a static Service Method invocation
     /// that will occur locally on the service
     /// </summary>
-    public class ServiceAction : DynamicServiceObjectBase {
+    public class ServiceAction : DynamicServiceObjectBase, IDisposable {
         #region Private Fields
         private bool _resultsToClient = true;
         private bool _terminateServiceOnFault = true;
@@ -33,6 +33,7 @@ namespace Dev2.DynamicServices {
         private Queue<PooledServiceActivity> _workflowPool = new Queue<PooledServiceActivity>();
 
         private MemoryStream _xamlStream;
+        bool _disposing;
         #endregion
 
         #region Public Properties
@@ -316,7 +317,30 @@ namespace Dev2.DynamicServices {
             _workflowActivity = activity;
         }
 
-        
+
+
+        // Picked up hanging references via .net memory profiler ;)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposing)
+            {
+                if (disposing)
+                {
+                    _xamlStream.Close();
+                    _xamlStream.Dispose();
+                }
+
+                // There are no unmanaged resources to release, but
+                // if we add them, they need to be released here.
+            }
+            _disposing = true;
+
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
     }
     #endregion
 

@@ -215,7 +215,11 @@ namespace Dev2 {
             try {
                 byte[] fileData = Convert.FromBase64String(base64FileData);
 
-                _ioProvider.Put(new MemoryStream(fileData), destinationPath, true, userName, password);
+                using(MemoryStream ms = new MemoryStream(fileData))
+                {
+                    _ioProvider.Put(ms, destinationPath, true, userName, password);    
+                }
+                
 
                 returnData.Result = "File Created";
             }

@@ -173,25 +173,27 @@ namespace Dev2.Session
             if (typeOf == enTranslationTypes.XML)
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                MemoryStream ms = new MemoryStream();
-                bf.Serialize(ms, datalist);
-
-                Guid pushID = _compiler.ConvertTo(binaryFormat, ms.ToArray(), string.Empty, out errors);
-
-                if (errors.HasErrors())
+                using(MemoryStream ms = new MemoryStream())
                 {
-                    error = errors.FetchErrors()[0];
-                }
-                else
-                {
-                    // now extract into XML
-                    result = _compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Data, out errors);
-                    if (errors.HasErrors())
+                    bf.Serialize(ms, datalist);
+
+                    Guid pushID = _compiler.ConvertTo(binaryFormat, ms.ToArray(), string.Empty, out errors);
+
+                    if(errors.HasErrors())
                     {
                         error = errors.FetchErrors()[0];
                     }
+                    else
+                    {
+                        // now extract into XML
+                        result = _compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Data, out errors);
+                        if(errors.HasErrors())
+                        {
+                            error = errors.FetchErrors()[0];
+                        }
+                    }
+                    ms.Close();
                 }
-                ms.Dispose();
             }
 
             return result;

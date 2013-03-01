@@ -488,45 +488,48 @@ namespace Dev2.PathOperations
             }
 
             // now transfer the zip file to the correct location
-            Stream s2 = new MemoryStream(File.ReadAllBytes(tmpZip));
-
-            // adjust so it has .zip on the end
-            string zipLoc = dst.IOPath.Path;
-
-            //MO : 22-08-2012 : If the user enters a full file path and no archive name 
-            if (!string.IsNullOrEmpty(args.ArchiveName))
+            string result = string.Empty;
+            using(Stream s2 = new MemoryStream(File.ReadAllBytes(tmpZip)))
             {
-                if (!args.ArchiveName.EndsWith(".zip"))
+
+                // adjust so it has .zip on the end
+                string zipLoc = dst.IOPath.Path;
+
+                //MO : 22-08-2012 : If the user enters a full file path and no archive name 
+                if(!string.IsNullOrEmpty(args.ArchiveName))
                 {
-                    zipLoc += dst.PathSeperator() + args.ArchiveName + ".zip";
+                    if(!args.ArchiveName.EndsWith(".zip"))
+                    {
+                        zipLoc += dst.PathSeperator() + args.ArchiveName + ".zip";
+                    }
+                    else
+                    {
+                        zipLoc += dst.PathSeperator() + args.ArchiveName;
+                    }
                 }
                 else
                 {
-                    zipLoc += dst.PathSeperator() + args.ArchiveName;
+                    if(!dst.IOPath.Path.EndsWith(".zip"))
+                    {
+                        zipLoc += ".zip";
+                    }
                 }
-            }
-            else
-            {
-                if (!dst.IOPath.Path.EndsWith(".zip"))
+
+                // add archive name to path
+                dst = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipLoc, dst.IOPath.Username, dst.IOPath.Password));
+
+                Dev2CRUDOperationTO zipTransferArgs = new Dev2CRUDOperationTO(false);
+
+                result = resultOk;
+
+                if(dst.Put(s2, dst.IOPath, zipTransferArgs) < 0)
                 {
-                    zipLoc += ".zip";
+                    result = resultBad;
                 }
+
+                // remove tmp directory and tmp zip
+                RemoveTmpFile(tmpZip);
             }
-
-            // add archive name to path
-            dst = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipLoc, dst.IOPath.Username, dst.IOPath.Password));
-
-            Dev2CRUDOperationTO zipTransferArgs = new Dev2CRUDOperationTO(false);
-
-            string result = resultOk;
-
-            if (dst.Put(s2, dst.IOPath, zipTransferArgs) < 0)
-            {
-                result = resultBad;
-            }
-
-            // remove tmp directory and tmp zip
-            RemoveTmpFile(tmpZip);
 
             return result;
         }
@@ -649,15 +652,17 @@ namespace Dev2.PathOperations
             bool result = true;
 
             String tmp = CreateTmpFile();
-            Stream s = new MemoryStream(File.ReadAllBytes(tmp));
-
-            if (dst.Put(s, dst.IOPath, args) < 0)
+            using(Stream s = new MemoryStream(File.ReadAllBytes(tmp)))
             {
-                result = false;
-            }
 
-            s.Close();
-            RemoveTmpFile(tmp);
+                if(dst.Put(s, dst.IOPath, args) < 0)
+                {
+                    result = false;
+                }
+
+                s.Close();
+                RemoveTmpFile(tmp);
+            }
 
             return result;
         }
