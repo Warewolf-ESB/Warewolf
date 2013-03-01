@@ -189,7 +189,6 @@
     <Content Include="wwwroot\Scripts\Sources\DbSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServerViewModel.js" />
     <Content Include="wwwroot\Views\Services\DbService.htm" />
-    <Content Include="wwwroot\Views\Sources\Database.htm" />
     <Content Include="wwwroot\Views\Sources\DbSource.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Scripts\Switch\DragModel.js" />

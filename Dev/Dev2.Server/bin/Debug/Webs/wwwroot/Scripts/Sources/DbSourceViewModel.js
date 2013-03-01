@@ -240,6 +240,8 @@
         });
         $("button").button();
         $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Connection')");
+        $dialogSaveButton.attr("tabindex", "59");
+        $dialogSaveButton.next().attr("tabindex", "60");
     };
 
     if (!$dialogContainerID) {

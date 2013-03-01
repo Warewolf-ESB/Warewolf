@@ -205,6 +205,8 @@
         });
 
         $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
+        $dialogSaveButton.attr("tabindex", "105");
+        $dialogSaveButton.next().attr("tabindex", "106");
     };
 
     self.createDialog();
