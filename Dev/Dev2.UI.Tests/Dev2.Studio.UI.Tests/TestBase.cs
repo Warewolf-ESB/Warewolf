@@ -2201,19 +2201,20 @@ namespace Dev2.CodedUI.Tests
         }
 
         // ii.1 - Database Service = database service wizard.
-        [TestMethod]
-        public void AllButtonsLaunchRelevantWizards_DatabaseWizard_Expected_DatabaseWizardLaunched()
-        {
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            string windowTitle = DatabaseServiceWizardUIMap.GetWorkflowWizardName();
-            Assert.AreEqual("Database Service Details", windowTitle);
-            bool isClosed = this.DatabaseServiceWizardUIMap.CloseWizard();
-            if (!isClosed)
-            {
-                Assert.Fail("Unable to close wizard window");
-            }
-        }
+        // Sashen.Naidoo - 28-02-2013 - Database Service wizard UI has changed.
+        //[TestMethod]
+        //public void AllButtonsLaunchRelevantWizards_DatabaseWizard_Expected_DatabaseWizardLaunched()
+        //{
+        //    RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
+        //    Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+        //    string windowTitle = DatabaseServiceWizardUIMap.GetWorkflowWizardName();
+        //    Assert.AreEqual("Database Service Details", windowTitle);
+        //    bool isClosed = this.DatabaseServiceWizardUIMap.CloseWizard();
+        //    if (!isClosed)
+        //    {
+        //        Assert.Fail("Unable to close wizard window");
+        //    }
+        //}
 
         // ii.2 - Plugin Service = plugin service wizard
         [TestMethod]

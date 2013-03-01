@@ -13,28 +13,28 @@
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourceServer">Server:</label>
-                        <input tabindex="52" type="text" name="dbSourceServer" id="dbSourceServer" placeholder="" autocomplete="off" data-bind="value: data.server, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="2" type="text" name="dbSourceServer" id="dbSourceServer" placeholder="" autocomplete="off" data-bind="value: data.server, valueUpdate: 'afterkeydown'" />
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label">Authentication Type:</label>
                         <span>
                             <span>
-                                <input tabindex="53" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
+                                <input tabindex="3" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
                                 <label class="radio" for="authenticationTypeWindows">Windows</label>
                             </span>
                             <span>
-                                <input tabindex="54" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
+                                <input tabindex="4" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
                                 <label class="radio" for="authenticationTypeUser">User</label>
                             </span>
                         </span>
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourceUserID" data-bind="visible: isUserInputVisible">User Name:</label>
-                        <input tabindex="55" type="text" name="dbSourceUserID" id="dbSourceUserID" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userID, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="5" type="text" name="dbSourceUserID" id="dbSourceUserID" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userID, valueUpdate: 'afterkeydown'" />
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourcePassword" data-bind="visible: isUserInputVisible">Password:</label>
-                        <input tabindex="56" type="password" name="dbSourcePassword" id="dbSourcePassword" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="6" type="password" name="dbSourcePassword" id="dbSourcePassword" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
                     </div>
                 </div>
                 <div style="text-align: right">
@@ -49,7 +49,7 @@
                             <span>Unsuccessful</span>
                         </span>
                     </span>
-                    <button tabindex="57" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
+                    <button tabindex="7" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
                 </div>
             </div>
         </div>
@@ -67,12 +67,12 @@
             </span>
             <div id="field">
                 <label data-bind="visible: testSucceeded()" class="sources-server-form-label" for="dbSourceDatabase">Database:</label>
-                <select tabindex="58" id="dbSourceDatabase" name="dbSourceDatabase" data-bind="value: data.databaseName, options: dataSources, optionsCaption: 'Choose...', visible: testSucceeded()" style="width: 260px" />
+                <select tabindex="8" id="dbSourceDatabase" name="dbSourceDatabase" data-bind="value: data.databaseName, options: dataSources, optionsCaption: 'Choose...', visible: testSucceeded()" style="width: 260px" />
             </div>
         </div>
         <div class="button-bar" style="clear: both; margin-top: 300px">
-            <button tabindex="59" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Connection</button>
-            <button tabindex="60" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
+            <button tabindex="9" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Connection</button>
+            <button tabindex="10" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
         </div>
     </div>
 </div>

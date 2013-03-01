@@ -87,6 +87,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void DependancyGraph_OnDoubleClickWorkFlow_Expected_NewTab()
         {
+            
             /*
             // Create new Activity
             var myTestBase = new TestBase();

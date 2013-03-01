@@ -75,10 +75,15 @@
     <Compile Include="UIMap.cs" />
     <Compile Include="UIMap.Designer.cs" />
     <Compile Include="UIMapBase.cs" />
+    <Compile Include="DatabaseServiceWizard.cs" />
     <Compile Include="UIMaps\ConnectViewUIMap.cs" />
     <Compile Include="UIMaps\ConnectViewUIMap.Designer.cs" />
-    <Compile Include="UIMaps\DatabaseServiceWizardUIMap.cs" />
-    <Compile Include="UIMaps\DatabaseServiceWizardUIMap.Designer.cs" />
+    <Compile Include="UIMaps\DatabaseServiceWizardUIMap.cs">
+      <DependentUpon>DatabaseServiceWizardUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\DatabaseServiceWizardUIMap.Designer.cs">
+      <DependentUpon>DatabaseServiceWizardUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\DebugUIMap.cs">
       <DependentUpon>DebugUIMap.uitest</DependentUpon>
     </Compile>
@@ -154,6 +159,7 @@
     <Compile Include="UITestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UIMaps\DatabaseSourceUIMap.uitest" />
     <None Include="UIMaps\FeedbackUIMap.uitest" />
     <None Include="UIMap.uitest" />
     <None Include="UIMaps\ConnectViewUIMap.uitest" />

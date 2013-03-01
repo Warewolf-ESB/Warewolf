@@ -7,6 +7,8 @@
 
     var $dialogContainerID = null;
     var $dialogSaveButton = null;
+
+    self.onSaveCompleted = null;
     
     self.data = {
         resourceID: ko.observable(""),
@@ -82,7 +84,6 @@
 
     self.isTestResultsLoading = ko.observable(false);
     self.showTestResults = ko.observable(false);
-    self.showTestResults = ko.observable(false);
     self.testSucceeded = ko.observable(false);
     self.testError = ko.observable("");
 
@@ -153,6 +154,9 @@
         self.saveViewModel.showDialog(isWindowClosedOnSave, function () {            
             if (!isWindowClosedOnSave) {
                 $dialogContainerID.dialog("close");
+                if (self.onSaveCompleted != null) {
+                    self.onSaveCompleted(self);
+                }
             };
         });
     };
@@ -184,7 +188,8 @@
         });
     };
 
-    self.showDialog = function (sourceName) {
+    self.showDialog = function (sourceName, onSaveCompleted) {
+        self.onSaveCompleted = onSaveCompleted;
         // NOTE: Should only be invoked from DbService form!
 
         self.load(sourceName);
@@ -196,7 +201,6 @@
         }
 
         // display showHelp checkbox that's on that title bar
-        //bug -gered up
         var $chkShowHelp = $("showHelp");
         if ($chkShowHelp) {
             $chkShowHelp.css("visibility", "visible");

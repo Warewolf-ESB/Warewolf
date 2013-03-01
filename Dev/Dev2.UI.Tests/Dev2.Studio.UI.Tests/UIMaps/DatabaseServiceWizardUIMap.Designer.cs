@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Dev2.CodedUI.Tests.UIMaps.DatabaseServiceUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -18,7 +18,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.DatabaseServiceUIMapClasses
     using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
@@ -26,171 +25,204 @@ namespace Dev2.CodedUI.Tests.UIMaps.DatabaseServiceUIMapClasses
     using MouseButtons = System.Windows.Forms.MouseButtons;
     
     
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class DatabaseServiceWizardUIMap
     {
         
         /// <summary>
-        /// WindowName
+        /// FuckOff
         /// </summary>
-        public void WindowName()
+        public void FuckOff()
         {
             #region Variable Declarations
-            WpfTitleBar uIDatabaseServiceDetaiTitleBar = this.UIDatabaseServiceDetaiWindow.UIDatabaseServiceDetaiTitleBar;
+            WpfImage uIItemImage = this.UIBusinessDesignStudioWindow.UIZ5bc03f5226434284a36Custom.UIUI_TabManager_AutoIDTabList.UIStartPageTabPage.UIStartPageCustom.UIItemImage;
             #endregion
 
-            // Click 'Database Service Details' title bar
-            Mouse.Click(uIDatabaseServiceDetaiTitleBar, new Point(597, 6));
+            // Click image
+            Mouse.Click(uIItemImage, new Point(631, 133));
         }
-
-
-        private void EnterDatabaseServiceName(string name) {
-            #region Variable Declarations
-            WinWindow uIDatabaseServiceDetaiWindow1 = this.UIDatabaseServiceDetaiWindow1;
-            #endregion
-
-            // Click 'Database Service Details' window
-            Mouse.Click(uIDatabaseServiceDetaiWindow1, new Point(253, 69));
-
-            // Type 'enterNameHereSSSSSSSSSSS' in 'Database Service Details' window
-            Keyboard.SendKeys(uIDatabaseServiceDetaiWindow1, name, ModifierKeys.None);
-        }
-
-        private void EnterCategory(string category) {
-            #region Variable Declarations
-            WinWindow uIDatabaseServiceDetaiWindow1 = this.UIDatabaseServiceDetaiWindow1;
-            #endregion
-            // Type 'category' in 'Category TextBox' window
-            Keyboard.SendKeys(uIDatabaseServiceDetaiWindow1, category, ModifierKeys.None);
-
-            // Click 'Category Autocomplete' window
-            Mouse.Click(uIDatabaseServiceDetaiWindow1, new Point(289, 192));
-        }
-
-        private void NextButtonClick() {
-            #region Variable Declarations
-            WinWindow uIDatabaseServiceDetaiWindow1 = this.UIDatabaseServiceDetaiWindow1;
-            #endregion
-
-            // Click 'Next' Button
-            Mouse.Click(uIDatabaseServiceDetaiWindow1, new Point(650, 205));
-        }
-        
         
         #region Properties
-        public virtual Enter1of1Params Enter1of1Params
+        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
             {
-                if ((this.mEnter1of1Params == null))
+                if ((this.mUIBusinessDesignStudioWindow == null))
                 {
-                    this.mEnter1of1Params = new Enter1of1Params();
+                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
-                return this.mEnter1of1Params;
-            }
-        }
-        
-        public UIDatabaseServiceDetaiWindow UIDatabaseServiceDetaiWindow
-        {
-            get
-            {
-                if ((this.mUIDatabaseServiceDetaiWindow == null))
-                {
-                    this.mUIDatabaseServiceDetaiWindow = new UIDatabaseServiceDetaiWindow();
-                }
-                return this.mUIDatabaseServiceDetaiWindow;
-            }
-        }
-        
-        public UIDatabaseServiceDetaiWindow1 UIDatabaseServiceDetaiWindow1
-        {
-            get
-            {
-                if ((this.mUIDatabaseServiceDetaiWindow1 == null))
-                {
-                    this.mUIDatabaseServiceDetaiWindow1 = new UIDatabaseServiceDetaiWindow1();
-                }
-                return this.mUIDatabaseServiceDetaiWindow1;
+                return this.mUIBusinessDesignStudioWindow;
             }
         }
         #endregion
         
         #region Fields
-        private Enter1of1Params mEnter1of1Params;
-        
-        private UIDatabaseServiceDetaiWindow mUIDatabaseServiceDetaiWindow;
-        
-        private UIDatabaseServiceDetaiWindow1 mUIDatabaseServiceDetaiWindow1;
+        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
     
-    /// <summary>
-    /// Parameters to be passed into 'Enter1of1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
-    public class Enter1of1Params
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIBusinessDesignStudioWindow : WpfWindow
     {
         
-        #region Fields
-        /// <summary>
-        /// Type 'enterNameHereSSSSSSSSSSS' in 'Database Service Details' window
-        /// </summary>
-        public string UIDatabaseServiceDetaiWindow1SendKeys = "enterNameHereSSSSSSSSSSS";
-        
-        /// <summary>
-        /// Type 'database' in 'Database Service Details' window
-        /// </summary>
-        public string UIDatabaseServiceDetaiWindow1SendKeys1 = "database";
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
-    public class UIDatabaseServiceDetaiWindow : WpfWindow
-    {
-        
-        public UIDatabaseServiceDetaiWindow()
+        public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Database Service Details";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\Ashley.lewis)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Database Service Details");
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
             #endregion
         }
         
         #region Properties
-        public WpfTitleBar UIDatabaseServiceDetaiTitleBar
+        public UIZ5bc03f5226434284a36Custom UIZ5bc03f5226434284a36Custom
         {
             get
             {
-                if ((this.mUIDatabaseServiceDetaiTitleBar == null))
+                if ((this.mUIZ5bc03f5226434284a36Custom == null))
                 {
-                    this.mUIDatabaseServiceDetaiTitleBar = new WpfTitleBar(this);
+                    this.mUIZ5bc03f5226434284a36Custom = new UIZ5bc03f5226434284a36Custom(this);
+                }
+                return this.mUIZ5bc03f5226434284a36Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIZ5bc03f5226434284a36Custom mUIZ5bc03f5226434284a36Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIZ5bc03f5226434284a36Custom : WpfCustom
+    {
+        
+        public UIZ5bc03f5226434284a36Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties["AutomationId"] = "Z5bc03f5226434284a364fdd8116a4038";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIStartPageTabPage UIStartPageTabPage
+        {
+            get
+            {
+                if ((this.mUIStartPageTabPage == null))
+                {
+                    this.mUIStartPageTabPage = new UIStartPageTabPage(this);
+                }
+                return this.mUIStartPageTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIStartPageTabPage mUIStartPageTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIStartPageTabPage : WpfTabPage
+    {
+        
+        public UIStartPageTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Start Page";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIStartPageCustom UIStartPageCustom
+        {
+            get
+            {
+                if ((this.mUIStartPageCustom == null))
+                {
+                    this.mUIStartPageCustom = new UIStartPageCustom(this);
+                }
+                return this.mUIStartPageCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIStartPageCustom mUIStartPageCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIStartPageCustom : WpfCustom
+    {
+        
+        public UIStartPageCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties["AutomationId"] = "splurt";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage UIItemImage
+        {
+            get
+            {
+                if ((this.mUIItemImage == null))
+                {
+                    this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mUIDatabaseServiceDetaiTitleBar.SearchProperties[WpfTitleBar.PropertyNames.AutomationId] = "TitleBar";
-                    this.mUIDatabaseServiceDetaiTitleBar.WindowTitles.Add("Database Service Details");
+                    this.mUIItemImage.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
                     #endregion
                 }
-                return this.mUIDatabaseServiceDetaiTitleBar;
+                return this.mUIItemImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTitleBar mUIDatabaseServiceDetaiTitleBar;
+        private WpfImage mUIItemImage;
         #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
-    public class UIDatabaseServiceDetaiWindow1 : WinWindow
-    {
-        
-        public UIDatabaseServiceDetaiWindow1()
-        {
-            #region Search Criteria
-            this.SearchProperties[WinWindow.PropertyNames.Name] = "Database Service Details";
-            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Database Service Details");
-            #endregion
-        }
     }
 }

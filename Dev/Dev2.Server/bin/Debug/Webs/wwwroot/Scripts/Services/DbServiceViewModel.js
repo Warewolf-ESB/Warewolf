@@ -10,9 +10,9 @@
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     
     // TODO: reinstate this check when all resources use an ID 
-    //self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
+    self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     // TODO: remove this check: resourceID is either a GUID or a name to cater for legacy stuff
-    self.isEditing = resourceID ? !(resourceID === "" || $.Guid.IsEmpty(resourceID)) : false;
+    //self.isEditing = resourceID ? !(resourceID === "" || $.Guid.IsEmpty(resourceID)) : false;
 
     self.data = {
         resourceID: ko.observable(""),
@@ -77,7 +77,6 @@
     self.isEditSourceEnabled = ko.computed(function () {
         return self.data.source();
     });
-
     
     self.title = ko.observable("New Service");
     self.title.subscribe(function (newValue) {
@@ -270,7 +269,14 @@
         // 
         // dbSourceViewModel is a global variable instantiated in DbSource.htm
         //
-        dbSourceViewModel.showDialog(theSourceName);
+        dbSourceViewModel.showDialog(theSourceName, self.getNewSourceName);
+    };
+
+    self.getNewSourceName = function(dbSourceModel) {
+        self.sources.ResourceName = dbSourceModel.data.resourceName();
+        self.sources.push(dbSourceModel.data.resourceName());
+        self.data.source(dbSourceModel.data.resourceName());
+        console.log("self.sources.ResourceName = " + self.sources.ResourceName);
     };
     
     self.load();    
