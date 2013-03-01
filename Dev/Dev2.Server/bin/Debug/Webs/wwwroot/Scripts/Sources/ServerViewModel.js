@@ -32,7 +32,8 @@
     });
 
     $address.autocomplete({      
-        minLength: 0,        
+        minLength: 0,
+        source: [],
         select: function (event, ui) {
             var addr = "http://" + ui.item.value + ":77/dsf";
             self.data.address(addr);

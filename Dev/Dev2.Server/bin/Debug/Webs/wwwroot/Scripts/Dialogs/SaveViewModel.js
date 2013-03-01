@@ -1,15 +1,14 @@
 ﻿function SaveViewModel(saveUri, baseViewModel, saveFormID) {
     var self = this;
     var $saveForm = $("#" + saveFormID);
-    var $errDiv = $("#saveFormError");
-    var $errDivSpan = $("#saveFormError span");
     var $resourceFoldersScrollBox = $("#resourceFoldersScrollBox");
     var $resourceFoldersScrollBoxHeight = 240;
     var $resourceFolders = $("#resourceFolders");
     var $resourceName = $("#resourceName");
     var $newFolderDialog = $("#newFolderDialog");
     var $newFolderName = $("#newFolderName");
-
+    var $dialogSaveButton = null;
+    
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
@@ -41,11 +40,16 @@
         return result;
     };
 
+    self.enableSaveButton = function (enabled) {
+        if ($dialogSaveButton) {
+            $dialogSaveButton.button("option", "disabled", !enabled);
+        }
+    };
+    
     self.save = function () {
-        if (!self.validate()) {
+        if (!self.isFormValid()) {
             return;
         }
-
         var jsonData = ko.toJSON(self.data);
         $.post(saveUri + window.location.search, jsonData, function (result) {
             if (!result.IsValid) {
@@ -76,13 +80,15 @@
     };
 
     self.isResourceNameValid = function () {
-        var name = self.data.resourceName().toLowerCase();
-        var isValid = false;
-        if (name !== "" && self.isValidName(name)) {
+        var name = self.data.resourceName() != null ? self.data.resourceName().toLowerCase() : "";
+        var isValid = name !== "" && self.isValidName(name);
+        if (!self.isEditing && isValid) {
+            // check for duplicates
             var matches = ko.utils.arrayFilter(self.resourceNames(), function (resourceName) {
                 return resourceName.toLowerCase() === name;
             });
             isValid = matches.length == 0;
+            console.log("    matches : " + isValid);
         }
         self.enableSaveButton(isValid);
         return isValid;
@@ -99,11 +105,9 @@
     });
 
     $resourceName.keyup(function (e) {
-        if (self.isResourceNameValid()) {
-            // ENTER key pressed
-            if (e.keyCode == 13) {
-                $saveForm.dialog("close");
-            }
+        // ENTER key pressed
+        if (e.keyCode == 13) {
+            self.save();
         }
     });
 
@@ -127,110 +131,84 @@
         utils.selectAndScrollToListItem(folderName, $resourceFoldersScrollBox, $resourceFoldersScrollBoxHeight);
     };
 
-    self.toggleValidationError = function ($elem, isValid) {
-        if (isValid) {
-            $elem.removeClass("error");
-            $elem.addClass("valid");
-        } else {
-            $elem.removeClass("valid");
-            $elem.addClass("error");
-        }
+    self.isFormValid = function () {
+        var isValidPath = self.data.resourcePath() ? true : false;
+        var isValid = isValidPath && self.isResourceNameValid();
+        self.enableSaveButton(isValid);
+        return isValid;
     };
+    
+    self.isSaveFormValid = ko.computed(function () {        
+        return self.isFormValid();
+    });     
 
-    self.validate = function () {
-        var isValidPath = self.data.resourcePath() !== "";
-        var isValidName = self.data.resourceName() !== "";
-
-        self.toggleValidationError($resourceFoldersScrollBox, isValidPath);
-        self.toggleValidationError($resourceName, isValidName);
-        $errDiv.hide();
-        if (!(isValidPath && isValidName)) {
-            var message = (isValidPath || isValidName)
-                   ? 'You missed 1 field. It has been highlighted above.'
-                   : 'You missed 2 fields. They have been highlighted above.';
-
-            $errDivSpan.html(message);
-            $errDiv.show();
-            return false;
-        }
-
-        return true;
-    };
-
-    $resourceName.blur(function () {
-        self.validate();
-    });
-
-    $saveForm.validate({
-        onkeyup: false
-    });
-
-    $newFolderDialog.dialog({
-        resizable: false,
-        autoOpen: false,
-        modal: true,
-        position: utils.getDialogPosition(),
-        buttons: {
-            "Add Folder": function () {
-                self.addNewFolder();
-                $(this).dialog("close");
-            },
-            Cancel: function () {
-                $(this).dialog("close");
+    self.createNewFolderDialog = function() {
+        $newFolderDialog.dialog({
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            position: utils.getDialogPosition(),
+            buttons: {
+                "Add Folder": function () {
+                    self.addNewFolder();
+                    $(this).dialog("close");
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
             }
-        }
-    });
+        });
 
-    var $newFolderOkButton = $(".ui-dialog-buttonpane button:contains('Add Folder')");
-    self.enableNewFolderOkButton = function (enabled) {
-        $newFolderOkButton.button("option", "disabled", !enabled);
-    };
-
-    var $saveButton = $(".ui-dialog-buttonpane button:contains('Save')");
-    self.enableSaveButton = function (enabled) {
-        $saveButton.button("option", "disabled", !enabled);
+        var $newFolderOkButton = $(".ui-dialog-buttonpane button:contains('Add Folder')");
+        self.enableNewFolderOkButton = function (enabled) {
+            $newFolderOkButton.button("option", "disabled", !enabled);
+        };
     };
 
     utils.registerSelectHandler($resourceFolders, function (selectedItem) {
         self.data.resourcePath(selectedItem);
-        self.validate();
     });
 
     self.showDialog = function (isWindowClosedOnSave, onSaveCompleted) {        
+        self.isFormValid();
         self.isWindowClosedOnSave = isWindowClosedOnSave;
         self.onSaveCompleted = onSaveCompleted;
         $saveForm.dialog("open");
     };
+    
+    self.createDialog = function() {
+        $saveForm.dialog({
+            resizable: false,
+            autoOpen: false,
+            height: 453,
+            width: 600,
+            modal: true,
+            position: utils.getDialogPosition(),
+            open: function (event, ui) {
+                self.enableSaveButton(self.data.resourceName());
+                var resourcePath = self.data.resourcePath();
+                if (resourcePath) {
+                    self.selectFolder(resourcePath);
+                }
+            },
+            buttons: [{
+                text: "Save",
+                tabindex: 3,
+                click: self.save
+            }, {
+                text: "Cancel",
+                tabindex: 4,
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]
+        });
 
-    $saveForm.dialog({
-        resizable: false,
-        autoOpen: false,
-        height: 453,
-        width: 600,
-        modal: true,
-        position: utils.getDialogPosition(),
-        open: function (event, ui) {
-            self.enableSaveButton(self.data.resourceName());
-            var resourcePath = self.data.resourcePath();
-            if (resourcePath) {
-                self.selectFolder(resourcePath);
-            }
-        },
-        buttons: [{
-            text: "Save",
-            tabindex: 3,
-            click: self.save
-        }, {
-            text: "Cancel",
-            tabindex: 4,
-            click: function () {
-                $(this).dialog("close");
-            }
-        }]
-    });
+        $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
+    };
 
-    $("#saveFormError").prependTo("div.ui-dialog-buttonpane");
-
+    self.createDialog();
+    self.createNewFolderDialog();
 };
 
 SaveViewModel.create = function (saveUri, baseViewModel, containerID) {

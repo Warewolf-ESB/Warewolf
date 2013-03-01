@@ -514,3 +514,10 @@ body,
 .ui-dialog-titlebar {
     font-size: 1.2em !important;
 }
+
+.ui-autocomplete {
+    max-height: 150px;  /* Check switch ui before changing! */
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}

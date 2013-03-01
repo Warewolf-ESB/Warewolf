@@ -46,6 +46,7 @@
 
     $dbSourceServer.autocomplete({
         minLength: 0,
+        source: [],
         select: function (event, ui) {
             self.data.server(ui.item.value);
             $dbSourceServer.removeClass("ui-autocomplete-loading");
