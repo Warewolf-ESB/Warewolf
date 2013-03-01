@@ -153,7 +153,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
             string error = string.Empty;
 
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, Dev2.DataList.Contract.enActionType.User, "[[[[scalar2]]1]]", out errors);
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[[[scalar2]]1]]", out errors);
 
             Assert.IsFalse(errors.HasErrors());
             var binaryDataListItem = result.FetchScalar();
@@ -162,6 +162,65 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
         }
 
+        [TestMethod]
+        public void EvaluateRecordsetWithStarIndexAndStaticDataExpectStaticDataAppendedToAllRecordsetEntries()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1></scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1></DataList>"));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
+            string error = string.Empty;
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs1(*).f1]] some cool static data ;)", out errors);
+
+            Assert.AreEqual("f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
+
+        [TestMethod]
+        public void EvaluateRecordsetWithStarIndexAndStaticDataAndScalarExpectStaticDataAppendedToAllRecordsetEntries()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1></DataList>"));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
+            string error = string.Empty;
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs1(*).f1]] some cool static data ;) [[scalar1]]", out errors);
+
+            Assert.AreEqual("f1.1 some cool static data ;) even more static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("f1.2 some cool static data ;) even more static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
+
+        [TestMethod]
+        public void EvaluateRecordsetWithStarIndexAndStaticDataAndScalarPreFixExpectStaticDataAppendedToAllRecordsetEntries()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1></DataList>"));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
+            string error = string.Empty;
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[scalar1]] [[rs1(*).f1]] some cool static data ;)", out errors);
+
+            Assert.AreEqual("even more static data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("even more static data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
+
+        [TestMethod]
+        public void EvaluateRecordsetWithStarIndexAndStaticDataAndRecordsetWithIndexPreFixExpectStaticDataAppendedToAllRecordsetEntries()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>recordset data ;)</f1a></rs2></DataList>"));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
+            string error = string.Empty;
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs2(1).f1a]] [[rs1(*).f1]] some cool static data ;)", out errors);
+
+            Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
 
         #endregion Positive Evaluate Test
 

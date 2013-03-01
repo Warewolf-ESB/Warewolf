@@ -1643,13 +1643,40 @@ namespace Dev2.Server.Datalist
                                             allErrors.AddError(error);
                                         } // else we need a column match to process by evaluate
 
-                                        expression = expression.Replace(p.Option.DisplayValue, string.Empty);
+                                        // break into parts for append ;)
+                                        string token = p.Option.DisplayValue;
+                                        string[] expParts = BreakStaticExpressionIntoPreAndPostPart(expression, token);
+                                        expression = expression.Replace(token, string.Empty);
+                                        
 
                                         // Bug 7835
-                                        if(!string.IsNullOrEmpty(expression))
+                                        if(!string.IsNullOrEmpty(expression) && !IsEvaluated(expression))
                                         {
-                                            lastFetch = EvaluateComplexExpression(lastFetch, expression, out errors);
+                                            lastFetch = EvaluateComplexExpression(lastFetch, expParts, out errors);
                                             allErrors.MergeErrors(errors);
+                                            expression = string.Empty; // all good to blank it ;)
+                                        }else if(!string.IsNullOrEmpty(expression) && IsEvaluated(expression))
+                                        {
+
+                                            // we need to evalaute the pre and post portions of the string to get the ordering right ;)
+                                            if(expParts[0] != null)
+                                            {
+                                                expParts[0] = EvaluateExpressionPart(expParts[0], bdl, out errors);
+                                                allErrors.MergeErrors(errors);
+                                                errors.ClearErrors();
+                                            }
+
+                                            if(expParts[1] != null)
+                                            {
+                                                expParts[1] = EvaluateExpressionPart(expParts[1], bdl, out errors);
+                                                allErrors.MergeErrors(errors);
+                                                errors.ClearErrors();
+                                            }
+
+                                            
+                                            lastFetch = EvaluateComplexExpression(lastFetch, expParts, out errors);
+                                            expression = string.Empty;
+                                              
                                         }
 
                                         if (expression != string.Empty && expression != " ") //Bug 7836
@@ -1819,48 +1846,121 @@ namespace Dev2.Server.Datalist
             return lastFetch21;
         }
 
+
+        private string EvaluateExpressionPart(string part, IBinaryDataList bdl, out ErrorResultTO errors)
+        {
+            string error = string.Empty;
+            string result = part;
+            // fully eval expression before we append it ;)
+            IBinaryDataListEntry entry = InternalDataListEvaluate(part, bdl, false, out errors);
+            errors.AddError(error);
+            if (entry != null && !entry.IsRecordset)
+            {
+                // Append to recordset ;)
+                IBinaryDataListItem itm = entry.FetchScalar();
+                if (itm != null)
+                {
+                    result = itm.TheValue;
+                }
+                else
+                {
+                    errors.AddError("Attempted to evaluated a complex expression with recordset, but failed to fully evaluated it");
+                }
+
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Breaks the static expression into pre and post part.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <param name="rsToken">The rs token.</param>
+        /// <returns></returns>
+        private string[] BreakStaticExpressionIntoPreAndPostPart(string expression, string rsToken)
+        {
+            string[] result = new string[2];
+
+            int idx = expression.IndexOf(rsToken, StringComparison.Ordinal);
+            int len = rsToken.Length;
+            int end = expression.Length;
+            
+            if(idx > 0)
+            {
+                // we have prefix data
+                string tmp = expression.Substring(0, idx);
+                result[0] = tmp; 
+
+                // check for post fix data
+                
+                if((idx + len) < end)
+                {
+                    // we have post fix data
+                    tmp = expression.Substring((idx+len), (end-(idx+len)));
+                    result[1] = tmp;
+                }
+
+            }else if(idx == 0)
+            {
+                // we have only postfix data
+                result[0] = null;
+                result[1] = expression.Substring(len, (end - len));
+            }
+
+
+            return result;
+        } 
+
         /// <summary>
         /// Evaluates the complex expression.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="expression">The expression.</param>
+        /// <param name="rawExpression">The raw expression.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        private IBinaryDataListEntry EvaluateComplexExpression(IBinaryDataListEntry payload, string expression, out ErrorResultTO errors)
+        private IBinaryDataListEntry EvaluateComplexExpression(IBinaryDataListEntry payload, string[] expParts, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if (!IsEvaluated(expression))
-            {
-                string error;
-                if (payload.IsRecordset)
-                {
-                    IIndexIterator idxItr = payload.FetchRecordsetIndexes();
-                    while (idxItr.HasMore())
-                    {
-                        int next = idxItr.FetchNextIndex();
-                        IList<IBinaryDataListItem> itms = payload.FetchRecordAt(next, out error);
-                        errors.AddError(error);
-                        if (itms != null)
-                        {
-                            foreach (IBinaryDataListItem itm in itms)
-                            {
-                                IBinaryDataListItem tmp = itm.Clone();
-                                tmp.UpdateValue(itm.TheValue + expression);
-                                payload.TryPutRecordItemAtIndex(tmp, next, out error);
-                            }
 
-                            errors.AddError(error);
+            string error;
+            if (payload.IsRecordset)
+            {
+                IIndexIterator idxItr = payload.FetchRecordsetIndexes();
+                while (idxItr.HasMore())
+                {
+                    int next = idxItr.FetchNextIndex();
+                    IList<IBinaryDataListItem> itms = payload.FetchRecordAt(next, out error);
+                    errors.AddError(error);
+                    if (itms != null)
+                    {
+                        foreach (IBinaryDataListItem itm in itms)
+                        {
+                            IBinaryDataListItem tmp = itm.Clone();
+                            //tmp.UpdateValue(itm.TheValue + expression);
+                            if(expParts[0] != null && expParts[1] != null)
+                            {
+                                // pre and post fix append
+                                tmp.UpdateValue(expParts[0] + itm.TheValue + expParts[1]);    
+                            }else if(expParts[0] == null && expParts[1] != null)
+                            {
+                                // postfix append
+                                tmp.UpdateValue(itm.TheValue + expParts[1]);
+                            }else if(expParts[0] != null && expParts[1] == null)
+                            {
+                                // prefix append only
+                                tmp.UpdateValue(expParts[0] + itm.TheValue);
+                            }
+                                
+                            payload.TryPutRecordItemAtIndex(tmp, next, out error);
                         }
+
+                        errors.AddError(error);
                     }
                 }
-                else
-                {
-                    IBinaryDataListItem itm = payload.FetchScalar();
-                    itm.UpdateValue(itm.TheValue + expression);
-                    payload.TryPutScalar(itm, out error);
-                    errors.AddError(error);
-                }
             }
+
 
             return payload;
         }

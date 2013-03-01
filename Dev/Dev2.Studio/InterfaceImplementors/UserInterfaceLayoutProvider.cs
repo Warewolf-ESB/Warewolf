@@ -900,68 +900,57 @@ namespace Dev2.Studio
             {
                 string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
-            ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+                ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
 
-            ErrorResultTO errors;
-            Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
-                                                           out errors); // fake it to get the ID
+                ErrorResultTO errors = new ErrorResultTO();
 
-            if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
-            {
-                // Bad things happened... Tell the user
-                PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading,
-                                   MessageBoxButton.OK, MessageBoxImage.Error);
-                // Stop configuring!!!
-                return;
-            }
-
-            // Push the correct data to the server ;)
-            if(activityExpression != null && activityExpression.Value == null)
-            {
-                // Its all new, push the empty model
-                compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
-            }
-            else if(activityExpression != null && activityExpression.Value != null)
-            {
-                //we got a model, push it in to the Model region ;)
-                // but first, strip and extract the model data ;)
-
-                val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
-
-                if(!string.IsNullOrEmpty(val)){
-
-                    val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
-
-                }
-                else
+                if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
                 {
-                    // its all invalid
-                    val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                    // Bad things happened... Tell the user
+                    PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading,
+                                       MessageBoxButton.OK, MessageBoxImage.Error);
+                    // Stop configuring!!!
+                    return;
                 }
-            }
 
-            // Now invoke the Wizard ;)
-            Uri requestUri;
-            if(Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
-            {
-                string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-
-                callBackHandler.ModelData = val; // set the model data
-
-                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
-                //callBackHandler.Owner.ShowDialog();
-                WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
-
-                // Wizard finished...
-                // Now Fetch from DL and push the model into the activityExpression.SetValue();
-                try
+                // Push the correct data to the server ;)
+                if(activityExpression != null && activityExpression.Value == null)
                 {
+                    // Its all new, push the empty model
+                    //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
+                }
+                else if(activityExpression != null && activityExpression.Value != null)
+                {
+                    //we got a model, push it in to the Model region ;)
+                    // but first, strip and extract the model data ;)
+
+                    val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
+
+                    if(string.IsNullOrEmpty(val)){
+
+                        val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                    }
+                }
+
+                // Now invoke the Wizard ;)
+                Uri requestUri;
+                if(Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
+                {
+                    string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, GlobalConstants.NullDataListID);
+
+                    callBackHandler.ModelData = val; // set the model data
+
+                    WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
+
+                    // Wizard finished...
+
+                    try
+                    {
                         Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(callBackHandler.ModelData);
 
                         if(dds != null)
                         {
-                        // Empty check the arms ;)
+                            // Empty check the arms ;)
                             if(string.IsNullOrEmpty(dds.TrueArmText.Trim()))
                             {
                                 dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
@@ -972,52 +961,47 @@ namespace Dev2.Studio
                                 dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
                             }
 
-                        // Update the decision node on the workflow ;)
-                        string modelData = dds.ToVBPersistableModel();
+                            // Update the decision node on the workflow ;)
+                            string modelData = dds.ToVBPersistableModel();
 
-                        // build up our injected expression handler ;)
-                        string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
-                                                                modelData, "\",",
-                                                                GlobalConstants.InjectedDecisionDataListVariable, ")");
+                            // build up our injected expression handler ;)
+                            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
+                                                                    modelData, "\",",
+                                                                    GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                             if(activityExpression != null)
                             {
                                 activityExpression.SetValue(expressionToInject);
                             }
 
-                        // now set arms ;)
-                        ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
+                            // now set arms ;)
+                            ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
                             if(tArm != null)
                             {
                                 tArm.SetValue(dds.TrueArmText);
                             }
 
-                        ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
+                            ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
                             if(fArm != null)
                             {
                                 fArm.SetValue(dds.FalseArmText);
                             }
+                        }
+                    }
+                    catch
+                    {
+                        // Bad things happened... Tell the user
+                        //PopupProvider.Show("", "")
+                        PopupProvider.Buttons = MessageBoxButton.OK;
+                        PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
+                        PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
+                        PopupProvider.ImageType = MessageBoxImage.Error;
+                        PopupProvider.Show();
                     }
                 }
-                catch
-                {
-                    // Bad things happened... Tell the user
-                    //PopupProvider.Show("", "")
-                    PopupProvider.Buttons = MessageBoxButton.OK;
-                    PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
-                    PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
-                    PopupProvider.ImageType = MessageBoxImage.Error;
-                    PopupProvider.Show();
-                }
-                finally
-                {
-                    // clean up ;)
-                    compiler.DeleteDataListByID(dataListID);
-                }
             }
-        }
         }
 
         internal void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
@@ -1037,9 +1021,8 @@ namespace Dev2.Studio
                     ModelProperty activityExpression =
                         activity.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
 
-                    ErrorResultTO errors;
-                    Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
-                                                                   out errors); // fake it to get the ID
+                    ErrorResultTO errors = new ErrorResultTO();
+                    Guid dataListID = GlobalConstants.NullDataListID;
 
                     if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
                     {
@@ -1134,11 +1117,6 @@ namespace Dev2.Studio
                                                GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
                                                MessageBoxImage.Error);
                         }
-                        finally
-                        {
-                            // clean up ;)
-                            compiler.DeleteDataListByID(dataListID);
-                        }
                     }
                 }
             }
@@ -1151,10 +1129,9 @@ namespace Dev2.Studio
             ModelItem switchCase = payload.Item1;
             string modelData = JsonConvert.SerializeObject(DataListConstants.DefaultCase);
 
-            ErrorResultTO errors;
+            ErrorResultTO errors = new ErrorResultTO();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
-            Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
-                                                           out errors); // fake it to get the ID
+            Guid dataListID = GlobalConstants.NullDataListID;
 
             if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
             {
@@ -1203,11 +1180,6 @@ namespace Dev2.Studio
                     PopupProvider.ImageType = MessageBoxImage.Error;
                     PopupProvider.Show();
                 }
-                finally
-                {
-                    // clean up ;)
-                    compiler.DeleteDataListByID(dataListID);
-                }
             }
         }
 
@@ -1220,10 +1192,9 @@ namespace Dev2.Studio
             string modelData = JsonConvert.SerializeObject(DataListConstants.DefaultCase);
 
 
-            ErrorResultTO errors;
+            ErrorResultTO errors = new ErrorResultTO();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
-            Guid dataListID = environment.UploadToDataList(GlobalConstants.DefaultDataListInitalizationString,
-                                                           out errors); // fake it to get the ID
+            Guid dataListID = GlobalConstants.NullDataListID;
 
             if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
             {
@@ -1239,10 +1210,7 @@ namespace Dev2.Studio
             if (switchCaseValue != null)
             {
                 string val = switchCaseValue.ComputedValue.ToString();
-
                 modelData = JsonConvert.SerializeObject(new Dev2Switch() { SwitchVariable = val });
-
-                //compiler.PushSystemModelToDataList(dataListID, new Dev2Switch() { SwitchVariable = val }, out errors);
             }
             else
             {
@@ -1282,11 +1250,6 @@ namespace Dev2.Studio
                     PopupProvider.Header = GlobalConstants.SwitchWizardErrorHeading;
                     PopupProvider.ImageType = MessageBoxImage.Error;
                     PopupProvider.Show();
-                }
-                finally
-                {
-                    // clean up ;)
-                    compiler.DeleteDataListByID(dataListID);
                 }
             }
         }
