@@ -40,16 +40,16 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataMergeRecordsetsUsingStarAndCharMerge()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataMergeRecordsetsUsingStarAndCharMerge");
-            string expected = @"<res>W.Buchan
-B.Buchan
-T.Williams-Ros
-T.Frisinger
-J.Smit
-B.Page
-M.Guerrera
-A.Lewis
-S.Naidoo
-M.Cullen
+            string expected = @"<res>Wallis's surname name is Buchan
+Barney's surname name is Buchan
+Trevor's surname name is Williams-Ros
+Travis's surname name is Frisinger
+Jurie's surname name is Smit
+Brendon's surname name is Page
+Massimo's surname name is Guerrera
+Ashley's surname name is Lewis
+Sashen's surname name is Naidoo
+Michael's surname name is Cullen
 </res>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
