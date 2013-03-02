@@ -142,12 +142,6 @@ namespace Dev2.Data.Binary_Objects
                             pos++;
                         }
 
-                        // then, clear old data left hanging ;)
-                        //for(int i = candiateLen; i < len; i++)
-                        //{
-                        //    _rowData[i] = '\0'; // null terminator ;)
-                        //}
-
                         // finally update length array ;)
                         _columnLen[idx] = candiateLen;
                     }
@@ -174,6 +168,9 @@ namespace Dev2.Data.Binary_Objects
                         itr.MoveNext();
                         _rowData[i] = itr.Current;
                     }
+
+                    
+                    itr.Dispose();
 
                     // finally, update the storage data
                     _startIdx[idx] = start;

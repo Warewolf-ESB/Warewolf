@@ -9,13 +9,18 @@ namespace Dev2.Data.Binary_Objects
 
         public string SerializeDeferredItem(object item)
         {
-            
+            string result = string.Empty;
             using(MemoryStream ms = new MemoryStream())
             {
                 BinaryFormatter formater = new BinaryFormatter();
                 formater.Serialize(ms, item);
-                return Convert.ToBase64String(ms.ToArray());
+                
+                result = Convert.ToBase64String(ms.ToArray());
+
+                ms.Dispose();
             }
+
+            return result;
 
         }
 

@@ -91,7 +91,6 @@
     <Compile Include="Binary Objects\Dev2BinaryRecsetTO.cs" />
     <Compile Include="Binary Objects\Dev2Column.cs" />
     <Compile Include="Binary Objects\Dev2PersistantDictionary.cs" />
-    <Compile Include="Binary Objects\Dev2RedisClient.cs" />
     <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Binary Objects\IBinaryDataList.cs" />
     <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />

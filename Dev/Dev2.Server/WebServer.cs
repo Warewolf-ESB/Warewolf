@@ -602,11 +602,12 @@ namespace Dev2
             {
                 ServerLifecycleManager.WriteLine(string.Format("{0} failed to start on {1}", _network, _endpointAddress));
             }
+            
         }
 
         private CommunicationResponseWriter CreateForm(dynamic d, string clientID)
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
             // strip out &amp; and replace correctly
             //string correctedURI = d.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
             string correctedURI = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");

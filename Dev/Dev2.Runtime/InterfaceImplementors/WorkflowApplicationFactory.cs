@@ -164,6 +164,7 @@ namespace Dev2.DynamicServices
 
                 Interlocked.Decrement(ref Balance);
                 dataTransferObject = run.DataTransferObject;
+                waitHandle.Dispose();
             }
 
             #region Removed

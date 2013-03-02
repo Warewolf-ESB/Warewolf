@@ -28,16 +28,6 @@
 
         studio.setValue(jsonData);
 
-        //alert(jsonData);
-
-        //$.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
-
-        //    $("#Dev2Msg").html(result.message);
-
-        //    studio.close();
-        //    return true;
-
-        //});
     };
 
     self.cancel = function () {
@@ -46,25 +36,6 @@
     };
 
     self.Load = function () {
-        //var dlID = window.location.search; //.replace("postdlid", "dlid");
-
-        //// FetchSwitchCase
-        //var request = $.ajax({
-        //    url: "Service/WebModel/FetchSwitchExpression" + dlID,
-        //    type: "post"
-        //});
-
-        //request.done(function (response, textStatus, json) {
-        //    if (response.SwitchVariable != undefined) {
-        //        self.data.SwitchVariable(response.SwitchVariable);
-        //    }
-        //});
-
-        //request.fail(function (response, textStatus, json) {
-        //    alert("An error occured : " + JSON.stringify(response));
-        //});
-        
-
 
         //BUG 8377 Add intellisense
         var dai = studio.getDataAndIntellisense();

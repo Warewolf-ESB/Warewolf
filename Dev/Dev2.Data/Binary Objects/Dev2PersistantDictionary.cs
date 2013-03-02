@@ -250,6 +250,7 @@ namespace Dev2.Data.Binary_Objects
             try
             {
                 bf.Serialize(ms, payload);
+                
             }
             catch(Exception e)
             {

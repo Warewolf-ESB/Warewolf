@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Reflection;
+using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using System;
 using System.Collections.Concurrent;
@@ -53,6 +54,7 @@ namespace Dev2.Data.Binary_Objects
         readonly String _uniqueIdentifierGuid;
         bool _disposed = false;
 
+        long _totalBytes = 0;
 
         public int ColumnSize { get; set; }
 
@@ -66,10 +68,6 @@ namespace Dev2.Data.Binary_Objects
                 BackgroundWorker.DoWork += MoveItemsIntoMemoryCacheBackground;
                 if(!BackgroundWorker.IsBusy) BackgroundWorker.RunWorkerAsync();
             }
-//            if(BackgroundWorker.CancellationPending)
-//            {
-//                BackgroundWorker.RunWorkerAsync();
-//            }
 
             _uniqueIdentifierGuid = uniqueIdentifier.ToString();
             _uniqueIndentifier = uniqueIndex + _uniqueIdentifierGuid;
@@ -115,6 +113,7 @@ namespace Dev2.Data.Binary_Objects
             return _uniqueKey;
         }
 
+
         public IBinaryDataListRow this[int key]
         {
             get
@@ -126,6 +125,8 @@ namespace Dev2.Data.Binary_Objects
             set
             {
                 var uniqueKey = GetUniqueKey(key);
+
+
                 Remove(uniqueKey); // ensure we clear it out of the other caches ;)
                 AddToLevelOneCache(uniqueKey, value);
                 _populatedKeys.SetMaxValue(key);

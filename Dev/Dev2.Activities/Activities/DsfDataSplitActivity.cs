@@ -200,19 +200,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
                         catch (Exception) { }
-                        break;
+                    break;
 
                     case "End":
                         dtb.AddEoFOp();
-                        break;
+                    break;
 
                     case "Space":
                         dtb.AddTokenOp(" ", Args[i].Include);
-                        break;
+                    break;
 
                     case "Tab":
                         dtb.AddTokenOp("\t", Args[i].Include);
-                        break;
+                    break;
 
                     case "New Line":
                         if (StringToSplit.Contains("\r\n"))
@@ -227,7 +227,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             dtb.AddTokenOp("\r", Args[i].Include);
                         }
-                        break;
+                    break;
 
                     case "Chars":
                         if (!string.IsNullOrEmpty(Args[i].At))
@@ -236,7 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             dtb.AddTokenOp(val, Args[i].Include);
                         }
-                        break;
+                    break;
                 }
             }
 

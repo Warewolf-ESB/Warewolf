@@ -907,8 +907,7 @@ namespace Dev2.Studio
                 if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
                 {
                     // Bad things happened... Tell the user
-                    PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading,
-                                       MessageBoxButton.OK, MessageBoxImage.Error);
+                    PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
                     // Stop configuring!!!
                     return;
                 }
@@ -943,10 +942,16 @@ namespace Dev2.Studio
                     WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
 
                     // Wizard finished...
-
                     try
                     {
-                        Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(callBackHandler.ModelData);
+                        // Remove naughty chars...
+                        var tmp = callBackHandler.ModelData;
+                        // remove the silly Choose... from the string
+                        tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp);
+                        // remove [[]], &, !
+                        tmp = Dev2DecisionStack.RemoveNaughtyCharsFromModel(tmp);
+
+                        Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
                         if(dds != null)
                         {
@@ -965,9 +970,7 @@ namespace Dev2.Studio
                             string modelData = dds.ToVBPersistableModel();
 
                             // build up our injected expression handler ;)
-                            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
-                                                                    modelData, "\",",
-                                                                    GlobalConstants.InjectedDecisionDataListVariable, ")");
+                            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                             if(activityExpression != null)
                             {
@@ -1081,8 +1084,7 @@ namespace Dev2.Studio
 
                     // now invoke the wizard ;)
                     Uri requestUri;
-                    if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDropWizardLocation),
-                                      UriKind.Absolute, out requestUri))
+                    if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDropWizardLocation),UriKind.Absolute, out requestUri))
                     {
                         string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
@@ -1099,10 +1101,7 @@ namespace Dev2.Studio
                             if (ds != null)
                             {
                                 // FetchSwitchData
-                                string expressionToInject = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
-                                                                        "(\"", ds.SwitchVariable, "\",",
-                                                                        GlobalConstants.InjectedDecisionDataListVariable,
-                                                                        ")");
+                                string expressionToInject = string.Join("", GlobalConstants.InjectedSwitchDataFetch, "(\"", ds.SwitchVariable, "\",", GlobalConstants.InjectedDecisionDataListVariable,")");
 
                                 if (activityExpression != null)
                                 {
@@ -1130,7 +1129,6 @@ namespace Dev2.Studio
             string modelData = JsonConvert.SerializeObject(DataListConstants.DefaultCase);
 
             ErrorResultTO errors = new ErrorResultTO();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(environment.DataListChannel);
             Guid dataListID = GlobalConstants.NullDataListID;
 
             if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
@@ -1144,8 +1142,7 @@ namespace Dev2.Studio
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),
-                              UriKind.Absolute, out requestUri))
+            if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),UriKind.Absolute, out requestUri))
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
                 callBackHandler.ModelData = modelData;
@@ -1157,8 +1154,6 @@ namespace Dev2.Studio
                 // Now Fetch from DL and push the model data into the workflow
                 try
                 {
-                    //Dev2Switch ds = compiler.FetchSystemModelFromDataList<Dev2Switch>(dataListID, out errors);
-
                     Dev2Switch ds = JsonConvert.DeserializeObject<Dev2Switch>(callBackHandler.ModelData);
 
                     if (ds != null)

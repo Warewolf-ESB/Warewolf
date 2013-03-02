@@ -371,13 +371,13 @@ namespace Dev2.Server.DataList.Translators
                 {
                     if(result != null)
                     {
-                    result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, 
+                        result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, 
                                                     TranslationConstants.systemTags.GetValue(i).ToString(), 
                                                     string.Empty, 
                                                     true, 
                                                     out error);
+                    }
                 }
-            }
             }
             catch (Exception e){
                 error = e.Message;

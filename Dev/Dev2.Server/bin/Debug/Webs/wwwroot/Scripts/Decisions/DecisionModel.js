@@ -134,15 +134,6 @@ function DecisionViewModel() {
         var jsonData = ko.toJSON(self.data);
 
         studio.setValue(jsonData);
-
-        //$.post("Service/WebModel/SaveModel" + dlID, jsonData, function (result) {
-
-        //    $("#Dev2Msg").html(result.message);
-
-        //    studio.close();
-        //    return true;
-
-        //});
     };
 
     self.cancel = function () {
@@ -169,14 +160,6 @@ function DecisionViewModel() {
     };
     
     self.Load = function() {
-        //var dlID = window.location.search; //.replace("postdlid", "dlid");
-
-        //var request = $.ajax({
-        //    url: "Service/WebModel/FetchDecisionModel" + dlID,
-        //    type: "post"
-        //});
-
-        //request.done(function (response, textStatus, json) {
 
         //BUG 8377 Add intellisense
         var dai = studio.getDataAndIntellisense();
@@ -207,11 +190,5 @@ function DecisionViewModel() {
             // Add a decision
             self.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
         }
-
-        //});
-
-        //request.fail(function (response, textStatus, json) {
-        //    alert("An error occured : " + JSON.stringify(response));
-        //});
     };
 }
