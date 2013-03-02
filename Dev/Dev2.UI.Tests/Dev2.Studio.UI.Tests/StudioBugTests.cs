@@ -4,13 +4,13 @@ using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
 using Dev2.CodedUI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DatabaseServiceUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses;
@@ -22,7 +22,6 @@ using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Dev2.Studio.UI.Tests
 {
