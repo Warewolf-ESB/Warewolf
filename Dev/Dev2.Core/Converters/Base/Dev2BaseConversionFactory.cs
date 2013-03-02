@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 
 namespace Dev2.Converters {
+
     public class Dev2BaseConversionFactory : SpookyAction<IBaseConverter> {
         /// <summary>
         /// Used to create the conversion broker between types

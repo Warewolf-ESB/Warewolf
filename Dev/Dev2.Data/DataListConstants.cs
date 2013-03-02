@@ -19,8 +19,9 @@ namespace Dev2.Data.SystemTemplates
         public static readonly IBinaryDataListItem baseItem = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
         public static readonly IBinaryDataListItem emptyItem = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
 
+        // Internal Row Storage Contants
         public static readonly int EmptyRowStartIdx = -1;
         public static readonly double RowGrowthFactor = 1.50;
-        public static readonly int MinRowSize = 50;
+        public static readonly int MinRowSize = 10;
     }
 }

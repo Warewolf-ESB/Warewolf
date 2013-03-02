@@ -66,12 +66,8 @@ namespace Dev2.Common
         //public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = "00:00:05";
         //public const string DefaultDataListCacheSizeLvl2MegaByteSize = "2048";
 
-        // Read Memory limit from config file ;)
-        //public const string DefaultDataListCacheSizeLvl2MegaByteSize = ConfigurationManager.AppSettings["DataListLvl2CacheCapacity"];
-        //public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = ConfigurationManager.AppSettings["DataListLvl2CachePollInterval"];
-
         public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
-        public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 40k rows in the 0 tier cache ;)
+        public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 20k rows in the 0 tier cache ;)
         public const int DefaultDataListCreateCacheSizeLvl1 = 30000;
         public const int DefaultCachePageSizeLvl1 = 1100;
         public const int DefaultColumnSizeLvl1 = 10;

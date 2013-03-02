@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using Dev2.Common;
-using Dev2.Interfaces;
 
 namespace Dev2.Converters {
-    internal class Dev2TextConverter : IBaseConverter, ISpookyLoadable {
+    internal class Dev2TextConverter : IBaseConverter {
 
         public string ConvertToBase(byte[] payload) {
             return (System.Text.Encoding.UTF8.GetString(payload));

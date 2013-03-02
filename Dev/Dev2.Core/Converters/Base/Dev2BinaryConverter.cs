@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Dev2.Common;
-using Dev2.Interfaces;
 
 namespace Dev2.Converters
 {
-    internal class Dev2BinaryConverter : IBaseConverter,ISpookyLoadable
+    internal class Dev2BinaryConverter : IBaseConverter
     {
 
         public string ConvertToBase(byte[] payload)
@@ -33,7 +29,6 @@ namespace Dev2.Converters
         {
 
             byte[] result = new byte[(payload.Length / 8)];
-            char[] chars = payload.ToCharArray();
 
             int pos = 0;
             for (int i = 0; i < payload.Length; i += 8)

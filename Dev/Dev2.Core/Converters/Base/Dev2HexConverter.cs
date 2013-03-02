@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Dev2.Common;
-using Dev2.Interfaces;
 
 namespace Dev2.Converters
 {
-    internal class Dev2HexConverter : IBaseConverter, ISpookyLoadable
+    internal class Dev2HexConverter : IBaseConverter
     {
        
         public string ConvertToBase(byte[] payload)
