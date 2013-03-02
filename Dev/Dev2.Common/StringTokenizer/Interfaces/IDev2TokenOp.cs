@@ -7,7 +7,7 @@ namespace Dev2.Common {
 
         string ExecuteOperation(char[] canidate, int startIdx, bool isReversed);
 
-        string ExecuteOperation(CharEnumerator parts, int startIdx, bool isReversed);
+        string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed);
         
         int OpLength();
 

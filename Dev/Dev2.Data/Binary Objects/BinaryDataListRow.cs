@@ -72,12 +72,14 @@ namespace Dev2.Data.Binary_Objects
                     {
                         StringBuilder result = new StringBuilder();
                         int end = (start + len);
-                        for(int i = start; i < end; i++)
+
+                        for (int i = start; i < end; i++)
                         {
                             result.Append(_rowData[i]);
                         }
 
                         return result.ToString();
+
                     }
                 }    
             }

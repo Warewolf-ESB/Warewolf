@@ -39,7 +39,7 @@ namespace Dev2.Data.Binary_Objects
         static bool ItemsAddedToLevelThreeCache;
 
         [NonSerialized]
-        static readonly ConcurrentDictionary<string, IBinaryDataListRow> LevelOneCache = new ConcurrentDictionary<string, IBinaryDataListRow>(1, GlobalConstants.DefaultDataListCreateCacheSizeLvl1, StringComparer.Ordinal);
+        static readonly ConcurrentDictionary<string, IBinaryDataListRow> LevelOneCache = new ConcurrentDictionary<string, IBinaryDataListRow>(GlobalConstants.DefaultConcurrentStorageAccsors, GlobalConstants.DefaultDataListCreateCacheSizeLvl1, StringComparer.Ordinal);
 
         [NonSerialized]
         static readonly Dev2PersistantDictionary<IBinaryDataListRow> LevelThreeCache = new Dev2PersistantDictionary<IBinaryDataListRow>(Path.GetTempFileName());

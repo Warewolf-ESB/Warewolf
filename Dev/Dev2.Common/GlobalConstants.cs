@@ -73,8 +73,7 @@ namespace Dev2.Common
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultIntellisenseCacheLvl1 = 100;
         public const int DefaultNamespaceSizeLvl1 = 10;
-
-        public const int DefaultObjectCacheSize = 100;
+        public const int DefaultConcurrentStorageAccsors = 5;
 
         public const string DataListIoColDirection = "ColumnIODirection";
 

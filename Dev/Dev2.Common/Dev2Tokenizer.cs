@@ -1,29 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Dev2.Common
 {
-    internal class Dev2Tokenizer : IDev2Tokenizer
+    internal class Dev2Tokenizer : IDev2Tokenizer, IDisposable
     {
 
         private readonly char[] _tokenParts;
         readonly CharEnumerator _charEnumerator;
         private readonly IList<IDev2SplitOp> _ops;
         private readonly bool _isReversed;
+        private readonly int _masterLen;
 
         private int _opPointer;
         private int _startIdx;
         private bool _hasMoreOps;
 
+        private bool _useEnumerator;
+
+        private bool _disposing;
+
         internal Dev2Tokenizer(string candiateString, IList<IDev2SplitOp> ops, bool reversed)
         {
-            _tokenParts = candiateString.ToCharArray();
-            _charEnumerator = candiateString.GetEnumerator();
+            // only build if we are using a non-single token op set ;)
+            
             _ops = ops;
+            _isReversed = reversed;
+            _useEnumerator = CanUseEnumerator();
+            _masterLen = candiateString.Length;
+
+            // we need the char array :( - non optomized
+            if(!_useEnumerator)
+            {
+                _tokenParts = candiateString.ToCharArray();
+            }
+            else
+            {
+                _charEnumerator = candiateString.GetEnumerator();    
+            }
+            
+
             _opPointer = 0;
             _hasMoreOps = true;
-            _isReversed = reversed;
+            
 
             if (!_isReversed)
             {
@@ -37,9 +58,33 @@ namespace Dev2.Common
 
         #region Private Method
 
+        /// <summary>
+        /// Determines whether this instance [can use enumerator].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance [can use enumerator]; otherwise, <c>false</c>.
+        /// </returns>
+        private bool CanUseEnumerator()
+        {
+            bool result = false;
+
+            if(_ops != null)
+            {
+                // are all the ops token based?!
+                if(_ops.Count( op=> op.CanUseEnumerator(_isReversed)) == _ops.Count)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Moves the op pointer.
+        /// </summary>
         private void MoveOpPointer()
         {
-
             _opPointer++;
 
             if (_opPointer >= _ops.Count)
@@ -48,6 +93,10 @@ namespace Dev2.Common
             }
         }
 
+        /// <summary>
+        /// Moves the start index.
+        /// </summary>
+        /// <param name="newOffSet">The new off set.</param>
         private void MoveStartIndex(int newOffSet)
         {
             if (!_isReversed)
@@ -60,13 +109,19 @@ namespace Dev2.Common
             }
         }
 
+        /// <summary>
+        /// Determines whether [has more data].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [has more data]; otherwise, <c>false</c>.
+        /// </returns>
         private bool HasMoreData()
         {
-            bool result = false;
+            bool result;
 
-            if (!_isReversed)
+            if(!_isReversed)
             {
-                result = (_startIdx < _tokenParts.Length);
+                result = (_startIdx < _masterLen);
             }
             else
             {
@@ -76,13 +131,34 @@ namespace Dev2.Common
             return result;
         }
 
+        /// <summary>
+        /// Remainders to string.
+        /// </summary>
+        /// <returns></returns>
         private string RemainderToString()
         {
             StringBuilder result = new StringBuilder();
 
-            for (int i = _startIdx; i < _tokenParts.Length; i++)
+            if(!_useEnumerator)
             {
-                result.Append(_tokenParts[i]);
+                for(int i = _startIdx; i < _tokenParts.Length; i++)
+                {
+                    result.Append(_tokenParts[i]);
+                }
+            }
+            else
+            {
+                try
+                {
+                    while(_charEnumerator.MoveNext())
+                    {
+                        result.Append(_charEnumerator.Current);
+                    }
+                }
+                catch
+                {
+                    // _charEnumerator will return null reference exception when done ;)
+                }
             }
 
             MoveStartIndex(result.Length);
@@ -93,26 +169,37 @@ namespace Dev2.Common
 
         #endregion
 
+        /// <summary>
+        /// Determines whether [has more ops].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [has more ops]; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasMoreOps()
         {
             return _hasMoreOps;
         }
 
+        /// <summary>
+        /// Nexts the token.
+        /// </summary>
+        /// <returns></returns>
         public string NextToken()
         {
             string result = string.Empty;
 
             try
             {
-                //if (_ops[_opPointer].CanUseEnumerator(_isReversed))
-                //{
-                //    result = _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _isReversed);
-                //}
-                //else
-                //{
+                // we can be smart about the operations ;)
+                if(_useEnumerator)
+                {
+                    result = _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _masterLen, _isReversed);
+                }
+                else
+                {
                     result = _ops[_opPointer].ExecuteOperation(_tokenParts, _startIdx, _isReversed);
-                //}
-                
+                }
+
                 MoveStartIndex((result.Length + _ops[_opPointer].OpLength()));
                 MoveOpPointer();
                 // check to see if there is data to fetch still?
@@ -128,5 +215,25 @@ namespace Dev2.Common
             return result;
         }
 
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposing)
+            {
+                if (disposing)
+                {
+                    _charEnumerator.Dispose();
+                }
+
+                // shared cleanup logic
+                _disposing = true;
+            }
+        }
     }
 }

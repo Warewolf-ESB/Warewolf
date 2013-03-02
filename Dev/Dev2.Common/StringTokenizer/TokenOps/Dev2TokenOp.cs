@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Dev2.Common {
+
     class Dev2TokenOp :  IDev2SplitOp {
 
         private readonly char[] _tokenParts;
@@ -77,86 +76,35 @@ namespace Dev2.Common {
 
         }
 
-        public string ExecuteOperation(CharEnumerator canidate, int startIdx, bool isReversed)
+        public string ExecuteOperation(CharEnumerator canidate, int startIdx, int len, bool isReversed)
         {
-
             StringBuilder result = new StringBuilder();
-            char[] multTokenMatch = null;
 
-            if (!isReversed)
+            if(!isReversed && _tokenParts.Length == 1)
             {
-                if (_tokenParts.Length == 1)
+                if(_tokenParts.Length == 1)
                 {
                     char tmp;
 
                     // fetch next value while 
-                    while (canidate.MoveNext() && (tmp = canidate.Current) != _tokenParts[0])
+                    while(canidate.MoveNext() && (tmp = canidate.Current) != _tokenParts[0])
                     {
                         result.Append(tmp);
                     }
                 }
-                else
-                {
-                    int pos = startIdx;
-                    CharEnumerator clonedCandiate = canidate.Clone() as CharEnumerator;
-                    multTokenMatch = new char[_tokenParts.Length];
-                    // now move forward the required number of chars ;)
-                    for(int i = 0; i < multTokenMatch.Length; i++)
-                    {
-                        multTokenMatch[i] = clonedCandiate.Current;
-                        clonedCandiate.MoveNext();
-                    }
-                    
-                    while (canidate.MoveNext() && !IsMultiTokenMatch(multTokenMatch, pos, isReversed))
-                    {
-                        result.Append(multTokenMatch[pos]);
-                        pos++;
-                    }
-                }
 
-                // did the user want the token included?
-                multTokenMatch = canidate.ToString().ToCharArray();
-
-                if (_include && (result.Length + startIdx) < multTokenMatch.Length)
+                // did they want the token included?
+                if(_include && (startIdx + result.Length) < len)
                 {
                     result.Append(_tokenParts);
                 }
             }
             else
-            { // reverse order
-                multTokenMatch = canidate.ToString().ToCharArray();
-                if (_tokenParts.Length == 1)
-                {
-                    int pos = startIdx;
-                    if (pos > multTokenMatch.Length)
-                    {
-                        pos = multTokenMatch.Length - 1;
-                    }
-                    while (pos >= 0 && multTokenMatch[pos] != _tokenParts[0])
-                    {
-                        result.Insert(0, multTokenMatch[pos]);
-                        pos--;
-                    }
-                }
-                else
-                {
-                    int pos = startIdx;
-                    multTokenMatch = canidate.ToString().ToCharArray();
-                    while (pos >= 0 && !IsMultiTokenMatch(multTokenMatch, pos, isReversed))
-                    {
-                        result.Insert(0, multTokenMatch[pos]);
-                        pos--;
-                    }
-                }
-
-                if (_include && (startIdx - result.Length) >= 0)
-                {
-                    result.Insert(0, _tokenParts);
-                }
+            {
+                throw new Exception("CharEnumerator is not supported for this operation type!");
             }
-
+            
             return result.ToString();
-
         }
 
         public int OpLength() {
