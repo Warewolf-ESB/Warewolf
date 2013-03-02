@@ -1,4 +1,5 @@
 ﻿
+
 namespace Dev2.Runtime.Hosting
 {
     public interface IResourceCatalog

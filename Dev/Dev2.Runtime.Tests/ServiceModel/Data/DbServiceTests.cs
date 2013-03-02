@@ -1,7 +1,7 @@
-﻿using Dev2.Common.ServiceModel;
+﻿using System.Xml.Linq;
+using Dev2.Common.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Xml.Linq;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         public void ToXmlExpectedCorrectXml()
         {
-            string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Name=""TravsTestService"" ResourceType=""DbService"">
+            string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Version=""1"" Name=""TravsTestService"" ResourceType=""DbService"">
   <Actions>
     <Action Name=""dbo.InsertDummyUser"" Type=""InvokeStoredProc"" SourceID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" SourceName=""testingDBSrc"" SourceMethod=""dbo.InsertDummyUser"">
       <Inputs>

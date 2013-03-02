@@ -65,12 +65,9 @@
     <Compile Include="Diagnostics\ExceptionManager.cs" />
     <Compile Include="Diagnostics\ValidationResult.cs" />
     <Compile Include="Hosting\IResourceCatalog.cs" />
-    <Compile Include="Hosting\IResourceCatalogItem.cs" />
-    <Compile Include="Hosting\IResourceCatalogItemKey.cs" />
+    <Compile Include="ServiceModel\Data\IResource.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
-    <Compile Include="Hosting\ResourceCatalogItem.cs" />
-    <Compile Include="Hosting\ResourceCatalogItemKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\HostSecureConfig.cs" />
     <Compile Include="Security\HostSecurityProvider.cs" />
