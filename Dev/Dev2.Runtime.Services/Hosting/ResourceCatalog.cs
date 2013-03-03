@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,14 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.Hosting
 {
     public class ResourceCatalog : IResourceCatalog
     {
-        //        readonly ConcurrentDictionary<IResourceKey, IResourceFile> _items = new ConcurrentDictionary<IResourceKey, IResourceFile>();
-        string _repositoryPath;
+        readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
+        readonly ConcurrentDictionary<Guid, object> _workspaceLocks = new ConcurrentDictionary<Guid, object>();
+        readonly object _loadLock = new object();
 
         #region Singleton Instance
 
@@ -51,33 +54,93 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        #region Initialization
-
-        // Prevent instantiation
-        ResourceCatalog()
+        public int Count
         {
-            _repositoryPath = GlobalConstants.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
+            get
+            {
+                return _workspaceResources.Count;
+            }
+        }
+
+        public List<IResource> this[Guid workspaceID]
+        {
+            get
+            {
+                return _workspaceResources.GetOrAdd(workspaceID, LoadImpl);
+            }
+        }
+
+        #region Load
+
+        public void Load(Guid workspaceID)
+        {
+            _workspaceResources.AddOrUpdate(workspaceID,
+                id => LoadImpl(workspaceID),
+                (id, resources) => LoadImpl(workspaceID));
         }
 
         #endregion
 
-        #region Implementation of IResourceCatalog
+        #region LoadImpl
 
-        public void Load()
+        List<IResource> LoadImpl(Guid workspaceID)
         {
+            object workspaceLock;
+            lock(_loadLock)
+            {
+                workspaceLock = _workspaceLocks.GetOrAdd(workspaceID, guid => new object());
+            }
+            lock(workspaceLock)
+            {
+                var folders = Resources.RootFolders.Values.Distinct();
+                var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+                var task = LoadAsync(workspacePath, folders.ToArray());
+                task.Wait();
+                return task.Result;
+            }
         }
 
-        public static async Task<List<IResource>> Load(Guid workspaceID)
+        #endregion
+
+        #region GetWorkspaceLock
+
+        object GetWorkspaceLock(Guid workspaceID)
         {
+            return _workspaceLocks.GetOrAdd(workspaceID, guid => new object());
+        }
+
+        #endregion
+
+        #region LoadAsync
+
+        public static async Task<List<IResource>> LoadAsync(string workspacePath, params string[] folders)
+        {
+            if(string.IsNullOrEmpty(workspacePath))
+            {
+                throw new ArgumentNullException("workspacePath");
+            }
+            if(folders == null)
+            {
+                throw new ArgumentNullException("folders");
+            }
+
+            var catalog = new List<IResource>();
+
+            if(folders.Length == 0 || !Directory.Exists(workspacePath))
+            {
+                return catalog;
+            }
+
             var tasks = new List<Task>();
             var sourceStreams = new List<FileStream>();
-            var catalog = new List<IResource>();
             try
             {
-                var folders = ServiceModel.Resources.RootFolders.Values.Distinct();
-                var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
-                foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
+                foreach(var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
                 {
+                    if(!Directory.Exists(path))
+                    {
+                        continue;
+                    }
                     var files = Directory.GetFiles(path, "*.xml");
                     foreach(var file in files)
                     {
@@ -92,9 +155,12 @@ namespace Dev2.Runtime.Hosting
                             .ReadAsync(buffer, 0, buffer.Length)
                             .ContinueWith(task =>
                             {
-                                var contents = Encoding.Unicode.GetString(buffer);
-                                var xml = XElement.Parse(contents);
-                                var resource = new Resource(xml) { Contents = contents, FilePath = filePath };
+                                XElement xml;
+                                using(var xmlStream = new MemoryStream(buffer))
+                                {
+                                    xml = XElement.Load(xmlStream);
+                                }
+                                var resource = new Resource(xml) { Contents = xml.ToString(SaveOptions.DisableFormatting), FilePath = filePath };
                                 catalog.Add(resource);
                             });
                         tasks.Add(theTask);

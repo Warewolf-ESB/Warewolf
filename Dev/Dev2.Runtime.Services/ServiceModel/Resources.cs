@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.Unknown, "Services" },
             { ResourceType.DbSource, "Sources" },
             { ResourceType.DbService, "Services" },
-            { ResourceType.Plugin, "Plugins" },
+            { ResourceType.PluginService, "Plugins" },
             { ResourceType.Server, "Sources" }
         };
 
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.Unknown, "Service" },
             { ResourceType.DbSource, "Source" },
             { ResourceType.DbService, "Service" },
-            { ResourceType.Plugin, "Plugin" },
+            { ResourceType.PluginService, "Plugin" },
             { ResourceType.Server, "Source" }
         };
 
@@ -176,7 +176,7 @@ namespace Dev2.Runtime.ServiceModel
                                 isResourceType = resourceType == ResourceType.DbService;
                                 break;
                             case enSourceType.Plugin:
-                                isResourceType = resourceType == ResourceType.Plugin;
+                                isResourceType = resourceType == ResourceType.PluginService;
                                 break;
                             case enSourceType.Dev2Server:
                                 isResourceType = resourceType == ResourceType.Server;

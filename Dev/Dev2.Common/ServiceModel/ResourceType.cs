@@ -6,6 +6,8 @@
         Server,
         DbService,
         DbSource,
-        Plugin
+        PluginService,
+        PluginSource,
+        Workflow
     }
 }

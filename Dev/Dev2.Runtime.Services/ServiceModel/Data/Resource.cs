@@ -35,11 +35,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceName = xml.AttributeSafe("Name");
             ResourcePath = xml.ElementSafe("Category");
 
+            // This is here for legacy XML!
             if(ResourceType == ResourceType.Unknown)
             {
-                // This is here for legacy XML!
-                IsUpgraded = true;
-                #region Check Type attribute
+                #region Check source type
 
                 var sourceTypeStr = xml.AttributeSafe("Type");
                 enSourceType sourceType;
@@ -47,21 +46,48 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     switch(sourceType)
                     {
+                        case enSourceType.Dev2Server:
+                            ResourceType = ResourceType.Server;
+                            IsUpgraded = true;
+                            break;
                         case enSourceType.SqlDatabase:
                         case enSourceType.MySqlDatabase:
                             ResourceType = ResourceType.DbSource;
-                            break;
-                        case enSourceType.WebService:
-                            break;
-                        case enSourceType.DynamicService:
-                            ResourceType = ResourceType.DbService;
+                            IsUpgraded = true;
                             break;
                         case enSourceType.Plugin:
-                            ResourceType = ResourceType.Plugin;
+                            ResourceType = ResourceType.PluginService;
+                            IsUpgraded = true;
                             break;
-                        case enSourceType.Dev2Server:
-                            ResourceType = ResourceType.Server;
-                            break;
+                    }
+                }
+
+                #endregion
+
+                #region Check action type
+
+                var action = xml.Element("Action");
+                if(action != null)
+                {
+                    var actionTypeStr = action.AttributeSafe("Type");
+                    enActionType actionType;
+                    if(Enum.TryParse(actionTypeStr, out actionType))
+                    {
+                        switch(actionType)
+                        {
+                            case enActionType.InvokeStoredProc:
+                                ResourceType = ResourceType.DbService;
+                                IsUpgraded = true;
+                                break;
+                            case enActionType.Plugin:
+                                ResourceType = ResourceType.PluginService;
+                                IsUpgraded = true;
+                                break;
+                            case enActionType.Workflow:
+                                ResourceType = ResourceType.Workflow;
+                                IsUpgraded = true;
+                                break;
+                        }
                     }
                 }
 

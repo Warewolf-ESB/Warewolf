@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ServiceModel
                         case ResourceType.DbService:
                             return new DbService(xml);
 
-                        case ResourceType.Plugin:
+                        case ResourceType.PluginService:
                             break;
                     }
                 }
@@ -219,7 +219,7 @@ namespace Dev2.Runtime.ServiceModel
                 case ResourceType.DbService:
                     return JsonConvert.DeserializeObject<DbService>(args);
 
-                case ResourceType.Plugin:
+                case ResourceType.PluginService:
                     break;
             }
             return service;
