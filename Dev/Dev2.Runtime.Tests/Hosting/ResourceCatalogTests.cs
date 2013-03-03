@@ -169,6 +169,14 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        public void LoadAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
+        {
+            var task = ResourceCatalog.LoadAsync("xx", new string[0]);
+            task.Wait();
+            Assert.AreEqual(0, task.Result.Count);
+        }
+
+        [TestMethod]
         public void LoadAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
             var workspaceID = Guid.NewGuid();
@@ -237,8 +245,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void LoadInParallelExpectedBehavesConcurrently()
         {
-            const int NumWorkspaces = 10;
-            const int NumThreadsPerWorkspace = 10;
+            const int NumWorkspaces = 5;
+            const int NumThreadsPerWorkspace = 5;
             try
             {
                 var catalog = new ResourceCatalog();

@@ -102,15 +102,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        #region GetWorkspaceLock
-
-        object GetWorkspaceLock(Guid workspaceID)
-        {
-            return _workspaceLocks.GetOrAdd(workspaceID, guid => new object());
-        }
-
-        #endregion
-
         #region LoadAsync
 
         public static async Task<List<IResource>> LoadAsync(string workspacePath, params string[] folders)
