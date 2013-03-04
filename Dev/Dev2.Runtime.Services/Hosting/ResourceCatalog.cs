@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -77,6 +78,11 @@ namespace Dev2.Runtime.Hosting
 
         public string GetContents(Guid workspaceID, string resourceName)
         {
+            if(string.IsNullOrEmpty(resourceName))
+            {
+                throw new ArgumentNullException("resourceName");
+            }
+
             var resources = this[workspaceID];
             var resource = resources.FirstOrDefault(r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
             return resource == null ? null : File.ReadAllText(resource.FilePath);
@@ -90,7 +96,15 @@ namespace Dev2.Runtime.Hosting
 
         public string GetContents(Guid workspaceID, IResource resource)
         {
-            return resource == null ? null : File.ReadAllText(resource.FilePath);
+            if(resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            if(string.IsNullOrEmpty(resource.FilePath))
+            {
+                throw new NoNullAllowedException("resource.FilePath");
+            }
+            return File.Exists(resource.FilePath) ? File.ReadAllText(resource.FilePath) : null;
         }
 
         #endregion
@@ -257,16 +271,26 @@ namespace Dev2.Runtime.Hosting
 
         #region Copy
 
-        public void Copy(string resourceName, Guid sourceWorkspaceID, Guid targetWorkspaceID)
+        public bool Copy(string resourceName, Guid sourceWorkspaceID, Guid targetWorkspaceID)
         {
+            if(string.IsNullOrEmpty(resourceName))
+            {
+                throw new ArgumentNullException("resourceName");
+            }
+
             var resources = this[sourceWorkspaceID];
             var resource = resources.FirstOrDefault(r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
             if(resource != null)
             {
                 var workspacePath = GlobalConstants.GetWorkspacePath(targetWorkspaceID);
-                var xml = File.ReadAllText(resource.FilePath);
-                Save(workspacePath, ServiceModel.Resources.RootFolders[resource.ResourceType], resource.ResourceName, xml);
+                if(File.Exists(resource.FilePath))
+                {
+                    var xml = File.ReadAllText(resource.FilePath);
+                    Save(workspacePath, ServiceModel.Resources.RootFolders[resource.ResourceType], resource.ResourceName, xml);
+                    return true;
+                }
             }
+            return false;
         }
 
         #endregion
@@ -481,6 +505,11 @@ namespace Dev2.Runtime.Hosting
 
         public List<IResource> FindByName(Guid workspaceID, ResourceType resourceType, string resourceName)
         {
+            if(string.IsNullOrEmpty(resourceName))
+            {
+                throw new ArgumentNullException("resourceName");
+            }
+
             var resources = this[workspaceID];
             return resources.FindAll(r => r.ResourceType == resourceType && string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
         }

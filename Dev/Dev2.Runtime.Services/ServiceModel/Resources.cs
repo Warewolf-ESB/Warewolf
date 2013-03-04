@@ -19,19 +19,23 @@ namespace Dev2.Runtime.ServiceModel
         public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
         {
             { ResourceType.Unknown, "Services" },
-            { ResourceType.DbSource, "Sources" },
+            { ResourceType.Server, "Sources" },
             { ResourceType.DbService, "Services" },
+            { ResourceType.DbSource, "Sources" },
             { ResourceType.PluginService, "Plugins" },
-            { ResourceType.Server, "Sources" }
+            { ResourceType.PluginSource, "Sources" },
+            { ResourceType.Workflow, "Services" },
         };
 
         internal static volatile Dictionary<ResourceType, string> RootElements = new Dictionary<ResourceType, string>
         {
             { ResourceType.Unknown, "Service" },
-            { ResourceType.DbSource, "Source" },
+            { ResourceType.Server, "Source" },
             { ResourceType.DbService, "Service" },
+            { ResourceType.DbSource, "Source" },
             { ResourceType.PluginService, "Plugin" },
-            { ResourceType.Server, "Source" }
+            { ResourceType.PluginSource, "Source" },
+            { ResourceType.Workflow, "Service" },
         };
 
         #endregion

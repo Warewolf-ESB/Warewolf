@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             IsUpgraded = true;
                             break;
                         case enSourceType.Plugin:
-                            ResourceType = ResourceType.PluginService;
+                            ResourceType = ResourceType.PluginSource;
                             IsUpgraded = true;
                             break;
                     }
