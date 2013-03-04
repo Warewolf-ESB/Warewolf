@@ -108,12 +108,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
                     }
-                    
+
                     // Do not merge in a the case of a scoped datalist(ie, foreach) - Bug 8725
                     //if (dataObject != null && !dataObject.IsDataListScoped)
                     //{
-                        compiler.Upsert(executionID, toUpsert, out errors);
-                        allErrors.MergeErrors(errors);
+                    compiler.Upsert(executionID, toUpsert, out errors);
+                    allErrors.MergeErrors(errors);
                     //}
                 }
 
@@ -204,10 +204,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 };
 
-                foreach (var debugItemResult in CreateDebugItems(variable, dataList))
+                IList<IDebugItemResult> debugItems = CreateDebugItems(variable, dataList);
+
+                foreach (var debugItemResult in debugItems)
                 {
 
-                    if (debugItemResult.Type == DebugItemResultType.Variable && debugItemResult.Value.ContainsSafe("!~calculation~!"))
+                    if (debugItemResult.Value.ContainsSafe("!~calculation~!") && debugItemResult.Value.ContainsSafe("!~~calculation~!"))
                     {
                         debugItemResult.Value = debugItemResult.Value.Replace("!~calculation~!", "").Replace("!~~calculation~!", "");
                     }

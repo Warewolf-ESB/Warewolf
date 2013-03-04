@@ -616,7 +616,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (!string.IsNullOrEmpty(expression))
             {
-                if (!expression.ContainsSafe("[["))
+                if (!expression.ContainsSafe("[[") && !(expression.Contains("!~calculation~!") && expression.Contains("!~~calculation~!")))
                 {
                     results.Add(new DebugItemResult
                     {
