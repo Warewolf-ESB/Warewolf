@@ -12,17 +12,6 @@
     };
 
     self.save = function () {
-        //if (!$mainForm.validate().form()) {
-        //    return;
-        //}
-
-        //var dlID = window.location.search;
-
-        // Bug 8603 - add brackets if they do not exist
-        //if (self.data.SwitchVariable().indexOf("[[") < 0) {
-        //    var tmp = self.data.SwitchVariable();
-        //    self.data.SwitchVariable("[[" + tmp + "]]");
-        //}
 
         var jsonData = ko.toJSON(self.data);
 
