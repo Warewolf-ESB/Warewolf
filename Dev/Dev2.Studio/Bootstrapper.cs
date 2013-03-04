@@ -24,6 +24,7 @@ namespace Dev2.Studio
         protected override void PrepareApplication()
         {
             base.PrepareApplication();
+            PreloadReferences();
             CheckPath();
         }
 
@@ -147,24 +148,24 @@ namespace Dev2.Studio
         #region Private Methods
 
 
-        //private void PreloadReferences()
-        //{
-        //    var currentAsm = typeof(App).Assembly;
-        //    var inspected = new HashSet<string> {currentAsm.GetName().ToString()};
-        //    LoadReferences(currentAsm, inspected);
-        //}
+        private void PreloadReferences()
+        {
+            var currentAsm = typeof(App).Assembly;
+            var inspected = new HashSet<string> { currentAsm.GetName().ToString() };
+            LoadReferences(currentAsm, inspected);
+        }
 
-        //private void LoadReferences(Assembly asm, HashSet<string> inspected)
-        //{
-        //    var allReferences = asm.GetReferencedAssemblies();
+        private void LoadReferences(Assembly asm, HashSet<string> inspected)
+        {
+            var allReferences = asm.GetReferencedAssemblies();
 
-        //    foreach (AssemblyName toLoad in allReferences)
-        //        if (inspected.Add(toLoad.ToString()))
-        //        {
-        //            Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-        //            LoadReferences(loaded, inspected);
-        //        }
-        //}
+            foreach (AssemblyName toLoad in allReferences)
+                if (inspected.Add(toLoad.ToString()))
+                {
+                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                    LoadReferences(loaded, inspected);
+                }
+        }
 
         private bool CheckWindowsService()
         {
