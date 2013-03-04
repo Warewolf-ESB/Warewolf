@@ -105,7 +105,7 @@
         var found = false;
         $.each(self.sources(), function (index, source) {
             if (source.ResourceID.toLowerCase() === theID) {
-                found = true;               
+                found = true;
                 self.data.source(source); // This will trigger a call to loadMethods
                 return false;
             }
@@ -270,8 +270,17 @@
         // dbSourceViewModel is a global variable instantiated in DbSource.htm
         //
         dbSourceViewModel.showDialog(theSourceName, function (result) {
+            var id = result.ResourceID.toLowerCase();
+            $.each(self.sources(), function (index, source) {
+                if (source.ResourceID.toLowerCase() === id) {
+                    self.sources.splice(index, 1, result);
+                    return false;
+                }
+                return true;
+            });
             self.sources.push(result);
-            self.selectSourceByName(result.ResourceName);
+            self.sources.sort(utils.resourceNameCaseInsensitiveSort);            
+            self.data.source(result); // This will trigger a call to loadMethods
         });
     };
     
