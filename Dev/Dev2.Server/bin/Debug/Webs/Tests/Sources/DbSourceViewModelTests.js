@@ -1,8 +1,9 @@
 ﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
-/// <reference path="~/wwwroot/Scripts/Sources/DbSourceViewModel.js" />
-/// <reference path="~/wwwroot/Scripts/Dialogs/SaveViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
 
-module("Source Model Constructor");
+module("DbSource Model Constructor");
 
 test("ConstructorWithNoParametersExpectedIsEditingIsFalse", function () {
 
@@ -10,7 +11,14 @@ test("ConstructorWithNoParametersExpectedIsEditingIsFalse", function () {
     equal(model.title(), "New Database Source", "Did Title Initialize");
 });
 
-module("Source Model Form Passes Validation");
+test("ConstructorWithNoParametersAndNewResourceNameExpectedResourceNameChanged", function() {
+
+    var dbSourceModel = new DbSourceViewModel();
+    dbSourceModel.data.resourceName("new resource name");
+    equal(dbSourceModel.data.resourceName(), "new resource name", "Resource Name Changed");
+});
+
+module("DbSource Model Form Passes Validation");
 
 test("AuthentificationTypeSubscriberWithChangingAuthentificationTypeToUserExpectedUserInputMadeVisible", function() {
 
@@ -41,7 +49,7 @@ test("IsFormValidWithWindowsAuthentificationAndDatabaseNameExpectedFormIsValid",
     ok(model.isFormValid(), "Did Form Pass Validation");
 });
 
-module("Source Model Form Fails Validation");
+module("DbSource Model Form Fails Validation");
 
 test("IsFormValidWithUserAuthentificationAndNoDatabaseNameExpectedFormIsNotValid", function() {
 
@@ -97,7 +105,7 @@ test("IsFormValidWithNoServerAddressExpectedFormIsNotValid", function () {
     ok(!model.isFormValid(), "Did Form Fail Validation");
 });
 
-module("Database Source Model Data to Save Model Data Binding");
+module("DbSource to Save Data Model Binding");
 
 test("SaveDialogConstructorExpectedResourceTypeIsDbSource", function () {
 
@@ -115,7 +123,7 @@ test("ChangeResourceIDExpectedSaveModelResourceIDChanged", function () {
 test("ChangeResourceNameExpectedSaveModelResourceNameChanged", function () {
 
     var model = new DbSourceViewModel();
-    model.data.resourceName("change resource path");
+    model.data.resourceName("change resource name");
     equal(model.saveViewModel.data.resourceName(), model.data.resourceName(), "Did Save Model Resource Name Change");
 });
 

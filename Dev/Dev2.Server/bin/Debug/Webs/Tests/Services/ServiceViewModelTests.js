@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
-/// <reference path="~/wwwroot/Scripts/Services/DbServiceViewModel.js" />
-/// <reference path="~/wwwroot/Scripts/Dialogs/SaveViewModel.js" />
-/// <reference path="~/wwwroot/Scripts/Sources/DbSourceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
 
 //module("ServiceViewModelTests", {
 //    setup: function() {
@@ -193,16 +193,15 @@ test("ChangeServiceModelRecordsetExpectedSaveModelRecordsetDataChanged", functio
     equal(model.saveViewModel.data.recordset.ErrorMessage(), errorMessage, "Did Save Model Recordset Error Message Change");
 });
 
-module("DbSource Model to DbService Model Binding");
+// TODO: to test the loadSources function, use mockjax...
+//test("SaveNewDbSourceExpectedServiceSourceChanged", function() {
 
-test("SaveNewDbSourceExpectedServiceSourceChanged", function() {
-
-    var model = new DbServiceViewModel();
-    var sourceModel = new DbSourceViewModel();
-    sourceModel.data.resourceName("newdbsource");
-    model.getNewSourceName(sourceModel);
-    equal(sourceModel.data.resourceName(), model.data.source(), "Service Model Source Name Changed");
-});
+//    var thisModel = new DbServiceViewModel();
+//    var sourceModel = new DbSourceViewModel();
+//    sourceModel.data.resourceName("newdbsource");
+//    thisModel.loadSources(null, sourceModel.data.resourceName());
+//    equal(sourceModel.data.resourceName(), thisModel.data.source(), "Service Model Source Name Changed");
+//});
 
 // TODO: to test the load function, use mockjax...
 //test("ConstructorWithValidResourcedIDExpectedTitleContainsEdit", function () {

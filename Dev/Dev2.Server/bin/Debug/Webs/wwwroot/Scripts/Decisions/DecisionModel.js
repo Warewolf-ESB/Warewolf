@@ -162,9 +162,12 @@ function DecisionViewModel() {
     self.Load = function() {
 
         //BUG 8377 Add intellisense
-        var dai = studio.getDataAndIntellisense();
-        self.intellisenseOptions = dai.intellisenseOptions;
-        var response = dai.data;
+        var response = {};
+        if (studio) {
+            var dai = studio.getDataAndIntellisense();
+            self.intellisenseOptions = dai.intellisenseOptions;
+            response = dai.data;
+        }
 
         if (response.TheStack != undefined) {
             // load decisions
@@ -190,5 +193,10 @@ function DecisionViewModel() {
             // Add a decision
             self.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
         }
+    };
+
+    self.onKeyPress = function (event) {
+        if (event.which == 13)
+            event.preventDefault();
     };
 }
