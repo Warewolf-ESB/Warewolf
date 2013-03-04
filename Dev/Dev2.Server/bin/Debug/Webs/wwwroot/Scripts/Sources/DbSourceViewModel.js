@@ -151,11 +151,11 @@
 
     self.save = function () {
         var isWindowClosedOnSave = $dialogContainerID ? false : true;
-        self.saveViewModel.showDialog(isWindowClosedOnSave, function () {            
+        self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {            
             if (!isWindowClosedOnSave) {
                 $dialogContainerID.dialog("close");
                 if (self.onSaveCompleted != null) {
-                    self.onSaveCompleted(self);
+                    self.onSaveCompleted(result);
                 }
             };
         });

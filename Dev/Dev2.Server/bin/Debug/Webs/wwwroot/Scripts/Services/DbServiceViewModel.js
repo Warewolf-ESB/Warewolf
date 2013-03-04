@@ -269,14 +269,10 @@
         // 
         // dbSourceViewModel is a global variable instantiated in DbSource.htm
         //
-        dbSourceViewModel.showDialog(theSourceName, self.getNewSourceName);
-    };
-
-    self.getNewSourceName = function(dbSourceModel) {
-        self.sources.ResourceName = dbSourceModel.data.resourceName();
-        self.sources.push(dbSourceModel.data.resourceName());
-        self.data.source(dbSourceModel.data.resourceName());
-        console.log("self.sources.ResourceName = " + self.sources.ResourceName);
+        dbSourceViewModel.showDialog(theSourceName, function (result) {
+            self.sources.push(result);
+            self.selectSourceByName(result.ResourceName);
+        });
     };
     
     self.load();    

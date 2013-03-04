@@ -13,7 +13,7 @@
     self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
     self.data = baseViewModel.data;
-    self.isEditing = baseViewModel.isEditing;
+    self.isEditing = ko.observable(baseViewModel.isEditing);
 
     $.post("Service/Resources/PathsAndNames" + window.location.search, self.data.resourceType(), function (result) {
         self.resourceFolders(result.Paths);
@@ -45,27 +45,7 @@
             $dialogSaveButton.button("option", "disabled", !enabled);
         }
     };
-    
-    self.save = function () {
-        if (!self.isFormValid()) {
-            return;
-        }
-        var jsonData = ko.toJSON(self.data);
-        $.post(saveUri + window.location.search, jsonData, function (result) {
-            if (!result.IsValid) {
-                $saveForm.dialog("close");
-                if (self.onSaveCompleted != null) {
-                    self.onSaveCompleted();
-                }
-                if (self.isWindowClosedOnSave) {
-                    studio.saveAndClose(result);
-                } else {
-                    studio.save(result);
-                }
-            }
-        });
-    };
-
+  
     self.isNewFolderNameValid = function () {
         var name = $newFolderName.val().toLowerCase();
         var isValid = false;
@@ -82,13 +62,12 @@
     self.isResourceNameValid = function () {
         var name = self.data.resourceName() != null ? self.data.resourceName().toLowerCase() : "";
         var isValid = name !== "" && self.isValidName(name);
-        if (!self.isEditing && isValid) {
+        if (!self.isEditing() && isValid) {
             // check for duplicates
             var matches = ko.utils.arrayFilter(self.resourceNames(), function (resourceName) {
                 return resourceName.toLowerCase() === name;
             });
             isValid = matches.length == 0;
-            console.log("    matches : " + isValid);
         }
         self.enableSaveButton(isValid);
         return isValid;
@@ -169,7 +148,28 @@
         self.data.resourcePath(selectedItem);
     });
 
-    self.showDialog = function (isWindowClosedOnSave, onSaveCompleted) {        
+    self.save = function () {
+        if (!self.isFormValid()) {
+            return;
+        }
+        var jsonData = ko.toJSON(self.data);
+        $.post(saveUri + window.location.search, jsonData, function (result) {
+            if (!result.IsValid) {
+                $saveForm.dialog("close");
+                if (self.onSaveCompleted != null) {
+                    self.onSaveCompleted(result);
+                }
+                if (self.isWindowClosedOnSave) {
+                    studio.saveAndClose(result);
+                } else {
+                    studio.save(result);
+                }
+            }
+        });
+    };
+
+    self.showDialog = function (isWindowClosedOnSave, onSaveCompleted) {
+        self.isEditing(baseViewModel.isEditing);        
         self.isFormValid();
         self.isWindowClosedOnSave = isWindowClosedOnSave;
         self.onSaveCompleted = onSaveCompleted;
