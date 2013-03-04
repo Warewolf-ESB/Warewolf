@@ -12,4 +12,4 @@ if not exist %targetdir% (cmd /c mkdir %targetdir%)
 
 REM copy build to the deployment directory
 robocopy %buildlocation% %targetdir% /E
-REM robocopy %svndirectory% %targetdir% /E
+robocopy %svndirectory% %targetdir% /E

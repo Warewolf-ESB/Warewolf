@@ -571,7 +571,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
             }
 
-           var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+            var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
             {
                 throw new Exception(resultObj.Error);

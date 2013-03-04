@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
@@ -244,6 +240,7 @@ namespace Dev2.Studio.UI.Tests
             }
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", workflowToCreate);
         }
+
 
         #endregion Debug Output Tests
 
