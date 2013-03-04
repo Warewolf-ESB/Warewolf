@@ -260,7 +260,7 @@
             </Border>
         </Popup>
 
-        <Grid Margin="0,0,5,0">
+        <Grid Margin="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -281,7 +281,7 @@
                     Width="20" AutomationProperties.AutomationId="UI_DebugOutputExpandAllMode_AutoID" />            
         </Grid>
         
-        <Border Margin="2"  BorderBrush="LightGray" BorderThickness="0,1,0,0" Grid.Row="1">
+        <Border BorderBrush="LightGray" BorderThickness="0,1,0,0" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
@@ -442,10 +442,8 @@
                     <diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}"></diagnostics:DebugStyleSelector>
                 </TreeView.ItemContainerStyleSelector>
             </TreeView>
-                <customControls:Dev2StatusBar Height="Auto" Grid.Row="1" Width="Auto" StatusBarLabelText="Processing..." ProgressBarVisiblity="{Binding ShowProcessingIcon,Mode=TwoWay,Converter={StaticResource BoolToVisConverter}}"></customControls:Dev2StatusBar>            
+                <customControls:Dev2StatusBar AutomationProperties.AutomationId="Dev2StatusBarAutomationID" Height="Auto" Grid.Row="1" Width="Auto" StatusBarLabelText="{Binding ProcessingText,Mode=TwoWay}" ProgressBarVisiblity="{Binding ShowProcessingIcon,Mode=TwoWay,Converter={StaticResource BoolToVisConverter}}" />         
             </Grid>
-        </Border>
-        
-
+        </Border>        
     </Grid>
 </UserControl>

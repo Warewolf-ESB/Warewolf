@@ -1,42 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Windows.Forms;
-using System.Drawing;
-using Dev2.Studio.UI.Tests;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
-using System.Diagnostics;
-using System.Linq;
-using System.IO;
-using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
-using System.Management;
-using Microsoft.Win32;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
-using System.Threading;
+using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
-
+using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management;
+using System.Threading;
+using System.Windows.Forms;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using Point = System.Drawing.Point;
 
 namespace Dev2.CodedUI.Tests
 {
@@ -2496,7 +2495,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Tests Requiring Designer access
 
-
         #region Studio Window Tests
 
         // BUG 9078
@@ -2703,6 +2701,41 @@ namespace Dev2.CodedUI.Tests
             Point closeButtonPoint = new Point(theStudio.BoundingRectangle.Left + theStudio.BoundingRectangle.Width - 10, theStudio.BoundingRectangle.Top + 10);
             Mouse.Click(closeButtonPoint);
             Thread.Sleep(2000); // Give it time to die
+        }
+
+        #endregion
+
+        #region Debug Tests
+
+        [TestMethod]
+        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpextedToShowDuringExecutionOnly()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //Open the correct workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            UITestControl control1 = OutputUIMap.GetStatusBar();
+
+            UITestControlCollection preStatusBarChildren = control1.GetChildren();
+            var preProgressbar = preStatusBarChildren.First(c => c.ClassName == "Uia.ProgressBar");
+            var preLabel = preStatusBarChildren.First(c => c.ClassName == "Uia.Text");
+            Assert.IsTrue(preLabel.FriendlyName == "Ready" || preLabel.FriendlyName == "Complete");
+            Assert.IsTrue(preProgressbar.Height == -1);
+
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
+            Thread.Sleep(1000);
+            DebugUIMap.ExecuteDebug();
+            Thread.Sleep(2000);
+            UITestControl control = OutputUIMap.GetStatusBar();
+
+            UITestControlCollection statusBarChildren = control.GetChildren();
+            var progressbar = statusBarChildren.First(c => c.ClassName == "Uia.ProgressBar");
+            var label = statusBarChildren.First(c => c.ClassName == "Uia.Text");
+            Assert.IsTrue(label.FriendlyName == "Executing...");
+            Assert.IsTrue(progressbar.Height != -1);
         }
 
         #endregion

@@ -10,21 +10,14 @@
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
-    using System;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Windows.Forms;
+    using System.CodeDom.Compiler;
+    using System.Drawing;
     using System.Threading;
+    using System.Windows.Forms;
+    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
@@ -119,7 +112,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
             // Uncomment these 3 lines if things start going slowly again (They help to locate the problem)
-            
+
             //UITestControl theStudioWindow = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom;
             //theStudioWindow.Find();
             //uITvExplorerTree.Find();
@@ -127,7 +120,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl serverListItem = new UITestControl(uITvExplorerTree);
             serverListItem.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
             serverListItem.SearchProperties.Add("ControlType", "TreeItem");
-            
+
             serverListItem.Find();
 
             Thread.Sleep(500);
@@ -294,9 +287,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                         }
                     }
                 }
-  
+
             }
-            return services; 
+            return services;
         }
 
         public UITestControlCollection GetNavigationItemCategories()
@@ -493,7 +486,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 {
                     this.mUIUI_txtSearch_AutoIDEdit = new WpfEdit(this);
                     #region Search Criteria
-                    this.mUIUI_txtSearch_AutoIDEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_txtSearch_AutoID";
+                    this.mUIUI_txtSearch_AutoIDEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_DataListSearchtxt_AutoID";
                     this.mUIUI_txtSearch_AutoIDEdit.WindowTitles.Add(TestBase.GetStudioWindowName());
                     #endregion
                 }

@@ -10,22 +10,13 @@
 
 namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 {
-    using System;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Windows.Input;
+    using Dev2.CodedUI.Tests;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using Dev2.CodedUI.Tests;
-    
-    
+    using System.CodeDom.Compiler;
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class OutputUIMap
     {
@@ -35,7 +26,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             WpfTree OutputTree = this.UIBusinessDesignStudioWindow.UIDebugOutputCustom.UIItemTree;
             return OutputTree;
         }
-        
+
+        private UITestControl StatusBar()
+        {
+            WpfControl Window = this.UIBusinessDesignStudioWindow.UIDebugOutputCustom;
+            UITestControlCollection children = Window.GetChildren();
+            UITestControlCollection statusBar = children[4].GetChildren();
+            UITestControl statusBarChildren = statusBar[0];
+            return statusBarChildren;
+        }
+
         #region Properties
         public virtual NewUIMapExpectedValues NewUIMapExpectedValues
         {
@@ -48,7 +48,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
                 return this.mNewUIMapExpectedValues;
             }
         }
-        
+
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
@@ -61,21 +61,21 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private NewUIMapExpectedValues mNewUIMapExpectedValues;
-        
+
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
-    
+
     /// <summary>
     /// Parameters to be passed into 'NewUIMap'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class NewUIMapExpectedValues
     {
-        
+
         #region Fields
         /// <summary>
         /// Verify that the 'Header' property of 'DsfActivity' -> 'DsfActivity' -> 'Assign' tree item equals 'Dev2.Studio.ViewModels.Diagnostics.DebugStateTreeViewItemViewModel'
@@ -83,11 +83,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
         public string UIAssignTreeItemHeader = "Dev2.Studio.ViewModels.Diagnostics.DebugStateTreeViewItemViewModel";
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
-        
+
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
@@ -96,7 +96,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIDebugOutputCustom UIDebugOutputCustom
         {
@@ -110,18 +110,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDebugOutputCustom mUIDebugOutputCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDebugOutputCustom : WpfCustom
     {
-        
-        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDebugOutputCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
@@ -129,7 +129,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIItemTree UIItemTree
         {
@@ -142,25 +142,27 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
                 return this.mUIItemTree;
             }
         }
+
+
         #endregion
-        
+
         #region Fields
         private UIItemTree mUIItemTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemTree : WpfTree
     {
-        
-        public UIItemTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIItemTree(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIDsfActivityTreeItem UIDsfActivityTreeItem
         {
@@ -174,25 +176,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDsfActivityTreeItem mUIDsfActivityTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDsfActivityTreeItem : WpfTreeItem
     {
-        
-        public UIDsfActivityTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDsfActivityTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "DsfActivity";
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIDsfActivityTreeItem1 UIDsfActivityTreeItem1
         {
@@ -206,18 +208,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDsfActivityTreeItem1 mUIDsfActivityTreeItem1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDsfActivityTreeItem1 : WpfTreeItem
     {
-        
-        public UIDsfActivityTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDsfActivityTreeItem1(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "DsfActivity";
@@ -226,7 +228,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public WpfTreeItem UIAssignTreeItem
         {
@@ -245,7 +247,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfTreeItem mUIAssignTreeItem;
         #endregion

@@ -1,11 +1,53 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 {
     public partial class OutputUIMap
     {
+
+        /// <summary>
+        /// Finds a control on the Output Pane
+        /// </summary>
+        /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
+        /// <returns>Returns the control as a UITestControl object</returns>
+        public UITestControl FindControlByAutomationId(string controlAutomationId)
+        {
+            // Unless the UI drastically changes (In which case most Automation tests will fail),
+            // the order will remain constant
+
+            // Cake names are used until they are replaced by the real names
+            UITestControlCollection theCollection = new UITestControlCollection();
+            try
+            {
+                theCollection = GetOutputWindow();
+            }
+            catch
+            {
+                Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
+            }
+            UITestControl splurtControl = theCollection[4];
+            UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
+            UITestControl cake2 = splurtChildChildren[0];
+            UITestControlCollection cake2Children = cake2.GetChildren();
+            UITestControl cake38 = cake2Children[3];
+            UITestControlCollection cake38Children = cake38.GetChildren();
+            // Cake38 -> ActivityTypeDesigner -> Cake53 -> FlowchartDesigner -> *Control Here*
+            UITestControl cake53 = cake38Children[0].GetChildren()[0];
+            UITestControlCollection cake53Children = cake53.GetChildren();
+            UITestControl flowchartDesigner = cake53Children[0];
+            UITestControlCollection flowchartDesignerChildren = flowchartDesigner.GetChildren();
+            foreach (UITestControl theControl in flowchartDesignerChildren)
+            {
+                string automationId = theControl.GetProperty("AutomationId").ToString();
+                if (automationId.Contains(controlAutomationId))
+                {
+                    return theControl;
+                }
+            }
+            return null;
+        }
 
         public bool DoesBug8747Pass()
         {
@@ -42,6 +84,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             WpfTree debugOutputControlTree = OutputTree();
             return debugOutputControlTree.Nodes;
 
+        }
+
+        public UITestControl GetStatusBar()
+        {
+            UITestControl statusBar = StatusBar();
+            return statusBar;
         }
 
         public UITestControlCollection GetStepInOutputWindow(UITestControl outputWindow, string stepToFind)

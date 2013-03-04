@@ -27,7 +27,7 @@ namespace Dev2.Studio.UI.Tests
     using MouseButtons = System.Windows.Forms.MouseButtons;
     
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class UIMap
     {
         
@@ -1372,6 +1372,19 @@ namespace Dev2.Studio.UI.Tests
             uIUI__Rounding_ComboBoComboBox.SelectedItem = this.selectUpInFormatNumbercbbxParams.UIUI__Rounding_ComboBoComboBoxSelectedItem;
         }
         
+        /// <summary>
+        /// MoTest - Use 'MoTestExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void MoTest()
+        {
+            #region Variable Declarations
+            WpfEdit uIDev2StatusBarAutomatEdit = this.UIBusinessDesignStudioWindow3.UIDebugOutputCustom.UIDev2StatusBarAutomatEdit;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'Dev2StatusBarAutomationID' text box equals 'True'
+            Assert.AreEqual(this.MoTestExpectedValues.UIDev2StatusBarAutomatEditEnabled, uIDev2StatusBarAutomatEdit.Enabled);
+        }
+        
         #region Properties
         public virtual Environment_Wizards_Workflow_StartParams Environment_Wizards_Workflow_StartParams
         {
@@ -1541,6 +1554,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         
+        public virtual MoTestExpectedValues MoTestExpectedValues
+        {
+            get
+            {
+                if ((this.mMoTestExpectedValues == null))
+                {
+                    this.mMoTestExpectedValues = new MoTestExpectedValues();
+                }
+                return this.mMoTestExpectedValues;
+            }
+        }
+        
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
@@ -1684,6 +1709,18 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIHttp1270011234servicWindow;
             }
         }
+        
+        public UIBusinessDesignStudioWindow3 UIBusinessDesignStudioWindow3
+        {
+            get
+            {
+                if ((this.mUIBusinessDesignStudioWindow3 == null))
+                {
+                    this.mUIBusinessDesignStudioWindow3 = new UIBusinessDesignStudioWindow3();
+                }
+                return this.mUIBusinessDesignStudioWindow3;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1715,6 +1752,8 @@ namespace Dev2.Studio.UI.Tests
         
         private selectUpInFormatNumbercbbxParams mselectUpInFormatNumbercbbxParams;
         
+        private MoTestExpectedValues mMoTestExpectedValues;
+        
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         
         private UIBusinessDesignStudioWindow1 mUIBusinessDesignStudioWindow1;
@@ -1738,13 +1777,15 @@ namespace Dev2.Studio.UI.Tests
         private UIUntitledNotepadWindow mUIUntitledNotepadWindow;
         
         private UIHttp1270011234servicWindow mUIHttp1270011234servicWindow;
+        
+        private UIBusinessDesignStudioWindow3 mUIBusinessDesignStudioWindow3;
         #endregion
     }
     
     /// <summary>
     /// Parameters to be passed into 'Environment_Wizards_Workflow_Start'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class Environment_Wizards_Workflow_StartParams
     {
         
@@ -1759,7 +1800,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'Environment_Wizards_Workflow_EnterSampleWorkflowDetails'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams
     {
         
@@ -1779,7 +1820,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'AssertForWorkflowDesigner'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class AssertForWorkflowDesignerExpectedValues
     {
         
@@ -1794,7 +1835,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'someMethodForDeployTab'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class someMethodForDeployTabParams
     {
         
@@ -1824,7 +1865,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'DeployTabSomeStuffItDoes'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class DeployTabSomeStuffItDoesParams
     {
         
@@ -1849,7 +1890,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'splurtExists'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class splurtExistsExpectedValues
     {
         
@@ -1864,7 +1905,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'ClickLocalHost'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class ClickLocalHostParams
     {
         
@@ -1879,7 +1920,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'WorkflowDesigner_ClickNameTextbox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class WorkflowDesigner_ClickNameTextboxParams
     {
         
@@ -1894,7 +1935,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'WorkflowDesigner_TypeTextInNameTextbox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class WorkflowDesigner_TypeTextInNameTextboxParams
     {
         
@@ -1914,7 +1955,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'TypeTextInNameTextbox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class TypeTextInNameTextboxParams
     {
         
@@ -1929,7 +1970,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'EnterSpamInFilterBox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class EnterSpamInFilterBoxParams
     {
         
@@ -1944,7 +1985,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'somestuffMethodName'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class somestuffMethodNameParams
     {
         
@@ -1959,7 +2000,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'IEContainsTest'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class IEContainsTestExpectedValues
     {
         
@@ -2044,7 +2085,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Parameters to be passed into 'selectUpInFormatNumbercbbx'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class selectUpInFormatNumbercbbxParams
     {
         
@@ -2056,7 +2097,22 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    /// <summary>
+    /// Parameters to be passed into 'MoTest'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    public class MoTestExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Dev2StatusBarAutomationID' text box equals 'True'
+        /// </summary>
+        public bool UIDev2StatusBarAutomatEditEnabled = true;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
         
@@ -2339,7 +2395,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UINavigationViewUserCoCustom : WpfCustom
     {
         
@@ -2372,7 +2428,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UITvExplorerTree : WpfTree
     {
         
@@ -2418,7 +2474,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem : WpfTreeItem
     {
         
@@ -2493,7 +2549,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_SashensServerhttpTreeItem : WpfTreeItem
     {
         
@@ -2530,7 +2586,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemMenu : WpfMenu
     {
         
@@ -2603,7 +2659,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDockManagerCustom : WpfCustom
     {
         
@@ -2674,7 +2730,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIPART_UnpinnedTabAreaTabList : WpfTabList
     {
         
@@ -2782,7 +2838,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIExplorerCustom : WpfCustom
     {
         
@@ -2815,7 +2871,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIExplorerCustom1 : WpfCustom
     {
         
@@ -2852,7 +2908,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowItemPresenteCustom : WpfCustom
     {
         
@@ -2885,7 +2941,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIFlowchartCustom : WpfCustom
     {
         
@@ -2923,7 +2979,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIActivityBuilderCustom : WpfCustom
     {
         
@@ -2956,7 +3012,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowItemPresenteCustom1 : WpfCustom
     {
         
@@ -2994,7 +3050,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemCustom : WpfCustom
     {
         
@@ -3026,7 +3082,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIPART_ToolsTree : WpfTree
     {
         
@@ -3058,7 +3114,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUtilityTreeItem : WpfTreeItem
     {
         
@@ -3090,7 +3146,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUnlimitedApplicationTreeItem : WpfTreeItem
     {
         
@@ -3123,7 +3179,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBaseConversionText : WpfText
     {
         
@@ -3162,7 +3218,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUserControl_1Custom : WpfCustom
     {
         
@@ -3200,7 +3256,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZf56a7f909cd342859f4Custom : WpfCustom
     {
         
@@ -3233,7 +3289,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_TabManager_AutoIDTabList : WpfTabList
     {
         
@@ -3301,7 +3357,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICodedUITestWorkflowTabPage : WpfTabPage
     {
         
@@ -3338,7 +3394,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZ84a8252c3a6046ab9bfCustom : WpfCustom
     {
         
@@ -3371,7 +3427,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZ2b1474b917664f67b5bTabList : WpfTabList
     {
         
@@ -3403,7 +3459,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIToolboxTabPage : WpfTabPage
     {
         
@@ -3435,7 +3491,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIToolboxCustom : WpfCustom
     {
         
@@ -3486,7 +3542,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIToolboxText : WpfText
     {
         
@@ -3523,7 +3579,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIExplorerCustom11 : WpfCustom
     {
         
@@ -3556,7 +3612,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UINavigationViewUserCoCustom1 : WpfCustom
     {
         
@@ -3593,7 +3649,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIPBI6527Custom : WpfCustom
     {
         
@@ -3640,7 +3696,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE1Custom : WpfCustom
     {
         
@@ -3678,7 +3734,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployUserControlCustom : WpfCustom
     {
         
@@ -3733,7 +3789,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployUserControlCustom1 : WpfCustom
     {
         
@@ -3770,7 +3826,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemCustom2 : WpfCustom
     {
         
@@ -3802,7 +3858,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZf56a7f909cd342859f4Custom1 : WpfCustom
     {
         
@@ -3839,7 +3895,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZ72b115b394fe4262923Custom : WpfCustom
     {
         
@@ -3872,7 +3928,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZ616b910d79e9463786eTabList : WpfTabList
     {
         
@@ -3904,7 +3960,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIExplorerTabPage : WpfTabPage
     {
         
@@ -3941,7 +3997,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBusinessDesignStudioWindow1 : WinWindow
     {
         
@@ -3955,7 +4011,7 @@ namespace Dev2.Studio.UI.Tests
         }
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIServiceDetailsWindow : WpfWindow
     {
         
@@ -3991,7 +4047,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIServiceDetailsWindow1 : WinWindow
     {
         
@@ -4005,7 +4061,7 @@ namespace Dev2.Studio.UI.Tests
         }
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBusinessDesignStudioWindow2 : WpfWindow
     {
         
@@ -4269,7 +4325,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemCustom1 : WpfCustom
     {
         
@@ -4301,7 +4357,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUserControl_1Custom1 : WpfCustom
     {
         
@@ -4339,7 +4395,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIExplorerCustom2 : WpfCustom
     {
         
@@ -4372,7 +4428,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIExplorerCustom12 : WpfCustom
     {
         
@@ -4427,7 +4483,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UINavigationViewUserCoCustom2 : WpfCustom
     {
         
@@ -4460,7 +4516,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UITvExplorerTree1 : WpfTree
     {
         
@@ -4510,7 +4566,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_localhosthttp1270TreeItem : WpfTreeItem
     {
         
@@ -4542,7 +4598,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_WORKFLOWSERVICES_TreeItem : WpfTreeItem
     {
         
@@ -4580,7 +4636,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemMenu1 : WpfMenu
     {
         
@@ -4617,7 +4673,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIZea895fb767e54b00992Custom : WpfCustom
     {
         
@@ -4650,7 +4706,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
     {
         
@@ -4682,7 +4738,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployResourcesTabPage : WpfTabPage
     {
         
@@ -4714,7 +4770,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployResourcesCustom : WpfCustom
     {
         
@@ -4747,7 +4803,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployUserControlCustom2 : WpfCustom
     {
         
@@ -4784,7 +4840,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployResourcesCustom1 : WpfCustom
     {
         
@@ -4817,7 +4873,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDeployUserControlCustom3 : WpfCustom
     {
         
@@ -4890,7 +4946,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UISourceNavigationViewCustom : WpfCustom
     {
         
@@ -4923,7 +4979,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UITvExplorerTree2 : WpfTree
     {
         
@@ -4955,7 +5011,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem1 : WpfTreeItem
     {
         
@@ -4987,7 +5043,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_SourceServer_WORKTreeItem : WpfTreeItem
     {
         
@@ -5034,7 +5090,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_SourceServer_SYSTTreeItem : WpfTreeItem
     {
         
@@ -5067,7 +5123,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_SourceServer_AutoTreeItem : WpfTreeItem
     {
         
@@ -5105,7 +5161,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_SourceServer_HUMATreeItem : WpfTreeItem
     {
         
@@ -5138,7 +5194,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_SourceServer_MineTreeItem : WpfTreeItem
     {
         
@@ -5176,7 +5232,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UITargetNavigationViewCustom : WpfCustom
     {
         
@@ -5209,7 +5265,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UITvExplorerTree3 : WpfTree
     {
         
@@ -5255,7 +5311,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem2 : WpfTreeItem
     {
         
@@ -5287,7 +5343,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem11 : WpfTreeItem
     {
         
@@ -5325,7 +5381,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem21 : WpfTreeItem
     {
         
@@ -5357,7 +5413,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem12 : WpfTreeItem
     {
         
@@ -5390,7 +5446,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDev2StudioCoreViewMoTreeItem3 : WpfTreeItem
     {
         
@@ -5428,7 +5484,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_DocManager_AutoIDCustom : WpfCustom
     {
         
@@ -5475,7 +5531,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIPART_UnpinnedTabAreaTabList1 : WpfTabList
     {
         
@@ -5529,7 +5585,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE17Custom : WpfCustom
     {
         
@@ -5562,7 +5618,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE16Custom : WpfCustom
     {
         
@@ -5595,7 +5651,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUI_TabManager_AutoIDTabList2 : WpfTabList
     {
         
@@ -5627,7 +5683,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIIntegrationTestReporTabPage : WpfTabPage
     {
         
@@ -5659,7 +5715,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIIntegrationTestReporCustom : WpfCustom
     {
         
@@ -5697,7 +5753,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemCustom11 : WpfCustom
     {
         
@@ -5729,7 +5785,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIPART_ToolsTree1 : WpfTree
     {
         
@@ -5761,7 +5817,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUtilityTreeItem1 : WpfTreeItem
     {
         
@@ -5793,7 +5849,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUnlimitedApplicationTreeItem1 : WpfTreeItem
     {
         
@@ -5826,7 +5882,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBaseConversionText2 : WpfText
     {
         
@@ -5865,7 +5921,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIActivityBuilderCustom1 : WpfCustom
     {
         
@@ -5926,7 +5982,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowItemPresenteCustom2 : WpfCustom
     {
         
@@ -5964,7 +6020,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE10Custom : WpfCustom
     {
         
@@ -6002,7 +6058,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE53Custom : WpfCustom
     {
         
@@ -6040,7 +6096,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowItemPresenteCustom3 : WpfCustom
     {
         
@@ -6073,7 +6129,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIFlowchartCustom1 : WpfCustom
     {
         
@@ -6111,7 +6167,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE1Custom2 : WpfCustom
     {
         
@@ -6144,7 +6200,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE1Custom1 : WpfCustom
     {
         
@@ -6182,7 +6238,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UICAKE10Custom1 : WpfCustom
     {
         
@@ -6215,7 +6271,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIFlowchartCustom2 : WpfCustom
     {
         
@@ -6253,7 +6309,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIFlowchartCustom3 : WpfCustom
     {
         
@@ -6286,7 +6342,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDsfNumberFormatActivCustom : WpfCustom
     {
         
@@ -6323,7 +6379,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBusinessDesignStudioWindow11 : WinWindow
     {
         
@@ -6358,7 +6414,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowServiceDetaiWindow : WpfWindow
     {
         
@@ -6390,7 +6446,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowServiceDetaiTitleBar : WpfTitleBar
     {
         
@@ -6426,7 +6482,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowServiceDetaiWindow1 : WinWindow
     {
         
@@ -6440,7 +6496,7 @@ namespace Dev2.Studio.UI.Tests
         }
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowServiceDetaiWindow2 : BrowserWindow
     {
         
@@ -6477,7 +6533,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIWorkflowServiceDetaiDocument : HtmlDocument
     {
         
@@ -6525,7 +6581,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIProcessErrorWindow : WpfWindow
     {
         
@@ -6539,7 +6595,7 @@ namespace Dev2.Studio.UI.Tests
         }
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUntitledNotepadWindow : WinWindow
     {
         
@@ -6571,7 +6627,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemWindow : WinWindow
     {
         
@@ -6606,7 +6662,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIHttp1270011234servicWindow : BrowserWindow
     {
         
@@ -6653,6 +6709,75 @@ namespace Dev2.Studio.UI.Tests
         
         #region Fields
         private HtmlDocument mUIHttp1270011234servicDocument;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    public class UIBusinessDesignStudioWindow3 : WpfWindow
+    {
+        
+        public UIBusinessDesignStudioWindow3()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\Massimo.Guerrera)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDebugOutputCustom UIDebugOutputCustom
+        {
+            get
+            {
+                if ((this.mUIDebugOutputCustom == null))
+                {
+                    this.mUIDebugOutputCustom = new UIDebugOutputCustom(this);
+                }
+                return this.mUIDebugOutputCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDebugOutputCustom mUIDebugOutputCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    public class UIDebugOutputCustom : WpfCustom
+    {
+        
+        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
+            this.SearchProperties["AutomationId"] = "DebugOutput";
+            this.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIDev2StatusBarAutomatEdit
+        {
+            get
+            {
+                if ((this.mUIDev2StatusBarAutomatEdit == null))
+                {
+                    this.mUIDev2StatusBarAutomatEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIDev2StatusBarAutomatEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Dev2StatusBarAutomationID";
+                    this.mUIDev2StatusBarAutomatEdit.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
+                    #endregion
+                }
+                return this.mUIDev2StatusBarAutomatEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIDev2StatusBarAutomatEdit;
         #endregion
     }
 }

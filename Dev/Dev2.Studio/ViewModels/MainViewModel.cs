@@ -734,8 +734,7 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            // Clear output
-            Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
+            // Clear output            
 
             Mediator.SendMessage(MediatorMessages.BindViewToViewModel, resourceModel);
 
@@ -749,6 +748,8 @@ namespace Dev2.Studio.ViewModels
 
             if (viewModelDialogResults == ViewModelDialogResults.Okay)
             {
+                Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
+
                 // Try show the output window
                 TryBringOutputWindowIntoView();
 

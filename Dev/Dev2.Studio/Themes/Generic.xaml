@@ -6,7 +6,15 @@
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
     <!--<ResourceDictionary.MergedDictionaries>
       <ResourceDictionary Source="/CustomControls/Intellisense/Themes/Generic.xaml" />
-   </ResourceDictionary.MergedDictionaries>-->
+   </ResourceDictionary.MergedDictionaries>-->   
+
+    <LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#F3F3F3" Offset="0"/>
+        <GradientStop Color="#EBEBEB" Offset="0.5"/>
+        <GradientStop Color="#DDDDDD" Offset="0.5"/>
+        <GradientStop Color="#CDCDCD" Offset="1"/>
+    </LinearGradientBrush>
+
     <LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         <GradientStop Color="#ABADB3" Offset="0.05" />
         <GradientStop Color="#E2E3EA" Offset="0.07" />
@@ -66,14 +74,8 @@
             </StackPanel>-->
         </Grid>
     </DataTemplate>
-
-    <LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
-        <GradientStop Color="#F3F3F3" Offset="0"/>
-        <GradientStop Color="#EBEBEB" Offset="0.5"/>
-        <GradientStop Color="#DDDDDD" Offset="0.5"/>
-        <GradientStop Color="#CDCDCD" Offset="1"/>
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ButtonNormalBorder" Color="#FF707070"/>
+    
+    <SolidColorBrush x:Key="ButtonNormalBorder" Color="LightGray"/>
 
     <Style x:Key="Dev2SquareButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
@@ -98,7 +100,7 @@
                             <Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="#ADADAD"/>
+                            <Setter Property="Background" Value="LightGray"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -265,15 +267,21 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="Transparent" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}">
-                        <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Height="20" Grid.Column="0" Width="Auto" IsIndeterminate="True" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></ProgressBar>
-                            <Label Grid.Column="0" Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
-                        </Grid>
-                    </Border>
+                    <StatusBar Width="Auto" Background="{StaticResource ButtonNormalBackground}" Padding="0" Margin="0" Height="22">                       
+                        <StatusBarItem Grid.Column="0" Padding="0" Margin="0" Width="Auto">
+                            <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <customDev2Controls:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customDev2Controls:CircularProgressBar>                                
+                                <Label Margin="0,-4,0,0" Grid.Column="0" Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
+                            </Grid>
+                        </StatusBarItem>
+                        <Separator Width="1" Background="DarkGray"></Separator>
+                        <StatusBarItem>                          
+                        </StatusBarItem>
+                    </StatusBar>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -296,7 +304,7 @@
                             <TextBox x:Name="FilterTextBox"                                      
                                  Grid.Column="0"                                                                  
                                  Text="{Binding Path=SearchText,Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
+                                 UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"                                 
                                  HorizontalAlignment="Stretch">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
@@ -343,8 +351,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
 </ResourceDictionary>

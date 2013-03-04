@@ -48,6 +48,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _highlightError = true;
 
         private bool _showProcessingIcon = false;
+        private string _processingText = "Ready";
 
         private bool _showOptions = false;
         private bool _skipOptionsCommandExecute = false;
@@ -97,6 +98,28 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 _showProcessingIcon = value;
                 OnPropertyChanged("ShowProcessingIcon");
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the processing text.
+        /// </summary>
+        /// <value>
+        /// The processing text.
+        /// </value>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>3/4/2013</date>
+        public string ProcessingText
+        {
+            get
+            {
+                return _processingText;
+            }
+            set
+            {
+                _processingText = value;
+                OnPropertyChanged("ProcessingText");
             }
         }
 
@@ -482,6 +505,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             RootItems.Clear();
             _contentItems.Clear();
+            ProcessingText = "Ready";
         }
 
         /// <summary>
@@ -656,6 +680,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (message != null)
             {
                 ShowProcessingIcon = message.DebugStatus;
+                if (message.DebugStatus)
+                {
+                    ProcessingText = "Executing...";
+                }
+                else
+                {
+                    ProcessingText = "Complete";
+                }
             }
         }
 
