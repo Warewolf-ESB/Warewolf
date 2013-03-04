@@ -1,13 +1,5 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Data;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
@@ -16,6 +8,14 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Data;
+using System.Windows.Input;
 
 #endregion
 
@@ -30,9 +30,9 @@ namespace Dev2.Studio.ViewModels.Navigation
     {
         #region private fields
 
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         protected ObservableCollection<ITreeNode> _children;
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         RelayCommand _deployCommand;
         string _iconPath;
         bool? _isChecked = false;
@@ -94,12 +94,16 @@ namespace Dev2.Studio.ViewModels.Navigation
         ///     <c>true</c> if this instance is filtered; otherwise, <c>false</c>.
         /// </value>
         /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
+        /// <date>2013/01/23</date>        
         public virtual bool IsFiltered
         {
             get { return _isFiltered; }
             set
             {
+                if (_isFiltered == value)
+                {
+                    return;
+                }
                 _isFiltered = value;
                 NotifyOfPropertyChange(() => IsFiltered);
 
@@ -107,7 +111,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     return;
                 }
-
                 TreeParent.FilteredChildren.Refresh();
                 TreeParent.NotifyOfPropertyChange("ChildrenCount");
             }
@@ -207,7 +210,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 var childCount = Children.Where(c => !c.IsFiltered)
-                                         .Count(c => c.GetType() == typeof (ResourceTreeViewModel));
+                                         .Count(c => c.GetType() == typeof(ResourceTreeViewModel));
 
                 return childCount
                        + Children.Where(c => !c.IsFiltered).Sum(c => c.ChildrenCount);
@@ -228,7 +231,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get { return _isChecked; }
             set { SetIsChecked(value, true, true, true); }
-            }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is expanded in the tree.
@@ -265,77 +268,77 @@ namespace Dev2.Studio.ViewModels.Navigation
         public virtual bool HasExecutableCommands
         {
             get { return CanDeploy; }
-            }
+        }
 
         public virtual bool CanBuild
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanDebug
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanEdit
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanManualEdit
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanRun
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanDelete
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanHelp
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanShowDependencies
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanShowProperties
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanCreateWizard
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanEditWizard
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanDeploy
         {
             get { return EnvironmentModel != null && EnvironmentModel.IsConnected; }
-            }
+        }
 
         public virtual bool CanRemove
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanDisconnect
         {
             get { return false; }
-            }
+        }
 
         public virtual bool CanConnect
         {
@@ -496,7 +499,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 Children.ToList().ForEach(c => c.SetFilter(filterText, true));
                 IsFiltered = Children.All(c => c.IsFiltered);
             }
-       
+
             //Notify parent to verify filterstate
             if (TreeParent != null && originalFilter != IsFiltered)
             {
@@ -729,7 +732,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             Children.Remove(toRemove);
             child.TreeParent = null;
-            
+
             return true;
         }
 
@@ -847,7 +850,8 @@ namespace Dev2.Studio.ViewModels.Navigation
     {
         private T _dataContext;
 
-        protected AbstractTreeViewModel(ITreeNode parent) : base(parent)
+        protected AbstractTreeViewModel(ITreeNode parent)
+            : base(parent)
         {
         }
 

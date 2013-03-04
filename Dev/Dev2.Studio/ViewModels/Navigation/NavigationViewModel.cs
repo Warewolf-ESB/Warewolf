@@ -518,7 +518,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                               resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
             BuildCategoryTree(ResourceType.Service, environmentVM,
                               resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
-            UpdateSearchFilter(_searchFilter);
+            if (!string.IsNullOrEmpty(_searchFilter))
+            {
+                UpdateSearchFilter(_searchFilter);
+            }
         }
 
         /// <summary>
