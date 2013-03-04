@@ -64,7 +64,6 @@
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
     <Compile Include="Diagnostics\ValidationResult.cs" />
-    <Compile Include="Hosting\IResourceCatalog.cs" />
     <Compile Include="ServiceModel\Data\IResource.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />

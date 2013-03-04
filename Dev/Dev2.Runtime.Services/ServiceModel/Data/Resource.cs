@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -129,12 +130,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string ResourcePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the contents of the resource.
-        /// </summary>
-        [JsonIgnore]
-        public string Contents { get; set; }
-
-        /// <summary>
         /// Gets or sets the file path of the resource.
         /// <remarks>
         /// Must only be used by the catalog!
@@ -143,14 +138,28 @@ namespace Dev2.Runtime.ServiceModel.Data
         [JsonIgnore]
         public string FilePath { get; set; }
 
+        /// <summary>
+        /// Gets or sets the contents of the resource.
+        /// Reads from disk first if contents is null.
+        /// </summary>
+        [JsonIgnore]
+        public string Contents
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Save
 
-        public virtual void Save(Guid workspaceID, Guid dataListID)
+        public virtual void Save(Guid workspaceID)
         {
-            var xml = ToXml();
-            Resources.Save(workspaceID, Resources.RootFolders[ResourceType], ResourceName, xml.ToString());
+            if(ResourceID == Guid.Empty)
+            {
+                ResourceID = Guid.NewGuid();
+            }
+            ResourceCatalog.Instance.Save(workspaceID, this);
         }
 
         #endregion
@@ -262,6 +271,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }

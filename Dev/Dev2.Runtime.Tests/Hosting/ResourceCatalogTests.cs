@@ -18,6 +18,12 @@ namespace Dev2.Tests.Runtime.Hosting
     {
         const int SaveResourceCount = 5;
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            Directory.SetCurrentDirectory(testContext.TestDir);
+        }
+
         #region Instance
 
         [TestMethod]
@@ -50,10 +56,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
-                {
-                    Directory.Delete(workspacePath, true);
-                }
+                TryDeleteDir(workspacePath);
             }
         }
 
@@ -74,10 +77,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
-                {
-                    Directory.Delete(workspacePath, true);
-                }
+                TryDeleteDir(workspacePath);
             }
         }
 
@@ -102,10 +102,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
-                {
-                    Directory.Delete(workspacePath, true);
-                }
+                TryDeleteDir(workspacePath);
             }
         }
 
@@ -127,10 +124,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
-                {
-                    Directory.Delete(workspacePath, true);
-                }
+                TryDeleteDir(workspacePath);
             }
         }
 
@@ -142,7 +136,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [ExpectedException(typeof(ArgumentNullException))]
         public void LoadAsyncWithNullWorkspaceArgumentExpectedThrowsArgumentNullException()
         {
-            var task = ResourceCatalog.LoadAsync(null, new string[0]);
+            var task = ResourceCatalog.LoadAsync(null, true, new string[0]);
             try
             {
                 task.Wait();
@@ -157,7 +151,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [ExpectedException(typeof(ArgumentNullException))]
         public void LoadAsyncWithNullFoldersArgumentExpectedThrowsArgumentNullException()
         {
-            var task = ResourceCatalog.LoadAsync("xx", null);
+            var task = ResourceCatalog.LoadAsync("xx", true, null);
             try
             {
                 task.Wait();
@@ -171,7 +165,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void LoadAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
-            var task = ResourceCatalog.LoadAsync("xx", new string[0]);
+            var task = ResourceCatalog.LoadAsync("xx", true, new string[0]);
             task.Wait();
             Assert.AreEqual(0, task.Result.Count);
         }
@@ -188,7 +182,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 Directory.CreateDirectory(sourcesPath);
                 var resources = SaveResources(sourcesPath, "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer").ToList();
 
-                var task = ResourceCatalog.LoadAsync(workspacePath, "Sources", "Services");
+                var task = ResourceCatalog.LoadAsync(workspacePath, true, "Sources", "Services");
                 task.Wait();
 
                 Assert.AreEqual(3, task.Result.Count);
@@ -202,10 +196,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
-                {
-                    Directory.Delete(workspacePath, true);
-                }
+                TryDeleteDir(workspacePath);
             }
         }
 
@@ -217,7 +208,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspacePath = SaveResources(workspaceID, out resources);
             try
             {
-                var task = ResourceCatalog.LoadAsync(workspacePath, "Sources", "Services");
+                var task = ResourceCatalog.LoadAsync(workspacePath, true, "Sources", "Services");
                 task.Wait();
 
                 Assert.AreEqual(SaveResourceCount, task.Result.Count);
@@ -231,10 +222,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
-                {
-                    Directory.Delete(workspacePath, true);
-                }
+                TryDeleteDir(workspacePath);
             }
         }
 
@@ -300,18 +288,247 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             finally
             {
-                var workspacePath = GlobalConstants.WorkspacePath;
-                if(Directory.Exists(workspacePath))
+                TryDeleteDir(GlobalConstants.WorkspacePath);
+            }
+        }
+
+        #endregion
+
+        #region GetContents
+
+        [TestMethod]
+        public void GetContentsWithExistingResourceIDExpectedReturnsResourceContents()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = SaveResources(workspaceID, out resources);
+            try
+            {
+                var catalog = new ResourceCatalog();
+                foreach(var expected in resources)
                 {
-                    try
-                    {
-                        Directory.Delete(workspacePath, true);
-                    }
-                    catch(IOException)
-                    {
-                        // Don't fail test just because this threw an IO exception!
-                    }
+                    var actual = catalog.GetContents(workspaceID, expected.ResourceID, expected.Version);
+                    Assert.IsNotNull(actual);
                 }
+            }
+            finally
+            {
+                TryDeleteDir(workspacePath);
+            }
+        }
+
+        [TestMethod]
+        public void GetContentsWithNonExistentResourceIDExpectedReturnsNull()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = SaveResources(workspaceID, out resources);
+            try
+            {
+                var catalog = new ResourceCatalog();
+                var actual = catalog.GetContents(workspaceID, Guid.NewGuid(), null);
+                Assert.IsNull(actual);
+            }
+            finally
+            {
+                TryDeleteDir(workspacePath);
+            }
+        }
+        #endregion
+
+        #region SyncTo
+
+        [TestMethod]
+        public void SyncToWithDeleteIsFalseAndFileDeletedFromSourceExpectedFileNotDeletedInDestination()
+        {
+            List<IResource> sourceResources;
+            var sourceWorkspaceID = Guid.NewGuid();
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+
+            List<IResource> targetResources;
+            var targetWorkspaceID = Guid.NewGuid();
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            try
+            {
+                var sourceResource = sourceResources[0];
+                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+                var sourceFile = new FileInfo(sourceResource.FilePath);
+                var targetFile = new FileInfo(targetResource.FilePath);
+
+                sourceFile.Delete();
+                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
+                targetFile.Refresh();
+                Assert.IsTrue(targetFile.Exists);
+            }
+            finally
+            {
+                //TryDeleteDir(sourceWorkspacePath);
+                //TryDeleteDir(targetWorkspacePath);
+            }
+        }
+
+        [TestMethod]
+        public void SyncToWithOverwriteIsTrueExpectedFileInDestinationOverwritten()
+        {
+            List<IResource> sourceResources;
+            var sourceWorkspaceID = Guid.NewGuid();
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+
+            List<IResource> targetResources;
+            var targetWorkspaceID = Guid.NewGuid();
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            try
+            {
+                var sourceResource = sourceResources[0];
+                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+                var sourceFile = new FileInfo(sourceResource.FilePath);
+                var targetFile = new FileInfo(targetResource.FilePath);
+
+                var fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
+                fs.Write(new byte[]
+                {
+                    200
+                }, 0, 1);
+                fs.Close();
+
+                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
+
+                sourceFile.Refresh();
+                targetFile.Refresh();
+
+                var expected = sourceFile.Length;
+                var actual = targetFile.Length;
+
+                Assert.AreEqual(expected, actual);
+            }
+            finally
+            {
+                //TryDeleteDir(sourceWorkspacePath);
+                //TryDeleteDir(targetWorkspacePath);
+            }
+        }
+
+        [TestMethod]
+        public void SyncToWithOverwriteIsFalseExpectedFileInDestinationUnchanged()
+        {
+            List<IResource> sourceResources;
+            var sourceWorkspaceID = Guid.NewGuid();
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+
+            List<IResource> targetResources;
+            var targetWorkspaceID = Guid.NewGuid();
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            try
+            {
+                var sourceResource = sourceResources[0];
+                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+                var sourceFile = new FileInfo(sourceResource.FilePath);
+                var targetFile = new FileInfo(targetResource.FilePath);
+
+                var fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
+                fs.Write(new byte[]
+                {
+                    200
+                }, 0, 1);
+                fs.Close();
+
+                targetFile.Refresh();
+                var expected = targetFile.Length;
+
+                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
+
+                targetFile.Refresh();
+
+                var actual = targetFile.Length;
+
+                Assert.AreEqual(expected, actual);
+            }
+            finally
+            {
+                //TryDeleteDir(sourceWorkspacePath);
+                //TryDeleteDir(targetWorkspacePath);
+            }
+        }
+
+        [TestMethod]
+        public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotCopied()
+        {
+            List<IResource> sourceResources;
+            var sourceWorkspaceID = Guid.NewGuid();
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+
+            List<IResource> targetResources;
+            var targetWorkspaceID = Guid.NewGuid();
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            try
+            {
+                var sourceResource = sourceResources[0];
+                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+                var sourceFile = new FileInfo(sourceResource.FilePath);
+                var targetFile = new FileInfo(targetResource.FilePath);
+
+                targetFile.Delete();
+                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
+                targetFile.Refresh();
+                Assert.IsFalse(targetFile.Exists);
+            }
+            finally
+            {
+                //TryDeleteDir(sourceWorkspacePath);
+                //TryDeleteDir(targetWorkspacePath);
+            }
+        }
+
+        [TestMethod]
+        public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotDeleted()
+        {
+            List<IResource> sourceResources;
+            var sourceWorkspaceID = Guid.NewGuid();
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+
+            List<IResource> targetResources;
+            var targetWorkspaceID = Guid.NewGuid();
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            try
+            {
+                var sourceResource = sourceResources[0];
+                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+                var sourceFile = new FileInfo(sourceResource.FilePath);
+                var targetFile = new FileInfo(targetResource.FilePath);
+
+                sourceFile.Delete();
+                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
+                targetFile.Refresh();
+                Assert.IsTrue(targetFile.Exists);
+            }
+            finally
+            {
+                //TryDeleteDir(sourceWorkspacePath);
+                //TryDeleteDir(targetWorkspacePath);
+            }
+        }
+
+        [TestMethod]
+        public void SyncToWithNonExistingDestinationDirectoryExpectedDestinationDirectoryCreated()
+        {
+            List<IResource> sourceResources;
+            var sourceWorkspaceID = Guid.NewGuid();
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+
+            var targetWorkspaceID = Guid.NewGuid();
+            var targetWorkspacePath = GlobalConstants.GetWorkspacePath(targetWorkspaceID);
+            try
+            {
+                var targetDir = new DirectoryInfo(targetWorkspacePath);
+
+                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
+                targetDir.Refresh();
+                Assert.IsTrue(targetDir.Exists);
+            }
+            finally
+            {
+                //TryDeleteDir(sourceWorkspacePath);
+                //TryDeleteDir(targetWorkspacePath);
             }
         }
 
@@ -320,6 +537,7 @@ namespace Dev2.Tests.Runtime.Hosting
         //
         // Static helpers
         //
+
         #region SaveResources
 
         static string SaveResources(Guid workspaceID, out List<IResource> resources)
@@ -344,10 +562,38 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 var xml = XmlResource.Fetch(resourceName);
                 var res = new Resource(xml) { FilePath = Path.Combine(resourcesPath, resourceName + ".xml"), Contents = xml.ToString(SaveOptions.DisableFormatting) };
-                result.Add(res);
-                xml.Save(res.FilePath);
+                try
+                {
+                    File.WriteAllText(res.FilePath, xml.ToString());
+                    result.Add(res);
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // Silently ignore errors
+                }
             }
             return result;
+        }
+
+        #endregion
+
+        #region TryDeleteDir
+
+        static void TryDeleteDir(string path)
+        {
+            if(Directory.Exists(path))
+            {
+                try
+                {
+                    Directory.Delete(path, true);
+                }
+                catch(IOException)
+                {
+                    // Don't fail test just because this threw an IO exception!
+                }
+            }
         }
 
         #endregion

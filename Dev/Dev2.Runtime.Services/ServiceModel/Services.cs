@@ -109,15 +109,10 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = DeserializeService(args);
-
-                if(service.ResourceID == Guid.Empty)
-                {
-                    service.ResourceID = Guid.NewGuid();
-                }
-                service.Save(workspaceID, dataListID);
+                service.Save(workspaceID);
                 if(workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
-                    service.Save(GlobalConstants.ServerWorkspaceID, dataListID);
+                    service.Save(GlobalConstants.ServerWorkspaceID);
                 }
                 return service.ToString();
             }

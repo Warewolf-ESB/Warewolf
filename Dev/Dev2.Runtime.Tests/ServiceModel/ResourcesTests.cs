@@ -247,7 +247,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         ResourcePath = string.Format("My Path {0}", i),
                         ResourceType = (i % Modulo == 0) ? ResourceType.DbSource : ResourceType.Unknown
                     };
-                    resource.Save(workspaceID, Guid.Empty);
+                    resource.Save(workspaceID);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
                 var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID, Guid.Empty);

@@ -48,12 +48,8 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);
-                if(connection.ResourceID == Guid.Empty)
-                {
-                    connection.ResourceID = Guid.NewGuid();
-                }
-                connection.Save(workspaceID, dataListID);
+                var connection = JsonConvert.DeserializeObject<Connection>(args);               
+                connection.Save(workspaceID);
                 return connection.ToString();
             }
             catch(Exception ex)

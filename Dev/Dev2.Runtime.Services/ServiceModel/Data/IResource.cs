@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using Dev2.Common.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -36,15 +37,28 @@ namespace Dev2.Runtime.ServiceModel.Data
         string ResourcePath { get; set; }
 
         /// <summary>
+        /// Gets or sets the file path of the resource.
+        /// <remarks>
+        /// Must only be used by the catalog!
+        /// </remarks>   
+        /// </summary>   
+        string FilePath { get; set; }
+
+        /// <summary>
         /// Gets or sets the contents of the resource.
         /// </summary>   
         string Contents { get; set; }
 
         /// <summary>
-        /// Gets or sets the file path of the resource.
-        /// <remarks>
-        /// Must only be used by the catalog!
-        /// </remarks>   /// </summary>   
-        string FilePath { get; set; }
+        /// Saves this resource to the specified workspace.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID.</param>
+        void Save(Guid workspaceID);
+
+        /// <summary>
+        /// Gets the XML representation of this resource.
+        /// </summary>
+        /// <returns>The XML representation of this resource.</returns>
+        XElement ToXml();
     }
 }

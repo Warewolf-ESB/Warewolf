@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -286,6 +281,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        // TODO: Remove save and use ResourceCatalog directly
         #region Save
 
         public static void Save(Guid workspaceID, string directoryName, DynamicServiceObjectBase resource)
@@ -306,36 +302,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public static void Save(string workspacePath, string directoryName, string resourceName, string resourceXml)
         {
-            directoryName = Path.Combine(workspacePath, directoryName);
-            if(!Directory.Exists(directoryName))
-            {
-                Directory.CreateDirectory(directoryName);
-            }
-
-            var versionDirectory = String.Format("{0}\\{1}", directoryName, "VersionControl");
-            if(!Directory.Exists(versionDirectory))
-            {
-                Directory.CreateDirectory(versionDirectory);
-            }
-
-            var fileName = String.Format("{0}\\{1}.xml", directoryName, resourceName);
-
-            if(File.Exists(fileName))
-            {
-                var count = Directory.GetFiles(versionDirectory, String.Format("{0}*.xml", resourceName)).Count();
-
-                File.Copy(fileName, String.Format("{0}\\{1}.V{2}.xml", versionDirectory, resourceName, (count + 1).ToString(CultureInfo.InvariantCulture)), true);
-
-                // Remove readonly attribute if it is set
-                FileAttributes attributes = File.GetAttributes(fileName);
-                if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                {
-                    File.SetAttributes(fileName, attributes ^ FileAttributes.ReadOnly);
-                }
-            }
-
-            var signedXml = HostSecurityProvider.Instance.SignXml(resourceXml);
-            File.WriteAllText(fileName, signedXml, Encoding.UTF8);
+            ResourceCatalog.Save(workspacePath, directoryName, resourceName, resourceXml);
         }
 
         #endregion

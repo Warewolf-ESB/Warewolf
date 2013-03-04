@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/dbSources/Get
         public DbSource Get(string resourceID, Guid workspaceID, Guid dataListID)
         {
-            var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows};
+            var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
             try
             {
                 var xmlStr = Resources.ReadXml(workspaceID, ResourceType.DbSource, resourceID);
@@ -53,19 +53,15 @@ namespace Dev2.Runtime.ServiceModel
                 switch(databaseSourceDetails.ServerType)
                 {
                     case enSourceType.SqlDatabase:
-                    {
-                        databaseSourceDetails.Port = 1433;
-                        break;
-                    }
+                        {
+                            databaseSourceDetails.Port = 1433;
+                            break;
+                        }
                     default:
                         break;
                 }
 
-                if(databaseSourceDetails.ResourceID == Guid.Empty)
-                {
-                    databaseSourceDetails.ResourceID = Guid.NewGuid();
-                }
-                databaseSourceDetails.Save(workspaceID, dataListID);
+                databaseSourceDetails.Save(workspaceID);
                 return databaseSourceDetails.ToString();
             }
             catch(Exception ex)
@@ -138,7 +134,7 @@ namespace Dev2.Runtime.ServiceModel
             switch(dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                //PBI 8720 TODO: Use existing code from runtime services to get the mssql server's database names
+                    //PBI 8720 TODO: Use existing code from runtime services to get the mssql server's database names
                     using(var conn = new SqlConnection(dbSourceDetails.ConnectionString))
                     {
                         try
@@ -161,10 +157,10 @@ namespace Dev2.Runtime.ServiceModel
                         break;
                     }
                 default:
-                {
-                    result.IsValid = false;
-                    break;
-                }
+                    {
+                        result.IsValid = false;
+                        break;
+                    }
             }
             return result;
         }
