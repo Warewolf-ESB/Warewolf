@@ -188,10 +188,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="..\Binaries\redis-server.exe">
-      <Link>redis-server.exe</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="XML\CatalogServiceAllTools.xml" />
     <EmbeddedResource Include="XML\CatalogSourceAnytingToXmlPlugin.xml" />
     <EmbeddedResource Include="XML\CatalogSourceCitiesDatabase.xml" />
