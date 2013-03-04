@@ -39,7 +39,7 @@
             <customDev2Controls:CircularProgressBar Grid.Column="1" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center"
                                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                     AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
-            <Button AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
+            <Button Margin="0,0,4,0" AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
                             Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" 
                             Command="{Binding Path=RefreshMenuCommand}"
                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">

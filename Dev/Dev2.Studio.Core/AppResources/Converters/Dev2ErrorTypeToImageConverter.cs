@@ -1,7 +1,7 @@
 ﻿
+using Dev2.Studio.Core.ErrorHandling;
 using System;
 using System.Windows.Data;
-using Dev2.Studio.Core.ErrorHandling;
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
