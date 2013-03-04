@@ -32,7 +32,7 @@
 		
         var jsonData = ko.toJSON(self.data);
 
-        studio.setValue(jsonData);
+        if (window.studio) studio.setValue(jsonData);
 
     };
 

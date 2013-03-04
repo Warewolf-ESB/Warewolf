@@ -69,7 +69,7 @@
     <Content Include="Tests\Sources\ServerViewModelTests.js" />
     <Content Include="Tests\SourceTests.htm" />
     <Content Include="Tests\Switch\DragModel_Test.js" />
-    <Content Include="Tests\Switch\DropModel_Test.js" />
+    <Content Include="Tests\Switch\DropModelTests.js" />
     <Content Include="Tests\Services\ServiceViewModelTests.js" />
     <Content Include="wwwroot\Content\qunit-1.11.0.css" />
     <Content Include="wwwroot\Content\Site.css" />
