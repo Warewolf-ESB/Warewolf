@@ -526,5 +526,5 @@ button.clear-filter {
     height: 29px; 
     width: 29px;    
     left: -4px;
-
+    /*border-color: black !important;*/
 }
