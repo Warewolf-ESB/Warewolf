@@ -1577,6 +1577,9 @@ namespace Unlimited.Applications.DynamicServicesHost
             //_redisProcess = Process.Start(pathToRedis);
             //Dev2RedisClient.StartRedis();
             DataListFactory.CreateServerDataListCompiler();
+            Dev2BinaryDataListStorage bootStrapStorage = new Dev2BinaryDataListStorage(GlobalConstants.NullEntryNamespace, Guid.NewGuid());
+            Thread.Sleep(1500);
+            bootStrapStorage.Dispose();
             Write("done.");
             WriteLine("");
             return true;
