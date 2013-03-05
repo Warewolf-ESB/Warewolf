@@ -35,6 +35,14 @@
         });
     });
 
+    self.clearFilter = function () {
+        self.searchFolderTerm("");
+    };
+    self.hasFilter = ko.computed(function () {
+        return self.searchFolderTerm() !== "";
+    });
+    utils.makeClearFilterButton("clearSaveFilterButton");
+    
     self.isValidName = function (name) {
         var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
         return result;

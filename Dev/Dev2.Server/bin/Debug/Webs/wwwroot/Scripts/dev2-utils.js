@@ -49,3 +49,10 @@ utils.getDialogPosition = function () {
         of: "#" + parentContainerID
     };
 };
+
+utils.makeClearFilterButton = function (buttonID) {
+    $("#" + buttonID)
+      .text("")
+      .append('<img height="16px" width="16px" src="images/clear-filter.png" />')
+      .button();
+};

@@ -165,6 +165,7 @@
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\Images\ajax-loader.gif" />
     <Content Include="wwwroot\Images\ajax-loader32.gif" />
+    <Content Include="wwwroot\Images\clear-filter.png" />
     <Content Include="wwwroot\Images\cross.png" />
     <Content Include="wwwroot\Images\error.png" />
     <Content Include="wwwroot\Images\folder-open.png" />

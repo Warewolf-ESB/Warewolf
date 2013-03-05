@@ -5,6 +5,7 @@
             <span style="float: right">
                 <button tabindex="100" type="button" name="newFolderButton" id="newFolderButton" data-bind="click: newFolder">New Folder</button>
                 <input tabindex="100" maxlength="20" type="text" name="searchFolderTerm" id="searchFolderTerm" placeholder="Search" autocomplete="off" style="width: 10em; vertical-align: middle;" data-bind="value: searchFolderTerm, valueUpdate: 'afterkeydown'" />
+                <button class="clear-filter" tabindex="101" type="button" name="clearSaveFilterButton" id="clearSaveFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
             </span>
         </div>
         <div class="field">

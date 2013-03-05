@@ -35,7 +35,7 @@
             ErrorMessage: ko.observable("")
         }
     };
-
+    
     self.sources = ko.observableArray();
     self.sourceMethods = ko.observableArray();
     self.sourceMethodSearchTerm = ko.observable("");
@@ -48,7 +48,15 @@
             return serviceAction.Name.toLowerCase().indexOf(term) !== -1;
         });
     });
-     
+
+    self.clearFilter = function () {
+        self.sourceMethodSearchTerm("");
+    };
+    self.hasFilter = ko.computed(function () {
+        return self.sourceMethodSearchTerm() !== "";
+    });
+    utils.makeClearFilterButton("clearDbServiceFilterButton");
+
     self.methodNameChanged = ko.observable(false);
     self.hasMethod = ko.computed(function () {
         return self.data.method.Name() !== "";
@@ -290,6 +298,12 @@
 
 DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
     // apply jquery-ui themes
+    //$("#clearFilterButton").button({
+    //    text: false,
+    //    icons: {
+    //        primary: "ui-icon-clear-filter"
+    //    }
+    //});
     $("button").button();
     $("#tabs").tabs();
 
