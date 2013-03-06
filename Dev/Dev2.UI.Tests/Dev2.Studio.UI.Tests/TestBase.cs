@@ -54,22 +54,31 @@ namespace Dev2.CodedUI.Tests
         // To bring up the generator utility, click in a method, and press
         // Cntrl+\, Cntrl+C
 
+        static Process studioProc;
 
         [ClassInitialize]
         public static void StartStudio(TestContext ctx)
         {
 
             //get the folder that's in
-            string theDirectory = Assembly.GetExecutingAssembly().Location;
+            string thePath = Assembly.GetExecutingAssembly().Location;
 
-            File.WriteAllText(@"e:\UI_Path.txt", theDirectory);
+            string dir = Path.GetDirectoryName(thePath);
+
+            studioProc = new Process();
+
+            studioProc.StartInfo.FileName = dir + @"\Dev2.Studio.exe";
+
+            studioProc.Start();
+            Thread.Sleep(30000); // wait 30 seconds for everything to fire up ;)
 
         }
 
         [ClassCleanup]
         public static void StopStudio()
         {
-
+            studioProc.Kill();
+            Thread.Sleep(10000);
         }
 
         
