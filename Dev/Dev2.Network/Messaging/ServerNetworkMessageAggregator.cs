@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Dev2.Network.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Network;
-using System.Text;
-using Dev2.Network.Messages;
 
 namespace Dev2.Network.Messaging
 {
@@ -58,8 +56,10 @@ namespace Dev2.Network.Messaging
             Type messageType = message.GetType();
             Type contextType = typeof(IServerNetworkChannelContext<>).MakeGenericType(new Type[] { typeof(ContextT) });
             Type callbackType = typeof(Action<,>).MakeGenericType(new Type[] { messageType, contextType });
+            Type callbackTypeSimple = typeof(Action<,>).MakeGenericType(new Type[] { messageType, typeof(NetworkContext) });
             Dictionary<Delegate, int> delegates;
             object[] parameters = new object[] { message, context };
+            object[] parametersSimple = new object[] { message, (context != null) ? context.NetworkContext : null};
             
             if (_callbacksIndexedByType.TryGetValue(messageType, out delegates))
             {
@@ -70,10 +70,10 @@ namespace Dev2.Network.Messaging
                         Delegate callback = callbackAndCount.Key;
                         if (async)
                         {
-                            Action a = new Action(() =>
+                            Action a = () =>
                             {
                                 callback.DynamicInvoke(parameters);
-                            });
+                            };
                             a.BeginInvoke(null, null);
                         }
                         else
@@ -81,9 +81,26 @@ namespace Dev2.Network.Messaging
                             callback.DynamicInvoke(parameters);
                         }
                     }
+                    else if (callbackAndCount.Key.GetType() == callbackTypeSimple)
+                    {
+                        Delegate callback = callbackAndCount.Key;
+                        if (async)
+                        {
+                            Action a = () =>
+                            {
+                                callback.DynamicInvoke(parametersSimple);
+                            };
+                            a.BeginInvoke(null, null);
+                        }
+                        else
+                        {
+                            callback.DynamicInvoke(parametersSimple);
+                        }                        
+                    }
                 }
             }
         }
+
 
         /// <summary>
         /// Subscribes to recieve messages of a certain type.
@@ -112,6 +129,53 @@ namespace Dev2.Network.Messaging
                 Type messageType = typeof(T);
                 Dictionary<Delegate, int> delegates;
                 
+                if (!_callbacksIndexedByType.TryGetValue(messageType, out delegates))
+                {
+                    delegates = new Dictionary<Delegate, int>();
+                    _callbacksIndexedByType.Add(messageType, delegates);
+                }
+
+                int count;
+                if (!delegates.TryGetValue(callback, out count))
+                {
+                    delegates.Add(callback, 1);
+                }
+                else
+                {
+                    delegates[callback]++;
+                }
+            }
+
+            return subscriptionToken;
+        }
+
+        /// <summary>
+        /// Subscribes to recieve messages of a certain type.
+        /// </summary>
+        /// <param name="callback">The callback.</param>
+        /// <returns></returns>
+        public Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage, new()
+        {
+            if (callback == null)
+            {
+                return Guid.Empty;
+            }
+
+            Guid subscriptionToken = Guid.NewGuid();
+
+            lock (_subscriptionLock)
+            {
+                //
+                // Register subscription
+                //
+                _subscriptions.Add(subscriptionToken, callback);
+
+                //
+                // Ensure the callback is registered with the type index
+                //
+                Type messageType = typeof(T);
+                Dictionary<Delegate, int> delegates;
+
                 if (!_callbacksIndexedByType.TryGetValue(messageType, out delegates))
                 {
                     delegates = new Dictionary<Delegate, int>();

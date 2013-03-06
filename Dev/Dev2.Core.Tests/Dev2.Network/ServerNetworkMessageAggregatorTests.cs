@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Network;
-using System.Text;
-using Dev2.Network;
+﻿using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Unlimited.UnitTest.Framework.Dev2.Network
 {
@@ -23,16 +19,6 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
             }));
 
             Assert.AreNotEqual(subscriptionToken, Guid.Empty);
-        }
-
-        [TestMethod]
-        public void Subscribe_WhereCallbackNull_Expect_EmptyToken()
-        {
-            ServerNetworkMessageAggregator<MockNetworkContext> serverNetworkMessageAggregator = new ServerNetworkMessageAggregator<MockNetworkContext>();
-
-            Guid subscriptionToken = serverNetworkMessageAggregator.Subscribe<TestMessage>(null);
-
-            Assert.AreEqual(subscriptionToken, Guid.Empty);
         }
 
         [TestMethod]
