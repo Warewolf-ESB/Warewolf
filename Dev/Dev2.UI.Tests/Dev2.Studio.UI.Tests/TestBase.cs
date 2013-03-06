@@ -68,6 +68,8 @@ namespace Dev2.CodedUI.Tests
 
                 string dir = Path.GetDirectoryName(thePath);
 
+                File.WriteAllText("c:\foo\ui_path.txt", dir);
+
                 studioProc = new Process();
 
                 studioProc.StartInfo.FileName = dir + @"\Dev2.Studio.exe";
