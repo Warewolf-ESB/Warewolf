@@ -358,35 +358,42 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public IBinaryDataListEntry Clone(enTranslationDepth depth, out string error)
+        public IBinaryDataListEntry Clone(enTranslationDepth depth, Guid clonedStorageID, out string error)
         {
             error = string.Empty;
             BinaryDataListEntry result;
-            if(Columns != null)
+            Guid dlKey = DataListKey;
+
+            if (clonedStorageID != GlobalConstants.NullDataListID)
+            {
+                dlKey = clonedStorageID;
+            }
+
+            if (Columns != null)
             {
                 // clone the columns
                 IList<Dev2Column> cols = new List<Dev2Column>(Columns.Count);
-                foreach(Dev2Column c in Columns)
+                foreach (Dev2Column c in Columns)
                 {
                     cols.Add(new Dev2Column(c.ColumnName, c.ColumnDescription));
                 }
-                result = new BinaryDataListEntry(Namespace, Description, cols, DataListKey);
+                result = new BinaryDataListEntry(Namespace, Description, cols, dlKey);
             }
             else
             {
-                result = new BinaryDataListEntry(Namespace, Description, DataListKey);
+                result = new BinaryDataListEntry(Namespace, Description, dlKey);
             }
 
-            if(depth == enTranslationDepth.Data || depth == enTranslationDepth.Data_With_Blank_OverWrite)
+            if (depth == enTranslationDepth.Data || depth == enTranslationDepth.Data_With_Blank_OverWrite)
             {
                 // clone _items
 
-                if(IsRecordset)
+                if (IsRecordset)
                 {
                     IIndexIterator ii = _internalObj.Keys;
                     bool isEmtpy = _internalObj.IsEmtpy;
                     result._internalObj.IsEmtpy = isEmtpy;
-                    while(ii.HasMore())
+                    while (ii.HasMore())
                     {
                         int next = ii.FetchNextIndex();
                         // clone the data
@@ -395,14 +402,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         // TODO : Internal Object will not have data, we just need to expose this fact!
 
-                        if(!isEmtpy)
+                        if (!isEmtpy)
                         {
                             IList<IBinaryDataListItem> items = _internalObj[next];
                             IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
                             // Bug 8725
-                            if(items != null)
+                            if (items != null)
                             {
-                                foreach(IBinaryDataListItem itm in items)
+                                foreach (IBinaryDataListItem itm in items)
                                 {
                                     clone.Add(itm.Clone());
                                 }
@@ -417,12 +424,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     IList<IBinaryDataListItem> items = _internalObj[0];
                     IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
-                    foreach(IBinaryDataListItem itm in items)
+                    foreach (IBinaryDataListItem itm in items)
                     {
                         clone.Add(itm.Clone());
                     }
 
                     // now push back clone
+
                     result._internalObj[0] = clone;
                 }
             }
@@ -430,14 +438,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 // clone _items
                 IList<IBinaryDataListItem> blankItems = new List<IBinaryDataListItem>();
-                if(_internalObj.Count > 0)
+                if (_internalObj.Count > 0)
                 {
-                    if(IsRecordset)
+                    if (IsRecordset)
                     {
                         //int firstKey = _internalObj.Keys.First();
                         int firstKey = _internalObj.Keys.MinIndex();
                         int listLen = _internalObj[firstKey].Count;
-                        for(int i = 0; i < listLen; i++)
+                        for (int i = 0; i < listLen; i++)
                         {
                             int idx = i + 1;
                             IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
@@ -459,6 +467,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
 
             return result;
+        }
+
+        public IBinaryDataListEntry Clone(enTranslationDepth depth, out string error)
+        {
+            return Clone(depth, GlobalConstants.NullDataListID, out error);
         }
 
         public void Merge(IBinaryDataListEntry toMerge, out string error)

@@ -132,6 +132,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         IBinaryDataListEntry Clone(enTranslationDepth depth, out string errors);
 
         /// <summary>
+        /// Clones the specified depth.
+        /// </summary>
+        /// <param name="depth">The depth.</param>
+        /// <param name="storageID">The storage ID.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        IBinaryDataListEntry Clone(enTranslationDepth depth, Guid storageID, out string errors);
+
+        /// <summary>
         /// Merges this instance.
         /// </summary>
         /// <param name="mergeWith">The merge with.</param>
