@@ -60,17 +60,21 @@ namespace Dev2.CodedUI.Tests
         public static void StartStudio(TestContext ctx)
         {
 
-            //get the folder that's in
-            string thePath = Assembly.GetExecutingAssembly().Location;
+            if (studioProc == null)
+            {
 
-            string dir = Path.GetDirectoryName(thePath);
+                //get the folder that's in
+                string thePath = Assembly.GetExecutingAssembly().Location;
 
-            studioProc = new Process();
+                string dir = Path.GetDirectoryName(thePath);
 
-            studioProc.StartInfo.FileName = dir + @"\Dev2.Studio.exe";
+                studioProc = new Process();
 
-            studioProc.Start();
-            Thread.Sleep(30000); // wait 30 seconds for everything to fire up ;)
+                studioProc.StartInfo.FileName = dir + @"\Dev2.Studio.exe";
+
+                studioProc.Start();
+                Thread.Sleep(30000); // wait 30 seconds for everything to fire up ;)
+            }
 
         }
 
@@ -78,7 +82,7 @@ namespace Dev2.CodedUI.Tests
         public static void StopStudio()
         {
             studioProc.Kill();
-            Thread.Sleep(10000);
+            Thread.Sleep(10000); // wait 10 seconds for everything to exit ;)
         }
 
         
