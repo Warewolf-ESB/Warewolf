@@ -78,6 +78,8 @@
     <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
+    <Compile Include="Configuration\NetworkContextMock.cs" />
+    <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="Hosting\ResourceCatalogTests.cs" />

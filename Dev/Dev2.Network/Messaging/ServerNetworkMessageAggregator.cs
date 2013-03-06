@@ -1,7 +1,7 @@
-﻿using Dev2.Network.Messages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Network.Messages;
 
 namespace Dev2.Network.Messaging
 {
@@ -32,7 +32,7 @@ namespace Dev2.Network.Messaging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="async">if set to <c>true</c> [async].</param>
-        public void Publish(INetworkMessage message, bool async = true) 
+        public void Publish(INetworkMessage message, bool async = true)
         {
             Publish(message, null, async);
         }
@@ -43,9 +43,9 @@ namespace Dev2.Network.Messaging
         /// <param name="message">The message.</param>
         /// <param name="context">The context.</param>
         /// <param name="async">if set to <c>true</c> [async].</param>
-        public void Publish(INetworkMessage message, IServerNetworkChannelContext<ContextT> context, bool async = true) 
+        public void Publish(INetworkMessage message, IServerNetworkChannelContext<ContextT> context, bool async = true)
         {
-            if (message == null)
+            if(message == null)
             {
                 return;
             }
@@ -59,16 +59,16 @@ namespace Dev2.Network.Messaging
             Type callbackTypeSimple = typeof(Action<,>).MakeGenericType(new Type[] { messageType, typeof(NetworkContext) });
             Dictionary<Delegate, int> delegates;
             object[] parameters = new object[] { message, context };
-            object[] parametersSimple = new object[] { message, (context != null) ? context.NetworkContext : null};
-            
-            if (_callbacksIndexedByType.TryGetValue(messageType, out delegates))
+            object[] parametersSimple = new object[] { message, (context != null) ? context.NetworkContext : null };
+
+            if(_callbacksIndexedByType.TryGetValue(messageType, out delegates))
             {
-                foreach (KeyValuePair<Delegate, int> callbackAndCount in delegates.ToList())
+                foreach(KeyValuePair<Delegate, int> callbackAndCount in delegates.ToList())
                 {
-                    if (callbackAndCount.Key.GetType() == callbackType)
+                    if(callbackAndCount.Key.GetType() == callbackType)
                     {
                         Delegate callback = callbackAndCount.Key;
-                        if (async)
+                        if(async)
                         {
                             Action a = () =>
                             {
@@ -81,10 +81,10 @@ namespace Dev2.Network.Messaging
                             callback.DynamicInvoke(parameters);
                         }
                     }
-                    else if (callbackAndCount.Key.GetType() == callbackTypeSimple)
+                    else if(callbackAndCount.Key.GetType() == callbackTypeSimple)
                     {
                         Delegate callback = callbackAndCount.Key;
-                        if (async)
+                        if(async)
                         {
                             Action a = () =>
                             {
@@ -95,7 +95,7 @@ namespace Dev2.Network.Messaging
                         else
                         {
                             callback.DynamicInvoke(parametersSimple);
-                        }                        
+                        }
                     }
                 }
             }
@@ -109,14 +109,14 @@ namespace Dev2.Network.Messaging
         /// <returns></returns>
         public Guid Subscribe<T>(Action<T, IServerNetworkChannelContext<ContextT>> callback) where T : INetworkMessage, new()
         {
-            if (callback == null)
+            if(callback == null)
             {
                 return Guid.Empty;
             }
 
             Guid subscriptionToken = Guid.NewGuid();
 
-            lock (_subscriptionLock)
+            lock(_subscriptionLock)
             {
                 //
                 // Register subscription
@@ -128,15 +128,15 @@ namespace Dev2.Network.Messaging
                 //
                 Type messageType = typeof(T);
                 Dictionary<Delegate, int> delegates;
-                
-                if (!_callbacksIndexedByType.TryGetValue(messageType, out delegates))
+
+                if(!_callbacksIndexedByType.TryGetValue(messageType, out delegates))
                 {
                     delegates = new Dictionary<Delegate, int>();
                     _callbacksIndexedByType.Add(messageType, delegates);
                 }
 
                 int count;
-                if (!delegates.TryGetValue(callback, out count))
+                if(!delegates.TryGetValue(callback, out count))
                 {
                     delegates.Add(callback, 1);
                 }
@@ -154,16 +154,16 @@ namespace Dev2.Network.Messaging
         /// </summary>
         /// <param name="callback">The callback.</param>
         /// <returns></returns>
-        public Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage, new()
+        public Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage
         {
-            if (callback == null)
+            if(callback == null)
             {
                 return Guid.Empty;
             }
 
             Guid subscriptionToken = Guid.NewGuid();
 
-            lock (_subscriptionLock)
+            lock(_subscriptionLock)
             {
                 //
                 // Register subscription
@@ -176,14 +176,14 @@ namespace Dev2.Network.Messaging
                 Type messageType = typeof(T);
                 Dictionary<Delegate, int> delegates;
 
-                if (!_callbacksIndexedByType.TryGetValue(messageType, out delegates))
+                if(!_callbacksIndexedByType.TryGetValue(messageType, out delegates))
                 {
                     delegates = new Dictionary<Delegate, int>();
                     _callbacksIndexedByType.Add(messageType, delegates);
                 }
 
                 int count;
-                if (!delegates.TryGetValue(callback, out count))
+                if(!delegates.TryGetValue(callback, out count))
                 {
                     delegates.Add(callback, 1);
                 }
@@ -204,30 +204,30 @@ namespace Dev2.Network.Messaging
         {
             bool result = false;
 
-            lock (_subscriptionLock)
+            lock(_subscriptionLock)
             {
                 //
                 // Get callback
                 //
                 Delegate callback;
-                if (_subscriptions.TryGetValue(subscriptionToken, out callback))
+                if(_subscriptions.TryGetValue(subscriptionToken, out callback))
                 {
                     //
                     // Get message type from callback
                     //
                     Type messageType = callback.GetType().GetGenericArguments().FirstOrDefault();
-                    if (messageType != null)
+                    if(messageType != null)
                     {
                         //
                         // Remove from delegate type index
                         //
                         Dictionary<Delegate, int> delegates;
-                        if (_callbacksIndexedByType.TryGetValue(messageType, out delegates))
+                        if(_callbacksIndexedByType.TryGetValue(messageType, out delegates))
                         {
                             int count;
-                            if (delegates.TryGetValue(callback, out count))
+                            if(delegates.TryGetValue(callback, out count))
                             {
-                                if (count <= 1)
+                                if(count <= 1)
                                 {
                                     delegates.Remove(callback);
                                 }

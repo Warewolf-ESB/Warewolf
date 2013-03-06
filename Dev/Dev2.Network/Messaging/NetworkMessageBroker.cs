@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Network;
-using System.Text;
 using Dev2.Network.Messages;
 
 namespace Dev2.Network.Messaging
@@ -16,18 +13,18 @@ namespace Dev2.Network.Messaging
         /// <summary>
         /// Sends the specified message.
         /// </summary>
-        public void Send<T>(T message, INetworkOperator networkOperator) where T : INetworkMessage, new()
+        public void Send<T>(T message, INetworkOperator networkOperator) where T : INetworkMessage
         {
-            if (message == null)
+            if(message == null)
             {
                 throw new InvalidOperationException("Netowrk operator is null.");
             }
-            
-            if (networkOperator == null)
+
+            if(networkOperator == null)
             {
                 throw new InvalidOperationException("Netowrk operator is null.");
             }
-            
+
             //
             // Create packet and write data to it
             //
@@ -47,7 +44,7 @@ namespace Dev2.Network.Messaging
         /// </summary>
         public INetworkMessage Recieve(IByteReaderBase reader)
         {
-            if (reader == null)
+            if(reader == null)
             {
                 throw new InvalidOperationException("Reader is null.");
             }
@@ -57,19 +54,19 @@ namespace Dev2.Network.Messaging
 
             Type t = Type.GetType(fullyQualifiedName, false);
 
-            if (t == null)
+            if(t == null)
             {
                 throw new InvalidOperationException("Type '" + fullyQualifiedName + "' isn't available, possible version miss match between server and client.");
             }
 
-            if (!typeof(INetworkMessage).IsAssignableFrom(t))
+            if(!typeof(INetworkMessage).IsAssignableFrom(t))
             {
                 throw new InvalidOperationException("Message type isn't assignable from '" + typeof(INetworkMessage).AssemblyQualifiedName + "'.");
             }
 
             INetworkMessage result = (INetworkMessage)Activator.CreateInstance(t);
 
-            if (result != null)
+            if(result != null)
             {
                 result.Handle = handle;
                 result.Read(reader);
