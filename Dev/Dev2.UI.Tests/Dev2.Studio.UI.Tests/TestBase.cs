@@ -53,6 +53,24 @@ namespace Dev2.CodedUI.Tests
         // To bring up the generator utility, click in a method, and press
         // Cntrl+\, Cntrl+C
 
+
+        [ClassInitialize]
+        public void StartStudio()
+        {
+
+            //get the folder that's in
+            string theDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+            File.WriteAllText(@"e:\UI_Path.txt", theDirectory);
+
+        }
+
+        [ClassCleanup]
+        public void StopStudio()
+        {
+
+        }
+
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
         public void CheckStartIsValid()
