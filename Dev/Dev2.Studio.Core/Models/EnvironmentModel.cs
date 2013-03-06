@@ -1,8 +1,4 @@
-﻿using System;
-using System.Network;
-using System.Windows;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Factories;
@@ -10,6 +6,10 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network.DataList;
 using Dev2.Studio.Core.Network.Execution;
+using System;
+using System.Network;
+using System.Windows;
+using System.Xml.Linq;
 using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
@@ -53,7 +53,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     return EnvironmentConnection.DisplayName;
                 }
@@ -61,7 +61,7 @@ namespace Dev2.Studio.Core.Models
             }
             set
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     EnvironmentConnection.DisplayName = value;
                 }
@@ -73,7 +73,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     return EnvironmentConnection.Address;
                 }
@@ -81,7 +81,7 @@ namespace Dev2.Studio.Core.Models
             }
             set
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     EnvironmentConnection.Address = value;
                 }
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     return EnvironmentConnection.IsConnected;
                 }
@@ -122,7 +122,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(DsfAddress != null)
+                if (DsfAddress != null)
                 {
                     return new Uri(string.Format("{0}://{1}:{2}", DsfAddress.Scheme, DsfAddress.Host, WebServerPort));
                 }
@@ -137,7 +137,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     return EnvironmentConnection.DataChannel;
                 }
@@ -149,7 +149,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     return EnvironmentConnection.ExecutionChannel;
                 }
@@ -161,7 +161,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(EnvironmentConnection != null)
+                if (EnvironmentConnection != null)
                 {
                     return EnvironmentConnection.DataListChannel;
                 }
@@ -175,12 +175,12 @@ namespace Dev2.Studio.Core.Models
 
         public void Connect()
         {
-            if(string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
             }
 
-            if(!Uri.IsWellFormedUriString(DsfAddress.ToString(), UriKind.RelativeOrAbsolute))
+            if (!Uri.IsWellFormedUriString(DsfAddress.ToString(), UriKind.RelativeOrAbsolute))
             {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Address_Not_Valid));
             }
@@ -190,7 +190,7 @@ namespace Dev2.Studio.Core.Models
 
         public void Disconnect()
         {
-            if(EnvironmentConnection != null && EnvironmentConnection.IsConnected)
+            if (EnvironmentConnection != null && EnvironmentConnection.IsConnected)
             {
                 EnvironmentConnection.Disconnect();
             }
@@ -198,24 +198,24 @@ namespace Dev2.Studio.Core.Models
 
         public void Connect(IEnvironmentModel model)
         {
-            if(!model.IsConnected)
+            if (!model.IsConnected)
             {
                 model.Connect();
 
-                if(!model.IsConnected) throw new InvalidOperationException("Model failed to connect.");
+                if (!model.IsConnected) throw new InvalidOperationException("Model failed to connect.");
             }
 
-            if(string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
             }
 
-            if(!Uri.IsWellFormedUriString(DsfAddress.ToString(), UriKind.RelativeOrAbsolute))
+            if (!Uri.IsWellFormedUriString(DsfAddress.ToString(), UriKind.RelativeOrAbsolute))
             {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Address_Not_Valid));
             }
 
-            if(EnvironmentConnection is WrappedEnvironmentConnection)
+            if (EnvironmentConnection is WrappedEnvironmentConnection)
             {
                 EnvironmentConnection.Connect();
             }
@@ -237,15 +237,15 @@ namespace Dev2.Studio.Core.Models
 
         public void LoadResources()
         {
-            if(EnvironmentConnection == null)
+            if (EnvironmentConnection == null)
             {
                 throw new InvalidOperationException("No Environment connection available");
             }
 
-            if(EnvironmentConnection.IsConnected)
+            if (EnvironmentConnection.IsConnected)
             {
 
-                if(DsfChannel != null)
+                if (DsfChannel != null)
                 {
                     _resources = ResourceRepositoryFactory.CreateResourceRepository(this);
                     _resources.Load();
@@ -280,7 +280,7 @@ namespace Dev2.Studio.Core.Models
             //
             // If application in shutdown do nothing
             //
-            if(Application.Current == null)
+            if (Application.Current == null)
             {
                 return;
             }
@@ -289,12 +289,12 @@ namespace Dev2.Studio.Core.Models
             // If auxilliry connection then do nothing
             //
             WrappedEnvironmentConnection connection = EnvironmentConnection as WrappedEnvironmentConnection;
-            if(connection != null && connection.IsAuxiliry)
+            if (connection != null && connection.IsAuxiliry)
             {
                 return;
             }
 
-            if(e.LoggedIn)
+            if (e.LoggedIn)
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => EventAggregator.Publish(new EnvironmentConnectedMessage(this))), null);
             }
@@ -326,7 +326,7 @@ namespace Dev2.Studio.Core.Models
 
             private void OnLoginStateChanged(LoginStateEventArgs args)
             {
-                if(LoginStateChanged != null)
+                if (LoginStateChanged != null)
                 {
                     LoginStateChanged(this, args);
                 }
@@ -377,13 +377,13 @@ namespace Dev2.Studio.Core.Models
 
             public void Connect()
             {
-                if(_client != null && _client.NetworkState == NetworkState.Online && _client.LoggedIn)
+                if (_client != null && _client.NetworkState == NetworkState.Online && _client.LoggedIn)
                 {
                     return;
                 }
 
                 IDisposable disposableExecutionChannel = ExecutionChannel as IDisposable;
-                if(disposableExecutionChannel != null)
+                if (disposableExecutionChannel != null)
                 {
                     disposableExecutionChannel.Dispose();
                     disposableExecutionChannel = null;
@@ -391,16 +391,16 @@ namespace Dev2.Studio.Core.Models
                 ExecutionChannel = null;
 
                 IDisposable disposableDataListChannel = DataListChannel as IDisposable;
-                if(disposableDataListChannel != null)
+                if (disposableDataListChannel != null)
                 {
                     disposableDataListChannel.Dispose();
                     disposableDataListChannel = null;
                 }
                 DataListChannel = null;
 
-                if(DataChannel != null && DataChannel is FrameworkDataChannelWrapper)
+                if (DataChannel != null && DataChannel is FrameworkDataChannelWrapper)
                 {
-                    if(_client != null)
+                    if (_client != null)
                     {
                         _client.LoginStateChanged -= _client_LoginStateChanged;
                     }
@@ -412,14 +412,14 @@ namespace Dev2.Studio.Core.Models
                 }
                 DataChannel = null;
 
-                if(!(_underlying.DsfChannel is IStudioClientContext)) throw new InvalidOperationException("Model DsfChannel is not a studio client context implementor.");
+                if (!(_underlying.DsfChannel is IStudioClientContext)) throw new InvalidOperationException("Model DsfChannel is not a studio client context implementor.");
                 IStudioClientContext context = (IStudioClientContext)_underlying.DsfChannel;
                 Address = _underlying.EnvironmentConnection.Address;
                 _client = context.AcquireAuxiliaryConnection();
 
-                if(_client == null)
+                if (_client == null)
                 {
-                    if(!string.IsNullOrEmpty(Alias))
+                    if (!string.IsNullOrEmpty(Alias))
                     {
                         DisplayName = string.Format("{0} - (Unavailable) ", Alias);
                     }
@@ -435,7 +435,7 @@ namespace Dev2.Studio.Core.Models
 
             public void Disconnect()
             {
-                if(_client != null && _client.NetworkState == NetworkState.Online)
+                if (_client != null && _client.NetworkState == NetworkState.Online)
                 {
                     _client.Disconnect();
                     _client.LoginStateChanged -= _client_LoginStateChanged;
@@ -443,7 +443,7 @@ namespace Dev2.Studio.Core.Models
                     _client = null;
 
                     IDisposable disposableExecutionChannel = ExecutionChannel as IDisposable;
-                    if(disposableExecutionChannel != null)
+                    if (disposableExecutionChannel != null)
                     {
                         disposableExecutionChannel.Dispose();
                         disposableExecutionChannel = null;
@@ -451,7 +451,7 @@ namespace Dev2.Studio.Core.Models
                     ExecutionChannel = null;
 
                     IDisposable disposableDataListChannel = DataListChannel as IDisposable;
-                    if(disposableDataListChannel != null)
+                    if (disposableDataListChannel != null)
                     {
                         disposableDataListChannel.Dispose();
                         disposableDataListChannel = null;
@@ -492,39 +492,47 @@ namespace Dev2.Studio.Core.Models
 
                 public TCPDispatchedClient AcquireAuxiliaryConnection()
                 {
-                    if(_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
-                    if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                    if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
+                    if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                     return (_environment._underlying.DsfChannel is IStudioClientContext) ? ((IStudioClientContext)_environment._underlying.DsfChannel).AcquireAuxiliaryConnection() : null;
                 }
 
                 public void AddDebugWriter(Dev2.Diagnostics.IDebugWriter writer)
                 {
-                    if(_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
-                    if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
-                    if(_environment._underlying.DsfChannel is IStudioClientContext) ((IStudioClientContext)_environment._underlying.DsfChannel).AddDebugWriter(writer);
+                    if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
+                    if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                    if (_environment._underlying.DsfChannel is IStudioClientContext) ((IStudioClientContext)_environment._underlying.DsfChannel).AddDebugWriter(writer);
                 }
 
                 public void RemoveDebugWriter(Dev2.Diagnostics.IDebugWriter writer)
                 {
-                    if(_client == null) return;
-                    if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
-                    if(_environment._underlying.DsfChannel is IStudioClientContext) ((IStudioClientContext)_environment._underlying.DsfChannel).RemoveDebugWriter(writer);
+                    if (_client == null) return;
+                    if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                    if (_environment._underlying.DsfChannel is IStudioClientContext) ((IStudioClientContext)_environment._underlying.DsfChannel).RemoveDebugWriter(writer);
                 }
 
                 public void RemoveDebugWriter(Guid writerID)
                 {
-                    if(_client == null) return;
-                    if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
-                    if(_environment._underlying.DsfChannel is IStudioClientContext) ((IStudioClientContext)_environment._underlying.DsfChannel).RemoveDebugWriter(writerID);
+                    if (_client == null) return;
+                    if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                    if (_environment._underlying.DsfChannel is IStudioClientContext) ((IStudioClientContext)_environment._underlying.DsfChannel).RemoveDebugWriter(writerID);
                 }
 
                 private bool EnsureConnected()
                 {
-                    if(_client == null || !_client.LoggedIn || _client.NetworkState != NetworkState.Online)
+                    if (_client != null)
                     {
-                        if(_client == null || _client.NetworkState == NetworkState.Offline)
+                        if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
                         {
-                            if(_client != null)
+                            throw new Exception("Retrieving client details from the server timed out.");
+                        }
+                    }
+
+                    if (_client == null || !_client.LoggedIn || _client.NetworkState != NetworkState.Online)
+                    {
+                        if (_client == null || _client.NetworkState == NetworkState.Offline)
+                        {
+                            if (_client != null)
                             {
                                 _client.Dispose();
                                 _client = null;
@@ -532,7 +540,7 @@ namespace Dev2.Studio.Core.Models
 
                             _client = (_environment._underlying.DsfChannel is IStudioClientContext) ? ((IStudioClientContext)_environment._underlying.DsfChannel).AcquireAuxiliaryConnection() : null;
 
-                            if(_client != null)
+                            if (_client != null)
                             {
                                 AccountID = _client.AccountID;
                                 ServerID = _client.ServerID;
@@ -547,15 +555,15 @@ namespace Dev2.Studio.Core.Models
 
                 public string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID)
                 {
-                    if(_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
-                    if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                    if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
+                    if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
 
                     return _client.ExecuteCommand(xmlRequest);
                 }
 
                 public void Dispose()
                 {
-                    if(_client != null)
+                    if (_client != null)
                     {
                         try
                         {
@@ -583,7 +591,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool Equals(IEnvironmentModel other)
         {
-            if(other == null)
+            if (other == null)
             {
                 return false;
             }
@@ -592,7 +600,7 @@ namespace Dev2.Studio.Core.Models
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }

@@ -141,42 +141,42 @@ namespace Dev2.Studio.Core
             NetworkStateEventArgs args = _client.Connect(dns, port);
 
             if (args.ToState == NetworkState.Online)
-             {
-                 LoginStateEventArgs lArgs = _client.Login(_username, _password);
-                 if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
-                 {
-                     throw new Exception("Retrieving client details from the server timed out.");
-                 }
+            {
+                LoginStateEventArgs lArgs = _client.Login(_username, _password);
+                if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+                {
+                    throw new Exception("Retrieving client details from the server timed out.");
+                }
 
-                 if (lArgs.LoggedIn)
-                 {
-                     DataChannel = new FrameworkDataChannelWrapper(this, _client, dns, port);
-                     ExecutionChannel = new ExecutionClientChannel(_client);
-                     DataListChannel = new DataListClientChannel(_client);
-                 }
-                 else
-                 {
-                     if (!string.IsNullOrEmpty(Alias))
-                     {
-                         DisplayName = string.Format("{0} - (Unavailable) ", Alias);
-                     }
+                if (lArgs.LoggedIn)
+                {
+                    DataChannel = new FrameworkDataChannelWrapper(this, _client, dns, port);
+                    ExecutionChannel = new ExecutionClientChannel(_client);
+                    DataListChannel = new DataListClientChannel(_client);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Alias))
+                    {
+                        DisplayName = string.Format("{0} - (Unavailable) ", Alias);
+                    }
 
-                     _client.LoginStateChanged -= _client_LoginStateChanged;
-                     _client.Dispose();
-                     _client = null;
-                 }
-             }
-             else
-             {
-                 DataChannel = new FrameworkDataChannelWrapper(this, _client, dns, port);
-                 ExecutionChannel = new ExecutionClientChannel(_client);
-                 DataListChannel = new DataListClientChannel(_client);
+                    _client.LoginStateChanged -= _client_LoginStateChanged;
+                    _client.Dispose();
+                    _client = null;
+                }
+            }
+            else
+            {
+                DataChannel = new FrameworkDataChannelWrapper(this, _client, dns, port);
+                ExecutionChannel = new ExecutionClientChannel(_client);
+                DataListChannel = new DataListClientChannel(_client);
 
-                 if (!string.IsNullOrEmpty(Alias))
-                 {
-                     DisplayName = string.Format("{0} - (Unavailable) ", Alias);
-                 }
-             }
+                if (!string.IsNullOrEmpty(Alias))
+                {
+                    DisplayName = string.Format("{0} - (Unavailable) ", Alias);
+                }
+            }
         }
 
         public void Disconnect()
@@ -229,20 +229,20 @@ namespace Dev2.Studio.Core
             private string _hostNameOrAddress;
             private int _port;
 
-            public Guid AccountID 
-            { 
-                get 
-                { 
-                    return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.AccountID; 
-                } 
+            public Guid AccountID
+            {
+                get
+                {
+                    return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.AccountID;
+                }
             }
-            
-            public Guid ServerID 
-            { 
-                get 
-                { 
-                    return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.ServerID; 
-                } 
+
+            public Guid ServerID
+            {
+                get
+                {
+                    return (_client == null || !_client.LoggedIn) ? Guid.Empty : _client.ServerID;
+                }
             }
 
             public FrameworkDataChannelWrapper(EnvironmentConnection environment, TCPDispatchedClient client, string hostNameOrAddress, int port)
@@ -273,15 +273,15 @@ namespace Dev2.Studio.Core
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 try
                 {
-                _client.RemoveDebugWriter(writer);
+                    _client.RemoveDebugWriter(writer);
 
-                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                    IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
-                if (eventAggregator != null)
-                {
-                    eventAggregator.Publish(new DebugStatusMessage(false));
+                    if (eventAggregator != null)
+                    {
+                        eventAggregator.Publish(new DebugStatusMessage(false));
+                    }
                 }
-            }
                 catch
                 {
                     // Empty catch because we want to avoid hanging sessions causing an exception
@@ -298,6 +298,11 @@ namespace Dev2.Studio.Core
 
             private bool EnsureConnected()
             {
+                if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+                {
+                    throw new Exception("Retrieving client details from the server timed out.");
+                }
+
                 if (!_client.LoggedIn || _client.NetworkState != NetworkState.Online)
                 {
                     if (_client.NetworkState == NetworkState.Offline)

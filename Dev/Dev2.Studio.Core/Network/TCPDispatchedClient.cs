@@ -640,6 +640,11 @@ namespace Dev2.Studio.Core
             if (!_loggedIn)
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
 
+            if (!WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+            {
+                throw new Exception("Retrieving client details from the server timed out.");
+            }
+
             int commandSerial = Interlocked.Increment(ref _commandSerial);
             Packet p = new Packet(InternalTemplates.Server_OnExecuteStringCommandReceived);
 
@@ -654,6 +659,7 @@ namespace Dev2.Studio.Core
             }
 
             _primaryConnection.Send(p);
+
             ByteBuffer reader = token.WaitForResponse(GlobalConstants.NetworkTimeOut);
 
             string result = null;
@@ -679,6 +685,11 @@ namespace Dev2.Studio.Core
                 throw new InvalidOperationException("TCPDispatchedClient is not online.");
             if (!_loggedIn)
                 throw new InvalidOperationException("TCPDispatchedClient is not logged in.");
+
+            if (!WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+            {
+                throw new Exception("Retrieving client details from the server timed out.");
+            }
 
             int commandSerial = Interlocked.Increment(ref _commandSerial);
             Packet p = new Packet(InternalTemplates.Server_OnExecuteBinaryCommandReceived);

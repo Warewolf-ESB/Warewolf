@@ -1,23 +1,20 @@
 ﻿#region
 
+using Dev2.Composition;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Dev2.Composition;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
 
 #endregion
 
@@ -58,8 +55,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 parent.Add(this);
             }
 
-//            _children = new ObservableCollection<ITreeNode>();
-//            _children.CollectionChanged += ChildrenOnCollectionChanged;
+            //            _children = new ObservableCollection<ITreeNode>();
+            //            _children.CollectionChanged += ChildrenOnCollectionChanged;
 
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
         }
@@ -563,7 +560,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             bool? state = null;
             var count = FilteredChildren.OfType<ITreeNode>().Count();
-            for (int i = 0; i < count ; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 bool? current = FilteredChildren.OfType<ITreeNode>().ToArray()[i].IsChecked;
                 if (i == 0)

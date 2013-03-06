@@ -205,7 +205,7 @@ namespace Dev2.CodedUI.Tests
                         }
                         if (theTab != "Start Page")
                         {
-                            TabManagerUIMap.CloseTab(theTab);
+                        TabManagerUIMap.CloseTab(theTab);
                         }
                         else
                         {
@@ -2478,7 +2478,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Comment"));
 
             // Cleanup
-            // Refresh the list            
+            // Refresh the list
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoRefresh();
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 
 namespace Dev2.Common
@@ -11,7 +10,7 @@ namespace Dev2.Common
         public const int _xamlPoolSize = 5;
 
         //Network
-        public const int NetworkTimeOut = 10000; //Bug 8796
+        public const int NetworkTimeOut = 30000; //Bug 8796
         public const string NetworkCommunicationErrorTextFormat = "An error occured while executing the '{0}' command";
 
         //Resource Constants
@@ -61,7 +60,7 @@ namespace Dev2.Common
         public const string AllColumns = null;
         public const string NaughtyTextNode = "#text";
         public const char EvaluationToken = '[';
-        
+
         public const string DefaultDataListCacheSizeLvl2MemoryPercentage = "85";
         //public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = "00:00:05";
         //public const string DefaultDataListCacheSizeLvl2MegaByteSize = "2048";
