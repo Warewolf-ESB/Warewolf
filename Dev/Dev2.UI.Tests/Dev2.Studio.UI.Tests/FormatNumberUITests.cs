@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-using System.Threading;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
+using System.Threading;
 
 
 namespace Dev2.Studio.UI.Tests
@@ -74,7 +67,7 @@ namespace Dev2.Studio.UI.Tests
             //string workflowName = "NumberFormatRoundingNormalWorkflowTest";
             //CreateWorkflow(workflowName);
             //DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl workflowTab = TabManagerUIMap.FindTabByName("TestFlow");
+            UITestControl workflowTab = TabManagerUIMap.FindTabByName("NumberFormatRoundingNormalWorkflowTest");
             Point pointUnderStartPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(workflowTab);
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", pointUnderStartPoint);
@@ -141,7 +134,8 @@ namespace Dev2.Studio.UI.Tests
             WorkflowDesignerUIMap.SetStartNode(workflowTab, "NumberFormat");
 
             DockManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
             DebugUIMap.ExecuteDebug();

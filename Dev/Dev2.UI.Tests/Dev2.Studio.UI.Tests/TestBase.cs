@@ -173,7 +173,7 @@ namespace Dev2.CodedUI.Tests
 
                 try
                 {
-                    // Make sure no tabs are open
+                    //Make sure no tabs are open
                     int openTabs = TabManagerUIMap.GetTabCount();
                     while (openTabs != 0)
                     {
@@ -186,7 +186,18 @@ namespace Dev2.CodedUI.Tests
                             Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
                             Thread.Sleep(2500);
                         }
-                        TabManagerUIMap.CloseTab(theTab);
+                        if (theTab != "Start Page")
+                        {
+                            TabManagerUIMap.CloseTab(theTab);
+                        }
+                        else
+                        {
+                            if (openTabs == 1)
+                            {
+                                return;
+                            }
+                        }
+
                         SendKeys.SendWait("n");
 
                         SendKeys.SendWait("{DELETE}");     // 
@@ -982,7 +993,8 @@ namespace Dev2.CodedUI.Tests
 
             // And map!
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             // All good - Cleanup time!
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5772Point1");
@@ -1063,7 +1075,8 @@ namespace Dev2.CodedUI.Tests
 
             // Map it
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
             if (DebugUIMap.CountRows() != 1)
@@ -1188,7 +1201,8 @@ namespace Dev2.CodedUI.Tests
 
             // Map it
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
             int tries = 0;
@@ -2405,13 +2419,16 @@ namespace Dev2.CodedUI.Tests
         public void CanAToolBeDroppedOntoTheDesigner()
         {
             // Create the Workflow
-            CreateCustomWorkflow("CanAToolBeDroppedOntoTheDesigner", "CodedUITestCategory");
+            //CreateCustomWorkflow("CanAToolBeDroppedOntoTheDesigner", "CodedUITestCategory");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "CanAToolBeDroppedOntoTheDesigner");
 
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName("CanAToolBeDroppedOntoTheDesigner");
 
             // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
+            //TabManagerUIMap.Click(theTab);
 
             // Wait a bit for user noticability
             Thread.Sleep(500);
@@ -2444,7 +2461,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Comment"));
 
             // Cleanup
-            // Refresh the list
+            // Refresh the list            
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoRefresh();
 
@@ -2546,6 +2563,36 @@ namespace Dev2.CodedUI.Tests
             }
             procMan.StartProcess();
             Thread.Sleep(5000);
+        }
+
+        [TestMethod]
+        public void FindMissingWithDoubleRegionExpectedBothAdded()
+        {
+            CreateCustomWorkflow("HelpTabWorkflow", "CodedUITestCategory");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("HelpTabWorkflow");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // Get a point underneath the start button for the workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 150);
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Get a sample workflow
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "TestForEachOutput");
+
+            // Drag it on
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+
+            // Click the help link adorner button
+
+            WorkflowDesignerUIMap.Adorner_ClickHelp(theTab, "TestForEachOutput");
+
+            Assert.IsTrue(TabManagerUIMap.GetActiveTabName() == "Help : a:/");
+
+            TabManagerUIMap.CloseTab("Help : a:/");
+
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "HelpTabWorkflow");
         }
 
         #endregion Studio Window Tests
@@ -2751,7 +2798,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl control1 = OutputUIMap.GetStatusBar();
 
             UITestControlCollection preStatusBarChildren = control1.GetChildren();
-            var preProgressbar = preStatusBarChildren.First(c => c.ClassName == "Uia.ProgressBar");
+            var preProgressbar = preStatusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
             var preLabel = preStatusBarChildren.First(c => c.ClassName == "Uia.Text");
             Assert.IsTrue(preLabel.FriendlyName == "Ready" || preLabel.FriendlyName == "Complete");
             Assert.IsTrue(preProgressbar.Height == -1);
@@ -2763,7 +2810,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl control = OutputUIMap.GetStatusBar();
 
             UITestControlCollection statusBarChildren = control.GetChildren();
-            var progressbar = statusBarChildren.First(c => c.ClassName == "Uia.ProgressBar");
+            var progressbar = statusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
             var label = statusBarChildren.First(c => c.ClassName == "Uia.Text");
             Assert.IsTrue(label.FriendlyName == "Executing...");
             Assert.IsTrue(progressbar.Height != -1);
@@ -3173,6 +3220,21 @@ namespace Dev2.CodedUI.Tests
 
         #endregion VideoTest UI Map
 
+        public UIMap UIMap
+        {
+            get
+            {
+                if ((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
         #endregion UI Maps
+
+        private UIMap map;
     }
 }

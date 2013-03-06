@@ -1,27 +1,27 @@
-﻿using System;
-using System.Threading;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Drawing;
-using Dev2.CodedUI.Tests;
+﻿using Dev2.CodedUI.Tests;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -86,32 +86,61 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void DependancyGraph_OnDoubleClickWorkFlow_Expected_NewTab()
         {
-            
-            /*
+
+
+            //// Create new Activity
+            //var myTestBase = new TestBase();
+            //myTestBase.CreateCustomWorkflow("5725", "CodedUITestCategory");
+
+            //// Refresh
+            //DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.DoRefresh();
+
+            //// Open Dependancy Graph
+            //DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
+
+            //// Double Click
+            //Mouse.DoubleClick(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));
+
+            //// Wait
+            //Thread.Sleep(2500);
+
+            //// Assert not viewing dependency graph any more
+            //Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "5725");
+
+            //// Garbage collection
+            //new TestBase().DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
+
+        }
+
+        [TestMethod]
+        public void DependancyGraphExpectedNewTabOfDependancy()
+        {
+
+
             // Create new Activity
             var myTestBase = new TestBase();
             myTestBase.CreateCustomWorkflow("5725", "CodedUITestCategory");
 
-            // Refresh
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Open Dependancy Graph
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
 
-            // Double Click
-            Mouse.DoubleClick(new Point(Screen.PrimaryScreen.Bounds.Width/2,Screen.PrimaryScreen.Bounds.Height/2)); <--- Needs a UIMap :(
-
             // Wait
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(2500);
 
             // Assert not viewing dependency graph any more
-            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "5725");
+            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "5725*Dependencies");
+
+            TabManagerUIMap.CloseTab("5725*Dependencies");
+            TabManagerUIMap.CloseTab("5725");
 
             // Garbage collection
             new TestBase().DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
-             */
+
         }
 
         // Bug 6127 - DataSplit
@@ -307,7 +336,7 @@ namespace Dev2.Studio.UI.Tests
                 DocManagerUIMap.ClickOpenTabPage("Explorer");
                 ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             }
-            
+
             string activeTab = TabManagerUIMap.GetActiveTabName();
             if (activeTab == "Base64ToString")
             {
@@ -488,7 +517,7 @@ namespace Dev2.Studio.UI.Tests
             // And enter some data
             string textWithTab = "test\ttest2";
             Clipboard.SetText(textWithTab);
-            
+
             WorkflowDesignerUIMap.DataSplit_ClickFirstTextbox(theTab, "Data Split");
             Thread.Sleep(500);
             SendKeys.SendWait("^v");
@@ -520,7 +549,7 @@ namespace Dev2.Studio.UI.Tests
             studioWindow.Find();
 
             Point closeButton = new Point(studioWindow.BoundingRectangle.X + studioWindow.Width - 25, studioWindow.BoundingRectangle.Y + 15);
-            
+
             // Its far - Move faster
             Mouse.MouseMoveSpeed *= 2;
             Mouse.Move(closeButton);
@@ -636,7 +665,8 @@ namespace Dev2.Studio.UI.Tests
 
             // Map them
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             // Actual test time :D
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
@@ -703,9 +733,10 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("[[first]][[second]]");
 
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
             Assert.AreEqual("scalar", VariablesUIMap.GetVariableName(0));
-            Assert.AreEqual("first",VariablesUIMap.GetVariableName(1));
+            Assert.AreEqual("first", VariablesUIMap.GetVariableName(1));
             Assert.AreEqual("second", VariablesUIMap.GetVariableName(2));
 
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6413");
@@ -731,7 +762,8 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 160, datasplitBoxOnWorkflow.BoundingRectangle.Y + 65));
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 160, datasplitBoxOnWorkflow.BoundingRectangle.Y + 150));
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             //Set datasplit as start node
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 10, datasplitBoxOnWorkflow.BoundingRectangle.Y + 10));
@@ -851,7 +883,7 @@ namespace Dev2.Studio.UI.Tests
             Thread.Sleep(100);
             SendKeys.SendWait("recSet().ValTwo");
             Thread.Sleep(500);
-            
+
             // Some normal recordset data has been entered - Now the fun begins!
 
             // Delete the first record value
@@ -888,13 +920,14 @@ namespace Dev2.Studio.UI.Tests
             string helpText = VariablesUIMap.GetRecordSetSubItemHelptext(0, 0);
 
             // If the error exists
-            if(helpText == "You cannot enter duplicate names in the Data List")
+            if (helpText == "You cannot enter duplicate names in the Data List")
             {
                 // It sometimes closes...
                 DocManagerUIMap.ClickOpenTabPage("Variables");
 
                 // Refresh the list for the next test
-                VariablesUIMap.UpdateDataList();
+                //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+                //VariablesUIMap.UpdateDataList();
 
                 // And fail the text
                 Assert.Fail("The remaining item should not be in an error state!");
@@ -983,7 +1016,7 @@ namespace Dev2.Studio.UI.Tests
             WorkflowDesignerUIMap.AssignControl_ClickScrollDown(theTab, "Assign", 5);
             Thread.Sleep(500);
             Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after clicking scroll down!");
-            
+
             // If we're here, the test passed!
             myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8565");
         }
@@ -1008,7 +1041,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("The new category was not highlighted!");
             }
-            
+
             // Click in the perfect position for the menu to NOT appear (Between the icon, and the text)
             Mouse.Click(barneyCategory, MouseButtons.Right, ModifierKeys.None, new Point(48, 10));
             System.Threading.Thread.Sleep(1500);
@@ -1042,7 +1075,7 @@ namespace Dev2.Studio.UI.Tests
             // Get a point to drag the control onto
             UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8604");
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            
+
             // Open the toolbox, and drag the control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
@@ -1063,7 +1096,7 @@ namespace Dev2.Studio.UI.Tests
             // Open the window for the first time
             UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             Mouse.DoubleClick(decisionControl, new Point(50, 50));
-            
+
             // Wait for it to load
             Thread.Sleep(500);
 
@@ -1107,7 +1140,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Even though it's labelled 8372, it's related to 8747
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");
-            
+
             // Run debug
             RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
             Thread.Sleep(1500);
@@ -1127,7 +1160,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create a Workflow
             myTestBase.CreateCustomWorkflow("Bug8803");
-            
+
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8803");
 
@@ -1137,7 +1170,8 @@ namespace Dev2.Studio.UI.Tests
             WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
             WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(5,10)", "[[myResult]]");
             DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
 
             // And deploy it (Without saving)
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -1158,9 +1192,9 @@ namespace Dev2.Studio.UI.Tests
             // Click the Deploy button in the Ribbon
             RibbonUIMap.ClickRibbonMenuItem("Home", "Deploy");
             Thread.Sleep(3000);
-            
+
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
-            
+
             // Make sure the Deploy button is disabled
             Assert.IsTrue(!DeployViewUIMap.IsDeployButtonEnabled(deployTab));
 

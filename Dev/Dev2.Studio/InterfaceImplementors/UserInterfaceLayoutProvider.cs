@@ -1,18 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using CircularDependencyTool;
 using Dev2.Common;
 using Dev2.Composition;
@@ -56,6 +42,20 @@ using Dev2.Studio.Webs;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 using Newtonsoft.Json;
+using System;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 using Unlimited.Applications.BusinessDesignStudio;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Views;
@@ -66,7 +66,7 @@ using Action = System.Action;
 
 namespace Dev2.Studio
 {
-    [Export(typeof (IUserInterfaceLayoutProvider))]
+    [Export(typeof(IUserInterfaceLayoutProvider))]
     public class UserInterfaceLayoutProvider : PropertyChangedBase, IUserInterfaceLayoutProvider
     {
         #region Class Members
@@ -457,7 +457,7 @@ namespace Dev2.Studio
         {
             if (!(state is KeyValuePair<ITreeNode, IContextualResourceModel>)) return;
 
-            var kvp = (KeyValuePair<ITreeNode, IContextualResourceModel>) state;
+            var kvp = (KeyValuePair<ITreeNode, IContextualResourceModel>)state;
             IContextualResourceModel model = kvp.Value;
             List<IResourceModel> dependencies = ResourceDependencyService.GetUniqueDependencies(model);
             bool openDependencyGraph;
@@ -507,7 +507,7 @@ namespace Dev2.Studio
         {
             if (state is KeyValuePair<ITreeNode, IContextualResourceModel>)
             {
-                var kvp = (KeyValuePair<ITreeNode, IContextualResourceModel>) state;
+                var kvp = (KeyValuePair<ITreeNode, IContextualResourceModel>)state;
                 IContextualResourceModel model = kvp.Value;
                 List<IResourceModel> dependencies = ResourceDependencyService.GetUniqueDependencies(model);
                 bool openDependencyGraph;
@@ -557,7 +557,7 @@ namespace Dev2.Studio
         {
             if (!(state is KeyValuePair<ITreeNode, IContextualResourceModel>)) return;
 
-            var kvp = (KeyValuePair<ITreeNode, IContextualResourceModel>) state;
+            var kvp = (KeyValuePair<ITreeNode, IContextualResourceModel>)state;
             IContextualResourceModel model = kvp.Value;
             List<IResourceModel> dependencies = ResourceDependencyService.GetUniqueDependencies(model);
             bool openDependencyGraph;
@@ -646,7 +646,7 @@ namespace Dev2.Studio
             request.ResourceName = resource.ResourceName;
             request.ResourceType = resourceType;
             request.Roles = roles;
-            Guid workspaceID = ((IStudioClientContext) resource.Environment.DsfChannel).AccountID;
+            Guid workspaceID = ((IStudioClientContext)resource.Environment.DsfChannel).AccountID;
 
             string result = resource.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID,
                                                                            GlobalConstants.NullDataListID);
@@ -663,6 +663,8 @@ namespace Dev2.Studio
         {
             openDependencyGraph = false;
 
+
+
             bool shouldRemove = MessageBox.Show(Application.Current.MainWindow, "Are you sure you wish to delete the \""
                                                                                 + resourceName + "\" " + resourceType +
                                                                                 "?",
@@ -676,7 +678,7 @@ namespace Dev2.Studio
                                                                                                resourceType +
                                                                                                " has resources that depend on it to function, are you sure you want to delete this "
                                                                                                + resourceType + "?",
-                                                      true) {Owner = Application.Current.MainWindow};
+                                                      true) { Owner = Application.Current.MainWindow };
                 bool? result = dialog.ShowDialog();
                 shouldRemove = result.HasValue && result.Value;
 
@@ -729,12 +731,12 @@ namespace Dev2.Studio
             if (resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
                 || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase))
             {
-                userInterfaceType = typeof (DsfWebPageActivity);
+                userInterfaceType = typeof(DsfWebPageActivity);
             }
 
             if (resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase))
             {
-                userInterfaceType = typeof (DsfWebSiteActivity);
+                userInterfaceType = typeof(DsfWebSiteActivity);
             }
 
             return userInterfaceType;
@@ -783,7 +785,7 @@ namespace Dev2.Studio
                 return;
 
             Type type = input.GetType();
-            if (type == typeof (WorkflowDesignerViewModel))
+            if (type == typeof(WorkflowDesignerViewModel))
             {
                 var workflowVm = input as WorkflowDesignerViewModel;
                 if (workflowVm != null)
@@ -857,7 +859,7 @@ namespace Dev2.Studio
         internal void WorkflowActivitySelected(IWebActivity activity)
         {
             var mappingVm = new DataMappingViewModel(activity);
-            var mappingView = new DataMapping {DataContext = mappingVm};
+            var mappingView = new DataMapping { DataContext = mappingVm };
 
             if (DataMappingPane == null)
                 return;
@@ -877,10 +879,10 @@ namespace Dev2.Studio
 
             ModelProperty conditionProperty = decisionActivity.Properties[GlobalConstants.ConditionPropertyText];
 
-            if(conditionProperty == null) return;
+            if (conditionProperty == null) return;
 
             var activity = conditionProperty.Value;
-            if(activity != null)
+            if (activity != null)
             {
                 string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
@@ -888,7 +890,7 @@ namespace Dev2.Studio
 
                 ErrorResultTO errors = new ErrorResultTO();
 
-                if(errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
                 {
                     // Bad things happened... Tell the user
                     PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -897,19 +899,20 @@ namespace Dev2.Studio
                 }
 
                 // Push the correct data to the server ;)
-                if(activityExpression != null && activityExpression.Value == null)
+                if (activityExpression != null && activityExpression.Value == null)
                 {
                     // Its all new, push the empty model
                     //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
                 }
-                else if(activityExpression != null && activityExpression.Value != null)
+                else if (activityExpression != null && activityExpression.Value != null)
                 {
                     //we got a model, push it in to the Model region ;)
                     // but first, strip and extract the model data ;)
 
                     val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
 
-                    if(string.IsNullOrEmpty(val)){
+                    if (string.IsNullOrEmpty(val))
+                    {
 
                         val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
                     }
@@ -917,7 +920,7 @@ namespace Dev2.Studio
 
                 // Now invoke the Wizard ;)
                 Uri requestUri;
-                if(Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
+                if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
                 {
                     string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, GlobalConstants.NullDataListID);
 
@@ -937,15 +940,15 @@ namespace Dev2.Studio
 
                         Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
-                        if(dds != null)
+                        if (dds != null)
                         {
                             // Empty check the arms ;)
-                            if(string.IsNullOrEmpty(dds.TrueArmText.Trim()))
+                            if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
                             {
                                 dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
                             }
 
-                            if(string.IsNullOrEmpty(dds.FalseArmText.Trim()))
+                            if (string.IsNullOrEmpty(dds.FalseArmText.Trim()))
                             {
                                 dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
                             }
@@ -956,7 +959,7 @@ namespace Dev2.Studio
                             // build up our injected expression handler ;)
                             string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
-                            if(activityExpression != null)
+                            if (activityExpression != null)
                             {
                                 activityExpression.SetValue(expressionToInject);
                             }
@@ -964,14 +967,14 @@ namespace Dev2.Studio
                             // now set arms ;)
                             ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
-                            if(tArm != null)
+                            if (tArm != null)
                             {
                                 tArm.SetValue(dds.TrueArmText);
                             }
 
                             ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
-                            if(fArm != null)
+                            if (fArm != null)
                             {
                                 fArm.SetValue(dds.FalseArmText);
                             }
@@ -1054,7 +1057,7 @@ namespace Dev2.Studio
                                             if (!string.IsNullOrEmpty(val))
                                             {
 
-                                                var ds = new Dev2Switch {SwitchVariable = val};
+                                                var ds = new Dev2Switch { SwitchVariable = val };
                                                 webModel = JsonConvert.SerializeObject(ds);
 
                                             }
@@ -1068,7 +1071,7 @@ namespace Dev2.Studio
 
                     // now invoke the wizard ;)
                     Uri requestUri;
-                    if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDropWizardLocation),UriKind.Absolute, out requestUri))
+                    if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDropWizardLocation), UriKind.Absolute, out requestUri))
                     {
                         string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
@@ -1085,7 +1088,7 @@ namespace Dev2.Studio
                             if (ds != null)
                             {
                                 // FetchSwitchData
-                                string expressionToInject = string.Join("", GlobalConstants.InjectedSwitchDataFetch, "(\"", ds.SwitchVariable, "\",", GlobalConstants.InjectedDecisionDataListVariable,")");
+                                string expressionToInject = string.Join("", GlobalConstants.InjectedSwitchDataFetch, "(\"", ds.SwitchVariable, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                                 if (activityExpression != null)
                                 {
@@ -1126,7 +1129,7 @@ namespace Dev2.Studio
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),UriKind.Absolute, out requestUri))
+            if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation), UriKind.Absolute, out requestUri))
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
                 callBackHandler.ModelData = modelData;
@@ -1431,7 +1434,7 @@ namespace Dev2.Studio
 
                     string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
-                    _win = new WebPropertyEditorWindow(resourceViewModel, uriString) {Width = 850, Height = 600};
+                    _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
                     _win.ShowDialog();
                 }
                 catch
@@ -1618,7 +1621,7 @@ namespace Dev2.Studio
                 ModelProperty implementationProperty = modelService.Root.Properties["Implementation"];
                 if (modelService.Root.Content != null)
                 {
-                    var fc = (Flowchart) modelService.Root.Content.ComputedValue;
+                    var fc = (Flowchart)modelService.Root.Content.ComputedValue;
                     var fs = new FlowStep();
                     dynamic wsa = Activator.CreateInstance(userInterfaceType);
                     fs.Action = wsa;
@@ -1875,7 +1878,7 @@ namespace Dev2.Studio
             }
             else
             {
-                var view = new DeployView {DataContext = DeployViewModelFactory.GetDeployViewModel(input)};
+                var view = new DeployView { DataContext = DeployViewModelFactory.GetDeployViewModel(input) };
 
                 AttachedPropertyHelper.SetAttachedProperties(view, tabName);
 
@@ -1910,7 +1913,7 @@ namespace Dev2.Studio
             IWorkspaceItem workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == model.ResourceName);
             if (workspaceItem != null) return;
 
-            var context = (IStudioClientContext) model.Environment.DsfChannel;
+            var context = (IStudioClientContext)model.Environment.DsfChannel;
             workspaceItem = new WorkspaceItem(context.AccountID, context.ServerID)
                 {
                     ServiceName = model.ResourceName,

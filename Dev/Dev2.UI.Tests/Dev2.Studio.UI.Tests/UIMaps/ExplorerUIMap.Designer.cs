@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -40,11 +42,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             // Find the refresh button
             UITestControl refreshButton = new UITestControl(explorerMenu);
-            refreshButton.SearchProperties["AutomationId"] = "UI_btnRefresh_AutoID";
-            refreshButton.Find();
+            UITestControlCollection explorerChildren = explorerMenu.GetChildren();
+            var connectUserControl = explorerChildren.First(c => c.FriendlyName == "TheNavigationView");
+            var connectUserControlChilren = connectUserControl.GetChildren();
+            refreshButton = connectUserControlChilren.First(c => c.FriendlyName == "UI_SourceServerRefreshbtn_AutoID");
+            //refreshButton.SearchProperties["AutomationId"] = "UI_SourceServerbtnRefresh_AutoID";
+            //refreshButton.Find();
 
             // And click it
             Mouse.Click(refreshButton, new Point(5, 5));
+            Thread.Sleep(7000);
         }
 
         public UITestControl GetServerDDL()

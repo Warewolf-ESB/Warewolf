@@ -2,22 +2,16 @@
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using System.Windows.Input;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Windows.Forms;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    
-    
+
+
     public partial class ExplorerUIMap
     {
         public void ClickNewServerButton()
@@ -85,7 +79,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UINavigationViewUserCoCustom.UITvExplorerTree;
             return uITvExplorerTree.GetChildren().Count;
         }
-        
+
         public void RightClickDeleteProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
@@ -93,9 +87,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Move(p);
             System.Threading.Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            System.Threading.Thread.Sleep(1000);
+            SendKeys.SendWait("{DOWN}");
+            System.Threading.Thread.Sleep(100);
             SendKeys.SendWait("{DOWN}");
             System.Threading.Thread.Sleep(100);
             SendKeys.SendWait("{DOWN}");
@@ -232,16 +226,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="folderName">The name of the folder (AKA: Category - EG: BARNEY (Or CODEDUITESTCATEGORY for the CodedUI Test Default))</param>
         /// <param name="projectName">The name of the project (EG: MyWorkflow)</param>
         /// <returns>A UITestControl object</returns>
-        public UITestControl GetService(string serverName, string serviceType, string folderName, string serviceName) {
+        public UITestControl GetService(string serverName, string serviceType, string folderName, string serviceName)
+        {
             UITestControl service = GetServiceItem(serverName, serviceType, folderName, serviceName);
             return service;
         }
 
-        public UITestControl GetServer(string serverName) {
+        public UITestControl GetServer(string serverName)
+        {
             return GetConnectedServer(serverName);
         }
 
-        public UITestControl GetServiceType(string serverName, string serviceType) {
+        public UITestControl GetServiceType(string serverName, string serviceType)
+        {
             return GetServiceTypeControl(serverName, serviceType);
         }
 

@@ -1,13 +1,13 @@
-﻿using System.Drawing;
-using System.Windows.Input;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System.Windows.Forms;
-using System.Threading;
 
 namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 {
@@ -206,6 +206,20 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
         }
 
+        public void Adorner_ClickHelp(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControlCollection testFlowChildCollection = aControl.GetChildren();
+            foreach (UITestControl theControl in testFlowChildCollection)
+            {
+                if (theControl.FriendlyName == "Help")
+                {
+                    Mouse.Click(theControl, new Point(5, 5));
+                    break;
+                }
+            }
+        }
+
         public void Adorner_ClickWizard(UITestControl theTab, string controlAutomationId)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
@@ -355,7 +369,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public void AssignControl_ClickQuickVariableInputButton(UITestControl theTab, string controlAutomationId)
         {
             WpfButton quickVarButton = GetQuickVariableInputButton(theTab, controlAutomationId);
-            Mouse.Move(new Point (quickVarButton.BoundingRectangle.X + 5, quickVarButton.BoundingRectangle.Y + 5));
+            Mouse.Move(new Point(quickVarButton.BoundingRectangle.X + 5, quickVarButton.BoundingRectangle.Y + 5));
             Mouse.Click();
         }
 
@@ -365,9 +379,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
             UITestControl qviControl = new UITestControl();
-            foreach(UITestControl theControl in assignControlCollection)
+            foreach (UITestControl theControl in assignControlCollection)
             {
-                if(theControl.FriendlyName == "quickVariableInputControl")
+                if (theControl.FriendlyName == "quickVariableInputControl")
                 {
                     qviControl = theControl;
                     break;
@@ -411,16 +425,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl qviControl = new UITestControl();
             foreach (UITestControl theControl in assignControlCollection)
             {
-                    if (theControl.FriendlyName == "quickVariableInputControl")
-                    {
-                        qviControl = theControl;
-                        break;
-                    }
+                if (theControl.FriendlyName == "quickVariableInputControl")
+                {
+                    qviControl = theControl;
+                    break;
+                }
             }
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl addBtn = new UITestControl();
-            foreach (UITestControl quickVarInputChildren in qviChildren) {
+            foreach (UITestControl quickVarInputChildren in qviChildren)
+            {
                 if (quickVarInputChildren.FriendlyName == "Add")
                 {
                     addBtn = quickVarInputChildren;
