@@ -64,46 +64,46 @@ namespace Dev2.Server.UI.Tests
         }
 
         // Bug 5016
-        [TestMethod]
-        public void WebpartWizardDoesNotDisplayDefaultName()
-        {
-            System.Diagnostics.Process.Start("iexplore.exe", "http://127.0.0.1:1234/services/Date%20Picker.wiz");
-            System.Threading.Thread.Sleep(2500); // Give time for IE to open
-            var openWindowProcesses = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName == "iexplore");
-            bool isValidName = false;
-            foreach (var process in openWindowProcesses)
-            {
-                if (process.MainWindowTitle.ToUpper().Contains("DATE PICKER"))
-                {
-                    isValidName = true;
-                    break;
-                }
-            }
-            if (!isValidName)
-            {
-                Assert.Inconclusive("The webpage window lacks a valid name!");
-            }
-        }
+        //[TestMethod]
+        //public void WebpartWizardDoesNotDisplayDefaultName()
+        //{
+        //    System.Diagnostics.Process.Start("iexplore.exe", "http://127.0.0.1:1234/services/Date%20Picker.wiz");
+        //    System.Threading.Thread.Sleep(2500); // Give time for IE to open
+        //    var openWindowProcesses = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName == "iexplore");
+        //    bool isValidName = false;
+        //    foreach (var process in openWindowProcesses)
+        //    {
+        //        if (process.MainWindowTitle.ToUpper().Contains("DATE PICKER"))
+        //        {
+        //            isValidName = true;
+        //            break;
+        //        }
+        //    }
+        //    if (!isValidName)
+        //    {
+        //        Assert.Inconclusive("The webpage window lacks a valid name!");
+        //    }
+        //}
 
-        // Bug 5561
-        [TestMethod]
-        public void CursorRemainsConstantEnteringWebpartName()
-        {
-            System.Diagnostics.Process.Start("iexplore.exe", "http://127.0.0.1:1234/services/Date%20Picker.wiz");
-            System.Threading.Thread.Sleep(2500); // Give time for IE to open
-            DatePickerWizardUIMap datePickerWizardUIMap = new DatePickerWizardUIMap();
-            datePickerWizardUIMap.ClickNameTextBox();
-            Keyboard.SendKeys("1");
-            Keyboard.SendKeys("4");
-            Keyboard.SendKeys("{Left}");
-            Keyboard.SendKeys("2");
-            Keyboard.SendKeys("3");
-            string nameText = datePickerWizardUIMap.GetNameTextBoxText();
-            if (nameText != "1234")
-            {
-                Assert.Inconclusive("Error - The text is in the wrong order!");
-            }
-        }
+        //// Bug 5561
+        //[TestMethod]
+        //public void CursorRemainsConstantEnteringWebpartName()
+        //{
+        //    System.Diagnostics.Process.Start("iexplore.exe", "http://127.0.0.1:1234/services/Date%20Picker.wiz");
+        //    System.Threading.Thread.Sleep(2500); // Give time for IE to open
+        //    DatePickerWizardUIMap datePickerWizardUIMap = new DatePickerWizardUIMap();
+        //    datePickerWizardUIMap.ClickNameTextBox();
+        //    Keyboard.SendKeys("1");
+        //    Keyboard.SendKeys("4");
+        //    Keyboard.SendKeys("{Left}");
+        //    Keyboard.SendKeys("2");
+        //    Keyboard.SendKeys("3");
+        //    string nameText = datePickerWizardUIMap.GetNameTextBoxText();
+        //    if (nameText != "1234")
+        //    {
+        //        Assert.Inconclusive("Error - The text is in the wrong order!");
+        //    }
+        //}
 
         // Bug 5579
         [TestMethod]
