@@ -3,14 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 using Dev2.Composition;
+using Dev2.Studio;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,11 +30,12 @@ namespace Dev2.Core.Tests
     {
         #region Test Variables
 
-        Mock<IEnvironmentModel> mockEnvironmentModel;
-        Mock<IContextualResourceModel> mockResourceModel;
-        Mock<IContextualResourceModel> mockResourceModel1;
-        Mock<IContextualResourceModel> mockResourceModel2;
-        NavigationViewModel vm;
+        private object _lock = new object();
+        private Mock<IEnvironmentModel> mockEnvironmentModel;
+        private Mock<IContextualResourceModel> mockResourceModel;
+        private Mock<IContextualResourceModel> mockResourceModel1;
+        private Mock<IContextualResourceModel> mockResourceModel2;
+        private NavigationViewModel vm;
 
         #endregion Test Variables
 
@@ -44,7 +48,24 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
+            Monitor.Enter(_lock);
+            
+        }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_lock);
+        }
+
+        #region Updating Resources
+
+        private void Init()
+        {
+            //if (Application.Current == null)
+            //{
+            //    App app = new App();
+            //}
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
             mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
@@ -79,11 +100,11 @@ namespace Dev2.Core.Tests
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(r => r.All()).Returns(
                 new Collection<IResourceModel>
-                {
-                    mockResourceModel.Object,
-                    mockResourceModel1.Object,
-                    mockResourceModel2.Object
-                });
+                    {
+                        mockResourceModel.Object,
+                        mockResourceModel1.Object,
+                        mockResourceModel2.Object
+                    });
 
             mockEnvironmentModel.SetupGet(x => x.Resources).Returns(mockResourceRepository.Object);
             mockEnvironmentModel.Setup(x => x.LoadResources());
@@ -92,100 +113,150 @@ namespace Dev2.Core.Tests
             vm.AddEnvironment(mockEnvironmentModel.Object);
         }
 
-        #region Updating Resources
-
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceExistsOldCategory_Expects_ResourceChanged()
         {
-            var oldResoure = vm.Root.FindChild(mockResourceModel.Object);
+            // Kick the test off on the dispatcher worker thread synchronously which will block until the work is competed
 
-            Assert.AreEqual("Mock", oldResoure.DisplayName);
+            var reset = new AutoResetEvent(false);
+            UpdateResourceMessage updatemsg;
+            ITreeNode updatedResource = null;
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode oldResoure = vm.Root.FindChild(mockResourceModel.Object);
 
-            mockResourceModel.Setup(r => r.ResourceName).Returns("MockChangedName");
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                //Assert.AreEqual("Mock", oldResoure.DisplayName);
 
-            vm.Handle(updatemsg);
-            var updatedResource = vm.Root.FindChild(mockResourceModel.Object);
+                                                mockResourceModel.Setup(r => r.ResourceName).Returns("MockChangedName");
+                                                updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+
+                                                vm.Handle(updatemsg);
+                                                updatedResource = vm.Root.FindChild(mockResourceModel.Object);
+                                            }
+                );
+
+            reset.WaitOne();
             Assert.AreEqual("MockChangedName", updatedResource.DisplayName);
-
         }
 
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceUnchanged_Expects_UnchangedResource()
         {
-            var oldResoure = vm.Root.FindChild(mockResourceModel.Object);
+            ITreeNode updatedResource = null;
 
-            Assert.AreEqual("Mock", oldResoure.DisplayName);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode oldResoure = vm.Root.FindChild(mockResourceModel.Object);
 
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                Assert.AreEqual("Mock", oldResoure.DisplayName);
 
-            vm.Handle(updatemsg);
-            var updatedResource = vm.Root.FindChild(mockResourceModel.Object);
+                                                var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+
+                                                vm.Handle(updatemsg);
+                                                updatedResource = vm.Root.FindChild(mockResourceModel.Object);
+                                            });
+            reset.WaitOne();
+
             Assert.AreEqual("Mock", updatedResource.DisplayName);
         }
 
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
         {
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
-            var oldCategory = serviceTypeVM.FindChild("Testing");
-            var resourceVM = oldCategory.FindChild(mockResourceModel.Object);
+            ITreeNode updatedCategory = null;
+            ITreeNode resourceVM = null;
 
-            Assert.IsTrue(ReferenceEquals(oldCategory, (ITreeNode)resourceVM.TreeParent));
-            Assert.IsTrue(String.Compare(oldCategory.DisplayName, "Testing", 
-                StringComparison.InvariantCultureIgnoreCase) == 0);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
+                                                ITreeNode oldCategory = serviceTypeVM.FindChild("Testing");
+                                                resourceVM = oldCategory.FindChild(mockResourceModel.Object);
 
-            mockResourceModel.Setup(r => r.Category).Returns("Testing2");
+                                                Assert.IsTrue(ReferenceEquals(oldCategory, resourceVM.TreeParent));
+                                                Assert.IsTrue(String.Compare(oldCategory.DisplayName, "Testing",
+                                                                             StringComparison.InvariantCultureIgnoreCase) ==
+                                                              0);
 
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                mockResourceModel.Setup(r => r.Category).Returns("Testing2");
 
-            vm.Handle(updatemsg);
+                                                var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
 
-            var updatedCategory = serviceTypeVM.FindChild("Testing2");
+                                                vm.Handle(updatemsg);
 
-            Assert.IsTrue(ReferenceEquals(updatedCategory, (ITreeNode)resourceVM.TreeParent));
+                                                updatedCategory = serviceTypeVM.FindChild("Testing2");
 
+                                            });
+            reset.WaitOne();
+
+            Assert.IsTrue(ReferenceEquals(updatedCategory, resourceVM.TreeParent));
             Assert.IsTrue(String.Compare(updatedCategory.DisplayName, "Testing2",
-                StringComparison.InvariantCultureIgnoreCase) == 0);
-
+                                         StringComparison.InvariantCultureIgnoreCase) ==
+                          0);
             Assert.AreEqual(updatedCategory.ChildrenCount, 2);
         }
 
         [TestMethod]
         public void UpdateResourceMessage_WhenNewCategory_Expects_CategoryAdded()
         {
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
-            var oldCategory = serviceTypeVM.FindChild("Testing");
-            var resourceVM = oldCategory.FindChild(mockResourceModel.Object);
+            ITreeNode updatedCategory = null;
+            ITreeNode resourceVM = null;
 
-            mockResourceModel.Setup(r => r.Category).Returns("Testing5");
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
+                                                ITreeNode oldCategory = serviceTypeVM.FindChild("Testing");
+                                                resourceVM = oldCategory.FindChild(mockResourceModel.Object);
 
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                mockResourceModel.Setup(r => r.Category).Returns("Testing5");
 
-            vm.Handle(updatemsg);
+                                                var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
 
-            var updatedCategory = serviceTypeVM.FindChild("Testing5");
+                                                vm.Handle(updatemsg);
 
-            Assert.IsTrue(ReferenceEquals(updatedCategory, (ITreeNode)resourceVM.TreeParent));
+                                                updatedCategory = serviceTypeVM.FindChild("Testing5");
 
+                                            });
+            reset.WaitOne();
+
+            Assert.IsTrue(ReferenceEquals(updatedCategory, resourceVM.TreeParent));
             Assert.IsTrue(String.Compare(updatedCategory.DisplayName, "Testing5",
-                StringComparison.InvariantCultureIgnoreCase) == 0);
-
+                                         StringComparison.InvariantCultureIgnoreCase) ==
+                          0);
             Assert.AreEqual(updatedCategory.ChildrenCount, 1);
         }
 
         [TestMethod]
         public void UpdateResourceMessage_WhenOldCategoryBecomesEmpty_Expects_CategoryDeleted()
         {
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
+            ITreeNode updatedCategory = null;
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
 
-            mockResourceModel.Setup(r => r.Category).Returns("Testing5");
+                                                mockResourceModel.Setup(r => r.Category).Returns("Testing5");
 
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
 
-            vm.Handle(updatemsg);
+                                                vm.Handle(updatemsg);
 
-            var updatedCategory = serviceTypeVM.FindChild("Testing");
+                                                updatedCategory = serviceTypeVM.FindChild("Testing");
+
+                                            });
+            reset.WaitOne();
 
             Assert.IsNull(updatedCategory);
             Assert.IsTrue(vm.Root.ChildrenCount == 3);
@@ -194,19 +265,28 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateResourceMessage_WhenOldCategoryNotEmpty_Expects_CategoryNotDeleted()
         {
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
+            ITreeNode updatedCategory = null;
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
 
-            mockResourceModel.Setup(r => r.Category).Returns("Testing2");
+                                                mockResourceModel.Setup(r => r.Category).Returns("Testing2");
 
-            var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
-            vm.Handle(updatemsg);
+                                                var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                vm.Handle(updatemsg);
 
-            mockResourceModel.Setup(r => r.Category).Returns("Testing3");
+                                                mockResourceModel.Setup(r => r.Category).Returns("Testing3");
 
-            updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
-            vm.Handle(updatemsg);
+                                                updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
+                                                vm.Handle(updatemsg);
 
-            var updatedCategory = serviceTypeVM.FindChild("Testing2");
+                                                updatedCategory = serviceTypeVM.FindChild("Testing2");
+
+                                            });
+            reset.WaitOne();
 
             Assert.IsTrue(updatedCategory.ChildrenCount == 1);
         }
@@ -214,18 +294,30 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateResourceMessage_WhenNewResource_Expects_ResourceAdded()
         {
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-            newResource.Setup(r => r.Category).Returns("Testing");
-            newResource.Setup(r => r.ResourceName).Returns("Cake");
-            newResource.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
+            ITreeNode categoryVM = null;
+            ITreeNode resourceVM = null;
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                var newResource = new Mock<IContextualResourceModel>();
+                                                newResource.Setup(r => r.ResourceType)
+                                                           .Returns(ResourceType.WorkflowService);
+                                                newResource.Setup(r => r.Category).Returns("Testing");
+                                                newResource.Setup(r => r.ResourceName).Returns("Cake");
+                                                newResource.Setup(r => r.Environment)
+                                                           .Returns(mockEnvironmentModel.Object);
 
-            var updatemsg = new UpdateResourceMessage(newResource.Object);
-            vm.Handle(updatemsg);
+                                                var updatemsg = new UpdateResourceMessage(newResource.Object);
+                                                vm.Handle(updatemsg);
 
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
-            var categoryVM = serviceTypeVM.FindChild("Testing");
-            var resourceVM = vm.Root.FindChild(newResource.Object);
+                                                ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
+                                                categoryVM = serviceTypeVM.FindChild("Testing");
+                                                resourceVM = vm.Root.FindChild(newResource.Object);
+
+                                            });
+            reset.WaitOne();
 
             Assert.IsTrue(resourceVM.DisplayName == "Cake");
             Assert.IsTrue(categoryVM.ChildrenCount == 2);
@@ -235,20 +327,32 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateResourceMessage_WhenNewResourceAndNewCategory_Expects_CategoryAdded()
         {
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-            newResource.Setup(r => r.Category).Returns("Testing4");
-            newResource.Setup(r => r.ResourceName).Returns("Cake");
-            newResource.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
+            ITreeNode categoryVM = null;
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                var newResource = new Mock<IContextualResourceModel>();
+                                                newResource.Setup(r => r.ResourceType)
+                                                           .Returns(ResourceType.WorkflowService);
+                                                newResource.Setup(r => r.Category).Returns("Testing4");
+                                                newResource.Setup(r => r.ResourceName).Returns("Cake");
+                                                newResource.Setup(r => r.Environment)
+                                                           .Returns(mockEnvironmentModel.Object);
 
-            var updatemsg = new UpdateResourceMessage(newResource.Object);
-            vm.Handle(updatemsg);
+                                                var updatemsg = new UpdateResourceMessage(newResource.Object);
+                                                vm.Handle(updatemsg);
 
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
-            var categoryVM = serviceTypeVM.FindChild("Testing4");
+                                                ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
+                                                categoryVM = serviceTypeVM.FindChild("Testing4");
+
+                                            });
+            reset.WaitOne();
 
             Assert.IsTrue(String.Compare(categoryVM.DisplayName, "Testing4",
-                StringComparison.InvariantCultureIgnoreCase) == 0);
+                                         StringComparison.InvariantCultureIgnoreCase) ==
+                          0);
 
             Assert.IsTrue(categoryVM.ChildrenCount == 1);
             Assert.IsTrue(vm.Root.ChildrenCount == 4);
@@ -257,17 +361,30 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void AddEnvironment_Expected_RootAndChildrenCreated()
         {
-            var workflowServiceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
-            var serviceTypeVM = vm.Root.FindChild(ResourceType.Service);
-            var categoryVM = workflowServiceTypeVM.FindChild("Testing");
-            var resourceVM = categoryVM.FindChild(mockResourceModel.Object);
+            ITreeNode workflowServiceTypeVM = null;
+            ITreeNode serviceTypeVM = null;
+            ITreeNode categoryVM = null;
+            ITreeNode resourceVM = null;
 
-            Assert.IsTrue(ReferenceEquals(categoryVM, (ITreeNode)resourceVM.TreeParent));
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                workflowServiceTypeVM =
+                                                    vm.Root.FindChild(ResourceType.WorkflowService);
+                                                serviceTypeVM = vm.Root.FindChild(ResourceType.Service);
+                                                categoryVM = workflowServiceTypeVM.FindChild("Testing");
+                                                resourceVM = categoryVM.FindChild(mockResourceModel.Object);
+                                            });
+            reset.WaitOne();
+
+            Assert.IsTrue(ReferenceEquals(categoryVM, resourceVM.TreeParent));
             Assert.IsTrue(String.Compare(categoryVM.DisplayName, "Testing",
-                StringComparison.InvariantCultureIgnoreCase) == 0);
+                                         StringComparison.InvariantCultureIgnoreCase) ==
+                          0);
             Assert.IsTrue(workflowServiceTypeVM.ChildrenCount == 2);
             Assert.IsTrue(serviceTypeVM.ChildrenCount == 1);
-
         }
 
         #endregion Updating Resources
@@ -277,21 +394,45 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_AfterReload_Expects_FilteredItemsInTreeWithIsFilteredTrue()
         {
-            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+            ITreeNode resourceVM = null;
 
-            Assert.IsTrue(vm.Root.ChildrenCount == 3);
-            Assert.IsTrue(resourceVM.IsFiltered == false);
-             
-            vm.UpdateSearchFilter("Mock2");
-            Assert.IsTrue(vm.Root.ChildrenCount == 1);
-            Assert.IsTrue(resourceVM.IsFiltered == true);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                 resourceVM = vm.Root.FindChild(mockResourceModel.Object);
 
-            vm.LoadEnvironmentResources(mockEnvironmentModel.Object);
-            resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            Assert.IsTrue(vm.Root.ChildrenCount == 1);
-            Assert.IsTrue(resourceVM.IsFiltered == true);
+                                                Assert.IsTrue(vm.Root.ChildrenCount == 3);
+                                                Assert.IsTrue(resourceVM.IsFiltered == false);
 
-            vm.UpdateSearchFilter("Mock");
+                                                vm.UpdateSearchFilter("Mock2");
+                                                vm.Root.NotifyOfFilterPropertyChanged(false);
+
+                                                Thread.Sleep(100);
+
+                                                Assert.IsTrue(vm.Root.ChildrenCount == 1);
+                                                Assert.IsTrue(resourceVM.IsFiltered);
+
+                                                vm.LoadEnvironmentResources(mockEnvironmentModel.Object);
+                                                vm.Root.NotifyOfFilterPropertyChanged(false);
+
+                                                Thread.Sleep(100);
+
+                                                resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+
+                                                Thread.Sleep(100);
+
+                                                Assert.IsTrue(vm.Root.ChildrenCount == 1);
+                                                Assert.IsTrue(resourceVM.IsFiltered);
+
+                                                vm.UpdateSearchFilter("Mock");
+
+                                                Thread.Sleep(100);
+
+                                            });
+            reset.WaitOne();
+
             Assert.IsTrue(vm.Root.ChildrenCount == 3);
             Assert.IsTrue(resourceVM.IsFiltered == false);
         }
@@ -299,18 +440,32 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_WhereResourceNodeNotFiltered_Expects_CategoryExpanded()
         {
-            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
-            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+            ITreeNode resourceVM2_2 = null;
 
-            Assert.IsTrue(resourceVM.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+                                                ITreeNode resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+                                                resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
 
-            vm.UpdateSearchFilter("Mock2");
+                                                Assert.IsTrue(resourceVM.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+
+                                                vm.UpdateSearchFilter("Mock2");
+                                                vm.Root.NotifyOfFilterPropertyChanged(false);
+
+                                                Thread.Sleep(100);
+
+                                            });
+            reset.WaitOne();
+
             Assert.IsTrue(resourceVM2_2.IsFiltered == false);
             Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded);
         }
@@ -318,18 +473,30 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_WhereResourceNodeFiltered_Expects_CategoryCollapsed()
         {
-            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
-            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+            ITreeNode resourceVM = null;
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+                                                ITreeNode resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+                                                ITreeNode resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
 
-            Assert.IsTrue(resourceVM.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
 
-            vm.UpdateSearchFilter("Mock2");
+                                                vm.UpdateSearchFilter("Mock2");
+                                                vm.Root.NotifyOfFilterPropertyChanged(false);
+
+                                                Thread.Sleep(100);
+                                            });
+            reset.WaitOne();
+
             Assert.IsTrue(resourceVM.IsFiltered);
             Assert.IsTrue(!resourceVM.TreeParent.IsExpanded);
         }
@@ -337,20 +504,32 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_WhereFilterReset_Expects_OriginalExpandState()
         {
-            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
-            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+            ITreeNode resourceVM = null;
+            ITreeNode resourceVM2_1 = null;
+            ITreeNode resourceVM2_2 = null;
 
-            Assert.IsTrue(resourceVM.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+                                                resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+                                                resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
 
-            vm.UpdateSearchFilter("Mock2");
+                                                Assert.IsTrue(resourceVM.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM2_1.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM2_2.IsFiltered == false);
+                                                Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
+                                                Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
 
-            vm.UpdateSearchFilter("");
+                                                vm.UpdateSearchFilter("Mock2");
+
+                                                vm.UpdateSearchFilter("");
+                                            });
+            reset.WaitOne();
+
             Assert.IsTrue(resourceVM.IsFiltered == false);
             Assert.IsTrue(resourceVM2_1.IsFiltered == false);
             Assert.IsTrue(resourceVM2_2.IsFiltered == false);
@@ -362,27 +541,43 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_WhereNoContent_Expects_RootAndEnvironmentNotFiltered()
         {
-            vm.UpdateSearchFilter("ZD");
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                vm.UpdateSearchFilter("ZD");
+                                            });
+            reset.WaitOne();
+
             Assert.IsTrue(vm.Root.IsFiltered == false);
-            Assert.IsTrue(vm.Root.IsExpanded == true);
+            Assert.IsTrue(vm.Root.IsExpanded);
             Assert.IsTrue(vm.Root.Children.ToList().All(c => c.IsFiltered == false));
         }
 
         [TestMethod]
         public void NavigationViewModel_WhereNoContent_Expects_RootAndEnvironmentNotFiltered()
         {
-            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
-            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                ITreeNode resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+                                                ITreeNode resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+                                                ITreeNode resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
 
-            resourceVM.TreeParent.Remove(resourceVM);
-            resourceVM2_1.TreeParent.Remove(resourceVM2_1);
-            resourceVM2_2.TreeParent.Remove(resourceVM2_2);
+                                                resourceVM.TreeParent.Remove(resourceVM);
+                                                resourceVM2_1.TreeParent.Remove(resourceVM2_1);
+                                                resourceVM2_2.TreeParent.Remove(resourceVM2_2);
 
-            vm.UpdateSearchFilter("");
+                                                vm.UpdateSearchFilter("");
+                                            });
+            reset.WaitOne();
+
             Assert.IsTrue(vm.Root.ChildrenCount == 0);
             Assert.IsTrue(vm.Root.IsFiltered == false);
-            Assert.IsTrue(vm.Root.IsExpanded == true);
+            Assert.IsTrue(vm.Root.IsExpanded);
             Assert.IsTrue(vm.Root.Children.ToList().All(c => c.IsFiltered == false));
             Assert.IsTrue(vm.Root.Children.ToList().All(c => c.ChildrenCount == 0));
         }
@@ -390,11 +585,24 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Filter_Expects_FilteredCategories_WithNoResources_IsFiltered()
         {
-            vm.UpdateSearchFilter("zd");
+            ITreeNode resourceVM = null;
+            ITreeNode resourceVM2_1 = null;
+            ITreeNode resourceVM2_2 = null;
 
-            var resourceVM = vm.Root.FindChild(mockResourceModel.Object);
-            var resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
-            var resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                vm.UpdateSearchFilter("zd");
+                                                vm.Root.NotifyOfFilterPropertyChanged(false);
+
+                                                resourceVM = vm.Root.FindChild(mockResourceModel.Object);
+                                                resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
+                                                resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
+
+                                            });
+            reset.WaitOne();
 
             Assert.IsTrue(resourceVM.TreeParent.IsFiltered);
             Assert.IsTrue(resourceVM2_1.TreeParent.IsFiltered);
@@ -404,29 +612,57 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Filter_Expects_FilteredCategories_WithResources_IsNotFiltered_AndExpanded()
         {
-            var nonMatchingNode1 = vm.Root.FindChild(mockResourceModel.Object);
-            var nonMatchingNode2 = vm.Root.FindChild(mockResourceModel1.Object);
-            var matchingNode = vm.Root.FindChild(mockResourceModel2.Object);
+            ITreeNode nonMatchingNode1 = null;
+            ITreeNode matchingNode = null;
 
-            vm.UpdateSearchFilter("Mock2");
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                nonMatchingNode1 = vm.Root.FindChild(mockResourceModel.Object);
+                                                matchingNode = vm.Root.FindChild(mockResourceModel2.Object);
+
+                                                vm.UpdateSearchFilter("Mock2");
+
+                                                Thread.Sleep(100);
+
+                                            });
+            reset.WaitOne();
 
             Assert.IsTrue(nonMatchingNode1.IsFiltered);
             Assert.IsTrue(matchingNode.IsFiltered == false);
-            Assert.IsTrue(matchingNode.TreeParent.IsExpanded == true);
+            Assert.IsTrue(matchingNode.TreeParent.IsExpanded);
         }
 
         [TestMethod]
         public void Filter_Expects_UnFilteredCategories_NotFiltered_AndExpanded()
         {
-            var nonMatchingCategory = vm.Root.FindChild(mockResourceModel.Object).TreeParent;
-            var matchingCategory = vm.Root.FindChild(mockResourceModel1.Object).TreeParent;
+            ITreeNode nonMatchingCategory = null;
+            ITreeNode matchingCategory = null;
 
-            vm.UpdateSearchFilter("Testing2");
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                nonMatchingCategory =
+                                                    vm.Root.FindChild(mockResourceModel.Object).TreeParent;
+                                                matchingCategory =
+                                                    vm.Root.FindChild(mockResourceModel1.Object).TreeParent;
 
-            Assert.IsTrue(nonMatchingCategory.IsFiltered == true);
+                                                vm.UpdateSearchFilter("Testing2");
+
+                                                Thread.Sleep(100);
+
+                                            });
+            reset.WaitOne();
+
+            Assert.IsTrue(nonMatchingCategory.IsFiltered);
             Assert.IsTrue(matchingCategory.IsFiltered == false);
-            Assert.IsTrue(matchingCategory.IsExpanded == true);
+            Assert.IsTrue(matchingCategory.IsExpanded);
         }
+
         #endregion Filtering
 
         #region disconnect
@@ -434,16 +670,26 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void EnvironmentNodeDisconnect_Expect_NodeRemovedFromRoot()
         {
-            mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
-            mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                            {
+                                                Init();
+                                                // FromCurrentSynchronizationContext will now resolve to the dispatcher thread here
+                                                mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
+                                                mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
 
-            Assert.IsTrue(vm.Root.ChildrenCount != 0);
+                                                Assert.IsTrue(vm.Root.ChildrenCount != 0);
 
-            var message = new EnvironmentDisconnectedMessage(mockEnvironmentModel.Object);
-            vm.Handle(message);
+                                                var message =
+                                                    new EnvironmentDisconnectedMessage(mockEnvironmentModel.Object);
+                                                vm.Handle(message);
+                                            });
+            reset.WaitOne();
 
             Assert.IsTrue(vm.Root.ChildrenCount == 0);
         }
+
         #endregion
     }
 }

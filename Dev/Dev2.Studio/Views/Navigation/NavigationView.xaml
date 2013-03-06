@@ -28,7 +28,7 @@
             <customControls:Dev2FilterTextBox x:Name="FilterTextBox"                                              
                                               Grid.Column="0">
                 <i:Interaction.Triggers>
-                    <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="1000">
+                    <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="100">
                         <cal:ActionMessage MethodName="UpdateSearchFilter">
                             <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
                         </cal:ActionMessage>

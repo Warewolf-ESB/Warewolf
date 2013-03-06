@@ -404,10 +404,10 @@ namespace Dev2.Core.Tests
         #region Resource
 
         [TestMethod]
-        public void TestGetChildCountFromResource_Expected_NoCount()
+        public void TestGetChildCountFromResource_Expected_CountOfOne()
         {
             var childCount = resourceVM.ChildrenCount;
-            Assert.IsTrue(childCount == 0);
+            Assert.IsTrue(childCount == 1);
         }
 
         [TestMethod]
@@ -693,15 +693,22 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
             var toAdd = TreeViewModelFactory.Create(mockResource3.Object, categoryVM2, false);
 
+            Thread.Sleep(100);
+
             Assert.IsTrue(categoryVM2.ChildrenCount == 2);
 
             toAdd.IsChecked = true;
-
             rootVM.FilterText = "Mock3";
+            rootVM.NotifyOfFilterPropertyChanged(false);
+
+            Thread.Sleep(100);
 
             Assert.IsTrue(categoryVM2.IsChecked == true);
 
             rootVM.FilterText = "";
+            rootVM.NotifyOfFilterPropertyChanged(false);
+
+            Thread.Sleep(100);
 
             Assert.IsTrue(categoryVM2.IsChecked == null);
         }

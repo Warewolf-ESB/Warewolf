@@ -2,8 +2,15 @@
 
 #region
 
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
@@ -18,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Action = System.Action;
 
 #endregion
 
@@ -40,6 +48,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private readonly bool _useAuxiliryConnections;
         private RelayCommand _refreshMenuCommand;
         private string _searchFilter = string.Empty;
+        private readonly SynchronizationContext _synchronizationContext;
 
         #endregion private fields
 
@@ -53,6 +62,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public NavigationViewModel(bool useAuxiliryConnections)
         {
+            _synchronizationContext = SynchronizationContext.Current;
+
             UserInterfaceLayoutProvider = ImportService.GetExportValue<IUserInterfaceLayoutProvider>();
             EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
@@ -382,7 +393,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     // Remove from old category
                     bool test = originalCategoryNode.Remove(resourceNode);
-                    var test1 = test;
                     //delete old category if empty
                     if (originalCategoryNode.ChildrenCount == 0)
                     {
@@ -419,8 +429,20 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void UpdateSearchFilter(string searhFilter)
         {
             _searchFilter = searhFilter;
+
             Root.FilterText = _searchFilter;
             Root.UpdateFilteredNodeExpansionStates(searhFilter);
+            Root.NotifyOfFilterPropertyChanged(false);
+                     //BackgroundWorker worker = new BackgroundWorker();
+            
+                     //   worker.DoWork += (s, e) => 
+                     //   {
+                     //       Root.FilterText = _searchFilter;
+                     //       Root.UpdateFilteredNodeExpansionStates(searhFilter);
+                     //       Root.NotifyOfFilterPropertyChanged(false);
+                     //   };
+            
+                     //   worker.RunWorkerAsync();
         }
 
         ///// <summary>
@@ -486,9 +508,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="node">The node.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private static void ClearChildren(ITreeNode node)
+        private void ClearChildren(ITreeNode node)
         {
-            node.Children.Clear();
+            node.Children = new SortedObservableCollection<ITreeNode>();
         }
 
         /// <summary>
@@ -513,15 +535,12 @@ namespace Dev2.Studio.ViewModels.Navigation
             ClearChildren(environmentVM);
 
             BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
             BuildCategoryTree(ResourceType.Source, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
             BuildCategoryTree(ResourceType.Service, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
-            if (!string.IsNullOrEmpty(_searchFilter))
-            {
-                UpdateSearchFilter(_searchFilter);
-            }
+                                resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+            UpdateSearchFilter(_searchFilter);
         }
 
         /// <summary>

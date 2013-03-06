@@ -96,6 +96,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override int ChildrenCount
+        {
+            get { return 1; }
+        }
+
         /// <summary>
         /// Gets the display name.
         /// </summary>
@@ -110,6 +115,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return DataContext != null ? DataContext.ResourceName : String.Empty;
             }
+        }
+
+        public override void VerifyCheckState()
+        {
         }
 
         /// <summary>
@@ -567,6 +576,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion commands
 
         #region public methods
+        public override void SetFilter(string filterText, bool updateChildren)
+        {
+            IsFiltered = GetIsFiltered(filterText);
+        }
 
         /// <summary>
         /// Finds the child containing a specific resource.
@@ -620,6 +633,18 @@ namespace Dev2.Studio.ViewModels.Navigation
             var data = new KeyValuePair<ITreeNode, IContextualResourceModel>(this, DataContext);
             SendDeleteMessage(data);
             RaisePropertyChangedForCommands();
+        }
+
+        public override void NotifyOfFilterPropertyChanged(bool updateParent = false)
+        {
+            NotifyOfPropertyChange("ChildrenCount");
+
+            if (TreeParent == null || !updateParent)
+            {
+                return;
+            }
+
+            TreeParent.NotifyOfFilterPropertyChanged(true);
         }
 
         /// <summary>

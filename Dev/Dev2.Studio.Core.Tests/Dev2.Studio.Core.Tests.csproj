@@ -167,6 +167,7 @@
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
+    <Compile Include="ThreadExecuter.cs" />
     <Compile Include="TreeViewModelsTest.cs" />
     <Compile Include="NavigationViewModelTest.cs" />
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />

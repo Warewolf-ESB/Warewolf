@@ -198,6 +198,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
                 return _children;
             }
+            set
+            {
+                if (_children == value) return;
+
+                _children = value;
+                _children.CollectionChanged -= ChildrenOnCollectionChanged;
+                _children.CollectionChanged += ChildrenOnCollectionChanged;
+            }
         }
         #endregion public properties
 

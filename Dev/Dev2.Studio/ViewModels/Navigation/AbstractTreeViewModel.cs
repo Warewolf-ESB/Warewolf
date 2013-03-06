@@ -1,6 +1,16 @@
 ﻿#region
 
-using Caliburn.Micro;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Threading;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -8,14 +18,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Data;
-using System.Windows.Input;
 
 #endregion
 
@@ -33,17 +35,18 @@ namespace Dev2.Studio.ViewModels.Navigation
         // ReSharper disable InconsistentNaming
         protected ObservableCollection<ITreeNode> _children;
         // ReSharper restore InconsistentNaming
-        RelayCommand _deployCommand;
-        string _iconPath;
-        bool? _isChecked = false;
-        bool _isExpanded;
-        bool _isFiltered;
-        bool _isSelected;
-        ITreeNode _treeParent;
-        ICollectionView _filteredChildren;
-        private bool? _unfilteredExpandState;
-        private bool _hasUnfilteredExpandStateBeenSet;
+        private RelayCommand _deployCommand;
         private string _filterText;
+        private ICollectionView _filteredChildren;
+        private bool _hasUnfilteredExpandStateBeenSet;
+        private string _iconPath;
+        private bool? _isChecked = false;
+        private bool _isExpanded;
+        private bool _isFiltered;
+        private bool _isSelected;
+        private ITreeNode _treeParent;
+        private bool? _unfilteredExpandState;
+
         #endregion
 
         #region ctor + init
@@ -54,6 +57,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 parent.Add(this);
             }
+
+//            _children = new ObservableCollection<ITreeNode>();
+//            _children.CollectionChanged += ChildrenOnCollectionChanged;
 
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
         }
@@ -94,7 +100,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         ///     <c>true</c> if this instance is filtered; otherwise, <c>false</c>.
         /// </value>
         /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>        
+        /// <date>2013/01/23</date>
         public virtual bool IsFiltered
         {
             get { return _isFiltered; }
@@ -104,15 +110,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     return;
                 }
+
                 _isFiltered = value;
                 NotifyOfPropertyChange(() => IsFiltered);
-
-                if (TreeParent == null)
-                {
-                    return;
-                }
-                TreeParent.FilteredChildren.Refresh();
-                TreeParent.NotifyOfPropertyChange("ChildrenCount");
             }
         }
 
@@ -165,10 +165,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public string FilterText
         {
-            get
-            {
-                return _filterText;
-            }
+            get { return _filterText; }
             set
             {
                 _filterText = value;
@@ -195,6 +192,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
                 return _children;
             }
+            set
+            {
+                if (_children == value) return;
+
+                _children = value;
+                _children.CollectionChanged -= ChildrenOnCollectionChanged;
+                _children.CollectionChanged += ChildrenOnCollectionChanged;
+            }
         }
 
         /// <summary>
@@ -205,16 +210,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public int ChildrenCount
+        public virtual int ChildrenCount
         {
-            get
-            {
-                var childCount = Children.Where(c => !c.IsFiltered)
-                                         .Count(c => c.GetType() == typeof(ResourceTreeViewModel));
-
-                return childCount
-                       + Children.Where(c => !c.IsFiltered).Sum(c => c.ChildrenCount);
-            }
+            get { return Children.Where(c => !c.IsFiltered).Sum(c => c.ChildrenCount); }
         }
 
         /// <summary>
@@ -230,7 +228,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public bool? IsChecked
         {
             get { return _isChecked; }
-            set { SetIsChecked(value, true, true, true); }
+            set { SetIsChecked(value, true, true); }
         }
 
         /// <summary>
@@ -434,7 +432,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return _deployCommand ??
                        (_deployCommand =
                         new RelayCommand(param => Mediator.SendMessage(MediatorMessages.DeployResources, this),
-                            o => CanDeploy));
+                                         o => CanDeploy));
             }
         }
 
@@ -458,69 +456,55 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region public methods
 
         /// <summary>
-        ///     Sets the filter text used to set The IsFilteredProperty.
+        /// Sets the filter text used to set The IsFilteredProperty.
         /// </summary>
         /// <param name="filterText">The filter text.</param>
-        /// <param name="updateProperty">
-        ///     if set to <c>true</c> [update property].
-        /// </param>
+        /// <param name="updateChildren">if set to <c>true</c> [update children].</param>
         /// <date>2013/01/23</date>
         /// <author>
-        ///     Jurie.smit
+        /// Jurie.smit
         /// </author>
-        public void SetFilter(string filterText, bool updateChildren)
+        public virtual void SetFilter(string filterText, bool updateChildren)
         {
-            var originalFilter = IsFiltered;
+            //bool originalFilter = IsFiltered;
 
-            if (GetType() == typeof(ResourceTreeViewModel))
-            {
-                IsFiltered = GetIsFiltered(filterText);
-            }
-            else if (GetType() == typeof(CategoryTreeViewModel))
-            {
-                if (updateChildren)
-                {
-                    IsFiltered = !DisplayName.ToUpper().Contains(filterText.ToUpper());
-                    if (!IsFiltered)
-                    {
-                        Children.ToList().ForEach(c =>
-                            { c.IsFiltered = false; });
-                    }
-                    else
-                    {
-                        Children.ToList().ForEach(c => c.SetFilter(filterText, false));
-                        IsFiltered = Children.All(c => c.IsFiltered);
-                    }
-                    VerifyCheckState();
-                }
-            }
-            else
-            {
-                Children.ToList().ForEach(c => c.SetFilter(filterText, true));
-                IsFiltered = Children.All(c => c.IsFiltered);
-            }
+            Children.ToList().ForEach(c => c.SetFilter(filterText, true));
 
-            //Notify parent to verify filterstate
-            if (TreeParent != null && originalFilter != IsFiltered)
-            {
-                TreeParent.SetFilter(filterText, false);
-            }
+            IsFiltered = Children.All(c => c.IsFiltered);
 
-            NotifyOfPropertyChange(() => FilterText);
+            ////Notify parent to verify filterstate
+            //if (TreeParent != null && originalFilter != IsFiltered)
+            //{
+            //    TreeParent.SetFilter(filterText, false);
+            //}
 
-            //Notify parent to update check status
-            if (TreeParent != null)
-            {
-                TreeParent.VerifyCheckState();
-            }
-
+            ////Notify parent to update check status
+            //if (TreeParent != null)
+            //{
+            //    TreeParent.VerifyCheckState();
+            //}
         }
 
-        private bool GetIsFiltered(string filterText)
+        public virtual void NotifyOfFilterPropertyChanged(bool updateParent = false)
         {
-            return !(DisplayName.ToUpper().Contains(filterText.ToUpper()) ||
-                     IsChecked.HasValue &&
-                     IsChecked.Value);
+            Children.ToList().ForEach(c => c.NotifyOfFilterPropertyChanged(false));
+            var worker = new BackgroundWorker();
+
+            worker.DoWork += (s, e) =>
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(
+                        new Action(() => FilteredChildren.Refresh()));
+                    NotifyOfPropertyChange("ChildrenCount");
+                    VerifyCheckState();
+                };
+
+            worker.RunWorkerCompleted += (s, e) =>
+                {
+                    if (updateParent && TreeParent != null)
+                        TreeParent.NotifyOfFilterPropertyChanged(true);
+                };
+
+            worker.RunWorkerAsync();
         }
 
         /// <summary>
@@ -538,7 +522,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public void SetIsChecked(bool? value, bool updateChildren, bool updateParent, bool sendMessage)
+        public void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
             if (value == _isChecked)
             {
@@ -550,8 +534,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             if (updateChildren && _isChecked.HasValue)
             {
                 //Do not check filtered children
-                Children.Where(c => !c.IsFiltered).ToList()
-                    .ForEach(c => c.SetIsChecked(_isChecked, true, false, false));
+                foreach (var c in Children)
+                {
+                    if (!c.IsFiltered) c.SetIsChecked(_isChecked, true, false);
+                }
             }
 
             if (updateParent && _treeParent != null)
@@ -560,11 +546,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             NotifyOfPropertyChange(() => IsChecked);
-            if (sendMessage)
-            {
-                //Message to update count totals
-                EventAggregator.Publish(new ResourceCheckedMessage());
-            }
         }
 
         /// <summary>
@@ -572,18 +553,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public void VerifyCheckState()
+        public virtual void VerifyCheckState()
         {
-            if (GetType() == typeof(ResourceTreeViewModel)) return;
-
             if (!FilteredChildren.OfType<ITreeNode>().Any())
             {
-                SetIsChecked(false, false, true, false);
+                SetIsChecked(false, false, true);
                 return;
             }
 
             bool? state = null;
-            for (int i = 0; i < FilteredChildren.OfType<ITreeNode>().Count(); ++i)
+            var count = FilteredChildren.OfType<ITreeNode>().Count();
+            for (int i = 0; i < count ; ++i)
             {
                 bool? current = FilteredChildren.OfType<ITreeNode>().ToArray()[i].IsChecked;
                 if (i == 0)
@@ -596,7 +576,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     break;
                 }
             }
-            SetIsChecked(state, false, true, false);
+            SetIsChecked(state, false, true);
         }
 
         /// <summary>
@@ -620,7 +600,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Updates the node's expansion states according to the current filter.
+        ///     Updates the node's expansion states according to the current filter.
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2/25/2013</date>
@@ -632,7 +612,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if (_unfilteredExpandState != null)
                     IsExpanded = _unfilteredExpandState.Value;
                 _hasUnfilteredExpandStateBeenSet = false;
-                foreach (var treeNode in Children)
+                foreach (ITreeNode treeNode in Children)
                 {
                     treeNode.UpdateFilteredNodeExpansionStates(filterText);
                 }
@@ -644,7 +624,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //toggle boolean indicating wheter unfiltered state has been set
             if (!_hasUnfilteredExpandStateBeenSet)
             {
-                _unfilteredExpandState = this.IsExpanded;
+                _unfilteredExpandState = IsExpanded;
                 _hasUnfilteredExpandStateBeenSet = true;
             }
 
@@ -653,7 +633,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 IsExpanded = true;
             }
-            foreach (var treeNode in Children)
+            foreach (ITreeNode treeNode in Children)
             {
                 treeNode.UpdateFilteredNodeExpansionStates(filterText);
             }
@@ -729,11 +709,18 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return false;
             }
+            Dispatcher.CurrentDispatcher.Invoke(new Func<bool>(() => Children.Remove(toRemove)));
 
-            Children.Remove(toRemove);
             child.TreeParent = null;
 
             return true;
+        }
+
+        public bool GetIsFiltered(string filterText)
+        {
+            return !(DisplayName.ToUpper().Contains(filterText.ToUpper()) ||
+                     IsChecked.HasValue &&
+                     IsChecked.Value);
         }
 
         /// <summary>
