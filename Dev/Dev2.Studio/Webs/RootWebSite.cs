@@ -119,12 +119,6 @@ namespace Dev2.Studio.Webs
                     height = 562;
                     break;
 
-                case ResourceType.DbSource:
-                    pageName = "sources/dbsource";
-                    pageHandler = new DbSourceCallbackHandler();
-                    width = 705;
-                    height = 455;
-                    break;
                 default:
                     return false;
             }
