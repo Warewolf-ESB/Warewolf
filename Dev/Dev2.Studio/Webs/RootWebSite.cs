@@ -4,6 +4,7 @@ using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
 
 namespace Dev2.Studio.Webs
@@ -58,6 +59,12 @@ namespace Dev2.Studio.Webs
                         {
                             resourceType = ResourceType.Server;
                         }
+                        else if (resourceXml.AttributeSafe("Type").Equals(enSourceType.SqlDatabase.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            // Since the resource is outdated we use the name instead                            
+                            resourceID = resourceXml.AttributeSafe("Name");
+                            resourceType = ResourceType.DbSource;
+                        }
                     }
                     else if(resourceXml.Name.LocalName.Equals("Service", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -110,6 +117,13 @@ namespace Dev2.Studio.Webs
                     pageHandler = new DbServiceCallbackHandler();
                     width = 941;
                     height = 562;
+                    break;
+
+                case ResourceType.DbSource:
+                    pageName = "sources/dbsource";
+                    pageHandler = new DbSourceCallbackHandler();
+                    width = 705;
+                    height = 455;
                     break;
                 default:
                     return false;

@@ -150,7 +150,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
+            result.Add(new XAttribute("Type", "Database"));
             result.Add(new XAttribute("ConnectionString", ConnectionString ?? string.Empty));
+
+            result.Add(new XElement("AuthorRoles", string.Empty));
+            result.Add(new XElement("Comment", string.Empty));
+            result.Add(new XElement("HelpLink", string.Empty));
+            result.Add(new XElement("Tags", string.Empty));
+            result.Add(new XElement("UnitTestTargetWorkflowService", string.Empty));
+            result.Add(new XElement("BizRule", string.Empty));
+            result.Add(new XElement("WorkflowActivityDef", string.Empty));
+            result.Add(new XElement("XamlDefinition", string.Empty));
             return result;
         }
 

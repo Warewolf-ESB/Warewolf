@@ -49,6 +49,7 @@ namespace Dev2.CodedUI.Tests
     [CodedUITest]
     public class TestBase
     {
+        public string ServerExeLocation;
         // To bring up the generator utility, click in a method, and press
         // Cntrl+\, Cntrl+C
 
@@ -111,6 +112,18 @@ namespace Dev2.CodedUI.Tests
                     if (!(serverCounter > 0 && serverCounter < 3))
                     {
                         Assert.Fail("Tests cannot run - The Server is not running!");
+                    }
+                    else
+                    {
+                        var ms = new ManagementObjectSearcher("SELECT * FROM Win32_Process WHERE ProcessId = " + findDev2Servers.ToList()[0].Id);
+                        foreach (ManagementObject mo in ms.Get())
+                        {
+                            foreach (PropertyData prop in mo.Properties)
+                            {
+                                if (prop.Name == "ExecutablePath")
+                                    ServerExeLocation = prop.Value.ToString();
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)

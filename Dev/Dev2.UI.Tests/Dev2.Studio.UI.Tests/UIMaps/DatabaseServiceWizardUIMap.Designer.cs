@@ -42,6 +42,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Mouse.Click(uIItemImage, new Point(631, 133));
         }
         
+        /// <summary>
+        /// NewDbSource
+        /// </summary>
+        public void NewDbSource()
+        {
+            #region Variable Declarations
+            WpfImage uIItemImage = this.UIBusinessDesignStudioWindow.UIItemImage;
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(343, 82));
+        }
+        
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
@@ -86,10 +99,27 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
                 return this.mUIZ5bc03f5226434284a36Custom;
             }
         }
+        
+        public WpfImage UIItemImage
+        {
+            get
+            {
+                if ((this.mUIItemImage == null))
+                {
+                    this.mUIItemImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIItemImage.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+                    #endregion
+                }
+                return this.mUIItemImage;
+            }
+        }
         #endregion
         
         #region Fields
         private UIZ5bc03f5226434284a36Custom mUIZ5bc03f5226434284a36Custom;
+        
+        private WpfImage mUIItemImage;
         #endregion
     }
     

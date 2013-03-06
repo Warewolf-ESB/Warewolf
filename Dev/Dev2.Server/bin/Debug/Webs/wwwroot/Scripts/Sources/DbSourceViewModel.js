@@ -189,8 +189,8 @@
     };
 
     self.showDialog = function (sourceName, onSaveCompleted) {
-        self.onSaveCompleted = onSaveCompleted;
         // NOTE: Should only be invoked from DbService form!
+        self.onSaveCompleted = onSaveCompleted;
 
         self.load(sourceName);
 
@@ -217,12 +217,9 @@
             $btnCancel.hide();
         }
 
-        // disable the save button that's on the button bar
-        //if ($saveButton) {
-        //    $(".ui-dialog-buttonpane button:contains('Save')").button("option", "disabled", true);
-        //}
-
+        // the dialog button bar adds about 50px, take 50px from the div height
         $dialogContainerID.dialog("open");
+        $("#dbSourceContainer").height(400);
     };
     
     self.createDialog = function ($containerID) {

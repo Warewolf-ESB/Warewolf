@@ -1507,6 +1507,37 @@ namespace Dev2.DynamicServices
                         Debug.WriteLine("Michael Warning: " + error);
                     }
 
+                    try
+                    {
+                        //XmlDocument xDoc = new XmlDocument();
+                        //xDoc.LoadXml("<x>" + (source as UnlimitedObject).XmlString + "</x>");
+                        //XmlNodeList nl = xDoc.GetElementsByTagName("Action");
+                        //if (nl.Count > 0) {
+                        //dlCheck = true;
+                        //}
+                        //06.03.2013: Ashley Lewis - PBI 8720 - Support for new format
+                        if (source.ServerType is string)
+                        {
+
+                            enSourceType sourceType;
+                            // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+                            if (!Enum.TryParse<enSourceType>(source.ServerType, out sourceType))
+                            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+                            {
+                                dlCheck = false;
+                            }
+                            else
+                            {
+                                dlCheck = true;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = ex.Message;
+                        Debug.WriteLine("Michael Warning: " + error);
+                    }
+
                     //(source as UnlimitedObject).xmlData.HasElements;
 
                     if(dlCheck)
@@ -1525,17 +1556,24 @@ namespace Dev2.DynamicServices
                             src.Name = source.Name;
                         }
 
-                        if(source.Type is string)
+                        if (source.Type is string)
                         {
                             enSourceType sourceType;
                             if(!Enum.TryParse<enSourceType>(source.Type, out sourceType))
                             {
-                                src.Type = enSourceType.Unknown;
+                                if (source.ServerType is string)
+                                {
+                                    src.Type = !Enum.TryParse<enSourceType>(source.ServerType, out sourceType) ? enSourceType.Unknown : sourceType;
+                                }
+                                else src.Type = enSourceType.Unknown;
                             }
                             else
                             {
                                 src.Type = sourceType;
                             }
+                        }
+                        else
+                        {
                         }
 
                         if(source.ConnectionString is string)

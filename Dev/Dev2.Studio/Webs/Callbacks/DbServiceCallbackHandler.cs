@@ -17,7 +17,10 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+            if (jsonObj.ResourceType == ResourceType.Service)
+                ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+            if (jsonObj.ResourceType == ResourceType.Source)
+                ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
         }
 
         protected override void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
