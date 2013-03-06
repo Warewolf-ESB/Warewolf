@@ -614,18 +614,19 @@ namespace Unlimited.UnitTest.Framework
         //}
 
 
-        //// Travis.Frisinger - 24.01.2013 : Bug 7856
-        //[TestMethod]
-        //public void SpaceChars_In_DataList_Region_Expect_Error()
-        //{
-        //    string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
-        //    string payload = "[[ ]]";
+        // Travis.Frisinger - 24.01.2013 : Bug 7856
+        // Ashley Lewis - 06.03.2013 : Bug 6731
+        [TestMethod]
+        public void SpaceChars_In_DataList_Region_Expect_Error()
+        {
+            string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
+            string payload = "[[ ]]";
 
-        //    IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-        //    Assert.AreEqual(1, results.Count);
-        //    Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
-        //    Assert.AreEqual("Empty DataList region", results[0].Message);
-        //}
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
+            Assert.AreEqual(1, results.Count);
+            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
+            Assert.AreEqual(" [[ ]] contains a space, this is an invalid character for a variable name", results[0].Message);
+        }
 
         #endregion
 
