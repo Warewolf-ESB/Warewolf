@@ -138,54 +138,54 @@ namespace Dev2.Server.UI.Tests
         }
 
         // Bug 6657
-        [TestMethod]
-        public void DatabaseBrowseDoesNotReturnError()
-        {
-            System.Diagnostics.Process.Start("iexplore.exe", "http://127.0.0.1:1234/services/Dev2ServiceDetails?Dev2ServiceType=Database");
-            System.Threading.Thread.Sleep(2500); // Give time for IE to open
-            this.UIMap.DatabaseWizard_ClickServerBrowseButton();
+        //[TestMethod]
+        //public void DatabaseBrowseDoesNotReturnError()
+        //{
+        //    System.Diagnostics.Process.Start("iexplore.exe", "http://127.0.0.1:1234/services/Dev2ServiceDetails?Dev2ServiceType=Database");
+        //    System.Threading.Thread.Sleep(2500); // Give time for IE to open
+        //    this.UIMap.DatabaseWizard_ClickServerBrowseButton();
 
-            this.UIMap.AlertBoxDoesntExist();
-        }
+        //    this.UIMap.AlertBoxDoesntExist();
+        //}
 
         // Bug 7846
-        [TestMethod]
-        public void OpeningStudioServerAndWorkflowWizardUsesSaneAmountsOfRAM_Expected_TestPasses()
-        {
-            // Get the server location
-            string serverLocation = GetServerEXEFolder();
-            string fileLocation = serverLocation + "Dev2.Server.exe";
+        //[TestMethod]
+        //public void OpeningStudioServerAndWorkflowWizardUsesSaneAmountsOfRAM_Expected_TestPasses()
+        //{
+        //    // Get the server location
+        //    string serverLocation = GetServerEXEFolder();
+        //    string fileLocation = serverLocation + "Dev2.Server.exe";
             
-            // Close it
-            KillServer();
+        //    // Close it
+        //    KillServer();
 
-            // Wait for it to close
-            System.Threading.Thread.Sleep(1000);
+        //    // Wait for it to close
+        //    System.Threading.Thread.Sleep(1000);
 
-            // Reopen it
-            Process p = new Process();
-            ProcessStartInfo pSI = new ProcessStartInfo(fileLocation);
+        //    // Reopen it
+        //    Process p = new Process();
+        //    ProcessStartInfo pSI = new ProcessStartInfo(fileLocation);
 
-            pSI.WorkingDirectory = serverLocation;
-            p.StartInfo = pSI;
-            p.Start();
-            string processTitle = String.Empty;
+        //    pSI.WorkingDirectory = serverLocation;
+        //    p.StartInfo = pSI;
+        //    p.Start();
+        //    string processTitle = String.Empty;
             
-            // Make sure it's fully loaded
-            System.Threading.Thread.Sleep(10000);
+        //    // Make sure it's fully loaded
+        //    System.Threading.Thread.Sleep(10000);
 
-            // Start the Browser
-            System.Diagnostics.Process.Start("http://127.0.0.1:1234/services/Dev2ServiceDetails?Dev2ServiceType=Workflow");
-            System.Threading.Thread.Sleep(10000);
+        //    // Start the Browser
+        //    System.Diagnostics.Process.Start("http://127.0.0.1:1234/services/Dev2ServiceDetails?Dev2ServiceType=Workflow");
+        //    System.Threading.Thread.Sleep(10000);
 
-            double ramUsage = p.PeakWorkingSet64;
-            ramUsage /= 1024;
-            ramUsage /= 1024;
-            if (ramUsage > 2000)
-            {
-                Assert.Fail("The RAM usage is too high!");
-            }
-        }
+        //    double ramUsage = p.PeakWorkingSet64;
+        //    ramUsage /= 1024;
+        //    ramUsage /= 1024;
+        //    if (ramUsage > 2000)
+        //    {
+        //        Assert.Fail("The RAM usage is too high!");
+        //    }
+        //}
 
         private string GetServerEXEFolder()
         {

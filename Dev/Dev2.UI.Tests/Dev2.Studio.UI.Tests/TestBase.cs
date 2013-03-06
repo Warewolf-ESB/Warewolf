@@ -32,6 +32,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -55,22 +56,23 @@ namespace Dev2.CodedUI.Tests
 
 
         [ClassInitialize]
-        public void StartStudio()
+        public static void StartStudio(TestContext ctx)
         {
 
             //get the folder that's in
-            string theDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string theDirectory = Assembly.GetExecutingAssembly().Location;
 
             File.WriteAllText(@"e:\UI_Path.txt", theDirectory);
 
         }
 
         [ClassCleanup]
-        public void StopStudio()
+        public static void StopStudio()
         {
 
         }
 
+        
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
         public void CheckStartIsValid()
