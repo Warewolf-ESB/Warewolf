@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2.Network.Messages;
+using System;
 using System.Network;
-using System.Text;
-using Dev2.Network.Messages;
 
 namespace Dev2.Network
 {
@@ -12,6 +9,7 @@ namespace Dev2.Network
         void Publish(INetworkMessage message, bool async = true);
         void Publish(INetworkMessage message, IStudioNetworkChannelContext context, bool async = true);
         Guid Subscribe<T>(Action<T, IStudioNetworkChannelContext> callback) where T : INetworkMessage, new();
+        Guid Subscribe<T>(Action<T, INetworkOperator> callback) where T : INetworkMessage, new();
         bool Unsubscibe(Guid subscriptionToken);
     }
 }
