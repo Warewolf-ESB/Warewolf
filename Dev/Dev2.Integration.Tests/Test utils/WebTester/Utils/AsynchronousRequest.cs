@@ -8,7 +8,7 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
-using mshtml;
+//using mshtml;
 using Dev2.Integration.Tests.Interfaces;
 
 namespace Dev2.Integration.Tests.MEF.WebTester
