@@ -5,7 +5,6 @@ using Microsoft.Windows.Controls.Ribbon;
 using System.Activities.Presentation.Toolbox;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
@@ -13,7 +12,6 @@ using System.Windows.Media.Imaging;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 using Dev2.Studio;
-using System.Windows;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 {

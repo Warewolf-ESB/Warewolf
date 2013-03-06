@@ -280,9 +280,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 {
                     File.Delete(_resourceFilePath);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return;
                 }
             }
         }
@@ -295,9 +294,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 {
                     File.Delete(_illegalResourceFilePath);
                 }
-                catch (Exception ex)
+                catch(Exception)
                 {
-                    return;
                 }
             }
         }
@@ -310,9 +308,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 {
                     File.Delete(_illegalExtensionResourceFilePath);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    return;
                 }
             }
         }
@@ -325,9 +322,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 {
                     File.Delete(_duplicateResourceFilePath);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    return;
                 }
             }
         }
