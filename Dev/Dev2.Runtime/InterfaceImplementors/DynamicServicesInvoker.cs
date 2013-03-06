@@ -3992,7 +3992,7 @@ namespace Dev2.Runtime.InterfaceImplementors
 
                 //ParentID = dataObject.ParentInstanceID
             }
-            catch
+            catch (Exception exception)
             {
                 //TODO what if not an xmlRequest ? IDSFDataObject dataObject = new DsfDataObject(xmlRequest, dataListId);
                 throw;
