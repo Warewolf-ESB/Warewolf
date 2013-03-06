@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.Tests {
                 Container.ComposeParts(this);
                 Container.ComposeExportedValue<IWebCommunicationResponse>("IWebCommunicationResponse", _webCommResp);
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 Assert.Fail("Composition Error");
             }
 
