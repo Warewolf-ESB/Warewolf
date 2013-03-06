@@ -3,7 +3,6 @@
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
     <DeploymentItem filename="Binaries\CefSharp\" />
-    <DeploymentItem filename="Binaries\redis-server.exe" />
     <DeploymentItem filename="Dev2.Sql\bin\Debug\Deploy\" />
   </Deployment>
   <Execution parallelTestCount="0">
