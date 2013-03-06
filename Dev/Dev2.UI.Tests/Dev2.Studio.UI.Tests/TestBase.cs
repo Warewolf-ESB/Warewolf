@@ -56,36 +56,36 @@ namespace Dev2.CodedUI.Tests
 
         static Process studioProc;
 
-        [ClassInitialize]
-        public static void StartStudio(TestContext ctx)
-        {
+        //[ClassInitialize]
+        //public static void StartStudio(TestContext ctx)
+        //{
 
-            if (studioProc == null)
-            {
+        //    if (studioProc == null)
+        //    {
 
-                //get the folder that's in
-                string thePath = Assembly.GetExecutingAssembly().Location;
+        //        //get the folder that's in
+        //        string thePath = Assembly.GetExecutingAssembly().Location;
 
-                string dir = Path.GetDirectoryName(thePath);
+        //        string dir = Path.GetDirectoryName(thePath);
 
-                File.WriteAllText(@"c:\foo\ui_path.txt", dir);
+        //        File.WriteAllText(@"c:\foo\ui_path.txt", dir);
 
-                studioProc = new Process();
+        //        studioProc = new Process();
 
-                studioProc.StartInfo.FileName = dir + @"\Dev2.Studio.exe";
+        //        studioProc.StartInfo.FileName = dir + @"\Dev2.Studio.exe";
 
-                studioProc.Start();
-                Thread.Sleep(30000); // wait 30 seconds for everything to fire up ;)
-            }
+        //        studioProc.Start();
+        //        Thread.Sleep(30000); // wait 30 seconds for everything to fire up ;)
+        //    }
 
-        }
+        //}
 
-        [ClassCleanup]
-        public static void StopStudio()
-        {
-            studioProc.Kill();
-            Thread.Sleep(10000); // wait 10 seconds for everything to exit ;)
-        }
+        //[ClassCleanup]
+        //public static void StopStudio()
+        //{
+        //    studioProc.Kill();
+        //    Thread.Sleep(10000); // wait 10 seconds for everything to exit ;)
+        //}
 
         
         // These run at the start of every test to make sure everything is sane
