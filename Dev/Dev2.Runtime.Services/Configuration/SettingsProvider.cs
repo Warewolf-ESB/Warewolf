@@ -1,12 +1,15 @@
 ﻿using System;
+using Dev2.Network.Messages;
+using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Runtime.Configuration.Settings;
 
 namespace Dev2.Runtime.Configuration
 {
     /// <summary>
     /// Do NOT instantiate directly - use static <see cref="Instance"/> property instead; use for testing only!
     /// </summary>
-    public class SettingsProvider : SettingsProviderBase
+    public class SettingsProvider : NetworkMessageProviderBase
     {
         #region Singleton Instance
 
@@ -49,15 +52,22 @@ namespace Dev2.Runtime.Configuration
         /// <summary>
         /// Do NOT instantiate directly - use static <see cref="Instance"/> property instead; 
         /// </summary>
-        private SettingsProvider()
+        public SettingsProvider()
         {
+            Logging = new LoggingSettings();
+            Security = new SecuritySettings();
+            Backup = new BackupSettings();
         }
 
         #endregion
 
+        public ILoggingSettings Logging { get; private set; }
+        public ISecuritySettings Security { get; private set; }
+        public IBackupSettings Backup { get; private set; }
+
         #region ProcessMessage
 
-        public override ISettingsMessage ProcessMessage(ISettingsMessage request)
+        public override INetworkMessage ProcessMessage(INetworkMessage request)
         {
             if(request == null)
             {

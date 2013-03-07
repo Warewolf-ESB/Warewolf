@@ -155,6 +155,7 @@
     <Compile Include="Dev2.Network\MockStudioNetworkChannelContext.cs" />
     <Compile Include="Dev2.Network\NetworkMessageBrokerTests.cs" />
     <Compile Include="Dev2.Network\ServerNetworkMessageAggregatorTests.cs" />
+    <Compile Include="Dev2.Network\NetworkMessageProviderTests.cs" />
     <Compile Include="Dev2.Network\StudioNetworkMessageAggregatorTests.cs" />
     <Compile Include="Diagnostics\DebugDispatcherTest.cs" />
     <Compile Include="Diagnostics\DebugStateMock.cs" />

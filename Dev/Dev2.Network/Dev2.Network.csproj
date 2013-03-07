@@ -66,6 +66,7 @@
     <Compile Include="Messaging\Messages\TestMessage.cs" />
     <Compile Include="Messaging\DispatcherFrameToken.cs" />
     <Compile Include="Messaging\ServerNetworkMessageAggregator.cs" />
+    <Compile Include="Messaging\NetworkMessageProviderBase.cs" />
     <Compile Include="Messaging\StudioNetworkMessageAggregator.cs" />
     <Compile Include="Messaging\NetworkMessageBroker.cs" />
     <Compile Include="PacketTemplates.cs" />
