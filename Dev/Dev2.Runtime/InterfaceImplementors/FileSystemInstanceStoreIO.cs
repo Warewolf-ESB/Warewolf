@@ -33,8 +33,7 @@ namespace Dev2.DynamicServices
 
         #region Save Methods
 
-        public Boolean SaveAllInstanceData(Guid instanceId,
-            SaveWorkflowCommand command)
+        public Boolean SaveAllInstanceData(Guid instanceId, SaveWorkflowCommand command)
         {
             Boolean isExistingInstance = false;
             try
@@ -66,8 +65,7 @@ namespace Dev2.DynamicServices
             return isExistingInstance;
         }
 
-        public void SaveAllInstanceMetaData(Guid instanceId,
-            SaveWorkflowCommand command)
+        public void SaveAllInstanceMetaData(Guid instanceId, SaveWorkflowCommand command)
         {
             try
             {
@@ -96,8 +94,7 @@ namespace Dev2.DynamicServices
             }
         }
 
-        private void SaveSingleEntry(NetDataContractSerializer serializer,
-            XElement section, KeyValuePair<XName, InstanceValue> entry)
+        private void SaveSingleEntry(NetDataContractSerializer serializer, XElement section, KeyValuePair<XName, InstanceValue> entry)
         {
             if(entry.Value.IsDeletedValue)
             {
