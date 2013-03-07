@@ -620,12 +620,12 @@ namespace Unlimited.UnitTest.Framework
         public void SpaceChars_In_DataList_Region_Expect_Error()
         {
             string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
-            string payload = "[[ ]]";
+            string payload = "[[a b ]]";
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
             Assert.AreEqual(1, results.Count);
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
-            Assert.AreEqual(" [[ ]] contains a space, this is an invalid character for a variable name", results[0].Message);
+            Assert.AreEqual(" [[a b ]] contains a space, this is an invalid character for a variable name", results[0].Message);
         }
 
         #endregion
