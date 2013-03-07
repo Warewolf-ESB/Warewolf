@@ -1507,37 +1507,6 @@ namespace Dev2.DynamicServices
                         Debug.WriteLine("Michael Warning: " + error);
                     }
 
-                    try
-                    {
-                        //XmlDocument xDoc = new XmlDocument();
-                        //xDoc.LoadXml("<x>" + (source as UnlimitedObject).XmlString + "</x>");
-                        //XmlNodeList nl = xDoc.GetElementsByTagName("Action");
-                        //if (nl.Count > 0) {
-                        //dlCheck = true;
-                        //}
-                        //06.03.2013: Ashley Lewis - PBI 8720 - Support for new format
-                        if (source.ServerType is string)
-                        {
-
-                            enSourceType sourceType;
-                            // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                            if (!Enum.TryParse<enSourceType>(source.ServerType, out sourceType))
-                            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
-                            {
-                                dlCheck = false;
-                            }
-                            else
-                            {
-                                dlCheck = true;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = ex.Message;
-                        Debug.WriteLine("Michael Warning: " + error);
-                    }
-
                     //(source as UnlimitedObject).xmlData.HasElements;
 
                     if(dlCheck)

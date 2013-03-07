@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -132,6 +133,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             return base.NormalizeXmlPayload(res);
+        }
+
+        //07.03.2013: Ashley Lewis - PBI 8720
+        public List<string> GetDatabasesSchema(string connectionString)
+        {
+            var result = new List<string>();
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                DataTable tblDatabases = conn.GetSchema("Databases");
+                conn.Close();
+
+                result.AddRange(from DataRow row in tblDatabases.Rows
+                                select (row["database_name"] ?? string.Empty).ToString());
+            }
+            return result;
         }
 
         #endregion

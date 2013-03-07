@@ -24,12 +24,12 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("userName", "Enter your <b>user name</b>.");
                         result.Add("password", "Enter the <b>password</b> for the server.");
                         break;
-                    //PBI 8720:
+                    //07.03.2013: Ashley Lewis - PBI 8720:
                     case "dbSource":
                         result.Add("default", "<h4>New Database Source Details</h4><p>This creates a connection to an existing database server.</p>");
                         result.Add("dbSourceServerType", "Enter the database <b>type</b> e.g. Microsoft SQL");
-                        result.Add("dbSourceServer", "Enter the database <b>server url</b> e.g. 192.168.0.1:77");
-                        result.Add("dbSourceUserName", "Enter your <b>user name</b>.");
+                        result.Add("dbSourceServer", "Enter the database <b>server url</b> e.g. IP address or computer name");
+                        result.Add("dbSourceUserID", "Enter your <b>user name</b>.");
                         result.Add("dbSourcePassword", "Enter the <b>password</b> for the server.");
                         result.Add("dbSourceDatabase", "Select one of the <b>databases</b> hosted by the server");
                         break;

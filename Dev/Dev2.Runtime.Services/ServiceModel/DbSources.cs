@@ -9,6 +9,7 @@ using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 using DbSource = Dev2.Runtime.ServiceModel.Data.DbSource;
 
@@ -134,33 +135,11 @@ namespace Dev2.Runtime.ServiceModel
             switch(dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                    //PBI 8720 TODO: Use existing code from runtime services to get the mssql server's database names
-                    using(var conn = new SqlConnection(dbSourceDetails.ConnectionString))
-                    {
-                        try
-                        {
-                            conn.Open();
-                            DataTable tblDatabases = conn.GetSchema("Databases");
-                            conn.Close();
-
-                            result.DatabaseList = new List<string>();
-                            foreach(DataRow row in tblDatabases.Rows)
-                            {
-                                result.DatabaseList.Add((row["database_name"] ?? string.Empty).ToString());
-                            }
-                        }
-                        catch(Exception e)
-                        {
-                            result.IsValid = false;
-                            result.ErrorMessage = e.Message;
-                        }
-                        break;
-                    }
+                    result.DatabaseList = new MsSqlBroker().GetDatabasesSchema(dbSourceDetails.ConnectionString);
+                    break;
                 default:
-                    {
-                        result.IsValid = false;
-                        break;
-                    }
+                    result.IsValid = false;
+                    break;
             }
             return result;
         }
