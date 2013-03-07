@@ -130,6 +130,10 @@
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>

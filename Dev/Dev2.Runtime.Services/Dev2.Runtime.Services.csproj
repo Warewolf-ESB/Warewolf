@@ -61,10 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
-    <Compile Include="Configuration\Settings\BackupSettings.cs" />
-    <Compile Include="Configuration\ISettingsMessage.cs" />
-    <Compile Include="Configuration\Settings\LoggingSettings.cs" />
-    <Compile Include="Configuration\Settings\SecuritySettings.cs" />
+    <Compile Include="Configuration\SettingsProviderBase.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
     <Compile Include="Diagnostics\ValidationResult.cs" />
@@ -109,9 +106,6 @@
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Data\Resource.cs" />
     <Compile Include="ServiceModel\Services.cs" />
-    <Compile Include="Configuration\Settings\IBackupSettings.cs" />
-    <Compile Include="Configuration\Settings\ILoggingSettings.cs" />
-    <Compile Include="Configuration\Settings\ISecuritySettings.cs" />
     <Compile Include="Configuration\ISettingsProvider.cs" />
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="Utilities.cs" />
@@ -133,6 +127,10 @@
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}</Project>
       <Name>Dev2.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,12 @@
 ﻿using System;
-using Dev2.Network;
-using Dev2.Runtime.Configuration.Settings;
+using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Runtime.Configuration
 {
-    public class SettingsProvider : ISettingsProvider
+    /// <summary>
+    /// Do NOT instantiate directly - use static <see cref="Instance"/> property instead; use for testing only!
+    /// </summary>
+    public class SettingsProvider : SettingsProviderBase
     {
         #region Singleton Instance
 
@@ -42,57 +44,31 @@ namespace Dev2.Runtime.Configuration
 
         #endregion
 
+        #region CTOR
+
         /// <summary>
-        /// Do NOT instantiate directly - use static <see cref="Instance"/> property instead; use for testing only!
+        /// Do NOT instantiate directly - use static <see cref="Instance"/> property instead; 
         /// </summary>
-        public SettingsProvider()
+        private SettingsProvider()
         {
-            Logging = new LoggingSettings();
-            Security = new SecuritySettings();
-            Backup = new BackupSettings();
-        }
-
-        public Guid SubscriptionToken { get; private set; }
-
-        public ILoggingSettings Logging { get; private set; }
-
-        public ISecuritySettings Security { get; private set; }
-
-        public IBackupSettings Backup { get; private set; }
-
-        #region Start
-
-        public void Start<TContext>(IServerNetworkMessageAggregator<TContext> aggregator, INetworkMessageBroker messageBroker)
-            where TContext : NetworkContext, new()
-        {
-            if(aggregator == null)
-            {
-                throw new ArgumentNullException("aggregator");
-            }
-            if(messageBroker == null)
-            {
-                throw new ArgumentNullException("messageBroker");
-            }
-            SubscriptionToken = aggregator.Subscribe((ISettingsMessage message, NetworkContext context) =>
-            {
-                var result = message.Execute();
-                messageBroker.Send(result, context);
-            });
         }
 
         #endregion
 
-        #region Stop
+        #region ProcessMessage
 
-        public void Stop<TContext>(IServerNetworkMessageAggregator<TContext> aggregator)
-            where TContext : NetworkContext, new()
+        public override ISettingsMessage ProcessMessage(ISettingsMessage request)
         {
-            if(aggregator == null)
+            if(request == null)
             {
-                throw new ArgumentNullException("aggregator");
+                throw new ArgumentNullException("request");
             }
 
-            aggregator.Unsubscibe(SubscriptionToken);
+            var result = new SettingsMessage
+            {
+                Handle = request.Handle
+            };
+            return result;
         }
 
         #endregion

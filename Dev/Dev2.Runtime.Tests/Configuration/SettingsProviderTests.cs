@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Network;
 using Dev2.Network;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -34,10 +35,10 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ConstructorExpectedInitializesProperties()
         {
-            var provider = new SettingsProvider();
-            Assert.IsNotNull(provider.Backup);
-            Assert.IsNotNull(provider.Logging);
-            Assert.IsNotNull(provider.Security);
+            var provider = new Mock<SettingsProviderBase>();
+            Assert.IsNotNull(provider.Object.Backup);
+            Assert.IsNotNull(provider.Object.Logging);
+            Assert.IsNotNull(provider.Object.Security);
         }
 
         #endregion
@@ -48,26 +49,26 @@ namespace Dev2.Tests.Runtime.Configuration
         [ExpectedException(typeof(ArgumentNullException))]
         public void StartWithNullArgumentsExpectedThrowsArgumentNullException()
         {
-            var provider = new SettingsProvider();
-            provider.Start<NetworkContextMock>(null, null);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Object.Start<NetworkContextMock>(null, null);
         }
 
         [TestMethod]
-        public void StartWithAggregatorExpectedInvokesExecuteSubscribeMethodOfAggregator()
+        public void StartWithValidArgumentsExpectedInvokesSubscribeMethod()
         {
             var aggregator = new Mock<IServerNetworkMessageAggregator<NetworkContextMock>>();
             aggregator.Setup(a => a.Subscribe(It.IsAny<Action<ISettingsMessage, NetworkContext>>())).Verifiable();
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new SettingsProvider();
-            provider.Start(aggregator.Object, messageBroker.Object);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
 
             aggregator.Verify(a => a.Subscribe(It.IsAny<Action<ISettingsMessage, NetworkContext>>()));
         }
 
         [TestMethod]
-        public void StartWithAggregatorExpectedSetsSubscriptionToken()
+        public void StartWithValidArgumentsExpectedSetsSubscriptionToken()
         {
             var expectedToken = Guid.NewGuid();
             var aggregator = new Mock<IServerNetworkMessageAggregator<NetworkContextMock>>();
@@ -75,49 +76,99 @@ namespace Dev2.Tests.Runtime.Configuration
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new SettingsProvider();
-            provider.Start(aggregator.Object, messageBroker.Object);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
 
-            Assert.AreEqual(expectedToken, provider.SubscriptionToken);
+            Assert.AreEqual(expectedToken, provider.Object.SubscriptionToken);
         }
 
         [TestMethod]
-        public void StartWithAggregatorAndMessageBrokerExpectedInvokesSendMethodOfMessageBroker()
+        public void StartWithValidArgumentsExpectedSetsMessageResponseHandleToRequestHandle()
         {
-            var setttingsMessage = new Mock<ISettingsMessage>();
+            const int MessageRequestHandle = 32;
+
+            var messageResponse = new Mock<ISettingsMessage>();
+            messageResponse.SetupProperty(m => m.Handle);
+
+            var messageRequest = new Mock<ISettingsMessage>();
+            messageRequest.Setup(m => m.Handle).Returns(MessageRequestHandle);
+
             var context = new Mock<NetworkContext>();
 
             var aggregator = new Mock<IServerNetworkMessageAggregator<NetworkContextMock>>();
             aggregator.Setup(a => a.Subscribe(It.IsAny<Action<ISettingsMessage, NetworkContext>>()))
-                .Callback<Action<ISettingsMessage, NetworkContext>>(action => action(setttingsMessage.Object, context.Object));
+                .Callback<Action<ISettingsMessage, NetworkContext>>(action => action(messageRequest.Object, context.Object));
+
+            long actualHandle = -1;
+            var messageBroker = new Mock<INetworkMessageBroker>();
+            messageBroker.Setup(m => m.Send(It.IsAny<ISettingsMessage>(), It.IsAny<INetworkOperator>()))
+                         .Callback<ISettingsMessage, INetworkOperator>((sm, no) => actualHandle = sm.Handle);
+
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Setup(p => p.ProcessMessage(It.IsAny<ISettingsMessage>())).Returns(messageResponse.Object);
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
+
+            Assert.AreEqual(MessageRequestHandle, actualHandle);
+        }
+
+        [TestMethod]
+        public void StartWithValidArgumentsExpectedInvokesSendMethodWithResult()
+        {
+            var message = new Mock<ISettingsMessage>();
+            var messageResponse = new Mock<ISettingsMessage>();
+            var context = new Mock<NetworkContext>();
+
+            var aggregator = new Mock<IServerNetworkMessageAggregator<NetworkContextMock>>();
+            aggregator.Setup(a => a.Subscribe(It.IsAny<Action<ISettingsMessage, NetworkContext>>()))
+                .Callback<Action<ISettingsMessage, NetworkContext>>(action => action(message.Object, context.Object));
 
             var messageBroker = new Mock<INetworkMessageBroker>();
             messageBroker.Setup(m => m.Send(It.IsAny<ISettingsMessage>(), It.IsAny<INetworkOperator>())).Verifiable();
 
-            var provider = new SettingsProvider();
-            provider.Start(aggregator.Object, messageBroker.Object);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Setup(p => p.ProcessMessage(It.IsAny<ISettingsMessage>())).Returns(messageResponse.Object);
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
 
             messageBroker.Verify(m => m.Send(It.IsAny<ISettingsMessage>(), It.IsAny<INetworkOperator>()));
         }
 
         [TestMethod]
-        public void StartWithAggregatorAndMessageBrokerExpectedInvokesExecuteMethodOfProvider()
+        public void StartWithValidArgumentsExpectedInvokesProcessMessage()
         {
-            var setttingsMessage = new Mock<ISettingsMessage>();
-            setttingsMessage.Setup(m => m.Execute()).Verifiable();
-
+            var message = new Mock<ISettingsMessage>();
             var context = new Mock<NetworkContext>();
 
             var aggregator = new Mock<IServerNetworkMessageAggregator<NetworkContextMock>>();
             aggregator.Setup(a => a.Subscribe(It.IsAny<Action<ISettingsMessage, NetworkContext>>()))
-                .Callback<Action<ISettingsMessage, NetworkContext>>(action => action(setttingsMessage.Object, context.Object));
+                .Callback<Action<ISettingsMessage, NetworkContext>>(action => action(message.Object, context.Object));
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new SettingsProvider();
-            provider.Start(aggregator.Object, messageBroker.Object);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Setup(m => m.ProcessMessage(It.IsAny<ISettingsMessage>())).Verifiable();
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
 
-            setttingsMessage.Verify(m => m.Execute());
+            provider.Verify(m => m.ProcessMessage(It.IsAny<ISettingsMessage>()));
+        }
+
+        [TestMethod]
+        public void StartWithValidArgumentsAndExecutionErrorExpectedInvokesSendMethodWithErrorMessage()
+        {
+            var message = new Mock<ISettingsMessage>();
+            var context = new Mock<NetworkContext>();
+
+            var aggregator = new Mock<IServerNetworkMessageAggregator<NetworkContextMock>>();
+            aggregator.Setup(a => a.Subscribe(It.IsAny<Action<ISettingsMessage, NetworkContext>>()))
+                .Callback<Action<ISettingsMessage, NetworkContext>>(action => action(message.Object, context.Object));
+
+            var messageBroker = new Mock<INetworkMessageBroker>();
+            messageBroker.Setup(m => m.Send(It.IsAny<ErrorMessage>(), It.IsAny<INetworkOperator>())).Verifiable();
+
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Setup(m => m.ProcessMessage(It.IsAny<ISettingsMessage>())).Callback(() => { throw new Exception("Exception occurred"); });
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
+
+            messageBroker.Verify(m => m.Send(It.IsAny<ErrorMessage>(), It.IsAny<INetworkOperator>()));
         }
 
         #endregion
@@ -128,8 +179,8 @@ namespace Dev2.Tests.Runtime.Configuration
         [ExpectedException(typeof(ArgumentNullException))]
         public void StopWithNullArgumentsExpectedThrowsArgumentNullException()
         {
-            var provider = new SettingsProvider();
-            provider.Stop<NetworkContextMock>(null);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Object.Stop<NetworkContextMock>(null);
         }
 
         [TestMethod]
@@ -142,9 +193,9 @@ namespace Dev2.Tests.Runtime.Configuration
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new SettingsProvider();
-            provider.Start(aggregator.Object, messageBroker.Object);
-            provider.Stop(aggregator.Object);
+            var provider = new Mock<SettingsProviderBase>();
+            provider.Object.Start(aggregator.Object, messageBroker.Object);
+            provider.Object.Stop(aggregator.Object);
 
             aggregator.Verify(a => a.Unsubscibe(It.IsAny<Guid>()));
         }
