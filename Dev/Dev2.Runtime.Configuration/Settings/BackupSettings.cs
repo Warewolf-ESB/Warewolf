@@ -2,26 +2,28 @@
 
 namespace Dev2.Runtime.Configuration.Settings
 {
-    public class BackupSettings : IBackupSettings
+    public class BackupSettings : SettingsBase
     {
         #region CTOR
 
-        public BackupSettings()
+        public BackupSettings() : base("Backup")
         {
         }
 
         public BackupSettings(XElement xml)
+            : base(xml)
         {
         }
 
         #endregion
 
-
         #region ToXml
 
-        public XElement ToXml()
+        public override XElement ToXml()
         {
-            return null;
+            var result = base.ToXml();
+
+            return result;
         }
 
         #endregion

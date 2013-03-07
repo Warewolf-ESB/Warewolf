@@ -1,4 +1,17 @@
-﻿using CommandLine;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Security.Principal;
+using System.ServiceProcess;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using CommandLine;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Reflection;
@@ -13,20 +26,6 @@ using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Security.Principal;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading;
-using System.Xml;
-using Unlimited.Framework;
 
 namespace Unlimited.Applications.DynamicServicesHost
 {
@@ -69,7 +68,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
@@ -80,31 +79,31 @@ namespace Unlimited.Applications.DynamicServicesHost
                 }
             }
 
-            if (options.StartService)
+            if(options.StartService)
             {
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
 
-                if (!WindowsServiceManager.StartService(null))
+                if(!WindowsServiceManager.StartService(null))
                 {
                     result = 83;
                 }
             }
 
-            if (options.StopService)
+            if(options.StopService)
             {
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
 
-                if (!WindowsServiceManager.StopService(null))
+                if(!WindowsServiceManager.StopService(null))
                 {
                     result = 84;
                 }
@@ -114,7 +113,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
@@ -125,7 +124,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 }
             }
 
-            if (commandLineParameterProcessed)
+            if(commandLineParameterProcessed)
             {
                 return result;
             }
@@ -291,11 +290,12 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// <summary>
         /// Runs the application server, and handles all initialization, execution and cleanup logic required.
         /// </summary>
+        /// <returns></returns>
         private int Run()
         {
             int result = 0;
             bool didBreak = false;
-           
+
 
             if(!SetWorkingDirectory())
             {
@@ -348,6 +348,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
+            // PBI 1018 - Settings Framework (TWR: 2013.03.07)
+            if(!didBreak && !LoadSettingsProvider())
+            {
+                result = 1;
+                didBreak = true;
+            }
+
             if(!didBreak && !OpenNetworkExecutionChannel())
             {
                 result = 97;
@@ -393,6 +400,9 @@ namespace Unlimited.Applications.DynamicServicesHost
             //    result = 6;
             //}
 
+            // PBI 1018 - Settings Framework (TWR: 2013.03.07)
+            UnloadSettingsProvider();
+
             if(!didBreak)
             {
                 Dispose();
@@ -431,7 +441,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 // ReSharper restore AssignNullToNotNullAttribute
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Fail("Unable to set working directory.", e);
                 result = false;
@@ -442,7 +452,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         private static bool EnsureRunningAsAdministrator(string[] arguments)
         {
-            if (!IsElevated())
+            if(!IsElevated())
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location);
                 startInfo.Verb = "runas";
@@ -1293,12 +1303,12 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-                if (_dataListChannel != null)
+                if(_dataListChannel != null)
                 {
                     _dataListChannel.Dispose();
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
                 result = false;
             }
@@ -1538,6 +1548,37 @@ namespace Unlimited.Applications.DynamicServicesHost
         #endregion
 
         #region External Services
+
+
+        /// <summary>
+        /// PBI 1018 - Loads the settings provider.
+        /// </summary>
+        /// <author>Trevor.Williams-Ros</author>
+        /// <date>2013/03/07</date>
+        bool LoadSettingsProvider()
+        {
+            Write("Loading settings provider...  ");
+            // First call to instance loads the provider.
+            var instance = Dev2.Runtime.Configuration.SettingsProvider.Instance;
+            instance.Start(StudioMessaging.MessageAggregator, StudioMessaging.MessageBroker);
+            WriteLine("done.");
+            return true;
+        }
+
+        void UnloadSettingsProvider()
+        {
+            try
+            {
+                var instance = Dev2.Runtime.Configuration.SettingsProvider.Instance;
+                instance.Stop(StudioMessaging.MessageAggregator);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                // Called when exiting so no use in throwing error!
+            }
+        }
 
         // PBI 5389 - Resources Assigned and Allocated to Server
         bool LoadServerWorkspace()

@@ -10,7 +10,7 @@ using Dev2.Runtime.Configuration.Settings;
 namespace Dev2.Runtime.Configuration
 {
     /// <summary>
-    /// Do NOT instantiate directly - use static <see cref="Instance"/> property instead; use for testing only!
+    /// Do NOT instantiate directly - use static <see cref="Instance" /> property instead; use for testing only!
     /// </summary>
     public class SettingsProvider : NetworkMessageProviderBase<ISettingsMessage>
     {
@@ -67,14 +67,15 @@ namespace Dev2.Runtime.Configuration
 
         public string AssemblyHashCode { get; private set; }
 
-        // --------------------------------------------------------
-        // - Add new property here and initialize in constructor
+        // ------------------------------------------------------------------------------
+        // - Add new class to Dev2.Runtime.Configuration assembly in Settings namespace
+        // - Then add new property for class here and initialize in constructor
         // - Then add property to GetConfigurationXml() 
         // - Then add to constructor test
-        // --------------------------------------------------------
-        public ILoggingSettings Logging { get; private set; }
-        public ISecuritySettings Security { get; private set; }
-        public IBackupSettings Backup { get; private set; }
+        // ------------------------------------------------------------------------------
+        public LoggingSettings Logging { get; private set; }
+        public SecuritySettings Security { get; private set; }
+        public BackupSettings Backup { get; private set; }
 
         #region GetConfigurationXml
 

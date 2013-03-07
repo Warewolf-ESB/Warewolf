@@ -52,6 +52,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IAssemblyMarker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -67,12 +69,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings\BackupSettings.cs" />
-    <Compile Include="Settings\IBackupSettings.cs" />
-    <Compile Include="Settings\ILoggingSettings.cs" />
-    <Compile Include="Settings\ISecuritySettings.cs" />
-    <Compile Include="Settings\ISettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
+    <Compile Include="Settings\SettingsBase.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
