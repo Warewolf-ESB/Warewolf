@@ -160,7 +160,23 @@
         if (!self.isFormValid()) {
             return;
         }
-        var jsonData = ko.toJSON(self.data);
+        
+        //07.03.2013: Ashley Lewis - Replaced var jsonData = ko.toJSON(self.data); With JSON.stringify(self.data,-) to remove any circular references
+
+        var cache = [];
+        var jsonData = JSON.stringify(self.data, function (key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.indexOf(value) !== -1) {
+                    // Circular reference found, discard key
+                    return;
+                }
+                // Store value in our collection
+                cache.push(value);
+            }
+            return value;
+        });
+        cache = null; // Enable garbage collection
+        
         $.post(saveUri + window.location.search, jsonData, function (result) {
             if (!result.IsValid) {
                 $saveForm.dialog("close");
