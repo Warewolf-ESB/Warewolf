@@ -17,6 +17,7 @@ namespace Dev2.DynamicServices
     public class WorkflowApplicationFactory
     {
         public static long Balance = 0;
+        public static FileSystemInstanceStore fsis =  new FileSystemInstanceStore();
 
         public WorkflowApplicationFactory()
         {
@@ -77,7 +78,7 @@ namespace Dev2.DynamicServices
                 }
             }
 
-            wfApp.InstanceStore = new FileSystemInstanceStore();
+            wfApp.InstanceStore = fsis;
 
             if(executionExtensions != null)
             {
