@@ -1,6 +1,6 @@
-﻿namespace Dev2.Runtime.Configuration
+﻿namespace Dev2.Runtime.Configuration.Settings
 {
-    public interface IBackupSettings
+    public interface IBackupSettings : ISettings
     {
     }
 }

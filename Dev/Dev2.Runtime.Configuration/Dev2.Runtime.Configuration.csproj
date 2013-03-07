@@ -52,6 +52,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAssemblyMarker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -69,6 +70,7 @@
     <Compile Include="Settings\IBackupSettings.cs" />
     <Compile Include="Settings\ILoggingSettings.cs" />
     <Compile Include="Settings\ISecuritySettings.cs" />
+    <Compile Include="Settings\ISettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

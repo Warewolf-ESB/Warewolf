@@ -11,9 +11,9 @@ namespace Dev2.Network.Messaging.Messages
 
         public byte[] Assembly { get; set; }
 
-        public byte[] AssemblyHash { get; set; }
+        public string AssemblyHashCode { get; set; }
 
-        public XElement Settings { get; set; }
+        public XElement ConfigurationXml { get; set; }
 
         public NetworkMessageAction Action { get; set; }
 

@@ -6,8 +6,9 @@ namespace Dev2.Network.Messaging.Messages
     public interface ISettingsMessage : INetworkMessage
     {
         byte[] Assembly { get; set; }
-        byte[] AssemblyHash { get; set; }
-        XElement Settings { get; set; }
+        string AssemblyHashCode { get; set; }
+        XElement ConfigurationXml { get; set; }
+
         NetworkMessageAction Action { get; set; }
         NetworkMessageResult Result { get; set; }
     }

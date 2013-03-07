@@ -1,6 +1,6 @@
-﻿namespace Dev2.Runtime.Configuration
+﻿namespace Dev2.Runtime.Configuration.Settings
 {
-    public interface ISecuritySettings
+    public interface ISecuritySettings : ISettings
     {
     }
 

@@ -1,6 +1,6 @@
-﻿namespace Dev2.Runtime.Configuration
+﻿namespace Dev2.Runtime.Configuration.Settings
 {
-    public interface ILoggingSettings
+    public interface ILoggingSettings : ISettings
     {
     }
 }

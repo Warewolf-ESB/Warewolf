@@ -20,7 +20,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
         [ExpectedException(typeof(ArgumentNullException))]
         public void StartWithNullAggregatorExpectedThrowsArgumentNullException()
         {
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Object.Start<MockNetworkContext>(null, null);
         }
 
@@ -29,7 +29,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
         public void StartWithNullMessageBrokerExpectedThrowsArgumentNullException()
         {
             var aggregator = new Mock<IServerNetworkMessageAggregator<MockNetworkContext>>();
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Object.Start(aggregator.Object, null);
         }
 
@@ -41,7 +41,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Object.Start(aggregator.Object, messageBroker.Object);
 
             aggregator.Verify(a => a.Subscribe(It.IsAny<Action<INetworkMessage, NetworkContext>>()));
@@ -56,7 +56,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Object.Start(aggregator.Object, messageBroker.Object);
 
             Assert.AreEqual(expectedToken, provider.Object.SubscriptionToken);
@@ -84,7 +84,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
             messageBroker.Setup(m => m.Send(It.IsAny<INetworkMessage>(), It.IsAny<INetworkOperator>()))
                          .Callback<INetworkMessage, INetworkOperator>((sm, no) => actualHandle = sm.Handle);
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Setup(p => p.ProcessMessage(It.IsAny<INetworkMessage>())).Returns(messageResponse.Object);
             provider.Object.Start(aggregator.Object, messageBroker.Object);
 
@@ -105,7 +105,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
             var messageBroker = new Mock<INetworkMessageBroker>();
             messageBroker.Setup(m => m.Send(It.IsAny<INetworkMessage>(), It.IsAny<INetworkOperator>())).Verifiable();
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Setup(p => p.ProcessMessage(It.IsAny<INetworkMessage>())).Returns(messageResponse.Object);
             provider.Object.Start(aggregator.Object, messageBroker.Object);
 
@@ -124,7 +124,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Setup(m => m.ProcessMessage(It.IsAny<INetworkMessage>())).Verifiable();
             provider.Object.Start(aggregator.Object, messageBroker.Object);
 
@@ -144,7 +144,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
             var messageBroker = new Mock<INetworkMessageBroker>();
             messageBroker.Setup(m => m.Send(It.IsAny<ErrorMessage>(), It.IsAny<INetworkOperator>())).Verifiable();
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Setup(m => m.ProcessMessage(It.IsAny<INetworkMessage>())).Callback(() => { throw new Exception("Exception occurred"); });
             provider.Object.Start(aggregator.Object, messageBroker.Object);
 
@@ -159,7 +159,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
         [ExpectedException(typeof(ArgumentNullException))]
         public void StopWithNullArgumentsExpectedThrowsArgumentNullException()
         {
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Object.Stop<MockNetworkContext>(null);
         }
 
@@ -173,7 +173,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
 
             var messageBroker = new Mock<INetworkMessageBroker>();
 
-            var provider = new Mock<NetworkMessageProviderBase>();
+            var provider = new Mock<NetworkMessageProviderBase<INetworkMessage>>();
             provider.Object.Start(aggregator.Object, messageBroker.Object);
             provider.Object.Stop(aggregator.Object);
 

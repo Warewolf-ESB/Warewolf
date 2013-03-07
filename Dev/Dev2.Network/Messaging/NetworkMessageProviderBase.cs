@@ -9,7 +9,8 @@ namespace Dev2.Network.Messaging
     /// </summary>
     /// <author>Trevor.Williams-Ros</author>
     /// <date>2013/03/07</date>
-    public abstract class NetworkMessageProviderBase
+    public abstract class NetworkMessageProviderBase<TNetworkMessage>
+        where TNetworkMessage : INetworkMessage
     {
         /// <summary>
         /// Gets the subscription token used by the aggregator.
@@ -21,7 +22,7 @@ namespace Dev2.Network.Messaging
         /// </summary>
         /// <param name="request">The request to be processed.</param>
         /// <returns>The result of processing the message.</returns>
-        public abstract INetworkMessage ProcessMessage(INetworkMessage request);
+        public abstract TNetworkMessage ProcessMessage(TNetworkMessage request);
 
         #region Start
 
@@ -47,7 +48,7 @@ namespace Dev2.Network.Messaging
             {
                 throw new ArgumentNullException("messageBroker");
             }
-            SubscriptionToken = aggregator.Subscribe((INetworkMessage request, NetworkContext context) =>
+            SubscriptionToken = aggregator.Subscribe((TNetworkMessage request, NetworkContext context) =>
             {
                 try
                 {
