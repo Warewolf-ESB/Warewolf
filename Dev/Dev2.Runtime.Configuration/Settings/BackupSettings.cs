@@ -4,9 +4,12 @@ namespace Dev2.Runtime.Configuration.Settings
 {
     public class BackupSettings : SettingsBase
     {
+        public const string SettingName = "Backup";
+
         #region CTOR
 
-        public BackupSettings() : base("Backup")
+        public BackupSettings()
+            : base(SettingName, "Backup")
         {
         }
 

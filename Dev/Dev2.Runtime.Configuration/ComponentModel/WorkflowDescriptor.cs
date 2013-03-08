@@ -19,8 +19,9 @@ namespace Dev2.Runtime.Configuration.ComponentModel
         {
             if(xml == null)
             {
-                throw new ArgumentNullException("xml");
+                return;
             }
+
             Name = xml.AttributeSafe("Name");
 
             Guid workflowID;

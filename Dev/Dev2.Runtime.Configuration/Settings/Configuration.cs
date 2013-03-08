@@ -27,9 +27,9 @@ namespace Dev2.Runtime.Configuration.Settings
             {
                 throw new ArgumentNullException("xml");
             }
-            Logging = new LoggingSettings(xml.Element("Logging"));
-            Security = new SecuritySettings(xml.Element("Security"));
-            Backup = new BackupSettings(xml.Element("Backup"));
+            Logging = new LoggingSettings(xml.Element(LoggingSettings.SettingName));
+            Security = new SecuritySettings(xml.Element(SecuritySettings.SettingName));
+            Backup = new BackupSettings(xml.Element(BackupSettings.SettingName));
         }
 
         public XElement ToXml()

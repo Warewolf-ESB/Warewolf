@@ -7,6 +7,8 @@ namespace Dev2.Runtime.Configuration.Settings
 {
     public class LoggingSettings : SettingsBase
     {
+        public const string SettingName = "Logging";
+
         #region Properties
 
         public bool IsLoggingEnabled { get; set; }
@@ -23,11 +25,11 @@ namespace Dev2.Runtime.Configuration.Settings
         public List<WorkflowDescriptor> Workflows { get; private set; }
 
         #endregion
-        
+
         #region CTOR
 
         public LoggingSettings()
-            : base("Logging")
+            : base(SettingName, "Logging")
         {
             PostWorkflow = new WorkflowDescriptor();
             Workflows = new List<WorkflowDescriptor>();
