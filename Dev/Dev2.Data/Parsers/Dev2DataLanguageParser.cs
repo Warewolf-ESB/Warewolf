@@ -731,6 +731,9 @@ namespace Dev2.DataList.Contract
                                             part = IntellisenseFactory.CreateDataListValidationRecordsetPart(display, "");
 
                                         }
+
+                                        // This is the line that requires change for PBI 6731!!!!
+
                                         // add error
                                         result.Add(!display.Contains(' ')
                                             ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your Data List", code, (!payload.HangingOpen))

@@ -93,7 +93,6 @@
     <Compile Include="ESB\DB Support\DBConnectionString.cs" />
     <Compile Include="ESB\DB Support\DB_Helper\DBHelperFactory.cs" />
     <Compile Include="ESB\DB Support\DB_Helper\IDBHelper.cs" />
-    <Compile Include="ESB\DB Support\DB_Helper\MS_SQL_Helper.cs" />
     <Compile Include="ESB\DB Support\DB_Sanity\AbstractSanitizer.cs" />
     <Compile Include="ESB\DB Support\DB_Sanity\DataSanitizerFactory.cs" />
     <Compile Include="ESB\DB Support\enSupportedDBTypes.cs" />
