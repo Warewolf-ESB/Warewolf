@@ -44,10 +44,7 @@ namespace Dev2.Tests.Runtime.Configuration
         {
             var provider = new SettingsProvider();
 
-            Assert.IsNotNull(provider.Backup);
-            Assert.IsNotNull(provider.Logging);
-            Assert.IsNotNull(provider.Security);
-
+            Assert.IsNotNull(provider.Configuration);
             Assert.IsNotNull(provider.AssemblyHashCode);
             Assert.AreNotEqual(string.Empty, provider.AssemblyHashCode);
         }

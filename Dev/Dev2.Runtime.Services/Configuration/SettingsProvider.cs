@@ -2,10 +2,8 @@
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Xml.Linq;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Dev2.Runtime.Configuration.Settings;
 
 namespace Dev2.Runtime.Configuration
 {
@@ -58,38 +56,14 @@ namespace Dev2.Runtime.Configuration
         public SettingsProvider()
         {
             AssemblyHashCode = GetAssemblyHashCode();
-            Logging = new LoggingSettings();
-            Security = new SecuritySettings();
-            Backup = new BackupSettings();
+            Configuration = new Settings.Configuration();
         }
 
         #endregion
 
         public string AssemblyHashCode { get; private set; }
 
-        // ------------------------------------------------------------------------------
-        // - Add new class to Dev2.Runtime.Configuration assembly in Settings namespace
-        // - Then add new property for class here and initialize in constructor
-        // - Then add property to GetConfigurationXml() 
-        // - Then add to constructor test
-        // ------------------------------------------------------------------------------
-        public LoggingSettings Logging { get; private set; }
-        public SecuritySettings Security { get; private set; }
-        public BackupSettings Backup { get; private set; }
-
-        #region GetConfigurationXml
-
-        XElement GetConfigurationXml()
-        {
-            var root = new XElement("Settings",
-                Logging.ToXml(),
-                Security.ToXml(),
-                Backup.ToXml()
-                );
-            return root;
-        }
-
-        #endregion
+        public Settings.Configuration Configuration { get; private set; }
 
         #region ProcessMessage
 
@@ -129,7 +103,7 @@ namespace Dev2.Runtime.Configuration
                 request.Result = NetworkMessageResult.Success;
             }
 
-            request.ConfigurationXml = GetConfigurationXml();
+            request.ConfigurationXml = Configuration.ToXml();
 
             return request;
         }
