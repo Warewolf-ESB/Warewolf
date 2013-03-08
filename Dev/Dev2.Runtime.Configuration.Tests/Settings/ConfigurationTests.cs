@@ -20,7 +20,7 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructorWithNullXmlArgumentExpectedThrowsArgumentNullException()
+        public void ConstructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             // ReSharper disable UnusedVariable
             var config = new Configuration.Settings.Configuration(null);
@@ -28,11 +28,20 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructorWithInvalidXmlArgumentExpectedThrowsArgumentNullException()
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstructorWithInvalidXmlVersionExpectedThrowsArgumentException()
         {
             // ReSharper disable UnusedVariable
             var config = new Configuration.Settings.Configuration(new XElement("x", new XElement("y"), new XElement("z")));
+            // ReSharper restore UnusedVariable
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructorWithInvalidXmlExpectedThrowsArgumentNullException()
+        {
+            // ReSharper disable UnusedVariable
+            var config = new Configuration.Settings.Configuration(new XElement("x", new XAttribute("Version", "1.0"), new XElement("y"), new XElement("z")));
             // ReSharper restore UnusedVariable
         }
 
@@ -65,12 +74,25 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
             var properties = config.GetType().GetProperties();
             foreach(var property in properties)
             {
-                var value = (Configuration.Settings.SettingsBase)property.GetValue(config);
-                var expected = value.ToXml().ToString(SaveOptions.DisableFormatting);
-                // ReSharper disable PossibleNullReferenceException
-                var actual = result.Element(value.SettingName).ToString(SaveOptions.DisableFormatting);
-                // ReSharper restore PossibleNullReferenceException
-                Assert.AreEqual(expected, actual);
+                var value = property.GetValue(config);
+
+                Version version;
+                Configuration.Settings.SettingsBase settings;
+
+                if((settings = value as Configuration.Settings.SettingsBase) != null)
+                {
+                    var expected = settings.ToXml().ToString(SaveOptions.DisableFormatting);
+                    // ReSharper disable PossibleNullReferenceException
+                    var actual = result.Element(settings.SettingName).ToString(SaveOptions.DisableFormatting);
+                    // ReSharper restore PossibleNullReferenceException
+                    Assert.AreEqual(expected, actual);
+                }
+                else if((version = value as Version) != null)
+                {
+                    var actual = result.AttributeSafe(property.Name);
+                    var expected = version.ToString(2);
+                    Assert.AreEqual(expected, actual);
+                }
             }
         }
 
@@ -89,7 +111,6 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
             foreach(var value in properties.Select(property => property.GetValue(config)))
             {
                 Assert.IsNotNull(value);
-                Assert.IsInstanceOfType(value, typeof(Configuration.Settings.SettingsBase));
             }
         }
 

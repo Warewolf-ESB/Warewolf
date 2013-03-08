@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Xml.Linq;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,6 +11,23 @@ namespace Dev2.Tests.Runtime.Configuration
     [TestClass]
     public class SettingsProviderTests
     {
+        readonly static object WriterLock = new object();
+
+        [TestInitialize]
+        public void TestMethodCleanup()
+        {
+            lock(WriterLock)
+            {
+                var provider = new SettingsProvider();
+                var filePath = provider.GetFilePath();
+                var dir = Path.GetDirectoryName(filePath);
+                if(dir != null && Directory.Exists(dir))
+                {
+                    Directory.Delete(dir);
+                }
+            }
+        }
+
         #region Instance
 
         [TestMethod]
@@ -119,5 +138,133 @@ namespace Dev2.Tests.Runtime.Configuration
         }
 
         #endregion
+
+        #region ProcessWrite
+
+        //[TestMethod]
+        //public void ProcessWriteWithOverwriteExpectedSavesFileAndReturnsSuccess()
+        //{
+        //    lock(WriterLock)
+        //    {
+        //        var configuration = new Dev2.Runtime.Configuration.Settings.Configuration();
+
+        //        var request = new Mock<ISettingsMessage>();
+        //        request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Overwrite);
+        //        request.SetupGet(m => m.ConfigurationXml).Returns(configuration.ToXml());
+        //        request.SetupProperty(m => m.Result);
+
+        //        var provider = new SettingsProvider();
+        //        var filePath = provider.GetFilePath();
+
+        //        var result = provider.ProcessMessage(request.Object);
+        //        Assert.AreEqual(NetworkMessageResult.Success, result.Result);
+        //        Assert.IsTrue(File.Exists(filePath));
+        //    }
+        //}
+
+        //[TestMethod]
+        //public void ProcessWriteWithWriteAndNoFileOnDiskExpectedSavesFileAndReturnsSuccess()
+        //{
+        //    lock(WriterLock)
+        //    {
+        //        var configuration = new Dev2.Runtime.Configuration.Settings.Configuration();
+
+        //        var request = new Mock<ISettingsMessage>();
+        //        request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+        //        request.SetupGet(m => m.ConfigurationXml).Returns(configuration.ToXml());
+        //        request.SetupProperty(m => m.Result);
+
+        //        var provider = new SettingsProvider();
+        //        var filePath = provider.GetFilePath();
+
+        //        var result = provider.ProcessMessage(request.Object);
+        //        Assert.AreEqual(NetworkMessageResult.Success, result.Result);
+        //        Assert.IsTrue(File.Exists(filePath));
+        //    }
+        //}
+
+        //[TestMethod]
+        //public void ProcessWriteWithWriteAndOlderVersionOnDiskExpectedSavesFileAndReturnsSuccess()
+        //{
+        //    lock(WriterLock)
+        //    {
+        //        var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
+        //        var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 0) };
+
+        //        var request = new Mock<ISettingsMessage>();
+        //        request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+        //        request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+        //        request.SetupProperty(m => m.Result);
+
+        //        var provider = new SettingsProvider();
+        //        var filePath = provider.GetFilePath();
+
+        //        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+        //        var xmlOld = configOld.ToXml();
+        //        xmlOld.Save(filePath);
+
+        //        var result = provider.ProcessMessage(request.Object);
+        //        Assert.AreEqual(NetworkMessageResult.Success, result.Result);
+        //        Assert.IsTrue(File.Exists(filePath));
+        //    }
+        //}
+
+        //[TestMethod]
+        //public void ProcessWriteWithWriteAndSameVersionOnDiskExpectedSavesFileAndReturnsSuccess()
+        //{
+        //    lock(WriterLock)
+        //    {
+        //        var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
+        //        var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
+
+        //        var request = new Mock<ISettingsMessage>();
+        //        request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+        //        request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+        //        request.SetupProperty(m => m.Result);
+
+        //        var provider = new SettingsProvider();
+        //        var filePath = provider.GetFilePath();
+
+        //        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+        //        var xmlOld = configOld.ToXml();
+        //        xmlOld.Save(filePath);
+
+        //        var result = provider.ProcessMessage(request.Object);
+        //        Assert.AreEqual(NetworkMessageResult.Success, result.Result);
+        //        Assert.IsTrue(File.Exists(filePath));
+        //    }
+        //}
+
+        //[TestMethod]
+        //public void ProcessWriteWithWriteAndNewerVersionOnDiskExpectedDoesNotSaveFileAndReturnsVersionConflict()
+        //{
+        //    lock(WriterLock)
+        //    {
+        //        var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 0) };
+        //        var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
+
+        //        var request = new Mock<ISettingsMessage>();
+        //        request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+        //        request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+        //        request.SetupProperty(m => m.Result);
+
+        //        var provider = new SettingsProvider();
+        //        var filePath = provider.GetFilePath();
+
+        //        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+        //        var xmlOld = configOld.ToXml();
+        //        xmlOld.Save(filePath);
+
+        //        var result = provider.ProcessMessage(request.Object);
+        //        Assert.AreEqual(NetworkMessageResult.VersionConflict, result.Result);
+        //        var diskXml = XElement.Load(filePath);
+
+        //        Assert.AreEqual(xmlOld.ToString(SaveOptions.DisableFormatting), diskXml.ToString(SaveOptions.DisableFormatting));
+        //    }
+        //}
+
+        #endregion
+
+
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Xml.Linq;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 
@@ -114,6 +115,33 @@ namespace Dev2.Runtime.Configuration
 
         ISettingsMessage ProcessWrite(ISettingsMessage request)
         {
+            var filePath = GetFilePath();
+            var canSave = request.Action == NetworkMessageAction.Overwrite || !File.Exists(filePath);
+            if(!canSave)
+            {
+                var configNew = new Settings.Configuration(request.ConfigurationXml);
+                var configOld = new Settings.Configuration(XElement.Load(filePath));
+                canSave = configNew.Version >= configOld.Version;
+            }
+
+            if(canSave)
+            {
+                var dir = Path.GetDirectoryName(filePath);
+                if(dir != null)
+                {
+                    if(!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                }
+                request.ConfigurationXml.Save(filePath);
+                request.Result = NetworkMessageResult.Success;
+            }
+            else
+            {
+                request.Result = NetworkMessageResult.VersionConflict;
+            }
+
             return request;
         }
 
@@ -148,22 +176,18 @@ namespace Dev2.Runtime.Configuration
 
         #endregion
 
-        //#region GetConfigurationXml
+        #region GetFilePath
 
-        //public XElement GetConfigurationXml()
-        //{
-        //    var appPath = Path.GetFullPath(Assembly.GetExecutingAssembly().Location);
-        //    var path = Path.Combine(appPath, ConfigurationManager.AppSettings["ConfigurationSettingsFolder"]);
-        //    if(!File.Exists(path))
-        //    {
-        //        var result = GetConfiguration();
-        //        result.Save(path);
-        //        return result;
-        //    }
-        //    return XElement.Load(path);
-        //}
+        public string GetFilePath()
+        {
+            var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        //#endregion
+            // ReSharper disable AssignNullToNotNullAttribute
+            return Path.Combine(rootDir, "Settings", "Application.xml");
+            // ReSharper restore AssignNullToNotNullAttribute
+        }
+
+        #endregion
 
     }
 }
