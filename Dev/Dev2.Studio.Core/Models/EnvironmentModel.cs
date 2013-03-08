@@ -133,7 +133,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IFrameworkDataChannel DsfChannel
+        public IStudioEsbChannel DsfChannel
         {
             get
             {
@@ -351,7 +351,7 @@ namespace Dev2.Studio.Core.Models
             }
 
             public string DisplayName { get; set; }
-            public IFrameworkDataChannel DataChannel { get; set; }
+            public IStudioEsbChannel DataChannel { get; set; }
             public INetworkExecutionChannel ExecutionChannel { get; set; }
             public INetworkDataListChannel DataListChannel { get; set; }
             public IFrameworkSecurityContext SecurityContext { get; set; }
@@ -558,7 +558,9 @@ namespace Dev2.Studio.Core.Models
                     if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
                     if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
 
-                    return _client.ExecuteCommand(xmlRequest);
+                    string payload =  _client.ExecuteCommand(xmlRequest);
+
+                    return payload;
                 }
 
                 public void Dispose()

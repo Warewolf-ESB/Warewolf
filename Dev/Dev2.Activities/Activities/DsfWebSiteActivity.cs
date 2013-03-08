@@ -128,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
                     //_assignActivity.FieldValue = string.Format(@"<html><head><META HTTP-EQUIV=""refresh"" content=""0;URL={0}""></head></html>", webpage);
                 } else {
-                    //var htmlResponse = binder.ParseHTML(html, XMLConfiguration, context.GetExtension<IFrameworkDataChannel>(), dataObject);
+                    //var htmlResponse = binder.ParseHTML(html, XMLConfiguration, context.GetExtension<IEsbChannel>(), dataObject);
                     //string payload = htmlResponse;
                     string payload = html;
                     compiler.UpsertSystemTag(executionDLID, enSystemTag.FormView, payload, out errors);
@@ -140,8 +140,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
                     // Handle Errors
                     if (allErrors.HasErrors()) {
-                        string err = DisplayAndWriteError("DsfWebpageActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                        DisplayAndWriteError("DsfWebpageActivity", allErrors);
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
 
 
@@ -161,8 +161,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
                 // Handle Errors
                 if (allErrors.HasErrors()) {
-                    string err = DisplayAndWriteError("DsfWebSiteActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfWebSiteActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
                 // clean up 

@@ -101,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         eval = eval.Replace("@Host", ServiceHost);
                                     }
-                                    eval = binder.BindEnvironmentVariables(eval, dataObject.ServiceName);
+                                    eval = DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
                                 }
                             }
 
@@ -168,7 +168,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Overridden ActivityAbstact Methods
-
 
         #region Get Debug Inputs/Outputs
 

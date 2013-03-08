@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Dev2.DataList.Contract.Binary_Objects;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract
 {
@@ -30,6 +28,7 @@ namespace Dev2.DataList.Contract
         bool PersistChildChain(Guid id);
 
         void DeleteDataList(Guid id, bool onlyIfNotPersisted);
+
         #endregion
     }
 }

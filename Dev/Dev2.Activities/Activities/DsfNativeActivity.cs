@@ -113,9 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override sealed void Execute(NativeActivityContext context)
         {
             _isOnDemandSimulation = false;
-
             var dataObject = context.GetExtension<IDSFDataObject>();
-            //var compiler = context.GetExtension<IDataListCompiler>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -233,8 +231,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (allErrors.HasErrors())
                     {
-                        var err = DisplayAndWriteError(rootInfo.ProxyName, allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                        DisplayAndWriteError(rootInfo.ProxyName, allErrors);
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
             }
@@ -247,7 +245,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
             var dataListExecutionID = DataListExecutionID.Get(context);
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var dataObject = context.GetExtension<IDSFDataObject>();
 
@@ -433,13 +430,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DisplayAndWriteError
 
-        protected static string DisplayAndWriteError(string serviceName, ErrorResultTO errors)
+        protected static void DisplayAndWriteError(string serviceName, ErrorResultTO errors)
         {
             foreach (var e in errors.FetchErrors())
             {
                 TraceWriter.WriteTrace(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
             }
-            return errors.MakeDataListReady();
         }
 
         protected static string DisplayAndWriteError(string serviceName, Exception ex, string dataList)

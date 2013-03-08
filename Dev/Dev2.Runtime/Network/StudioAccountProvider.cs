@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.Network;
-using System.Cryptography;
 using System.IO;
 using System.Collections.Concurrent;
 
@@ -56,11 +52,10 @@ namespace Dev2.DynamicServices
                             //                            implemented this will have ot be changed.
                             //
                             account.SetPassword("abc123xyz");
-                            
                         }
+
                         reader.Dispose();
                     }
-                    
                 }
             }
 

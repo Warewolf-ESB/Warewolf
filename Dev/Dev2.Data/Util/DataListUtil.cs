@@ -52,6 +52,24 @@ namespace Dev2.DataList.Contract
         #endregion Constructor
 
         /// <summary>
+        /// Binds the environment variables.
+        /// </summary>
+        /// <param name="transform">The transform.</param>
+        /// <param name="rootServiceName">Name of the root service.</param>
+        /// <returns></returns>
+        public static string BindEnvironmentVariables(string transform, string rootServiceName="") {
+            if (string.IsNullOrEmpty(transform)) {
+                return transform;
+            }
+
+            transform = transform.Replace("@AppPath", Environment.CurrentDirectory);
+            transform = transform.Replace("@ServiceName", rootServiceName);
+            transform = transform.Replace("@OSVersion", Environment.OSVersion.VersionString);
+
+            return transform;
+        }
+
+        /// <summary>
         /// Composes the into user visible recordset.
         /// </summary>
         /// <param name="rs">The rs.</param>

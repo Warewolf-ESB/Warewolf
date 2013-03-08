@@ -34,6 +34,7 @@ namespace Dev2.Studio.Core.Models
         public string ParentInstanceID { get; set; }
 
         public Guid DataListID { get; set; }
+        public string RawPayload { get; set;}
 
 
         public IDSFDataObject Clone()

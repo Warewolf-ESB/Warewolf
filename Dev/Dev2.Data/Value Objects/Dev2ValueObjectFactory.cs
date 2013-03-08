@@ -24,5 +24,6 @@ namespace Dev2.DataList.Contract.Value_Objects
         {
             return new Dev2IteratorCollection();
         }
+
     }
 }

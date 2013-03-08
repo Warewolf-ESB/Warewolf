@@ -64,6 +64,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Activities" />
     <Reference Include="System.Web.Services" />
@@ -201,10 +202,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagrams\DsfReplaceActivityClassDiagram.cd" />
-    <None Include="ClassDiagrams\DsfIndexActivityClassDiagram.cd" />
-    <None Include="ClassDiagrams\DsfNumberFormatActivity 6226.cd" />
-    <None Include="ClassDiagrams\DsfDataMergeActivityClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

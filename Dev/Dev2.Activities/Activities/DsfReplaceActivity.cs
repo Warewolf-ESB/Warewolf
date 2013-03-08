@@ -135,8 +135,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfReplaceActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfReplaceActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
 

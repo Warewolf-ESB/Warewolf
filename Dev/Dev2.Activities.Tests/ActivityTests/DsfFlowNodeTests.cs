@@ -1,5 +1,5 @@
-﻿using System.Activities.Statements;
-using System.Data;
+﻿using System;
+using System.Activities.Statements;
 using Dev2;
 using Dev2.Common;
 using Dev2.Data.Decision;
@@ -10,6 +10,7 @@ using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.DataList.Contract;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -68,28 +69,23 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Decision Tests
 
-        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913
+        // 2013.02.13: Ashley Lewis - Bug 8725, Task 8913
+        // 2013.03.03 : Travis - Refactored to properly test logic required
         [TestMethod]
         public void DecisionWithQuotesInScalarExpectedNoUnhandledExceptions()
         {
-            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
-
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             dds.AddModelItem(new Dev2Decision() { Col1 = "[[var]]", Col2 = "\"", EvaluationFn = enDecisionType.IsEqual });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-
 
             CurrentDl = "<ADL><var/></ADL>";
             TestData = "<root><var>\"</var></root>";
-            TestStartNode = new FlowStep
-            {
-                Action = act
-            };
-            IDSFDataObject result = ExecuteProcess();
+            ErrorResultTO errors;
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
 
-            IList<string> getDatalistID = new List<string>() { result.DataListID.ToString() };
+            IList<string> getDatalistID = new List<string>() { exeID.ToString() };
             Assert.IsTrue(new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID));
         }
 

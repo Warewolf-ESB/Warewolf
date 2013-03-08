@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DataList.Contract.Binary_Objects;
+﻿using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Network;
+using System;
 
 namespace Dev2.DataList.Contract.Persistence
 {
@@ -157,5 +154,11 @@ namespace Dev2.DataList.Contract.Persistence
         }
 
         #endregion Tear Down
+
+
+        public bool ForceDeleteDataListChain(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

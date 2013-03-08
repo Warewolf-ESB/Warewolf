@@ -88,6 +88,7 @@
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
@@ -164,6 +165,7 @@
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
     <Compile Include="AppResources\Exceptions\WebResourceRemoveFailedException.cs" />
     <Compile Include="AppResources\Exceptions\WebResourceUploadFailedException.cs" />
+    <Compile Include="AppResources\ExecutionRequestExtractor.cs" />
     <Compile Include="AppResources\Expression\ExpressionEvaluator.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitor.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitorDSFImpl.cs" />

@@ -6,8 +6,13 @@ using System.Xml.Linq;
 using Dev2.DataList.Contract;
 using Unlimited.Framework;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
+// ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// The core TO used in the execution engine ;)
+    /// </summary>
     public class DsfDataObject : PersistenceParticipant, IDSFDataObject
     {
         #region Class Members
@@ -15,8 +20,7 @@ namespace Dev2.DynamicServices
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
         private bool _workflowResumeable;
-        private List<object> items = new List<object>();
-        private XNamespace _dSFDataObjectNS = XNamespace.Get("http://dev2.co.za/");
+        private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
 
         #endregion Class Members
 
@@ -50,6 +54,7 @@ namespace Dev2.DynamicServices
                 }               
                 IsOnDemandSimulation = isOnDemandSimulation;
 
+                _parentServiceName = dataObject.GetValue("ParentServiceName");
                 _parentWorkflowInstanceId = dataObject.GetValue("ParentWorkflowInstanceId");
 
                 Guid executionCallbackID;
@@ -66,11 +71,6 @@ namespace Dev2.DynamicServices
                 }
 
                 ParentInstanceID = dataObject.GetValue("ParentInstanceID");
-                ParentServiceName = dataObject.GetValue("ParentServiceName");
-
-                Guid workspaceID;
-                Guid.TryParse(dataObject.GetValue("WorkspaceID"), out workspaceID);
-                WorkspaceID = workspaceID;
 
                 if(dataObject.Bookmark is string)
                 {
@@ -100,7 +100,16 @@ namespace Dev2.DynamicServices
                 bool isScoped;
                 bool.TryParse(dataObject.GetValue("IsDataListScoped"), out isScoped);
                 IsDataListScoped = isScoped;
+
+                // Set incoming service name ;)
+                if(dataObject.Service is string)
+                {
+                    ServiceName = dataObject.Service;
+                }
             }
+
+            // finally set raw payload
+            RawPayload = xmldata;
         }
 
         #endregion Constructor
@@ -129,9 +138,11 @@ namespace Dev2.DynamicServices
         public Guid BookmarkExecutionCallbackID { get; set; }
 
         public Guid DataListID { get; set; }
+        public ServiceAction ExecuteAction { get; set; }
         public string Bookmark { get; set; }
         public Guid InstanceID { get; set; }
 
+        public string RawPayload { get; set; }
 
         public bool WorkflowResumeable
         {
@@ -162,7 +173,7 @@ namespace Dev2.DynamicServices
             get
             {
 
-                return _parentWorkflowInstanceId == null ? string.Empty : _parentWorkflowInstanceId.ToString();
+                return _parentWorkflowInstanceId == null ? string.Empty : _parentWorkflowInstanceId;
             }
             set
             {
@@ -188,26 +199,26 @@ namespace Dev2.DynamicServices
         {
             IDSFDataObject result = new DsfDataObject();
 
-            result.CurrentBookmarkName = this.CurrentBookmarkName;
-            result.DataList = this.DataList;
-            result.DataListID = this.DataListID;
-            result.DatalistOutMergeDepth = this.DatalistOutMergeDepth;
-            result.DatalistOutMergeFrequency = this.DatalistOutMergeFrequency;
-            result.DatalistOutMergeID = this.DatalistOutMergeID;
-            result.DatalistOutMergeType = this.DatalistOutMergeType;
-            result.DatalistInMergeDepth = this.DatalistInMergeDepth;
-            result.DatalistInMergeID = this.DatalistInMergeID;
-            result.DatalistInMergeType = this.DatalistInMergeType;
-            result.ExecutionCallbackID = this.ExecutionCallbackID;
-            result.BookmarkExecutionCallbackID = this.BookmarkExecutionCallbackID;
-            result.IsDebug = this.IsDebug;
-            result.ParentServiceName = this.ParentServiceName;
-            result.ParentWorkflowInstanceId = this.ParentWorkflowInstanceId;
-            result.ServiceName = this.ServiceName;
-            result.WorkflowInstanceId = this.WorkflowInstanceId;
-            result.WorkflowResumeable = this.WorkflowResumeable;
-            result.WorkspaceID = this.WorkspaceID;
-            result.IsDataListScoped = this.IsDataListScoped;
+            result.CurrentBookmarkName = CurrentBookmarkName;
+            result.DataList = DataList;
+            result.DataListID = DataListID;
+            result.DatalistOutMergeDepth = DatalistOutMergeDepth;
+            result.DatalistOutMergeFrequency = DatalistOutMergeFrequency;
+            result.DatalistOutMergeID = DatalistOutMergeID;
+            result.DatalistOutMergeType = DatalistOutMergeType;
+            result.DatalistInMergeDepth = DatalistInMergeDepth;
+            result.DatalistInMergeID = DatalistInMergeID;
+            result.DatalistInMergeType = DatalistInMergeType;
+            result.ExecutionCallbackID = ExecutionCallbackID;
+            result.BookmarkExecutionCallbackID = BookmarkExecutionCallbackID;
+            result.IsDebug = IsDebug;
+            result.ParentServiceName = ParentServiceName;
+            result.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
+            result.ServiceName = ServiceName;
+            result.WorkflowInstanceId = WorkflowInstanceId;
+            result.WorkflowResumeable = WorkflowResumeable;
+            result.WorkspaceID = WorkspaceID;
+            result.IsDataListScoped = IsDataListScoped;
 
             return result;
         }
@@ -221,7 +232,7 @@ namespace Dev2.DynamicServices
         /// </summary>
         /// <param name="readWriteValues">The read-write values to be persisted.</param>
         /// <param name="writeOnlyValues">The write-only values to be persisted.</param>
-        protected override void CollectValues(out IDictionary<System.Xml.Linq.XName, object> readWriteValues, out IDictionary<System.Xml.Linq.XName, object> writeOnlyValues)
+        protected override void CollectValues(out IDictionary<XName, object> readWriteValues, out IDictionary<XName, object> writeOnlyValues)
         {
             // Sashen: 05-07-2012
             // These methods are used on completion of any workflow application instance
@@ -235,7 +246,7 @@ namespace Dev2.DynamicServices
 
             foreach (PropertyInfo pi in typeof(IDSFDataObject).GetProperties())
             {
-                readWriteValues.Add(_dSFDataObjectNS.GetName(pi.Name).LocalName, pi.GetValue(this, null));
+                readWriteValues.Add(_dSfDataObjectNs.GetName(pi.Name).LocalName, pi.GetValue(this, null));
             }
 
             writeOnlyValues = null;
@@ -260,9 +271,9 @@ namespace Dev2.DynamicServices
         /// The host invokes this method and passes all the loaded values in the <see cref="P:System.Activities.Persistence.SaveWorkflowCommand.InstanceData" /> collection (filled by the <see cref="T:System.Activities.Persistence.LoadWorkflowCommand" /> or <see cref="T:System.Activities.Persistence.LoadWorkflowByInstanceKeyCommand" />) as a dictionary parameter.
         /// </summary>
         /// <param name="readWriteValues">The read-write values that were loaded from the persistence store. This dictionary corresponds to the dictionary of read-write values persisted in the most recent persistence episode.</param>
-        protected override void PublishValues(IDictionary<System.Xml.Linq.XName, object> readWriteValues)
+        protected override void PublishValues(IDictionary<XName, object> readWriteValues)
         {
-            foreach (System.Xml.Linq.XName key in readWriteValues.Keys)
+            foreach (XName key in readWriteValues.Keys)
             {
                 PropertyInfo pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
 

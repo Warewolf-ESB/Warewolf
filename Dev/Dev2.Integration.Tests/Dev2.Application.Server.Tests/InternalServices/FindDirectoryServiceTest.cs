@@ -58,26 +58,26 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
         public void FindDirectoryService_ValidPath() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=C:\");
-            string expected = @"[{""title"":""$Recycle.Bin""";
+            string expected = "{\"title\":\"$RECYCLE.BIN\"";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
-            Assert.IsTrue(responseData.Contains(expected));
+            Assert.IsTrue(responseData.Contains(expected), "Could not locate Directory Data");
         }
 
         [TestMethod]
         public void FindDirectoryService_ValidCredentials()
         {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=c:\&Domain=DEV2&Username=" + TestResource.PathOperations_Correct_Username + "&Password=" + TestResource.PathOperations_Correct_Password);
-            string expected = @"[{""title"":""$Recycle.Bin""";
+            string expected = "{\"title\":\"$RECYCLE.BIN\"";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
-            Assert.IsTrue(responseData.Contains(expected));
+            Assert.IsTrue(responseData.Contains(expected), "Could not locate Directory Data");
         }
 
         [TestMethod]
         public void FindDirectoryService_InvalidCredentials() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=c:\BPM&Domain=DEV2&Username=john.doe&Password=P@ssword");
-            string expected = @"<Result>System.ComponentModel.Win32Exception (0x80004005): Logon failure: unknown user name or bad password</Result>";
+            string expected = @"<Result>Login Failure : Unknown username or password</Result>";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(responseData, expected);

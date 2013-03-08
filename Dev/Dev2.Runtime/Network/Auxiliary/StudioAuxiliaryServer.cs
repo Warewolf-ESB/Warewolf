@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Network;
+using Dev2.Common;
+using Dev2.DataList.Contract;
 
 namespace Dev2.DynamicServices.Network.Auxiliary
 {
@@ -29,7 +31,15 @@ namespace Dev2.DynamicServices.Network.Auxiliary
 
         protected override string OnExecuteCommand(StudioAuxiliarySession context, string payload, Guid dataListID)
         {
-            return _owner.Channel.ExecuteCommand(payload, Workspaces.WorkspaceRepository.Instance.ServerWorkspace, dataListID);
+            // TODO : Create DataObject from payload ;)
+
+            IDSFDataObject dataObject = new DsfDataObject(payload, dataListID);
+            ErrorResultTO errors = new ErrorResultTO();
+
+            // Workspaces.WorkspaceRepository.Instance.Get(context.AccountID) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace
+            return _owner.Channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
+
+            //return _owner.Channel.ExecuteCommand(payload, Workspaces.WorkspaceRepository.Instance.ServerWorkspace, dataListID);
         }
 
         private sealed class StudioAuxiliaryInboundAuthenticationBroker : InboundSRPAuthenticationBroker

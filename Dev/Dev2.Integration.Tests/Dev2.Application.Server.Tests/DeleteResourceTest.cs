@@ -14,7 +14,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         private const string _initialDeleteResourceServiceXmlString = "<XmlData><Service></Service><ResourceName></ResourceName><ResourceType></ResourceType><Roles></Roles></XmlData>";
         private static ServerFabricationFactory _serverFactory;
         private object _lock = new object();
-     
+
         //private static ServerFabricationFactory _serverFactory;
         private DataListValueInjector _dataListValueInjector = new DataListValueInjector();
 
@@ -32,34 +32,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         public TestContext TestContext { get { return _context; } set { _context = value; } }
 
-        [TestMethod]
-        public void DeleteWorkflow_Test()
-        {
-            lock(_lock)
-            {
-                _serverFactory = new ServerFabricationFactory();
-                var serviceName = "DeleteWorkflowTest2";
-                string xmlString = BuildDeleteRequestXml(serviceName, "WorkflowService");
-                string postData = String.Format("{0}{1}?{2}", _serverFactory.ServerAddress, "DeleteResourceService", xmlString);
-
-                using(ServerFabrication fabrication = _serverFactory.CreateFabrication())
-                {
-                    using(ServerExecutionInstance execution = fabrication.Execute())
-                    {
-                        string[] initialFiles = Directory.GetFiles(fabrication.GetCommonDirectoryPath(ServerCommonDirectory.Services));
-                        var originalcount = initialFiles.Count(s => s.Contains(serviceName));
-
-                        //string versionDirectory = Path.Combine(, "VersionControl");
-                        string actualResult = TestHelper.PostDataToWebserver(postData);
-                        StringAssert.Contains(actualResult, "<Result>Success</Result>");
-
-                        //Assert that it cant be found
-                        actualResult = TestHelper.PostDataToWebserver(postData);
-                        Assert.AreEqual(true, actualResult.Contains(" <Error>WorkflowService \"DeleteWorkflowTest2\" was not found.</Error>"));
-                    }
-                }
-            }
-        }
 
         [TestMethod]
         public void DeleteWorkflowSuccess_FileIsDeleted_Test()

@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Interfaces {
         bool IsAuxiliry { get; }
         string Alias { get; set; }
         string DisplayName { get; set; }
-        IFrameworkDataChannel DataChannel { get; set; }
+        IStudioEsbChannel DataChannel { get; set; }
         INetworkExecutionChannel ExecutionChannel { get; set; }
         INetworkDataListChannel DataListChannel { get; set; }
         IFrameworkSecurityContext SecurityContext { get; set; }

@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Dev2.Common;
+using Dev2.Data;
+using Dev2.DataList.Contract.Binary_Objects;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
-using Dev2.Common;
-using Dev2.Data;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract.Binary_Objects;
-using System.Collections.Concurrent;
-using Ionic.Zip;
 
 namespace Dev2.DataList.Contract.Persistence {
 

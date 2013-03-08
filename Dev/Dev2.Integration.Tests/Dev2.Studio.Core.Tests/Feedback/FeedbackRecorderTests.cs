@@ -1,5 +1,4 @@
-﻿using Dev2.Studio.AppResources.Exceptions;
-using Dev2.Studio.Feedback;
+﻿using Dev2.Studio.Feedback;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;

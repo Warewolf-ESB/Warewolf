@@ -1,4 +1,4 @@
-﻿<Service Name="Tool Testing" ID="7fae60bd-89e1-46a8-898d-c88ba3e581fa" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Tool Testing"
+<Service Name="Tool Testing" ID="7fae60bd-89e1-46a8-898d-c88ba3e581fa" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Tool Testing"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"

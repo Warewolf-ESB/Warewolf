@@ -494,7 +494,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             EndpointAddress dsfAddress = new EndpointAddress(uri);
             BasicHttpBinding dsfBinding = new BasicHttpBinding();
 
-            IFrameworkDataChannel dsf = ChannelFactory<IFrameworkDataChannel>.CreateChannel(dsfBinding, dsfAddress);
+            IEsbChannel dsf = ChannelFactory<IEsbChannel>.CreateChannel(dsfBinding, dsfAddress);
 
             return dsf.ExecuteCommand(requestXml);
         }

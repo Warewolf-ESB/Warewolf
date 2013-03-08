@@ -23,7 +23,7 @@ namespace Dev2.Integration.Tests.Build.Tests
         }
 
         IEnvironmentConnection _connection;
-        IFrameworkDataChannel _dataChannel;
+        IStudioEsbChannel _dataChannel;
         MockSecurityProvider _mockSecurityProvider;
 
         private TestContext testContextInstance;
@@ -196,11 +196,7 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestMethod()]
         public void AppServerr_Update_Resource_Correctly()
         {
-            string expected = @"<XmlData>
-              <XmlData>
-                <CompilerMessage>Updated Service 'ServiceToBindFrom'</CompilerMessage>
-              </XmlData>
-            </XmlData>";
+            string expected = @"<CompilerMessage>Updated Service 'ServiceToBindFrom'</CompilerMessage>";
             string Command = TestResource.Service_Update_Request_String;
             string actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.NewGuid());
 

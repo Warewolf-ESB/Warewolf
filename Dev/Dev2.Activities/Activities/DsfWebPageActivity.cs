@@ -14,6 +14,7 @@ using Dev2;
 using Dev2.Network.Execution;
 using Unlimited.Framework;
 using Dev2.Data.Util;
+using Dev2.DynamicServices;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -172,7 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(!string.IsNullOrEmpty(WebsiteServiceName))
             {
-                websiteService = compiler.Evaluate(dataObject.DataListID, enActionType.User, WebsiteServiceName, false, out errors).FetchScalar().TheValue;
+                websiteService = compiler.Evaluate(dataObject.DataListID, Dev2.DataList.Contract.enActionType.User, WebsiteServiceName, false, out errors).FetchScalar().TheValue;
                 if(errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
@@ -198,7 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 </html>            
 ";
 
-            IFrameworkDataChannel dsfChannel = context.GetExtension<IFrameworkDataChannel>();
+            IEsbChannel dsfChannel = context.GetExtension<IEsbChannel>();
             string error = string.Empty;
             Guid dialoutID = GlobalConstants.NullDataListID;
 
@@ -224,8 +225,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         dataObject
                 );
 
-                string exeResult = dsfChannel.ExecuteCommand(instruction, dataObject.WorkspaceID, dataObject.DataListID);
-                Guid.TryParse(exeResult, out dialoutID);
+                // PBI 7913 - FIX
+                //string exeResult = string.Empty;
+                string tmpServiceName = dataObject.ServiceName;
+                dataObject.ServiceName = websiteService; // set up for sub-exection ;)
+                ErrorResultTO tmpErrors;
+                dialoutID = dsfChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+                dataObject.ServiceName = tmpServiceName;
+                //string exeResult = dsfChannel.ExecuteCommand(instruction, dataObject.WorkspaceID, dataObject.DataListID);
 
                 if(!compiler.HasErrors(dialoutID) && dialoutID == executionID)
                 {
@@ -362,67 +369,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         tmpConfig.Add(cell.XmlConfiguration);
 
                         // TODO : Merge executionID into new tmpDLID for binding...
-                        string instruction = UnlimitedObject.GenerateServiceRequest(
-                                cell.WebPartServiceName,
-                                string.Empty,
-                                new List<string> { DataListUtil.StripCrap(tmpConfig.XmlString), properWebServer },
-                                dataObject
-                        );
-
-                        // Do some cleanup -- Hack of note ;)
-                        instruction = instruction.Replace("<DataList>", "").Replace("</DataList>", "").Replace("<ADL>", "").Replace("</ADL>", "");
-
-
-                        Guid currentGuid = Guid.NewGuid();
-                        Guid tmpID = compiler.CloneDataList(executionID, out errors);
-                        if(errors.HasErrors())
-                        {
-                            allErrors.MergeErrors(errors);
-                        }
-
-                        // 03.01.2013 - Force binding at this level to avoid silly recusive data binding problems ;)
-                        IBinaryDataListEntry evaluatedPayload = compiler.Evaluate(parentID, enActionType.User, instruction, false, out errors);
+                        string inst = DataListUtil.StripCrap(tmpConfig.XmlString);
+                        IBinaryDataListEntry evaluatedPayload = compiler.Evaluate(parentID, Dev2.DataList.Contract.enActionType.User, inst, false, out errors);
                         allErrors.MergeErrors(errors);
 
-                        if (evaluatedPayload.FetchScalar() != null)
+                        if (evaluatedPayload != null)
                         {
-                            string boundInstruction = evaluatedPayload.FetchScalar().TheValue;
-                            
-                            if (boundInstruction != string.Empty)
+                            string payload = evaluatedPayload.FetchScalar().TheValue;
+
+                            IDSFDataObject cellServiceObj = new DsfDataObject(payload, GlobalConstants.NullDataListID);
+                            cellServiceObj.ServiceName = cell.WebPartServiceName;
+
+                            ErrorResultTO invokeErrors;
+                            Guid currentGuid = dsfChannel.ExecuteTransactionallyScopedRequest(cellServiceObj, dataObject.WorkspaceID, out invokeErrors);
+                            allErrors.MergeErrors(invokeErrors);
+
+
+                            if (currentGuid == cellServiceObj.DataListID)
                             {
-                                instruction = boundInstruction.Replace(GlobalConstants.WebserverReplaceTag, server);
+
+                                // 25.07.2012 : Travis.Frisinger - correctly bind variables 
+                                // At this point, I need to re-bind vars in the stream to ensure recursive binding happens correctly
+                                // since with webpages there is a very real possiblity that recursivly bound var is not in the 
+                                // sub activities DL and would cause a blank instead of proper binding ;)
+
+                                //string fragment = Compiler.ExtractSystemTag(enSystemTag.Fragment, result);
+                                string fragment = compiler.EvaluateSystemEntry(currentGuid, enSystemTag.Fragment, out errors);
+                                if (errors.HasErrors())
+                                {
+                                    allErrors.MergeErrors(errors);
+                                }
+
+                                res.Add(currentGuid, fragment);
+                                sb.Append(currentGuid.ToString());
+
+                                // now clean up the tmp dataList
+                                compiler.ForceDeleteDataListByID(currentGuid);
+                                //executionID = masterExecutionID;
+
                             }
-                        }
-
-                        string result = dsfChannel.ExecuteCommand(instruction, dataObject.WorkspaceID, tmpID);
-                        Guid.TryParse(result, out currentGuid);
-
-                        if(currentGuid == tmpID)
-                        {
-
-                            // 25.07.2012 : Travis.Frisinger - correctly bind variables 
-                            // At this point, I need to re-bind vars in the stream to ensure recursive binding happens correctly
-                            // since with webpages there is a very real possiblity that recursivly bound var is not in the 
-                            // sub activities DL and would cause a blank instead of proper binding ;)
-
-                            //string fragment = Compiler.ExtractSystemTag(enSystemTag.Fragment, result);
-                            string fragment = compiler.EvaluateSystemEntry(tmpID, enSystemTag.Fragment, out errors);
-                            if(errors.HasErrors())
+                            else
                             {
-                                allErrors.MergeErrors(errors);
+                                res.Add(currentGuid, GlobalConstants.WebpartRenderError);
                             }
-
-                            res.Add(currentGuid, fragment);
-                            sb.Append(currentGuid.ToString());
-
-                            // now clean up the tmp dataList
-                            compiler.ForceDeleteDataListByID(tmpID);
-                            executionID = masterExecutionID;
-
-                        }
-                        else
-                        {
-                            res.Add(currentGuid, GlobalConstants.WebpartRenderError);
                         }
                     }
 
@@ -465,7 +454,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Travis.Frisinger : Evaluate Title from DataList - Must remain swapped with pre and current ADL to properly eval
             //string evaluatedTitle = Compiler.EvaluateFromDataList(DisplayName, DataObject.DataList, preExecuteADL, DataObject.XmlData);
-            string evaluatedTitle = compiler.Evaluate(executionID, enActionType.User, DisplayName, false, out errors).FetchScalar().TheValue;
+            string evaluatedTitle = compiler.Evaluate(executionID, Dev2.DataList.Contract.enActionType.User, DisplayName, false, out errors).FetchScalar().TheValue;
             if(errors.HasErrors())
             {
                 allErrors.MergeErrors(errors);
@@ -530,8 +519,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if(allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError(webPageName, allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError(webPageName, allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
                 // clean up
@@ -620,8 +609,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 </html>            
 ";
 
-            IFrameworkDataChannel dsfChannel = context.GetExtension<IFrameworkDataChannel>();
-            IFrameworkActivityChannel actChannel = dsfChannel as IFrameworkActivityChannel;
+            IEsbChannel dsfChannel = context.GetExtension<IEsbChannel>();
+            IEsbActivityChannel actChannel = dsfChannel as IEsbActivityChannel;
 
             if (!string.IsNullOrEmpty(websiteService))
             {
@@ -985,7 +974,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        private sealed class WebSiteActivityPayload : IFrameworkActivityInstruction
+        private sealed class WebSiteActivityPayload : IEsbActivityInstruction
         {
             private string _instruction;
             private string _result;
@@ -996,7 +985,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             public string Instruction { get { return _instruction; } }
             public string Result { get { return _result; } set { _result = value; } }
             public Guid ID;
-            public Guid dataListID { get; set; }
+            public Guid DataListID { get; set; }
 
             public void SetInstruction(string value)
             {

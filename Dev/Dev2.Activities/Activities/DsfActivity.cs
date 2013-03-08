@@ -6,9 +6,7 @@ using Dev2.Diagnostics;
 using Dev2.Network.Execution;
 using System;
 using System.Activities;
-using System.Collections;
 using System.Collections.Generic;
-using Unlimited.Framework;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -145,37 +143,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             context.Properties.ToObservableCollection(); /// ???? Why is this here....
 
             bool createResumptionPoint = false;
-            //IFrameworkDataChannel dsfChannel = context.GetExtension<IFrameworkDataChannel>();
-            IFrameworkWorkspaceChannel workspaceChannel = context.GetExtension<IFrameworkWorkspaceChannel>();
-            IApplicationMessage messageNotification = context.GetExtension<IApplicationMessage>();
-            //IDynamicServicesInvoker executionEngine = context.GetExtension<IDynamicServicesInvoker>();
+            IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            if (dataObject != null && compiler != null)
-            {
-                compiler.ClearErrors(dataObject.DataListID);
-
-                if (!dataObject.IsDataListScoped)
-                {
-                    var dataListExecutionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
-                    DataListExecutionID.Set(context, dataListExecutionID);
-
-                }
-                else
-                {
-                    // recycle the DataList ;)
-                    DataListExecutionID.Set(context, dataObject.DataListID);
-                }
-            }
-
-
-            Guid parentID = dataObject.DataListID;
             Guid executionID = DataListExecutionID.Get(context);
             ParentServiceName = dataObject.ServiceName;
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
@@ -183,40 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                if (dataObject.IsDataListScoped)
-                {
-                    // we need to manually manage stuff from there for foreach invoke
-                    executionID = compiler.Shape(executionID, enDev2ArgumentType.Input, InputMapping, out errors);
-                    allErrors.MergeErrors(errors);
-                }
-
-                // Set new DataListID to execution context for children
-                dataObject.DataListID = executionID;
-                Guid ghostID = GlobalConstants.NullDataListID;
-
-                // Bind service name
-                string executionServiceName = string.Empty;
-                if (!string.IsNullOrEmpty(ServiceName))
-                {
-                    // ghost service ;)
-                    if (DataListUtil.IsEvaluated(ServiceName))
-                    {
-                        // Re-assign the executionID since we need all the data!!!
-                        ghostID = compiler.FetchParentID(executionID);
-                        executionID = ghostID;
-                        dataObject.DataListID = ghostID;
-
-                        executionServiceName = compiler.Evaluate(executionID, Dev2.DataList.Contract.enActionType.User, ServiceName, false, out errors).FetchScalar().TheValue;
-                        allErrors.MergeErrors(errors);
-                    }
-                    else
-                    {
-                        executionServiceName = ServiceName;
-                    }
-
-                    //executionServiceName = binder.TextAndJScriptRegionEvaluator(ambientData, ServiceName, "", DatabindRecursive, DataObject != null ? DataObject.ServiceName : string.Empty);
-                }
-
+                string executionServiceName = ServiceName;
 
                 // Set Debug Mode Value
                 string debugMode = compiler.EvaluateSystemEntry(executionID, enSystemTag.BDSDebugMode, out errors);
@@ -243,7 +184,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.UpsertSystemTag(executionID, enSystemTag.BDSDebugMode, string.Empty, out errors);
                 allErrors.MergeErrors(errors);
 
-                //compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.ParentWorkflowInstanceId, context.WorkflowInstanceId.ToString(), out errors);
                 compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, context.WorkflowInstanceId.ToString(), out errors);
                 allErrors.MergeErrors(errors);
 
@@ -253,13 +193,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentInstanceID = InstanceID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
-                string instruction = UnlimitedObject.GenerateServiceRequest(
-                        executionServiceName,
-                        DataTags,
-                        new List<string> { },
-                        dataObject
-                );
-
                 if (!DeferExecution)
                 {
 
@@ -267,22 +200,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Guid result = GlobalConstants.NullDataListID;
                     ErrorResultTO tmpErrors = new ErrorResultTO();
 
-                    if (workspaceChannel == null)
+                    if (esbChannel == null)
                     {
-                        throw new Exception("FATAL ERROR : Null workspace channel!!");
-                        //result = binder.InvokeDsfService(instruction, uri, executionID);
+                        throw new Exception("FATAL ERROR : Null ESB channel!!");
                     }
                     else
                     {
-                        string id = workspaceChannel.ExecuteCommand(instruction, dataObject.WorkspaceID, dataObject.DataListID);
-                        Guid.TryParse(id, out result);
+                        // PBI 7913
+                        if (executionID != GlobalConstants.NullDataListID)
+                        {
+                            // Inputs adjustment as the request
+                            Guid subExeID = compiler.Shape(executionID, enDev2ArgumentType.Input, InputMapping, out errors);
+                            dataObject.DataListID = subExeID;
+                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+
+                            // Execute Request
+                            esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
+
+
+                            compiler.SetParentID(subExeID, executionID);
+
+                            //  Do Output shaping
+                            compiler.Shape(subExeID, enDev2ArgumentType.Output, OutputMapping, out errors);
+                            allErrors.MergeErrors(errors);
+
+
+                            compiler.DeleteDataListByID(subExeID); // remove sub service DL
+
+                            dataObject.DataListID = executionID; // re-set DL ID
+                            dataObject.ServiceName = ServiceName;
+                        }
 
                     }
-
-                    // adjust the webpage and instance data....????
-
-                    //result = result.Replace("@WebpageInstance", context.WorkflowInstanceId.ToString());
-                    //result = result.Replace("@Instance", context.WorkflowInstanceId.ToString());
 
                     bool whereErrors = compiler.HasErrors(executionID);
 
@@ -318,40 +268,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.DatalistOutMergeID, dataObject.DataListID, dataObject.DatalistOutMergeFrequency, dataObject.DatalistOutMergeType, dataObject.DatalistOutMergeDepth);
                         ExecutionStatusCallbackDispatcher.Instance.Post(dataObject.BookmarkExecutionCallbackID, ExecutionStatusCallbackMessageType.BookmarkedCallback);
 
-
-
                         // Signal DataList server to persist the data ;)
                         compiler.PersistResumableDataListChain(dataObject.DataListID);
 
                         // INFO : In these cases resumption handles the delete and shape ;)
-                    }
-                    else
-                    {
-                        // Travis.Frisinger - 24.07.2012, Brendon.Page - 2012-12-03 Moved here because this logic only should run if not being bookmarked
-                        if (result == GlobalConstants.NullDataListID || result != dataObject.DataListID)
-                        {
-                            allErrors.AddError("Failed to execute instruction [ " + instruction + " ] DataListID [ " + dataObject.DataListID + " ]");
-                        }
-                        else
-                        {
-                            // Reset DataListID for merge ;)
-                            dataObject.DataListID = parentID;
-                        }
-
-                        if (dataObject.IsDataListScoped)
-                        {
-                            compiler.Shape(executionID, enDev2ArgumentType.Output_Append_Style, OutputMapping, out errors);
-                            allErrors.MergeErrors(errors);
-                            IBinaryDataList bdl = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-                            bdl.FetchAllEntries();
-                            // we need to delete the executionID in this case ;)
-                            compiler.DeleteDataListByID(executionID);
-                        }
-                        else
-                        {
-                            compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                            allErrors.MergeErrors(errors);
-                        }
                     }
                 }
                 else
@@ -366,8 +286,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Handle Errors
                     if (allErrors.HasErrors())
                     {
-                        string err = DisplayAndWriteError("DsfBaseActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                        DisplayAndWriteError("DsfBaseActivity", allErrors);
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
                 dataObject.ParentInstanceID = _previousParentID;
@@ -475,6 +395,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Overridden ActivityAbstact Methods
 
+        #region Debug IO
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
@@ -518,6 +439,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return results;
         }
+
+        #endregion
 
         #region Get ForEach Input/Output Updates
 

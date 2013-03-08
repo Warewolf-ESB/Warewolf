@@ -111,17 +111,5 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
-        public void BaseConvertIncorrectTypeConversion_Expected_ErrorReturnedStatingTheIncorrectTypeWasUsedToConvert()
-        {
-            string expected = @"<InnerError>Base Conversion Broker was expecting [ Binary ] but the data was not in this format</InnerError>";
-
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithNoIndex");
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-
-            Assert.IsTrue(ResponseData.Contains(expected));
-
-        }
     }
 }

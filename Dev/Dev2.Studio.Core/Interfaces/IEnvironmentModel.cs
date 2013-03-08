@@ -2,7 +2,7 @@
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 
-namespace Dev2.Studio.Core.Interfaces
+namespace Dev2.Studio.Core.Interfaces 
 {
     public interface IEnvironmentModel : IEquatable<IEnvironmentModel>
     {
@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Interfaces
         string Name { get; set; }
         bool IsConnected { get; }
         Uri DsfAddress { get; set; }
-        IFrameworkDataChannel DsfChannel { get; }
+        IStudioEsbChannel DsfChannel { get;  }
         INetworkExecutionChannel ExecutionChannel { get; }
         INetworkDataListChannel DataListChannel { get; }
         IEnvironmentConnection EnvironmentConnection { get; set; }

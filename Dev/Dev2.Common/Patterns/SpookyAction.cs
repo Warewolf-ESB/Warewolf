@@ -10,9 +10,9 @@ namespace Dev2.Common
     /// </summary>
     /// <typeparam name="T">Class</typeparam>
     /// <typeparam name="S">Enum</typeparam>
-    public class SpookyAction<T> where T : ISpookyLoadable
+    public class SpookyAction<T, TS> where T : ISpookyLoadable<TS>
     {
-        private static readonly ConcurrentDictionary<Enum, T> _options = new ConcurrentDictionary<Enum, T>();
+        private static readonly ConcurrentDictionary<TS, T> _options = new ConcurrentDictionary<TS, T>();
         private static bool _inited;
 
         /// <summary>
@@ -41,9 +41,9 @@ namespace Dev2.Common
         /// <summary>
         /// Find the matching object
         /// </summary>
-        /// <param name="expressionType"></param>
+        /// <param name="typeOf">The type of.</param>
         /// <returns></returns>
-        public T FindMatch(Enum typeOf)
+        public T FindMatch(TS typeOf)
         {
             T result;
             if (!_options.TryGetValue(typeOf, out result))

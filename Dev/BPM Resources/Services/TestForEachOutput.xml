@@ -1,4 +1,4 @@
-﻿<Service Name="TestForEachOutput" ID="7baeb3dc-8257-405a-a59b-10ff935e699e" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="TestForEachOutput"
+<Service Name="TestForEachOutput" ID="7baeb3dc-8257-405a-a59b-10ff935e699e" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="TestForEachOutput"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

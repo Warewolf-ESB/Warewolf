@@ -1,4 +1,4 @@
-﻿<Service Name="MultiAssignUsingBlankIntegrationTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="MultiAssignUsingBlankIntegrationTest"
+<Service Name="MultiAssignUsingBlankIntegrationTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="MultiAssignUsingBlankIntegrationTest"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:d="clr-namespace:Dev2;assembly=Dev2.Core"

@@ -66,7 +66,6 @@ namespace Dev2
             bool isXmlData = false;
 
             // Commented out by Michael by instruction of Travis pending the refactor
-            /*
             try
             {
                 string baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
@@ -85,7 +84,7 @@ namespace Dev2
             catch(Exception)
             {
             }
-             */
+         
 
             if (!isXmlData)
             {
@@ -247,7 +246,7 @@ namespace Dev2
         #endregion
 
         #region Instance Fields
-        private DynamicServicesEndpoint _dsf;
+        private DynamicServicesEndpoint _esbEndpoint;
         private string _endpointAddress;
         private HttpServer _server;
         private StudioNetworkServer _network;
@@ -326,7 +325,7 @@ namespace Dev2
 
         void GetResourceHandler(HttpServer sender, ICommunicationContext ctx)
         {
-            var uriString = ctx.Request.Uri.OriginalString;
+                var uriString = ctx.Request.Uri.OriginalString;
 
 
             if(uriString.IndexOf("wwwroot") < 0)
@@ -337,46 +336,46 @@ namespace Dev2
                 return;
             }
 
-            var website = ctx.Request.BoundVariables["website"];
-            var path = ctx.Request.BoundVariables["path"];
-            var extension = Path.GetExtension(uriString);
+                var website = ctx.Request.BoundVariables["website"];
+                var path = ctx.Request.BoundVariables["path"];
+                var extension = Path.GetExtension(uriString);
 
             if (string.IsNullOrEmpty(extension))
-            {
+                {
+                    //
+                    // REST request e.g. http://localhost:1234/wwwroot/sources/server
+                    //
+                    const string ContentToken = "getParameterByName(\"content\")";
+
+                    var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
+                    var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
+
+                    ctx.Send(new DynamicFileCommunicationResponseWriter(layoutFilePath, ContentToken, contentPath));
+                    return;
+                }
+
+                // Should get url's with the following signatures
                 //
-                // REST request e.g. http://localhost:1234/wwwroot/sources/server
+                // http://localhost:1234/wwwroot/sources/Scripts/jquery-1.7.1.js
+                // http://localhost:1234/wwwroot/sources/Content/Site.css
+                // http://localhost:1234/wwwroot/sources/images/error.png
+                // http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
+                // http://localhost:1234/wwwroot/views/sources/server.htm
                 //
-                const string ContentToken = "getParameterByName(\"content\")";
-
-                var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
-                var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
-
-                ctx.Send(new DynamicFileCommunicationResponseWriter(layoutFilePath, ContentToken, contentPath));
-                return;
-            }
-
-            // Should get url's with the following signatures
-            //
-            // http://localhost:1234/wwwroot/sources/Scripts/jquery-1.7.1.js
-            // http://localhost:1234/wwwroot/sources/Content/Site.css
-            // http://localhost:1234/wwwroot/sources/images/error.png
-            // http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
-            // http://localhost:1234/wwwroot/views/sources/server.htm
-            //
-            // We support only 1 level below the Views folder 
-            // If path is a string without a backslash then we are processing the following request
-            //       http://localhost:1234/wwwroot/views/sources/server.htm
-            // If path is a string with a backslash then we are processing the following request
-            //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
-            //
+                // We support only 1 level below the Views folder 
+                // If path is a string without a backslash then we are processing the following request
+                //       http://localhost:1234/wwwroot/views/sources/server.htm
+                // If path is a string with a backslash then we are processing the following request
+                //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
+                //
             if (!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
-            {
-                uriString = uriString.Replace(path, "");
-            }
-            var result = GetFileFromPath(new Uri(uriString));
+                {
+                    uriString = uriString.Replace(path, "");
+                }
+                var result = GetFileFromPath(new Uri(uriString));
 
-            ctx.Send(result);
-        }
+                ctx.Send(result);
+            }
 
         #endregion
 
@@ -539,7 +538,7 @@ namespace Dev2
 
         private void StartNetworkServer(IList<string> endpointAddresses)
         {
-            _dsf = _network.Channel;
+            _esbEndpoint = _network.Channel;
 
             if (endpointAddresses == null || endpointAddresses.Count == 0)
             {
@@ -547,32 +546,32 @@ namespace Dev2
             }
 
             var entries = endpointAddresses.Where(s => !string.IsNullOrWhiteSpace(s)).Select(a =>
-            {
-                int port;
-                IPHostEntry entry;
+                {
+                    int port;
+                    IPHostEntry entry;
 
-                try
-                {
-                    Uri uri = new Uri(a);
-                    string dns = uri.DnsSafeHost;
-                    port = uri.Port;
-                    entry = Dns.GetHostEntry(dns);
-                }
-                catch
-                {
-                    port = 0;
-                    entry = null;
-                }
+                    try
+                    {
+                        Uri uri = new Uri(a);
+                        string dns = uri.DnsSafeHost;
+                        port = uri.Port;
+                        entry = Dns.GetHostEntry(dns);
+                    }
+                    catch
+                    {
+                        port = 0;
+                        entry = null;
+                    }
 
                 if (entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
-                {
-                    ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
-                    return null;
-                }
+                    {
+                        ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
+                        return null;
+                    }
 
-                return new Tuple<IPHostEntry, int>(entry, port);
+                    return new Tuple<IPHostEntry, int>(entry, port);
 
-            }).Where(e => e != null).ToList();
+                }).Where(e => e != null).ToList();
 
 
             if (!entries.Any())
@@ -605,39 +604,83 @@ namespace Dev2
             
         }
 
-        private CommunicationResponseWriter CreateForm(dynamic d, string clientID)
+        private CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string clientID)
         {
 
             // strip out &amp; and replace correctly
             //string correctedURI = d.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
             string correctedURI = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
             string executePayload = null;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            Guid clientGuid = Guid.Empty;
 
             if (clientID != null)
             {
-                Guid clientGuid;
 
-                if (Guid.TryParse(clientID, out clientGuid))
+                if (!Guid.TryParse(clientID, out clientGuid))
                 {
-                    executePayload = _dsf.ExecuteCommand(correctedURI, Workspaces.WorkspaceRepository.Instance.Get(clientGuid) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace, GlobalConstants.NullDataListID);
+
+                    clientGuid = Workspaces.WorkspaceRepository.Instance.ServerWorkspace.ID;
+
+                    // executePayload = _esbEndpoint.ExecuteCommand(correctedURI, Workspaces.WorkspaceRepository.Instance.Get(clientGuid) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace, GlobalConstants.NullDataListID);
                 }
                 else
-                    executePayload = _dsf.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
+                {
+                    //executePayload = _esbEndpoint.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
+            }
             }
             else
             {
-                executePayload = _dsf.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
+                //executePayload = _esbEndpoint.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
+                clientGuid = Workspaces.WorkspaceRepository.Instance.ServerWorkspace.ID;
             }
 
-
-            // Travis.Frisinger - 404 hack
-            if (executePayload.IndexOf("<InnerError>", StringComparison.Ordinal) > 0 && executePayload.IndexOf("' Not Found", StringComparison.Ordinal) > 0)
+            ErrorResultTO errors = new ErrorResultTO();
+            IDSFDataObject dataObject = new DsfDataObject(correctedURI, GlobalConstants.NullDataListID);
+            // ensure service gets set ;)
+            if (dataObject.ServiceName == null)
             {
-
-                string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-
-                return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, "<center><h1>404</h1>\r\n" + WebServerResources.ERROR_404_Message + "</center>"));
+                dataObject.ServiceName = serviceName;
             }
+
+            Guid executionDLID = _esbEndpoint.ExecuteRequest(dataObject, clientGuid, out errors);
+
+            // Handle errors returned ;)
+            if (errors.HasErrors())
+            {
+                ErrorResultTO errors2;
+                compiler.UpsertSystemTag(executionDLID, enSystemTag.Error, errors.MakeDataListReady(), out errors2);
+            }
+
+            // Fetch and convert DL
+            if(executionDLID != GlobalConstants.NullDataListID)
+            {
+                executePayload = compiler.ConvertFrom(executionDLID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            }
+            else
+            {
+                executePayload = "<FatalError> An internal error occured while executing the service request</FatalError>";
+            }
+
+            // Clean up the datalist from the server
+            if (!dataObject.WorkflowResumeable)
+            {
+                compiler.ForceDeleteDataListByID(executionDLID);
+            }
+
+            //dynamic result = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(executePayload);
+
+            // Stop returning 404 on failure....
+            //if (result.HasError)
+            //{
+            //    if (result.Error is string)
+            //    {
+            //        if (result.Error.Equals(WebServerResources.ERROR_404_Message, StringComparison.InvariantCultureIgnoreCase))
+            //        {
+            //            return new NotFoundCommunicationResponseWriter();
+            //        }
+            //    }
+            //}
 
             // TODO : Allow return type to be specified as a parameter... Default to XML
             string result = executePayload;
@@ -702,7 +745,7 @@ namespace Dev2
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
 
-            return CreateForm(d, null);
+            return CreateForm(d, serviceName, null);
 
         }
 
@@ -721,7 +764,7 @@ namespace Dev2
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
 
-            return CreateForm(d, clientID);
+            return CreateForm(d, serviceName, clientID);
 
         }
         #endregion
@@ -765,7 +808,7 @@ namespace Dev2
                 d.AddResponse(formData);
             }
 
-            return CreateForm(d, workspaceID);
+            return CreateForm(d, serviceName, workspaceID);
         }
         #endregion
 

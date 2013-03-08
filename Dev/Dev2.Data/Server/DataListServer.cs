@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
-using Dev2.DataList.Contract;
-using Dev2.Server.DataList.Persistence;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Server.DataList
 {
@@ -158,5 +156,6 @@ namespace Dev2.Server.DataList
         public bool PersistChildChain(Guid id) {
             return _persistence.PersistChildChain(id);
         }
+
     }
 }

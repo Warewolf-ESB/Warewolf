@@ -3,11 +3,12 @@ using System.IO;
 using Dev2;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
-using Dev2.Runtime.InterfaceImplementors;
+using Dev2.Runtime.ESB;
 using Dev2.Tests.Activities;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework;
+using Dev2.Runtime.ESB.Execution;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests
@@ -28,10 +30,10 @@ namespace ActivityUnitTests
     public class BaseActivityUnitTest
     {
 
-        public IFrameworkWorkspaceChannel DsfChannel;
+        public IEsbWorkspaceChannel DsfChannel;
         public IFrameworkSecurityContext SecurityContext;
         public Uri DsfAdddress = new Uri("http://localhost:77/dsf");
-        public Mock<IFrameworkWorkspaceChannel> MockChannel;
+        public Mock<IEsbWorkspaceChannel> MockChannel;
         public IDataListCompiler Compiler;
 
         
@@ -92,7 +94,8 @@ namespace ActivityUnitTests
                          new Variable<string>{Name = "ExplicitDataList"},
                          new Variable<bool>{Name = "IsValid"},
                          new Variable<UnlimitedObject>{Name = "d"},
-                         new Variable<Util>{ Name = "t"}
+                         new Variable<Util>{ Name = "t"},
+                         new Variable<Dev2DataListDecisionHandler>{Name = "Dev2DecisionHandler"}
 
                         }
                         ,
@@ -127,15 +130,9 @@ namespace ActivityUnitTests
         public dynamic ExecuteProcess(DsfDataObject dataObject = null)
         {
 
-            var svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
-
+            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
             svc.SetActivity(FlowchartProcess);
-
-            var mockChannel = new Mock<IFrameworkDataChannel>();
-
-            mockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), GlobalConstants.NullDataListID)).Callback((string xml, Guid dlId, Guid id) => ExecuteCallBack(xml)).Returns(() => _result);
-
-            var invoker = new DynamicServicesInvoker(mockChannel.Object, null, false, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace);
+            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
 
             if (CurrentDl == null)
             {
@@ -148,12 +145,13 @@ namespace ActivityUnitTests
                 Compiler = DataListFactory.CreateDataListCompiler();
 
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-                    if(dataObject != null)
-                    {
-                        dataObject.DataListID = ExecutionID;
-                    }
+                if(dataObject != null)
+                {
+                    dataObject.DataListID = ExecutionID;
+                }
                 
             }
+
             if (errors.HasErrors())
             {
                 string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
@@ -163,6 +161,7 @@ namespace ActivityUnitTests
 
             if (dataObject == null)
             {
+
                 dataObject = new DsfDataObject(CurrentDl, ExecutionID)
                 {
                     // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
@@ -171,8 +170,11 @@ namespace ActivityUnitTests
                 };
             }
 
-            
-            invoker.WorkflowApplication(svc, dataObject, TestData);
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+
+            errors.ClearErrors();
+            dataObject.DataListID = wfec.Execute(out errors);
+
             return dataObject;
         }
 
@@ -184,20 +186,17 @@ namespace ActivityUnitTests
         /// We will mock the DSF channel to return something that we expect is shaped.
         /// </summary>
         /// <returns></returns>
-        public dynamic ExecuteForEachProcess()
+        public Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject)
         {
-            var svc = new ServiceAction { Name = "testAction", ServiceName = "UnitTestService" };
-
+            var svc = new ServiceAction { Name = "ForEachTestAction", ServiceName = "UnitTestService" };
+            var mockChannel = new Mock<IEsbChannel>();
             svc.SetActivity(FlowchartProcess);
-
-
-
 
             if (CurrentDl == null)
             {
                 CurrentDl = TestData;
             }
-            //UnlimitedObject.GetStringXmlDataAsUnlimitedObject(CurrentDL)
+
             Compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid exID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
@@ -208,48 +207,26 @@ namespace ActivityUnitTests
                 throw new Exception(errorString);
             }
 
-            var dataObject = new DsfDataObject(CurrentDl, exID)
+            dataObject = new DsfDataObject(CurrentDl, exID)
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
                 ServerID = Guid.NewGuid()
             };
-            MockChannel = new Mock<IFrameworkWorkspaceChannel>();
-            MockChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                       .Returns((string svcName, Guid wsId, Guid executionID) => executionID.ToString()).Verifiable();
 
-            var invoker = new DynamicServicesInvoker(MockChannel.Object, null, false, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace);
 
-            invoker.WorkflowApplication(svc, dataObject, TestData);
-            return dataObject;
+            mockChannel.Setup(c=>c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors)).Verifiable();
+
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+
+            errors.ClearErrors();
+            dataObject.DataListID = wfec.Execute(out errors);
+
+            return mockChannel;
         }
 
 
         #endregion ForEach Execution
-
-
-        // return for the callback
-        string _result = "<error>nop</error>";
-        //protected static Process _redisProcess;
-
-        /*
-         * After much fing around it appears the mock is staticly evaluated and the result cannot be changed for a callback return value
-         * 
-         */
-        public void ExecuteCallBack(string xml)
-        {
-            UnlimitedObject serviceRequest = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
-
-            string partName = serviceRequest.GetValue("WebPartServiceName");
-
-            Console.WriteLine(@"Part : " + partName);
-
-            if (partName == "HtmlWidget")
-            {
-                _result = ActivityStrings.webpartTemplate.Replace("!REPLACE!", CallBackData);
-            }
-
-        }
 
         #region Activity Debug Input/Output Test Methods
 

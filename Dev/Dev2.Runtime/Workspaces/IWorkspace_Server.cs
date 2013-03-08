@@ -9,7 +9,7 @@ namespace Dev2.Workspaces {
         /// <summary>
         /// Gets or sets the host - TODO: Remove and use Services instead.
         /// </summary>
-        DynamicServicesHost Host {
+        IDynamicServicesHost Host {
             get;
             set;
         }

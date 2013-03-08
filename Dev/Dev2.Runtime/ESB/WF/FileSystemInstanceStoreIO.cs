@@ -33,7 +33,8 @@ namespace Dev2.DynamicServices
 
         #region Save Methods
 
-        public Boolean SaveAllInstanceData(Guid instanceId, SaveWorkflowCommand command)
+        public Boolean SaveAllInstanceData(Guid instanceId,
+            SaveWorkflowCommand command)
         {
             Boolean isExistingInstance = false;
             try
@@ -51,13 +52,13 @@ namespace Dev2.DynamicServices
 
                 XElement section = new XElement("InstanceData");
                 root.Add(section);
-                foreach(var entry in command.InstanceData)
+                foreach (var entry in command.InstanceData)
                 {
                     SaveSingleEntry(serializer, section, entry);
                 }
                 SaveInstanceDocument(fullPath, xml);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("SaveAllInstanceData Exception: {0}", exception.Message);
                 throw new InstancePersistenceException(exception.Message, exception);
@@ -65,7 +66,8 @@ namespace Dev2.DynamicServices
             return isExistingInstance;
         }
 
-        public void SaveAllInstanceMetaData(Guid instanceId, SaveWorkflowCommand command)
+        public void SaveAllInstanceMetaData(Guid instanceId,
+            SaveWorkflowCommand command)
         {
             try
             {
@@ -81,22 +83,23 @@ namespace Dev2.DynamicServices
 
                 XElement section = new XElement("InstanceMetadata");
                 root.Add(section);
-                foreach(var entry in command.InstanceMetadataChanges)
+                foreach (var entry in command.InstanceMetadataChanges)
                 {
                     SaveSingleEntry(serializer, section, entry);
                 }
                 SaveInstanceDocument(fullPath, xml);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("SaveAllMetaData Exception: {0}", exception.Message);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
 
-        private void SaveSingleEntry(NetDataContractSerializer serializer, XElement section, KeyValuePair<XName, InstanceValue> entry)
+        private void SaveSingleEntry(NetDataContractSerializer serializer,
+            XElement section, KeyValuePair<XName, InstanceValue> entry)
         {
-            if(entry.Value.IsDeletedValue)
+            if (entry.Value.IsDeletedValue)
             {
                 return;
             }
@@ -110,12 +113,12 @@ namespace Dev2.DynamicServices
 
         private static void SaveInstanceDocument(String fullPath, XDocument xml)
         {
-            using(FileStream stream =
+            using (FileStream stream =
                 new FileStream(fullPath, FileMode.Create))
             {
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Encoding = Encoding.UTF8;
-                using(XmlWriter writer = XmlWriter.Create(stream, settings))
+                using (XmlWriter writer = XmlWriter.Create(stream, settings))
                 {
                     writer.WriteRaw(xml.ToString());
                 }
@@ -138,7 +141,7 @@ namespace Dev2.DynamicServices
 
                 String fileName = String.Format("{0}.xml", instanceId);
                 String fullPath = Path.Combine(_dataDirectory, fileName);
-                if(!File.Exists(fullPath))
+                if (!File.Exists(fullPath))
                 {
                     return result;
                 }
@@ -151,7 +154,7 @@ namespace Dev2.DynamicServices
                 var entries =
                     (from e in xml.Element("InstanceData").Elements("Entry")
                      select e).ToList();
-                foreach(XElement entry in entries)
+                foreach (XElement entry in entries)
                 {
                     LoadSingleEntry(serializer, instanceData, entry);
                 }
@@ -164,14 +167,14 @@ namespace Dev2.DynamicServices
                     (from e in xml.Element(
                          "InstanceMetadata").Elements("Entry")
                      select e).ToList();
-                foreach(XElement entry in entries)
+                foreach (XElement entry in entries)
                 {
                     LoadSingleEntry(serializer, instanceMetadata, entry);
                 }
 
                 result = true;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("LoadInstance Exception: {0}", exception.Message);
                 throw new InstancePersistenceException(exception.Message, exception);
@@ -190,7 +193,7 @@ namespace Dev2.DynamicServices
             InstanceValueOptions options =
                 (InstanceValueOptions)Deserialize(
                     serializer, entry.Element("Options"));
-            if(!options.HasFlag(InstanceValueOptions.WriteOnly))
+            if (!options.HasFlag(InstanceValueOptions.WriteOnly))
             {
                 instanceData.Add(key, iv);
             }
@@ -204,14 +207,14 @@ namespace Dev2.DynamicServices
         {
             String fileName = String.Format("{0}.xml", instanceId);
             String fullPath = Path.Combine(_dataDirectory, fileName);
-            if(File.Exists(fullPath))
+            if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
             }
 
             fileName = String.Format("{0}.meta.xml", instanceId);
             fullPath = Path.Combine(_dataDirectory, fileName);
-            if(File.Exists(fullPath))
+            if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
             }
@@ -232,22 +235,22 @@ namespace Dev2.DynamicServices
             try
             {
                 var fullPath = GetSaveInstanceAssociationPath(instanceId, instanceKeyToAssociate);
-                if(!isDelete)
+                if (!isDelete)
                 {
-                    if(!File.Exists(fullPath))
+                    if (!File.Exists(fullPath))
                     {
                         File.Create(fullPath);
                     }
                 }
                 else
                 {
-                    if(File.Exists(fullPath))
+                    if (File.Exists(fullPath))
                     {
                         File.Delete(fullPath);
                     }
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("PersistInstanceAssociation Exception: {0}", exception.Message);
                 throw new InstancePersistenceException(exception.Message, exception);
@@ -260,21 +263,21 @@ namespace Dev2.DynamicServices
             try
             {
                 var files = Directory.GetFiles(_dataDirectory, string.Format("Key.{0}.*.xml", instanceKey));
-                if(files.Length > 0)
+                if (files.Length > 0)
                 {
                     // TWR: Changed to use filename only as full path might also include periods!!
                     var fileName = Path.GetFileName(files[0]);
-                    if(fileName != null)
+                    if (fileName != null)
                     {
                         var nodes = fileName.Split('.');
-                        if(nodes.Length == 4)
+                        if (nodes.Length == 4)
                         {
                             Guid.TryParse(nodes[2], out instanceId);
                         }
                     }
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("GetInstanceAssociation Exception: {0}", exception.Message);
                 throw new InstancePersistenceException(exception.Message, exception);
@@ -288,15 +291,15 @@ namespace Dev2.DynamicServices
             {
                 String[] files = Directory.GetFiles(_dataDirectory,
                     String.Format("Key.*.{0}.xml", instanceKey));
-                if(files != null && files.Length > 0)
+                if (files != null && files.Length > 0)
                 {
-                    foreach(String file in files)
+                    foreach (String file in files)
                     {
                         File.Delete(file);
                     }
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("DeleteInstanceAssociation Exception: {0}", exception.Message);
                 throw new InstancePersistenceException(exception.Message, exception);
@@ -311,7 +314,7 @@ namespace Dev2.DynamicServices
         {
             _dataDirectory = Path.Combine(
                 Environment.CurrentDirectory, "InstanceStore");
-            if(!Directory.Exists(_dataDirectory))
+            if (!Directory.Exists(_dataDirectory))
             {
                 Directory.CreateDirectory(_dataDirectory);
             }
@@ -321,11 +324,11 @@ namespace Dev2.DynamicServices
             XElement parent, String name, Object value)
         {
             XElement element = new XElement(name);
-            using(MemoryStream stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream())
             {
                 serializer.Serialize(stream, value);
                 stream.Position = 0;
-                using(StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     element.Add(XElement.Load(stream));
                 }
@@ -338,12 +341,12 @@ namespace Dev2.DynamicServices
             XElement element)
         {
             Object result = null;
-            using(MemoryStream stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream())
             {
-                using(XmlDictionaryWriter writer =
+                using (XmlDictionaryWriter writer =
                     XmlDictionaryWriter.CreateTextWriter(stream))
                 {
-                    foreach(XNode node in element.Nodes())
+                    foreach (XNode node in element.Nodes())
                     {
                         node.WriteTo(writer);
                     }

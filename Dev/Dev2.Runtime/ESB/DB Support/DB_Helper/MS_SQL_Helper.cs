@@ -1,10 +1,10 @@
-﻿using Dev2.DB_Sanity;
-using Dev2.DB_Support;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Text;
+using Dev2.DB_Sanity;
+using Dev2.DB_Support;
+using System.Data.SqlClient;
+using System.Data;
 using System.Xml;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
@@ -284,15 +284,10 @@ namespace Dev2.DB_Helper
             ouputDescription.DataSourceShapes.Add(dataSourceShape);
 
             IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            dataSourceShape.Paths.AddRange(dataBrowser.Map(outputXML));
 
-            if (!string.IsNullOrEmpty(outputXML))
-            {
-                dataSourceShape.Paths.AddRange(dataBrowser.Map(outputXML));
-
-                IOutputDescriptionSerializationService outputDescriptionSerializationService =
-                    OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
-                result = outputDescriptionSerializationService.Serialize(ouputDescription);
-            }
+            IOutputDescriptionSerializationService outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+            result = outputDescriptionSerializationService.Serialize(ouputDescription);
 
 
             return result;

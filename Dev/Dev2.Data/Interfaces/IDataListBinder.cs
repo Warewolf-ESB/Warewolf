@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace Dev2.DataList.Contract
@@ -24,17 +22,9 @@ namespace Dev2.DataList.Contract
 
         string NormalizeFieldValue(string value);
 
-        //IList<UnlimitedObject> FindDataObjectByTagName(IList<string> dataList, string tagName);
-
-        //UnlimitedObject DataListToUnlimitedObject(IList<string> dataList);
-
-        //bool TagsExist(string dataTags, IList<string> dataList, out UnlimitedObject dataObject);
-
         bool ResultValidation(string result, string resultValidationRequiredTags, string resultValidationExpression);
 
         Guid InvokeDsfService(string requestXml, string uri, Guid dataListID); // Should be moved out ??
-
-        //string ParseHTML(string html, string bindingData, IFrameworkDataChannel dsfChannel, IDSFDataObject parentRequest);
 
     }
 }

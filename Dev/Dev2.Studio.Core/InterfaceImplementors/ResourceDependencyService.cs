@@ -1,4 +1,7 @@
 ﻿using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DynamicServices;
 using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -34,12 +37,14 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             request.ResourceName = resourceModel.ResourceName;
 
             var workspaceID = ((IStudioClientContext)resourceModel.Environment.DsfChannel).AccountID;
-            string result = resourceModel.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
+
+            var result = resourceModel.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
             if (result == null)
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, request.Service));
             }
+
 
             return result;
         }

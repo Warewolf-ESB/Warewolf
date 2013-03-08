@@ -1,11 +1,12 @@
-﻿using Dev2.Common;
+﻿using System;
+using Dev2.Common;
 
 namespace Dev2.Converters
 {
     /// <summary>
     /// The interface all conversion operations use
     /// </summary>
-    public interface IBaseConverter : ISpookyLoadable
+    public interface IBaseConverter : ISpookyLoadable<Enum>
     {
         /// <summary>
         /// Confirms that the payload is of the selected from type

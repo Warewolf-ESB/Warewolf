@@ -27,7 +27,7 @@ namespace Dev2.Studio.Views.Workflow {
     /// </summary>
     public partial class WorkflowDebuggerWindow {
 
-        IFrameworkDataChannel _dsfChannel;
+        IStudioEsbChannel _dsfChannel;
         IApplicationMessage _applicationMessage;
         private readonly string _dataList;
         private readonly string _workflowName;
@@ -39,7 +39,7 @@ namespace Dev2.Studio.Views.Workflow {
             InitializeComponent();
         }
 
-        public WorkflowDebuggerWindow(IFrameworkDataChannel dsfChannel, string workflowName, string workflowDefinition, string inputData, string dataList) : this() {
+        public WorkflowDebuggerWindow(IStudioEsbChannel dsfChannel, string workflowName, string workflowDefinition, string inputData, string dataList) : this() {
             _dsfChannel = dsfChannel;
             _applicationMessage = new ActivityMessage();
             _applicationMessage.MessageReceived += _applicationMessage_MessageReceived;
@@ -204,14 +204,12 @@ namespace Dev2.Studio.Views.Workflow {
             };
 
             var dataObject = new DsfDebuggerDataObject {XmlData = _inputData, DataList = _dataList};
-            var binder = new DataListBinder();
             IDataListCompiler dlCompiler = DataListFactory.CreateDataListCompiler();
 
             instance.Extensions.Add(debugger);
             instance.Extensions.Add(_dsfChannel);
             instance.Extensions.Add(_applicationMessage);
             instance.Extensions.Add(dataObject);
-            instance.Extensions.Add(binder);
             instance.Extensions.Add(dlCompiler);
 
             ThreadPool.QueueUserWorkItem((context) => {

@@ -1,4 +1,4 @@
-﻿<Service Name="DataMergeWithScalarsAndTabMerge" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="DataMergeWithScalarsAndTabMerge"
+<Service Name="DataMergeWithScalarsAndTabMerge" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="DataMergeWithScalarsAndTabMerge"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

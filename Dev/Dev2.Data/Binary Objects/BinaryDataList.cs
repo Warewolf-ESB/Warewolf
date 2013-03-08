@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using System;
@@ -357,7 +353,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 string error = string.Empty;
                 // fetch this instance via clone, fetch toClone instance and merge the data
-                IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, out error);
+                IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, this.UID, out error);
                 // Copy over the intellisesne parts ;)
                 result._intellisenseParts = _intellisenseParts;
                 if (error != string.Empty)
@@ -446,8 +442,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IBinaryDataListEntry entry;
             string error = string.Empty;
-            TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
+            TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, false), out entry, out error);
+            if(entry != null)
+            {
             entry.TryPutScalar(new BinaryDataListItem(string.Empty, GlobalConstants.ErrorPayload), out error);
+        }
+
         }
 
         #endregion
@@ -496,6 +496,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
+
         /// <summary>
         /// Merges the into instance.
         /// </summary>
@@ -543,6 +544,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         {
                             DepthMerge(depth, cloned, e, out lamdaErrors);
                         }
+
+                        // We need to ensure that the intellisense dictionary is populated with this key ;)
+
                     }
                     else
                     {
@@ -554,7 +558,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     IBinaryDataListEntry toFetch;
                     if (toClone.TryGetEntry(e, out toFetch, out error))
                     {
-                        cloned = toClone._templateDict[e].Clone(depth, out error);
+                        cloned = toClone._templateDict[e].Clone(depth, this.UID, out error);
                         if (error != string.Empty)
                         {
                             lamdaErrors.Add(error);
@@ -626,6 +630,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     // safe to add
                     if (cloned.IsRecordset)
                     {
+
+                        // Inject into the intellisense options...
+                        CreateIntelliseneResult(key, cloned.Columns);
 
                         //Massimo.Guerrera - 21-01-2013 - Added for the DeleteRecordOperation, it need to over write the data with blank values.
                         if (depth == enTranslationDepth.Data_With_Blank_OverWrite)

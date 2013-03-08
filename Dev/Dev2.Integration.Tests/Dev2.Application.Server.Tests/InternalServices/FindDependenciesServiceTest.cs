@@ -67,16 +67,5 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
 
         }
 
-        [TestMethod]
-        public void FindDependencies_NonExistantService_Expected_AllDependanciesReturned() {
-            string postData = String.Format("{0}{1}", _webserverURI, "FindDependencyService?ResourceName=somethingthatwillnevereverexist");
-            XElement response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
-
-            IEnumerable<XNode> nodes = response.DescendantNodes();
-            int count = nodes.Count();
-            // 3 Nodes indicate that the service returned nothing
-            Assert.IsTrue(count == 3);
-
-        }
     }
 }

@@ -160,8 +160,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfDataMergeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfDataMergeActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
                 #endregion

@@ -9,7 +9,7 @@ using System.IO;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     public static class Dev2HTMLParser {
 
-        /*public static string ParseHTML(string html, string bindingData, IFrameworkDataChannel dsfChannel) {
+        /*public static string ParseHTML(string html, string bindingData, IEsbChannel dsfChannel) {
             if (dsfChannel == null) {
                 throw new ArgumentNullException("dsfChannel");
             }

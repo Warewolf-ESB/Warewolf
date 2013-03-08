@@ -1,4 +1,4 @@
-﻿<Service Name="Bug6619Dep" ID="ec636256-5f11-40ab-a044-10e731d87555" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Bug6619Dep"
+<Service Name="Bug6619Dep" ID="ec636256-5f11-40ab-a044-10e731d87555" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Bug6619Dep"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"

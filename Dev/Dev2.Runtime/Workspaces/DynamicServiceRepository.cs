@@ -479,20 +479,7 @@ namespace Dev2.Workspaces
             {
                 try
                 {
-
-                    // dataList = dslObject.DataList.XmlString;
-
-                    // The following code was added by Michael to fix the try catch bug.
-                    Object theObject = dslObject.DataList;
-                    string objectType = theObject.GetType().ToString();
-                    if (objectType == "System.String")
-                    {
-                        dataList = "<ADL></ADL>";
-                    }
-                    else
-                    {
-                        dataList = dslObject.DataList.XmlString;
-                    }
+                    dataList = dslObject.DataList.XmlString;
                 }
                 catch(Exception)
                 {

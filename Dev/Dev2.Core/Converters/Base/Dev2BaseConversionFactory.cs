@@ -1,8 +1,8 @@
-﻿using Dev2.Common;
+﻿using System;
+using Dev2.Common;
 
 namespace Dev2.Converters {
-
-    public class Dev2BaseConversionFactory : SpookyAction<IBaseConverter> {
+    public class Dev2BaseConversionFactory : SpookyAction<IBaseConverter, Enum> {
         /// <summary>
         /// Used to create the conversion broker between types
         /// </summary>

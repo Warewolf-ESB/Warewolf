@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -52,21 +53,17 @@ namespace Dev2.Server.DataList.Translators
 
                     if (entry.IsRecordset)
                     {
-                        int cnt = entry.FetchLastRecordsetIndex();
-
-                        if(entry.IsEmpty())
-                        {
-                            cnt = 0; // avoid emiting a blank record if it is ment to be empty ;)
-                        }
+                        IIndexIterator idxItr = entry.FetchRecordsetIndexes();
 
                         // &amp;amp;
+                        int i;
 
-                        for (int i = 1; i <= cnt; i++)
-                        {
+                        while(idxItr.HasMore()){
+                            
+                            i = idxItr.FetchNextIndex();
+
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            if (error != string.Empty) {
-                                errors.AddError(error);
-                            }
+                            errors.AddError(error);
                             result.Append("<");
                             result.Append(entry.Namespace);
                             result.Append(">");

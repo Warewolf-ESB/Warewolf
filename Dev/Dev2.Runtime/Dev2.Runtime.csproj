@@ -50,7 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -89,23 +89,57 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DB Support\DBConnectionProperties.cs" />
-    <Compile Include="DB Support\DBConnectionString.cs" />
-    <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />
-    <Compile Include="DB Support\DB_Helper\IDBHelper.cs" />
-    <Compile Include="DB Support\DB_Helper\MS_SQL_Helper.cs" />
-    <Compile Include="DB Support\DB_Sanity\AbstractSanitizer.cs" />
-    <Compile Include="DB Support\DB_Sanity\DataSanitizerFactory.cs" />
-    <Compile Include="DB Support\enSupportedDBTypes.cs" />
-    <Compile Include="DB Support\DB_Sanity\IDataProviderSanitizer.cs" />
-    <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
-    <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
-    <Compile Include="InterfaceImplementors\DynamicServicesEndpoint.cs" />
-    <Compile Include="InterfaceImplementors\DynamicservicesHost.cs" />
-    <Compile Include="InterfaceImplementors\FileSystemInstanceStore.cs" />
-    <Compile Include="InterfaceImplementors\FileSystemInstanceStoreIO.cs" />
-    <Compile Include="InterfaceImplementors\WorkflowApplicationFactory.cs" />
-    <Compile Include="InterfaceImplementors\XmlInstanceStore.cs" />
+    <Compile Include="ESB\DB Support\DBConnectionProperties.cs" />
+    <Compile Include="ESB\DB Support\DBConnectionString.cs" />
+    <Compile Include="ESB\DB Support\DB_Helper\DBHelperFactory.cs" />
+    <Compile Include="ESB\DB Support\DB_Helper\IDBHelper.cs" />
+    <Compile Include="ESB\DB Support\DB_Helper\MS_SQL_Helper.cs" />
+    <Compile Include="ESB\DB Support\DB_Sanity\AbstractSanitizer.cs" />
+    <Compile Include="ESB\DB Support\DB_Sanity\DataSanitizerFactory.cs" />
+    <Compile Include="ESB\DB Support\enSupportedDBTypes.cs" />
+    <Compile Include="ESB\DB Support\DB_Sanity\IDataProviderSanitizer.cs" />
+    <Compile Include="ESB\DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
+    <Compile Include="ESB\Control\IDynamicServicesInvoker.cs" />
+    <Compile Include="ESB\Control\ServiceLocator.cs" />
+    <Compile Include="ESB\DynamicServicesInvoker_OLD.cs" />
+    <Compile Include="ESB\Control\DynamicservicesHost.cs" />
+    <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
+    <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
+    <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
+    <Compile Include="ESB\Execution\PluginServiceContainer.cs" />
+    <Compile Include="ESB\Execution\WebServiceContainer.cs" />
+    <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
+    <Compile Include="ESB\Management\EsbManagementServiceLocator.cs" />
+    <Compile Include="ESB\Management\IEsbManagementEndpoint.cs" />
+    <Compile Include="ESB\Management\Services\AddResource.cs" />
+    <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
+    <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
+    <Compile Include="ESB\Management\Services\CompileResource.cs" />
+    <Compile Include="ESB\Management\Services\DeleteResource.cs" />
+    <Compile Include="ESB\Management\Services\DeployResource.cs" />
+    <Compile Include="ESB\Management\Services\FindDependencies.cs" />
+    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
+    <Compile Include="ESB\Management\Services\FindDrive.cs" />
+    <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
+    <Compile Include="ESB\Management\Services\FindResource.cs" />
+    <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
+    <Compile Include="ESB\Management\Services\FindResources.cs" />
+    <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
+    <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
+    <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
+    <Compile Include="ESB\Management\Services\GetLatest.cs" />
+    <Compile Include="ESB\Management\Services\GetResource.cs" />
+    <Compile Include="ESB\Management\Services\InterrogatePlugin.cs" />
+    <Compile Include="ESB\Management\Services\Ping.cs" />
+    <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
+    <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
+    <Compile Include="ESB\Management\Services\ReloadResource.cs" />
+    <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
+    <Compile Include="ESB\Management\Sources\ManagementServiceSource.cs" />
+    <Compile Include="ESB\WF\FileSystemInstanceStore.cs" />
+    <Compile Include="ESB\WF\FileSystemInstanceStoreIO.cs" />
+    <Compile Include="ESB\WF\WorkflowApplicationFactory.cs" />
+    <Compile Include="ESB\WF\XmlInstanceStore.cs" />
     <Compile Include="AppServerStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -120,6 +154,11 @@
     <Compile Include="Network\ServerNetworkChannelContext.cs" />
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioTemplates.cs" />
+    <Compile Include="Security\HostSecureConfig.cs" />
+    <Compile Include="Security\HostSecurityProvider.cs" />
+    <Compile Include="Security\IHostSecurityProvider.cs" />
+    <Compile Include="Security\ISecureConfig.cs" />
+    <Compile Include="Security\RSAKey.cs" />
     <Compile Include="Workspaces\Framework\CompilerException.cs" />
     <Compile Include="Workspaces\Framework\DuplicateException.cs" />
     <Compile Include="Workspaces\DynamicServiceRepository.cs" />
@@ -135,7 +174,8 @@
     <Compile Include="Network\StudioNetworkServer.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="InterfaceImplementors\DynamicServicesInvoker.cs" />
+    <Compile Include="ESB\Control\DynamicServicesInvoker.cs" />
+    <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="TO\ServiceHydrationTO.cs" />
     <Compile Include="Workspaces\IWorkspaceRepository.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
@@ -144,7 +184,7 @@
     <Compile Include="Workspaces\Workspace_Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Class Diagrams\Unlimited.Framework.DynamicServices.cd" />
+    <None Include="Security\Security.cd" />
     <None Include="Workspaces\Workspaces.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -200,10 +240,6 @@
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
-      <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

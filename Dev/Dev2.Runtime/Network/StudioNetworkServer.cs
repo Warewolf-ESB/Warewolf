@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Network;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Network;
 using Dev2.DynamicServices.Network.Auxiliary;
 using Dev2.Network;
 using Dev2.Network.Messages;
 using Dev2.Network.Messaging.Messages;
+using System;
+using System.Network;
 
 namespace Dev2.DynamicServices {
     public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession> {
@@ -18,7 +19,7 @@ namespace Dev2.DynamicServices {
 
         private object _auxiliaryLock = new object();
         private StudioAuxiliaryServer _auxiliaryServer;
-        private List<ListenerConfig> _auxiliaryConfigurations;
+        private ListenerConfig[] _auxiliaryConfigurations;
 
         #endregion
 
@@ -98,9 +99,16 @@ namespace Dev2.DynamicServices {
 
         #endregion
 
-        #region ExecuteCommand Handling
-        protected override string OnExecuteCommand(StudioNetworkSession context, string payload, Guid datalistID) {
-            return _channel.ExecuteCommand(payload, Workspaces.WorkspaceRepository.Instance.Get(context.AccountID) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace, datalistID);
+        #region ExecuteRequest Handling
+        protected override string OnExecuteCommand(StudioNetworkSession context, string payload, Guid datalistID)
+        {
+            IDSFDataObject dataObject = new DsfDataObject(payload, datalistID);
+            ErrorResultTO errors = new ErrorResultTO();
+
+            string dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            string result = compiler.ConvertFrom(new Guid(dlID), DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            return result;
         }
 
         protected override void OnExecuteCommand(StudioNetworkSession context, ByteBuffer payload, Packet writer) {
@@ -110,25 +118,10 @@ namespace Dev2.DynamicServices {
 
         #region Auxiliary Conection Handling
         protected override void OnStarted(ListenerConfig[] configs) {
-            lock (_auxiliaryLock) 
-            {
-                if (_auxiliaryConfigurations == null)
-                {
-                    _auxiliaryConfigurations = new List<ListenerConfig>();
-                }
-
-                if (configs == null)
-                {
-                    return;
-                }
-
-                foreach (ListenerConfig listenerConfig in configs)
-                {
-                    _auxiliaryConfigurations.Add(new ListenerConfig(listenerConfig.Address, listenerConfig.Port + 20000, listenerConfig.Backlog));
-                }
-                //_auxiliaryConfigurations = configs ?? new ListenerConfig[0];
-                //for (int i = 0; i < _auxiliaryConfigurations.Length; i++)
-                    //_auxiliaryConfigurations[i] = new ListenerConfig(_auxiliaryConfigurations[i].Address, _auxiliaryConfigurations[i].Port + 20000, _auxiliaryConfigurations[i].Backlog);
+            lock (_auxiliaryLock) {
+                _auxiliaryConfigurations = configs ?? new ListenerConfig[0];
+                for (int i = 0; i < _auxiliaryConfigurations.Length; i++)
+                    _auxiliaryConfigurations[i] = new ListenerConfig(_auxiliaryConfigurations[i].Address, _auxiliaryConfigurations[i].Port + 20000, _auxiliaryConfigurations[i].Backlog);
             }
         }
 
@@ -148,7 +141,7 @@ namespace Dev2.DynamicServices {
             lock (_auxiliaryLock) {
                 if (_auxiliaryServer == null) {
                     _auxiliaryServer = new StudioAuxiliaryServer(this);
-                    _auxiliaryServer.Start(_auxiliaryConfigurations.ToArray());
+                    _auxiliaryServer.Start(_auxiliaryConfigurations);
                 }
 
                 _auxiliaryServer.AccountProvider.CreateAccount(guid);
@@ -239,5 +232,6 @@ namespace Dev2.DynamicServices {
             }
         }
         #endregion
+
     }
 }

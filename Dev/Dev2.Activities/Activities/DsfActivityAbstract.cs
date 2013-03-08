@@ -138,8 +138,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                    
                     // Handle Errors
                     if (errors.HasErrors()) {
-                        string err = DisplayAndWriteError("Resumption", errors);
-                        compiler.UpsertSystemTag(myDO.DataListID, enSystemTag.Error, err, out errors);
+                        DisplayAndWriteError("Resumption", errors);
+                        compiler.UpsertSystemTag(myDO.DataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
                     }
                 }
             } else {

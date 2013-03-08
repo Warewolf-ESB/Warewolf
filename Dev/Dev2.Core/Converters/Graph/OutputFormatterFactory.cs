@@ -20,5 +20,21 @@ namespace Unlimited.Framework.Converters.Graph
 
             return outputFormatter;
         }
+
+        public static IOutputFormatter CreateOutputFormatter(IOutputDescription outputDescription, string rootNodeName)
+        {
+            IOutputFormatter outputFormatter;
+
+            if (outputDescription.Format == OutputFormats.ShapedXML)
+            {
+                outputFormatter = new ShapedXmlOutputFormatter(outputDescription, rootNodeName);
+            }
+            else
+            {
+                outputFormatter = null;
+            }
+
+            return outputFormatter;
+        }
     }
 }

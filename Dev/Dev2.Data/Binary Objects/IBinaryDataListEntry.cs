@@ -1,5 +1,5 @@
-﻿using System;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
+using System;
 using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
@@ -135,10 +135,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Clones the specified depth.
         /// </summary>
         /// <param name="depth">The depth.</param>
-        /// <param name="storageID">The storage ID.</param>
+        /// <param name="clonedStorageID">The cloned storage ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        IBinaryDataListEntry Clone(enTranslationDepth depth, Guid storageID, out string errors);
+        IBinaryDataListEntry Clone(enTranslationDepth depth, Guid clonedStorageID, out string errors);
 
         /// <summary>
         /// Merges this instance.

@@ -1,4 +1,4 @@
-﻿<Service Name="Case Convert" ID="008f5bdb-e6e6-4d65-b9cf-20ea8f8c0dcb" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Case Convert"
+<Service Name="Case Convert" ID="008f5bdb-e6e6-4d65-b9cf-20ea8f8c0dcb" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Case Convert"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:d="clr-namespace:Dev2;assembly=Dev2.Core"

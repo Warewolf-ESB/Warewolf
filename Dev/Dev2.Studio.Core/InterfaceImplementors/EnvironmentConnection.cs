@@ -52,7 +52,7 @@ namespace Dev2.Studio.Core
 
         public Uri Address { get; set; }
         public string DisplayName { get; set; }
-        public IFrameworkDataChannel DataChannel { get; set; }
+        public IStudioEsbChannel DataChannel { get; set; }
         public INetworkExecutionChannel ExecutionChannel { get; set; }
         public INetworkDataListChannel DataListChannel { get; set; }
 
@@ -348,14 +348,39 @@ namespace Dev2.Studio.Core
                 else return true;
             }
 
+           
             public string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID)
             {
                 if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
 
-                return _client.ExecuteCommand(xmlRequest);
-            }
+                string payload =  _client.ExecuteCommand(xmlRequest) ?? string.Empty;
 
+                return payload;
+
+                //Guid executionID;
+                //Guid.TryParse(result, out executionID);
+
+                //string payload = string.Empty;
+
+                //if(executionID != GlobalConstants.NullDataListID)
+                //{
+                //    ErrorResultTO errors;
+                //    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(_environment.DataListChannel);
+                //    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
+
+                //    if(bdl != null)
+                //    {
+                //        payload = compiler.ConvertFrom(executionID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+                //    }
+
+                //    // clean up ;)
+                //    compiler.ForceDeleteDataListByID(executionID);
+                //}
+
+                //return payload;
+            }
+             
             public void Dispose()
             {
                 if (_client != null)

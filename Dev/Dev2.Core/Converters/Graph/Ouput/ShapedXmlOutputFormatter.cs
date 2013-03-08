@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.DataList.Contract;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
@@ -14,6 +14,13 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
     {
 
         #region Constructors
+
+        public ShapedXmlOutputFormatter(IOutputDescription outputDescription, string rootNodeName)
+        {
+            RootNodeName = rootNodeName;
+            OutputDescription = outputDescription;
+            DataBrowser = DataBrowserFactory.CreateDataBrowser();
+        }
 
         public ShapedXmlOutputFormatter(IOutputDescription outputDescription)
         {

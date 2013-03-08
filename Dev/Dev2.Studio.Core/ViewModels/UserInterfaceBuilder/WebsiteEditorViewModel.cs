@@ -9,6 +9,9 @@ using System.Xml;
 using CefSharp.Wpf;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
+using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Exceptions;
@@ -557,11 +560,13 @@ namespace Dev2.Studio.Core.ViewModels
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;
                 var workspaceID = ((IStudioClientContext)_webActivity.ResourceModel.Environment.DsfChannel).AccountID;
-                string result = _webActivity.ResourceModel.Environment.DsfChannel.ExecuteCommand(package.XmlString, workspaceID, GlobalConstants.NullDataListID);
-                if(result == null)
+
+                var result = _webActivity.ResourceModel.Environment.DsfChannel.ExecuteCommand(package.XmlString, workspaceID, GlobalConstants.NullDataListID);
+                if (result == null)
                 {
                     throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, StringResources.Website_BootStrap_Service));
                 }
+                
             }
         }
 
@@ -762,7 +767,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Save(string value, bool closeBrowserWindow = true)
         {
-        }
+            }
 
         public void NavigateTo(string uri, string args, string returnUri)
         {

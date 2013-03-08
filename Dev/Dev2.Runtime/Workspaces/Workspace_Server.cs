@@ -10,7 +10,7 @@ namespace Dev2.Workspaces {
         /// <summary>
         /// Gets or sets the host - TODO: Remove and use Services instead.
         /// </summary>
-        public DynamicServicesHost Host {
+        public IDynamicServicesHost Host {
             get;
             set;
         }
@@ -46,8 +46,8 @@ namespace Dev2.Workspaces {
                 roles = string.Empty;
             }
 
-            UnlimitedObject unlimitedObject = Host.AddResources(Host.GenerateObjectGraphFromString(objectXml), roles);
-            return unlimitedObject.XmlString;
+            string result = Host.AddResources(Host.GenerateObjectGraphFromString(objectXml), roles);
+            return result;
         }
 
         #endregion
@@ -113,13 +113,10 @@ namespace Dev2.Workspaces {
             switch (serviceType) {
                 case enDynamicServiceObjectType.DynamicService:
                     destination.Host.AddDynamicService((DynamicService)dsoThis, roles);
-                    break;
+                break;
                 case enDynamicServiceObjectType.Source:
                     destination.Host.AddSource((Source)dsoThis, roles);
-                    break;
-                case enDynamicServiceObjectType.WorkflowActivity:
-                    destination.Host.AddWorkflowActivity((WorkflowActivityDef)dsoThis, roles);
-                    break;
+                break;
             }
         }
 

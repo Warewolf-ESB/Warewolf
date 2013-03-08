@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Dev2.DynamicServices;
 
 namespace Dev2.Workspaces {
     /// <summary>
@@ -8,6 +9,7 @@ namespace Dev2.Workspaces {
     /// </summary>
     [Serializable]
     public partial class Workspace : IWorkspace {
+        
         #region Initialization
 
         /// <summary>

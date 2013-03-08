@@ -162,8 +162,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
         }

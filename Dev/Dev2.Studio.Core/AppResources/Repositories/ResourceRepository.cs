@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
@@ -83,7 +85,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.EditedItemsXml = rootElement.ToString();
             package.Roles = string.Join(",", SecurityContext.Roles);
 
-            string updateResult = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            var updateResult = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);  
 
             if (updateResult == null)
             {
@@ -105,9 +107,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
             reloadPayload.ResourceName = resourceName;
-            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType); ;
+            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
 
-            string reloadResult = Environment.DsfChannel.ExecuteCommand(reloadPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+
+            var reloadResult = Environment.DsfChannel.ExecuteCommand(reloadPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
             if (reloadResult == null)
             {
@@ -117,6 +120,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             // Debug statements do not belong in product code ;)
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
             //Debug.WriteLine(reloadResult);
+
 
             dynamic reloadResultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(reloadResult);
             if (reloadResultObj.HasError)
@@ -130,7 +134,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
             findPayload.Roles = string.Join(",", SecurityContext.Roles);
 
-            string findResult = Environment.DsfChannel.ExecuteCommand(findPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            var findResult = Environment.DsfChannel.ExecuteCommand(findPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
             if (findResult == null)
             {
@@ -222,7 +226,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.Service = "AddResourceService";
             package.ResourceXml = instanceObj.ToServiceDefinition();
             package.Roles = string.Join(",", SecurityContext.Roles);
-            string result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+
+            var result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
             if (result == null)
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
@@ -245,7 +250,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.Service = "DeployResourceService";
             package.ResourceXml = resource.ToServiceDefinition();
             package.Roles = string.Join(",", SecurityContext.Roles);
-            string result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+
+            var result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
             if (result == null)
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
@@ -287,7 +293,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.ResourceType = resourceType;
             dataObj.Roles = string.Join(",", SecurityContext.Roles);
 
-            string result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            var result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
             if (result == null)
             {
@@ -297,6 +303,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             // Debug statements do not belong in product code ;)
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
             //Debug.WriteLine(result);
+
 
             dynamic resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
@@ -327,7 +334,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
             dataObj.Roles = string.Join(",", SecurityContext.Roles);
 
-            string result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            var result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
             if (result == null)
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, dataObj.Service));
@@ -337,6 +344,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
             //Debug.WriteLine(result);
 
+           
             dynamic resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
             {
@@ -571,7 +579,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
             }
 
-            var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+            // PBI : 7913 -  Travis
+           
+           var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
             {
                 throw new Exception(resultObj.Error);

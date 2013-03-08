@@ -1,4 +1,4 @@
-﻿<Service Name="DeleteWorkflowTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads" x:Class="DeleteWorkflowTest"
+<Service Name="DeleteWorkflowTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads" x:Class="DeleteWorkflowTest"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

@@ -1,4 +1,5 @@
 ﻿using Dev2;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -43,34 +44,6 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-
-
-
-
-        }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
         #region Number Of Execution Tests
 
         [TestMethod] // - OK
@@ -81,8 +54,13 @@ namespace ActivityUnitTests.ActivityTest
                           , ActivityStrings.ForEachDataListShape
                           , "2"
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+
+            //DsfForEachActivity activity = (TestStartNode.Action as DsfForEachActivity);
+            //Assert.AreEqual(2,activity.ExecutionCount);
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(2));
         }
 
         [TestMethod] // - OK
@@ -94,9 +72,10 @@ namespace ActivityUnitTests.ActivityTest
                           , "[[recset()]]"
                           );
 
-            IDSFDataObject result = ExecuteForEachProcess();
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(5));
         }
 
         [TestMethod] // - OK
@@ -107,9 +86,10 @@ namespace ActivityUnitTests.ActivityTest
                           , ActivityStrings.ForEachDataListShape
                           , "[[recset(2)]]"
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(2));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(2));
         }
 
         [TestMethod] // - OK
@@ -120,9 +100,10 @@ namespace ActivityUnitTests.ActivityTest
                           , ActivityStrings.ForEachDataListShape
                           , "[[testScalar]]"
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(0));
         }
 
         [TestMethod] // - OK
@@ -133,9 +114,10 @@ namespace ActivityUnitTests.ActivityTest
                           , ActivityStrings.ForEachDataListShape
                           , "[[recset(*)]]"
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(5));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(5));
         }
 
         [TestMethod] // - OK
@@ -146,9 +128,10 @@ namespace ActivityUnitTests.ActivityTest
                           , ActivityStrings.ForEachDataListShape
                           , "-2"
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(0));
         }
 
         [TestMethod] // - OK
@@ -159,9 +142,10 @@ namespace ActivityUnitTests.ActivityTest
                            , ActivityStrings.ForEachDataListShape
                            , "[[recset(-2)]]"
                            );
-            IDSFDataObject result = ExecuteForEachProcess();
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(0));
         }
 
         #endregion Number Of Execution Tests
@@ -294,7 +278,8 @@ namespace ActivityUnitTests.ActivityTest
                           );
 
 
-            IDSFDataObject result = ExecuteForEachProcess();
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             List<string> expected = new List<string> { "recVal1"
                                                      , "recVal2"
                                                      , "recVal3"
@@ -304,9 +289,9 @@ namespace ActivityUnitTests.ActivityTest
                                                      };
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+            ErrorResultTO errors = new ErrorResultTO();
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
+            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
 
         }
 
@@ -323,7 +308,8 @@ namespace ActivityUnitTests.ActivityTest
                           );
 
 
-            IDSFDataObject result = ExecuteForEachProcess();
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             List<string> expected = new List<string> { "recVal1"
                                                      , "recVal2"
                                                      , "recVal3"
@@ -332,9 +318,10 @@ namespace ActivityUnitTests.ActivityTest
                                                      , "" };
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
 
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
         }
 
         [TestMethod] // - OK
@@ -350,12 +337,14 @@ namespace ActivityUnitTests.ActivityTest
                           );
 
 
-            IDSFDataObject result = ExecuteForEachProcess();
-            string expected = "recVal5";
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            string expected = "recVal1";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
             Assert.AreEqual(expected, actual);
         }
 
@@ -371,14 +360,15 @@ namespace ActivityUnitTests.ActivityTest
                           , false
                           , outputMapping
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
 
-            string expected = "recVal5";
+            string expected = "recVal1";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
-
-            MockChannel.Verify(c => c.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
             Assert.AreEqual(expected, actual);
 
         }
@@ -394,7 +384,8 @@ namespace ActivityUnitTests.ActivityTest
                           , false
                           , outputMapping
                           );
-            IDSFDataObject result = ExecuteForEachProcess();
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Dev2.Common
 {
@@ -9,8 +6,8 @@ namespace Dev2.Common
     /// Used to represent an class that can be loaded via the spooky action at a distance pattern
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ISpookyLoadable
+    public interface ISpookyLoadable<T>
     {
-        Enum HandlesType();
+        T HandlesType();
     }
 }

@@ -191,8 +191,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=insert");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.Inconclusive();
-            //Assert.IsTrue((result.IndexOf("<userID>") > 0));
+            Assert.IsTrue((result.IndexOf("<userID>") > 0));
         }
 
         [TestMethod]
@@ -201,8 +200,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.Inconclusive();
-            //Assert.IsTrue((result.IndexOf("ZZZ - Null value passed in") > 0));
+            Assert.IsTrue((result.IndexOf("<result>ZZZ</result>") > 0),"Failed to pass null for empty");
         }
 
         [TestMethod]
@@ -211,8 +209,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.Inconclusive();
-            //Assert.IsTrue((result.IndexOf("AAA - Non null value passed in") > 0));
+            Assert.IsTrue((result.IndexOf("<result>AAA</result>") > 0), "Failed to assign non-null value");
         }
         [TestMethod]
         public void TestDBNullLogicEmptyNullConvertOffValue_Expected_AAA()
@@ -220,8 +217,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=notActive&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.Inconclusive();
-            //Assert.IsTrue((result.IndexOf("AAA - Non null value passed in") > 0));
+            Assert.IsTrue((result.IndexOf("<result>AAA</result>") > 0),"Assigned null, when it should have been empty");
         }
 
         [TestMethod]
@@ -230,8 +226,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.Inconclusive();
-            //Assert.IsTrue((result.IndexOf("Anonymous email sent") > 0));
+            Assert.IsTrue((result.IndexOf("Anonymous email sent") > 0));
         }
 
         [TestMethod]
@@ -240,8 +235,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.Inconclusive();
-            //Assert.IsTrue((result.IndexOf("from test@domain.local") > 0));
+            Assert.IsTrue((result.IndexOf("from test@domain.local") > 0));
         }
 
         #endregion EmptyToNull Test

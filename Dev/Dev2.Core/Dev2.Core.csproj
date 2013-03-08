@@ -100,6 +100,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -224,11 +225,12 @@
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
     <Compile Include="InterfaceImplementors\DataListBinder.cs" />
+    <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="InterfaceImplementors\FileSystem.cs" />
     <Compile Include="InterfaceImplementors\FTP.cs" />
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
-    <Compile Include="Interfaces\IFrameworkDataChannel.cs" />
+    <Compile Include="Interfaces\IEsbChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDataFormatter.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexCallbackChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexDataChannel.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Simulation\SimulationKey.cs" />
     <Compile Include="Simulation\SimulationRepository.cs" />
     <Compile Include="Simulation\SimulationResult.cs" />
+    <Compile Include="Util\Dev2ActivityIOIteration.cs" />
     <Compile Include="Util\Dev2XamlCleaner.cs" />
     <Compile Include="Web\WebServiceInvoker.cs" />
     <Compile Include="DynamicServices\Objects\BizRule.cs" />

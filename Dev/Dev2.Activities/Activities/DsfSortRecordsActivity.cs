@@ -100,8 +100,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
 

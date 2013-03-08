@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace Dev2.Common.ExtMethods
 {
@@ -15,6 +16,14 @@ namespace Dev2.Common.ExtMethods
         private static Regex _isBinary = new Regex("^[01]+$");
         static Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
+
+        public static string Unescape(this string payload)
+        {
+            XmlDocument doc = new XmlDocument();
+            string xml = string.Format("<dummycake>{0}</dummycake>", payload);
+            doc.LoadXml(xml);
+            return doc.DocumentElement.InnerText;
+        }
 
         /// <summary>
         /// Determines whether the specified payload is alpha.

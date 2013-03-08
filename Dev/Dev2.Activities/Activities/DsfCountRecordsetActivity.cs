@@ -163,8 +163,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    string err = DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, err, out errors);
+                    DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
             }
         }

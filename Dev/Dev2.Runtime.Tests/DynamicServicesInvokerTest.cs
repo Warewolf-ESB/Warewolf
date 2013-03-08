@@ -1,8 +1,14 @@
-﻿using Dev2.Runtime.InterfaceImplementors;
+﻿using System.Collections.Generic;
+using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.Runtime.ESB;
+using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using Unlimited.Framework;
@@ -54,9 +60,15 @@ namespace Dev2.DynamicServices.Test
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var result = invoker.UpdateWorkspaceItem(null, null);
+            IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["ItemXml"] = string.Empty;
+            data["Roles"] = string.Empty;
+
+            var result = endpoint.Execute(data, workspace.Object);
+
             Assert.IsTrue(result.Contains("<Error>Invalid workspace item definition</Error>"));
+
         }
 
         [TestMethod]
@@ -65,8 +77,13 @@ namespace Dev2.DynamicServices.Test
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var result = invoker.UpdateWorkspaceItem("<xxxx/>", null);
+            IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["ItemXml"] = "<xxxx/>";
+            data["Roles"] = null;
+
+            var result = endpoint.Execute(data, workspace.Object);
+
             Assert.IsTrue(result.Contains("<Error>Error updating workspace item</Error>"));
         }
 
@@ -79,9 +96,15 @@ namespace Dev2.DynamicServices.Test
             var workspaceItem = new WorkspaceItem(Guid.NewGuid(), Guid.NewGuid());
             var itemXml = workspaceItem.ToXml().ToString();
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var result = invoker.UpdateWorkspaceItem(itemXml, null);
+            IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["ItemXml"] = itemXml;
+            data["Roles"] = string.Empty;
+
+            var result = endpoint.Execute(data, workspace.Object);
+
             Assert.IsTrue(result.Contains("<Error>Cannot update a workspace item from another workspace</Error>"));
+
         }
 
         [TestMethod]
@@ -93,10 +116,15 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
             workspace.Setup(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<string>())).Verifiable();
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            invoker.UpdateWorkspaceItem(WorkspaceTest.TestWorkspaceItemXml.ToString(), null);
+            IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["ItemXml"] = WorkspaceTest.TestWorkspaceItemXml.ToString();
+            data["Roles"] = string.Empty;
+
+            var result = endpoint.Execute(data, workspace.Object);
 
             workspace.Verify(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<string>()), Times.Exactly(1));
+
         }
 
         #endregion UpdateWorkspaceItem
@@ -105,24 +133,17 @@ namespace Dev2.DynamicServices.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void FindResourcesByID_With_NullGuidCsvParameter_Expected_ThrowsArgumentNullException()
-        {
-            var workspace = new Mock<IWorkspace>();
-            workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
-
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var result = invoker.FindResourcesByID(null, "xx");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FindResourcesByID_With_NullTypeParameter_Expected_ThrowsArgumentNullException()
         {
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var result = invoker.FindResourcesByID("xx", null);
+            IEsbManagementEndpoint endpoint = new FindResourcesByID();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["GuidCsv"] = null;
+            data["Type"] = null;
+
+            endpoint.Execute(data, workspace.Object);
         }
 
         [TestMethod]
@@ -157,17 +178,21 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
             workspace.Setup(m => m.Host).Returns(host);
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var resources = invoker.FindResourcesByID(string.Join(",", guids), "Source");
+            IEsbManagementEndpoint findResourcesEndPoint = new FindResourcesByID();
+            IDictionary<string,string> data = new Dictionary<string, string>();
+            data["GuidCsv"] = string.Join(",", guids);
+            data["Type"] = "Source";
+
+            var resources = findResourcesEndPoint.Execute(data, workspace.Object);
 
             var resourcesObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(resources);
             var actualCount = 0;
-            if(resourcesObj.Source != null)
+            if (resourcesObj.Source != null)
             {
-                foreach(var source in resourcesObj.Source)
+                foreach (var source in resourcesObj.Source)
                 {
                     var sourceObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(source.XmlString);
-                    if(guids.Contains(sourceObj.ID as string))
+                    if (guids.Contains(sourceObj.ID as string))
                     {
                         actualCount++;
                     }
@@ -188,8 +213,11 @@ namespace Dev2.DynamicServices.Test
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            invoker.FindSourcesByType(null);
+            IEsbManagementEndpoint endpoint = new FindSourcesByType();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["Type"] = null;
+
+            endpoint.Execute(data, workspace.Object);
         }
 
         [TestMethod]
@@ -207,14 +235,17 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(WorkspaceTest.TestWorkspaceID);
             workspace.Setup(m => m.Host).Returns(host);
 
-            var invoker = new DynamicServicesInvoker(null, null, false, workspace.Object);
-            var resources = invoker.FindSourcesByType(sourceType.ToString());
+            IEsbManagementEndpoint endpoint = new FindSourcesByType();
+            IDictionary<string, string> data = new Dictionary<string, string>();
+            data["Type"] = sourceType.ToString();
+
+            var resources = endpoint.Execute(data, workspace.Object);
 
             var resourcesObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(resources);
             var actualCount = 0;
-            if(resourcesObj.Source != null)
+            if (resourcesObj.Source != null)
             {
-                foreach(var source in resourcesObj.Source)
+                foreach (var source in resourcesObj.Source)
                 {
                     actualCount++;
                 }

@@ -36,6 +36,8 @@ namespace Dev2
         Guid DataListID { get; set; }
         bool IsDataListScoped { get; set; }
         bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
+        string RawPayload { get; set; }
+
         IDSFDataObject Clone();
     }
 }

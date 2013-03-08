@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 using Dev2.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Server.Datalist {
     public interface IServerDataListCompiler {

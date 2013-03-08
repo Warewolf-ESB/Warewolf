@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Security.Principal;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading;
-using System.Xml;
-using CommandLine;
+﻿using CommandLine;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Reflection;
@@ -26,6 +13,19 @@ using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Security.Principal;
+using System.ServiceProcess;
+using System.Text;
+using System.Threading;
+using System.Xml;
 
 namespace Unlimited.Applications.DynamicServicesHost
 {
@@ -295,7 +295,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             int result = 0;
             bool didBreak = false;
-
+           
 
             if(!SetWorkingDirectory())
             {
@@ -1606,21 +1606,13 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             // PBI : 5376 - Create instance of the Server compiler
             Write("Starting DataList Server...  ");
-            //var pathToRedis = Path.Combine(Environment.CurrentDirectory, "redis-server.exe");
 
-            //ProcessStartInfo startInfo = new ProcessStartInfo();
-            //startInfo.FileName = pathToRedis;
-            //startInfo.UseShellExecute = false;
-            //startInfo.RedirectStandardOutput = true;
-
-            ////_redisProcess = new Process();
-            //_redisProcess = Process.Start(startInfo);
-            //_redisProcess = Process.Start(pathToRedis);
-            //Dev2RedisClient.StartRedis();
             DataListFactory.CreateServerDataListCompiler();
-            Dev2BinaryDataListStorage bootStrapStorage = new Dev2BinaryDataListStorage(GlobalConstants.NullEntryNamespace, Guid.NewGuid());
+            // Now bootstrap the Dev2BinaryDataListStorage object since it can be silly ;(
+            Dev2BinaryDataListStorage binaryDataListStorage = new Dev2BinaryDataListStorage(GlobalConstants.NullEntryNamespace, Guid.NewGuid());
             Thread.Sleep(1500);
-            bootStrapStorage.Dispose();
+            binaryDataListStorage.Dispose();
+
             Write("done.");
             WriteLine("");
             return true;

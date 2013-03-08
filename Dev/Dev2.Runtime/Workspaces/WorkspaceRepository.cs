@@ -1,11 +1,11 @@
-﻿using Dev2.Common;
-using Dev2.DynamicServices;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Dev2.Common;
+using Dev2.DynamicServices;
 
 namespace Dev2.Workspaces
 {
@@ -17,7 +17,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// The server workspace ID.
         /// </summary>
-        public static readonly Guid ServerWorkspaceID = GlobalConstants.ServerWorkspaceID;
+        public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
 
@@ -147,8 +147,6 @@ namespace Dev2.Workspaces
 
                 // HACK: Workaround for leaving server resource at root so that we can use DynamicServicesHost
                 // TODO: Remove DynamicServicesHost dependency and use DynamicServiceRepository
-                //
-                // See ALSO: GlobalConstants.GetWorkspacePath(workspaceID)
                 var workspacePath = workspaceID == ServerWorkspaceID
                     ? GlobalConstants.ApplicationPath
                     : Path.Combine(RepositoryPath, workspaceID.ToString());
@@ -198,7 +196,7 @@ namespace Dev2.Workspaces
             List<string> filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
             var targetPath = Path.Combine(RepositoryPath, workspace.ID.ToString());
             ServerWorkspace.Host.SyncTo(targetPath, true, true, filesToIgnore);
-            workspace.Host.RestoreResources();
+            workspace.Host.RestoreResources(new string[]{"Sources","Services"});
         }
 
         #endregion
@@ -256,22 +254,22 @@ namespace Dev2.Workspaces
         private IWorkspace Read(Guid workdspaceID)
         {
             // force a lock on the file system ;)
-            lock(_workspaceLock)
+            lock (_workspaceLock)
             {
                 var filePath = GetFileName(workdspaceID);
                 var fileExists = File.Exists(filePath);
-                using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
                     var formatter = new BinaryFormatter();
-                    if(fileExists)
+                    if (fileExists)
                     {
                         try
                         {
-                            return (IWorkspace)formatter.Deserialize(stream);
+                            return (IWorkspace) formatter.Deserialize(stream);
                         }
-                        // ReSharper disable EmptyGeneralCatchClause 
+                            // ReSharper disable EmptyGeneralCatchClause 
                         catch
-                        // ReSharper restore EmptyGeneralCatchClause
+                            // ReSharper restore EmptyGeneralCatchClause
                         {
                             // Deserialization failed so overwrite with new one.
                         }
