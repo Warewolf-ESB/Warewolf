@@ -1,16 +1,12 @@
 ﻿using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Threading;
+using System.Windows;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {
@@ -95,6 +91,47 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             // When exepctions are thrown, no results are to be displayed
             Assert.AreEqual(0,textBox.Items.Count);
             //The desired result is that an exception isn't thrown
+        }
+
+        [TestMethod]
+        public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
+        {
+            bool eventRaised = false;
+            IntellisenseTextBox sender = null;
+            EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent, new RoutedEventHandler((s, e) =>
+            {
+                eventRaised = true;
+                sender = s as IntellisenseTextBox;
+            }));
+
+            Clipboard.SetText("Cake\t");
+
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            
+            textBox.Paste();
+
+            Assert.IsTrue(eventRaised, "The 'IntellisenseTextBox.TabInsertedEvent' wasn't raised when text containing a tab was pasted into the IntellisenseTextBox.");
+            Assert.AreEqual(textBox, sender, "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised teh event.");
+        }
+
+        [TestMethod]
+        public void TextContaningNoTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventNotRaised()
+        {
+            bool eventRaised = false;
+            EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent, new RoutedEventHandler((s, e) =>
+            {
+                eventRaised = true;
+            }));
+
+            Clipboard.SetText("Cake");
+
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+
+            textBox.Paste();
+
+            Assert.IsFalse(eventRaised, "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
         }
         
         #endregion Test Initialization

@@ -95,6 +95,22 @@ namespace Dev2.UI
         }
         #endregion OpenedEvent
 
+        #region TabInsertedEvent
+        public static readonly RoutedEvent TabInsertedEvent = EventManager.RegisterRoutedEvent("TabInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntellisenseTextBox));
+
+        public event RoutedEventHandler TabInserted
+        {
+            add
+            {
+                AddHandler(TabInsertedEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(TabInsertedEvent, value);
+            }
+        }
+        #endregion TabInsertedEvent
+
         #region ClosedEvent
         public static readonly RoutedEvent ClosedEvent = EventManager.RegisterRoutedEvent("Closed", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntellisenseTextBox));
 
@@ -555,6 +571,8 @@ namespace Dev2.UI
             DefaultStyleKey = typeof(IntellisenseTextBox);
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
             Unloaded += OnUnloaded;
+
+            DataObject.AddPastingHandler(this, OnPaste);
         }
 
         #endregion
@@ -602,6 +620,24 @@ namespace Dev2.UI
             //_listBox.MouseLeftButtonUp += new MouseButtonEventHandler(ListBox_MouseLeftButtonUp);
         }
         #endregion
+
+        #region Paste Handeling
+
+        void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
+        {
+            var isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
+            if(!isText) return;
+
+            var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
+
+            if(text.Contains("\t"))
+            {
+                RaiseRoutedEvent(TabInsertedEvent);
+            }
+        }
+
+        #endregion
+
 
         #region Event Handling
         protected void OnPropertyChanged(string propertyName)

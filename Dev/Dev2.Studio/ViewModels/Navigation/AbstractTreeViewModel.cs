@@ -485,11 +485,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         public virtual void NotifyOfFilterPropertyChanged(bool updateParent = false)
         {
             Children.ToList().ForEach(c => c.NotifyOfFilterPropertyChanged(false));
+            DispatcherFrame frame = new DispatcherFrame();
             var worker = new BackgroundWorker();
 
             worker.DoWork += (s, e) =>
                 {
-                    Dispatcher.CurrentDispatcher.Invoke(
+                    App.Current.Dispatcher.Invoke(
                         new Action(() => FilteredChildren.Refresh()));
                     NotifyOfPropertyChange("ChildrenCount");
                     VerifyCheckState();
@@ -498,10 +499,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             worker.RunWorkerCompleted += (s, e) =>
                 {
                     if (updateParent && TreeParent != null)
+                    {
                         TreeParent.NotifyOfFilterPropertyChanged(true);
+                    }
+
+                    frame.Continue = false;
                 };
 
             worker.RunWorkerAsync();
+            
+            Dispatcher.PushFrame(frame);
         }
 
         /// <summary>

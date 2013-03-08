@@ -36,11 +36,10 @@ namespace Dev2.Core.Tests
         public void Connect_OkayDialogResult_Expected_Server_IsAdded()
         {
             ImportService.CurrentContext = _okayContext;
-            var servers = new List<IServer>(new[]
-            {
-                CreateServerMock().Object,
-                CreateServerMock().Object
-            });
+ 
+            var servers = new List<IServer>();
+            servers.Add(null);
+            servers.Add(null);
 
             var serverProvider = new Mock<IServerProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);
@@ -57,11 +56,9 @@ namespace Dev2.Core.Tests
         public void Connect_CancelDialogResult_Expected_Server_NotAdded()
         {
             ImportService.CurrentContext = _cancelContext;
-            var servers = new List<IServer>(new[]
-            {
-                CreateServerMock().Object,
-                CreateServerMock().Object
-            });
+            var servers = new List<IServer>();
+            servers.Add(null);
+            servers.Add(null);
 
             var serverProvider = new Mock<IServerProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);

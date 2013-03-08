@@ -9,6 +9,7 @@ namespace Dev2.Studio.Core.ViewModels{
         string Question { get; set; }
         MessageBoxImage ImageType { get; set; }
         MessageBoxButton Buttons { get; set; }
+        string DontShowAgainKey { get; set; }
         MessageBoxResult Show();
     }
 }

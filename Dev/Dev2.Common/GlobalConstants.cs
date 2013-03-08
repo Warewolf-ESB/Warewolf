@@ -5,6 +5,8 @@ namespace Dev2.Common
 {
     public static class GlobalConstants
     {
+        //Dev2MessageBox DontShowAgainKeys
+        public const string Dev2MessageBoxDesignSurfaceTabPasteDialog = "1";
 
         // WF Constants
         public const int _xamlPoolSize = 5;

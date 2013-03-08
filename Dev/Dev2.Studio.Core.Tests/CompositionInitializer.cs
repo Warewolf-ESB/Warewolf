@@ -298,6 +298,11 @@ namespace Dev2.Core.Tests
 
         internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult popupResult)
         {
+            return PopUpProviderForTestsWithMockMainViewModel(new MoqPopup(popupResult));
+        }
+
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MoqPopup moqPopup)
+        {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
 
@@ -309,7 +314,7 @@ namespace Dev2.Core.Tests
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
             ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
-            ImportService.AddExportedValueToContainer<IPopUp>(new MoqPopup(popupResult));
+            ImportService.AddExportedValueToContainer<IPopUp>(moqPopup);
 
             return importServiceContext;
         }
@@ -510,6 +515,23 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
             ImportService.AddExportedValueToContainer(repo.Object);
             ImportService.AddExportedValueToContainer<IWizardEngine>(new WizardEngine());
+
+            return importServiceContext;
+        }
+
+        internal static ImportServiceContext InitializeIFilePersistenceProvider(Mock<IFilePersistenceProvider> filePersistenceProvider)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                //new StudioCoreTestAggregateCatalog()
+            });
+
+            var mainViewModel = new Mock<IMainViewModel>();
+            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+            ImportService.AddExportedValueToContainer(filePersistenceProvider.Object);
 
             return importServiceContext;
         }

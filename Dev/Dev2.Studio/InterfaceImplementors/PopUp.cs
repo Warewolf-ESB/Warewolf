@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using Dev2.Studio.ViewModels.Dialogs;
 using System.ComponentModel.Composition;
+using System.Windows;
 
 namespace Dev2.Studio.Core.ViewModels {
     [Export(typeof(IPopUp))]
@@ -13,6 +10,7 @@ namespace Dev2.Studio.Core.ViewModels {
         private string _question;
         MessageBoxImage _imageType;
         MessageBoxButton _buttons;
+        string _dontShowAgainKey;
 
         public PopUp(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons) {
             Header = headerText;
@@ -69,8 +67,22 @@ namespace Dev2.Studio.Core.ViewModels {
                 _buttons = value;
             }
         }
+
+        public string DontShowAgainKey
+        {
+            get
+            {
+                return _dontShowAgainKey;
+            }
+            set
+            {
+                _dontShowAgainKey = value;
+            }
+        }
+
         public MessageBoxResult Show() {
-            return MessageBox.Show(Description, Header, Buttons, ImageType);
+            //return MessageBox.Show(Description, Header, Buttons, ImageType);
+            return Dev2MessageBoxViewModel.Show(Description, Header, Buttons, ImageType, DontShowAgainKey);
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Dev2.Studio.AppResources.AttachedProperties {
     public static class FocusAttachedProperty {
@@ -23,7 +20,12 @@ namespace Dev2.Studio.AppResources.AttachedProperties {
                 DependencyPropertyChangedEventArgs e) {
             var uie = (UIElement)d;
             if ((bool)e.NewValue) {
-                uie.Focus(); // Don't care about false values.
+                //uie.Focus(); // Don't care about false values.
+                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    Keyboard.Focus(uie);
+                }), null);
+                
             }
         }
     }

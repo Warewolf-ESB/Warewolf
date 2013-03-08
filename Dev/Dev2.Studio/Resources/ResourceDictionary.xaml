@@ -35,6 +35,8 @@
     <SolidColorBrush x:Key="DebugItemValueBrush" Color="ForestGreen"/>
     <SolidColorBrush x:Key="DebugItemVariableBrush" Color="Purple"/>
 
+    <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
+    <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />
     <converters:DebugItemResultTypeToColorConverter x:Key="DebugItemResultTypeToColorConverter" />
     <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />

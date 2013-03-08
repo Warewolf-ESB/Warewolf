@@ -11,6 +11,7 @@ namespace Dev2.Core.Tests.ProperMoqs {
         MessageBoxImage _imageType;
         MessageBoxButton _buttons;
         MessageBoxResult _result;
+        string _dontShowAgainKey;
 
         public MoqPopup(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons) {
             Header = headerText;
@@ -76,6 +77,18 @@ namespace Dev2.Core.Tests.ProperMoqs {
         }
         public MessageBoxResult Show() {
             return _result;
+        }
+
+        public string DontShowAgainKey
+        {
+            get
+            {
+                return _dontShowAgainKey;
+            }
+            set
+            {
+                _dontShowAgainKey = value;
+            }
         }
     }
 }

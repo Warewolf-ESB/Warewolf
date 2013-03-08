@@ -123,6 +123,8 @@
     <Compile Include="Account\UserAccountProviderTests.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverterTests.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="AutoMappingInputActionTest.cs" />
     <Compile Include="AutoMappingOutputActionTest.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Utils\MediatorMessageTrapper.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
+    <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
     <Compile Include="ViewModelTests\DsfActivityViewModelTests.cs" />
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />

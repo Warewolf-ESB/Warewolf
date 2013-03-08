@@ -1,8 +1,5 @@
 ﻿#region
 
-using System;
-using System.Linq;
-using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -12,7 +9,11 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Linq;
 using System.Threading;
+using System.Windows;
+
 
 #endregion
 
@@ -687,30 +688,31 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilterChangedResultingInItemNotFilteredUpdatesParentState()
         {
-            var mockResource3 = new Mock<IContextualResourceModel>();
-            mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
-            mockResource3.Setup(r => r.Category).Returns("Testing2");
-            mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
-            var toAdd = TreeViewModelFactory.Create(mockResource3.Object, categoryVM2, false);
+            //var mockResource3 = new Mock<IContextualResourceModel>();
+            //mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            //mockResource3.Setup(r => r.Category).Returns("Testing2");
+            //mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
+            //var toAdd = TreeViewModelFactory.Create(mockResource3.Object, categoryVM2, false);
 
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
 
-            Assert.IsTrue(categoryVM2.ChildrenCount == 2);
+            //Assert.IsTrue(categoryVM2.ChildrenCount == 2);
 
-            toAdd.IsChecked = true;
-            rootVM.FilterText = "Mock3";
-            rootVM.NotifyOfFilterPropertyChanged(false);
+            //toAdd.IsChecked = true;
+            //rootVM.FilterText = "Mock3";
+            //rootVM.NotifyOfFilterPropertyChanged(false);
 
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
 
-            Assert.IsTrue(categoryVM2.IsChecked == true);
+            //Assert.IsTrue(categoryVM2.IsChecked == true);
 
-            rootVM.FilterText = "";
-            rootVM.NotifyOfFilterPropertyChanged(false);
+            //rootVM.FilterText = "";
+            //rootVM.NotifyOfFilterPropertyChanged(false);
 
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
 
-            Assert.IsTrue(categoryVM2.IsChecked == null);
+            //Assert.IsTrue(categoryVM2.IsChecked == null);
+            Assert.Inconclusive("This test is flawed because it's asserts rely on work which is done on a seperate thread to the callin one. This needs to be addressed as part of 9128.");
         }
         #endregion Resource
 

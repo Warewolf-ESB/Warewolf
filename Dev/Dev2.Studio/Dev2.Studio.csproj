@@ -302,7 +302,10 @@
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
+    <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
@@ -317,10 +320,15 @@
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
+    <Compile Include="InterfaceImplementors\PopUp.cs" />
+    <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Workflow\AbstractWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurfaceContextViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\Workflow\IWorkSurfaceViewModel.cs" />
+    <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
+      <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>
@@ -702,6 +710,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml">
       <SubType>Designer</SubType>

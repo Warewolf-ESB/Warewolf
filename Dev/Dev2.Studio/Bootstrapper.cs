@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Dev2.Studio.ViewModels.Dialogs;
 
 namespace Dev2.Studio
 {
@@ -94,6 +95,8 @@ namespace Dev2.Studio
 
             _container.Compose(batch);
             ImportService.Initialize(_container);
+
+            ClassRoutedEventHandlers.RegisterEvents();
         }
 
         protected override object GetInstance(Type serviceType, string key)
@@ -119,6 +122,7 @@ namespace Dev2.Studio
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            //Dev2MessageBoxViewModel.Show("cake you broke something with something ntuff cake you broke something with something ntuff", "heading cake", MessageBoxButton.OK, MessageBoxImage.Error);
 
             bool start = true;
 #if !DEBUG
