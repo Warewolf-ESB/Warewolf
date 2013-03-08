@@ -41,11 +41,10 @@ namespace Dev2.Studio
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 IPopUp popup = ImportService.GetExportValue<IPopUp>();
-                popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. Please note that tabs are fully supported but the runtime, in variables and when reading from files.", "Paste", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog);
+                popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. " + Environment.NewLine + Environment.NewLine + "Please note that tabs are fully supported but the runtime, in variables and when reading from files.", "Tabs Pasted", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog);
             }), null);
         }
 
         #endregion
-
     }
 }
