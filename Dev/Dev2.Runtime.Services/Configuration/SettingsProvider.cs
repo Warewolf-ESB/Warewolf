@@ -117,9 +117,9 @@ namespace Dev2.Runtime.Configuration
         {
             var filePath = GetFilePath();
             var canSave = request.Action == NetworkMessageAction.Overwrite || !File.Exists(filePath);
+            var configNew = new Settings.Configuration(request.ConfigurationXml);
             if(!canSave)
             {
-                var configNew = new Settings.Configuration(request.ConfigurationXml);
                 var configOld = new Settings.Configuration(XElement.Load(filePath));
                 canSave = configNew.Version >= configOld.Version;
             }
@@ -134,7 +134,9 @@ namespace Dev2.Runtime.Configuration
                         Directory.CreateDirectory(dir);
                     }
                 }
-                request.ConfigurationXml.Save(filePath);
+                configNew.IncrementVersion();
+                configNew.ToXml().Save(filePath);
+                Configuration = configNew;
                 request.Result = NetworkMessageResult.Success;
             }
             else

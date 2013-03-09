@@ -41,12 +41,17 @@ namespace Dev2.Runtime.Configuration.Settings
         public XElement ToXml()
         {
             var result = new XElement("Settings",
-                new XAttribute("Version", Version.ToString(2)),
+                new XAttribute("Version", Version.ToString()),
                 Logging.ToXml(),
                 Security.ToXml(),
                 Backup.ToXml()
                 );
             return result;
+        }
+
+        public void IncrementVersion()
+        {
+            Version = Version == null ? new Version(1, 0) : new Version(Version.Major, Version.Minor + 1);
         }
     }
 }
