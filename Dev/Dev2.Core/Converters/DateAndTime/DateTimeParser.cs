@@ -27,13 +27,18 @@ namespace Dev2.Converters.DateAndTime
 
         #region Class Members
 
-        private static readonly char _literalCharacter = '\'';
+        private static readonly char _dateLiteralCharacter = '\'';
+        private static readonly char _timeLiteralCharacter = ':';
         private static readonly char _escapeCharacter = '\\';
         private static readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
         private static readonly Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatParts = new Dictionary<string, IDateTimeFormatPartTO>();
         private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static readonly Dictionary<string, ITimeZoneTO> _timeZones = new Dictionary<string, ITimeZoneTO>();        
+        private static readonly Dictionary<string, ITimeZoneTO> _timeZones = new Dictionary<string, ITimeZoneTO>();
+
+        private static readonly Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatPartsForDotNet = new Dictionary<string, IDateTimeFormatPartTO>();
+        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        private static readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
 
         #endregion Class Members
 
@@ -45,6 +50,8 @@ namespace Dev2.Converters.DateAndTime
             CreateDateTimeFormatForwardLookups();
             CreateDateTimeFormatParts();
             CreateTimeFormatParts();
+            CreateDateTimeFormatForwardLookupsForDotNet();
+            CreateDateTimeFormatPartsForDotNet();
         }
 
         #endregion Constructors
@@ -74,6 +81,119 @@ namespace Dev2.Converters.DateAndTime
             return TryParse(time, inputFormat, true, out parsedTime, out error);
         }
 
+        public string TranslateDotNetToDev2Format(string originalFormat, out string error)
+        {
+            //
+            // Get input format parts for the dotnet format
+            //
+            List<IDateTimeFormatPartTO> dotNetFormatParts = new List<IDateTimeFormatPartTO>();
+            TryGetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet, out dotNetFormatParts, out error);
+
+            //
+            // Replace input format parts with Dev2 equivilents
+            //
+            //m into our two digit minute format eg 03
+            var mPart = dotNetFormatParts.FindIndex(part => part.Value == "m");
+            while (mPart > -1 && mPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[mPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Minutes"))];
+                mPart = dotNetFormatParts.FindIndex(part => part.Value == "m");
+            }
+            //mm into our two digit minute format eg 03
+            var mmPart = dotNetFormatParts.FindIndex(part => part.Value == "mm");
+            while (mmPart > -1 && mmPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[mmPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Minutes"))];
+                mmPart = dotNetFormatParts.FindIndex(part => part.Value == "mm");
+            }
+            //M into our single digit month format eg 03
+            var MPart = dotNetFormatParts.FindIndex(part => part.Value == "M");
+            while (MPart > -1 && MPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[MPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month in single digit"))];
+                MPart = dotNetFormatParts.FindIndex(part => part.Value == "M");
+            }
+            //MM into our two digit month format eg 03 (Dev2 format interprets MM as a full month name eg March)
+            var MMPart = dotNetFormatParts.FindIndex(part => part.Value == "MM");
+            while (MMPart > -1 && MMPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[MMPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month in 2 digits"))];
+                MMPart = dotNetFormatParts.FindIndex(part => part.Value == "MM");
+            }
+            //MMM into our month text abbreviated format eg 03
+            var MMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMM");
+            while (MMMPart > -1 && MMMPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[MMMPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month text abbreviated"))];
+                MMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMM");
+            }
+            //MMMM into our month test in full format eg 03
+            var MMMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMMM");
+            while (MMMMPart > -1 && MMMMPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[MMMMPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month text in full"))];
+                MMMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMMM");
+            }
+            //'h' into our two digit hour format eg '12h'
+            var hPart = dotNetFormatParts.FindIndex(part => part.Value == "h");
+            while (hPart > -1 && hPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[hPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 12 hour format"))];
+                hPart = dotNetFormatParts.FindIndex(part => part.Value == "h");
+            }
+            //'hh' into our two digit hour format eg '12h'
+            var hhPart = dotNetFormatParts.FindIndex(part => part.Value == "hh");
+            while (hhPart > -1 && hhPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[hhPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 12 hour format"))];
+                hhPart = dotNetFormatParts.FindIndex(part => part.Value == "hh");
+            }
+            //'H' into our two digit hour format eg '12h'
+            var HPart = dotNetFormatParts.FindIndex(part => part.Value == "H");
+            while (HPart > -1 && HPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[HPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 24 hour format"))];
+                HPart = dotNetFormatParts.FindIndex(part => part.Value == "H");
+            }
+            //'HH' into our two digit hour format eg '12h'
+            var HHPart = dotNetFormatParts.FindIndex(part => part.Value == "HH");
+            while (HHPart > -1 && HHPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[HHPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 24 hour format"))];
+                HHPart = dotNetFormatParts.FindIndex(part => part.Value == "HH");
+            }
+            //'tt' into our am or pm format
+            var ttPart = dotNetFormatParts.FindIndex(part => part.Value == "tt");
+            while (ttPart > -1 && ttPart < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[ttPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("am or pm"))];
+                ttPart = dotNetFormatParts.FindIndex(part => part.Value == "tt");
+            }
+            //'ddd' into our abbreviated day of the week format
+            var findAllddd = dotNetFormatParts.FindIndex(part => part.Value == "ddd");
+            while (findAllddd > -1 && findAllddd < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[findAllddd] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Day of Week text abbreviated"))];
+                findAllddd = dotNetFormatParts.FindIndex(part => part.Value == "ddd");
+            }
+            //'dddd' into our full day of the week format
+            var findAlldddd = dotNetFormatParts.FindIndex(part => part.Value == "dddd");
+            while (findAlldddd > -1 && findAlldddd < dotNetFormatParts.Count)
+            {
+                dotNetFormatParts[findAlldddd] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Day of Week in full"))];
+                findAlldddd = dotNetFormatParts.FindIndex(part => part.Value == "dddd");
+            }
+            var dev2Format = "";
+            foreach (var part in dotNetFormatParts)
+            {
+                if(part.Isliteral)
+                    dev2Format += "'" + part.Value + "'";
+                else
+                    dev2Format += part.Value;
+            }
+            return dev2Format;
+        }
+
         #endregion Methods
 
         #region Internal Methods
@@ -82,6 +202,14 @@ namespace Dev2.Converters.DateAndTime
         /// Breaks a date time format up into parts
         /// </summary>
         internal static bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts, out string error)
+        {
+            return TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
+        }
+
+        /// <summary>
+        /// Breaks a date time format up into parts
+        /// </summary>
+        internal static bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
             bool nothingDied = true;
 
@@ -101,17 +229,17 @@ namespace Dev2.Converters.DateAndTime
                 if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
                 {
                     string tmpForwardLookupResult;
-                    if (currentChar == _literalCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if (currentChar == _dateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegion;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == _literalCharacter)
+                    else if (currentChar == _dateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                     }
-                    else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, out currentValue, out error))
+                    else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups, dateTimeFormatPartOptions, out currentValue, out error))
                     {
                         forwardLookupLength = currentValue.Length;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, false, ""));
@@ -128,12 +256,12 @@ namespace Dev2.Converters.DateAndTime
                 {
                     string tmpCurrentValue;
                     string tmpForwardLookupResult;
-                    if (currentChar == _literalCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if (currentChar == _dateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == _literalCharacter)
+                    else if (currentChar == _dateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
@@ -143,7 +271,7 @@ namespace Dev2.Converters.DateAndTime
                     {
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegionWithEscape;
                     }
-                    else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, out tmpCurrentValue, out error))
+                    else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups, dateTimeFormatPartOptions, out tmpCurrentValue, out error))
                     {
                         literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
                         forwardLookupLength = tmpCurrentValue.Length;
@@ -159,7 +287,7 @@ namespace Dev2.Converters.DateAndTime
                 }
                 else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
                 {
-                    if (currentChar == _literalCharacter || currentChar == _escapeCharacter)
+                    if (currentChar == _dateLiteralCharacter || currentChar == _escapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegion;
                         currentValue += currentChar;
@@ -173,12 +301,12 @@ namespace Dev2.Converters.DateAndTime
                 else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
                 {
                     string tmpForwardLookupResult;
-                    if (currentChar == _literalCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if (currentChar == _dateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == _literalCharacter)
+                    else if (currentChar == _dateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
@@ -195,7 +323,7 @@ namespace Dev2.Converters.DateAndTime
                 }
                 else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
                 {
-                    if (currentChar == _literalCharacter || currentChar == _escapeCharacter)
+                    if (currentChar == _dateLiteralCharacter || currentChar == _escapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                         currentValue += currentChar;
@@ -263,10 +391,11 @@ namespace Dev2.Converters.DateAndTime
             }
             else if (string.IsNullOrWhiteSpace(inputFormat))
             {
-                nothingDied = false;
-                error = "Format can't be null/empty.";
+                //07.03.2013: Ashley Lewis - Bug 9167 null to default
+                //nothingDied = false;
+                //error = "Format can't be null/empty.";
+                inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
             }
-
 
             if (nothingDied)
             {
@@ -277,7 +406,7 @@ namespace Dev2.Converters.DateAndTime
                 //
                 // Get input format parts
                 //
-                nothingDied = TryGetDateTimeFormatParts(inputFormat, out formatParts, out error);
+                nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
 
                 if (nothingDied)
                 {
@@ -440,7 +569,7 @@ namespace Dev2.Converters.DateAndTime
         /// Performs a forward lookup for the given forwardLookupIndex and checks the results against known
         /// date time format parts. Returns true if part is found otherwise false.
         /// </summary>
-        private static bool TryGetDateTimeFormatPart(char[] formatArray, int startPosition, char forwardLookupIndex, out string result, out string error)
+        private static bool TryGetDateTimeFormatPart(char[] formatArray, int startPosition, char forwardLookupIndex, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out string result, out string error)
         {
             bool nothingDied = true;
 
@@ -448,7 +577,7 @@ namespace Dev2.Converters.DateAndTime
             result = "";
 
             List<int> lookupLengths;
-            if (_dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out lookupLengths))
+            if (dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out lookupLengths))
             {
                 //
                 // Perform all forward lookups
@@ -462,7 +591,7 @@ namespace Dev2.Converters.DateAndTime
                     // Check if forward lookup result is a known date time format part
                     //
                     List<IDateTimeFormatPartOptionTO> tmp;
-                    if (_dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out tmp))
+                    if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out tmp))
                     {
                         result = lookupResults[count];
                         count = lookupResults.Count;
@@ -501,6 +630,114 @@ namespace Dev2.Converters.DateAndTime
 
             return result;
         }
+        //Ashley make a .net version of this method Only populate the _dateTimeFormatPartOptions dictionary, and all values should be null
+        /// <summary>
+        /// Creates a list of all valid date time format parts
+        /// </summary>
+        private static void CreateDateTimeFormatPartsForDotNet()
+        {
+            _dateTimeFormatPartsForDotNet.Add("d", new DateTimeFormatPartTO("d", false, "Day in 1 or 2 digits: 8"));
+            _dateTimeFormatPartOptionsForDotNet.Add("d", null);
+            _dateTimeFormatPartsForDotNet.Add("dd", new DateTimeFormatPartTO("dd", false, "Day in 2 digits: 8"));
+            _dateTimeFormatPartOptionsForDotNet.Add("dd", null);
+            _dateTimeFormatPartsForDotNet.Add("ddd", new DateTimeFormatPartTO("ddd", false, "The abbreviated name of the day of the week: Mon"));
+            _dateTimeFormatPartOptionsForDotNet.Add("ddd", null);
+            _dateTimeFormatPartsForDotNet.Add("dddd", new DateTimeFormatPartTO("dddd", false, "The full name of the day of the week: Monday"));
+            _dateTimeFormatPartOptionsForDotNet.Add("dddd", null);
+
+            _dateTimeFormatPartsForDotNet.Add("f", new DateTimeFormatPartTO("f", false, "The tenths of a second: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("f", null);
+            _dateTimeFormatPartsForDotNet.Add("ff", new DateTimeFormatPartTO("ff", false, "The hundredths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("ff", null);
+            _dateTimeFormatPartsForDotNet.Add("fff", new DateTimeFormatPartTO("fff", false, "The milliseconds in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("fff", null);
+            _dateTimeFormatPartsForDotNet.Add("ffff", new DateTimeFormatPartTO("ffff", false, "The ten thousandths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("ffff", null);
+            _dateTimeFormatPartsForDotNet.Add("fffff", new DateTimeFormatPartTO("fffff", false, "The hundred thousandths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("fffff", null);
+            _dateTimeFormatPartsForDotNet.Add("ffffff", new DateTimeFormatPartTO("ffffff", false, "The millionths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("ffffff", null);
+            _dateTimeFormatPartsForDotNet.Add("fffffff", new DateTimeFormatPartTO("ffffffff", false, "The ten millionths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("fffffff", null);
+
+            _dateTimeFormatPartsForDotNet.Add("F", new DateTimeFormatPartTO("f", false, "If non-zero, the tenths of a second: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("F", null);
+            _dateTimeFormatPartsForDotNet.Add("FF", new DateTimeFormatPartTO("FF", false, "If non-zero, the hundredths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("FF", null);
+            _dateTimeFormatPartsForDotNet.Add("FFF", new DateTimeFormatPartTO("FFF", false, "If non-zero, the milliseconds in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("FFF", null);
+            _dateTimeFormatPartsForDotNet.Add("FFFF", new DateTimeFormatPartTO("FFFF", false, "If non-zero, the ten thousandths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("FFFF", null);
+            _dateTimeFormatPartsForDotNet.Add("FFFFF", new DateTimeFormatPartTO("FFFFF", false, "If non-zero, the hundred thousandths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("FFFFF", null);
+            _dateTimeFormatPartsForDotNet.Add("FFFFFF", new DateTimeFormatPartTO("FFFFFF", false, "If non-zero, the millionths of a second in a date and time value: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("FFFFFF", null);
+
+            _dateTimeFormatPartsForDotNet.Add("g", new DateTimeFormatPartTO("g", false, "The period or era: A.D."));
+            _dateTimeFormatPartOptionsForDotNet.Add("g", null);
+            _dateTimeFormatPartsForDotNet.Add("gg", new DateTimeFormatPartTO("gg", false, "The period or era: A.D."));
+            _dateTimeFormatPartOptionsForDotNet.Add("gg", null);
+
+            _dateTimeFormatPartsForDotNet.Add("h", new DateTimeFormatPartTO("h", false, "The hour, using a 12-hour clock from 1 to 12: 1"));
+            _dateTimeFormatPartOptionsForDotNet.Add("h", null);
+            _dateTimeFormatPartsForDotNet.Add("hh", new DateTimeFormatPartTO("hh", false, "The hour, using a 12-hour clock from 1 to 12: 01"));
+            _dateTimeFormatPartOptionsForDotNet.Add("hh", null);
+            _dateTimeFormatPartsForDotNet.Add("H", new DateTimeFormatPartTO("H", false, "The hour, using a 24-hour clock from 1 to 24: 01"));
+            _dateTimeFormatPartOptionsForDotNet.Add("H", null);
+            _dateTimeFormatPartsForDotNet.Add("HH", new DateTimeFormatPartTO("HH", false, "The hour, using a 24-hour clock from 1 to 24: 13"));
+            _dateTimeFormatPartOptionsForDotNet.Add("HH", null);
+
+            _dateTimeFormatPartsForDotNet.Add("K", new DateTimeFormatPartTO("K", false, "Time zone information: +02:00"));
+            _dateTimeFormatPartOptionsForDotNet.Add("K", null);
+
+            _dateTimeFormatPartsForDotNet.Add("m", new DateTimeFormatPartTO("m", false, "Minute in 1 or 2 digits: 9"));
+            _dateTimeFormatPartOptionsForDotNet.Add("m", null);
+            _dateTimeFormatPartsForDotNet.Add("mm", new DateTimeFormatPartTO("mm", false, "Minute in two digits: 09"));
+            _dateTimeFormatPartOptionsForDotNet.Add("mm", null);
+
+            _dateTimeFormatPartsForDotNet.Add("M", new DateTimeFormatPartTO("M", false, "Month in 1 or 2 digits: 6"));
+            _dateTimeFormatPartOptionsForDotNet.Add("M", null);
+            _dateTimeFormatPartsForDotNet.Add("MM", new DateTimeFormatPartTO("MM", false, "Month in two digits: 06"));
+            _dateTimeFormatPartOptionsForDotNet.Add("MM", null);
+            _dateTimeFormatPartsForDotNet.Add("MMM", new DateTimeFormatPartTO("MMM", false, "Abbreviated name of the month: Jun"));
+            _dateTimeFormatPartOptionsForDotNet.Add("MMM", null);
+            _dateTimeFormatPartsForDotNet.Add("MMMM", new DateTimeFormatPartTO("MMM", false, "Full name of the month: June"));
+            _dateTimeFormatPartOptionsForDotNet.Add("MMMM", null);
+
+            _dateTimeFormatPartsForDotNet.Add("s", new DateTimeFormatPartTO("s", false, "Second in 1 or 2 digits: 9"));
+            _dateTimeFormatPartOptionsForDotNet.Add("s", null);
+            _dateTimeFormatPartsForDotNet.Add("ss", new DateTimeFormatPartTO("ss", false, "Second in two digits: 09"));
+            _dateTimeFormatPartOptionsForDotNet.Add("ss", null);
+
+            _dateTimeFormatPartsForDotNet.Add("t", new DateTimeFormatPartTO("t", false, "First character of the AM/PM designator: 9"));
+            _dateTimeFormatPartOptionsForDotNet.Add("t", null);
+            _dateTimeFormatPartsForDotNet.Add("tt", new DateTimeFormatPartTO("tt", false, "AM/PM designator: 09"));
+            _dateTimeFormatPartOptionsForDotNet.Add("tt", null);
+
+            _dateTimeFormatPartsForDotNet.Add("y", new DateTimeFormatPartTO("y", false, "Year in 1 or 2 digits: 13"));
+            _dateTimeFormatPartOptionsForDotNet.Add("y", null);
+            _dateTimeFormatPartsForDotNet.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in two digits: 13"));
+            _dateTimeFormatPartOptionsForDotNet.Add("yy", null);
+            _dateTimeFormatPartsForDotNet.Add("yyy", new DateTimeFormatPartTO("yyy", false, "Year, with a minimum of three digits: 2013"));
+            _dateTimeFormatPartOptionsForDotNet.Add("yyy", null);
+            _dateTimeFormatPartsForDotNet.Add("yyyy", new DateTimeFormatPartTO("yyyy", false, "Year in four digits: 2013"));
+            _dateTimeFormatPartOptionsForDotNet.Add("yyyy", null);
+            _dateTimeFormatPartsForDotNet.Add("yyyyy", new DateTimeFormatPartTO("yyyyy", false, "Year in five digits: 02013"));
+            _dateTimeFormatPartOptionsForDotNet.Add("yyyyy", null);
+
+            _dateTimeFormatPartsForDotNet.Add("z", new DateTimeFormatPartTO("z", false, "Hours offset from UTC, with no leading zeros: +2"));
+            _dateTimeFormatPartOptionsForDotNet.Add("z", null);
+            _dateTimeFormatPartsForDotNet.Add("zz", new DateTimeFormatPartTO("zz", false, "Hours offset from UTC in two digits: +02"));
+            _dateTimeFormatPartOptionsForDotNet.Add("zz", null);
+            _dateTimeFormatPartsForDotNet.Add("zzz", new DateTimeFormatPartTO("zzz", false, "Hours and minutes offset from UTC: +02:00"));
+            _dateTimeFormatPartOptionsForDotNet.Add("zzz", null);
+
+            _dateTimeFormatPartsForDotNet.Add(_timeLiteralCharacter.ToString(), new DateTimeFormatPartTO(_timeLiteralCharacter.ToString(), false, "The time separator: '" + _timeLiteralCharacter + "'"));
+            _dateTimeFormatPartOptionsForDotNet.Add(_timeLiteralCharacter.ToString(), null);
+            _dateTimeFormatPartsForDotNet.Add(_dateLiteralCharacter.ToString(), new DateTimeFormatPartTO(_dateLiteralCharacter.ToString(), false, "The date separator: "+_dateLiteralCharacter));
+            _dateTimeFormatPartOptionsForDotNet.Add(_dateLiteralCharacter.ToString(), null);
+
+        }
 
         /// <summary>
         /// Creates a list of all valid date time format parts
@@ -528,7 +765,7 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths) 
             });
 
-            _dateTimeFormatParts.Add("m", new DateTimeFormatPartTO("m", false, "Month is single digit: 3"));
+            _dateTimeFormatParts.Add("m", new DateTimeFormatPartTO("m", false, "Month in single digit: 3"));
             _dateTimeFormatPartOptions.Add("m",
             new List<IDateTimeFormatPartOptionTO>
             { 
@@ -966,15 +1203,87 @@ namespace Dev2.Converters.DateAndTime
             }
         }
 
+        //Ashley make a .net version of this method
+        /// <summary>
+        /// Creates forward lookup information for date time parts
+        /// </summary>
+        private static void CreateDateTimeFormatForwardLookupsForDotNet()
+        {
+            //
+            // Lookups for dddd, ddd, dd, d
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('d', new List<int> { 4, 3, 2, 1 });
+
+            //
+            // Lookups for fffffff, ffffff, fffff, ffff, fff, ff, f
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('f', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
+
+            //
+            // Lookups for FFFFFFF, FFFFFF, FFFFF, FFFF, FFF, FF, F
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('F', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
+
+            //
+            // Lookups for gg, g
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('g', new List<int> { 2, 1 });
+
+            //
+            // Lookups for hh, h
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('h', new List<int> { 2, 1 });
+
+            //
+            // Lookups for HH, H
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('H', new List<int> { 2, 1 });
+
+            //
+            // Lookups for K
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('K', new List<int> { 1 });
+
+            //
+            // Lookups for mm, m
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('m', new List<int> { 2, 1 });
+
+            //
+            // Lookups for MMMM, MMM, MM, M
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('M', new List<int> { 4, 3, 2, 1 });
+
+            //
+            // Lookups for ss, s
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('s', new List<int> { 2, 1 });
+
+            //
+            // Lookups for tt, t
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('t', new List<int> { 2, 1 });
+
+            //
+            // Lookups for yyyyy, yyyy, yyy, yy, y
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('y', new List<int> { 5, 4, 3, 2, 1 });
+
+            //
+            // Lookups for zzz, zz, z
+            //
+            _dateTimeFormatForwardLookupsForDotNet.Add('z', new List<int> { 3, 2, 1 });
+        }
+
         /// <summary>
         /// Creates forward lookup information for date time parts
         /// </summary>
         private static void CreateDateTimeFormatForwardLookups()
         {
             //
-            // Lookups for yyyy and yy
+            // Lookups for yyyyy, yyyy, yyy, yy and y
             //
-            _dateTimeFormatForwardLookups.Add('y', new List<int> { 4, 2 });
+            _dateTimeFormatForwardLookups.Add('y', new List<int> { 5, 4, 3, 2, 1 });
 
             //
             // Lookups for min, mm and m
@@ -1567,8 +1876,8 @@ namespace Dev2.Converters.DateAndTime
         }
 
         #endregion Predicates
-
-        #endregion Private Methods        
+        #endregion Private Methods
+     
 
         #region Properties
 

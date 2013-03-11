@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System;
+using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -111,6 +112,28 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("9090", results[2].TheValue);
         }
 
+        //2013.03.11: Ashley Lewis - PBI 9167 Moved to positive tests
+        [TestMethod]
+        public void Blank_InputFormat_Expected_Error()
+        {
+            SetupArguments(
+                              "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
+                            , ActivityStrings.DateTimeDiff_DataListShape
+                            , DateTime.Now.ToString()
+                            , DateTime.Now.AddDays(209).ToString()
+                            , ""
+                            , "Days"
+                            , "[[Result]]"
+                            );
+            IDSFDataObject result = ExecuteProcess();
+            string expected = "209";
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+        }
+
         #endregion Positive Test Cases
 
         #region Error Test Cases
@@ -217,26 +240,6 @@ Input can't be null/empty.]]></Error>";
             /* Expected Result - how can we retrieve from datalist
             string expected = @"<Error><![CDATA[The following errors occured : 
 Input can't be null/empty.]]></Error>";
-             */
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-        }
-
-        [TestMethod]
-        public void Blank_InputFormat_Expected_Error()
-        {
-            SetupArguments(
-                              "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                            , ActivityStrings.DateTimeDiff_DataListShape
-                            , "2012/10/01 07:15:50 AM"
-                            , "2012/10/01 07:15:50 AM"
-                            , ""
-                            , "Days"
-                            , "[[Result]]"
-                            );
-            IDSFDataObject result = ExecuteProcess();
-            /* Expected Result - how can we retrieve from datalist
-            string expected = @"<Error><![CDATA[The following errors occured : 
-Format can't be null/empty.]]></Error>";
              */
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }

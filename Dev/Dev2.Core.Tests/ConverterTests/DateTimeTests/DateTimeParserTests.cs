@@ -416,26 +416,29 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             }
         }
 
-        #endregion Valid Parse Formats
-
-        #region Invalid Parse Formats
-
-        /// <summary>
-        /// Tests that the DateTime parser does not throw an exception when given a null value for format but indicates that it is unable to parse a datetime 
-        /// object
-        /// </summary>
+        //07.03.2013: Ashley Lewis - PBI 9167: Null input format is now valid
         [TestMethod]
-        public void TryParseDateTime_InputFormat_NULL_Expected_ParserReturnsFalseIndicatingUnableToParse() {
+        public void TryParseDateTimeWithInputFormatNULLExpectedDefaultFormatUsed()
+        {
             bool IsParseable;
             string result;
-            string inputString = "14101988";
+            string inputString = DateTime.Now.ToString();
             string formatString = null;
             IDateTimeResultTO dateTimeResult;
 
+            string defaultFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+            string tmpError;
+            string translatedFormat = parser.TranslateDotNetToDev2Format(defaultFormat, out tmpError);
             IsParseable = parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
 
-            Assert.IsFalse(IsParseable);
+            string s = "Default format: {0}\nTranslated format: {1}\nDateTime.Now= {2}\nResult: {3}";
+
+            Assert.IsTrue(IsParseable, string.Format(s, defaultFormat, translatedFormat, inputString, result));
         }
+
+        #endregion Valid Parse Formats
+
+        #region Invalid Parse Formats
 
         /// <summary>
         /// Tests that the parser does not parse datetime inputs when the input format does not match the input string
@@ -1095,7 +1098,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time with input time NULL expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Time_NULL_Expected_ErrorReturned() {
+        public void TryParseTimeTimeNullExpectedErrorReturned() {
             bool isParseable;
             IDateTimeResultTO returnTO;
             string result;
@@ -1109,7 +1112,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using yy input format expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_yy_Expected_ErrorReturned() {
+        public void TryParseTimeUsingYyExpectedErrorReturned() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "yy";
@@ -1127,7 +1130,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// parse time using yyyy input format expected year returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_yyyy_Expected_YearReturned() {
+        public void TryParseTimeUsingYyyyExpectedYearReturned() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "yyyy";
@@ -1145,7 +1148,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using mm input format expected months returned correctly.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_mm_Expected_MonthsReturnedCorrectly() {
+        public void TryParseTimeUsingMmExpectedMonthsReturnedCorrectly() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "mm";
@@ -1181,7 +1184,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using M as input format expected month returned as single digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_M_Expected_MonthReturnedAsSingleDigit() {
+        public void TryParseTimeUsingMExpectedMonthReturnedAsSingleDigit() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "M";
@@ -1199,7 +1202,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using MM as input format expected month returned as padded digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_MM_Expected_MonthReturnedAsPaddedDigit() {
+        public void TryParseTimeUsingMmExpectedMonthReturnedAsPaddedDigit() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "MM";
@@ -1217,7 +1220,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using d as input format expected day returned as single digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_d_Expected_DayReturnedAsSingleDigit() {
+        public void TryParseTimeUsingDExpectedDayReturnedAsSingleDigit() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "d";
@@ -1235,7 +1238,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using dd as input format expected day returned as padded digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_dd_Expected_DayReturnedAsPaddedDigit() {
+        public void TryParseTimeUsingDdExpectedDayReturnedAsPaddedDigit() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "dd";
@@ -1265,7 +1268,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         }
 
         [TestMethod]
-        public void TryParseTime_Using_dW_Expected_Positive() {
+        public void TryParseTimeUsing_DWExpectedPositive() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "dW";
@@ -1280,7 +1283,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         }
 
         [TestMethod]
-        public void TryParseTime_Using_dw_Expected_Positive() {
+        public void TryParseTimeUsingDwExpectedPositive() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "dw";
@@ -1295,7 +1298,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         }
 
         [TestMethod]
-        public void TryParseTime_Using_dy_Expected_Positive() {
+        public void TryParseTimeUsingDyExpectedPositive() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "dy";
@@ -1313,7 +1316,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using w as input format expected week returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_w_Expected_WeekReturned() {
+        public void TryParseTimeUsingWExpectedWeekReturned() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "w";
@@ -1332,7 +1335,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using 24h input format expected hours added and returned as 24h.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_24h_Expected_HoursAddedAndReturnedAs24h() {
+        public void TryParseTimeUsing24HExpectedHoursAddedAndReturnedAs24H() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "24h";
@@ -1350,7 +1353,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using 12h input format expected hours added according to 12h.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_12h_Expected_HoursAddedAccordingTo12h() {
+        public void TryParseTimeUsing12HExpectedHoursAddedAccordingTo12H() {
             IDateTimeResultTO returnTO;
             string result;
             string inputFormat = "12h";
@@ -1368,14 +1371,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using min as input format expected minutes added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_min_Expected_MinutesAddedToBaseTime() {
-            IDateTimeResultTO returnTO;
+        public void TryParseTimeUsingMinExpectedMinutesAddedToBaseTime() {
+            IDateTimeResultTO returnTo;
             string result;
-            string inputFormat = "min";
-            string addTime = "34";
-            parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Minutes == 34) {
-                Assert.IsTrue(1 == 1);
+            const string InputFormat = "min";
+            const string AddTime = "34";
+            parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
+            if(returnTo.Minutes == 34) {
+                Assert.IsTrue(true);
             }
             else {
                 Assert.Fail("Incorect object returned");
@@ -1386,14 +1389,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using ss as input format expected seconds added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_ss_Expected_SecondsAddedToBaseTime() {
-            IDateTimeResultTO returnTO;
+        public void TryParseTimeUsingSsExpectedSecondsAddedToBaseTime() {
+            IDateTimeResultTO returnTo;
             string result;
-            string inputFormat = "ss";
-            string addTime = "3";
-            parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Seconds == 3) {
-                Assert.IsTrue(1 == 1);
+            const string InputFormat = "ss";
+            const string AddTime = "3";
+            parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
+            if(returnTo.Seconds == 3) {
+                Assert.IsTrue(true);
             }
             else {
                 Assert.Fail("Incorect object returned");
@@ -1404,14 +1407,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using sp as input format expected split seconds added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_sp_Expected_SplitSecondsAddedToBaseTime() {
-            IDateTimeResultTO returnTO;
+        public void TryParseTimeUsingSpExpectedSplitSecondsAddedToBaseTime() {
+            IDateTimeResultTO returnTo;
             string result;
-            string inputFormat = "sp";
-            string addTime = "3";
-            parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Milliseconds == 3) {
-                Assert.IsTrue(1 == 1);
+            const string InputFormat = "sp";
+            const string AddTime = "3";
+            parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
+            if(returnTo.Milliseconds == 3) {
+                Assert.IsTrue(true);
             }
             else {
                 Assert.Fail("Incorect object returned");
@@ -1422,14 +1425,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using simple literal expected date added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_SimpleLiteral_Expected_DateAddedToBaseTime() {
-            IDateTimeResultTO returnTO;
+        public void TryParseTimeUsingSimpleLiteralExpectedDateAddedToBaseTime() {
+            IDateTimeResultTO returnTo;
             string result;
-            string inputFormat = "'The date is : 'ddmmyyyy";
-            string addTime = "The date is : 02010021";
-            parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Days == 2 && returnTO.Months == 1 && returnTO.Years == 21) {
-                Assert.IsTrue(1 == 1);
+            const string InputFormat = "'The date is : 'ddmmyyyy";
+            const string AddTime = "The date is : 02010021";
+            parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
+            if(returnTo.Days == 2 && returnTo.Months == 1 && returnTo.Years == 21) {
+                Assert.IsTrue(true);
             }
             else {
                 Assert.Fail("Incorect object returned");
@@ -1440,14 +1443,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         /// Parse time using complex literal expected date added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_ComplexLiteral_Expected_DateAddedToBaseTime() {
-            IDateTimeResultTO returnTO;
+        public void TryParseTimeUsingComplexLiteralExpectedDateAddedToBaseTime() {
+            IDateTimeResultTO returnTo;
             string result;
-            string inputFormat = "'I was born on the 'd'th of 'm' in the year 'yy";
-            string addTime = "I was born on the 2th of 1 in the year 21";
-            parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Days == 2 && returnTO.Months == 1 && returnTO.Years == 21) {
-                Assert.IsTrue(1 == 1);
+            const string InputFormat = "'I was born on the 'd'th of 'm' in the year 'yy";
+            const string AddTime = "I was born on the 2th of 1 in the year 21";
+            parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
+            if(returnTo.Days == 2 && returnTo.Months == 1 && returnTo.Years == 21) {
+                Assert.IsTrue(true);
             }
             else {
                 Assert.Fail("Incorect object returned");
@@ -1455,5 +1458,291 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         }
 
         #endregion TryParseTime Tests
+
+        #region Dot Net Translator
+
+        #region Dates
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatOfDayoftheMonthExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "d, dd, ddd, dddd";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "d', 'dd', 'dW', 'DW");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatOfMonthExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "MMMM, MMM, MM, M";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "MM', 'M', 'mm', 'm");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForYearsExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "yyyyy, yyyy, yy, y, yyy";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "yyyyy', 'yyyy', 'yy', 'y', 'yyy");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForLongDateExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "dddd, dd MMMM yyyy";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "DW', 'dd' 'MM' 'yyyy");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForShortDateExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "MM/dd/yyyy";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "mm'/'dd'/'yyyy");
+        }
+
+        #endregion
+
+        #region Times
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForHoursExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "h, hh, H, HH";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "12h', '12h', '24h', '24h");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForMinutesExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "m, mm";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "min', 'min");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForSecondsExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "s, ss";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "s', 'ss");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForSplitSecondsExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "f, ff, fff, ffff, ffffff, fffffff,";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "f', 'ff', 'fff', 'ffff', 'ffffff', 'fffffff','");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForNonZeroSplitSecondsExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "F- FF- FFF- FFFF- FFFFFF- FFFFFFF-";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "F'- 'FF'- 'FFF'- 'FFFF'- 'FFFFFF'- 'FFFFFFF'-'");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForShortTimeExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "HH:mm";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "24h':'min");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForLongTimeExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "HH:mm:ss.fffffff";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "24h':'min':'ss'.'fffffff");
+        }
+
+        #endregion
+
+        #region Time Zones
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForTimeZoneExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "K";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "K");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForTimeZonesExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "'Hours offset from UTC: 'z', Hours offset from UTC, with a leading zero: 'zz', Offset with minutes: 'zzz";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "'Hours offset from UTC: 'z', Hours offset from UTC, with a leading zero: 'zz', Offset with minutes: 'zzz");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForRoundTripExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "yyyy'-'mm'-'dd'T'24h':'min':'ss'.'fffffffK");
+        }
+        
+        #endregion
+
+        #region Special
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForAmpmDesignatorExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "t, tt";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "t', 'am/pm");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForEraExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "g, gg";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "g', 'gg");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForFullDateShortTimeExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "dddd, dd MMMM yyyy HH:mm";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "DW', 'dd' 'MM' 'yyyy' '24h':'min");
+        }
+
+        [TestMethod]
+        public void TranslateFormatFromDotNetWhereFormatForFullLongTimeExpectedInDev2Format()
+        {
+            //initialize
+            IDateTimeParser translatingParser = new DateTimeParser();
+            string inputFormat = "dddd', 'dd MMMM yyyy HH:mm:ss";
+            string error;
+
+            //execute
+            inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
+            Assert.IsTrue(string.IsNullOrEmpty(error));
+            Assert.AreEqual(inputFormat, "DW', 'dd' 'MM' 'yyyy' '24h':'min':'ss");
+        }
+
+        #endregion
+
+        #endregion
     }
 }

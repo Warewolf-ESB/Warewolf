@@ -58,7 +58,7 @@ namespace Dev2.Converters.DateAndTime
 
             bool nothingDied = true;
             IDateTimeResultTO dateTimeResultTO;
-            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Trim data and format
+            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Added trim to data
             if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat.Trim(), out dateTimeResultTO, out error))
             {                               
                 //
