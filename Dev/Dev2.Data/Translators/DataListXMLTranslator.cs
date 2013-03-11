@@ -58,8 +58,9 @@ namespace Dev2.Server.DataList.Translators
                         // &amp;amp;
                         int i;
 
-                        while(idxItr.HasMore()){
-                            
+                        while (idxItr.HasMore() && !entry.IsEmpty())
+                        {
+
                             i = idxItr.FetchNextIndex();
 
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
@@ -84,7 +85,7 @@ namespace Dev2.Server.DataList.Translators
                                 else
                                 {
                                     // deferred read, just print the location
-                                    if(!string.IsNullOrEmpty(col.TheValue))
+                                    if (!string.IsNullOrEmpty(col.TheValue))
                                     {
                                         result.Append(col.FetchDeferredLocation());
                                     }
@@ -92,8 +93,8 @@ namespace Dev2.Server.DataList.Translators
                                     {
                                         result.Append(string.Empty);
                                     }
-                                    
-                                    
+
+
                                 }
                                 result.Append("</");
                                 result.Append(fName);
@@ -115,7 +116,7 @@ namespace Dev2.Server.DataList.Translators
                             result.Append(fName);
                             result.Append(">");
                             // Travis.Frisinger 04.02.2013
-                            if(!val.IsDeferredRead)
+                            if (!val.IsDeferredRead)
                             {
                                 // Dev2System.FormView is our html region, pass it by ;)
                                 if (!entry.IsManagmentServicePayload && !entry.Namespace.Equals("Dev2System.FormView"))
@@ -131,7 +132,8 @@ namespace Dev2.Server.DataList.Translators
                             {
                                 // deferred read, just print the location
                                 result.Append(val.FetchDeferredLocation());
-;                           }
+                                ;
+                            }
                             result.Append("</");
                             result.Append(fName);
                             result.Append(">");
@@ -171,8 +173,10 @@ namespace Dev2.Server.DataList.Translators
                 }
 
                 // populate the shape 
-                if (payload != string.Empty) {
-                    try {
+                if (payload != string.Empty)
+                {
+                    try
+                    {
                         string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
                         XmlDocument xDoc = new XmlDocument();
                         if (DataListUtil.IsXml(toLoad)) xDoc.LoadXml(toLoad);
@@ -181,36 +185,46 @@ namespace Dev2.Server.DataList.Translators
                             toLoad = "<root>" + toLoad + "</root>";
                             xDoc.LoadXml(toLoad);
                         }
-                        if(xDoc.DocumentElement != null)
+                        if (xDoc.DocumentElement != null)
                         {
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                            XmlNodeList children = xDoc.DocumentElement.ChildNodes;
 
-                        IDictionary<string, int> indexCache = new Dictionary<string, int>();
+                            IDictionary<string, int> indexCache = new Dictionary<string, int>();
 
 
                             IBinaryDataListEntry entry = null;
                             int idx = 1; // recset index
 
                             // spin through each element in the XML
-                            foreach (XmlNode c in children) {
-                                if (!DataListUtil.isSystemTag(c.Name) && c.Name != GlobalConstants.NaughtyTextNode) {
+                            foreach (XmlNode c in children)
+                            {
+                                if (!DataListUtil.isSystemTag(c.Name) && c.Name != GlobalConstants.NaughtyTextNode)
+                                {
                                     // scalars and recordset fetch
-                                    if (result.TryGetEntry(c.Name, out entry, out error)) {
-                                        if (entry.IsRecordset) {
+                                    if (result.TryGetEntry(c.Name, out entry, out error))
+                                    {
+                                        if (entry.IsRecordset)
+                                        {
                                             // fetch recordset index
                                             int fetchIdx = 0;
-                                            if (indexCache.TryGetValue(c.Name, out fetchIdx)) {
+                                            if (indexCache.TryGetValue(c.Name, out fetchIdx))
+                                            {
                                                 idx = fetchIdx;
-                                            } else {
+                                            }
+                                            else
+                                            {
                                                 idx = 1; //re-set idx on cache miss ;)
                                             }
                                             // process recordset
                                             XmlNodeList nl = c.ChildNodes;
-                                            if (nl != null) {
-                                                foreach (XmlNode subc in nl) {
+                                            if (nl != null)
+                                            {
+                                                foreach (XmlNode subc in nl)
+                                                {
                                                     entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
 
-                                                    if (!string.IsNullOrEmpty(error)) {
+                                                    if (!string.IsNullOrEmpty(error))
+                                                    {
                                                         errors.AddError(error);
                                                     }
                                                 }
@@ -218,15 +232,20 @@ namespace Dev2.Server.DataList.Translators
                                                 indexCache[c.Name] = ++idx;
                                             }
 
-                                        } else {
+                                        }
+                                        else
+                                        {
                                             // process scalar
                                             entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
 
-                                            if (!string.IsNullOrEmpty(error)) {
+                                            if (!string.IsNullOrEmpty(error))
+                                            {
                                                 errors.AddError(error);
                                             }
                                         }
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         errors.AddError(error);
                                         entry = null;
                                     }
@@ -237,7 +256,8 @@ namespace Dev2.Server.DataList.Translators
 
                         // Transfer System Tags
                         IBinaryDataListEntry sysEntry;
-                        for (int i = 0; i < TranslationConstants.systemTags.Length; i++) {
+                        for (int i = 0; i < TranslationConstants.systemTags.Length; i++)
+                        {
                             string key = TranslationConstants.systemTags.GetValue(i).ToString();
                             string query = String.Concat("//", key);
                             XmlNode n = xDoc.SelectSingleNode(query);
@@ -249,22 +269,27 @@ namespace Dev2.Server.DataList.Translators
                                 n = xDoc.SelectSingleNode(query);
                             }
 
-                            if (n != null) {
+                            if (n != null)
+                            {
                                 string bkey = DataListUtil.BuildSystemTagForDataList(key, false);
-                                if (result.TryGetEntry(bkey, out sysEntry, out error)) {
+                                if (result.TryGetEntry(bkey, out sysEntry, out error))
+                                {
                                     sysEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(n.InnerXml, bkey), out error);
                                 }
                             }
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         // if use passed in empty input they only wanted the shape ;)
-                        if (input.Length > 0) {
+                        if (input.Length > 0)
+                        {
                             errors.AddError(e.Message);
                         }
                     }
                 }
             }
-            return result;    
+            return result;
         }
 
         #region Private Methods
@@ -295,35 +320,43 @@ namespace Dev2.Server.DataList.Translators
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(shape);
-                if(xDoc.DocumentElement != null)
+                if (xDoc.DocumentElement != null)
                 {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                error = string.Empty;
+                    XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                    error = string.Empty;
 
-                HashSet<string> procssesNamespaces = new HashSet<string>();
+                    HashSet<string> procssesNamespaces = new HashSet<string>();
 
                     result = Dev2BinaryDataListFactory.CreateDataList();
 
                     foreach (XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
-                        if (!DataListUtil.isSystemTag(c.Name)) {
-                            if (c.HasChildNodes) {
+                        if (!DataListUtil.isSystemTag(c.Name))
+                        {
+                            if (c.HasChildNodes)
+                            {
                                 IList<Dev2Column> cols = new List<Dev2Column>();
                                 //recordset
-                                if (c.ChildNodes != null) {
+                                if (c.ChildNodes != null)
+                                {
                                     // build template
-                                    if (!procssesNamespaces.Contains(c.Name)) {
+                                    if (!procssesNamespaces.Contains(c.Name))
+                                    {
                                         // build columns
-                                        foreach (XmlNode subc in c.ChildNodes) {
+                                        foreach (XmlNode subc in c.ChildNodes)
+                                        {
                                             if (subc.Attributes != null)
                                             {
                                                 descAttribute = subc.Attributes["Description"];
                                             }
-                                            
-                                            if (descAttribute != null) {
+
+                                            if (descAttribute != null)
+                                            {
                                                 cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
-                                            } else {
+                                            }
+                                            else
+                                            {
                                                 cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
                                             }
                                         }
@@ -334,49 +367,60 @@ namespace Dev2.Server.DataList.Translators
                                             descAttribute = c.Attributes["Description"];
                                         }
 
-                                        if (descAttribute != null) {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError)) {
+                                        if (descAttribute != null)
+                                        {
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
+                                            {
                                                 error = myError;
                                             }
-                                        } else {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError)) {
+                                        }
+                                        else
+                                        {
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
+                                            {
                                                 error = myError;
                                             }
                                         }
                                     }
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 //scalar
                                 if (c.Attributes != null)
                                 {
                                     descAttribute = c.Attributes["Description"];
                                 }
 
-                                if (descAttribute != null) {
+                                if (descAttribute != null)
+                                {
                                     result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, out error);
-                                } else {
+                                }
+                                else
+                                {
                                     result.TryCreateScalarTemplate(string.Empty, c.Name, string.Empty, true, out error);
                                 }
                             }
                         }
                     }
-                    
+
                 }
 
                 // Build System Tag Shape ;)
                 for (int i = 0; i < TranslationConstants.systemTags.Length; i++)
                 {
-                    if(result != null)
+                    if (result != null)
                     {
-                        result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, 
-                                                    TranslationConstants.systemTags.GetValue(i).ToString(), 
-                                                    string.Empty, 
-                                                    true, 
+                        result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace,
+                                                    TranslationConstants.systemTags.GetValue(i).ToString(),
+                                                    string.Empty,
+                                                    true,
                                                     out error);
                     }
                 }
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 error = e.Message;
             }
 
