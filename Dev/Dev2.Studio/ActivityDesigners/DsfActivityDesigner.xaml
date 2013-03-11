@@ -21,7 +21,8 @@
                         </Grid.RowDefinitions>
                         <!--<Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="#FFE5C365" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="#FFFFE8A6" VerticalAlignment="Stretch" MouseDown="UIElement_OnMouseDown" />-->
                         <Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
-                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,1,1,0" Height="20"
+                                    Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}">
                             <Button Command="{Binding OpenParentCommand}" ToolTip="Edit" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                         PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                                 <Image Source="/Images/editIcon.png" Width="15" Height="15"/>
