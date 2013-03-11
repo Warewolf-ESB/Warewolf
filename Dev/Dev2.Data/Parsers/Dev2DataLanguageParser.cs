@@ -731,14 +731,16 @@ namespace Dev2.DataList.Contract
                                             part = IntellisenseFactory.CreateDataListValidationRecordsetPart(display, "");
 
                                         }
-
-                                        // This is the line that requires change for PBI 6731!!!!
-
                                         // add error
-                                        result.Add(!display.Contains(' ')
-                                            ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your Data List", code, (!payload.HangingOpen))
+                                        if(!display.Contains(' '))
+                                        {
+                                            result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your Data List", code, (!payload.HangingOpen)));
+                                        }
+                                        else
+                                        {
                                             //06.03.2013: Ashley Lewis - BUG 6731
-                                            : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, (!payload.HangingOpen)));
+                                            result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, (!payload.HangingOpen)));
+                                        }
                                     }
                                 }
                             }
