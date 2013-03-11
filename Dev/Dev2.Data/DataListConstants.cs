@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System;
+using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -15,7 +16,7 @@ namespace Dev2.Data.SystemTemplates
         public static readonly Dev2Switch DefaultSwitch = new Dev2Switch() { SwitchVariable = "" };
         public static readonly Dev2Switch DefaultCase = new Dev2Switch() { SwitchVariable = "" };
 
-        public static readonly IBinaryDataListEntry baseEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty);
+        public static readonly IBinaryDataListEntry baseEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty, Guid.NewGuid());
         public static readonly IBinaryDataListItem baseItem = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
         public static readonly IBinaryDataListItem emptyItem = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
 

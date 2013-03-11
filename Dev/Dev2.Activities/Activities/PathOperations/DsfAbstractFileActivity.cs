@@ -83,7 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         {
                                             // deferred read ;)
                                             string error;
-                                            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty);
+                                            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, dlID);
                                             deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
                                             allErrors.AddError(error);
                                             toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);

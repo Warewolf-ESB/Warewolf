@@ -382,7 +382,7 @@ namespace ActivityUnitTests.ActivityTest
             actual.Add(tempActual);
 
 
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
         }
 
         [TestMethod]
@@ -510,23 +510,14 @@ namespace ActivityUnitTests.ActivityTest
             };
 
             TestData = ActivityStrings.DataSplit_preDataList;
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
+            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { @"me|TelNo|
-1.Mr"
-                                                     , @"|0795628443
-2."
-                                                     , @"Title|Fname|LNa"
-                                                     , @"|Frank|Williams"
-                                                     , @"Mr|Enzo|Ferrari"
-                                                     , @"Mrs|Jenny|Smith"
-                                                     , @"Ms|Kerrin|deSil" };
-            string error = string.Empty;
+
+            string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
 
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error));
-
 
             Assert.AreEqual("896", actual[1]);
             Assert.AreEqual("Branson|0812457", actual[3]);
@@ -630,7 +621,7 @@ namespace ActivityUnitTests.ActivityTest
 
             _resultsCollection.Add(new DataSplitDTO("[[recset1(*).field1]]", "Index", "15", 1));
 
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_DataListShape, Source, _resultsCollection);
+            SetupArguments(@"<root></root>", ActivityStrings.DataSplit_DataListShape, Source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -765,7 +756,7 @@ No tokenize operations!]]></Error>";
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
 
-            CollectionAssert.AreEqual(expectedRecSet1, actual, new ActivityUnitTests.Utils.StringComparer());
+            CollectionAssert.AreEqual(expectedRecSet1, actual, new Utils.StringComparer());
         }
 
         #region Get Debug Input/Output Tests
@@ -809,7 +800,7 @@ No tokenize operations!]]></Error>";
             Assert.AreEqual(4, inRes[0].Count);
             Assert.AreEqual(4, inRes[1].Count);
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(31, outRes[0].Count);
+            Assert.AreEqual(43, outRes[0].Count); // changed to 43 ;)
         }
 
         #endregion

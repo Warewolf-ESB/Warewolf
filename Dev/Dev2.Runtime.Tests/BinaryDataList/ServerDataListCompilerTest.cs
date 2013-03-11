@@ -242,7 +242,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
             IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2",string.Empty);
+            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2",string.Empty, dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = sdlc.Upsert(null, dlID, "[[scalar1]]", upsertEntry, out errors);
@@ -265,7 +265,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
             IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty);
+            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = sdlc.Upsert(null , dlID, "[[[[scalar1]]]]", upsertEntry, out errors);
@@ -288,7 +288,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
             IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty);
+            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty,dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = sdlc.Upsert(null, dlID, "[[rs1(5).f2]]", upsertEntry, out errors);
@@ -311,7 +311,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
             IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty);
+            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty,dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = sdlc.Upsert(null, dlID, "[[rs1().f2]]", upsertEntry, out errors);

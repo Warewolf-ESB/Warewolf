@@ -45,8 +45,8 @@ namespace Dev2.Data.Binary_Objects
         [NonSerialized]
         readonly static ManualResetEvent _keepRunning = new ManualResetEvent(true);
 
-        private static object _lockLvl1Guard = new object();
-        private static object _lockLvl2Guard = new object();
+        //private static object _lockLvl1Guard = new object();
+        //private static object _lockLvl2Guard = new object();
         private static bool _backgroundWorkerInited = false;
         
         readonly String _uniqueIdentifierGuid;
@@ -91,20 +91,29 @@ namespace Dev2.Data.Binary_Objects
             //if (BackgroundWorker.CancellationPending) return;
             if (LevelOneCache.Count >= GlobalConstants.DefaultDataListMaxCacheSizeLvl1)
             {
-                
-                lock (_lockLvl1Guard)
-                {
-                    var keys = LevelOneCache.Keys.ToList();
-                    keys.ForEach(s =>
+
+                //lock (_lockLvl1Guard)
+                //{
+
+                    foreach (string key in LevelOneCache.Keys)
                     {
                         IBinaryDataListRow list;
-                        LevelOneCache.TryRemove(s, out list);
-                        lock (_lockLvl2Guard)
-                        {
-                            LevelTwoCache.Set(s, list, CacheItemPolicy);
-                        }
-                    });
-                }
+                        LevelOneCache.TryRemove(key, out list);
+                        LevelTwoCache.Set(key, list, CacheItemPolicy);
+                    }
+                //}
+
+                //var keys = LevelOneCache.Keys.ToList();
+                    //keys.ForEach(s =>
+                    //{
+                    //    IBinaryDataListRow list;
+                    //    LevelOneCache.TryRemove(s, out list);
+                    //    //lock (_lockLvl2Guard)
+                    //    //{
+                    //        LevelTwoCache.Set(s, list, CacheItemPolicy);
+                    //    //}
+                    //});
+                //}
             }
         }
 
@@ -150,20 +159,20 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        public List<IList<IBinaryDataListItem>> Values
-        {
-            get
-            {
-                List<IList<IBinaryDataListItem>> result;
+        //public List<IList<IBinaryDataListItem>> Values
+        //{
+        //    get
+        //    {
+        //        List<IList<IBinaryDataListItem>> result;
 
-                lock (_lockLvl2Guard)
-                {
-                    result = LevelTwoCache.Select(pair => (IList<IBinaryDataListItem>)pair.Value).ToList();
-                }
+        //        //lock (_lockLvl2Guard)
+        //        //{
+        //            result = LevelTwoCache.Select(pair => (IList<IBinaryDataListItem>)pair.Value).ToList();
+        //        //}
 
-                return result;
-            }
-        }
+        //        return result;
+        //    }
+        //}
 
         public int Count
         {
@@ -184,12 +193,14 @@ namespace Dev2.Data.Binary_Objects
                 var cacheItem = arguments.CacheItem;
                 var value = cacheItem.Value;
                 var key = cacheItem.Key;
-                LevelThreeCache.Add(key,(IBinaryDataListRow)value);
+                //lock (_lockLvl2Guard)
+                //{
+                    LevelThreeCache.Add(key, (IBinaryDataListRow) value);
+                //}
                 ItemsAddedToLevelThreeCache = true;
             }
         }
 
-        //public bool TryGetValue(int key, out IList<IBinaryDataListItem> value)
         public bool TryGetValue(int key, int missSize, out IBinaryDataListRow value)
         {
             bool r = false;
@@ -208,14 +219,7 @@ namespace Dev2.Data.Binary_Objects
             }
             else
             {
-                if(_populatedKeys.Contains(key))
-                {
-                    if(value == null)
-                    {
-                        r = false;
-                    }
-                }
-                else
+                if(!_populatedKeys.Contains(key))
                 {
                     // Naughty, we need to push the key, not blank it?!?!
                     _populatedKeys.SetMaxValue(key);
@@ -229,18 +233,18 @@ namespace Dev2.Data.Binary_Objects
 
             if(!row.IsEmpty)
             {
-                lock (_lockLvl1Guard)
-                {
+                //lock (_lockLvl1Guard)
+                //{
                     LevelOneCache.AddOrUpdate(uniqueKey, row, (s, r) => row);
-                }
+                //}
                 _keepRunning.Set();
             }
             else
             {
-                lock (_lockLvl1Guard)
-                {
+                //lock (_lockLvl1Guard)
+                //{
                     Remove(uniqueKey);
-                }
+                //}
             }
         }
 
@@ -250,10 +254,12 @@ namespace Dev2.Data.Binary_Objects
             {
                 return true;
             }
+
             if(TryGetValueFromLevelTwoCache(uniqueKey, out value))
             {
                 return true;
             }
+
             if(ItemsAddedToLevelThreeCache)
             {
                 if(TryGetValueFromLevelThreeCache(uniqueKey, out value))
@@ -266,16 +272,18 @@ namespace Dev2.Data.Binary_Objects
 
         bool TryGetValueFromLevelThreeCache(string uniqueKey, out IBinaryDataListRow value)
         {
+
             value = LevelThreeCache[uniqueKey];
+
             return value != null;
         }
 
         bool TryGetValueFromLevelTwoCache(string uniqueKey, out IBinaryDataListRow value)
         {
-            lock (_lockLvl2Guard)
-            {
+            //lock (_lockLvl2Guard)
+            //{
                 value = (IBinaryDataListRow)LevelTwoCache.Get(uniqueKey);
-            }
+            //}
             return value != null;
         }
 
@@ -283,10 +291,10 @@ namespace Dev2.Data.Binary_Objects
         {
             bool result = false;
 
-            lock (_lockLvl1Guard)
-            {
+            //lock (_lockLvl1Guard)
+            //{
                 result = LevelOneCache.TryGetValue(uniqueKey, out value);
-            }
+            //}
 
             return result;
         }
@@ -314,21 +322,21 @@ namespace Dev2.Data.Binary_Objects
         {
             IBinaryDataListRow list;
             
-            lock (_lockLvl1Guard)
-            {
+            //lock (_lockLvl1Guard)
+            //{
                 LevelOneCache.TryRemove(uniqueKey, out list);
-            }
+            //}
 
-            lock (_lockLvl2Guard)
-            {
+           // lock (_lockLvl2Guard)
+            //{
                 LevelTwoCache.Remove(uniqueKey);
-            }
+            //}
 
             if (ItemsAddedToLevelThreeCache)
             {
                 LevelThreeCache.Remove(uniqueKey);
             }
-            //_populatedKeys.AddGap(key);
+
             return true;
         }
 
@@ -418,60 +426,94 @@ namespace Dev2.Data.Binary_Objects
 
         void RemoveFromLevelOneCache()
         {
-            lock (_lockLvl1Guard)
-            {
-                List<string> keysToRemove = LevelOneCache.Keys
-                                            .Where(key =>
-                                              key.Contains(_uniqueIndentifier) || key.Contains(GlobalConstants.NullEntryNamespace))
-                                            .ToList();
-                if (keysToRemove.Count != 0)
+            //lock (_lockLvl1Guard)
+            //{
+
+                IEnumerable<string> keys = LevelOneCache.Keys
+                                                        .Where(key =>
+                                                               key.Contains(_uniqueIndentifier) );
+
+                foreach (string key in keys)
                 {
                     IBinaryDataListRow row;
-                    keysToRemove.ForEach(keyToRemove => LevelOneCache.TryRemove(keyToRemove, out row));
+                    LevelOneCache.TryRemove(key, out row);
                 }
-            }
+                
+                
+                //List<string> keysToRemove = LevelOneCache.Keys
+                //                            .Where(key =>
+                //                             key.Contains(_uniqueIndentifier) || key.Contains(GlobalConstants.NullEntryNamespace))
+                //                            .ToList();
+                //if (keysToRemove.Count != 0)
+                //{
+                //    IBinaryDataListRow row;
+                //    keysToRemove.ForEach(keyToRemove => LevelOneCache.TryRemove(keyToRemove, out row));
+                //}
+            //}
         }      
         void RemoveFromLevelTwoCache()
         {
-            lock (_lockLvl2Guard)
-            {
-                //pair => (pair.Key.Contains(_uniqueIdentifierGuid) || pair.Key.Contains(GlobalConstants.NullEntryNamespace)) ? pair.Key : null
-                List<string> keysToRemove = LevelTwoCache.Select(pair => pair.Key).Where(key => key.Contains(_uniqueIdentifierGuid) || key.Contains(GlobalConstants.NullEntryNamespace)).ToList();
-                if (keysToRemove.Count != 0)
-                {
-                    keysToRemove.ForEach(keyToRemove =>
-                    {
-                        if (!String.IsNullOrEmpty(keyToRemove))
-                        {
+            //lock (_lockLvl2Guard)
+            //{
 
-                            LevelTwoCache.Remove(keyToRemove);
-                        }
-                    });
+                IEnumerable<string> keys =
+                    LevelTwoCache.Select(pair => pair.Key)
+                                 .Where(
+                                     key =>
+                                     (key.Contains(_uniqueIdentifierGuid)) && !string.IsNullOrEmpty(key));
+
+                foreach (var key in keys)
+                {
+                    LevelTwoCache.Remove(key);
                 }
-            }
+            //}
+
+                //List<string> keysToRemove = LevelTwoCache.Select(pair => pair.Key).Where(key => key.Contains(_uniqueIdentifierGuid) || key.Contains(GlobalConstants.NullEntryNamespace)).ToList();
+                //if (keysToRemove.Count != 0)
+                //{
+                //    keysToRemove.ForEach(keyToRemove =>
+                //    {
+                //        if (!String.IsNullOrEmpty(keyToRemove))
+                //        {
+
+                //            LevelTwoCache.Remove(keyToRemove);
+                //        }
+                //    });
+                //}
+            
         }
 
         void RemoveFromLevelThreeCache()
         {
             if (ItemsAddedToLevelThreeCache)
             {
-                lock (_lockLvl2Guard)
-                {
-                    var keysToRemove = LevelThreeCache.Keys.ToList().Where(pair => pair.Contains(_uniqueIndentifier) || pair.Contains(GlobalConstants.NullEntryNamespace)).ToList();
+                //lock (_lockLvl2Guard)
+                //{
+                    IEnumerable<string> keys =
+                        LevelThreeCache.Keys.Where(
+                            pair => (pair.Contains(_uniqueIndentifier)) && !string.IsNullOrEmpty(pair));
 
-                    if (keysToRemove.Count != 0)
+                    foreach (string key in keys)
                     {
-
-                        for (int i = keysToRemove.Count - 1; i >= 0; i--)
-                        {
-                            var value = keysToRemove[i];
-                            if (!String.IsNullOrEmpty(value))
-                            {
-                                LevelThreeCache.Remove(value);
-                            }
-                        }
+                        LevelThreeCache.Remove(key);
                     }
-                }
+                //}
+
+                    //var keysToRemove = LevelThreeCache.Keys.ToList().Where(pair => pair.Contains(_uniqueIndentifier) || pair.Contains(GlobalConstants.NullEntryNamespace)).ToList();
+
+                    //if (keysToRemove.Count != 0)
+                    //{
+
+                    //    for (int i = keysToRemove.Count - 1; i >= 0; i--)
+                    //    {
+                    //        var value = keysToRemove[i];
+                    //        if (!String.IsNullOrEmpty(value))
+                    //        {
+                    //            LevelThreeCache.Remove(value);
+                    //        }
+                    //    }
+                    //}
+                
             }
         }
     }

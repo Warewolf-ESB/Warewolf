@@ -130,20 +130,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #region Ctors
 
-        internal BinaryDataListEntry(string nameSpace, string description, IList<Dev2Column> cols)
-            : this(nameSpace, description, cols, true, enDev2ColumnArgumentDirection.None, Guid.NewGuid())
-        {
-        }
 
-       BinaryDataListEntry(string nameSpace, string description, IList<Dev2Column> cols, Guid dataListKey)
+        BinaryDataListEntry(string nameSpace, string description, IList<Dev2Column> cols, Guid dataListKey)
             : this(nameSpace, description, cols, true, enDev2ColumnArgumentDirection.None, dataListKey)
         {
         }
 
-        internal BinaryDataListEntry(string nameSpace, string description)
-            : this(nameSpace, description, true, enDev2ColumnArgumentDirection.None, Guid.NewGuid())
-        {
-        }
 
         internal BinaryDataListEntry(string nameSpace, string description, Guid dataListKey)
             : this(nameSpace, description, true, enDev2ColumnArgumentDirection.None, dataListKey)
@@ -243,7 +235,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     if(colIdx >= 0)
                     {
                         // entry already exist
-                        _internalObj[myIdx] = new List<IBinaryDataListItem>(){item};
+                        _internalObj[myIdx] = new List<IBinaryDataListItem> {item};
                         error = string.Empty;
                         _internalObj.IsEmtpy = false;
                     }
@@ -261,7 +253,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         item.UpdateIndex(myIdx);
                         item.UpdateRecordset(ns);
-                        IList<IBinaryDataListItem> cols = new List<IBinaryDataListItem>() { item };
+                        IList<IBinaryDataListItem> cols = new List<IBinaryDataListItem> { item };
 
                         _internalObj[myIdx] = cols;
                         _internalObj.IsEmtpy = false;
@@ -284,7 +276,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 Dev2Column colToFind = Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
                 if(colToFind != null)
                 {
-                    _internalObj[ItemCollectionSize()] = new List<IBinaryDataListItem>() { item };
+                    _internalObj[ItemCollectionSize()] = new List<IBinaryDataListItem> { item };
                     error = string.Empty;
                     _internalObj.IsEmtpy = false;
                 }
@@ -303,7 +295,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 string error;
                 return TryFetchLastIndexedRecordsetUpsertPayload(out error);
             }
-            else if(_internalObj.Count > 0)
+            
+            if(_internalObj.Count > 0)
             {
                 var binaryDataListItems = _internalObj[0];
                 if(binaryDataListItems.Count > 0)
@@ -328,7 +321,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if(!IsRecordset)
             {
                 // set evaluation scalar
+                // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                 if(item.FieldName == GlobalConstants.EvalautionScalar)
+                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 {
                     IsEvaluationScalar = true;
                 }
@@ -338,7 +333,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 }
 
                 // set managment service payload
+                // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                 if(item.FieldName == GlobalConstants.ManagementServicePayload)
+                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 {
                     IsManagmentServicePayload = true;
                 }
@@ -352,21 +349,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     _internalObj.RemoveDeferedRead(item);
                 }
 
-                _internalObj[0] = new List<IBinaryDataListItem>() { item };
+                _internalObj[0] = new List<IBinaryDataListItem> { item };
 
                 error = string.Empty;
             }
         }
 
-        public IBinaryDataListEntry Clone(enTranslationDepth depth, Guid clonedStorageID, out string error)
+        public IBinaryDataListEntry Clone(enTranslationDepth depth, Guid clonedStorageId, out string error)
         {
             error = string.Empty;
             BinaryDataListEntry result;
             Guid dlKey = DataListKey;
 
-            if (clonedStorageID != GlobalConstants.NullDataListID)
+            if (clonedStorageId != GlobalConstants.NullDataListID)
             {
-                dlKey = clonedStorageID;
+                dlKey = clonedStorageId;
             }
 
             if (Columns != null)
@@ -423,11 +420,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 else
                 {
                     IList<IBinaryDataListItem> items = _internalObj[0];
-                    IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
-                    foreach (IBinaryDataListItem itm in items)
-                    {
-                        clone.Add(itm.Clone());
-                    }
+                    IList<IBinaryDataListItem> clone = items.Select(itm => itm.Clone()).ToList();
 
                     // now push back clone
 
@@ -450,7 +443,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
                             int idx = i + 1;
                             IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
                             itm.UpdateRecordset(Namespace);
-                            itm.UpdateField(Columns[i].ColumnName);
+                            if (Columns != null)
+                            {
+                                itm.UpdateField(Columns[i].ColumnName);
+                            }
                             itm.UpdateIndex(idx);
                             blankItems.Add(itm);
                         }
@@ -469,10 +465,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-        public IBinaryDataListEntry Clone(enTranslationDepth depth, out string error)
-        {
-            return Clone(depth, GlobalConstants.NullDataListID, out error);
-        }
+        //public IBinaryDataListEntry Clone(enTranslationDepth depth, out string error)
+        //{
+        //    return Clone(depth, GlobalConstants.NullDataListID, out error);
+        //}
 
         public void Merge(IBinaryDataListEntry toMerge, out string error)
         {
@@ -584,7 +580,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public IBinaryDataListItem TryFetchRecordsetColumnAtIndex(string field, int idx, out string error)
         {
-            error = string.Empty;
             IList<IBinaryDataListItem> cols = FetchRecordAt(idx, field, out error);
             IBinaryDataListItem result = DataListConstants.baseItem.Clone();
 
@@ -620,7 +615,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if(colName != null)
             {
                 Dev2Column cc = Columns.FirstOrDefault(c => c.ColumnName == colName);
-                string error = string.Empty;
 
                 if(cc != null)
                 {
@@ -629,6 +623,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         int next = ii.FetchNextIndex();
                         // now blank all values at this location
                         IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, Namespace, cc.ColumnName, next);
+                        string error;
                         TryPutRecordItemAtIndex(itm, next, out error);
                     }
                 }
@@ -692,21 +687,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 // Int
                 try
                 {
-                    sortedData = IntSort(toSort, field, colIdx, desc);
+                    sortedData = IntSort(toSort, colIdx, desc);
                 }
                 catch(Exception)
                 {
                     // DateTime
                     try
                     {
-                        sortedData = DateTimeSort(toSort, field, colIdx, desc);
+                        sortedData = DateTimeSort(toSort, colIdx, desc);
                     }
                     catch(Exception)
                     {
                         // String
                         try
                         {
-                            sortedData = StringSort(toSort, field, colIdx, desc);
+                            sortedData = StringSort(toSort, colIdx, desc);
                         }
                         catch(Exception)
                         {
@@ -731,7 +726,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             bool result = false;
             if(IsRecordset && index != null)
             {
-                int numericIndex = 0;
+                int numericIndex;
                 if(!Int32.TryParse(index, out numericIndex))
                 {
                     if(string.IsNullOrEmpty(index))
@@ -812,7 +807,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         bool DeleteAllRows()
         {
-            SBinaryDataListEntry tmp = new SBinaryDataListEntry();
+            var tmp = new SBinaryDataListEntry();
             
             tmp.IsRecordset = _internalObj.IsRecordset;
             tmp.Columns = _internalObj.Columns;
@@ -867,42 +862,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         /// <summary>
-        ///     Fetches the index iterator.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns></returns>
-        IIndexIterator FetchIndexIterator(string index)
-        {
-            int numericIndex = 0;
-            IIndexIterator indexIterator = null;
-            if(!Int32.TryParse(index, out numericIndex))
-            {
-                if(string.IsNullOrEmpty(index))
-                {
-                    indexIterator = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(FetchLastRecordsetIndex(), 1);
-                }
-                else if(index == "*")
-                {
-                    indexIterator = FetchRecordsetIndexes();
-                }
-            }
-            else
-            {
-                indexIterator = new LoopedIndexIterator(numericIndex, 1);
-            }
-            return indexIterator;
-        }
-
-        /// <summary>
         ///     Ints the sort.
         /// </summary>
-        /// <param name="field">The field.</param>
+        /// <param name="toSort"></param>
+        /// <param name="colIdx"></param>
         /// <param name="desc">
         ///     if set to <c>true</c> [desc].
         /// </param>
-        IDictionary<int, IList<IBinaryDataListItem>> IntSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, string field, int colIdx, bool desc)
+        IDictionary<int, IList<IBinaryDataListItem>> IntSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
         {
-            IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
+            IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
             if(!desc)
             {
@@ -926,7 +895,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 int idx = 1;
                 foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
-                    _toSwap[idx] = tmp.Value;
+                    toSwap[idx] = tmp.Value;
                     idx++;
                 }
             }
@@ -952,7 +921,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 int idx = 1;
                 foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
-                    _toSwap[idx] = tmp.Value;
+                    toSwap[idx] = tmp.Value;
                     idx++;
                 }
             }
@@ -960,9 +929,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             toSort.Clear();
 
             // make the swap
-            foreach(int k in _toSwap.Keys)
+            foreach(int k in toSwap.Keys)
             {
-                toSort[k] = (IList<IBinaryDataListItem>)_toSwap[k];
+                toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
 
             return toSort;
@@ -971,14 +940,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         ///     Dates the time sort.
         /// </summary>
-        /// <param name="field">The field.</param>
+        /// <param name="toSort"></param>
         /// <param name="colIdx">The col idx.</param>
         /// <param name="desc">
         ///     if set to <c>true</c> [desc].
         /// </param>
-        IDictionary<int, IList<IBinaryDataListItem>> DateTimeSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, string field, int colIdx, bool desc)
+        IDictionary<int, IList<IBinaryDataListItem>> DateTimeSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
         {
-            IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
+            IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
             if(!desc)
             {
@@ -1002,7 +971,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 int idx = 1;
                 foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
-                    _toSwap[idx] = tmp.Value;
+                    toSwap[idx] = tmp.Value;
                     idx++;
                 }
             }
@@ -1028,7 +997,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 int idx = 1;
                 foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
-                    _toSwap[idx] = tmp.Value;
+                    toSwap[idx] = tmp.Value;
                     idx++;
                 }
             }
@@ -1036,23 +1005,22 @@ namespace Dev2.DataList.Contract.Binary_Objects
             toSort.Clear();
 
             // make the swap
-            foreach(int k in _toSwap.Keys)
+            foreach(int k in toSwap.Keys)
             {
-                toSort[k] = (IList<IBinaryDataListItem>)_toSwap[k];
+                toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
 
             return toSort;
         }
 
         /// <summary>
-        ///     Strings the sort.
+        /// Strings the sort.
         /// </summary>
-        /// <param name="field">The field.</param>
+        /// <param name="toSort">To sort.</param>
         /// <param name="colIdx">The col idx.</param>
-        /// <param name="desc">
-        ///     if set to <c>true</c> [desc].
-        /// </param>
-        IDictionary<int, IList<IBinaryDataListItem>> StringSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, string field, int colIdx, bool desc)
+        /// <param name="desc">if set to <c>true</c> [desc].</param>
+        /// <returns></returns>
+        IDictionary<int, IList<IBinaryDataListItem>> StringSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
         {
             //IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
@@ -1087,7 +1055,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             //return toSort;
 
-            IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
+            IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
             if (!desc)
             {
@@ -1102,7 +1070,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
-                    _toSwap[idx] = tmp.Value;
+                    toSwap[idx] = tmp.Value;
                     idx++;
                 }
             }
@@ -1117,7 +1085,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 int idx = 1;
                 foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
-                    _toSwap[idx] = tmp.Value;
+                    toSwap[idx] = tmp.Value;
                     idx++;
                 }
             }
@@ -1125,9 +1093,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             toSort.Clear();
 
             // make the swap
-            foreach (int k in _toSwap.Keys)
+            foreach (int k in toSwap.Keys)
             {
-                toSort[k] = (IList<IBinaryDataListItem>)_toSwap[k];
+                toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
 
             return toSort;
@@ -1151,9 +1119,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         /// <summary>
-        ///     Clears all.
+        /// Clears all.
         /// </summary>
-        /// <param name="keys">The keys.</param>
+        /// <param name="idxItr">The idx itr.</param>
         void ClearAll(IIndexIterator idxItr)
         {
             // miss, clear it all out ;)

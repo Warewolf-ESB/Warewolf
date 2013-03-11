@@ -169,17 +169,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return new Dev2Column(name, string.Empty);
         }
 
-        /// <summary>
-        /// Creates the entry.
-        /// </summary>
-        /// <param name="field">The field.</param>
-        /// <param name="desc">The desc.</param>
-        /// <returns></returns>
-        public static IBinaryDataListEntry CreateEntry(string field, string desc)
-        {
-            return new BinaryDataListEntry(field, desc);
-        }
-
 
         /// <summary>
         /// Creates the entry.
@@ -193,16 +182,5 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return new BinaryDataListEntry(field, desc,dataListKey);
         }
 
-        /// <summary>
-        /// Creates the entry.
-        /// </summary>
-        /// <param name="recordset">The recordset.</param>
-        /// <param name="desc">The desc.</param>
-        /// <param name="cols">The cols.</param>
-        /// <returns></returns>
-        public static IBinaryDataListEntry CreateEntry(string recordset, string desc, IList<Dev2Column> cols)
-        {
-            return new BinaryDataListEntry(recordset, desc, cols);
-        }
     }
 }

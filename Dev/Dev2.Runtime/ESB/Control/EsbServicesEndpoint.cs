@@ -234,7 +234,7 @@ namespace Dev2.DynamicServices
             try
             {
                 // Setup the invoker endpoint ;)
-                IDynamicServicesInvoker invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+                var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
 
                 // Should return the top level DLID
                 resultID = invoker.Invoke(dataObject, out errors);
@@ -248,10 +248,17 @@ namespace Dev2.DynamicServices
             return resultID;
         }
 
+        /// <summary>
+        /// Executes the transactionally scoped request, caller must delete datalist
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid ExecuteTransactionallyScopedRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
         {
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            IDynamicServicesInvoker invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+            var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
             errors = new ErrorResultTO();
 
             // Account for silly webpages...

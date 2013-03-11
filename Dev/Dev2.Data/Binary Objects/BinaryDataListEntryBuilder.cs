@@ -44,12 +44,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 // Break into parts so we can correctly create the required entry......
 
-                IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(recsetName, string.Empty);
+                IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(recsetName, string.Empty, dlID);
 
                 int idx = 1;
                 foreach (string output in outputTO.OutputStrings)
                 {
-                    IBinaryDataListItem itemToAdd = Dev2BinaryDataListFactory.CreateBinaryItem(output, recsetName, fieldName, idx.ToString());
+                    IBinaryDataListItem itemToAdd = Dev2BinaryDataListFactory.CreateBinaryItem(output, recsetName, fieldName, idx);
                     idx++;
                     entry.TryAppendRecordItem(itemToAdd, out error);
                     if (error != string.Empty)
@@ -64,9 +64,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-        public static IBinaryDataListEntry CreateScalarEntry(string valueForScalar, out string error)
+        public static IBinaryDataListEntry CreateScalarEntry(string valueForScalar, Guid dlID, out string error)
         {
-            IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty);
+            IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty, dlID);
             IBinaryDataListItem item = Dev2BinaryDataListFactory.CreateBinaryItem(valueForScalar, string.Empty);
             entry.TryPutScalar(item, out error);
             return entry;

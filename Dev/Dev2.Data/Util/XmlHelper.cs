@@ -39,7 +39,7 @@ namespace Dev2.Data.Util
                     }
                 }
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 result.Clear();
                 result.Append(tag);

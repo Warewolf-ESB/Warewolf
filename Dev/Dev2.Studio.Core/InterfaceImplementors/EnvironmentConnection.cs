@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
@@ -356,29 +357,25 @@ namespace Dev2.Studio.Core
 
                 string payload =  _client.ExecuteCommand(xmlRequest) ?? string.Empty;
 
+                // Only return Dev2System.ManagmentServicePayload if present ;)
+
+                int start = payload.IndexOf("<"+GlobalConstants.ManagementServicePayload+">", StringComparison.Ordinal);
+
+                if (start > 0)
+                {
+                    int end = payload.IndexOf("</"+GlobalConstants.ManagementServicePayload+">", StringComparison.Ordinal);
+                    if (start < end && (end - start) > 1)
+                    {
+                        // we can return the trimed payload instead
+
+                        start += (GlobalConstants.ManagementServicePayload.Length + 2);
+
+                        return payload.Substring(start, (end - start));
+                    }
+                }
+
+
                 return payload;
-
-                //Guid executionID;
-                //Guid.TryParse(result, out executionID);
-
-                //string payload = string.Empty;
-
-                //if(executionID != GlobalConstants.NullDataListID)
-                //{
-                //    ErrorResultTO errors;
-                //    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(_environment.DataListChannel);
-                //    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
-
-                //    if(bdl != null)
-                //    {
-                //        payload = compiler.ConvertFrom(executionID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
-                //    }
-
-                //    // clean up ;)
-                //    compiler.ForceDeleteDataListByID(executionID);
-                //}
-
-                //return payload;
             }
              
             public void Dispose()

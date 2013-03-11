@@ -137,7 +137,7 @@ namespace Unlimited.UnitTest.Framework
             }
 
             // Add defered entry
-            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty);
+            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty, dataList.UID);
             deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem("", "", GlobalConstants.EvalautionScalar), out error);
             toUpsertDeferred.Add(DataListUtil.AddBracketsToValueIfNotExist(fieldName), deferredEntry);
             compiler.Upsert(dataList.UID, toUpsertDeferred, out localErrors);

@@ -353,7 +353,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 string error = string.Empty;
                 // fetch this instance via clone, fetch toClone instance and merge the data
-                IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, this.UID, out error);
+                IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, UID, out error);
                 // Copy over the intellisesne parts ;)
                 result._intellisenseParts = _intellisenseParts;
                 if (error != string.Empty)
@@ -535,7 +535,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     if (toClone._templateDict.TryGetValue(e, out fetchTmp))
                     {
                         unionKeyHits.Add(e);
-                        cloned = fetchTmp.Clone(depth, this.UID, out error);
+                        cloned = fetchTmp.Clone(depth, UID, out error);
                         if (error != string.Empty)
                         {
                             lamdaErrors.Add(error);
@@ -558,7 +558,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     IBinaryDataListEntry toFetch;
                     if (toClone.TryGetEntry(e, out toFetch, out error))
                     {
-                        cloned = toClone._templateDict[e].Clone(depth, this.UID, out error);
+                        cloned = toClone._templateDict[e].Clone(depth, UID, out error);
                         if (error != string.Empty)
                         {
                             lamdaErrors.Add(error);
@@ -590,7 +590,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 //toClone._templateDict.Keys
                 foreach (string k in (toClone._templateDict.Keys.ToArray().Except(unionKeyHits)))
                 {
-                    IBinaryDataListEntry cloned = toClone._templateDict[k].Clone(depth, this.UID, out error);
+                    IBinaryDataListEntry cloned = toClone._templateDict[k].Clone(depth, UID, out error);
                     if (error != string.Empty)
                     {
                         lamdaErrors.Add(error);

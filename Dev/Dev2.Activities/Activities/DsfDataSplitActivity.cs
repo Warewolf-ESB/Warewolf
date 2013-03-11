@@ -74,13 +74,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            //Guid executionId = DataListExecutionID.Get(context);
 
             try
             {
@@ -99,11 +97,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         foreach (IBinaryDataListItem c in cols)
                         {
                             // set up live flushing iterator details
-                            if(c.IsDeferredRead)
-                            {
-                                toUpsert.HasLiveFlushing = true;
-                                toUpsert.LiveFlushingLocation = dlID;
-                            }
+                            toUpsert.HasLiveFlushing = true;
+                            toUpsert.LiveFlushingLocation = dlID;
 
                             if(!string.IsNullOrEmpty(c.TheValue))
                             {
@@ -135,24 +130,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
                                 }
 
-                                if (toUpsert.HasLiveFlushing)
-                                {
-                                    try
-                                    {
-                                        toUpsert.FlushIterationFrame(true);
-                                        toUpsert = null;
-                                        //toUpsert.PublishLiveIterationData();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        allErrors.AddError(e.Message);
-                                    }
-                                }
-                                else
-                                {
-                                    compiler.Upsert(dlID, toUpsert, out errors);
-                                    allErrors.MergeErrors(errors);
-                                }
+                                // flush the final frame ;)
+                                toUpsert.FlushIterationFrame(true);
+                                toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+
                             }
                         }
                     }

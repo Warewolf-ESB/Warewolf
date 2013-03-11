@@ -732,7 +732,6 @@ namespace Dev2.DataList.Contract
                     IList<IBinaryDataListEntry> entries = dl.FetchAllEntries();
                     foreach (IBinaryDataListEntry entry in entries)
                     {
-                        string errorString;
                         if (entry.IsRecordset)
                         {
                             if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)

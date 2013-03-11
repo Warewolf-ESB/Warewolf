@@ -53,10 +53,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         protected override void OnExecute(NativeActivityContext context) {
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>(); ;
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
-
-            // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
@@ -67,24 +63,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
             // Process if no errors
             try {
-                // TODO : Fill with execution logic
-                //IList<string> ambientData = new List<string> { dataObject.XmlData };
-
-                //dynamic data = binder.DataListToUnlimitedObject(ambientData);
-
-                // Upsert the FormView tag into the dataList structure
-                //dataObject.DataList = Compiler.UpsertSystemTagIntoDataList(dataObject.DataList, enSystemTag.FormView);
-                //compiler.UpsertSystemTag(executionDLID, enSystemTag.FormView, string.Empty, out errors);
-                if (errors.HasErrors()) {
-                    allErrors.MergeErrors(errors);
-                }
+                allErrors.MergeErrors(errors);
 
                 // TODO : Load XMLConfiguration into IBinaryDataList for manipulation... Remember to Delete once done!!
                 Guid configID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), XMLConfiguration, XMLConfiguration, out errors); // TODO : Worry about translation....
+                allErrors.MergeErrors(errors);
 
-                if (errors.HasErrors()) {
-                    allErrors.MergeErrors(errors);
-                }
 
                 //var configData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(XMLConfiguration);
 
@@ -122,14 +106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                     if (errors.HasErrors()) {
                         allErrors.MergeErrors(errors);
                     }
-
-                    //fields.Clear();
-                    //fields.Add(new ActivityDTO(frmView, payload, 0));
-
-                    //_assignActivity.FieldValue = string.Format(@"<html><head><META HTTP-EQUIV=""refresh"" content=""0;URL={0}""></head></html>", webpage);
                 } else {
-                    //var htmlResponse = binder.ParseHTML(html, XMLConfiguration, context.GetExtension<IEsbChannel>(), dataObject);
-                    //string payload = htmlResponse;
                     string payload = html;
                     compiler.UpsertSystemTag(executionDLID, enSystemTag.FormView, payload, out errors);
 
@@ -143,21 +120,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                         DisplayAndWriteError("DsfWebpageActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
-
-
-
-                    //fields.Clear();
-                    //fields.Add(new ActivityDTO("[[FormView]]", payload, 0));
-                    //_assignActivity.FieldValue = htmlResponse;
                 }
 
 
                 //context.ScheduleActivity(_assignActivity);
             } finally {
                 Guid shapeID = compiler.Shape(executionDLID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                if (errors.HasErrors()) {
-                    allErrors.MergeErrors(errors);
-                }
+                allErrors.MergeErrors(errors);
+
 
                 // Handle Errors
                 if (allErrors.HasErrors()) {

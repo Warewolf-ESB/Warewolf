@@ -13,7 +13,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2;
 using Dev2.Network.Execution;
 using Unlimited.Framework;
-using Dev2.Data.Util;
 using Dev2.DynamicServices;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -123,18 +122,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             base.CacheMetadata(metadata);
             //metadata.AddDelegate(_delegate);
         }
-#if !PARALLEL
+
         protected override void OnExecute(NativeActivityContext context)
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Reset();
-            watch.Start();
 
             List<LayoutObject> layoutObjects = new List<LayoutObject>();
 
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -149,14 +145,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         allErrors.MergeErrors(errors);
                     }
-                    this.XMLConfiguration = "<WebPage>" + webpageValue + "</WebPage>";
+                    
+                    XMLConfiguration = "<WebPage>" + webpageValue + "</WebPage>";
                 }
                 catch(Exception) { }
             }
 
-            Guid parentID = dataObject.DataListID;
-            Guid executionID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
-            dataObject.DataListID = executionID;
+            Guid parentId = dataObject.DataListID;
+            Guid executionId = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, InputMapping, out errors);
+            dataObject.DataListID = executionId;
 
             if(errors.HasErrors())
             {
@@ -180,12 +177,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            string server = compiler.EvaluateSystemEntry(executionID, enSystemTag.Dev2WebServer, out errors);
+            string server = compiler.EvaluateSystemEntry(executionId, enSystemTag.Dev2WebServer, out errors);
             if(errors.HasErrors())
             {
                 allErrors.MergeErrors(errors);
             }
-            string properWebServer = "<Dev2WebServer>" + server + "</Dev2WebServer>";
+            
+            //string properWebServer = "<Dev2WebServer>" + server + "</Dev2WebServer>";
 
             string masterPageTemplate = @"
 <html>
@@ -200,14 +198,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 ";
 
             IEsbChannel dsfChannel = context.GetExtension<IEsbChannel>();
-            string error = string.Empty;
-            Guid dialoutID = GlobalConstants.NullDataListID;
+            Guid dialoutID;
 
             // 2012.12.03 - Travis.Frisinger :  Strip instance ID and Bookmark
 
-            string instanceID = compiler.EvaluateSystemEntry(dataObject.DataListID, enSystemTag.ParentWorkflowInstanceId, out errors);
+            string instanceId = compiler.EvaluateSystemEntry(dataObject.DataListID, enSystemTag.ParentWorkflowInstanceId, out errors);
             allErrors.MergeErrors(errors);
-            dataObject.ParentWorkflowInstanceId = instanceID;
+            dataObject.ParentWorkflowInstanceId = instanceId;
             dataObject.ParentServiceName = dataObject.ServiceName;
 
             compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.InstanceId, string.Empty, out errors);
@@ -218,13 +215,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(!string.IsNullOrEmpty(websiteService))
             {
-                string instruction = UnlimitedObject.GenerateServiceRequest(
-                        websiteService,
-                        string.Empty,
-                        new List<string> { "<WebSiteInput/>" },
-                        dataObject
-                );
-
+               
                 // PBI 7913 - FIX
                 //string exeResult = string.Empty;
                 string tmpServiceName = dataObject.ServiceName;
@@ -234,9 +225,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ServiceName = tmpServiceName;
                 //string exeResult = dsfChannel.ExecuteCommand(instruction, dataObject.WorkspaceID, dataObject.DataListID);
 
-                if(!compiler.HasErrors(dialoutID) && dialoutID == executionID)
+                if(!compiler.HasErrors(dialoutID) && dialoutID == executionId)
                 {
-                    string val = compiler.EvaluateSystemEntry(executionID, enSystemTag.FormView, out errors);
+                    string val = compiler.EvaluateSystemEntry(executionId, enSystemTag.FormView, out errors);
 
                     if(val != string.Empty)
                     {
@@ -303,21 +294,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 layoutObjects.Add(layoutObj);
             }
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.Dev2UIServiceOutput, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.Dev2UIServiceOutput, string.Empty, out errors);
             allErrors.MergeErrors(errors);
-            compiler.UpsertSystemTag(executionID, enSystemTag.WebPage, string.Empty, out errors);
-            allErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.WebPage, string.Empty, out errors);
             allErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.Bookmark, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.InstanceId, string.Empty, out errors);
             allErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.BDSDebugMode, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.Bookmark, string.Empty, out errors);
             allErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.Service, webPageName, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.BDSDebugMode, string.Empty, out errors);
+            allErrors.MergeErrors(errors);
+
+            compiler.UpsertSystemTag(executionId, enSystemTag.Service, webPageName, out errors);
             allErrors.MergeErrors(errors);
 
             StringBuilder sb = new StringBuilder();
@@ -326,22 +317,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             sb.Append(formstring);
             sb.Append("<table>");
 
-            StringBuilder resultsBuilder = new StringBuilder();
-
             Dictionary<Guid, string> res = new Dictionary<Guid, string>();
             //int cellRenderCnt = 0;
 
             // 25.07.2012 - Travis.Frisinger : Check for design mode binding
             //string serviceName = Compiler.ExtractSystemTag(enSystemTag.Service, preExecuteADL);
-            string serviceName = compiler.EvaluateSystemEntry(executionID, enSystemTag.Service, out errors);
+            string serviceName = compiler.EvaluateSystemEntry(executionId, enSystemTag.Service, out errors);
             allErrors.MergeErrors(errors);
 
-            //string parentService = Compiler.ExtractSystemTag(enSystemTag.ParentServiceName, preExecuteADL);
-            string parentService = compiler.EvaluateSystemEntry(executionID, enSystemTag.ParentServiceName, out errors);
+            string parentService = compiler.EvaluateSystemEntry(executionId, enSystemTag.ParentServiceName, out errors);
             allErrors.MergeErrors(errors);
 
             bool designTimeBinding = DataListUtil.RequiresDesignTimeBindingSupport(serviceName, parentService);
-            Guid masterExecutionID = executionID;
+
+            //List<Guid> toRemoveDL = new List<Guid>();
 
             for(int row = 0; row < rows + 1; row++)
             {
@@ -349,15 +338,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 for(int col = 0; col < cols + 1; col++)
                 {
                     sb.Append("<td>");
-                    var cell = layoutObjects.Where(c => c.RowIndex == row && c.ColumnIndex == col && !string.IsNullOrEmpty(c.WebPartServiceName)).FirstOrDefault();
+                    var cell = layoutObjects.FirstOrDefault(c => c.RowIndex == row && c.ColumnIndex == col && !string.IsNullOrEmpty(c.WebPartServiceName));
                     if(cell != null && cell.WebPartServiceName != string.Empty)
                     {
-                        UnlimitedObject tmpConfig = new UnlimitedObject(GlobalConstants.DataListRootTag);
+                        var tmpConfig = new UnlimitedObject(GlobalConstants.DataListRootTag);
 
                         // 25.07.2012 - Travis.Frisinger : Inject design time flag for carry over ;)
                         if(designTimeBinding)
                         {
-                            XElement designBinding = new XElement(enSystemTag.Dev2DesignTimeBinding.ToString());
+                            var designBinding = new XElement(enSystemTag.Dev2DesignTimeBinding.ToString());
                             designBinding.Value = "true";
                             tmpConfig.Add(designBinding);
                         }
@@ -370,7 +359,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         // TODO : Merge executionID into new tmpDLID for binding...
                         string inst = DataListUtil.StripCrap(tmpConfig.XmlString);
-                        IBinaryDataListEntry evaluatedPayload = compiler.Evaluate(parentID, Dev2.DataList.Contract.enActionType.User, inst, false, out errors);
+                        IBinaryDataListEntry evaluatedPayload = compiler.Evaluate(parentId, Dev2.DataList.Contract.enActionType.User, inst, false, out errors);
                         allErrors.MergeErrors(errors);
 
                         if (evaluatedPayload != null)
@@ -405,6 +394,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 // now clean up the tmp dataList
                                 compiler.ForceDeleteDataListByID(currentGuid);
+                                //toRemoveDL.Add(currentGuid);
                                 //executionID = masterExecutionID;
 
                             }
@@ -423,14 +413,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             sb.Append("</table>");
             sb.Append("</form>");
 
-            s.Stop();
-            var rss = s.ElapsedMilliseconds;
-            s.Reset();
-
             string ui = sb.ToString();
 
-
-            s.Start();
             res
                 .ToList()
                 .ForEach(c =>
@@ -445,16 +429,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ui = ui.Replace(c.Key.ToString(), "Part Fetch Error");
                     }
                 });
-
-            s.Stop();
             // Remove encoding to compare and replace objects&amp;gt;
             ui = DataListUtil.RemoveHTMLEncoding(ui);
             masterPageTemplate = DataListUtil.RemoveHTMLEncoding(masterPageTemplate);
-            var r = s.ElapsedMilliseconds;
 
             // Travis.Frisinger : Evaluate Title from DataList - Must remain swapped with pre and current ADL to properly eval
             //string evaluatedTitle = Compiler.EvaluateFromDataList(DisplayName, DataObject.DataList, preExecuteADL, DataObject.XmlData);
-            string evaluatedTitle = compiler.Evaluate(executionID, Dev2.DataList.Contract.enActionType.User, DisplayName, false, out errors).FetchScalar().TheValue;
+            string evaluatedTitle = compiler.Evaluate(executionId, Dev2.DataList.Contract.enActionType.User, DisplayName, false, out errors).FetchScalar().TheValue;
             if(errors.HasErrors())
             {
                 allErrors.MergeErrors(errors);
@@ -475,7 +456,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 masterPageTemplate = InjectWizardInjectionScript(masterPageTemplate);
             }
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.FormView, masterPageTemplate, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.FormView, masterPageTemplate, out errors);
 
             if(!IsPreview)
             {
@@ -484,21 +465,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 context.CreateBookmark("dsfResumption", Resumed);
 
                 // Signal DataList server to persist the data ;)
-                compiler.PersistResumableDataListChain(parentID);
+                compiler.PersistResumableDataListChain(parentId);
 
                 // Set DataListID to parentID, execution is all done so we need to  clean up an push back against the master DL
 
-                compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
+                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
 
                 //GCWriter.WriteData(compiler.ConvertFrom(executionID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors));
                 
-                compiler.ForceDeleteDataListByID(executionID);
+                compiler.ForceDeleteDataListByID(executionId);
                 //Guid outshapeIDToRemove = DataListExecutionID.Get(context);
 
                 dataObject.ForceDeleteAtNextNativeActivityCleanup = true; // flag to native activity cleansup correctly ;)
 
                 //compiler.ForceDeleteDataListByID(outshapeIDToRemove);
-                dataObject.DataListID = parentID;
+                dataObject.DataListID = parentId;
 
                 compiler.ConditionalMerge(DataListMergeFrequency.Always | DataListMergeFrequency.OnBookmark,
                     dataObject.DatalistOutMergeID, dataObject.DataListID, dataObject.DatalistOutMergeFrequency, dataObject.DatalistOutMergeType, dataObject.DatalistOutMergeDepth);
@@ -507,14 +488,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 // clean up ;)
-                compiler.Shape(executionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                if(errors.HasErrors())
-                {
-                    allErrors.MergeErrors(errors);
-                }
+                compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
+                allErrors.MergeErrors(errors);
 
                 // reset DataListID
-                dataObject.DataListID = parentID;
+                dataObject.DataListID = parentId;
 
                 // Handle Errors
                 if(allErrors.HasErrors())
@@ -523,440 +501,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
+                // clean up all the sub DataList ;) 
+                // -- TODO : Figure out why data is not transfering correctly from sub DL into this DL ;(
+                //foreach (Guid dlID in toRemoveDL.Where(compiler.DeleteDataListByID))
+                //{
+                //    compiler.ForceDeleteDataListByID(dlID);
+                //}
+
                 // clean up
-                compiler.ForceDeleteDataListByID(executionID);
+                compiler.ForceDeleteDataListByID(executionId);
             }
-
-            watch.Stop();
-            // Debug statements do not belong in product code ;)
-            //System.Diagnostics.Debug.WriteLine("WEBSITE DSF GENERATION TIME TOOK " + watch.Elapsed.ToString());
         }
-#else
-        protected override void OnExecute(NativeActivityContext context)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Reset();
-            watch.Start();
-
-            // Travis.Frisinger : 06.07.2012 - Never ever set the ADL to that of the context, this is the old pre-shape method!!!
-            IList<string> ambientData = null;  //= AmbientDataList.Get(context);
-
-            List<LayoutObject> layoutObjects = new List<LayoutObject>();
-
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
-            IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
-
-            IDSFDataObject DataObject = context.GetExtension<IDSFDataObject>();
-
-            string fakeDataListShape = @"<DataList>
-    <WebsiteServiceName Description="""" />
-    <Dev2WebPage Description="""" />
-  </DataList>";
-
-            string fakeCurrentDataList = DataObject.XmlData.Replace("<WebPage>", "<Dev2WebPage>").Replace("</WebPage>", "</Dev2WebPage>");
-
-            if (IsPreview)
-            {
-                try
-                {
-                    string webpageValue = compiler.EvaluateFromDataList("[[Dev2WebPage]]", fakeDataListShape, fakeCurrentDataList, fakeCurrentDataList);
-                    this.XMLConfiguration = "<WebPage>" + webpageValue + "</WebPage>";
-                }
-                catch (Exception) { }
-            }
-
-
-            // -------[ Start Input Shape Region ]------- 
-
-            string preExecuteADL = DataObject.XmlData;
-            List<string> ambientDataList = new List<string>();
-            // Shape Input to what is exepected
-            // Do this by shapping current ADL
-            DataObject.XmlData = compiler.ShapeInput(DataObject.XmlData, InputMapping, DataObject.DataList);
-            ambientDataList = new List<string> { DataObject.XmlData };
-
-
-            // -------[ End Input Shape Region ]-------
-
-            string xmlConfiguration = XMLConfiguration;
-            string websiteService = WebsiteServiceName;
-
-            if (string.IsNullOrEmpty(websiteService))
-            {
-                websiteService = "Default Master Page";
-            }
-
-            if (!string.IsNullOrEmpty(WebsiteServiceName))
-            {
-                websiteService = binder.TextAndJScriptRegionEvaluator(ambientDataList, WebsiteServiceName, string.Empty, DatabindRecursive, DataObject != null ? DataObject.ServiceName : string.Empty);
-            }
-
-            // Travis.Frisinger : 18.10.2012 - Dev2WebServer var issue  as it is embeded in all webparts!
-            // Bug : 5995
-            string properWebServer = "<Dev2WebServer>" + 
-                                    binder.TextAndJScriptRegionEvaluator(new List<string> { fakeCurrentDataList } , "[[Dev2WebServer]]", string.Empty)
-                                    + "</Dev2WebServer>";
-
-            string masterPageTemplate = @"
-<html>
-    <head>
-        <title><Dev2WebpageTitle/></title>
-    </head>
-    <body>    
-        <Dev2WebForm/>
-        <Dev2HTML Type=""Form""/>
-    </body>
-</html>            
-";
-
-            IEsbChannel dsfChannel = context.GetExtension<IEsbChannel>();
-            IEsbActivityChannel actChannel = dsfChannel as IEsbActivityChannel;
-
-            if (!string.IsNullOrEmpty(websiteService))
-            {
-                string instruction = UnlimitedObject.GenerateServiceRequest(
-                        websiteService,
-                        string.Empty,
-                        new List<string> { "<WebSiteInput/>" }
-                );
-                try
-                {
-                    string exeResult = dsfChannel.ExecuteCommand(instruction);
-                    UnlimitedObject result = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(exeResult);
-                    if (!result.HasError)
-                    {
-                        if (result.ElementExists("FormView"))
-                        {
-                            var masterPage = result.GetElement("FormView").XmlString;
-                            masterPage = DataListUtil.CDATAUnwrapHTML(masterPage);
-                            var masterPageHeader = masterPage.Replace("<FormView>", "").Replace("</FormView>", "");
-                            masterPageTemplate = masterPageHeader;
-                        }
-                        else
-                        {
-                            masterPageTemplate = string.Empty;
-                        }
-
-                        if (masterPageTemplate.Length == 0)
-                        {
-                            masterPageTemplate = @"
-                                                    <html>
-                                                        <head>
-                                                            <title><dev2html type=""pagetitle"" /></title>
-                                                            <dev2html type=""meta"" />
-                                                        </head>
-                                                        <body>    
-                                                            <dev2html type=""form"" />
-                                                        </body>
-                                                    </html>            
-                                                    ";
-                        }
-                    }
-                }
-                catch (Exception) { }
-
-            }
-
-            masterPageTemplate = masterPageTemplate.ToLower();
-
-            var data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmlConfiguration);
-
-            int rows = 0;
-            int cols = 0;
-            string webPageName = string.Empty;
-
-            webPageName = data.GetValue("WebPageServiceName");
-            int.TryParse(data.GetValue("Rows"), out rows);
-            int.TryParse(data.GetValue("Cols"), out cols);
-
-            var s = Stopwatch.StartNew();
-            foreach (var item in data.GetAllElements("WebPart"))
-            {
-                int rowIndex = 0;
-                int colIndex = 0;
-                int colSpan = 1;
-                int rowSpan = 1;
-
-
-                int.TryParse(item.GetValue("RowIndex"), out rowIndex);
-                int.TryParse(item.GetValue("ColumnIndex"), out colIndex);
-                int.TryParse(item.GetValue("ColumnSpan"), out colSpan);
-                int.TryParse(item.GetValue("RowSpan"), out rowSpan);
-
-                var layoutObj = new LayoutObject();
-                layoutObj.WebPartServiceName = item.GetValue("WebPartServiceName");
-                layoutObj.RowIndex = rowIndex;
-                layoutObj.ColumnIndex = colIndex;
-                layoutObj.ColumnSpan = colSpan;
-                layoutObj.RowSpan = rowSpan;
-
-                //webpageBindingShape = compiler.EvaluateFromDataList(tmp, DataObject.DataList, DataObject.XmlData, preExecuteADL);
-                layoutObj.XmlConfiguration = item;
-                //layoutObj.XmlConfiguration = binder.DataListToUnlimitedObject(new List<string> { webpageBindingShape});
-
-                layoutObjects.Add(layoutObj);
-            }
-
-
-            if (ambientData == null)
-            {
-                this.ParentWorkflowInstanceId = DataObject.ParentWorkflowInstanceId;
-
-                if ((DataObject != null) && !string.IsNullOrEmpty(DataObject.XmlData))
-                {
-                    //ambientData = new List<string>() { preExecuteADL };
-                    ambientData = new List<string>() { DataObject.XmlData };
-                }
-                else
-                {
-                    ambientData = new List<string>();
-                }
-            }
-
-            var ambientDataObject = binder.DataListToUnlimitedObject(ambientData);
-
-            // Travis : Replace System Tag Extraction with DL Methods
-            string removeData = compiler.RemoveSystemTag(ambientDataObject.XmlString, enSystemTag.Dev2UIServiceOutput);
-            removeData = compiler.RemoveSystemTag(removeData, enSystemTag.WebPage);
-            removeData = compiler.RemoveSystemTag(removeData, enSystemTag.FormView);
-            removeData = compiler.RemoveSystemTag(removeData, enSystemTag.InstanceId);
-            removeData = compiler.RemoveSystemTag(removeData, enSystemTag.Bookmark);
-            removeData = compiler.RemoveSystemTag(removeData, enSystemTag.BDSDebugMode);
-
-            ambientDataObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(removeData);
-
-            StringBuilder sb = new StringBuilder();
-
-            string formstring = string.Format(@"<form action=""/services/@WebPageServiceName/instances/@WebpageInstance/bookmarks/dsfResumption"" method=""post"" onsubmit=""return checkRequired()"" id=""uiForm"" enctype=""{0}"">", FormEncodingType);
-
-            formstring = formstring.Replace("@WebpageInstance", context.WorkflowInstanceId.ToString()).Replace("@WebPageServiceName", webPageName);
-
-            sb.Append(formstring);
-
-            sb.Append("<table>");
-
-            StringBuilder resultsBuilder = new StringBuilder();
-            Dictionary<Guid, string> res = new Dictionary<Guid, string>();
-            //int cellRenderCnt = 0;
-
-            // 25.07.2012 - Travis.Frisinger : Check for design mode binding
-            string serviceName = compiler.ExtractSystemTag(enSystemTag.Service, preExecuteADL);
-            string parentService = compiler.ExtractSystemTag(enSystemTag.ParentServiceName, preExecuteADL);
-            bool designTimeBinding = DataListUtil.RequiresDesignTimeBindingSupport(serviceName, parentService);
-            string cleanPre = compiler.StripRubbish(preExecuteADL);
-
-            HashSet<WebSiteActivityPayload> allPayloads = new HashSet<WebSiteActivityPayload>(WSAPayloadComparer.Comparer);
-            WebSiteActivityPayload query = new WebSiteActivityPayload();
-            
-
-            for (int row = 0; row < rows + 1; row++)
-            {
-                sb.Append("<tr>");
-
-                for (int col = 0; col < cols + 1; col++)
-                {
-                    sb.Append("<td>");
-
-                    var cell = layoutObjects.Where(c => c.RowIndex == row && c.ColumnIndex == col && !string.IsNullOrEmpty(c.WebPartServiceName)).FirstOrDefault();
-
-                    if (cell != null && cell.WebPartServiceName != string.Empty)
-                    {
-                        UnlimitedObject test = new UnlimitedObject("WebXMLConfiguration");
-
-                        // 25.07.2012 - Travis.Frisinger : Inject design time flag for carry over ;)
-                        if (designTimeBinding)
-                        {
-                            XElement designBinding = new XElement(enSystemTag.Dev2DesignTimeBinding.ToString());
-                            designBinding.Value = "true";
-                            test.Add(designBinding);
-                        }
-
-                        // Travis.Frisinger : 18.10.2012 - Dev2WebServer var issue  as it is embeded in all webparts!
-                        // Bug : 5995
-                        //properWebServer
-                        cell.XmlConfiguration.RemoveElementsByTagName("Dev2WebServer");
-
-
-
-                        test.Add(cell.XmlConfiguration);
-                        UnlimitedObject bindingData = new UnlimitedObject("Dev2WebpartBindingData");
-                        bindingData.Add(ambientDataObject);
-                        test.Add(bindingData);
-
-
-                        Debug.WriteLine("Name: " + cell.WebPartServiceName);
-
-                        string instruction = UnlimitedObject.GenerateServiceRequest(
-                                cell.WebPartServiceName,
-                                string.Empty,
-                                new List<string> { test.XmlString }
-                        );
-
-                        query.Index = -1;
-                        query.SetInstruction(instruction);
-                        query.HashCode = instruction.GetHashCode();
-                        bool recreate = false;
-
-                        if (allPayloads.Add(query))
-                        {
-                            query.ID = Guid.NewGuid();
-                            query.Index = allPayloads.Count - 1;
-                            recreate = true;
-                        }
-
-                        sb.Append(query.ID.ToString());
-                        if (recreate) query = new WebSiteActivityPayload();
-                    }
-
-                    sb.Append("</td>");
-
-                }
-                sb.Append("</tr>");
-            }
-
-            sb.Append("</table>");
-            sb.Append("</form>");
-
-
-            WebSiteActivityPayload[] tempPayloads = allPayloads.ToArray();
-
-            if (actChannel == null)
-            {
-                for (int i = 0; i < tempPayloads.Length; i++)
-                {
-                    string result = dsfChannel.ExecuteCommand(tempPayloads[i].Instruction);
-                    tempPayloads[i].Result = result;
-                }
-            }
-            else
-            {
-                if (!actChannel.ExecuteParallel(tempPayloads))
-                {
-                    for (int i = 0; i < tempPayloads.Length; i++)
-                        if (tempPayloads[i].Result == null)
-                            tempPayloads[i].Result = dsfChannel.ExecuteCommand(tempPayloads[i].Instruction);
-                }
-            }
-
-            for (int i = 0; i < tempPayloads.Length; i++)
-            {
-                string result = tempPayloads[i].Result;
-
-                // 25.07.2012 : Travis.Frisinger - correctly bind variables 
-                // At this point, I need to re-bind vars in the stream to ensure recursive binding happens correctly
-                // since with webpages there is a very real possiblity that recursivly bound var is not in the 
-                // sub activities DL and would cause a blank instead of proper binding ;)
-
-                string fragment = compiler.ExtractSystemTag(enSystemTag.Fragment, result);
-                fragment = DataListUtil.CDATAUnwrapText(fragment);
-                string comboDL = compiler.MergePreAndPostExecute(cleanPre, result);
-                string newFragment = compiler.EvaluateFromDataList(fragment, DataObject.DataList, comboDL, "<ADL></ADL>");
-                newFragment = DataListUtil.CDATAWrapText(newFragment);
-                tempPayloads[i].Result = newFragment;
-            }
-
-
-
-            s.Stop();
-            var rss = s.ElapsedMilliseconds;
-            s.Reset();
-
-            string ui = sb.ToString();
-
-            for (int i = 0; i < tempPayloads.Length; i++)
-            {
-                ui = ui.Replace(tempPayloads[i].ID.ToString(), tempPayloads[i].Result);
-            }
-
-
-            s.Start();
-            //res
-            //    .ToList()
-            //    .ForEach(c =>
-            //    {
-
-            //        try
-            //        {
-            //            ui = ui.Replace(c.Key.ToString(), c.Value);
-            //        }
-            //        catch (Exception)
-            //        {
-            //            ui = ui.Replace(c.Key.ToString(), "Part Fetch Error");
-            //        }
-            //    });
-
-            s.Stop();
-            // Remove encoding to compare and replace objects&amp;gt;
-            ui = DataListUtil.RemoveHTMLEncoding(ui);
-            masterPageTemplate = DataListUtil.RemoveHTMLEncoding(masterPageTemplate);
-            var r = s.ElapsedMilliseconds;
-
-            // Travis.Frisinger : Evaluate Title from DataList - Must remain swapped with pre and current ADL to properly eval
-            string evaluatedTitle = compiler.EvaluateFromDataList(DisplayName, DataObject.DataList, preExecuteADL, DataObject.XmlData);
-
-            masterPageTemplate = masterPageTemplate.Replace(@"<dev2html type=""pagetitle"" />", evaluatedTitle);
-
-            masterPageTemplate = masterPageTemplate.Replace(@"<dev2html type=""meta"" />", MetaTags);
-
-            masterPageTemplate = masterPageTemplate.Replace(@"<dev2html type=""form"" />", ui);
-
-            // Travis.Frisinger - 13.08.2012 - Inject the wizard script here ;)
-            if (designTimeBinding)
-            { // We have a wizard :)
-                masterPageTemplate = InjectWizardInjectionScript(masterPageTemplate);
-                masterPageTemplate = masterPageTemplate.Replace("lt;", "<").Replace("gt;", ">");
-            }
-            //else {
-            //    masterPageTemplate = InjectStandardWebpageInjectionScript(masterPageTemplate);
-            //}
-
-            if (!ambientDataObject.ElementExists("FormView"))
-            {
-                ambientDataObject.CreateElement("FormView");
-            }
-
-            //ambientDataObject.GetElement("FormView").SetValue(masterPageTemplate);
-            //string newADL = compiler.ShapeOutput(ambientDataObject.XmlString, preExecuteADL, OutputMapping, DataObject.DataList);
-            //// THIS IS THE ONLY WAY FORWARD FOR PASSING DATA -- DO NOT CHANGE EVER!!
-            //DataObject.XmlData = compiler.StripCrap(newADL); 
-            //AmbientDataList.Set(context, new List<string> { DataObject.XmlData });
-
-            ambientDataObject.GetElement("FormView").SetValue(masterPageTemplate);
-            //Sashen : we need to remove these silly ActivityInput Tags, what matters is the data within the tag.
-            //ambientDataObject.XmlString.Replace("<ActivityInput>", "").Replace("</ActivityInput>","");
-            DataObject.XmlData = compiler.StripCrap(ambientDataObject.XmlString);
-            // -------[ Start Post Execute Cleanup ]--------
-
-            // Execute ADL filter activity, will get post execute ADL from activity and set to clean
-            //context.ScheduleActivity(_dlFilterActivity);
-            string newADL = compiler.ShapeOutput(DataObject.XmlData, preExecuteADL, OutputMapping, DataObject.DataList, false);
-            // THIS IS THE ONLY WAY FORWARD FOR PASSING DATA -- DO NOT CHANGE EVER!!
-            DataObject.XmlData = newADL;
-            AmbientDataList.Set(context, new List<string> { DataObject.XmlData });
-            //UpdateADL(newADL, context);
-
-            if (!IsPreview)
-            {
-                // DO NOT REMOVE THIS - it is required to resume a workflow.
-                DataObject.WorkflowResumeable = true;
-                context.CreateBookmark("dsfResumption", Resumed);
-
-                DataListUtil.ConditionalMerge(compiler, DataListMergeFrequency.Always | DataListMergeFrequency.OnBookmark,
-                    dataObject.DatalistMergeID, dataObject.DataListID, dataObject.DatalistMergeFrequency, dataObject.DatalistMergeType, dataObject.DatalistMergeDepth);
-                ExecutionStatusCallbackDispatcher.Instance.Post(dataObject.BookmarkExecutionCallbackID, ExecutionStatusCallbackMessageType.BookmarkedCallback);
-            }
-
-            watch.Stop();
-            System.Diagnostics.Debug.WriteLine("WEBSITE DSF GENERATION TIME TOOK " + watch.Elapsed.ToString());
-
-        }
-#endif
 
         // Travis.Frisinger - 13.08.2012 : Inject the wizard helper script server side now ;)
         private string InjectWizardInjectionScript(string template)
         {
             //string toInject = "<script type=\"text/javascript\">$(document).ready(function () { $('form').submit(function () { var formPostData = $(this).serialize(); if(isValidForm) { window.external.Dev2Set(formPostData, document.forms[0].action); } return false; }); $('input[type=button]').click(function () { var item = $('input[id ^= \"dev2hidden\"]').remove(); $('form').remove('input[id ^= \"dev2hidden\"]'); $('form').append('<input type=\"hidden\" name=\"' + this.name + '\" id=\"dev2hidden' + this.id + '\"' + ' value=\"' + this.value + '\"/>'); $('form').submit(); }) $('input[type=submit]').click(function () { var item = $('input[id ^= \"dev2hidden\"]').remove(); $('form').remove('input[id ^= \"dev2hidden\"]'); $('form').append('<input type=\"hidden\" name=\"' + this.name + '\" id=\"dev2hidden' + this.id + '\"' + ' value=\"' + this.value + '\"/>'); }) }); </script>";
-            string toInject = @"<script type=""text/javascript"">
+            const string toInject = @"<script type=""text/javascript"">
                     $(document).ready(function () {
                         $('form').submit(function (event) {
                                 var formPostData = $(this).serialize();
@@ -968,7 +529,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     });
                 </script>";
 
-            int idx = template.IndexOf("</head>");
+            int idx = template.IndexOf("</head>", StringComparison.Ordinal);
             string result = template.Insert(idx, toInject);
 
             return result;

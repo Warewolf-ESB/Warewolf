@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    public interface IBinaryDataListEntry:IDisposable
+    public interface IBinaryDataListEntry : IDisposable
     {
         #region Properties
 
@@ -104,7 +104,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="error">The error.</param>
         void TryPutRecordRowAt(IList<IBinaryDataListItem> itms, int idx, out string error);
 
-
         /// <summary>
         /// Append a column value at an recordset index
         /// </summary>
@@ -129,16 +128,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Clones the specified to clone.
         /// </summary>
         /// <param name="toClone">To clone.</param>
-        IBinaryDataListEntry Clone(enTranslationDepth depth, out string errors);
+        //IBinaryDataListEntry Clone(enTranslationDepth depth, out string errors);
 
         /// <summary>
         /// Clones the specified depth.
         /// </summary>
         /// <param name="depth">The depth.</param>
-        /// <param name="clonedStorageID">The cloned storage ID.</param>
+        /// <param name="clonedStorageId">The cloned storage ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        IBinaryDataListEntry Clone(enTranslationDepth depth, Guid clonedStorageID, out string errors);
+        IBinaryDataListEntry Clone(enTranslationDepth depth, Guid clonedStorageId, out string errors);
 
         /// <summary>
         /// Merges this instance.
@@ -251,6 +250,5 @@ namespace Dev2.DataList.Contract.Binary_Objects
         int InternalFetchColumnIndex(string column);
 
         #endregion
-
     }
 }

@@ -23,7 +23,6 @@ namespace Dev2.DynamicServices.Test {
 
         private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
         private static readonly string _dataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
-        private static readonly string _dataListWellformedDataWithIllegalCharacters = "<DataList><scalar1>&s1</scalar1><rs1><f1>&f1.1</f1></rs1><rs1><f1>&f1.2</f1></rs1><scalar2/></DataList>";
         private static readonly string _dataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
         //private static readonly string _dataListWellformedMultData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2/></DataList>";
         private static readonly string _dataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
