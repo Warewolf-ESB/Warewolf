@@ -1230,6 +1230,11 @@ namespace Dev2.Studio.ViewModels
 
         public void Save(IContextualResourceModel resource, bool showWindow = true)
         {
+            var vm = ActiveItem.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+            if(vm != null)
+            {
+                vm.BindToModel();
+            }
             if (resource == null) return;
             
 
@@ -1698,7 +1703,7 @@ namespace Dev2.Studio.ViewModels
             switch (res)
             {
                 case MessageBoxResult.Yes:
-                    workflowVM.BindToModel();
+                    //workflowVM.BindToModel();
                     Mediator.SendMessage(MediatorMessages.SaveResource, workflowVM.ResourceModel);
                     return true;
                 case MessageBoxResult.No:
