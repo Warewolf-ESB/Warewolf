@@ -325,6 +325,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string serviceName = compiler.EvaluateSystemEntry(executionId, enSystemTag.Service, out errors);
             allErrors.MergeErrors(errors);
 
+            string webserver = "http://127.0.0.1:1234";
+
             string parentService = compiler.EvaluateSystemEntry(executionId, enSystemTag.ParentServiceName, out errors);
             allErrors.MergeErrors(errors);
 
@@ -368,6 +370,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             IDSFDataObject cellServiceObj = new DsfDataObject(payload, GlobalConstants.NullDataListID);
                             cellServiceObj.ServiceName = cell.WebPartServiceName;
+                            
 
                             ErrorResultTO invokeErrors;
                             Guid currentGuid = dsfChannel.ExecuteTransactionallyScopedRequest(cellServiceObj, dataObject.WorkspaceID, out invokeErrors);

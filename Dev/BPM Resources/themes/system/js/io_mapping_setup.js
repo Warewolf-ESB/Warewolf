@@ -1301,6 +1301,7 @@ function fetchMapping(webServer, sourceName, typeOf){
 	}
 	
 	var uri = webServer + "/services/FindResourcesService?ResourceName=" + sourceName + "&ResourceType=" + typeOf + "&Roles=*";
+
 	xmlhttp.open("GET",uri,false);
 	xmlhttp.send();
 	

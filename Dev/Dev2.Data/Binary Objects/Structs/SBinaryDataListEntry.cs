@@ -187,6 +187,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             //_items = new Dictionary<int, IList<IBinaryDataListItem>>();
             _items = new Dev2BinaryDataListStorage(Namespace, DataListKey);
+            
             _isEmpty = true;
             _internalReturnValue = new List<IBinaryDataListItem>(colCnt); // build the object we require to return data in ;)
 

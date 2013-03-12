@@ -279,9 +279,16 @@ namespace Dev2.DynamicServices
 
                 File.Copy(fileName, string.Format("{1}\\{2}.V{3}.xml", directoryName, versionDirectory, resource.Name, (count + 1).ToString()), true);
 
+                // Remove readonly attribute if it is set
+                FileAttributes attributes = File.GetAttributes(fileName);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(fileName, attributes ^ FileAttributes.ReadOnly);
+                }
             }
 
             var signedXml = HostSecurityProvider.Instance.SignXml(resource.ResourceDefinition);
+
             File.WriteAllText(fileName, signedXml, Encoding.UTF8);
         }
 
@@ -615,7 +622,13 @@ namespace Dev2.DynamicServices
             //             Refactored to enable unit testing
             var resourceIndex = new Dictionary<string, string>();
             var resources = new List<DynamicServiceObjectBase>();
-            
+
+            if(!string.IsNullOrWhiteSpace(resourceName))
+            {
+                //2012.03.12: Ashley Lewis - BUG 9208
+                filePaths = filePaths.Where(p => p.ToLower().Contains(string.Format("{0}{1}", resourceName, GlobalConstants.ResourceFileExtension).ToLower())).ToList();
+            }
+
             foreach (string fileName in filePaths)
             {
                 string fileContent;
@@ -634,6 +647,13 @@ namespace Dev2.DynamicServices
                     //                                It is NOT a permenant solution. This code needs to be refactored so that it is extensible and testible, 
                     //                                ideally to using the repository pattern.
                     List<DynamicServiceObjectBase> generatedResources = GenerateObjectGraphFromString(fileContent);
+
+                    if(generatedResources.Count == 0)
+                    {
+                        //2012.03.12: Ashley Lewis - BUG 9208
+                        TraceWriter.WriteTrace(string.Format("No valid resources were found in file '{1}' ", fileName));
+                    }
+
                     foreach (DynamicServiceObjectBase dynamicServiceObjectBase in generatedResources)
                     {
                         if (!Path.GetFileNameWithoutExtension(fileName).Equals(dynamicServiceObjectBase.Name, StringComparison.InvariantCultureIgnoreCase))

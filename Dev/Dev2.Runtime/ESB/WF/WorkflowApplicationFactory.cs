@@ -17,7 +17,7 @@ namespace Dev2.DynamicServices
     {
         public static long Balance = 0;
 
-        private static readonly FileSystemInstanceStore _InstanceStore = new FileSystemInstanceStore();
+        private static readonly FileSystemInstanceStore InstanceStore = new FileSystemInstanceStore();
 
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Dev2.DynamicServices
             if(wfApp != null)
             {
 
-                wfApp.InstanceStore = _InstanceStore;
+                wfApp.InstanceStore = InstanceStore;
 
                 if(executionExtensions != null)
                 {
@@ -150,7 +150,8 @@ namespace Dev2.DynamicServices
             {
                 using(ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
                 {
-                    WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, FetchParentInstanceID(dataTransferObject), isDebug);
+                    WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, FetchParentInstanceID(dataTransferObject), isDebug, errors);
+
 
                     if(instanceId == Guid.Empty)
                     {
@@ -180,17 +181,21 @@ namespace Dev2.DynamicServices
 
                             waitHandle.Wait();
                         }
-                        catch(InstanceNotReadyException)
+                        catch(InstanceNotReadyException e1)
                         {
                             Interlocked.Decrement(ref Balance);
                             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
+                            errors.AddError(e1.Message);
+
                             return null;
                         }
-                        catch(InstancePersistenceException)
+                        catch(InstancePersistenceException e2)
                         {
                             Interlocked.Decrement(ref Balance);
                             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
+
+                            errors.AddError(e2.Message);
 
                             return run.DataTransferObject;
                         }
@@ -238,10 +243,11 @@ namespace Dev2.DynamicServices
             #region Public Properties
             public IDSFDataObject DataTransferObject { get { return _result; } }
             public WorkflowApplication Instance { get { return _instance; } }
+            public ErrorResultTO AllErrors { get; private set; }
             #endregion
 
             #region Constructor
-            public WorkflowApplicationRun(WorkflowApplicationFactory owner, ManualResetEventSlim waitHandle, IDSFDataObject dataTransferObject, WorkflowApplication instance, IWorkspace workspace, IList<object> executionExtensions, Guid parentWorkflowInstanceId, bool isDebug)
+            public WorkflowApplicationRun(WorkflowApplicationFactory owner, ManualResetEventSlim waitHandle, IDSFDataObject dataTransferObject, WorkflowApplication instance, IWorkspace workspace, IList<object> executionExtensions, Guid parentWorkflowInstanceId, bool isDebug, ErrorResultTO errors)
             {
                 _owner = owner;
                 _waitHandle = waitHandle;
@@ -256,6 +262,7 @@ namespace Dev2.DynamicServices
                 _instance.Unloaded = OnUnloaded;
                 _instance.Completed = OnCompleted;
                 _instance.OnUnhandledException = OnUnhandledException;
+                AllErrors = errors;
             }
             #endregion
 
@@ -270,7 +277,7 @@ namespace Dev2.DynamicServices
 
             private void OnCompleted(WorkflowApplicationCompletedEventArgs args) {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
-                IDataListCompiler compiler = args.GetInstanceExtensions<IDataListCompiler>().First();
+                
                 // PBI : 5376 Removed line below
                 //_result.XmlData = _result.XmlData.Replace("&", "&amp;");
 
@@ -328,7 +335,7 @@ namespace Dev2.DynamicServices
                                         _workspace.Host.UnlockServices();
                                     }
 
-                                    if (services.Count() > 0)
+                                    if (services.Any())
                                     {
                                         _currentInstanceID = _parentWorkflowInstanceID;
                                         var actionSet = services.First().Actions;
@@ -340,7 +347,13 @@ namespace Dev2.DynamicServices
 
                                             try
                                             {
-                                                //_result = _owner.InvokeWorkflow(wfActivity.Value, _result, _executionExtensions, _parentWorkflowInstanceID, _workspace, "dsfResumption");
+                                                ErrorResultTO invokeErrors = new ErrorResultTO(); 
+                                                _result = _owner.InvokeWorkflow(wfActivity.Value, _result, _executionExtensions, _parentWorkflowInstanceID, _workspace, "dsfResumption", out invokeErrors);
+                                                // attach any execution errors
+                                                if (AllErrors != null)
+                                                {
+                                                    AllErrors.MergeErrors(invokeErrors);    
+                                                }
                                             }
                                             finally
                                             {

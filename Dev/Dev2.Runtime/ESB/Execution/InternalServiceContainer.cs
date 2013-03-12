@@ -58,10 +58,6 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.MergeErrors(invokeErrors);
                     result = DataObject.DataListID;
 
-                    //if (!compiler.HasErrors(DataObject.DataListID) && !errors.HasErrors())
-                    //{
-                        
-                    //}
                 }
                 else
                 {

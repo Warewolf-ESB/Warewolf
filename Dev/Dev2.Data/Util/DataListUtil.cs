@@ -860,7 +860,7 @@ namespace Dev2.DataList.Contract
         public static string ExtractRecordsetNameFromValue(string value)
         {
             value = StripBracketsFromValue(value);
-            string result = value;
+            string result = string.Empty;
 
             int openBracket = value.IndexOf("(");
             if (openBracket > 0)

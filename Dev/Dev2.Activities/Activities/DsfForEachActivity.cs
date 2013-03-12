@@ -169,6 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // schedule the func to execute ;)
                     // ReSharper disable RedundantTypeArgumentsOfMethod
                     dataObject.ParentInstanceID = InstanceID;
+                    dataObject.IsDataListScoped = true; // set for ForEach execution ;)
 
                     context.ScheduleFunc<string, bool>(DataFunc, string.Empty, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod

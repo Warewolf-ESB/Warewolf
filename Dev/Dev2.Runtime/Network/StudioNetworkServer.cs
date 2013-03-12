@@ -8,6 +8,7 @@ using Dev2.Network.Messages;
 using Dev2.Network.Messaging.Messages;
 using System;
 using System.Network;
+using System.Collections.Generic;
 
 namespace Dev2.DynamicServices {
     public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession> {
@@ -19,7 +20,7 @@ namespace Dev2.DynamicServices {
 
         private object _auxiliaryLock = new object();
         private StudioAuxiliaryServer _auxiliaryServer;
-        private ListenerConfig[] _auxiliaryConfigurations;
+        private List<ListenerConfig> _auxiliaryConfigurations;
 
         #endregion
 
@@ -118,10 +119,25 @@ namespace Dev2.DynamicServices {
 
         #region Auxiliary Conection Handling
         protected override void OnStarted(ListenerConfig[] configs) {
-            lock (_auxiliaryLock) {
-                _auxiliaryConfigurations = configs ?? new ListenerConfig[0];
-                for (int i = 0; i < _auxiliaryConfigurations.Length; i++)
-                    _auxiliaryConfigurations[i] = new ListenerConfig(_auxiliaryConfigurations[i].Address, _auxiliaryConfigurations[i].Port + 20000, _auxiliaryConfigurations[i].Backlog);
+            lock (_auxiliaryLock)
+            {
+                if (_auxiliaryConfigurations == null)
+                {
+                    _auxiliaryConfigurations = new List<ListenerConfig>();
+                }
+
+                if (configs == null)
+                {
+                    return;
+                }
+
+                foreach (ListenerConfig listenerConfig in configs)
+                {
+                    _auxiliaryConfigurations.Add(new ListenerConfig(listenerConfig.Address, listenerConfig.Port + 20000, listenerConfig.Backlog));
+                }
+                //_auxiliaryConfigurations = configs ?? new ListenerConfig[0];
+                //for (int i = 0; i < _auxiliaryConfigurations.Length; i++)
+                //_auxiliaryConfigurations[i] = new ListenerConfig(_auxiliaryConfigurations[i].Address, _auxiliaryConfigurations[i].Port + 20000, _auxiliaryConfigurations[i].Backlog);
             }
         }
 
@@ -141,7 +157,7 @@ namespace Dev2.DynamicServices {
             lock (_auxiliaryLock) {
                 if (_auxiliaryServer == null) {
                     _auxiliaryServer = new StudioAuxiliaryServer(this);
-                    _auxiliaryServer.Start(_auxiliaryConfigurations);
+                    _auxiliaryServer.Start(_auxiliaryConfigurations.ToArray());
                 }
 
                 _auxiliaryServer.AccountProvider.CreateAccount(guid);

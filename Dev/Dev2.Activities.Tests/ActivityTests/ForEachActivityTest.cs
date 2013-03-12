@@ -55,7 +55,7 @@ namespace ActivityUnitTests.ActivityTest
                           , "2"
                           );
             IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
 
             //DsfForEachActivity activity = (TestStartNode.Action as DsfForEachActivity);

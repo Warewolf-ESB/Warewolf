@@ -808,7 +808,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         bool DeleteAllRows()
         {
             var tmp = new SBinaryDataListEntry();
-            
+
             tmp.IsRecordset = _internalObj.IsRecordset;
             tmp.Columns = _internalObj.Columns;
             tmp.Namespace = _internalObj.Namespace;
@@ -816,7 +816,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             tmp.Description = _internalObj.Description;
             tmp.IsEditable = _internalObj.IsEditable;
             tmp.ColumnIODirection = _internalObj.ColumnIODirection;
-            tmp._appendIndex = _internalObj._appendIndex;
+            tmp._appendIndex = -1;
 
             tmp.Init(_internalObj.Columns.Count);
 

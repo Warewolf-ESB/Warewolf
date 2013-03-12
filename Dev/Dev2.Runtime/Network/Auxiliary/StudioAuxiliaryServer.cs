@@ -31,15 +31,24 @@ namespace Dev2.DynamicServices.Network.Auxiliary
 
         protected override string OnExecuteCommand(StudioAuxiliarySession context, string payload, Guid dataListID)
         {
-            // TODO : Create DataObject from payload ;)
+            //// TODO : Create DataObject from payload ;)
+
+            //IDSFDataObject dataObject = new DsfDataObject(payload, dataListID);
+            //ErrorResultTO errors = new ErrorResultTO();
+
+            //// Workspaces.WorkspaceRepository.Instance.Get(context.AccountID) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace
+            //return _owner.Channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
+
+            ////return _owner.Channel.ExecuteCommand(payload, Workspaces.WorkspaceRepository.Instance.ServerWorkspace, dataListID);
+
 
             IDSFDataObject dataObject = new DsfDataObject(payload, dataListID);
             ErrorResultTO errors = new ErrorResultTO();
 
-            // Workspaces.WorkspaceRepository.Instance.Get(context.AccountID) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace
-            return _owner.Channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
-
-            //return _owner.Channel.ExecuteCommand(payload, Workspaces.WorkspaceRepository.Instance.ServerWorkspace, dataListID);
+            string dlID = _owner.Channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            string result = compiler.ConvertFrom(new Guid(dlID), DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            return result;
         }
 
         private sealed class StudioAuxiliaryInboundAuthenticationBroker : InboundSRPAuthenticationBroker

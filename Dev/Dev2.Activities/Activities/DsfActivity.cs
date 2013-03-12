@@ -2,11 +2,13 @@
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Network.Execution;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -165,26 +167,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 bool.TryParse(debugMode, out _IsDebug);
 
-                // Strip System Tags
-                compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.UpsertSystemTag(executionID, enSystemTag.Bookmark, string.Empty, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, string.Empty, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.UpsertSystemTag(executionID, enSystemTag.ParentServiceName, string.Empty, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.UpsertSystemTag(executionID, enSystemTag.BDSDebugMode, string.Empty, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, context.WorkflowInstanceId.ToString(), out errors);
+                // scrub it clean ;)
+                ScrubDataList(compiler, executionID, context.WorkflowInstanceId.ToString(), out errors);
                 allErrors.MergeErrors(errors);
 
                 // set the parent service
@@ -197,7 +181,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
 
                     // In all cases the ShapeOutput will have merged the execution data up into the current
-                    Guid result = GlobalConstants.NullDataListID;
                     ErrorResultTO tmpErrors = new ErrorResultTO();
 
                     if (esbChannel == null)
@@ -209,24 +192,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         // PBI 7913
                         if (executionID != GlobalConstants.NullDataListID)
                         {
-                            // Inputs adjustment as the request
-                            Guid subExeID = compiler.Shape(executionID, enDev2ArgumentType.Input, InputMapping, out errors);
-                            dataObject.DataListID = subExeID;
-                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                            // 1) I need to build iterators to loop
+                            Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
 
-                            // Execute Request
-                            esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+                            int iterateTotal = 2;
+                            // only iterate if we are not invoking from a for each ;)
+                            if (!dataObject.IsDataListScoped)
+                            {
+                                iterateTotal = FetchMaxIterations(compiler, executionID, out tmpErrors);
+                            }
                             allErrors.MergeErrors(tmpErrors);
 
+                            // save input mapping to restore later
+                            string newInputs = InputMapping;
+                            int iterateIdx = 1;
 
-                            compiler.SetParentID(subExeID, executionID);
+                            // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
+                            while (iterateIdx < iterateTotal)
+                            {
+                                // Set proper index ;)
+                                string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
 
-                            //  Do Output shaping
-                            compiler.Shape(subExeID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                            allErrors.MergeErrors(errors);
+                                // Inputs adjustment as the request
+                                Guid subExeID = compiler.Shape(executionID, enDev2ArgumentType.Input, myInputMapping, out errors);
+                                dataObject.DataListID = subExeID;
+                                dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
+                                // Execute Request
+                                esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+                                allErrors.MergeErrors(tmpErrors);
 
-                            compiler.DeleteDataListByID(subExeID); // remove sub service DL
+                                compiler.SetParentID(subExeID, executionID);
+
+                                //  Do Output shaping
+                                compiler.Shape(subExeID, enDev2ArgumentType.Output, OutputMapping, out errors);
+                                allErrors.MergeErrors(errors);
+
+                                compiler.DeleteDataListByID(subExeID); // remove sub service DL
+                                iterateIdx++;
+                            }
 
                             dataObject.DataListID = executionID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
@@ -297,25 +301,117 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Private Methods
-        private void NotifyApplicationHost(IApplicationMessage messageNotification, string instruction, string result, string transformedResult)
+
+        private void ScrubDataList(IDataListCompiler compiler, Guid executionID, string workflowID, out ErrorResultTO invokeErrors)
         {
-            //Notifications out from this activity for tracking purposes
-            Notify(messageNotification, string.Format("<{0}>", this.DisplayName.Replace(" ", string.Empty)));
+            ErrorResultTO errors = new ErrorResultTO();
+            invokeErrors = new ErrorResultTO();
+            // Strip System Tags
+            compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
 
-            Notify(messageNotification, string.Format("\r\n\t<{0}DSFINSTRUCTION>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
-            Notify(messageNotification, instruction);
-            Notify(messageNotification, string.Format("\r\n\t</{0}DSFINSTRUCTION>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+            compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
 
-            Notify(messageNotification, string.Format("\r\n\t<{0}DSFRESULT>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
-            Notify(messageNotification, string.Format("\r\n{0}\r\n", result));
-            Notify(messageNotification, string.Format("\r\n\t</{0}DSFRESULT>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+            compiler.UpsertSystemTag(executionID, enSystemTag.Bookmark, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
 
-            Notify(messageNotification, string.Format("\r\n\t<{0}DSFRESULT_TRANSFORMED>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
-            Notify(messageNotification, string.Format("\r\n{0}\r\n", transformedResult));
-            Notify(messageNotification, string.Format("\r\n\t</{0}DSFRESULT_TRANSFORMED>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+            compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
 
-            Notify(messageNotification, string.Format("</{0}>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+            compiler.UpsertSystemTag(executionID, enSystemTag.ParentServiceName, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
+
+            compiler.UpsertSystemTag(executionID, enSystemTag.BDSDebugMode, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
+
+            compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, workflowID, out errors);
+            invokeErrors.MergeErrors(errors);
         }
+
+        /// <summary>
+        /// Fetches the max iterations.
+        /// </summary>
+        /// <param name="compiler">The compiler.</param>
+        /// <param name="executionID">The execution ID.</param>
+        /// <param name="allErrors">All errors.</param>
+        /// <returns></returns>
+        private int FetchMaxIterations(IDataListCompiler compiler, Guid executionID, out ErrorResultTO allErrors)
+        {
+            // Break the inputs apart into individual segments for use
+            IDev2LanguageParser ilp = DataListFactory.CreateInputParser();
+            int itTotal = 1;
+
+            allErrors = new ErrorResultTO();
+            ErrorResultTO tmpErrors;
+
+            IList<IDev2Definition> defs = ilp.Parse(InputMapping);
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out tmpErrors);
+            allErrors.MergeErrors(tmpErrors);
+            bool foundRS = false;
+
+            foreach (IDev2Definition d in defs)
+            {
+                if (d.RawValue != null)
+                {
+                    string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
+                    if (!string.IsNullOrEmpty(rs))
+                    {
+                        // find the total number of entries ;)
+                        IBinaryDataListEntry entry;
+                        string error;
+                        if (bdl.TryGetEntry(rs, out entry, out error))
+                        {
+                            if (entry != null)
+                            {
+                                foundRS = true;
+                                int tmpItrCnt = entry.FetchAppendRecordsetIndex();
+                                // set max iterations ;)
+                                if (tmpItrCnt > itTotal)
+                                {
+                                    itTotal = tmpItrCnt;
+                                }
+                            }
+                            else
+                            {
+                                allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
+                            }
+                        }
+
+                        allErrors.AddError(error);
+                    }
+                }
+            }
+
+            // force all scalars mappings to execute once ;)
+            if (!foundRS && defs.Count > 0)
+            {
+                itTotal = 2;
+            }
+
+            return itTotal;
+        }
+
+        //private void NotifyApplicationHost(IApplicationMessage messageNotification, string instruction, string result, string transformedResult)
+        //{
+        //    //Notifications out from this activity for tracking purposes
+        //    Notify(messageNotification, string.Format("<{0}>", this.DisplayName.Replace(" ", string.Empty)));
+
+        //    Notify(messageNotification, string.Format("\r\n\t<{0}DSFINSTRUCTION>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
+        //    Notify(messageNotification, instruction);
+        //    Notify(messageNotification, string.Format("\r\n\t</{0}DSFINSTRUCTION>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+
+        //    Notify(messageNotification, string.Format("\r\n\t<{0}DSFRESULT>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
+        //    Notify(messageNotification, string.Format("\r\n{0}\r\n", result));
+        //    Notify(messageNotification, string.Format("\r\n\t</{0}DSFRESULT>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+
+        //    Notify(messageNotification, string.Format("\r\n\t<{0}DSFRESULT_TRANSFORMED>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
+        //    Notify(messageNotification, string.Format("\r\n{0}\r\n", transformedResult));
+        //    Notify(messageNotification, string.Format("\r\n\t</{0}DSFRESULT_TRANSFORMED>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+
+        //    Notify(messageNotification, string.Format("</{0}>\r\n", this.DisplayName.Replace(" ", string.Empty)));
+        //}
 
         #endregion
 

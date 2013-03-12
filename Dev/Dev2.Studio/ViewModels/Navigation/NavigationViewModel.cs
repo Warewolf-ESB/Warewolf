@@ -2,12 +2,6 @@
 
 #region
 
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
@@ -24,8 +18,9 @@ using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
-using Action = System.Action;
+
 
 #endregion
 
@@ -668,16 +663,16 @@ namespace Dev2.Studio.ViewModels.Navigation
                     environment.Connect(primaryEnvironment);
                 }
                 // ReSharper disable EmptyGeneralCatchClause
-                catch
-                // ReSharper restore EmptyGeneralCatchClause
-                {
-                    //TODO show that connection failed.
-                }
                 finally
                 {
                     if (disconnectFromPrimary && primaryEnvironment.IsConnected)
                     {
                         primaryEnvironment.Disconnect();
+                    }
+
+                    if (!environment.IsConnected)
+                    {
+                        throw new Exception("Auxiliary Connection failed.");
                     }
                 }
             }

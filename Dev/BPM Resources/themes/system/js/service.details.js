@@ -6,6 +6,9 @@ function initServiceDetails(webServer, editService, editServiceType, sourceName,
 	
 	$(document).ready(function(){
 
+		// Fix for webServer not making it down ;)
+		webServer = "http://127.0.0.1:1234";
+
 		$("#Dev2ServiceDetailsServerDialog").hide();
 	
 		if(editService != ''){
@@ -14,6 +17,7 @@ function initServiceDetails(webServer, editService, editServiceType, sourceName,
 			nameOk = true;
 			
 			var serviceData = fetchMapping(webServer, editService, "*");
+			
 			// Name="travwebpage"
 			// && srcChanged != "changed"
 			if(serviceData.toLowerCase().indexOf('name="'+editService.toLowerCase()+'"') > 0){
@@ -325,7 +329,6 @@ function buildCategories(webServer){
 	var categories=[];
 	var cleanCategories =[];
 
-	
 	$.ajax({
 		type:"GET",
 		url:webServer+"/services/FindResourcesService",

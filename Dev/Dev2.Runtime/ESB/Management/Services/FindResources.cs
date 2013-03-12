@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new StringBuilder("<Payload>");
             IDynamicServicesHost theHost = theWorkspace.Host;
 
             string resourceName;
@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string type;
             values.TryGetValue("ResourceName", out resourceName);
             values.TryGetValue("Roles", out roles);
-            values.TryGetValue("Type", out type);
+            values.TryGetValue("ResourceType", out type);
 
 
             if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(roles))
@@ -167,6 +167,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             }
 
+            // close out the payload ;)
+            result.Append("</Payload>");
+
             dynamic serviceData = new UnlimitedObject("Dev2Resources");
             string returnVal = "";
             //zuko.mgwili@dev2.co.za
@@ -192,7 +195,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findAllService = new DynamicService();
             findAllService.Name = HandlesType();
-            findAllService.DataListSpecification = "<root><Type/><Roles/><ResourceName/></root>";
+            findAllService.DataListSpecification = "<root><ResourceType/><Roles/><ResourceName/></root>";
             
             ServiceAction findAllServiceAction = new ServiceAction();
             findAllServiceAction.Name = HandlesType();

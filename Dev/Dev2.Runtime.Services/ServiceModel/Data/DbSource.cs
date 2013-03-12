@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
-            result.Add(new XAttribute("Type", "Database"));
+            result.Add(new XAttribute("Type", ServerType));
             result.Add(new XAttribute("ConnectionString", ConnectionString ?? string.Empty));
 
             result.Add(new XElement("AuthorRoles", string.Empty));
