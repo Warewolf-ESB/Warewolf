@@ -47,11 +47,11 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected void ReloadResource(IEnvironmentModel environmentModel, string resourceName, ResourceType resourceType)
         {
-            if(EventAggregator == null || environmentModel == null || environmentModel.Resources == null)
+            if(EventAggregator == null || environmentModel == null || environmentModel.ResourceRepository == null)
             {
                 return;
             }
-            var effectedResources = environmentModel.Resources.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
+            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
             foreach(var resource in effectedResources)
             {
                 EventAggregator.Publish(new UpdateResourceMessage(resource));

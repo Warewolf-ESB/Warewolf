@@ -9,8 +9,7 @@
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
     xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls" xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-             Name="DeployUserControl"
-             ap:UIElementTitleProperty.Title="Deploy">
+             Name="DeployUserControl">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

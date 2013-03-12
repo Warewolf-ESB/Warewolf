@@ -376,7 +376,12 @@ namespace Dev2.DataList.Contract
 
             DataListTranslatedPayloadTO tmp = _svrCompiler.ConvertFrom(null, curDLID, depth, typeOf, out errors);
 
-            return tmp.FetchAsString();
+            if (tmp != null)
+            {
+                return tmp.FetchAsString();
+            }
+
+            return string.Empty;            
         }
 
         public T ConvertFromJsonToModel<T>(string payload)

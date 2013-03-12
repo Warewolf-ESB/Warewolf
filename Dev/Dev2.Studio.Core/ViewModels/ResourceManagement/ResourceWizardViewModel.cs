@@ -201,7 +201,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Dev2Done()
         {
-            if(_resource != null && _resource.Environment != null && _resource.Environment.Resources != null)
+            if(_resource != null && _resource.Environment != null && _resource.Environment.ResourceRepository != null)
             {
                 try
                 {
@@ -216,7 +216,7 @@ namespace Dev2.Studio.Core.ViewModels
                     PopupProvider.Show();
                 }
 
-                IResourceModel res = _resource.Environment.Resources.FindSingle(r => r.ResourceName == _resource.ResourceName);
+                IResourceModel res = _resource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == _resource.ResourceName);
                 bool savedByWizard = (_resource.ResourceType == ResourceType.Source || _resource.ResourceType == ResourceType.Service);
                 bool newResource = (res == null);
 
@@ -225,7 +225,7 @@ namespace Dev2.Studio.Core.ViewModels
                     //
                     // Reload resource call
                     //
-                    List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
+                    List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
                     foreach(IResourceModel resource in effectedResources)
                     {
                         EventAggregator.Publish(new UpdateResourceMessage(resource));
@@ -233,7 +233,7 @@ namespace Dev2.Studio.Core.ViewModels
                 }
                 else
                 {
-                    _resource.Environment.Resources.Save(_resource);
+                    _resource.Environment.ResourceRepository.Save(_resource);
                     EventAggregator.Publish(new UpdateResourceMessage(_resource));
                 }
 
@@ -280,12 +280,12 @@ namespace Dev2.Studio.Core.ViewModels
         {
             ResourceType parsedResourceType;
             if(Enum.TryParse<ResourceType>(resourceType, out parsedResourceType) &&
-                _resource != null && _resource.Environment != null && _resource.Environment.Resources != null)
+                _resource != null && _resource.Environment != null && _resource.Environment.ResourceRepository != null)
             {
                 //
                 // Reload resource call
                 //
-                List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(resourceName, parsedResourceType, ResourceModelEqualityComparer.Current);
+                List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceName, parsedResourceType, ResourceModelEqualityComparer.Current);
                 foreach(IResourceModel resource in effectedResources)
                 {
                     EventAggregator.Publish(new UpdateResourceMessage(resource));

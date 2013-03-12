@@ -148,7 +148,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             if (OriginalLayout == null)
             {
                 MemoryStream originalLayoutData = new MemoryStream();
-                AssociatedObject.SaveLayout(originalLayoutData);
+                //AssociatedObject.SaveLayout(originalLayoutData);
 
                 originalLayoutData.Seek(0, SeekOrigin.Begin);
                 BinaryReader reader = new BinaryReader(originalLayoutData);

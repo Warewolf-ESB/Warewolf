@@ -495,35 +495,35 @@ namespace Dev2.Studio.Core.ViewModels.DataList
 
         private void AddRowToScalars()
         {
-            IList<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-            if (blankList.Count == 0)
-            {
-                IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(string.Empty);
-                ScalarCollection.Add(scalar);
-                Validator.Add(scalar);
-            }
-        }
+                    IList<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
+                    if (blankList.Count == 0)
+                    {
+                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(string.Empty);
+                        ScalarCollection.Add(scalar);
+                        Validator.Add(scalar);
+                    }
+                }
 
         private void AddRowToRecordsets()
-        {
-            IList<IDataListItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-            if (blankList.Count == 0)
-            {
-                AddRecordSet();
-            }
-
-            foreach (IDataListItemModel recset in RecsetCollection)
-            {
-                IList<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-                if (blankChildList.Count == 0)
                 {
-                    IDataListItemModel newChild = DataListItemModelFactory.CreateDataListModel(string.Empty);
-                    newChild.Parent = recset;
-                    recset.Children.Add(newChild);
-                    recset.Validator.Add(newChild);
+                    IList<IDataListItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
+                    if (blankList.Count == 0)
+                    {
+                        AddRecordSet();
+                    }
+
+                    foreach (IDataListItemModel recset in RecsetCollection)
+                    {
+                        IList<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
+                        if (blankChildList.Count == 0)
+                        {
+                            IDataListItemModel newChild = DataListItemModelFactory.CreateDataListModel(string.Empty);
+                            newChild.Parent = recset;
+                            recset.Children.Add(newChild);
+                            recset.Validator.Add(newChild);
+                        }
+                    }
                 }
-            }
-        }
 
         public void RemoveBlankRows(IDataListItemModel item)
         {

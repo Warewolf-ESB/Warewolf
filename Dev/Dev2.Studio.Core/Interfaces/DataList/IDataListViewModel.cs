@@ -1,9 +1,10 @@
-﻿using Dev2.DataList.Contract;
+﻿using Caliburn.Micro;
+using Dev2.DataList.Contract;
 using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
-    public interface IDataListViewModel
+    public interface IDataListViewModel : IScreen
     {
         IResourceModel Resource { get; }
 

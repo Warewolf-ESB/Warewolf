@@ -184,10 +184,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
+    <Compile Include="Utilities\ActivityHelper.cs" />
     <Compile Include="Utilities\ActivityInputOutputUtils.cs" />
     <Compile Include="Utilities\DsfActivityUtils.cs" />
     <Compile Include="Utilities\GeneralSettings.cs" />
     <Compile Include="Utilities\IActivityPropertyAttribute.cs" />
+    <Compile Include="Utilities\IEnvironmentModel.cs" />
     <Compile Include="Utilities\Inputs.cs" />
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\QuickSort.cs" />

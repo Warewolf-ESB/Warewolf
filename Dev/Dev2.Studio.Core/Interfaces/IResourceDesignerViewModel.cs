@@ -6,6 +6,5 @@ namespace Dev2.Studio.Core.Interfaces {
         IEnvironmentModel EnvironmentModel { get; }
         string ServiceDefinition { get; set; }
         IContextualResourceModel ResourceModel { get; set; }
-        void BindToModel();
     }
 }

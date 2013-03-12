@@ -344,7 +344,6 @@ namespace Dev2.Studio.Core
             {
                 return true;
             }
-
             if (_clientDetailsReveived)
             {
                 return _clientDetailsReveived;

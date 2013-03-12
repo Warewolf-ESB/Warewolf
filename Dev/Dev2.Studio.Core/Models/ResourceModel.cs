@@ -22,7 +22,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Models
 {
-    public class ResourceModel : BaseValidatable, IDataErrorInfo, IContextualResourceModel
+    public class ResourceModel : ValidationController, IDataErrorInfo, IContextualResourceModel
     {
         #region Class Members
 

@@ -7,16 +7,8 @@ namespace Dev2.Studio.Core
         // UI Messages
         //
         AddHelpDocument,
-        AddStuidoShortcutKeysPage,
-
-        ShowExplorer,
-        ShowStartPage,
-        ShowStartTabs,
 
         SetActivePage,
-
-        TabContextChanged,
-        DisplayAboutDialogue,
         UpdateWebpagePreview,
 
         ConfigureSwitchExpression,
@@ -37,19 +29,10 @@ namespace Dev2.Studio.Core
 
         SelectItemInDeploy,
 
-        //ShowDataInOutputWindow,
-        //AppendDataToOutputWindow,
-
         //
         // Intellisense Messages
         //
         UpdateIntelisense,
-
-        //
-        // Mapping Messages
-        //
-        RemoveDataMapping,
-        UpdateDataMapping,
 
         //
         // Datalist Messages
@@ -64,29 +47,19 @@ namespace Dev2.Studio.Core
         //
         // Resource Messages
         //
-        BuildResource,
         SaveResource,
         DebugResource, //Use this message to start debugging a resource
         DeployResources,
         ExecuteResource,
 
-        DeleteServiceExplorerResource,
-        DeleteSourceExplorerResource,
-        DeleteWorkflowExplorerResource,
-
         AddWebsiteDesigner,
         AddWorkflowDesigner,
         AddWebpageDesigner,
-        AddResourceDocument,
-        WorkflowActivitySelected,
 
-        ShowDependencyGraph,
-        ShowNewResourceWizard,
         ShowWebpartWizard,
         ShowEditResourceWizard,
 
         SaveResourceModel,
-        BindViewToViewModel,
 
         //
         // Environment Messages
@@ -94,11 +67,6 @@ namespace Dev2.Studio.Core
         SetActiveEnvironment,
         UpdateExplorer,
         UpdateDeploy,
-
-        //
-        // Workspace Messages
-        //
-        SaveWorkspaceItems,
 
         //
         // IDebugWriter

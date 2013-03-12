@@ -9,7 +9,6 @@
     mc:Ignorable="d"
     xmlns:uf="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"                       
     xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-    ap:UIElementTitleProperty.Title="Website Editor"
     >
     
     <UserControl.InputBindings>

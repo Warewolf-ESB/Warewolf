@@ -8,7 +8,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.ViewModels.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -90,7 +90,9 @@ namespace Dev2.Core.Tests
 
             //Mock Setup
             Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.MainViewModel;
-            mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
+
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
             Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
@@ -148,7 +150,8 @@ namespace Dev2.Core.Tests
             // Mock Setup            
 
             Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.MainViewModel;
-            mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
             _dataListViewModel.AddMissingDataListItems(parts, false);
             int beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);

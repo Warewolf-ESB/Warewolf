@@ -1,8 +1,13 @@
 ﻿#region
 
+using System;
+using System.Linq;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Factory;
@@ -27,6 +32,7 @@ namespace Dev2.Core.Tests
     {
         #region Variables
 
+        Mock<IEventAggregator> _eventAggregator;
         CategoryTreeViewModel categoryVM;
         CategoryTreeViewModel categoryVM2;
         EnvironmentTreeViewModel environmentVM;
@@ -56,7 +62,12 @@ namespace Dev2.Core.Tests
         {
             Monitor.Enter(_testGuard);
 
-            CompositionInitializer.DeployViewModelOkayTest();
+            _eventAggregator = new Mock<IEventAggregator>();
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
+
+            ImportService.CurrentContext =
+                CompositionInitializer.InializeWithEventAggregator(_eventAggregator.Object);
+
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
 
@@ -431,36 +442,12 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void ResourceNodeDeleteCommand_With_Source_Expected_MediatorDeleteSourceExplorerResourceMessage()
+        public void ResourceNodeDeleteCommand_With_Expected_EventAggregatorDeleteResourceMessage()
         {
-            bool messageRecieved = false;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeleteSourceExplorerResource, o => messageRecieved = true);
-            mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Source);
             resourceVM.DeleteCommand.Execute(null);
 
-            Assert.IsTrue(messageRecieved);
-        }
-
-        [TestMethod]
-        public void ResourceNodeDeleteCommand_With_WorkflowService_Expected_MediatorDeleteWorkflowExplorerResourceMessage()
-        {
-            bool messageRecieved = false;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeleteWorkflowExplorerResource, o => messageRecieved = true);
-            mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.WorkflowService);
-            resourceVM.DeleteCommand.Execute(null);
-
-            Assert.IsTrue(messageRecieved);
-        }
-
-        [TestMethod]
-        public void ResourceNodeDeleteCommand_With_Service_Expected_MediatorDeleteServiceExplorerResourceMessage()
-        {
-            bool messageRecieved = false;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeleteServiceExplorerResource, o => messageRecieved = true);
-            mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Service);
-            resourceVM.DeleteCommand.Execute(null);
-
-            Assert.IsTrue(messageRecieved);
+            _eventAggregator.Verify(e => e.Publish(It.Is<DeleteResourceMessage>
+                (t => t.ResourceModel == mockResourceModel.Object)), Times.Once());
         }
 
         [TestMethod]
@@ -595,13 +582,12 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void ResourceNodeShowDependenciesCommand_Expected_MediatorShowDependencyGraphMessage()
+        public void ResourceNodeShowDependenciesCommand_Expected_EventAggregatorShowDependencyGraphMessage()
         {
-            bool messageRecieved = false;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowDependencyGraph, o => messageRecieved = true);
             resourceVM.ShowDependenciesCommand.Execute(null);
 
-            Assert.IsTrue(messageRecieved);
+            _eventAggregator.Verify(e => e.Publish(It.Is<ShowDependenciesMessage>
+                (t => t.ResourceModel == mockResourceModel.Object)), Times.Once());
         }
 
         [TestMethod]

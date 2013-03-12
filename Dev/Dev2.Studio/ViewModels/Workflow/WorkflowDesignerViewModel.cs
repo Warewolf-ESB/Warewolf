@@ -11,7 +11,6 @@ using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -21,6 +20,7 @@ using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Wizards;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
 using System;
 using System.Activities;
@@ -47,10 +47,10 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowDesignerViewModel : AbstractWorkSurfaceViewModel, 
+    public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
         IWorkflowDesignerViewModel, IDisposable,
-        IHandle<UpdateResourceMessage>, 
-        IHandle<AddStringListToDataListMessage>, 
+        IHandle<UpdateResourceMessage>,
+        IHandle<AddStringListToDataListMessage>,
         IHandle<AddMissingAndFindUnusedDataListItemsMessage>
     {
         #region Fields
@@ -62,7 +62,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
         private IList<IDataListVerifyPart> _filteredDataListParts;
 
-        private IContextualResourceModel _workflowModel;
+        private IContextualResourceModel _resourceModel;
         private readonly IDesignerManagementService _designerManagementService;
 
         private RelayCommand _newWorkflowCommand;
@@ -95,9 +95,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             PopUp = ImportService.GetExportValue<IPopUp>();
             MediatorRepo = ImportService.GetExportValue<IMediatorRepo>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
-
-            _workflowModel = resource;
-            _designerManagementService = new DesignerManagementService(_workflowModel.Environment.Resources);
+            _resourceModel = resource;
+            _designerManagementService = new DesignerManagementService(_resourceModel.Environment.ResourceRepository);
         }
         #endregion
 
@@ -150,16 +149,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _workflowModel;
+                return _resourceModel;
             }
-            set { _workflowModel = value; }
+            set { _resourceModel = value; }
         }
 
         public string WorkflowName
         {
             get
             {
-                return _workflowModel.ResourceName;
+                return _resourceModel.ResourceName;
             }
         }
 
@@ -173,7 +172,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             set
             {
                 _wd.Flush();
-                _workflowModel.WorkflowXaml = _wd.Text;
+                _resourceModel.WorkflowXaml = _wd.Text;
             }
         }
 
@@ -181,7 +180,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _workflowModel.RequiresSignOff;
+                return _resourceModel.RequiresSignOff;
             }
         }
 
@@ -189,11 +188,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _workflowModel.AuthorRoles;
+                return _resourceModel.AuthorRoles;
             }
             set
             {
-                _workflowModel.AuthorRoles = value;
+                _resourceModel.AuthorRoles = value;
             }
         }
 
@@ -210,14 +209,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             get
             {
                 return _wd.View;
-            }
-        }
-
-        public UIElement PropertyView
-        {
-            get
-            {
-                return _wd.PropertyInspectorView;
             }
         }
 
@@ -252,7 +243,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (_newWorkflowCommand == null)
                 {
-                    _newWorkflowCommand = new RelayCommand(param => { if (OnRequestCreateNewResource != null) OnRequestCreateNewResource(_workflowModel); }, param => true);
+                    _newWorkflowCommand = new RelayCommand(param => { if (OnRequestCreateNewResource != null) OnRequestCreateNewResource(_resourceModel); }, param => true);
                 }
                 return _newWorkflowCommand;
             }
@@ -264,7 +255,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (_editWorkflowCommand == null)
                 {
-                    _editWorkflowCommand = new RelayCommand(param => { if (OnRequestEditResource != null) OnRequestEditResource(_workflowModel); }, param => true);
+                    _editWorkflowCommand = new RelayCommand(param => { if (OnRequestEditResource != null) OnRequestEditResource(_resourceModel); }, param => true);
                 }
                 return _editWorkflowCommand;
             }
@@ -347,7 +338,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var res = modelProperty.ComputedValue;
 
                     var resource =
-                        _workflowModel.Environment.Resources.FindSingle(c => c.ResourceName == res.ToString());
+                        _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
 
                     if (resource != null)
                     {
@@ -377,7 +368,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var res = modelProperty.ComputedValue;
 
                     var resource =
-                        _workflowModel.Environment.Resources.FindSingle(c => c.ResourceName == res.ToString());
+                        _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
 
                     if (resource != null)
                     {
@@ -399,7 +390,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WizardInvocationTO activityWizardTO = null;
                 try
                 {
-                    activityWizardTO = WizardEngine.GetActivitySettingsWizardInvocationTO(modelItem, _workflowModel);
+                    activityWizardTO = WizardEngine.GetActivitySettingsWizardInvocationTO(modelItem, _resourceModel);
                 }
                 catch (Exception e)
                 {
@@ -421,14 +412,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WizardInvocationTO activityWizardTO = null;
 
 
-                if (!WizardEngine.HasWizard(modelItem, _workflowModel))
+                if (!WizardEngine.HasWizard(modelItem, _resourceModel))
                 {
                     PopUp.Show("Wizard not found.", "Missing Wizard");
                     return;
                 }
                 try
                 {
-                    activityWizardTO = WizardEngine.GetActivityWizardInvocationTO(modelItem, _workflowModel);
+                    activityWizardTO = WizardEngine.GetActivityWizardInvocationTO(modelItem, _resourceModel);
                 }
                 catch (Exception e)
                 {
@@ -443,7 +434,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (activityWizardTO != null)
             {
                 ActivitySettingsView activitySettingsView = new ActivitySettingsView();
-                ActivitySettingsViewModel activitySettingsViewModel = new ActivitySettingsViewModel(activityWizardTO, _workflowModel);
+                ActivitySettingsViewModel activitySettingsViewModel =
+                    new ActivitySettingsViewModel(activityWizardTO, _resourceModel);
 
                 activitySettingsViewModel.Close += delegate
                 {
@@ -1921,24 +1913,28 @@ namespace Dev2.Studio.ViewModels.Workflow
             List<IDataListVerifyPart> MissingDataParts = new List<IDataListVerifyPart>();
             foreach (var part in partsToVerify)
             {
-                if (!(part.IsScalar))
+                if (DataListSingleton.ActiveDataList != null)
                 {
-                    var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
-                    if (!recset.Any())
+                    if (!(part.IsScalar))
                     {
-                        MissingDataParts.Add(part);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                        var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
+                        if (!recset.Any())
                         {
                             MissingDataParts.Add(part);
                         }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                            {
+                                MissingDataParts.Add(part);
+                            }
+                        }
                     }
-                }
-                else if (DataListSingleton.ActiveDataList.DataList.Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
-                {
-                    MissingDataParts.Add(part);
+                    else if (DataListSingleton.ActiveDataList.DataList
+                        .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
+                    {
+                        MissingDataParts.Add(part);
+                    }
                 }
             }
             return MissingDataParts;
@@ -1958,51 +1954,52 @@ namespace Dev2.Studio.ViewModels.Workflow
         private List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> PartsToVerify)
         {
             List<IDataListVerifyPart> MissingWorkflowParts = new List<IDataListVerifyPart>();
-            foreach (IDataListItemModel dataListItem in DataListSingleton.ActiveDataList.DataList)
-            {
-                if (String.IsNullOrEmpty(dataListItem.Name))
+            if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
+                foreach (IDataListItemModel dataListItem in DataListSingleton.ActiveDataList.DataList)
                 {
-                    continue;
-                }
-                if ((dataListItem.Children.Count > 0))
-                {
-
-                    if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                    if (String.IsNullOrEmpty(dataListItem.Name))
                     {
-                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                        if (dataListItem.IsEditable)
+                        continue;
+                    }
+                    if ((dataListItem.Children.Count > 0))
+                    {
+
+                        if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
-                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, String.Empty, dataListItem.Description));
-                            foreach (var child in dataListItem.Children)
-                                if (!(String.IsNullOrEmpty(child.Name)))
+                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                            if (dataListItem.IsEditable)
+                            {
+                                MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, String.Empty, dataListItem.Description));
+                                foreach (var child in dataListItem.Children)
+                                    if (!(String.IsNullOrEmpty(child.Name)))
+                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                        if (dataListItem.IsEditable)
+                                        {
+                                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
+                                        }
+                            }
+                        }
+                        else foreach (IDataListItemModel child in dataListItem.Children)
+                                if (PartsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
+                                {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if (dataListItem.IsEditable)
+                                    if (child.IsEditable)
                                     {
                                         MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
                                     }
-                        }
+                                }
                     }
-                    else foreach (IDataListItemModel child in dataListItem.Children)
-                            if (PartsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
+                    else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
+                    {
+                        {
+                            if (dataListItem.IsEditable)
                             {
                                 //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                if (child.IsEditable)
-                                {
-                                    MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
-                                }
+                                MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name, dataListItem.Description));
                             }
-                }
-                else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
-                {
-                    {
-                        if (dataListItem.IsEditable)
-                        {
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name, dataListItem.Description));
                         }
                     }
                 }
-            }
             return MissingWorkflowParts;
         }
 
@@ -2168,14 +2165,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             MetadataStore.AddAttributeTable(builder.CreateTable());
-            if (string.IsNullOrEmpty(_workflowModel.WorkflowXaml))
+            if (string.IsNullOrEmpty(_resourceModel.WorkflowXaml))
             {
                 _wd.Load(GetBaseUnlimitedFlowchartActivity());
                 BindToModel();
             }
             else
             {
-                _wd.Text = _workflowModel.WorkflowXaml;
+                _wd.Text = _resourceModel.WorkflowXaml;
                 _wd.Load();
             }
 
@@ -2213,6 +2210,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
+
+            _wd.ModelChanged += WdOnModelChanged;
+        }
+
+        private void WdOnModelChanged(object sender, EventArgs eventArgs)
+        {
+            //This will auto save the workflow if anything changes on the design surface.Comment back in if we want the  workflows to auto save.
+            //BindToModel();
         }
 
         public bool NotifyItemSelected(object primarySelection)
@@ -2261,28 +2266,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //}
                         //if (selectedItem.ItemType == typeof(DsfWebPageActivity))
                         //{
-                        var resourceModel = _workflowModel.Environment.Resources.All().FirstOrDefault(resource => resource.ResourceName.Equals(displayName, StringComparison.InvariantCultureIgnoreCase));
-                        bool sendMediatorMessage = resourceModel != null;
+                        var resourceModel = _resourceModel.Environment.ResourceRepository.All().FirstOrDefault(resource => resource.ResourceName.Equals(displayName, StringComparison.InvariantCultureIgnoreCase));
 
-                        if (selectedItem.ItemType == typeof(DsfWebPageActivity))
+                        if (resourceModel != null || selectedItem.ItemType == typeof(DsfWebPageActivity))
                         {
-                            sendMediatorMessage = true;
-                        }
-                        // (selectedItem.ItemType == typeof(Flowchart))
-                        else
-                        {
-                            sendMediatorMessage = false;
-                        }
-
-                        if (sendMediatorMessage)
-                        {
-                            IWebActivity webActivity = WebActivityFactory.CreateWebActivity(selectedItem, resourceModel as IContextualResourceModel, displayName);
-                            Mediator.SendMessage(MediatorMessages.WorkflowActivitySelected, webActivity);
+                            IWebActivity webActivity = WebActivityFactory
+                                .CreateWebActivity(selectedItem, resourceModel as IContextualResourceModel, displayName);
                             isItemSelected = true;
-                        }
-                        else
-                        {
-                            Mediator.SendMessage(MediatorMessages.RemoveDataMapping, this);
                         }
                         //}
                     }
@@ -2295,16 +2285,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void BindToModel()
         {
             _wd.Flush();
-            _workflowModel.WorkflowXaml = _wd.Text;
-            if (string.IsNullOrEmpty(_workflowModel.ServiceDefinition))
+            _resourceModel.WorkflowXaml = _wd.Text;
+            if (string.IsNullOrEmpty(_resourceModel.ServiceDefinition))
             {
-                _workflowModel.ServiceDefinition = _workflowModel.ToServiceDefinition();
+                _resourceModel.ServiceDefinition = _resourceModel.ToServiceDefinition();
             }
-        }
-
-        public void InvalidateUI()
-        {
-            base.OnPropertyChanged("DesignerView");
         }
 
         // Travis.Frisinger : 23.01.2013 - Added A Dev2DataListDecisionHandler Variable
@@ -2312,7 +2297,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             ActivityBuilder emptyWorkflow = new ActivityBuilder()
             {
-                Name = _workflowModel.ResourceName,
+                Name = _resourceModel.ResourceName,
                 Properties = {
                     new DynamicActivityProperty{Name = "AmbientDataList",Type = typeof(InOutArgument<List<string>>)}
                     ,new DynamicActivityProperty{ Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>)}
@@ -2320,7 +2305,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 },
                 Implementation = new Flowchart
                 {
-                    DisplayName = _workflowModel.ResourceName,
+                    DisplayName = _resourceModel.ResourceName,
                     Variables = {
                          new Variable<List<string>>{Name = "InstructionList"},
                          new Variable<string>{Name = "LastResult"},
@@ -2386,8 +2371,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(_removeParts, ResourceModel));
             }
 
-
-
             if (eventAggregator != null)
             {
                 eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
@@ -2440,9 +2423,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         //2013.02.11: Ashley Lewis - Bug 8553
         public void Handle(UpdateResourceMessage message)
         {
-            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel as IContextualResourceModel, _workflowModel))
+            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel as IContextualResourceModel, _resourceModel))
             {
-                _workflowModel.Update(message.ResourceModel);
+                _resourceModel.Update(message.ResourceModel);
             }
         }
 
@@ -2520,20 +2503,20 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                         if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                         {
-                            Mediator.SendMessage(MediatorMessages.EditCaseExpression, new Tuple<ModelProperty, IEnvironmentModel>(tmp, _workflowModel.Environment));
+                            Mediator.SendMessage(MediatorMessages.EditCaseExpression, new Tuple<ModelProperty, IEnvironmentModel>(tmp, _resourceModel.Environment));
                         }
                     }
 
                     // Handle Switch Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        Mediator.SendMessage(MediatorMessages.ConfigureSwitchExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _workflowModel.Environment));
+                        Mediator.SendMessage(MediatorMessages.ConfigureSwitchExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment));
                     }
 
                     // Handle Decision Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
                     {
-                        Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _workflowModel.Environment));
+                        Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment));
                     }
                 }
 
@@ -2544,13 +2527,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     if (modelItem.ItemType == typeof(DsfWebPageActivity))
                     {
-                        IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _workflowModel, modelItem.Properties["DisplayName"].ComputedValue.ToString());
+                        IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel, modelItem.Properties["DisplayName"].ComputedValue.ToString());
                         Mediator.SendMessage(MediatorMessages.AddWebpageDesigner, webpageActivity);
                         e.Handled = true;
                     }
                     else if (modelItem.ItemType == typeof(DsfWebSiteActivity))
                     {
-                        IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _workflowModel, modelItem.Properties["DisplayName"].ComputedValue.ToString());
+                        IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel, modelItem.Properties["DisplayName"].ComputedValue.ToString());
                         Mediator.SendMessage(MediatorMessages.AddWebsiteDesigner, webpageActivity);
                         e.Handled = true;
                     }
@@ -2606,7 +2589,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         if ((mi.Properties["Key"].Value != null) && mi.Properties["Key"].Value.ToString().Contains("Case"))
                         {
-                            Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _workflowModel.Environment);
+                            Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
                             Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, wrapper);
                             //Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, mi);
                         }
@@ -2618,7 +2601,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         SetLastDroppedModelItem(mi);
 
                         // Travis.Frisinger : 28.01.2013 - Switch Amendments
-                        Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _workflowModel.Environment);
+                        Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
                         Mediator.SendMessage(MediatorMessages.ConfigureSwitchExpression, wrapper);
                     }
 
@@ -2627,7 +2610,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //This line is necessary to fix the issue were decisions and switches didn't have the correct positioning when dragged on
                         SetLastDroppedModelItem(mi);
 
-                        Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _workflowModel.Environment);
+                        Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
                         Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, wrapper);
 
                         //Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, mi);
@@ -2655,7 +2638,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             if (!string.IsNullOrEmpty(droppedActivity.ServiceName))
                             {
                                 //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                IContextualResourceModel resource = _workflowModel.Environment.Resources.FindSingle(
+                                IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                                      c => c.ResourceName == droppedActivity.ServiceName) as IContextualResourceModel;
                                 droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
                                 mi.Properties["Action"].SetValue(droppedActivity);
@@ -2760,6 +2743,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                            ? WorkSurfaceContext.Unknown
                            : ResourceModel.ResourceType.ToWorkSurfaceContext();
             }
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+        }
+
+        protected override void OnViewAttached(object view, object context)
+        {
+            base.OnViewAttached(view, context);
+            ActivityDesigners.ActivityDesignerHelper.AddDesignerAttributes(this);
         }
     }
 }

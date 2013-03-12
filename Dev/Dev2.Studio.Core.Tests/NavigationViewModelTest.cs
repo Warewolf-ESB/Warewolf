@@ -66,7 +66,9 @@ namespace Dev2.Core.Tests
             //{
             //    App app = new App();
             //}
+
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
             mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
             mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
 
@@ -106,7 +108,7 @@ namespace Dev2.Core.Tests
                         mockResourceModel2.Object
                     });
 
-            mockEnvironmentModel.SetupGet(x => x.Resources).Returns(mockResourceRepository.Object);
+            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(mockResourceRepository.Object);
             mockEnvironmentModel.Setup(x => x.LoadResources());
 
             vm = new NavigationViewModel(false);

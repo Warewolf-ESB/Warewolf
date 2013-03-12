@@ -30,7 +30,8 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         string FilterText { get; set; }
         bool IsConnected { get; }
         string DisplayName { get; set; }
-        ICollectionView FilteredChildren { get; } 
+        ICollectionView FilteredChildren { get; }
+        IEventAggregator EventAggregator { get; set; }
 
         void Add(ITreeNode child);
         bool Remove(ITreeNode child);

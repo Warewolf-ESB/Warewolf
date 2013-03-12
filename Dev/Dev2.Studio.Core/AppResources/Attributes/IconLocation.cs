@@ -10,6 +10,11 @@ namespace Dev2.Studio.Core.AppResources.Attributes
             Value = value;
         }
 
+        public IconLocation(string value, Type resourceType)
+        {
+            Value = ResourceHelper.GetResourceLookup<string>(resourceType, value);
+        }
+
         public string Value { get; private set; }
     }
 }

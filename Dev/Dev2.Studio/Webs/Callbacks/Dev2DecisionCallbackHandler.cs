@@ -5,7 +5,7 @@ using Dev2.Studio.Webs.Callbacks;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
-    class Dev2DecisionCallbackHandler : IPropertyEditorWizard
+    internal class Dev2DecisionCallbackHandler : IPropertyEditorWizard
     {
         public Window Owner { get; set; }
 

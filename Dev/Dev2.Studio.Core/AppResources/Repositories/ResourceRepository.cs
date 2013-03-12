@@ -1,16 +1,17 @@
-﻿using System.IO;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Composition;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 using Unlimited.Framework;
@@ -34,6 +35,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IFrameworkSecurityContext SecurityContext { get; set; }
 
+        public IWizardEngine WizardEngine { get; set; }
+
         Guid WorkspaceID
         {
             get
@@ -56,6 +59,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _workflowDb = new List<IResourceModel>();
             Environment = environment;
             SecurityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
         }
 
         #endregion Constructor
@@ -85,7 +89,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.EditedItemsXml = rootElement.ToString();
             package.Roles = string.Join(",", SecurityContext.Roles);
 
-            var updateResult = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);  
+            var updateResult = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
 
             if (updateResult == null)
             {
@@ -227,7 +231,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.ResourceXml = instanceObj.ToServiceDefinition();
             package.Roles = string.Join(",", SecurityContext.Roles);
 
-            var result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            string result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
             if (result == null)
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
@@ -249,7 +253,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic package = new UnlimitedObject();
             package.Service = "DeployResourceService";
             package.ResourceXml = resource.ToServiceDefinition();
-            package.Roles = string.Join(",", SecurityContext.Roles);
+            package.Roles = string.Join(",", SecurityContext.Roles ?? new string[0]);
 
             var result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
             if (result == null)
@@ -270,10 +274,73 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Remove(IResourceModel instanceObj)
         {
-            int index = _workflowDb.IndexOf(instanceObj);
+            DeleteResource(instanceObj);
+        }
+
+        public UnlimitedObject DeleteResource(IResourceModel resource)
+        {
+            int index = _workflowDb.IndexOf(resource);
             if (index != -1)
                 _workflowDb.RemoveAt(index);
             else throw new KeyNotFoundException();
+
+            var contextualResource = resource as IContextualResourceModel;
+            if (contextualResource == null) return null;
+
+            if (!WizardEngine.IsWizard(contextualResource))
+            {
+                IContextualResourceModel wizard = WizardEngine.GetWizard(contextualResource);
+                if (wizard != null)
+                {
+                    UnlimitedObject wizardData = ExecuteDeleteResource(wizard);
+
+                    if (wizardData.HasError)
+                    {
+                        HandleDeleteResourceError(wizardData, contextualResource);
+                        return null;
+                    }
+                }
+            }
+
+            UnlimitedObject data = ExecuteDeleteResource(contextualResource);
+
+            if (data.HasError)
+            {
+                HandleDeleteResourceError(data, contextualResource);
+                return null;
+            }
+
+            return data;
+        }
+
+        private UnlimitedObject ExecuteDeleteResource(IContextualResourceModel resource)
+        {
+            dynamic request = new UnlimitedObject();
+            request.Service = "DeleteResourceService";
+            request.ResourceName = resource.ResourceName;
+            request.ResourceType = resource.ResourceType.ToString();
+            request.Roles = String.Join(",", SecurityContext.Roles ?? new string[0]);
+            Guid workspaceID = ((IStudioClientContext)resource.Environment.DsfChannel).AccountID;
+
+            string result = resource.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID,
+                                                                           GlobalConstants.NullDataListID);
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, request.Service));
+            }
+
+            return UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+        }
+
+        //Juries TODO - Refactor to popupProvider
+        private void HandleDeleteResourceError(dynamic data, IContextualResourceModel model)
+        {
+            if (data.HasError)
+            {
+                MessageBox.Show(Application.Current.MainWindow, model.ResourceType.GetDescription() + " \"" + model.ResourceName +
+                                                                "\" could not be deleted, reason: " + data.Error,
+                                model.ResourceType.GetDescription() + " Deletion Failed", MessageBoxButton.OK);
+            }
         }
 
         public void Add(IResourceModel instanceObj)//Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
@@ -344,7 +411,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
             //Debug.WriteLine(result);
 
-           
+
             dynamic resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
             {
@@ -580,8 +647,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             // PBI : 7913 -  Travis
-           
-           var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+
+            var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
             if (resultObj.HasError)
             {
                 throw new Exception(resultObj.Error);
@@ -606,5 +673,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         #endregion
+
     }
 }

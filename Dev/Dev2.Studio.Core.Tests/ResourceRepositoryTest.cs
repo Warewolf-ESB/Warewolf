@@ -2,14 +2,18 @@
 using Dev2.Composition;
 using Dev2.Core.Tests;
 using Dev2.DynamicServices;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace BusinessDesignStudio.Unit.Tests
@@ -219,16 +223,27 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void WorkFlowService_OnDelete_Expected_NotInRepository()
         {
-            var servers = new List<string> { EnviromentRepositoryTest.Server1ID };
-            var env = new EnviromentRepositoryTest().CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
-            var myRepo = new ResourceRepository(env.Object);
-            var myItem = new ResourceModel(env.Object);
-            myRepo.Add(myItem);
-            int expected = myRepo.All().Count;
-            myRepo.Remove(myItem);
-            Assert.AreEqual(myRepo.All().Count,expected-1);
-            myRepo.Add(myItem);
-            Assert.AreEqual(1, myRepo.All().Count);
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(Dev2MockFactory.SetupIFrameworkDataChannel_EmptyReturn().Object);                              
+
+            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);   
+            
+            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
+            mockEnvironmentModel.Setup(x => x.LoadResources());    
+
+            var servers = new List<string> { EnviromentRepositoryTest.Server1ID };            
+            var myItem = new ResourceModel(mockEnvironmentModel.Object);
+            myItem.ResourceName = "TestResource";
+            mockEnvironmentModel.Object.ResourceRepository.Add(myItem);           
+            int exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+
+            mockEnvironmentModel.Object.ResourceRepository.Remove(myItem);
+            Assert.AreEqual(exp - 1,mockEnvironmentModel.Object.ResourceRepository.All().Count);
+            mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
+            Assert.AreEqual(1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
         }
 
         [TestMethod]
@@ -259,7 +274,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 repo.Load();
             }
             //Assert
-            catch(InvalidOperationException iex)
+            catch (InvalidOperationException iex)
             {
                 Assert.AreEqual("No connected environment found to perform operation on.", iex.Message);
             }

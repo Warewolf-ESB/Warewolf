@@ -8,7 +8,7 @@ namespace Dev2.Studio.Core.Factories
     {
         public static IResourceRepository CreateResourceRepository(IEnvironmentModel environment)
         {
-            ResourceRepository resourceRepository = new ResourceRepository(environment);
+            var resourceRepository = new ResourceRepository(environment);
             
             return resourceRepository;
         }

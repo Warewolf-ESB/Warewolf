@@ -34,7 +34,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
             }
-            UITestControl splurtControl = theCollection[4];
+            UITestControl splurtControl = theCollection[6];
             UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
             UITestControl cake2 = splurtChildChildren[0];
             UITestControlCollection cake2Children = cake2.GetChildren();

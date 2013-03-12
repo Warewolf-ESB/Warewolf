@@ -3,12 +3,16 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Dev2.Studio.Core.AppResources.Converters;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition;
 using System.Xml;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.Core {
     public static class ResourceHelper {
@@ -289,6 +293,59 @@ namespace Dev2.Studio.Core {
                 TypeSwitch.Case<IWebActivity>(x => resourceModel = x.ResourceModel));
 
             return resourceModel;
+        }
+
+        public static string GetIconPath(IContextualResourceModel resource)
+        {
+            string iconPath = resource.IconPath;
+            if (string.IsNullOrEmpty(resource.UnitTestTargetWorkflowService))
+            {
+                if (string.IsNullOrEmpty(resource.IconPath))
+                {
+                    iconPath = ResourceType.WorkflowService.GetIconLocation();
+                }
+                else if (!resource.IconPath.Contains(StringResources.Pack_Uri_Application_Image))
+                {
+                    var imageUriConverter = new ContextualResourceModelToImageConverter();
+                    var iconUri = imageUriConverter.Convert(resource, null, null, null) as Uri;
+                    if (iconUri != null) iconPath = iconUri.ToString();
+                }
+            }
+            else
+            {
+                iconPath = string.IsNullOrEmpty(resource.IconPath)
+                               ? StringResources.Navigation_UnitTest_Icon_Pack_Uri
+                               : resource.IconPath;
+            }
+            return iconPath;
+        }
+
+        public static bool IsWebpage(IContextualResourceModel resource)
+        {
+            bool isWebpage = resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
+                             ||
+                             resource.Category.Equals("Human Interface Workflow",
+                                                      StringComparison.InvariantCultureIgnoreCase);
+
+            return isWebpage;
+        }
+
+        public static Type GetUserInterfaceType(IContextualResourceModel resource)
+        {
+            Type userInterfaceType = null;
+
+            if (resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
+                || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase))
+            {
+                userInterfaceType = typeof(DsfWebPageActivity);
+            }
+
+            if (resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase))
+            {
+                userInterfaceType = typeof(DsfWebSiteActivity);
+            }
+
+            return userInterfaceType;
         }
 
     }

@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
             //_testEnvironmentModel.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             //_testEnvironmentModel.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(_testDependencyGraph.ToString());
             _testEnvironmentModel.Setup(e => e.DsfChannel).Returns(_dataChannel.Object);
-            _testEnvironmentModel.Setup(e => e.Resources.All()).Returns(_testExpectedResources);
+            _testEnvironmentModel.Setup(e => e.ResourceRepository.All()).Returns(_testExpectedResources);
           
             _testRequestModel = new ResourceModel(_testEnvironmentModel.Object) { ResourceName = "Button" };
         }
@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetUniqueDependenciesWithModelReturnsEmptyListWhenNoResourcesMatch()
         {
-            _testEnvironmentModel.Setup(e => e.Resources.All()).Returns(new IResourceModel[0]);
+            _testEnvironmentModel.Setup(e => e.ResourceRepository.All()).Returns(new IResourceModel[0]);
             var service = new ResourceDependencyService();
             var result = service.GetUniqueDependencies(_testRequestModel);
             Assert.AreEqual(0, result.Count);

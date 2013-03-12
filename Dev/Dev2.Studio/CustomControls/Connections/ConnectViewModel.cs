@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
-    public class ConnectViewModel : BaseViewModel, IDataErrorInfo
+    public class ConnectViewModel : ValidationController, IDataErrorInfo
     {
         #region Class Members
 

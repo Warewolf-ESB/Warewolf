@@ -3,12 +3,17 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
                      xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
-                     xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"                     
+                     xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
                      xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                      xmlns:igDock="http://infragistics.com/DockManager"
-                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
+                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                      xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-                     Loaded="RibbonWindowLoaded" Closing="RibbonWindow_Closing" WindowState="Maximized"
+                     xmlns:igExtensions="clr-namespace:Dev2.Studio.Dock"
+                     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+                     xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
+                     xmlns:diagnostics="clr-namespace:Dev2.Studio.Views.Diagnostics"
+                     xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
+                     WindowState="Maximized"
                      Title="{Binding Title}"
                      Icon="pack://application:,,,/Dev2.Studio;component/Images/Network.png"
                      Name="MainViewWindow">                   
@@ -20,7 +25,7 @@
         <KeyBinding Command="{Binding Path=DebugCommand}" Key="F5" />
         <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Alt" />        
+        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="S" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="A" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="L" Modifiers="Alt" />
@@ -55,7 +60,7 @@
     <Grid>
         <DockPanel AutomationProperties.AutomationId="MainWindow">
 
-            <ItemsControl Name="WorkflowActions" Visibility="Collapsed">                
+            <ItemsControl Name="WorkflowActions" Visibility="Collapsed">
                 <ribbon:RibbonButton Label="Save"
                                      LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
                                      Command="{Binding Path=SaveCommand}" />
@@ -164,7 +169,7 @@
                                      LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png"
                                      Command="{Binding Path=NotImplementedCommand}" />
             </ItemsControl>
-            
+
             <ItemsControl Name="ScheduleManagerActions" Visibility="Collapsed">
                 <ribbon:RibbonButton Label="New Schedule"
                                      LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png"
@@ -245,7 +250,7 @@
 
             <ItemsControl Name="DeployActions" Visibility="Collapsed">
             </ItemsControl>
-            
+
             <ribbon:Ribbon x:Name="ribbon" ShowQuickAccessToolBarOnTop="True" IsCollapsed="False" DockPanel.Dock="Top">
                 <ribbon:Ribbon.Resources>
                     <Style TargetType="ribbon:RibbonButton">
@@ -257,10 +262,10 @@
                     </Style>
                     <Style TargetType="ribbon:RibbonTab">
                         <Setter Property="ContextMenu" Value="{x:Null}"></Setter>
-                        
+
                         <!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"> -->
                     </Style>
-                    
+
                     <Style TargetType="ribbon:Ribbon">
                         <Setter Property="ContextMenu" Value="{x:Null}"></Setter>
                         <!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"></Setter> -->
@@ -268,151 +273,151 @@
                     <Style x:Key="RibbonGroupActions">
                         <Style.Triggers>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Unknown">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource" Value="{x:Null}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Workflow">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=WorkflowActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Service">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=ServiceActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Webpage">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=WebpageActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Website">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=WebsiteActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Webpart">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=WorkpartActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Wizard">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=WizardActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="SourceManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=SourceManagerActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="ConnectionManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=ConnectionManagerActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="ScheduleManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=ScheduleManagerActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="PeopleAndSecurityManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=PeopleAndSecurityManagerActions}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="BackupManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=BackupManagerActions}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="ReportsManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=ReportsManagerActions}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="WebserverManager">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=WebserverManagerActions}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Settings">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=SettingsActions}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="BuyOrBrowse">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=BuyOrBrowseActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Sell">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=SellActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="AppstoreAccount">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=AppStoreAccountActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Installed">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=InstalledActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="CommunityAccount">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=CommunityAccountActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="CommunitySearch">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=CommunitySearchActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="HelpSearch">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=HelpSearchActions}" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Community">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=CommunityActions}" />
                                 <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger
-                                Binding="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocumentTabAction, ElementName=ribbon}"
+                                Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="DeployResources">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource"
                                         Value="{Binding Items, ElementName=DeployActions}" />
@@ -420,7 +425,7 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                                     
+
                 </ribbon:Ribbon.Resources>
 
                 <ribbon:Ribbon.ApplicationMenu>
@@ -471,10 +476,10 @@
                         <ribbon:RibbonButton Label="Deploy"
                                              LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png"
                                              Command="{Binding Path=DeployCommand}" />
-                    </ribbon:RibbonGroup>                    
+                    </ribbon:RibbonGroup>
                 </ribbon:RibbonTab>
-               
-                
+
+
                 <!--
                 TODO PBIs 800, 5656, 6599, 798, 797, 1027, 4443, 5503, 1018
                 <ribbon:RibbonTab Header="Manage">
@@ -559,72 +564,105 @@
                         <ribbon:RibbonButton Label="About"
                                              LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Network.png"
                                              Command="{Binding Path=DisplayAboutDialogueCommand}" />
-                        </ribbon:RibbonGroup>
+                    </ribbon:RibbonGroup>
                 </ribbon:RibbonTab>
             </ribbon:Ribbon>
 
             <igDock:XamDockManager x:Name="dockManager" AutomationProperties.AutomationId="UI_DocManager_AutoID">
                 <i:Interaction.Behaviors>
                     <local:XamlDockManagerLayoutPersistenceBehavior
-                        UserInterfaceLayoutRepository="{Binding DataContext.UserInterfaceLayoutRepository, ElementName=dockManager}"
-                                                                    LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
+                        UserInterfaceLayoutRepository="{Binding UserInterfaceLayoutRepository}"
+                        LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
                 </i:Interaction.Behaviors>
                 <igDock:DocumentContentHost x:Name="DocumentHost"
                                             AutomationProperties.AutomationId="UI_DocumentHost_AutoID">
-                    <igDock:SplitPane AutomationProperties.AutomationId="UI_SplitPane_AutoID">
+                    <igDock:SplitPane x:Name="DockCentre" AutomationProperties.AutomationId="UI_SplitPane_AutoID">
                         <igDock:TabGroupPane x:Name="TabManager"
                                              AutomationProperties.AutomationId="UI_TabManager_AutoID">
-                            <igDock:TabGroupPane.Resources>
-                                <Style TargetType="igDock:ContentPane">
-
-                                </Style>
-                            </igDock:TabGroupPane.Resources>
                             <i:Interaction.Behaviors>
                                 <local:TabGroupPaneBindingBehavior
-                                    ItemsSource="{Binding DataContext.UserInterfaceLayoutProvider.Value.Tabs, ElementName=DocumentHost}"
                                     DocumentHost="{Binding ElementName=DocumentHost}"
-                                                                   SelectedItem="{Binding DataContext.UserInterfaceLayoutProvider.Value.ActiveDocument, Mode=TwoWay, ElementName=DocumentHost}">
-                                    <local:TabGroupPaneBindingBehavior.ItemTemplate>
-                                        <DataTemplate>
-                                            <igDock:ContentPane
-                                                Header="{Binding Path=(ap:UIElementTitleProperty.Title)}"
-                                                Content="{Binding}"
-                                                Image="{Binding Path=(ap:UIElementImageProperty.Image)}"
-                                                CloseAction="RemovePane" AllowDockingBottom="False"
-                                                AllowDockingFloating="False" AllowDockingLeft="False"
-                                                AllowDockingRight="False" SaveInLayout="False" AllowDockingTop="False"
-                                                Closing="ContentPane_Closing"
-                                                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                AutomationProperties.AutomationId="splurt" />
-                                            
-                                        </DataTemplate>
-                                    </local:TabGroupPaneBindingBehavior.ItemTemplate>
+                                    SelectedItem="{Binding DataContext.ActiveItem, Mode=TwoWay, ElementName=DocumentHost}">
                                 </local:TabGroupPaneBindingBehavior>
                             </i:Interaction.Behaviors>
+                            <igExtensions:ContentPaneFactory.PaneFactory>
+                                <!-- Binds to the Items property of the DataContext. -->
+                                <igExtensions:ContentPaneFactory 
+                                    ItemsSource="{Binding Items}"
+                                    TabHeaderPath="WorkSurfaceViewModel"
+                                    ContentPath="WorkSurfaceViewModel">
+                                    <igExtensions:ContentPaneFactory.ContainerStyle>                                    
+                                         <Style TargetType="igDock:ContentPane">                                            
+                                            <Setter Property="TabHeaderTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="{Binding IconPath}" AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2"></Image>
+                                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"></TextBlock>                                                            
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                             <Setter Property="ContentTemplate">
+                                             <Setter.Value>
+                                        <DataTemplate>
+                                                        <ContentControl cal:View.Model="{Binding .}"/>
+                                        </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="AllowDockingBottom" Value="False"/>
+                                            <Setter Property="AllowDockingLeft" Value="False"/>
+                                            <Setter Property="AllowDockingRight" Value="False"/>
+                                            <Setter Property="AllowDockingTop" Value="False"/>
+                                            <Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}"/>
+                                            <Setter Property="SaveInLayout" Value="false"/>
+                                            <Setter Property="cal:Message.Attach" Value="[Event Closing] = [Action CloseWorkSurfaceContext($dataContext, $eventArgs)]"/>                                             
+                                        </Style>
+                                    </igExtensions:ContentPaneFactory.ContainerStyle>
+                                </igExtensions:ContentPaneFactory>
+                            </igExtensions:ContentPaneFactory.PaneFactory>
                         </igDock:TabGroupPane>
                     </igDock:SplitPane>
                 </igDock:DocumentContentHost>
 
                 <igDock:XamDockManager.Panes>
-                    <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedLeft" Width="300">
-                        <igDock:SplitPane SplitterOrientation="Horizontal">
-                            <igDock:ContentPane x:Name="Variables" Header="Variables" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
-                            <igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
-                                <!--<bdsviews:ToolboxUserControl/>-->
+                    <igDock:SplitPane x:Name="DockBottom" igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
+                        <igDock:TabGroupPane>
+                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
+                                                IsPinned="False" AllowClose="False">
+                                <diagnostics:DebugOutputView DataContext="{Binding DebugOutputViewModel}"/>
                             </igDock:ContentPane>
                             <!-- TODO PBI 8291 
                             <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
                             <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />-->
-                        </igDock:SplitPane>
+
+                            </igDock:TabGroupPane>
                     </igDock:SplitPane>
 
-                    <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedRight" Width="300">
+                    <igDock:SplitPane x:Name="DockLeft" igDock:XamDockManager.InitialLocation="DockedLeft" Width="300">
                         <igDock:TabGroupPane>
-                            <igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" AutomationProperties.AutomationId="UI_ExplorerPane_AutoID"/>
-                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowClose="False" AllowInDocumentHost="False" IsPinned="True"/>
+                            <igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False"
+                                                AllowInDocumentHost="False" IsPinned="False"
+                                                AutomationProperties.AutomationId="UI_ExplorerPane_AutoID">
+                                <explorer:ExplorerView DataContext="{Binding ExplorerViewModel}"/>
+                             </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False"
+                                                AllowInDocumentHost="False" IsPinned="False"
+                                                AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
+                                <bdsviews:ToolboxUserControl/>
+                            </igDock:ContentPane>
+                           <igDock:ContentPane x:Name="Variables" 
+                                                Header="Variables" AllowClose="False"
+                                                AllowInDocumentHost="False" IsPinned="False" >
+                                <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
+                            </igDock:ContentPane>
                         </igDock:TabGroupPane>
                     </igDock:SplitPane>
-                </igDock:XamDockManager.Panes>
+                </igDock:XamDockManager.Panes> 
+                <!-- TODO PBI 8291 
+                            <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="False" />
+                            <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="False" />-->
+
             </igDock:XamDockManager>
         </DockPanel>
 

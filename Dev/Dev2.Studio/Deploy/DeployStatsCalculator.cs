@@ -108,8 +108,8 @@ namespace Dev2.Studio.Deploy
                 || !vm.IsChecked.Value) return false;
 
             return vm.DataContext != null &&
-                   targetEnvironment != null && targetEnvironment.Resources != null &&
-                   targetEnvironment.Resources.All()
+                   targetEnvironment != null && targetEnvironment.ResourceRepository != null &&
+                   targetEnvironment.ResourceRepository.All()
                                     .Any(r =>
                                          ResourceModelEqualityComparer
                                              .Current.Equals(r, vm.DataContext));
@@ -126,8 +126,8 @@ namespace Dev2.Studio.Deploy
                 || !vm.IsChecked.Value) return false;
 
             return vm.DataContext != null &&
-                   targetEnvironment != null && targetEnvironment.Resources != null &&
-                   !targetEnvironment.Resources.All()
+                   targetEnvironment != null && targetEnvironment.ResourceRepository != null &&
+                   !targetEnvironment.ResourceRepository.All()
                                      .Any(r =>
                                           ResourceModelEqualityComparer
                                               .Current.Equals(r, vm.DataContext));

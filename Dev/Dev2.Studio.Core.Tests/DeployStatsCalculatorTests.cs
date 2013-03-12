@@ -375,7 +375,7 @@ namespace Dev2.Core.Tests
             resourceVM.IsChecked = true;
        
             Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
-            mockEnvironmentModel.Setup(e => e.Resources).Returns<object>(null);
+            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
 
             IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
 
@@ -505,7 +505,7 @@ namespace Dev2.Core.Tests
                     null, false); 
             
             Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
-            mockEnvironmentModel.Setup(e => e.Resources).Returns<object>(null);
+            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
 
             IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
 

@@ -38,7 +38,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <date>2013/01/23</date>
     public class NavigationViewModel : SimpleBaseViewModel,
                                        IHandle<EnvironmentConnectedMessage>, IHandle<EnvironmentDisconnectedMessage>,
-                                       IHandle<UpdateResourceMessage>
+                                       IHandle<UpdateResourceMessage>, IHandle<RemoveNavigationResourceMessage>
     {
         #region private fields
 
@@ -63,8 +63,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         public NavigationViewModel(bool useAuxiliryConnections)
         {
             _synchronizationContext = SynchronizationContext.Current;
-
-            UserInterfaceLayoutProvider = ImportService.GetExportValue<IUserInterfaceLayoutProvider>();
             EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
 
@@ -90,8 +88,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 NotifyOfPropertyChange(() => IsRefreshing);
             }
         }
-
-        public IUserInterfaceLayoutProvider UserInterfaceLayoutProvider { get; set; }
 
         public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
 
@@ -278,15 +274,15 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             try
             {
-                foreach (var environment in _environments)
-                {
-                    RefreshEnvironment(environment);
-                }
+            foreach (var environment in _environments)
+            {
+                RefreshEnvironment(environment);
+            }
             }
             finally
             {
-                IsRefreshing = false;
-            }
+            IsRefreshing = false;
+        }
         }
 
         /// <summary>
@@ -294,6 +290,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void UpdateWorkspaces()
         {
+            var mainVM = ImportService.GetExportValue<IMainViewModel>();
             if (IsRefreshing)
             {
                 return;
@@ -303,15 +300,15 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             try
             {
-                foreach (var environment in _environments)
-                {
-                    UpdateWorkspace(environment, UserInterfaceLayoutProvider.WorkspaceItems);
-                }
+            foreach (var environment in _environments)
+            {
+                UpdateWorkspace(environment, mainVM.WorkspaceItems);
+            }
             }
             finally
             {
-                IsRefreshing = false;
-            }
+            IsRefreshing = false;
+        }
         }
 
         /// <summary>
@@ -489,12 +486,12 @@ namespace Dev2.Studio.ViewModels.Navigation
                 Connect(environment);
             }
 
-            if (environment == null || environment.Resources == null || !environment.IsConnected) return;
+            if (environment == null || environment.ResourceRepository == null || !environment.IsConnected) return;
 
             //
             // Load the environments resources
             //
-            environment.Resources.UpdateWorkspace(workspaceItems);
+            environment.ResourceRepository.UpdateWorkspace(workspaceItems);
 
             //
             // Build the resources into a tree
@@ -522,12 +519,12 @@ namespace Dev2.Studio.ViewModels.Navigation
             var environmentVM =
                 Find(environment, true);
 
-            if (environment == null || !environment.IsConnected || environment.Resources == null) return;
+            if (environment == null || !environment.IsConnected || environment.ResourceRepository == null) return;
 
             //
             // Load the environemnts resources
             //
-            var resources = environment.Resources.All().Cast<IContextualResourceModel>().ToList();
+            var resources = environment.ResourceRepository.All().Cast<IContextualResourceModel>().ToList();
 
             //
             // Clear any resources currently being displayed for the environment
@@ -535,11 +532,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             ClearChildren(environmentVM);
 
             BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                              resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
             BuildCategoryTree(ResourceType.Source, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                              resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
             BuildCategoryTree(ResourceType.Service, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                              resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
             UpdateSearchFilter(_searchFilter);
         }
 
@@ -691,5 +688,18 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion private methods
+
+        public void Handle(RemoveNavigationResourceMessage message)
+        {
+            var resource = message.ResourceModel;
+            var vm = Root.FindChild(resource);
+            if (vm != null)
+            {
+                if (vm.TreeParent != null)
+                {
+                    vm.TreeParent.Children.Remove(vm);
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Models;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -92,7 +94,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.AreEqual(0,textBox.Items.Count);
             //The desired result is that an exception isn't thrown
         }
-
+        
         [TestMethod]
         public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
         {

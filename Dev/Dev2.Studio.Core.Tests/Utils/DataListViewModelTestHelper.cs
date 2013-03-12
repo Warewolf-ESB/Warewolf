@@ -8,7 +8,7 @@ using Dev2.Studio.Core.ViewModels;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.ViewModels.DataList;
+using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Core.Tests.Utils {
     public sealed class DataListViewModelTestHelper {

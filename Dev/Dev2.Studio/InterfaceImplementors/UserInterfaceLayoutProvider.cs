@@ -23,31 +23,34 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Administration;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.ViewModels.DataList;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.Web;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Administration;
 using Dev2.Studio.Views.DataList;
 using Dev2.Studio.Views.Deploy;
 using Dev2.Studio.Views.Explorer;
+using Dev2.Studio.Views.Help;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Views.UserInterfaceBuilder;
 using Dev2.Studio.Views.Workflow;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
-using Newtonsoft.Json;
 using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
@@ -56,12 +59,13 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Xml.Linq;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 using Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder;
 using Unlimited.Framework;
-using Unlimited.Framework.Workspaces;
 using Action = System.Action;
 
 namespace Dev2.Studio
@@ -73,22 +77,19 @@ namespace Dev2.Studio
 
         private FrameworkElement _activeDocument;
         private WebPropertyEditorWindow _win;
-
+        private readonly Dev2DecisionCallbackHandler _callBackHandler = new Dev2DecisionCallbackHandler();
         #endregion Class Members
 
         #region Properties
 
-        [Import]
-        public IWizardEngine WizardEngine { get; set; }
+        [Import(typeof(IWizardEngine))]
+        public WizardEngine WizardEngine { get; set; }
 
         [Import]
         public IResourceDependencyService ResourceDependencyService { get; set; }
 
         [Import]
         public IMainViewModel MainViewModel { get; set; }
-
-        [Import]
-        public IWebCommunication WebCommunication { get; set; }
 
         [Import]
         public IPopUp PopupProvider { get; set; }
@@ -99,34 +100,14 @@ namespace Dev2.Studio
         [Import]
         public IEventAggregator EventAggregator { get; set; }
 
-        public WorkSurfaceContext ActiveDocumentTabAction
-        {
-            get
-            {
-                if (ActiveDocument == null)
-                    return WorkSurfaceContext.Unknown;
-
-                var uielement = ActiveDocument as UIElement;
-                return uielement == null
-                           ? WorkSurfaceContext.Unknown
-                           : UIElementTabActionContext.GetTabActionContext(uielement);
-            }
-        }
-
-        public IList<IWorkspaceItem> WorkspaceItems { get; private set; }
-
-        public TabControl Manager { get; set; }
-
         public FrameworkElement ActiveDocument
         {
             get { return _activeDocument; }
             set
             {
                 _activeDocument = value;
-                Mediator.SendMessage(MediatorMessages.TabContextChanged, ActiveDocumentDataContext);
                 NotifyOfPropertyChange(() => ActiveDocument);
                 NotifyOfPropertyChange(() => ActiveDocumentDataContext);
-                NotifyOfPropertyChange(() => ActiveDocumentTabAction);
             }
         }
 
@@ -143,46 +124,21 @@ namespace Dev2.Studio
 
         public ContentControl PropertyPane { get; set; }
 
-        public ContentControl OutputPane { get; set; }
-
         public ContentControl NavigationPane { get; set; }
-
-        public ContentControl DataMappingPane { get; set; }
-
-        public ContentControl DataListPane { get; set; }
 
         #endregion Properties
 
         #region Constructor
 
-
-        private Dev2DecisionCallbackHandler callBackHandler = new Dev2DecisionCallbackHandler();
-
         public UserInterfaceLayoutProvider()
         {
-            LoadWorkspaceItems();
-
             Tabs = new ObservableCollection<FrameworkElement>();
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowStartTabs, AddStartTabs);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddStuidoShortcutKeysPage, AddShortcutKeysPage);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowExplorer, ShowExplorer);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, AddWorkflowDesigner);
             Mediator.RegisterToReceiveMessage(MediatorMessages.ShowWebpartWizard,
                                               input => ShowWebpartWizard(input as IPropertyEditorWizard));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.CloseWizard, CloseWizard);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowNewResourceWizard, ShowNewResourceWizard);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, ShowEditResourceWizard);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddHelpDocument, AddHelpDocument);
             Mediator.RegisterToReceiveMessage(MediatorMessages.AddWebpageDesigner,
                                               input => AddWebPageDesigner(input as IWebActivity));
             Mediator.RegisterToReceiveMessage(MediatorMessages.AddWebsiteDesigner,
                                               input => AddWebsiteDesigner(input as IWebActivity));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.BindViewToViewModel,
-                                              input => BindViewToViewModel(input as IResourceModel));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.SaveResourceModel,
-                                              input => SaveResourceModel(input as IContextualResourceModel));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowDependencyGraph,
-                                              input => ShowDependencyGraph(input as IContextualResourceModel));
             Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureDecisionExpression,
                                               input =>
                                               ConfigureDecisionExpression(input as Tuple<ModelItem, IEnvironmentModel>));
@@ -192,97 +148,14 @@ namespace Dev2.Studio
             Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureCaseExpression,
                                               input =>
                                               ConfigureSwitchCaseExpression(input as Tuple<ModelItem, IEnvironmentModel>));
-            // 28.01.2013 - Travis.Frisinger : Added Edit Case Functionality
             Mediator.RegisterToReceiveMessage(MediatorMessages.EditCaseExpression,
                                               input =>
                                               EditSwitchCaseExpression(input as Tuple<ModelProperty, IEnvironmentModel>));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.WorkflowActivitySelected,
-                                              input => WorkflowActivitySelected(input as IWebActivity));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.RemoveDataMapping, input => RemoveDataMapping());
-            Mediator.RegisterToReceiveMessage(MediatorMessages.TabContextChanged, TabContextChanged);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DisplayAboutDialogue, DisplayAboutDialog);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeleteServiceExplorerResource,
-                                              DeleteServiceExplorerResource);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeleteSourceExplorerResource,
-                                              DeleteSourceExplorerResource);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeleteWorkflowExplorerResource,
-                                              DeleteWorkflowExplorerResource);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeployResources, AddDeployResources);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.SaveWorkspaceItems, input => SaveWorkspaceItems());
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowHelpTab, input => ShowHelpTab(input as string));
         }
 
         #endregion Constructor
 
         #region public methods
-
-        public void StartDebuggingSession(DebugTO input, IEnvironmentModel environment)
-        {
-            var contentDocument = new WorkflowDebuggerWindow(environment.DsfChannel, input.ServiceName,
-                                                             input.WorkflowXaml, input.XmlData, input.DataList);
-            UIElementTitleProperty.SetTitle(contentDocument, input.ServiceName + " *Debug");
-
-            contentDocument.OnOutputMessageReceived += delegate(string message)
-                {
-                    Mediator.SendMessage(MediatorMessages.DebugWriterAppend, message);
-
-                    if (!message.Equals("</DebugData>")) return;
-
-                    Tabs.Remove(contentDocument);
-
-                    FrameworkElement documentToSetActiveAfterDebugging = FindTabByName(input.ServiceName);
-                    if (documentToSetActiveAfterDebugging != null)
-                    {
-                        SetActiveDocument(documentToSetActiveAfterDebugging);
-                    }
-                };
-
-            foreach (FrameworkElement item in Tabs)
-            {
-                if (UIElementTitleProperty.GetTitle(item)
-                                          .Equals(UIElementTitleProperty.GetTitle(contentDocument),
-                                                  StringComparison.InvariantCultureIgnoreCase))
-                {
-                    Tabs.Remove(item);
-                }
-            }
-            Tabs.Add(contentDocument);
-            SetActiveDocument(contentDocument);
-            //2012.10.11: massimo.guerrera - Added for debug PBI 5781
-            contentDocument.RunDebugger(0);
-            //contentDocument.RunDebugger(input.WaitTimeForTransition);
-        }
-
-        public ViewModelDialogResults GetServiceInputDataFromUser(IServiceDebugInfoModel input, out DebugTO debugTO)
-        {
-            EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage());
-
-            var inputData = new WorkflowInputDataWindow();
-
-            debugTO = new DebugTO
-                {
-                    DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList)
-                                   ? input.ResourceModel.DataList
-                                   : "<DataList></DataList>", //Bug 8363 & Bug 8018
-                    ServiceName = input.ResourceModel.ResourceName,
-                    WorkflowID = input.ResourceModel.ResourceName,
-                    WorkflowXaml = input.ResourceModel.WorkflowXaml,
-                    RememberInputs = true
-                };
-            //debugTO.WorkflowID = input.ResourceModel.ResourceName;
-            if (input.DebugModeSetting == DebugMode.DebugInteractive)
-            {
-                debugTO.IsDebugMode = true;
-            }
-            //Call the InitDebugSession(debugTO);
-            var inputDataViewModel = new WorkflowInputDataViewModel(debugTO);
-            //2012.10.11: massimo.guerrera - Added for PBI 5781
-            inputDataViewModel.LoadWorkflowInputs();
-            inputData.DataContext = inputDataViewModel;
-            inputData.ShowDialog();
-
-            return inputDataViewModel.DialogResult;
-        }
 
         /// <summary>
         ///     Removes the document passed in from the tab collection
@@ -771,9 +644,6 @@ namespace Dev2.Studio
         //        dependencies.AddRange(graph.GetAllUniqueNodesRecirsively());
         //    }
 
-        //    return dependencies;
-        //}
-
         #endregion
 
         #region Mediator Sinks
@@ -886,51 +756,55 @@ namespace Dev2.Studio
             {
                 string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
-                ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+            ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
 
                 ErrorResultTO errors = new ErrorResultTO();
 
                 if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
-                {
-                    // Bad things happened... Tell the user
+            {
+                // Bad things happened... Tell the user
                     PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
-                    // Stop configuring!!!
-                    return;
-                }
+                // Stop configuring!!!
+                return;
+            }
 
-                // Push the correct data to the server ;)
+            // Push the correct data to the server ;)
                 if (activityExpression != null && activityExpression.Value == null)
-                {
-                    // Its all new, push the empty model
+            {
+                // Its all new, push the empty model
                     //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
-                }
+            }
                 else if (activityExpression != null && activityExpression.Value != null)
-                {
-                    //we got a model, push it in to the Model region ;)
-                    // but first, strip and extract the model data ;)
+            {
+                //we got a model, push it in to the Model region ;)
+                // but first, strip and extract the model data ;)
 
                     val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
 
                     if (string.IsNullOrEmpty(val))
-                    {
+                {
 
-                        val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                            val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
                     }
                 }
 
-                // Now invoke the Wizard ;)
-                Uri requestUri;
+            // Now invoke the Wizard ;)
+            Uri requestUri;
                 if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
-                {
+            {
                     string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, GlobalConstants.NullDataListID);
 
-                    callBackHandler.ModelData = val; // set the model data
 
+                    _callBackHandler.ModelData = val; // set the model data
+
+                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString);
+                //callBackHandler.Owner.ShowDialog();
+                WebSites.ShowWebPageDialog(uriString, _callBackHandler, 824, 508);
                     WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
 
-                    // Wizard finished...
-                    try
-                    {
+                // Wizard finished...
+                try
+                {
                         // Remove naughty chars...
                         var tmp = callBackHandler.ModelData;
                         // remove the silly Choose... from the string
@@ -941,57 +815,57 @@ namespace Dev2.Studio
                         Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
                         if (dds != null)
-                        {
-                            // Empty check the arms ;)
+                    {
+                        // Empty check the arms ;)
                             if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
-                            {
-                                dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
-                            }
+                        {
+                            dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
+                        }
 
                             if (string.IsNullOrEmpty(dds.FalseArmText.Trim()))
-                            {
-                                dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
-                            }
+                        {
+                            dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
+                        }
 
-                            // Update the decision node on the workflow ;)
-                            string modelData = dds.ToVBPersistableModel();
+                        // Update the decision node on the workflow ;)
+                        string modelData = dds.ToVBPersistableModel();
 
-                            // build up our injected expression handler ;)
+                        // build up our injected expression handler ;)
                             string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                             if (activityExpression != null)
-                            {
-                                activityExpression.SetValue(expressionToInject);
-                            }
+                        {
+                            activityExpression.SetValue(expressionToInject);
+                        }
 
-                            // now set arms ;)
-                            ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
+                        // now set arms ;)
+                        ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
                             if (tArm != null)
-                            {
-                                tArm.SetValue(dds.TrueArmText);
-                            }
+                        {
+                            tArm.SetValue(dds.TrueArmText);
+                        }
 
-                            ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
+                        ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
                             if (fArm != null)
-                            {
-                                fArm.SetValue(dds.FalseArmText);
-                            }
+                        {
+                            fArm.SetValue(dds.FalseArmText);
                         }
                     }
-                    catch
-                    {
-                        // Bad things happened... Tell the user
-                        //PopupProvider.Show("", "")
-                        PopupProvider.Buttons = MessageBoxButton.OK;
-                        PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
-                        PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
-                        PopupProvider.ImageType = MessageBoxImage.Error;
-                        PopupProvider.Show();
-                    }
+                }
+                catch
+                {
+                    // Bad things happened... Tell the user
+                    //PopupProvider.Show("", "")
+                    PopupProvider.Buttons = MessageBoxButton.OK;
+                    PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
+                    PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
+                    PopupProvider.ImageType = MessageBoxImage.Error;
+                    PopupProvider.Show();
                 }
             }
+        }
         }
 
         internal void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
@@ -1058,7 +932,7 @@ namespace Dev2.Studio
                                             {
 
                                                 var ds = new Dev2Switch { SwitchVariable = val };
-                                                webModel = JsonConvert.SerializeObject(ds);
+                                                    webModel = JsonConvert.SerializeObject(ds);
 
                                             }
 
@@ -1083,7 +957,7 @@ namespace Dev2.Studio
                         // Now Fetch from DL and push the model data into the workflow
                         try
                         {
-                            Dev2Switch ds = JsonConvert.DeserializeObject<Dev2Switch>(callBackHandler.ModelData);
+                            Dev2Switch ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
 
                             if (ds != null)
                             {
@@ -1132,9 +1006,13 @@ namespace Dev2.Studio
             if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation), UriKind.Absolute, out requestUri))
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-                callBackHandler.ModelData = modelData;
 
-                WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
+                //var callBackHandler = new Dev2DecisionCallbackHandler();
+                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
+                //callBackHandler.Owner.ShowDialog();
+                _callBackHandler.ModelData = modelData;
+
+                WebSites.ShowWebPageDialog(uriString, _callBackHandler, 470, 285);
 
 
                 // Wizard finished...
@@ -1207,8 +1085,11 @@ namespace Dev2.Studio
             {
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
-                callBackHandler.ModelData = modelData;
-                WebSites.ShowWebPageDialog(uriString, callBackHandler, 470, 285);
+                //var callBackHandler = new Dev2DecisionCallbackHandler();
+                //callBackHandler.Owner = new WebPropertyEditorWindow(callBackHandler, uriString) { Width = 580, Height = 270 };
+                //callBackHandler.Owner.ShowDialog();
+                _callBackHandler.ModelData = modelData;
+                WebSites.ShowWebPageDialog(uriString, _callBackHandler, 470, 285);
 
 
                 // Wizard finished...
@@ -1291,174 +1172,25 @@ namespace Dev2.Studio
 
         internal void AddHelpDocument(object resourceModel)
         {
-            var helpResource = resourceModel as IResourceModel;
-            if (helpResource != null && !string.IsNullOrWhiteSpace(helpResource.HelpLink))
-            {
-                FrameworkElement helpTab = FindTabByName(helpResource.ResourceName + "*Help");
-                if (helpTab != null)
-                {
-                    SetActiveDocument(helpTab);
-                }
-                else
-                {
-                    var help = new HelpWindow(helpResource.HelpLink);
-                    UIElementTitleProperty.SetTitle(help, helpResource.ResourceName + "*Help");
-                    UIElementTabActionContext.SetTabActionContext(help, WorkSurfaceContext.HelpSearch);
-                    Tabs.Add(help);
-                    SetActiveDocument(help);
-                }
+            //Juries Todo
+            //var helpResource = resourceModel as IResourceModel;
+            //if (helpResource != null && !string.IsNullOrWhiteSpace(helpResource.HelpLink))
+            //{
+            //    FrameworkElement helpTab = FindTabByName(helpResource.ResourceName + "*Help");
+            //    if (helpTab != null)
+            //    {
+            //        SetActiveDocument(helpTab);
+            //    }
+            //    else
+            //    {
+            //        var help = new HelpView(helpResource.HelpLink);
+            //        UIElementTitleProperty.SetTitle(help, helpResource.ResourceName + "*Help");
+            //        UIElementTabActionContext.SetTabActionContext(help, WorkSurfaceContext.Help);
+            //        Tabs.Add(help);
+            //        SetActiveDocument(help);
+            //    }
+            //}
             }
-        }
-
-        internal void ShowNewResourceWizard(object newResourceInfo)
-        {
-            var newResourceTuple = newResourceInfo as Tuple<IEnvironmentModel, string>;
-
-            if (newResourceTuple == null) return;
-
-            //Brendon.Page, 2012-12-03. Hack to fix Bug 6367. It was decided by the team that this should be employed because the wizards are going to be 
-            //                          reworked in the near future and it was to much work to go an ammend all the javascript to be workspace aware.
-            SaveOpenTabs();
-            //End of hack
-
-            IEnvironmentModel environment = newResourceTuple.Item1;
-            string resourceType = newResourceTuple.Item2;
-
-            IContextualResourceModel resourceModel = ResourceModelFactory.CreateResourceModel(environment, resourceType,
-                                                                                              resourceType);
-            var resourceViewModel = new ResourceWizardViewModel(resourceModel);
-
-            //
-            // TWR: 2013.02.14
-            // PBI: 801
-            // BUG: 8477
-            //
-            if (RootWebSite.ShowDialog(resourceModel))
-            {
-                return;
-            }
-
-            bool doesServiceExist = environment.Resources.Find(r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
-
-            if (doesServiceExist)
-            {
-                // Travis.Frisinger: 07.90.2012 - Amended to convert studio resources into server resources
-                string resName =
-                    StudioToWizardBridge.ConvertStudioToWizardType(resourceType.ToString(CultureInfo.InvariantCulture),
-                                                                   resourceModel.ServiceDefinition,
-                                                                   resourceModel.Category);
-                //string requestUri = string.Format("{0}/services/{1}?{2}={3}&Dev2NewService=1", MainViewModel.CurrentWebServer, StudioToWizardBridge.SelectWizard(resourceModel), ResourceKeys.Dev2ServiceType, resName);
-
-                Uri requestUri;
-                if (
-                    !Uri.TryCreate(environment.WebServerAddress,
-                                   "/services/" + StudioToWizardBridge.SelectWizard(resourceModel) + "?" +
-                                   ResourceKeys.Dev2ServiceType + "=" + resName, out requestUri))
-                {
-                    requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
-                                         "/services/" + StudioToWizardBridge.SelectWizard(resourceModel) + "?" +
-                                         ResourceKeys.Dev2ServiceType + "=" + resName);
-                }
-
-                try
-                {
-                    _win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri)
-                        {
-                            Width = 850,
-                            Height = 600
-                        };
-                    _win.ShowDialog();
-                }
-                catch
-                {
-                }
-            }
-            else
-            {
-                PopupProvider.Buttons = MessageBoxButton.OK;
-                PopupProvider.Description =
-                    "Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.";
-                PopupProvider.Header = "Missing Wizard";
-                PopupProvider.ImageType = MessageBoxImage.Error;
-                PopupProvider.Show();
-            }
-        }
-
-        internal void ShowEditResourceWizard(object resourceModel)
-        {
-            //Brendon.Page, 2012-12-03. Hack to fix Bug 6367. It was decided by the team that this should be employed because the wizards are going to be 
-            //                          reworked in the near future and it was to much work to go an ammend all the javascript to be workspace aware.
-            SaveOpenTabs();
-            //End of hack
-
-            var resourceModelToEdit = resourceModel as IContextualResourceModel;
-
-            if (RootWebSite.ShowDialog(resourceModelToEdit))
-            {
-                return;
-            }
-
-            bool doesServiceExist = resourceModelToEdit != null &&
-                                    resourceModelToEdit.Environment.Resources.Find(
-                                        r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
-
-            if (doesServiceExist)
-            {
-                var resourceViewModel = new ResourceWizardViewModel(resourceModelToEdit);
-
-                Uri requestUri;
-                if (
-                    !Uri.TryCreate(resourceModelToEdit.Environment.WebServerAddress,
-                                   "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit), out requestUri))
-                {
-                    requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
-                                         "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit));
-                }
-
-                try
-                {
-                    ErrorResultTO errors;
-                    string args =
-                        StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(),
-                                                                    resourceModelToEdit);
-                    Guid dataListID = resourceModelToEdit.Environment.UploadToDataList(args, out errors);
-
-                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
-                    {
-                        // Bad things happened... Tell the user
-                        PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK,
-                                           MessageBoxImage.Error);
-                        // Stop configuring!!!
-                        return;
-                    }
-
-                    string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-
-                    _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
-                    _win.ShowDialog();
-                }
-                catch
-                {
-                }
-            }
-            else
-            {
-                PopupProvider.Buttons = MessageBoxButton.OK;
-                PopupProvider.Description =
-                    "Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.";
-                PopupProvider.Header = "Missing Wizard";
-                PopupProvider.ImageType = MessageBoxImage.Error;
-                PopupProvider.Show();
-            }
-        }
-
-        internal void CloseWizard(object input)
-        {
-            if (_win != null)
-            {
-                _win.Close();
-            }
-        }
 
         // Travis.Frisinger - 13.08.2012 : Changed to use POST request instead of fetched HTML injection ;)
         internal void ShowWebpartWizard(IPropertyEditorWizard layoutObjectToOpenWizardFor)
@@ -1516,81 +1248,11 @@ namespace Dev2.Studio
             }
         }
 
-        internal void AddDataListView(IResourceModel resourceModel)
-        {
-            var dataListView = new DataListView();
-
-            // Set up the DataList to be shared by all objects
-            //dataListVm = MainViewModel.DataListRepository.All().FirstOrDefault(resource => resource.Resource == resourceModel) as DataListViewModel;
-            //if(dataListVm == null)
-            //{
-            IDataListViewModel dataListVm =
-                DataListViewModelFactory.CreateDataListViewModel(resourceModel);
-            dataListView.DataContext = dataListVm;
-
-            //MainViewModel.DataListRepository.Save(dataListVm);
-            //}
-
-            DataListSingleton.SetDataList(dataListVm);
-
-            //21-11-2012:massimo.guerrera - added for bug 5024
-
-            DataListPane.Content = dataListView;
-
-            SetActiveDataList(dataListVm);
-        }
-
-        internal void SetActiveDataList(IDataListViewModel dataListViewModel)
-        {
-            MainViewModel.ActiveDataList = dataListViewModel;
-            // dataList singletonset
-            DataListSingleton.UpdateDataList(dataListViewModel);
-        }
-
-        internal void AddWorkflowDesigner(object resourceModel)
-        {
-            var resource = resourceModel as IContextualResourceModel;
-            AddDataListView(resource);
-
-            if (resource == null) return;
-
-            foreach (
-                FrameworkElement item in
-                    Tabs.Where(item => UIElementTitleProperty.GetTitle(item) == resource.ResourceName))
-            {
-                SetActiveDocument(item);
-                return;
-            }
-
-            AddWorkspaceItem(resource);
-
-            var workflowDesignerWindow = new WorkflowDesignerWindow();
-            string iconPath = GetIconPath(resource);
-            var workflowVm = new WorkflowDesignerViewModel(resource);
-
-            AttachedPropertyHelper.SetAttachedProperties(workflowDesignerWindow, resource, iconPath);
-            ActivityDesignerHelper.AddDesignerAttributes(workflowVm);
-            workflowDesignerWindow.DataContext = workflowVm;
-            if (PropertyPane != null)
-                PropertyPane.Content = workflowVm.PropertyView;
-
-            Tabs.Add(workflowDesignerWindow);
-            SetActiveDocument(workflowDesignerWindow);
-
-            if (resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
-                || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase)
-                || resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase)
-                )
-            {
-                AddUserInterfaceWorkflow(resource, workflowVm);
-            }
-        }
-
         internal void AddUserInterfaceWorkflow(IContextualResourceModel resource,
                                                IWorkflowDesignerViewModel workflowViemModel)
         {
-            bool isWebpage = IsWebpage(resource);
-            Type userInterfaceType = GetUserInterfaceType(resource);
+            bool isWebpage = ResourceHelper.IsWebpage(resource);
+            Type userInterfaceType = ResourceHelper.GetUserInterfaceType(resource);
             if (userInterfaceType == null) return;
 
             var modelService = workflowViemModel.wfDesigner.Context.Services.GetService<ModelService>();
@@ -1763,101 +1425,17 @@ namespace Dev2.Studio
             //workspaceItem.IsSelected = true;
         }
 
-        internal void AddStartTabs(object input)
-        {
-            if (EnvironmentRepository != null)
-            {
-                //int count = WorkspaceItems.Count - 1;
-                //while (count >= 0)
-                //{
-                foreach (IWorkspaceItem workspaceItem in WorkspaceItems)
-                {
-                    //
-                    // Get the environment for the workspace item
-                    //
-                    IWorkspaceItem item = workspaceItem;
-                    IEnvironmentModel environment = EnvironmentRepository.FindSingle(e => e.IsConnected &&
-                                                                                          e.DsfChannel is
-                                                                                          IStudioClientContext &&
-                                                                                          ((IStudioClientContext)
-                                                                                           e.DsfChannel).ServerID ==
-                                                                                          item.ServerID);
-
-                    if (environment == null || environment.Resources == null) continue;
-
-                    // TODO: 5559 B.P. to implement in new architecture
-                    // This code will only start working when a constant ServerID is generated on the server
-                    IResourceModel resource = environment.Resources.FindSingle(r => r.ResourceName == item.ServiceName);
-                    if (resource == null) continue;
-
-                    if (resource.ResourceType == ResourceType.WorkflowService)
-                    {
-                        AddWorkflowDesigner(resource);
-                    }
-                }
-            }
-
-            string location = Assembly.GetExecutingAssembly().Location;
-            string path = Path.Combine(Path.GetDirectoryName(location), StringResources.Uri_Studio_Homepage);
-            var content = new HelpWindow(path);
-
-            UIElementTitleProperty.SetTitle(content, "Start Page");
-            UIElementImageProperty.SetImage(content, StringResources.Pack_Uri_Application_Image_Home);
-            Tabs.Add(content);
-            SetActiveDocument(content);
-            RemoveDataList();
-        }
-
         internal void AddShortcutKeysPage(object input)
         {
-            string location = Assembly.GetExecutingAssembly().Location;
-            string path = Path.Combine(Path.GetDirectoryName(location),
-                                       StringResources.Uri_Studio_Shortcut_Keys_Document);
-            var content = new HelpWindow(path);
-            UIElementTitleProperty.SetTitle(content, "Shortcut Keys");
-            UIElementImageProperty.SetImage(content, StringResources.Pack_Uri_Application_Image_Information);
-            Tabs.Add(content);
-            SetActiveDocument(content);
-        }
-
-        internal void DisplayAboutDialog(object input)
-        {
-            IDev2DialogueViewModel dialogueViewModel = new Dev2DialogueViewModel();
-            ImportService.SatisfyImports(dialogueViewModel);
-            string packUri = StringResources.Dev2_Logo;
-            dialogueViewModel.SetupDialogue(StringResources.About_Header_Text,
-                                            String.Format(StringResources.About_Content, StringResources.CurrentVersion,
-                                                          StringResources.CurrentVersion), packUri,
-                                            StringResources.About_Description_Header);
-            var dev2Dialog = new Dev2Dialogue
-                {
-                    Owner = Application.Current.MainWindow,
-                    DataContext = dialogueViewModel
-                };
-            dialogueViewModel.OnOkClick += (e, f) =>
-                {
-                    dev2Dialog.Close();
-                    dialogueViewModel.Dispose();
-                };
-            dev2Dialog.ShowDialog();
-        }
-
-        internal void ShowHelpTab(string uriToDisplay)
-        {
-            var content = new HelpWindow(uriToDisplay);
-            UIElementTitleProperty.SetTitle(content, "Help : " + uriToDisplay);
-            UIElementImageProperty.SetImage(content, StringResources.Pack_Uri_Application_Image_Help);
-            Tabs.Add(content);
-            SetActiveDocument(content);
-            RemoveDataList();
-        }
-
-        internal void ShowExplorer(object input)
-        {
-            var explorerView = new ExplorerView();
-            var explorerViewModel = new ExplorerViewModel();
-            explorerView.DataContext = explorerViewModel;
-            NavigationPane.Content = explorerView;
+            //Juries Todo
+            //string location = Assembly.GetExecutingAssembly().Location;
+            //string path = Path.Combine(Path.GetDirectoryName(location),
+            //                           StringResources.Uri_Studio_Shortcut_Keys_Document);
+            //var content = new HelpView(path);
+            //UIElementTitleProperty.SetTitle(content, "Shortcut Keys");
+            //UIElementImageProperty.SetImage(content, StringResources.Pack_Uri_Application_Image_Information);
+            //Tabs.Add(content);
+            //SetActiveDocument(content);
         }
 
         internal void ShowErrorConnectingToEnvironment(object environment)
@@ -1938,36 +1516,6 @@ namespace Dev2.Studio
             WorkspaceItems.Remove(itemToRemove);
             SaveWorkspaceItems();
         }
-
-        #endregion
-
-        #region MoveWorkspaceItem
-
-        //private void MoveWorkspaceItem(IContextualResourceModel model, int tabIndex)
-        //{
-        //    // TODO: Check model server uri
-        //    IWorkspaceItem workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == model.ResourceName);
-        //    if (workspaceItem == null)
-        //    {
-        //        return;
-        //    }
-
-        //    int currentIndex = WorkspaceItems.IndexOf(workspaceItem);
-        //    if (currentIndex != tabIndex)
-        //    {
-        //        WorkspaceItems.RemoveAt(currentIndex);
-        //        if (tabIndex >= 0 && tabIndex <= WorkspaceItems.Count)
-        //        {
-        //            WorkspaceItems.Insert(tabIndex, workspaceItem);
-        //        }
-        //        else
-        //        {
-        //            WorkspaceItems.Add(workspaceItem);
-        //        }
-
-        //        SaveWorkspaceItems();
-        //    }
-        //}
 
         #endregion
     }

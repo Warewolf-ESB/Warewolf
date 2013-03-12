@@ -8,7 +8,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.ViewModels.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -147,7 +147,8 @@ namespace Dev2.Core.Tests
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
@@ -243,7 +244,8 @@ namespace Dev2.Core.Tests
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
@@ -284,7 +286,8 @@ namespace Dev2.Core.Tests
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
@@ -327,7 +330,8 @@ namespace Dev2.Core.Tests
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
@@ -371,7 +375,8 @@ namespace Dev2.Core.Tests
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            //Juries 8810 TODO
+           // mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
@@ -555,7 +560,9 @@ namespace Dev2.Core.Tests
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
             Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 

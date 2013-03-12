@@ -32,7 +32,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -87,7 +86,7 @@ namespace Dev2.CodedUI.Tests
         //    Thread.Sleep(10000); // wait 10 seconds for everything to exit ;)
         //}
 
-        
+
         // These run at the start of every test to make sure everything is sane
         [TestInitialize]
         public void CheckStartIsValid()
@@ -205,7 +204,7 @@ namespace Dev2.CodedUI.Tests
                         }
                         if (theTab != "Start Page")
                         {
-                        TabManagerUIMap.CloseTab(theTab);
+                            TabManagerUIMap.CloseTab(theTab);
                         }
                         else
                         {
@@ -1324,6 +1323,7 @@ namespace Dev2.CodedUI.Tests
             Assert.AreNotEqual(fileData2, newFileData2, "Error - The data is equal in case 2");
 
             // Finally - Clean Up
+            TabManagerUIMap.CloseTab("5782Point3");
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5782Point3");
         }
 
@@ -1512,7 +1512,7 @@ namespace Dev2.CodedUI.Tests
 
             // Check that no tabs remain open
             int tabCount = TabManagerUIMap.GetTabCount();
-            Assert.AreEqual(tabCount, 0, "Error - Clicking No kept the tab open.");
+            Assert.AreEqual(1,tabCount, "Error - Clicking No kept the tab open.");
 
             // Re-read the data
             sr1 = new StreamReader(path1);
@@ -1582,7 +1582,7 @@ namespace Dev2.CodedUI.Tests
 
             // Check that no tabs remain open
             int tabCount = TabManagerUIMap.GetTabCount();
-            Assert.AreEqual(tabCount, 0, "Error - Clicking No kept the tab open.");
+            Assert.AreEqual(1,tabCount, "Error - Clicking No kept the tab open.");
 
             // Re-read the data
             sr1 = new StreamReader(path1);
@@ -1675,6 +1675,8 @@ namespace Dev2.CodedUI.Tests
             // And make sure that nothing was altered
             Assert.AreEqual(fileData1, newFileData1, "The data is not equal in case 1");
             Assert.AreEqual(fileData2, newFileData2, "The data is not equal in case 2");
+
+            TabManagerUIMap.CloseTab_Click_No("5782Point7");
 
             // Finally - Clean Up
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5782Point7");
@@ -2583,7 +2585,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        public void FindMissingWithDoubleRegionExpectedBothAdded()
+        public void HelpTabExpectedHelpTabToBeOpened()
         {
             CreateCustomWorkflow("HelpTabWorkflow", "CodedUITestCategory");
             UITestControl theTab = TabManagerUIMap.FindTabByName("HelpTabWorkflow");
@@ -2605,9 +2607,9 @@ namespace Dev2.CodedUI.Tests
 
             WorkflowDesignerUIMap.Adorner_ClickHelp(theTab, "TestForEachOutput");
 
-            Assert.IsTrue(TabManagerUIMap.GetActiveTabName() == "Help : a:/");
+            Assert.IsTrue(TabManagerUIMap.GetActiveTabName() == "Help");
 
-            TabManagerUIMap.CloseTab("Help : a:/");
+            TabManagerUIMap.CloseTab("Help");
 
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "HelpTabWorkflow");
         }
@@ -2760,7 +2762,7 @@ namespace Dev2.CodedUI.Tests
             {
                 // Test complete - Delete itself
                 DocManagerUIMap.ClickOpenTabPage("Explorer");
-                ExplorerUIMap.DoRefresh();
+                //ExplorerUIMap.DoRefresh();
 
                 Thread.Sleep(3500);
 

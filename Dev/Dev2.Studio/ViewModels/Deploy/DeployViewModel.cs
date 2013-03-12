@@ -18,10 +18,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Studio.ViewModels.Workflow;
 
 namespace Dev2.Studio.ViewModels.Deploy
 {
-    public class DeployViewModel : SimpleBaseViewModel,
+    public class DeployViewModel : BaseWorkSurfaceViewModel,
         IHandle<ResourceCheckedMessage>
     {
         #region Class Members

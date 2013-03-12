@@ -7,8 +7,7 @@
              xmlns:dev2="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties" 
              xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-    ap:UIElementTitleProperty.Title="Data List View"        
+    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"       
              LostKeyboardFocus="UserControl_LostKeyboardFocus">
     <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour/>

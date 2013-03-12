@@ -576,7 +576,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     return;
                 }
 
-                IResourceModel resource = environment.Resources.FindSingle(r => r.ResourceName == debugState.DisplayName);
+                IResourceModel resource = environment.ResourceRepository.FindSingle(r => r.ResourceName == debugState.DisplayName);
 
                 if (resource == null)
                 {
@@ -593,6 +593,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         private void Write(object content)
         {
+            if (Application.Current != null)
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(WriteUI), content);
         }
 
@@ -612,6 +613,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         private void Append(object content)
         {
+            if (Application.Current != null)
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(AppendUI), content);
         }
 

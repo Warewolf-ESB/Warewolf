@@ -59,6 +59,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v12.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2107, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dev2.Data\bin\Debug\InfragisticsWPF4.v12.1.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
@@ -128,6 +135,7 @@
     <Compile Include="Activities\Services\IDesignerManagementService.cs" />
     <Compile Include="Activities\Utils\ModelItemUtils.cs" />
     <Compile Include="AppResources\Administration\BDSAdminChannel.cs" />
+    <Compile Include="AppResources\Attributes\ResourceHelper.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\Browser.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
@@ -170,12 +178,12 @@
     <Compile Include="AppResources\Expression\ExpressionVisitor.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitorDSFImpl.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitorSQLImpl.cs" />
-    <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensionMethods.cs" />
+    <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\EnumerableExtensionMethods.cs" />
     <Compile Include="AppResources\ExtensionMethods\EnumExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\ModelPropertyCollection.cs" />
+    <Compile Include="AppResources\ExtensionMethods\PaneLocationExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
-    <Compile Include="AppResources\ExtensionMethods\VisualTreeHelperExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
     <Compile Include="AppResources\Repositories\UserInterfaceLayoutRepository.cs" />
@@ -183,17 +191,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppResources\Trigger\DelayTextChangedEventTrigger.cs" />
+    <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
+    <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="ErrorHandling\enErrorType.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
     <Compile Include="Helpers\TypeSwitch.cs" />
     <Compile Include="Interfaces\DataList\IDataListValidator.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
-    <Compile Include="Factories\DataListViewModelFactory.cs" />
-    <Compile Include="Factories\DataMappingListFactory.cs" />
     <Compile Include="Factories\Dev2MessageFactory.cs" />
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
@@ -209,7 +218,6 @@
     <Compile Include="Interfaces\IDeployDTO.cs" />
     <Compile Include="Interfaces\IDev2DialogueViewModel.cs" />
     <Compile Include="Interfaces\IContextualResourceModel.cs" />
-    <Compile Include="Factories\InputOutputViewModelFactory.cs" />
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />
     <Compile Include="Factories\WebCommunicationResponseFactory.cs" />
@@ -255,7 +263,6 @@
     <Compile Include="Interfaces\IServerProvider.cs" />
     <Compile Include="Interfaces\IServiceDebugInfoModel.cs" />
     <Compile Include="Interfaces\IStudioClientContext.cs" />
-    <Compile Include="Interfaces\IUserInterfaceLayoutProvider.cs" />
     <Compile Include="Interfaces\IUserMessageProvider.cs" />
     <Compile Include="Interfaces\IWebActivity.cs" />
     <Compile Include="Interfaces\IWebCommunication.cs" />
@@ -273,6 +280,8 @@
     <Compile Include="Messages\AddMissingAndFindUnusedDataListItemsMessage.cs" />
     <Compile Include="Messages\AddMissingDataListItems.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
+    <Compile Include="Messages\DeleteResourceMessage.cs" />
+    <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
     <Compile Include="Messages\DebugStatusMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
@@ -284,6 +293,7 @@
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
+    <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateResourceDesignerMessage.cs" />
@@ -315,7 +325,6 @@
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
-    <Compile Include="Models\WorkflowInputDataModel.cs" />
     <Compile Include="Network\DataList\DataListClientChannel.cs" />
     <Compile Include="Network\Execution\ExecutionClientChannel.cs" />
     <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
@@ -356,19 +365,15 @@
     <Compile Include="ViewModels\ActivityViewModels\BaseActivityViewModel.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\Administration\Dev2DialogueViewModel.cs" />
-    <Compile Include="ViewModels\Base\BaseValidate.cs" />
+    <Compile Include="ViewModels\Base\BaseConductor.cs" />
+    <Compile Include="ViewModels\Base\ValidationController.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\DataListShowMissing\IPopUp.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
-    <Compile Include="ViewModels\DataList\DataListViewModel.cs" />
-    <Compile Include="ViewModels\DataMapping\Actions\AutoMappingInputAction.cs" />
-    <Compile Include="ViewModels\DataMapping\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="Interfaces\IAutoMappingInputAction.cs" />
     <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
-    <Compile Include="ViewModels\DataMapping\DataMappingViewModel.cs" />
-    <Compile Include="ViewModels\DataMapping\InputOutputViewModel.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
@@ -391,15 +396,12 @@
     <Compile Include="Interfaces\ILayoutGridViewModel.cs" />
     <Compile Include="Interfaces\IWebsiteEditorViewModel.cs" />
     <Compile Include="Interfaces\IWebResourceViewModel.cs" />
-    <Compile Include="ViewModels\UserInterfaceBuilder\LayoutGridViewModel.cs" />
     <Compile Include="ViewModels\UserInterfaceBuilder\LayoutObjectViewModel.cs" />
     <Compile Include="ViewModels\UserInterfaceBuilder\WebResourceViewModel.cs" />
-    <Compile Include="ViewModels\UserInterfaceBuilder\WebsiteEditorViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="ViewModels\Workflow\ConfigureDecisionViewModel.cs" />
     <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfBaseConvertActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfBaseWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfCalculateActivityWizCallback.cs" />
@@ -481,6 +483,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\UserInterfaceBuilder\" />
+    <Folder Include="ViewModels\DataMapping\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

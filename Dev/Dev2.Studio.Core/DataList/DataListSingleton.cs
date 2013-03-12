@@ -44,10 +44,6 @@ namespace Dev2.Studio.Core {
             _activeDataList = activeDataList;
         }
 
-        public static void UpdateDataList(IDataListViewModel dataListViewModel) {
-            _activeDataList = dataListViewModel;
-        }
-
         #endregion Methods
     }
 }

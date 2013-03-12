@@ -519,6 +519,41 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
+        public static ImportServiceContext InializeWithEventAggregator(IEventAggregator eventAggregator)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            var mainViewModel = new Mock<IMainViewModel>();
+            ImportService.AddExportedValueToContainer<IEventAggregator>(eventAggregator);
+            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
+
+            // setup env repo
+            var repo = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            repo.Setup(l => l.Load()).Verifiable();
+
+            var model = new Mock<IEnvironmentModel>();
+            repo.Setup(l => l.Save(model.Object)).Verifiable();
+
+            IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
+            repo.Setup(l => l.All()).Returns(models);
+
+            // set up window behavior
+            var winBehavior = new Mock<IDev2WindowManager>();
+
+            winBehavior.Setup(w => w.ShowDialog(It.IsAny<SimpleBaseViewModel>())).Callback<SimpleBaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Okay);
+            ImportService.AddExportedValueToContainer(repo.Object);
+            ImportService.AddExportedValueToContainer(winBehavior.Object);
+
+            return importServiceContext;
+        }
+
         internal static ImportServiceContext InitializeIFilePersistenceProvider(Mock<IFilePersistenceProvider> filePersistenceProvider)
         {
             var importServiceContext = new ImportServiceContext();

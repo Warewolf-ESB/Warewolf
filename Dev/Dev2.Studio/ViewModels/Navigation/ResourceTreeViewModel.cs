@@ -8,6 +8,7 @@ using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 
@@ -630,8 +631,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Delete()
         {
             if (DataContext == null) return;
-            var data = new KeyValuePair<ITreeNode, IContextualResourceModel>(this, DataContext);
-            SendDeleteMessage(data);
+            SendDeleteMessage(DataContext);
             RaisePropertyChangedForCommands();
         }
 
@@ -721,7 +721,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowDependencies()
         {
-            Mediator.SendMessage(MediatorMessages.ShowDependencyGraph, DataContext);
+            EventAggregator.Publish(new ShowDependenciesMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -814,22 +814,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         /// <exception cref="System.ArgumentException"></exception>
-        private static void SendDeleteMessage(KeyValuePair<ITreeNode, IContextualResourceModel> data)
+        private void SendDeleteMessage(IContextualResourceModel model)
         {
-            switch (data.Value.ResourceType)
-            {
-                case ResourceType.Source:
-                    Mediator.SendMessage(MediatorMessages.DeleteSourceExplorerResource, data);
-                    break;
-                case ResourceType.WorkflowService:
-                    Mediator.SendMessage(MediatorMessages.DeleteWorkflowExplorerResource, data);
-                    break;
-                case ResourceType.Service:
-                    Mediator.SendMessage(MediatorMessages.DeleteServiceExplorerResource, data);
-                    break;
-                default:
-                    throw new ArgumentException(StringResources.NavigationItemViewModel_Unexpected_Resource);
-            }
+            EventAggregator.Publish(new DeleteResourceMessage(model));
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using Dev2.Composition;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.Studio.Core.Interfaces;
@@ -83,7 +85,9 @@ namespace Dev2.Core.Tests {
             Mock<IDataListViewModel> dataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
             dataListViewModel.Setup(dataList => dataList.DataList).Returns(Items);
-            mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(dataListViewModel.Object.DataList);
+
+            //Juries 8810 TODO
+            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(dataListViewModel.Object.DataList);
             dataListViewModel.Setup(c => c.Resource).Returns(resource.Object);
 
 

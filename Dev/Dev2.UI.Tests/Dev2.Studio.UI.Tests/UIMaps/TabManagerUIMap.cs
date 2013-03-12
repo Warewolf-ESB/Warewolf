@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UITesting;
+using System.Windows.Forms;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 
@@ -12,7 +12,18 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public string GetActiveTabName()
         {
             var theTabManager = GetTabManager();
-            string selectedTabName = theTabManager.Tabs[theTabManager.SelectedIndex].FriendlyName;
+            UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+            UITestControlCollection tabChildren = tab.GetChildren();
+            string selectedTabName = string.Empty;
+            foreach (var tabChild in tabChildren)
+            {
+                if (tabChild.ClassName == "Uia.TextBlock")
+                {
+                    selectedTabName = tabChild.FriendlyName;
+                    break;
+                }
+            }
+            //string selectedTabName = theTabManager.Tabs[theTabManager.SelectedIndex].FriendlyName;
             return selectedTabName;
         }
 
@@ -62,7 +73,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Mouse.Click(close);
             // Rare closure bug if you click a DDL before
             UITestControl theTab = FindTabByName("tabName");
-            if(theTab.Container != null)
+            if (theTab.Container != null)
             {
                 Mouse.Click(close);
             }
@@ -109,7 +120,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
             UITestControl cancelButton = saveDialogButtons[0];
-            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 25);
+            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
             Mouse.MouseMoveSpeed = 1000;
             Mouse.Move(p);
             Mouse.MouseMoveSpeed = 450;
@@ -122,7 +133,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
             UITestControl cancelButton = saveDialogButtons[1];
-            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 25);
+            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
             Mouse.MouseMoveSpeed = 1000;
             Mouse.Move(p);
             Mouse.MouseMoveSpeed = 450;
@@ -135,7 +146,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
             UITestControl cancelButton = saveDialogButtons[2];
-            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 25);
+            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
             Mouse.MouseMoveSpeed = 1000;
             Mouse.Move(p);
             Mouse.MouseMoveSpeed = 450;

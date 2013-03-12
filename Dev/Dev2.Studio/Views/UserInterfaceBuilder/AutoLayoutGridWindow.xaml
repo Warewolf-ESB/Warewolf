@@ -5,8 +5,7 @@
         xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
         xmlns:uf="clr-namespace:Unlimited.Applications.BusinessDesignStudio"                    
         xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-    xmlns:framework="clr-namespace:Unlimited.Framework;assembly=Dev2.Studio.Core"
-    ap:UIElementTitleProperty.Title="MainWindow" >
+    xmlns:framework="clr-namespace:Unlimited.Framework;assembly=Dev2.Studio.Core">
     <!--<UserControl.DataContext>
         <autolayout:LayoutGridViewModel />
     </UserControl.DataContext>-->

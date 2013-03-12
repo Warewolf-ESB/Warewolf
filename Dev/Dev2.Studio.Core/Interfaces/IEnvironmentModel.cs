@@ -14,7 +14,7 @@ namespace Dev2.Studio.Core.Interfaces
         INetworkExecutionChannel ExecutionChannel { get; }
         INetworkDataListChannel DataListChannel { get; }
         IEnvironmentConnection EnvironmentConnection { get; set; }
-        IResourceRepository Resources { get; set; }
+        IResourceRepository ResourceRepository { get; set; }
         Uri WebServerAddress { get; }
         int WebServerPort { get; set; }
 

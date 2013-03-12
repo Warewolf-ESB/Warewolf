@@ -27,7 +27,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         /// <param name="environmentModel">The environment model to be queried.</param>
         public void Deploy(IDeployDTO deployDTO, IEnvironmentModel environmentModel)
         {
-            if (deployDTO == null || deployDTO.ResourceModels == null || environmentModel == null || environmentModel.Resources == null)
+            if (deployDTO == null || deployDTO.ResourceModels == null || environmentModel == null || environmentModel.ResourceRepository == null)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             {
                 foreach (var resourceModel in deployDTO.ResourceModels)
                 {
-                    environmentModel.Resources.DeployResource(resourceModel);
+                    environmentModel.ResourceRepository.DeployResource(resourceModel);
                 }
             }
         }

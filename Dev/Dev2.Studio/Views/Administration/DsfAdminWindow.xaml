@@ -1,9 +1,7 @@
 ﻿<UserControl x:Class="Unlimited.Applications.BusinessDesignStudio.Views.DsfAdminWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
              Loaded="DocumentContent_Loaded"                    
-             ap:UIElementTitleProperty.Title="Dsf Admin Console"
              FocusManager.FocusedElement="{Binding ElementName=txtUserCommand}"            
              Width="640" Height="480">
     <UserControl.InputBindings>

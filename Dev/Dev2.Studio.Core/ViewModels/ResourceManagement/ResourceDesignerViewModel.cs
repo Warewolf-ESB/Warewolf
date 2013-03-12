@@ -33,17 +33,22 @@ namespace Dev2.Studio.Core.ViewModels {
             }
         }
 
-        public string ServiceDefinition {
-            get {
-                if (string.IsNullOrEmpty(_contexttualResourceModel.ServiceDefinition)) {
+        public string ServiceDefinition
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_contexttualResourceModel.ServiceDefinition))
+                {
                     _contexttualResourceModel.ServiceDefinition = DefaultDefinition();
                 }
 
                 return _contexttualResourceModel.ServiceDefinition;
             }
-            set {
+            set
+            {
                 _contexttualResourceModel.ServiceDefinition = value;
-                base.OnPropertyChanged("ServiceDefinition");
+                NotifyOfPropertyChange(() => ServiceDefinition);
+                if (ResourceModel != null) ResourceModel.ServiceDefinition = ServiceDefinition;
             }
 
         }
@@ -57,15 +62,6 @@ namespace Dev2.Studio.Core.ViewModels {
         #endregion
 
         #region Methods
-
-        public void BindToModel()
-        {
-            ResourceModel.ServiceDefinition = ServiceDefinition;
-        }
-
-        public void UpdateServiceDefinition() {
-            base.OnPropertyChanged("ServiceDefinition");
-        }
 
         private string DefaultDefinition() {
 

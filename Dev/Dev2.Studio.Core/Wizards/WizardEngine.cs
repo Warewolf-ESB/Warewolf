@@ -149,7 +149,7 @@ namespace Dev2.Studio.Core.Wizards
                 //
                 // Get resource that the DsfActivity represents
                 //
-                IContextualResourceModel resource = hostResource.Environment.Resources.FindSingle(r => r.ResourceName == activityName) as IContextualResourceModel;
+                IContextualResourceModel resource = hostResource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == activityName) as IContextualResourceModel;
                 if (resource != null)
                 {
                     //
@@ -276,7 +276,7 @@ namespace Dev2.Studio.Core.Wizards
                 wizardName = GetCodedActivityWizardName(activity.ItemType.Name);
             }
 
-            IContextualResourceModel resource = hostResource.Environment.Resources.FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
+            IContextualResourceModel resource = hostResource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
             if (resource != null)
             {
                 result = true;
@@ -304,7 +304,7 @@ namespace Dev2.Studio.Core.Wizards
             }
 
             string parentName = GetWizardParentName(wizardResource.ResourceName);
-            IContextualResourceModel parentResource = wizardResource.Environment.Resources.FindSingle(r => r.ResourceName == parentName) as IContextualResourceModel;
+            IContextualResourceModel parentResource = wizardResource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == parentName) as IContextualResourceModel;
 
             return parentResource;
         }
@@ -326,7 +326,7 @@ namespace Dev2.Studio.Core.Wizards
             }
 
             string wizardName = GetResourceWizardName(parentResource.ResourceName);
-            IContextualResourceModel wizardResource = parentResource.Environment.Resources.FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
+            IContextualResourceModel wizardResource = parentResource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
 
             return wizardResource;
         }

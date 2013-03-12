@@ -50,7 +50,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 _collection.CollectionChanged += CollectionCollectionChanged;
             }
 
-            _treeviewScrollViewer = VisualTreeHelperExtensions.GetChildByType(AssociatedObject, typeof(ScrollViewer)) as ScrollViewer;
+            _treeviewScrollViewer = DependencyObjectExtensions.GetChildByType(AssociatedObject, typeof(ScrollViewer)) as ScrollViewer;
 
             //Juries - Removed, instead implement a collection changed handler, to only scroll to end when new items are added.          
             //if (_treeviewScrollViewer != null)

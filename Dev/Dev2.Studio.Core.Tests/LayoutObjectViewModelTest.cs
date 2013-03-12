@@ -1,23 +1,10 @@
-﻿using Unlimited.Framework;
+﻿using Dev2.Studio.ViewModels.Web;
+using Unlimited.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.Studio.Core.Interfaces;
-using System.Windows.Input;
-using Dev2.Studio.Core.Actions;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.Models;
 using Moq;
 using Dev2.Studio.Core;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Xml.Linq;
-using System.Reflection;
-using System.Collections;
-using System.Collections.Generic;
 using Dev2.Composition;
 
 
@@ -68,7 +55,7 @@ namespace Dev2.Core.Tests {
             _moqEnvironment.Setup(env => env.Name).Returns("Test");
             _moqEnvironment.Setup(env => env.Connect()).Verifiable();
             _moqEnvironment.Setup(env => env.IsConnected).Returns(true);
-            _moqEnvironment.Setup(env => env.Resources).Returns(repo.Object);
+            _moqEnvironment.Setup(env => env.ResourceRepository).Returns(repo.Object);
 
             _test.Setup(c => c.XMLConfiguration).Returns("<WebParts/>").Verifiable();
 

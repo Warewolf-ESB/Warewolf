@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             var envMock = new Mock<IEnvironmentModel>();
-            envMock.Setup(e => e.Resources.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
             envMock.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             envMock.Setup(e => e.IsConnected).Returns(true);
 
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests
             var ds = new DeployService();
             ds.Deploy(dtoMock.Object, envMock.Object);
 
-            envMock.Verify(e => e.Resources.DeployResource(It.IsAny<IResourceModel>()), Times.Exactly(_numModels));
+            envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>()), Times.Exactly(_numModels));
         } 
 
         #endregion

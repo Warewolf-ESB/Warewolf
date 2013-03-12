@@ -100,7 +100,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IResourceRepository Resources
+        public IResourceRepository ResourceRepository
         {
             get
             {

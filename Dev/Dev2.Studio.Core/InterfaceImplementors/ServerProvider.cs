@@ -1,5 +1,4 @@
-﻿using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
+﻿using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +13,6 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         #region Singleton Instance
 
-        //
-        // Multi-threaded implementation - see http://msdn.microsoft.com/en-us/library/ff650316.aspx
-        //
-        // This approach ensures that only one instance is created and only when the instance is needed. 
-        // Also, the variable is declared to be volatile to ensure that assignment to the instance variable
-        // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
-        // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
-        //
         static volatile ServerProvider _instance;
         static readonly object SyncRoot = new Object();
 

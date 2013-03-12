@@ -10,20 +10,13 @@
 
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
-    using System;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Windows.Forms;
-    using System.Windows.Input;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Drawing;
+    using System.Linq;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
 
 
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
@@ -142,8 +135,16 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             theWindow.SearchProperties["Name"] = "Workflow not saved...";
             theWindow.SearchProperties["ControlType"] = "Window";
             theWindow.Find();
+            UITestControlCollection firstChildren = theWindow.GetChildren();
 
-            UITestControlCollection saveDialogButtons = theWindow.GetChildren()[3].GetChildren();
+            var ctrls = firstChildren.Where(c => c.ClassName == "Uia.Button");
+
+            UITestControlCollection saveDialogButtons = new UITestControlCollection();
+            foreach (UITestControl control in ctrls)
+            {
+                saveDialogButtons.Add(control);
+            }
+            
             return saveDialogButtons;
         }
         public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
@@ -165,10 +166,14 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 UITestControlCollection tabList = theList.Tabs; // This lags for some reason
                 foreach (WpfTabPage currentTapPage in tabList)
                 {
-                    if (currentTapPage.FriendlyName == childAutomationID)
+                    UITestControlCollection tabChildren = currentTapPage.GetChildren();
+                    foreach (var tabChild in tabChildren)
                     {
-                        childOfInterest = currentTapPage;
-                        break;
+                        if (tabChild.FriendlyName == childAutomationID)
+                        {
+                            childOfInterest = currentTapPage;
+                            return childOfInterest;
+                        }
                     }
                 }
                 return childOfInterest;

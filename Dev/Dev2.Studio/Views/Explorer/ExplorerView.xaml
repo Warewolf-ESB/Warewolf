@@ -7,10 +7,7 @@
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
              xmlns:Dev2="clr-namespace:Dev2.UI"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-    xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
-    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-    Name="Explorer"
-             ap:UIElementTitleProperty.Title="Explorer">
+    Name="Explorer">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

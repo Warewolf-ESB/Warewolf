@@ -54,8 +54,6 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
-
-
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             WriteToResourceModel();
@@ -113,9 +111,6 @@ namespace Dev2.Studio.Views.DataList
                     WriteToResourceModel();
                 }
             }
-
-        }
-
-        
+        }       
     }
 }

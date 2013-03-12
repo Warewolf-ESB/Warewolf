@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -68,5 +69,22 @@ namespace Dev2.Studio.Core.Helpers
                 path.Directory.Create();
             }
         }
+
+        /// <summary>
+        /// Gets the full path based on a uri and the current assembly.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns></returns>
+        /// <author>Jurie.smit</author>
+        /// <date>3/6/2013</date>
+        public static string GetFullPath(string uri)
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+            if (directory == null) return null;
+            var path = Path.Combine(directory, uri);
+            return path;
+        }
+
     }
 }

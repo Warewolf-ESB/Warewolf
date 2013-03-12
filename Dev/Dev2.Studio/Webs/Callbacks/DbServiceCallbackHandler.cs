@@ -23,7 +23,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
         {
-            if(environmentModel == null || environmentModel.Resources == null || jsonArgs == null)
+            if(environmentModel == null || environmentModel.ResourceRepository == null || jsonArgs == null)
             {
                 return;
             }
@@ -33,7 +33,7 @@ namespace Dev2.Studio.Webs.Callbacks
             var sourceName = jsonArgs.ResourceName.Value;
             var contextualResource = string.IsNullOrEmpty(sourceName)
                                          ? null
-                                         : environmentModel.Resources.All().FirstOrDefault(r => r.ResourceName.Equals(sourceName, StringComparison.InvariantCultureIgnoreCase)) as IContextualResourceModel;
+                                         : environmentModel.ResourceRepository.All().FirstOrDefault(r => r.ResourceName.Equals(sourceName, StringComparison.InvariantCultureIgnoreCase)) as IContextualResourceModel;
             if(contextualResource == null)
             {
                 relativeUri += "?Dev2ServiceType=Database";

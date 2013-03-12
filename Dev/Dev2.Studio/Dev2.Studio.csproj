@@ -274,14 +274,10 @@
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfZipDesigner.xaml.cs">
       <DependentUpon>DsfZipDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppResources\AttachedProperties\AttachedPropertyHelper.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditAutocompleteBehaviour.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
-    <Compile Include="AppResources\AttachedProperties\UIElementImageProperty.cs" />
-    <Compile Include="AppResources\AttachedProperties\UIElementTabActionContext.cs" />
-    <Compile Include="AppResources\AttachedProperties\UIElementTitleProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\WizardEngineAttachedProperties.cs" />
     <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\AutomationIdCreationBehaviour.cs" />
@@ -305,7 +301,13 @@
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceContextEqualityComparer.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
+    <Compile Include="Controller\AbstractController.cs" />
+    <Compile Include="Controller\IController.cs" />
+    <Compile Include="Controller\MainController.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
@@ -320,13 +322,35 @@
     <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
+    <Compile Include="Dock\BindingHelper.cs" />
+    <Compile Include="Dock\ContainerFactory.cs" />
+    <Compile Include="Dock\ContentPaneFactory.cs" />
+    <Compile Include="Dock\ItemBinding.cs" />
+    <Compile Include="Dock\ItemBindingCollection.cs" />
+    <Compile Include="Dock\UIElementHelper.cs" />
+    <Compile Include="Factory\DataListViewModelFactory.cs" />
+    <Compile Include="Factory\DataMappingListFactory.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
+    <Compile Include="Factory\InputOutputViewModelFactory.cs" />
+    <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
+    <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="ViewModels\DataList\Actions\AutoMappingInputAction.cs" />
+    <Compile Include="ViewModels\DataList\Actions\AutoMappingOutputAction.cs" />
+    <Compile Include="ViewModels\DataList\DataListViewModel.cs" />
+    <Compile Include="ViewModels\DataList\DataMappingViewModel.cs" />
+    <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
+    <Compile Include="ViewModels\Help\HelpViewModel.cs" />
+    <Compile Include="ViewModels\Web\LayoutGridViewModel.cs" />
+    <Compile Include="ViewModels\Web\WebsiteEditorViewModel.cs" />
+    <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
+    <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
     <Compile Include="InterfaceImplementors\PopUp.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\AbstractWorkSurfaceViewModel.cs" />
-    <Compile Include="ViewModels\WorkSurfaceContextViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\IWorkSurfaceViewModel.cs" />
+    <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
+    <Compile Include="Views\Help\HelpView.xaml.cs">
+      <DependentUpon>HelpView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
       <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
     </Compile>
@@ -340,6 +364,7 @@
     <Compile Include="Webs\WebBrowserWindow.xaml.cs">
       <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Webs\WebHelper.cs" />
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="AppResources\Comparers\DeployStatsTOComparer.cs" />
@@ -353,7 +378,7 @@
     <Compile Include="AppResources\DependencyVisualization\BDSDependencyCanvas.cs" />
     <Compile Include="AppResources\DependencyVisualization\CircularDependency.cs" />
     <Compile Include="AppResources\DependencyVisualization\Graph.cs" />
-    <Compile Include="AppResources\DependencyVisualization\GraphBuilder.cs" />
+    <Compile Include="ViewModels\DependencyVisualization\DependencyVisualiserViewModel.cs" />
     <Compile Include="AppResources\DependencyVisualization\Node.cs" />
     <Compile Include="AppResources\DependencyVisualization\NodeConnectionAdorner.cs" />
     <Compile Include="AppResources\DependencyVisualization\NodeConnectionAdornerDecorator.cs" />
@@ -397,7 +422,6 @@
     <Compile Include="InterfaceImplementors\DateTimeIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\DefaultIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\FileNameProviderImpl.cs" />
-    <Compile Include="InterfaceImplementors\UserInterfaceLayoutProvider.cs" />
     <Compile Include="InterfaceImplementors\UserMessageProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\WindowManager.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
@@ -453,8 +477,8 @@
     <Compile Include="Views\DataMapping\DataMapping.xaml.cs">
       <DependentUpon>DataMapping.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DependencyVisualization\DependencyVisualiser.xaml.cs">
-      <DependentUpon>DependencyVisualiser.xaml</DependentUpon>
+    <Compile Include="Views\DependencyVisualization\DependencyVisualiserView.xaml.cs">
+      <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\DependencyVisualization\GraphDetailsView.xaml.cs">
@@ -482,9 +506,6 @@
     </Compile>
     <Compile Include="Views\Global\GetStringValueWindow.xaml.cs">
       <DependentUpon>GetStringValueWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Global\HelpWindow.xaml.cs">
-      <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Global\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
@@ -534,8 +555,8 @@
     <Compile Include="Views\Workflow\WorkflowDebuggerWindow.xaml.cs">
       <DependentUpon>WorkflowDebuggerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Workflow\WorkflowDesignerWindow.xaml.cs">
-      <DependentUpon>WorkflowDesignerWindow.xaml</DependentUpon>
+    <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
+      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Workflow\WorkflowInputDataWindow.xaml.cs">
       <DependentUpon>WorkflowInputDataWindow.xaml</DependentUpon>
@@ -544,6 +565,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Wizards\DsfActivityWizCallback.cs" />
     <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -756,7 +778,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DependencyVisualization\DependencyVisualiser.xaml">
+    <Page Include="Views\DependencyVisualization\DependencyVisualiserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -792,7 +814,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Global\HelpWindow.xaml">
+    <Page Include="Views\Help\HelpView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -864,7 +886,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Workflow\WorkflowDesignerWindow.xaml">
+    <Page Include="Views\Workflow\WorkflowDesignerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1101,6 +1123,10 @@
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
+      <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
+      <Name>Dev2.UndoFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

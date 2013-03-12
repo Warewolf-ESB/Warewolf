@@ -3,6 +3,7 @@ using Dev2.Composition;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.AppResources.WindowManagers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.ViewModels;
@@ -90,6 +91,7 @@ namespace Dev2.Studio
             var batch = new CompositionBatch();
 
             batch.AddExportedValue<IWindowManager>(new WindowManager());
+            batch.AddExportedValue<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
             batch.AddExportedValue(_container);
 

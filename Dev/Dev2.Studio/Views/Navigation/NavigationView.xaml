@@ -11,8 +11,7 @@
              xmlns:core="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-             Name="NavigationViewUserControl"
-             ap:UIElementTitleProperty.Title="Navigation">
+             Name="NavigationViewUserControl">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

@@ -188,7 +188,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             }
         }
 
-
         public abstract void SetViewModelProperties(ModelItem _model);
 
         #endregion Private Methods

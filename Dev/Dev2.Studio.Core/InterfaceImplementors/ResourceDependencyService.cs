@@ -60,7 +60,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         /// <returns>A list of <see cref="IResourceModel"/>'s.</returns>
         public List<IResourceModel> GetUniqueDependencies(IContextualResourceModel resourceModel)
         {
-            if(resourceModel == null || resourceModel.Environment == null || resourceModel.Environment.Resources == null)
+            if(resourceModel == null || resourceModel.Environment == null || resourceModel.Environment.ResourceRepository == null)
             {
                 return new List<IResourceModel>();
             }
@@ -72,7 +72,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
                             where idAttr != null
                             select idAttr.Value;
 
-            var resources = from r in resourceModel.Environment.Resources.All()
+            var resources = from r in resourceModel.Environment.ResourceRepository.All()
                             join n in nodes on r.ResourceName equals n
                             select r;
 

@@ -17,12 +17,11 @@ namespace Dev2.Studio.Core.ViewModels {
         string AuthorRoles { get; set; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
-        UIElement PropertyView { get; }
         ICommand NewWorkflowCommand { get; }
         ICommand EditWorkflowCommand { get; }
-        void InvalidateUI();
         void Dispose();
         bool NotifyItemSelected(object primarySelection);
-        ActivityBuilder GetBaseUnlimitedFlowchartActivity(); 
+        ActivityBuilder GetBaseUnlimitedFlowchartActivity();
+        void BindToModel();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Dev2.Studio.ViewModels.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -102,7 +103,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
             _mockEnvironment.Setup(env => env.Name).Returns("result");
             _mockEnvironment.Setup(env => env.Connect()).Verifiable();
             _mockEnvironment.Setup(env => env.IsConnected).Returns(true);
-            _mockEnvironment.Setup(env => env.Resources).Returns(_mockResRepository.Object);
+            _mockEnvironment.Setup(env => env.ResourceRepository).Returns(_mockResRepository.Object);
             _mockEnvironment.Setup(env => env.DsfChannel).Returns(_mockFrameworkDataChannel.Object);
 
             _mockRes.Setup(c => c.Environment).Returns(_mockEnvironment.Object);
