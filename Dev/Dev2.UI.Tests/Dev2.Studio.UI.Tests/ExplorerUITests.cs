@@ -55,24 +55,35 @@ namespace Dev2.Studio.UI.Tests
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             var expected = ExplorerUIMap.AshesServerCount()+2;
             var firstNewServer = Guid.NewGuid().ToString().Substring(0, 5);
-            var secondNewServer = Guid.NewGuid().ToString().Substring(0,5);
+            var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);
 
             //Create first server
             ExplorerUIMap.ClickNewServerButton();
+            System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
-            Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+            Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}");
+            System.Threading.Thread.Sleep(100);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            System.Threading.Thread.Sleep(100);
             saveWizard.ClickFirstCategory();
-            saveWizard.ClickNameTextbox();
-            Keyboard.SendKeys(firstNewServer);
+            Keyboard.SendKeys("{TAB}" + firstNewServer);
             saveWizard.ClickSave();
+
+            //Reconnect to localhost
+            //ExplorerUIMap.ClickConnectDropdown();
+            //Keyboard.SendKeys("{ENTER}");
+            ExplorerUIMap.ClickRefreshButton();
 
             //Try create second server
             ExplorerUIMap.ClickNewServerButton();
+            System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
-            Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+            Keyboard.SendKeys(@"http://RSAKLFASHLEY:77/dsf{TAB}{TAB}{ENTER}");
+            System.Threading.Thread.Sleep(100);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            System.Threading.Thread.Sleep(100);
             saveWizard.ClickFirstCategory();
-            saveWizard.ClickNameTextbox();
-            Keyboard.SendKeys(secondNewServer);
+            Keyboard.SendKeys("{TAB}" + secondNewServer);
             saveWizard.ClickSave();
 
             //Assert

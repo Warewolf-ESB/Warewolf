@@ -16,11 +16,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     {
         public void ClickNewServerButton()
         {
-            UITestControl window = this.UIBusinessDesignStudioWindow;
+            UITestControl window = UIBusinessDesignStudioWindow.UIExplorerCustom;
             var findDocManager = window.GetChildren();
             UITestControl docManager = findDocManager[3];
             var findSplitPane = docManager.GetChildren();
-            UITestControl splitPane = findSplitPane[1];
+            UITestControl splitPane = findSplitPane[3];
             var findExplorerPane = splitPane.GetChildren()[0].GetChildren()[0].GetChildren();
             UITestControl explorerPane = findExplorerPane[3].GetChildren()[6];
             var findNewServerButton = explorerPane.GetChildren()[0].GetChildren();
@@ -30,11 +30,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public int AshesServerCount()
         {
-            UITestControl window = this.UIBusinessDesignStudioWindow;
+            UITestControl window = UIBusinessDesignStudioWindow;
             var findDocManager = window.GetChildren();
             UITestControl docManager = findDocManager[3];
             var findSplitPane = docManager.GetChildren();
-            UITestControl splitPane = findSplitPane[1];
+            UITestControl splitPane = findSplitPane[3];
             var findExplorerPane = splitPane.GetChildren()[0].GetChildren()[0].GetChildren();
             UITestControl explorerPane = findExplorerPane[3].GetChildren()[6];
             var findTreeView = explorerPane.GetChildren()[1].GetChildren();
@@ -51,12 +51,39 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return count;
         }
 
+        public void ClickRefreshButton()
+        {
+            UITestControl window = UIBusinessDesignStudioWindow;
+            var findDocManager = window.GetChildren();
+            UITestControl docManager = findDocManager[3];
+            var findSplitPane = docManager.GetChildren();
+            UITestControl splitPane = findSplitPane[3];
+            var findExplorerPane = splitPane.GetChildren()[0].GetChildren()[0].GetChildren();
+            UITestControl explorerPane = findExplorerPane[3].GetChildren()[6];
+            var findRefreshButton = explorerPane.GetChildren()[1].GetChildren();
+            UITestControl refreshButton = findRefreshButton[2];
+            Mouse.Click(refreshButton, new Point(5, 5));
+        }
+
+        public void ClickConnectDropdown()
+        {
+            UITestControl window = UIBusinessDesignStudioWindow;
+            var findDocManager = window.GetChildren();
+            UITestControl docManager = findDocManager[3];
+            var findSplitPane = docManager.GetChildren();
+            UITestControl splitPane = findSplitPane[3];
+            var findExplorerPane = splitPane.GetChildren()[0].GetChildren()[0].GetChildren();
+            UITestControl explorerPane = findExplorerPane[3].GetChildren()[6];
+            var findNewServerButton = explorerPane.GetChildren()[0].GetChildren();
+            UITestControl connectDropdown = findNewServerButton[1];
+            Mouse.Click(connectDropdown, new Point(5, 5));
+        }
+
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.DoubleClick(p);
-
         }
 
         public void RightClickDeployProject(string serverName, string serviceType, string folderName, string projectName)
