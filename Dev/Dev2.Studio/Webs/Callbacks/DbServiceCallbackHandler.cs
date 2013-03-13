@@ -18,13 +18,17 @@ namespace Dev2.Studio.Webs.Callbacks
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             //2013.03.12: Ashley Lewis - BUG 9208
-            if(jsonObj.ResourceType.Value != Dev2.Common.ServiceModel.ResourceType.DbSource.ToString())
+            var getDynamicResourceType = jsonObj.ResourceType.Value;
+            if(getDynamicResourceType != null)
             {
-                ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
-            }
-            else
-            {
-                ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
+                if (getDynamicResourceType != Common.ServiceModel.ResourceType.DbSource.ToString())
+                {
+                    ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+                }
+                else
+                {
+                    ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
+                }
             }
 
         }
