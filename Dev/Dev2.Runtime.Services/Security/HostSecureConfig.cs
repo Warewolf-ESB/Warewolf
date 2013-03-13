@@ -52,14 +52,14 @@ namespace Dev2.Runtime.Security
         /// <exception cref="System.ArgumentNullException">settings</exception>
         protected void Initialize(NameValueCollection settings, bool shouldProtectConfig)
         {
-            if(settings == null)
+            if (settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
             Guid serverID;
-            if(Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
+            if (Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if(shouldProtectConfig)
+                if (shouldProtectConfig)
                 {
                     ProtectConfig();
                 }
@@ -116,7 +116,7 @@ namespace Dev2.Runtime.Security
         protected virtual void SaveConfig(NameValueCollection secureSettings)
         {
             var config = new XElement(SectionName);
-            foreach(string key in secureSettings.Keys)
+            foreach (string key in secureSettings.Keys)
             {
                 config.Add(new XElement("add",
                                         new XAttribute("key", key),
@@ -139,11 +139,11 @@ namespace Dev2.Runtime.Security
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var section = config.GetSection(SectionName);
-            if(section != null)
+            if (section != null)
             {
-                if(!section.SectionInformation.IsProtected)
+                if (!section.SectionInformation.IsProtected)
                 {
-                    if(!section.ElementInformation.IsLocked)
+                    if (!section.ElementInformation.IsLocked)
                     {
                         section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
                         section.SectionInformation.ForceSave = true;

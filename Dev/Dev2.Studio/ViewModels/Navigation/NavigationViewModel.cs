@@ -260,25 +260,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void RefreshEnvironments()
         {
-            if (IsRefreshing)
-            {
-                return;
+                foreach (var environment in _environments)
+                {
+                    RefreshEnvironment(environment);
+                }
             }
-
-            IsRefreshing = true;
-
-            try
-            {
-            foreach (var environment in _environments)
-            {
-                RefreshEnvironment(environment);
-            }
-            }
-            finally
-            {
-            IsRefreshing = false;
-        }
-        }
 
         /// <summary>
         ///     Updates the worksapces for all environments
@@ -295,15 +281,15 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             try
             {
-            foreach (var environment in _environments)
-            {
+                foreach (var environment in _environments)
+                {
                 UpdateWorkspace(environment, mainVM.WorkspaceItems);
-            }
+                }
             }
             finally
             {
-            IsRefreshing = false;
-        }
+                IsRefreshing = false;
+            }
         }
 
         /// <summary>
@@ -336,6 +322,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="environment">The environment.</param>
         public void LoadEnvironmentResources(IEnvironmentModel environment)
         {
+            if (IsRefreshing)
+            {
+                return;
+            }
+
+            IsRefreshing = true;
+
+            try
+            {
             if (environment != null && !environment.IsConnected)
             {
                 Connect(environment);
@@ -353,6 +348,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             // Build the resources into a tree
             //
             BuildNavigationItemViewModels(environment);
+        }
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
 
         /// <summary>
@@ -527,11 +527,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             ClearChildren(environmentVM);
 
             BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
             BuildCategoryTree(ResourceType.Source, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
             BuildCategoryTree(ResourceType.Service, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
             UpdateSearchFilter(_searchFilter);
         }
 
@@ -670,10 +670,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                         primaryEnvironment.Disconnect();
                     }
 
-                    if (!environment.IsConnected)
-                    {
-                        throw new Exception("Auxiliary Connection failed.");
-                    }
+                    //if (!environment.IsConnected)
+                    //{
+                    //    throw new Exception("Auxiliary Connection failed.");
+                    //}
                 }
             }
             else

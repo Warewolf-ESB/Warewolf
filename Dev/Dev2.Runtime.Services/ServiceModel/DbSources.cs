@@ -69,6 +69,7 @@ namespace Dev2.Runtime.ServiceModel
                     //2012.03.12: Ashley Lewis - BUG 9208
                     databaseSourceDetails.Save(GlobalConstants.ServerWorkspaceID);
                 }
+
                 return databaseSourceDetails.ToString();
             }
             catch(Exception ex)

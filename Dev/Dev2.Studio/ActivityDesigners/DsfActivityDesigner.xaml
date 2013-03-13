@@ -7,23 +7,22 @@
                       MouseEnter="DsfActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfActivityDesigner_OnMouseLeave"
                       xmlns:dev2="clr-namespace:Dev2.UI"
-                      xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-                      MinWidth="250">
+                      MinWidth="250"
+                      Name="ADesigner">
     <i:Interaction.Behaviors>
-        <local:ActivityDesignerAugmentationBehavior SupressConnectorNodes="{Binding ShowMapping}">
+        <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=ADesigner}" SupressConnectorNodes="{Binding ShowMapping}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>
                 <DataTemplate>
-                    <Grid Visibility="{Binding ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" MinWidth="250">
+                    <Grid Visibility="{Binding DataContext.ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" MinWidth="{Binding ActualWidth}">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!--<Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="#FFE5C365" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="#FFFFE8A6" VerticalAlignment="Stretch" MouseDown="UIElement_OnMouseDown" />-->
                         <Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
-                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,1,1,0" Height="20"
-                                    Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}">
-                            <Button Command="{Binding OpenParentCommand}" ToolTip="Edit" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button Command="{Binding DataContext.OpenParentCommand}" ToolTip="Edit" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                         PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                                 <Image Source="/Images/editIcon.png" Width="15" Height="15"/>
                                     <AutomationProperties.AutomationId>
@@ -32,12 +31,12 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <ToggleButton IsChecked="{Binding Path=ShowMapping, Mode=OneWay}" Command="{Binding OpenMappingCommand}" ToolTip="Mapping"
+                            <ToggleButton IsChecked="{Binding Path=DataContext.ShowMapping, Mode=OneWay}" Command="{Binding DataContext.OpenMappingCommand}" ToolTip="Mapping"
                                           PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                           Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
                                 <Grid>
-                                    <Image Source="/Images/expand.png" Width="15" Height="15" Visibility="{Binding ShowMapping, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
-                                    <Image Source="/Images/collapse.png" Width="15" Height="15" Visibility="{Binding ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                    <Image Source="/Images/expand.png" Width="15" Height="15" Visibility="{Binding DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                                    <Image Source="/Images/collapse.png" Width="15" Height="15" Visibility="{Binding DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                 </Grid>
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="[UI_{0}_OpenMappingBtn_AutoID]">
@@ -45,7 +44,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </ToggleButton>
-                                <Button Command="{Binding OpenWizardCommand}" Visibility="{Binding Path=HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
+                            <Button Command="{Binding DataContext.OpenWizardCommand}" Visibility="{Binding Path=DataContext.HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/wizardIcon.png" Width="15" Height="15"/>
@@ -55,7 +54,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <Button Command="{Binding OpenSettingsCommand}" ToolTip="Settings"
+                            <Button Command="{Binding DataContext.OpenSettingsCommand}" ToolTip="Settings"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/settingsIcon.png" Width="15" Height="15"/>
@@ -65,7 +64,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                                <Button Command="{Binding OpenHelpCommand}" Visibility="{Binding Path=HasHelpLink,Converter={StaticResource BoolToVisConverter}}" ToolTip="Help"
+                            <Button Command="{Binding DataContext.OpenHelpCommand}" Visibility="{Binding Path=DataContext.HasHelpLink, Converter={StaticResource BoolToVisConverter}}" ToolTip="Help"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/helpIcon.png" Width="15" Height="15"/>
@@ -77,9 +76,10 @@
                                 </Button>
                             </StackPanel>
 
-                        <ContentControl x:Name="resizeContent" MinHeight="250" MinWidth="250" Width="250" Grid.Row="1" Padding="5" Visibility="{Binding Path=ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}" Loaded="ResizeContent_OnLoaded" LayoutUpdated="ResizeContent_OnLayoutUpdated">
+                        <ContentControl x:Name="resizeContent" MinHeight="250" MinWidth="{Binding ActualWidth}" Grid.Row="1" Padding="5" Visibility="{Binding Path=DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}" Loaded="ResizeContent_OnLoaded" LayoutUpdated="ResizeContent_OnLayoutUpdated">
                             <Border x:Name="contentHost" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="0,0,3,3" Background="White" 
-                                    BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1">
+                                    MinWidth="{Binding ActualWidth}" BorderThickness="1"
+                                    BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
@@ -102,7 +102,7 @@
 
                                         <Label Grid.Row="0" Content="Inputs" Style="{StaticResource Dev2HeadingLabelStyle}"></Label>
                                         <DataGrid x:Name="inputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
-                                                  Grid.Row="1" ItemsSource="{Binding Path=DataMappingViewModel.Inputs}">
+                                                  Grid.Row="1" ItemsSource="{Binding Path=DataContext.DataMappingViewModel.Inputs}">
                                             <DataGrid.Columns>
                                                 <DataGridTemplateColumn Header="From data or variable" Width="*" MinWidth="125" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
@@ -134,7 +134,7 @@
 
                                         <Label Grid.Row="0" Content="Outputs" Style="{StaticResource Dev2HeadingLabelStyle}"></Label>
                                         <DataGrid x:Name="outputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
-                                                  Grid.Row="1" ItemsSource="{Binding Path=DataMappingViewModel.Outputs}">
+                                                  Grid.Row="1" ItemsSource="{Binding Path=DataContext.DataMappingViewModel.Outputs}">
                                             <DataGrid.Columns>
                                                 <DataGridTemplateColumn Header="From service" Width="SizeToCells" MinWidth="65" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
@@ -177,8 +177,8 @@
             </local:ActivityDesignerAugmentationBehavior.TopTemplate>
             <local:ActivityDesignerAugmentationBehavior.BottomTemplate>
                 <DataTemplate>
-                    <Border Padding="3" CornerRadius="0,0,3,3" Background="White" VerticalAlignment="Center" Margin="0,-3,0,0" Visibility="{Binding ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1">
-                        <ItemsControl Grid.IsSharedSizeScope="True"  ItemsSource="{Binding Path=ErrorCollection}">
+                    <Border Padding="3" CornerRadius="0,0,3,3" Background="White" VerticalAlignment="Center" Margin="0,-3,0,0" Visibility="{Binding DataContext.ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1">
+                        <ItemsControl Grid.IsSharedSizeScope="True"  ItemsSource="{Binding Path=DataContext.ErrorCollection}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,0,0,0">
@@ -189,9 +189,9 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Image Width="16" Height="16" Grid.Column="0" Source="{Binding Path=ErrorType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Dev2ErrorTypeToImageConverter}}">
+                                        <Image Width="16" Height="16" Grid.Column="0" Source="{Binding Path=ErrorType, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Dev2ErrorTypeToImageConverter}}">
                                         </Image>
-                                        <Button Grid.Column="1" Style="{StaticResource LinkButton}" Command="{Binding Path=FixAction}" Content="{Binding Path=UserErrorMessage,UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                        <Button Grid.Column="1" Style="{StaticResource LinkButton}" Command="{Binding Path=FixAction}" Content="{Binding Path=UserErrorMessage, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                                         </Button>
                                     </Grid>
                                 </DataTemplate>

@@ -1,4 +1,6 @@
-﻿using Dev2;
+﻿using System.IO;
+using System.Windows;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -95,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (dataObject != null)
                                 {
                                     string bookmarkName = Guid.NewGuid().ToString();
-                                    eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName);
+                                    eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath",Directory.GetCurrentDirectory());
                                     Uri hostUri = null;
                                     if (Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
                                     {

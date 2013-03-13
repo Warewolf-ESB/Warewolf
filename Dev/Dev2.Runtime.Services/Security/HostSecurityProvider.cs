@@ -9,7 +9,7 @@ namespace Dev2.Runtime.Security
     {
         public static readonly Guid InternalServerID = new Guid("51A58300-7E9D-4927-A57B-E5D700B11B55");
         public static readonly string InternalPublicKey = "BgIAAACkAABSU0ExAAQAAAEAAQBlsJw+ibEmPy3P93PV7a8QjuHqS4QR+yP/+6CVUUpqvUE3hguQUzZ4Fw28hz0LwMLK8Sc1qb0s0FFiH9Ju6O+fIXruGzC3CjzN8wZRGoV2IvfmJ/nMKQ/NVESx9virJA1xTIZa9Za3PQvGbPh1ce0me5YJd3VOHKUqqJCbVeE7pg==";
-      
+
         readonly RSACryptoServiceProvider _serverKey;
         readonly RSACryptoServiceProvider _systemKey;
         public Guid ServerID { get; private set; }
@@ -34,11 +34,11 @@ namespace Dev2.Runtime.Security
         {
             get
             {
-                if(TheInstance == null)
+                if (TheInstance == null)
                 {
-                    lock(SyncRoot)
+                    lock (SyncRoot)
                     {
-                        if(TheInstance == null)
+                        if (TheInstance == null)
                         {
                             TheInstance = new HostSecurityProvider(new HostSecureConfig());
                         }
@@ -58,7 +58,7 @@ namespace Dev2.Runtime.Security
         /// <param name="config">The config to be used.</param>
         protected HostSecurityProvider(ISecureConfig config)
         {
-            if(config == null)
+            if (config == null)
             {
                 throw new ArgumentNullException("config");
             }
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.Security
 
         public bool VerifyXml(string xml)
         {
-            if(string.IsNullOrEmpty(xml))
+            if (string.IsNullOrEmpty(xml))
             {
                 throw new ArgumentNullException("xml");
             }
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.Security
 
             // Validate server ID, this is a check which can be done quickly in order to skip loading the whole file for verification        
             var serverID = GetServerID(doc);
-            if(serverID != ServerID && serverID != InternalServerID)
+            if (serverID != ServerID && serverID != InternalServerID)
             {
                 return false;
             }
@@ -105,7 +105,7 @@ namespace Dev2.Runtime.Security
 
         public string SignXml(string xml)
         {
-            if(string.IsNullOrEmpty(xml))
+            if (string.IsNullOrEmpty(xml))
             {
                 throw new ArgumentNullException("xml");
             }
@@ -116,10 +116,10 @@ namespace Dev2.Runtime.Security
             SetServerID(doc);
 
             var nodeList = doc.GetElementsByTagName("Signature");
-            if(nodeList.Count > 0)
+            if (nodeList.Count > 0)
             {
                 var child = nodeList[0];
-                if(child.ParentNode != null)
+                if (child.ParentNode != null)
                 {
                     child.ParentNode.RemoveChild(child);
                 }
@@ -145,12 +145,12 @@ namespace Dev2.Runtime.Security
             var xmlDigitalSignature = signedXml.GetXml();
 
             // Append the element to the XML document.
-            if(doc.DocumentElement != null)
+            if (doc.DocumentElement != null)
             {
                 doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
             }
 
-            if(doc.FirstChild is XmlDeclaration)
+            if (doc.FirstChild is XmlDeclaration)
             {
                 doc.RemoveChild(doc.FirstChild);
             }
@@ -163,7 +163,7 @@ namespace Dev2.Runtime.Security
 
         void SetServerID(XmlDocument doc)
         {
-            if(doc.DocumentElement != null)
+            if (doc.DocumentElement != null)
             {
                 doc.DocumentElement.SetAttribute("ServerID", ServerID.ToString());
             }
@@ -171,15 +171,15 @@ namespace Dev2.Runtime.Security
 
         static Guid GetServerID(XmlDocument doc)
         {
-            if(doc.DocumentElement != null)
+            if (doc.DocumentElement != null)
             {
                 var attr = doc.DocumentElement.Attributes["ServerID"];
-                if(attr != null)
+                if (attr != null)
                 {
-                    if(!string.IsNullOrEmpty(attr.Value))
+                    if (!string.IsNullOrEmpty(attr.Value))
                     {
                         Guid id;
-                        if(Guid.TryParse(attr.Value, out id))
+                        if (Guid.TryParse(attr.Value, out id))
                         {
                             return id;
                         }

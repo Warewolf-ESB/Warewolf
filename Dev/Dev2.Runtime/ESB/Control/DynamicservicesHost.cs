@@ -12,11 +12,9 @@
 
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices.Security;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Management;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,6 +24,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Runtime.Security;
 using Unlimited.Framework;
 
 namespace Dev2.DynamicServices
@@ -651,7 +650,7 @@ namespace Dev2.DynamicServices
                     if(generatedResources.Count == 0)
                     {
                         //2012.03.12: Ashley Lewis - BUG 9208
-                        TraceWriter.WriteTrace(string.Format("No valid resources were found in file '{1}' ", fileName));
+                        TraceWriter.WriteTrace(string.Format("No valid resources were found in file '{0}' ", fileName));
                     }
 
                     foreach (DynamicServiceObjectBase dynamicServiceObjectBase in generatedResources)

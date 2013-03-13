@@ -3,6 +3,7 @@
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
@@ -536,6 +537,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             NotifyOfPropertyChange(() => IsChecked);
+
+            EventAggregator.Publish(new ResourceCheckedMessage());
         }
 
         /// <summary>

@@ -269,7 +269,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 _selectedSourceServer = value;
                 LoadSourceEnvironment(_selectedSourceServer);
-                NotifyOfPropertyChange(() => SelectedSourceServer);
+                NotifyOfPropertyChange(() => SelectedDestinationServer);
+                NotifyOfPropertyChange(() => SourceItemsSelected);
+                NotifyOfPropertyChange(() => CanDeploy);
             }
         }
 
@@ -286,8 +288,8 @@ namespace Dev2.Studio.ViewModels.Deploy
                     _selectedDestinationServer = value;
                     LoadDestinationEnvironment(_selectedDestinationServer);
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
-                    NotifyOfPropertyChange(() => CanDeploy);
                     NotifyOfPropertyChange(() => SourceItemsSelected);
+                    NotifyOfPropertyChange(() => CanDeploy);
                 }
             }
         }

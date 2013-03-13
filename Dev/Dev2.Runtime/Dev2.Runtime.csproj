@@ -50,7 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -153,11 +153,6 @@
     <Compile Include="Network\ServerNetworkChannelContext.cs" />
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioTemplates.cs" />
-    <Compile Include="Security\HostSecureConfig.cs" />
-    <Compile Include="Security\HostSecurityProvider.cs" />
-    <Compile Include="Security\IHostSecurityProvider.cs" />
-    <Compile Include="Security\ISecureConfig.cs" />
-    <Compile Include="Security\RSAKey.cs" />
     <Compile Include="Workspaces\Framework\CompilerException.cs" />
     <Compile Include="Workspaces\Framework\DuplicateException.cs" />
     <Compile Include="Workspaces\DynamicServiceRepository.cs" />
@@ -183,7 +178,6 @@
     <Compile Include="Workspaces\Workspace_Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Security\Security.cd" />
     <None Include="Workspaces\Workspaces.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +233,10 @@
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -167,12 +167,18 @@ namespace Dev2.UI
                     
                     if (ServerChangedCommand != null && ServerChangedCommand.CanExecute(server.Environment))
                     {
-                        ServerChangedCommand.Execute(server);
+                        Dispatcher.BeginInvoke(new Action(() => 
+                        {
+                            ServerChangedCommand.Execute(server);
+                        }));
                     }
 
                     if (EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(server.Environment))
                     {
-                        EnvironmentChangedCommand.Execute(server.Environment);
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            EnvironmentChangedCommand.Execute(server.Environment);
+                        }));
                     }
                 }
 
