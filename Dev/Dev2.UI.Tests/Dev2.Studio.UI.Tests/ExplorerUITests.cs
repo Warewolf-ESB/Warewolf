@@ -4,6 +4,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
+using Dev2.CodedUI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps.SaveWizardDialogClasses;
+using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -18,7 +21,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Summary description for ExplorerUITests
     /// </summary>
-    [CodedUITest]
+    [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
     public class ExplorerUITests
     {
         public ExplorerUITests()
@@ -28,8 +31,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
-            // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
-            // For more information on generated code, see http://go.microsoft.com/fwlink/?LinkId=179463
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             
             // Refresh before we count :p
@@ -42,6 +43,44 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             int allResourcesAfterSearch = ExplorerUIMap.GetCategoryItems().Count;
             Assert.AreEqual(allResources, allResourcesAfterSearch);
+        }
+
+        //2013.03.11: Ashley Lewis - Bug 9124
+        [TestMethod]
+        public void TryConnectWhereBusyConnectingExpectedWizardCanCreateAndDeleteBoth()
+        {
+            //Initialize
+            var connectionWizard = new ServerWizard();
+            var saveWizard = new SaveWizardDialog();
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            var expected = ExplorerUIMap.AshesServerCount()+2;
+            var firstNewServer = Guid.NewGuid().ToString().Substring(0, 5);
+            var secondNewServer = Guid.NewGuid().ToString().Substring(0,5);
+
+            //Create first server
+            ExplorerUIMap.ClickNewServerButton();
+            connectionWizard.ClickNewServerAddress();
+            Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+            saveWizard.ClickFirstCategory();
+            saveWizard.ClickNameTextbox();
+            Keyboard.SendKeys(firstNewServer);
+            saveWizard.ClickSave();
+
+            //Try create second server
+            ExplorerUIMap.ClickNewServerButton();
+            connectionWizard.ClickNewServerAddress();
+            Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+            saveWizard.ClickFirstCategory();
+            saveWizard.ClickNameTextbox();
+            Keyboard.SendKeys(secondNewServer);
+            saveWizard.ClickSave();
+
+            //Assert
+            Assert.AreEqual(expected, ExplorerUIMap.AshesServerCount());
+
+            //Clean up
+            ExplorerUIMap.Server_RightClick_Delete(firstNewServer);
+            ExplorerUIMap.Server_RightClick_Delete(secondNewServer);
         }
 
         #region Additional test attributes
@@ -113,5 +152,20 @@ namespace Dev2.Studio.UI.Tests
         }
 
         private ExplorerUIMap _explorerUIMap;
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if ((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

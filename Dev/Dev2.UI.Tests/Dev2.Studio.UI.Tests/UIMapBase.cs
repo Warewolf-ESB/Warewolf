@@ -1,5 +1,4 @@
 ﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -18,6 +17,7 @@ using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests
@@ -30,20 +30,20 @@ namespace Dev2.Studio.UI.Tests
 
         #region ConnectViewUIMap
 
-        public ConnectViewUIMap ConnectViewUIMap
+        public ServerWizard ConnectViewUIMap
         {
             get
             {
                 if (_connectViewUIMap == null)
                 {
-                    _connectViewUIMap = new ConnectViewUIMap();
+                    _connectViewUIMap = new ServerWizard();
                 }
                 return _connectViewUIMap;
             }
 
         }
 
-        private ConnectViewUIMap _connectViewUIMap;
+        private ServerWizard _connectViewUIMap;
 
         #endregion ConnectViewUIMap
 

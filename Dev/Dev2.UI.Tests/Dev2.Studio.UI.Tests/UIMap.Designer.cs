@@ -8,26 +8,31 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.CodedUI.Tests;
+
 namespace Dev2.Studio.UI.Tests
 {
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Text.RegularExpressions;
+    using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.CodeDom.Compiler;
-    using System.Drawing;
-    using System.Windows.Input;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class UIMap
     {
-
+        
         /// <summary>
         /// Environment_Wizards_Workflow_Start - Use 'Environment_Wizards_Workflow_StartParams' to pass parameters into this method.
         /// </summary>
@@ -48,7 +53,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Service Details' title bar
             Mouse.Click(uIServiceDetailsTitleBar, new Point(443, 6));
         }
-
+        
         /// <summary>
         /// Environment_Wizards_Workflow_EnterSampleWorkflowDetails - Use 'Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams' to pass parameters into this method.
         /// </summary>
@@ -76,7 +81,7 @@ namespace Dev2.Studio.UI.Tests
             // Type 'CodedUITestCategory' in 'Service Details' window
             Keyboard.SendKeys(uIServiceDetailsWindow1, this.Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams.UIServiceDetailsWindow1SendKeys1, ModifierKeys.None);
         }
-
+        
         /// <summary>
         /// Environment_Wizards_Workflow_ClickDone
         /// </summary>
@@ -93,7 +98,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Service Details' window
             Mouse.Click(uIServiceDetailsWindow1, new Point(1007, 191));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_WorkflowServicesExists
         /// </summary>
@@ -106,7 +111,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'UI_WORKFLOW SERVICES_AutoID' tree item is not equal to 'null'
             Assert.IsNotNull(uIUI_WORKFLOWSERVICES_TreeItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_IsConnected
         /// </summary>
@@ -119,7 +124,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Disconnect' menu item equals 'null'
             Assert.IsNull(uIDisconnectMenuItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Server_RightClick
         /// </summary>
@@ -136,7 +141,7 @@ namespace Dev2.Studio.UI.Tests
             // Right-Click 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' tree item
             Mouse.Click(uIDev2StudioCoreViewMoTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(95, 5));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Server_RightClick_Disconnect
         /// </summary>
@@ -153,7 +158,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Disconnect' menu item
             Mouse.Click(uIDisconnectMenuItem, new Point(28, 12));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Connect_Click
         /// </summary>
@@ -170,7 +175,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Connect' button
             Mouse.Click(uIConnectButton, new Point(18, 9));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Server_RightClick_Connect
         /// </summary>
@@ -191,7 +196,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Connect' menu item
             Mouse.Click(uIConnectMenuItem, new Point(28, 15));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_WorkerServicesExists
         /// </summary>
@@ -208,7 +213,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'UI_WORKER SERVICES_AutoID' tree item is not equal to 'null'
             Assert.IsNotNull(uIUI_WORKERSERVICES_AuTreeItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_SourcesExists
         /// </summary>
@@ -221,7 +226,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'UI_SOURCES_AutoID' tree item is not equal to 'null'
             Assert.IsNotNull(uIUI_SOURCES_AutoIDTreeItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Wizards_Workflow_ClickAdvanced
         /// </summary>
@@ -234,7 +239,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Service Details' window
             Mouse.Click(uIServiceDetailsWindow1, new Point(1123, 45));
         }
-
+        
         /// <summary>
         /// Environment_Workflow_StartButtonExists
         /// </summary>
@@ -247,7 +252,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'StartNode' custom control is not equal to 'null'
             Assert.IsNotNull(uIStartNodeCustom.AutomationId);
         }
-
+        
         /// <summary>
         /// ClickWorkflow
         /// </summary>
@@ -260,7 +265,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Flowchart' custom control
             Mouse.Click(uIFlowchartCustom, new Point(384, 173));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_DragComponentOntoWorkflow
         /// </summary>
@@ -280,7 +285,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIBaseConversionText1, new Point(45, 10));
             Mouse.StopDragging(uIFlowchartCustom, new Point(319, 271));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Toolbox_BaseConversion_Click
         /// </summary>
@@ -297,7 +302,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Base Conversion' label
             Mouse.Click(uIBaseConversionText1, new Point(66, 14));
         }
-
+        
         /// <summary>
         /// Environment_Workflow_Flowchart_Click
         /// </summary>
@@ -310,7 +315,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Flowchart' custom control
             Mouse.Click(uIFlowchartCustom, new Point(425, 365));
         }
-
+        
         /// <summary>
         /// WorkflowItemPresenterExists
         /// </summary>
@@ -326,7 +331,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'WorkflowItemPresenter' custom control is not equal to 'null'
             Assert.IsNotNull(uIWorkflowItemPresenteCustom.AutomationId);
         }
-
+        
         /// <summary>
         /// ActivityTypeDesignerExists
         /// </summary>
@@ -339,7 +344,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'ActivityBuilder' custom control is not equal to 'null'
             Assert.IsNotNull(uIActivityBuilderCustom.AutomationId);
         }
-
+        
         /// <summary>
         /// scrollViewerExists
         /// </summary>
@@ -352,7 +357,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'scrollViewer' pane is not equal to 'null'
             Assert.IsNotNull(uIScrollViewerPane.AutomationId);
         }
-
+        
         /// <summary>
         /// UserControl_1Exists
         /// </summary>
@@ -365,7 +370,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'UserControl_1' custom control is not equal to 'null'
             Assert.IsNotNull(uIUserControl_1Custom.AutomationId);
         }
-
+        
         /// <summary>
         /// WorkflowDesignerWindowExists
         /// </summary>
@@ -378,7 +383,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ClassName' property of custom control is not equal to 'null'
             Assert.IsNotNull(uIItemCustom1.ClassName);
         }
-
+        
         /// <summary>
         /// ContentPaneExists
         /// </summary>
@@ -391,7 +396,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ClassName' property of 'CodedUITestWorkflow' custom control is not equal to 'null'
             Assert.IsNotNull(uICodedUITestWorkflowCustom.ClassName);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_AnotherServer_Exists
         /// </summary>
@@ -404,7 +409,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'UI_Sashens Server (http://rsaklfsashennai:77/dsf)_...' tree item is not equal to 'null'
             Assert.IsNotNull(uIUI_SashensServerhttpTreeItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_AnotherServer_RightClick
         /// </summary>
@@ -417,7 +422,7 @@ namespace Dev2.Studio.UI.Tests
             // Right-Click 'UI_Sashens Server (http://rsaklfsashennai:77/dsf)_...' tree item
             Mouse.Click(uIUI_SashensServerhttpTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(91, 19));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_AnotherServer_RightClick_Connect
         /// </summary>
@@ -430,7 +435,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Connect' menu item
             Mouse.Click(uIConnectMenuItem, new Point(31, 14));
         }
-
+        
         /// <summary>
         /// Environment_Explorer_AnotherServer_DoesRightClickDisconnectExist
         /// </summary>
@@ -443,7 +448,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Disconnect' menu item is not equal to 'null'
             Assert.IsNotNull(uIDisconnectMenuItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Server_DoesRightClickDisconnectExist
         /// </summary>
@@ -456,7 +461,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Disconnect' menu item is not equal to 'null'
             Assert.IsNotNull(uIDisconnectMenuItem.AutomationId);
         }
-
+        
         /// <summary>
         /// TryFindDC
         /// </summary>
@@ -469,7 +474,7 @@ namespace Dev2.Studio.UI.Tests
             // Right-Click 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' tree item
             Mouse.Click(uIDev2StudioCoreViewMoTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(175, 12));
         }
-
+        
         /// <summary>
         /// DisconnectExists
         /// </summary>
@@ -482,7 +487,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'Name' property of 'Disconnect' menu item is not equal to 'null'
             Assert.IsNotNull(uIDisconnectMenuItem.Name);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_AnotherServer_IsConnected
         /// </summary>
@@ -495,7 +500,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'UI_Sashens Server (http://rsaklfsashennai:77/dsf)_...' -> 'UI_WORKFLOW SERVICES_AutoID' tree item is not equal to 'null'
             Assert.IsNotNull(uIUI_WORKFLOWSERVICES_TreeItem.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_SetFocus
         /// </summary>
@@ -508,7 +513,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'ribbon' tab list
             Mouse.Click(uIRibbonTabList, new Point(910, 4));
         }
-
+        
         /// <summary>
         /// Environment_Toolbox_Click
         /// </summary>
@@ -521,7 +526,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Toolbox' tab
             Mouse.Click(uIToolboxTabPage, new Point(4, 22));
         }
-
+        
         /// <summary>
         /// Environment_Properties_Click
         /// </summary>
@@ -534,7 +539,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Properties' tab
             Mouse.Click(uIPropertiesTabPage, new Point(4, 26));
         }
-
+        
         /// <summary>
         /// Environment_Mapping_Click
         /// </summary>
@@ -547,7 +552,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Mapping' tab
             Mouse.Click(uIMappingTabPage, new Point(4, 42));
         }
-
+        
         /// <summary>
         /// Environment_DataList_Click
         /// </summary>
@@ -560,7 +565,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'DataList' tab
             Mouse.Click(uIDataListTabPage, new Point(9, 34));
         }
-
+        
         /// <summary>
         /// DoesThisExist
         /// </summary>
@@ -573,7 +578,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Business Design Studio (DEV2\Michael.Cullen)' window is not equal to 'null'
             Assert.IsNotNull(uIBusinessDesignStudioWindow.AutomationId);
         }
-
+        
         /// <summary>
         /// Environment_Explorer_Click
         /// </summary>
@@ -586,7 +591,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Explorer' tab
             Mouse.Click(uIExplorerTabPage, new Point(4, 26));
         }
-
+        
         /// <summary>
         /// RibbonExists
         /// </summary>
@@ -599,7 +604,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'ribbon' tab list is not equal to 'null'
             Assert.IsNotNull(uIRibbonTabList.AutomationId);
         }
-
+        
         /// <summary>
         /// PartToolsExists
         /// </summary>
@@ -612,7 +617,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'PART_Tools' tree is not equal to 'null'
             Assert.IsNotNull(uIPART_ToolsTree.AutomationId);
         }
-
+        
         /// <summary>
         /// TabItemNotNull
         /// </summary>
@@ -625,7 +630,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ClassName' property of 'Toolbox' tab is not equal to 'null'
             Assert.IsNotNull(uIToolboxTabPage.ClassName);
         }
-
+        
         /// <summary>
         /// ToolboxExists
         /// </summary>
@@ -638,7 +643,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Toolbox' custom control is not equal to 'null'
             Assert.IsNotNull(uIToolboxCustom.AutomationId);
         }
-
+        
         /// <summary>
         /// PartTools2Exists
         /// </summary>
@@ -651,7 +656,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'PART_Tools' tree is not equal to 'null'
             Assert.IsNotNull(uIPART_ToolsTree.AutomationId);
         }
-
+        
         /// <summary>
         /// ToolboxControlExists
         /// </summary>
@@ -664,7 +669,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ClassName' property of first custom control next to 'Toolbox' label is not equal to 'null'
             Assert.IsNotNull(uIItemCustom.ClassName);
         }
-
+        
         /// <summary>
         /// ToolboxPaneExists
         /// </summary>
@@ -677,7 +682,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Toolbox' custom control is not equal to 'null'
             Assert.IsNotNull(uIToolboxCustom.AutomationId);
         }
-
+        
         /// <summary>
         /// ExplorerPaneExists
         /// </summary>
@@ -690,7 +695,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Explorer' custom control is not equal to 'null'
             Assert.IsNotNull(uIExplorerCustom.AutomationId);
         }
-
+        
         /// <summary>
         /// TvExplorerExists
         /// </summary>
@@ -703,7 +708,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'tvExplorer' tree is not equal to 'null'
             Assert.IsNotNull(uITvExplorerTree.AutomationId);
         }
-
+        
         /// <summary>
         /// AssertForWorkflowDesigner - Use 'AssertForWorkflowDesignerExpectedValues' to pass parameters into this method.
         /// </summary>
@@ -716,7 +721,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'scrollViewer' pane equals 'scrollViewer'
             Assert.AreEqual(this.AssertForWorkflowDesignerExpectedValues.UIScrollViewerPaneAutomationId, uIScrollViewerPane.AutomationId, "TestFlow");
         }
-
+        
         /// <summary>
         /// ClickBPMCI
         /// </summary>
@@ -729,7 +734,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'UI_localhost (http://127.0.0.1:77/dsf)_AutoID' -> 'UI_WORKFLOW SERVICES_AutoID' -> 'UI_BPM_CI_AutoID' tree item
             Mouse.Click(uIUI_BPM_CI_AutoIDTreeItem, new Point(82, 9));
         }
-
+        
         /// <summary>
         /// ConnectBtnClick
         /// </summary>
@@ -742,7 +747,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Connect' button
             Mouse.Click(uIConnectButton, new Point(35, 11));
         }
-
+        
         /// <summary>
         /// somestuff
         /// </summary>
@@ -786,7 +791,7 @@ namespace Dev2.Studio.UI.Tests
             // Click text box
             Mouse.Click(uIItemEdit, new Point(646, 10));
         }
-
+        
         /// <summary>
         /// someMethodForDeployTab - Use 'someMethodForDeployTabParams' to pass parameters into this method.
         /// </summary>
@@ -833,7 +838,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' tree item
             Mouse.Click(uIDev2StudioCoreViewMoTreeItem1, new Point(31, 4));
         }
-
+        
         /// <summary>
         /// DeployTabSomeStuffItDoes - Use 'DeployTabSomeStuffItDoesParams' to pass parameters into this method.
         /// </summary>
@@ -862,7 +867,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' tree item
             Mouse.Click(uIDev2StudioCoreViewMoTreeItem1, new Point(45, 7));
         }
-
+        
         /// <summary>
         /// MoveToWorkflowDesigner
         /// </summary>
@@ -882,7 +887,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIBaseConversionText1, new Point(18, 11));
             Mouse.StopDragging(uIFlowchartCustom, new Point(392, 422));
         }
-
+        
         /// <summary>
         /// RecordedMethod1
         /// </summary>
@@ -898,7 +903,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIDsfBaseConvertActiviCustom, new Point(192, 3));
             Mouse.StopDragging(uIFlowchartCustom, new Point(371, 336));
         }
-
+        
         /// <summary>
         /// RecordedMethod2
         /// </summary>
@@ -915,7 +920,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIDsfBaseConvertActiviCustom, new Point(198, 12));
             Mouse.StopDragging(uIDsfBaseConvertActiviCustom, 9, 0);
         }
-
+        
         /// <summary>
         /// RecordedMethod3
         /// </summary>
@@ -932,7 +937,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIDsfBaseConvertActiviCustom, new Point(201, 11));
             Mouse.StopDragging(uIDsfBaseConvertActiviCustom, 18, 1);
         }
-
+        
         /// <summary>
         /// RecordedMethod4
         /// </summary>
@@ -959,7 +964,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIBaseConversionText1, new Point(63, 7));
             Mouse.StopDragging(uIFlowchartCustom, new Point(222, 338));
         }
-
+        
         /// <summary>
         /// RecordedMethod5
         /// </summary>
@@ -982,7 +987,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.StartDragging(uIBaseConversionText1, new Point(41, 12));
             Mouse.StopDragging(uIFlowchartCustom, new Point(254, 355));
         }
-
+        
         /// <summary>
         /// Cake2Exists
         /// </summary>
@@ -995,7 +1000,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of '--CAKE!2' custom control is not equal to 'null'
             Assert.IsNotNull(uICAKE2Custom.AutomationId);
         }
-
+        
         /// <summary>
         /// Cake1Exists
         /// </summary>
@@ -1008,7 +1013,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'CAKE!1' custom control is not equal to 'null'
             Assert.IsNotNull(uICAKE1Custom.AutomationId);
         }
-
+        
         /// <summary>
         /// splurtExists - Use 'splurtExistsExpectedValues' to pass parameters into this method.
         /// </summary>
@@ -1024,7 +1029,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'PBI 6527' custom control is not equal to 'null'
             Assert.IsNotNull(uIPBI6527Custom.AutomationId);
         }
-
+        
         /// <summary>
         /// TabPageExists
         /// </summary>
@@ -1037,7 +1042,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ControlType' property of 'PBI 6527' tab is not equal to 'null'
             Assert.IsNotNull(uIPBI6527TabPage.ControlType);
         }
-
+        
         /// <summary>
         /// sourceServerNotNull
         /// </summary>
@@ -1053,7 +1058,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'UI_SourceServercbx_AutoID' combo box is not equal to 'null'
             Assert.IsNotNull(uIUI_SourceServercbx_AComboBox.AutomationId);
         }
-
+        
         /// <summary>
         /// ClickLocalHost - Use 'ClickLocalHostParams' to pass parameters into this method.
         /// </summary>
@@ -1074,7 +1079,7 @@ namespace Dev2.Studio.UI.Tests
             // Select 'Dev2.Studio.Core.InterfaceImplementors.ServerDTO' in 'UI_SourceServercbx_AutoID' combo box
             uIUI_SourceServercbx_AComboBox.SelectedItem = this.ClickLocalHostParams.UIUI_SourceServercbx_AComboBoxSelectedItem;
         }
-
+        
         /// <summary>
         /// CanClickDeploy
         /// </summary>
@@ -1087,7 +1092,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Deploy' menu item is not equal to 'null'
             Assert.IsNotNull(uIDeployMenuItem.AutomationId);
         }
-
+        
         /// <summary>
         /// WindowExists
         /// </summary>
@@ -1100,7 +1105,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ClassName' property of 'Workflow Service Details' window is not equal to 'null'
             Assert.IsNotNull(uIWorkflowServiceDetaiWindow.ClassName);
         }
-
+        
         /// <summary>
         /// TitleBarIsNotNull
         /// </summary>
@@ -1113,7 +1118,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Workflow Service Details' title bar is not equal to 'null'
             Assert.IsNotNull(uIWorkflowServiceDetaiTitleBar.AutomationId);
         }
-
+        
         /// <summary>
         /// CloseButtonIsNotNull
         /// </summary>
@@ -1126,7 +1131,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Close' button is not equal to 'null'
             Assert.IsNotNull(uICloseButton.AutomationId);
         }
-
+        
         /// <summary>
         /// TabManagerNotNull
         /// </summary>
@@ -1139,7 +1144,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'UI_TabManager_AutoID' tab list is not equal to 'null'
             Assert.IsNotNull(uIUI_TabManager_AutoIDTabList.AutomationId);
         }
-
+        
         /// <summary>
         /// TabManagerIsNotNull
         /// </summary>
@@ -1152,7 +1157,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'UI_TabManager_AutoID' tab list is not equal to 'null'
             Assert.IsNotNull(uIUI_TabManager_AutoIDTabList.AutomationId);
         }
-
+        
         /// <summary>
         /// ClickNameTextBox
         /// </summary>
@@ -1165,7 +1170,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Workflow Service Details' window
             Mouse.Click(uIWorkflowServiceDetaiWindow1, new Point(245, 71));
         }
-
+        
         /// <summary>
         /// WorkflowDesigner_ClickNameTextbox - Use 'WorkflowDesigner_ClickNameTextboxParams' to pass parameters into this method.
         /// </summary>
@@ -1178,7 +1183,7 @@ namespace Dev2.Studio.UI.Tests
             // Type '' in 'Dev2ServiceName' text box
             uIDev2ServiceNameEdit.Text = this.WorkflowDesigner_ClickNameTextboxParams.UIDev2ServiceNameEditText;
         }
-
+        
         /// <summary>
         /// WorkflowDesigner_TypeTextInNameTextbox - Use 'WorkflowDesigner_TypeTextInNameTextboxParams' to pass parameters into this method.
         /// </summary>
@@ -1194,7 +1199,7 @@ namespace Dev2.Studio.UI.Tests
             // Type 'Bug6482' in 'Dev2ServiceName' text box
             uIDev2ServiceNameEdit.Text = this.WorkflowDesigner_TypeTextInNameTextboxParams.UIDev2ServiceNameEditText1;
         }
-
+        
         /// <summary>
         /// TypeTextInNameTextbox - Use 'TypeTextInNameTextboxParams' to pass parameters into this method.
         /// </summary>
@@ -1216,7 +1221,7 @@ namespace Dev2.Studio.UI.Tests
             // Type 'DragMultipleControls' in 'Workflow Service Details' window
             Keyboard.SendKeys(uIWorkflowServiceDetaiWindow1, this.TypeTextInNameTextboxParams.UIWorkflowServiceDetaiWindow1SendKeys, ModifierKeys.None);
         }
-
+        
         /// <summary>
         /// EnterSpamInFilterBox - Use 'EnterSpamInFilterBoxParams' to pass parameters into this method.
         /// </summary>
@@ -1229,7 +1234,7 @@ namespace Dev2.Studio.UI.Tests
             // Type 'dddddddddddddddddd' in 'UI_SourceServerSearchtxt_AutoID' text box
             uIUI_SourceServerSearcEdit.Text = this.EnterSpamInFilterBoxParams.UIUI_SourceServerSearcEditText;
         }
-
+        
         /// <summary>
         /// somestuffMethodName - Use 'somestuffMethodNameParams' to pass parameters into this method.
         /// </summary>
@@ -1242,7 +1247,7 @@ namespace Dev2.Studio.UI.Tests
             // Type 'test123' in 'UI_SourceServerSearchtxt_AutoID' text box
             uIUI_SourceServerSearcEdit.Text = this.somestuffMethodNameParams.UIUI_SourceServerSearcEditText;
         }
-
+        
         /// <summary>
         /// DeployOptionExists
         /// </summary>
@@ -1255,7 +1260,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Deploy' menu item is not equal to 'null'
             Assert.IsNotNull(uIDeployMenuItem.AutomationId);
         }
-
+        
         /// <summary>
         /// ProcessErrorWindowExists
         /// </summary>
@@ -1268,7 +1273,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'ClassName' property of 'Process Error' window is not equal to 'null'
             Assert.IsNotNull(uIProcessErrorWindow.ClassName);
         }
-
+        
         /// <summary>
         /// TestText
         /// </summary>
@@ -1281,7 +1286,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'Text' property of text box is not equal to 'null'
             Assert.IsNotNull(uIItemEdit.Text);
         }
-
+        
         /// <summary>
         /// IEContainsTest - Use 'IEContainsTestExpectedValues' to pass parameters into this method.
         /// </summary>
@@ -1329,7 +1334,7 @@ namespace Dev2.Studio.UI.Tests
             //  </DataList>'
             StringAssert.Contains(uIHttp1270011234servicDocument.InnerText, this.IEContainsTestExpectedValues.UIHttp1270011234servicDocumentInnerText);
         }
-
+        
         /// <summary>
         /// ExplorerSearchText
         /// </summary>
@@ -1342,7 +1347,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'UI_txtSearch_AutoID' text box
             Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(84, 11));
         }
-
+        
         /// <summary>
         /// UIMap_Test
         /// </summary>
@@ -1355,7 +1360,7 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'AutomationId' property of 'Explorer' custom control is not equal to 'null'
             Assert.IsNotNull(uIExplorerCustom.AutomationId, "Test123");
         }
-
+        
         /// <summary>
         /// selectUpInFormatNumbercbbx - Use 'selectUpInFormatNumbercbbxParams' to pass parameters into this method.
         /// </summary>
@@ -1368,7 +1373,7 @@ namespace Dev2.Studio.UI.Tests
             // Select 'Up' in 'UI__Rounding_ComboBox_AutoID' combo box
             uIUI__Rounding_ComboBoComboBox.SelectedItem = this.selectUpInFormatNumbercbbxParams.UIUI__Rounding_ComboBoComboBoxSelectedItem;
         }
-
+        
         /// <summary>
         /// MoTest - Use 'MoTestExpectedValues' to pass parameters into this method.
         /// </summary>
@@ -1381,7 +1386,46 @@ namespace Dev2.Studio.UI.Tests
             // Verify that the 'Enabled' property of 'Dev2StatusBarAutomationID' text box equals 'True'
             Assert.AreEqual(this.MoTestExpectedValues.UIDev2StatusBarAutomatEditEnabled, uIDev2StatusBarAutomatEdit.Enabled);
         }
+        
+        /// <summary>
+        /// MyTestAssert - Use 'MyTestAssertExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void MyTestAssert()
+        {
+            #region Variable Declarations
+            WpfButton uIUI_SourceServerRefreButton = this.UIBusinessDesignStudioWindow3.UIExplorerCustom.UITheNavigationViewCustom.UIUI_SourceServerRefreButton;
+            #endregion
 
+            // Verify that the 'FriendlyName' property of 'UI_SourceServerRefreshbtn_AutoID' button equals 'UI_SourceServerRefreshbtn_AutoID'
+            Assert.AreEqual(this.MyTestAssertExpectedValues.UIUI_SourceServerRefreButtonFriendlyName, uIUI_SourceServerRefreButton.FriendlyName);
+        }
+        
+        /// <summary>
+        /// ClickNewServer
+        /// </summary>
+        public void ClickNewServer()
+        {
+            #region Variable Declarations
+            WpfButton uIItemButton = this.UIBusinessDesignStudioWindow4.UIExplorerCustom.UIConnectUserControlCustom.UIItemButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(uIItemButton, new Point(7, 12));
+        }
+        
+        /// <summary>
+        /// ClickNewServerButton
+        /// </summary>
+        public void ClickNewServerButton()
+        {
+            #region Variable Declarations
+            WpfButton uIItemButton = this.UIBusinessDesignStudioWindow4.UIExplorerCustom.UIConnectUserControlCustom.UIItemButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(uIItemButton, new Point(6, 8));
+        }
+        
         #region Properties
         public virtual Environment_Wizards_Workflow_StartParams Environment_Wizards_Workflow_StartParams
         {
@@ -1394,7 +1438,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mEnvironment_Wizards_Workflow_StartParams;
             }
         }
-
+        
         public virtual Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams
         {
             get
@@ -1406,7 +1450,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mEnvironment_Wizards_Workflow_EnterSampleWorkflowDetailsParams;
             }
         }
-
+        
         public virtual AssertForWorkflowDesignerExpectedValues AssertForWorkflowDesignerExpectedValues
         {
             get
@@ -1418,7 +1462,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mAssertForWorkflowDesignerExpectedValues;
             }
         }
-
+        
         public virtual someMethodForDeployTabParams someMethodForDeployTabParams
         {
             get
@@ -1430,7 +1474,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.msomeMethodForDeployTabParams;
             }
         }
-
+        
         public virtual DeployTabSomeStuffItDoesParams DeployTabSomeStuffItDoesParams
         {
             get
@@ -1442,7 +1486,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mDeployTabSomeStuffItDoesParams;
             }
         }
-
+        
         public virtual splurtExistsExpectedValues splurtExistsExpectedValues
         {
             get
@@ -1454,7 +1498,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.msplurtExistsExpectedValues;
             }
         }
-
+        
         public virtual ClickLocalHostParams ClickLocalHostParams
         {
             get
@@ -1466,7 +1510,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mClickLocalHostParams;
             }
         }
-
+        
         public virtual WorkflowDesigner_ClickNameTextboxParams WorkflowDesigner_ClickNameTextboxParams
         {
             get
@@ -1478,7 +1522,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mWorkflowDesigner_ClickNameTextboxParams;
             }
         }
-
+        
         public virtual WorkflowDesigner_TypeTextInNameTextboxParams WorkflowDesigner_TypeTextInNameTextboxParams
         {
             get
@@ -1490,7 +1534,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mWorkflowDesigner_TypeTextInNameTextboxParams;
             }
         }
-
+        
         public virtual TypeTextInNameTextboxParams TypeTextInNameTextboxParams
         {
             get
@@ -1502,7 +1546,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mTypeTextInNameTextboxParams;
             }
         }
-
+        
         public virtual EnterSpamInFilterBoxParams EnterSpamInFilterBoxParams
         {
             get
@@ -1514,7 +1558,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mEnterSpamInFilterBoxParams;
             }
         }
-
+        
         public virtual somestuffMethodNameParams somestuffMethodNameParams
         {
             get
@@ -1526,7 +1570,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.msomestuffMethodNameParams;
             }
         }
-
+        
         public virtual IEContainsTestExpectedValues IEContainsTestExpectedValues
         {
             get
@@ -1538,7 +1582,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mIEContainsTestExpectedValues;
             }
         }
-
+        
         public virtual selectUpInFormatNumbercbbxParams selectUpInFormatNumbercbbxParams
         {
             get
@@ -1550,7 +1594,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mselectUpInFormatNumbercbbxParams;
             }
         }
-
+        
         public virtual MoTestExpectedValues MoTestExpectedValues
         {
             get
@@ -1562,7 +1606,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mMoTestExpectedValues;
             }
         }
-
+        
         public virtual MyTestAssertExpectedValues MyTestAssertExpectedValues
         {
             get
@@ -1574,7 +1618,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mMyTestAssertExpectedValues;
             }
         }
-
+        
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
@@ -1586,7 +1630,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIBusinessDesignStudioWindow;
             }
         }
-
+        
         public UIBusinessDesignStudioWindow1 UIBusinessDesignStudioWindow1
         {
             get
@@ -1598,7 +1642,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIBusinessDesignStudioWindow1;
             }
         }
-
+        
         public UIServiceDetailsWindow UIServiceDetailsWindow
         {
             get
@@ -1610,7 +1654,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIServiceDetailsWindow;
             }
         }
-
+        
         public UIServiceDetailsWindow1 UIServiceDetailsWindow1
         {
             get
@@ -1622,7 +1666,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIServiceDetailsWindow1;
             }
         }
-
+        
         public UIBusinessDesignStudioWindow2 UIBusinessDesignStudioWindow2
         {
             get
@@ -1634,7 +1678,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIBusinessDesignStudioWindow2;
             }
         }
-
+        
         public UIBusinessDesignStudioWindow11 UIBusinessDesignStudioWindow11
         {
             get
@@ -1646,7 +1690,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIBusinessDesignStudioWindow11;
             }
         }
-
+        
         public UIWorkflowServiceDetaiWindow UIWorkflowServiceDetaiWindow
         {
             get
@@ -1658,7 +1702,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowServiceDetaiWindow;
             }
         }
-
+        
         public UIWorkflowServiceDetaiWindow1 UIWorkflowServiceDetaiWindow1
         {
             get
@@ -1670,7 +1714,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowServiceDetaiWindow1;
             }
         }
-
+        
         public UIWorkflowServiceDetaiWindow2 UIWorkflowServiceDetaiWindow2
         {
             get
@@ -1682,7 +1726,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowServiceDetaiWindow2;
             }
         }
-
+        
         public UIProcessErrorWindow UIProcessErrorWindow
         {
             get
@@ -1694,7 +1738,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIProcessErrorWindow;
             }
         }
-
+        
         public UIUntitledNotepadWindow UIUntitledNotepadWindow
         {
             get
@@ -1706,7 +1750,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUntitledNotepadWindow;
             }
         }
-
+        
         public UIHttp1270011234servicWindow UIHttp1270011234servicWindow
         {
             get
@@ -1718,7 +1762,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIHttp1270011234servicWindow;
             }
         }
-
+        
         public UIBusinessDesignStudioWindow3 UIBusinessDesignStudioWindow3
         {
             get
@@ -1730,76 +1774,90 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIBusinessDesignStudioWindow3;
             }
         }
+        
+        public UIBusinessDesignStudioWindow4 UIBusinessDesignStudioWindow4
+        {
+            get
+            {
+                if ((this.mUIBusinessDesignStudioWindow4 == null))
+                {
+                    this.mUIBusinessDesignStudioWindow4 = new UIBusinessDesignStudioWindow4();
+                }
+                return this.mUIBusinessDesignStudioWindow4;
+            }
+        }
         #endregion
-
+        
         #region Fields
         private Environment_Wizards_Workflow_StartParams mEnvironment_Wizards_Workflow_StartParams;
-
+        
         private Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams mEnvironment_Wizards_Workflow_EnterSampleWorkflowDetailsParams;
-
+        
         private AssertForWorkflowDesignerExpectedValues mAssertForWorkflowDesignerExpectedValues;
-
+        
         private someMethodForDeployTabParams msomeMethodForDeployTabParams;
-
+        
         private DeployTabSomeStuffItDoesParams mDeployTabSomeStuffItDoesParams;
-
+        
         private splurtExistsExpectedValues msplurtExistsExpectedValues;
-
+        
         private ClickLocalHostParams mClickLocalHostParams;
-
+        
         private WorkflowDesigner_ClickNameTextboxParams mWorkflowDesigner_ClickNameTextboxParams;
-
+        
         private WorkflowDesigner_TypeTextInNameTextboxParams mWorkflowDesigner_TypeTextInNameTextboxParams;
-
+        
         private TypeTextInNameTextboxParams mTypeTextInNameTextboxParams;
-
+        
         private EnterSpamInFilterBoxParams mEnterSpamInFilterBoxParams;
-
+        
         private somestuffMethodNameParams msomestuffMethodNameParams;
-
+        
         private IEContainsTestExpectedValues mIEContainsTestExpectedValues;
-
+        
         private selectUpInFormatNumbercbbxParams mselectUpInFormatNumbercbbxParams;
-
+        
         private MoTestExpectedValues mMoTestExpectedValues;
-
+        
         private MyTestAssertExpectedValues mMyTestAssertExpectedValues;
-
+        
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
-
+        
         private UIBusinessDesignStudioWindow1 mUIBusinessDesignStudioWindow1;
-
+        
         private UIServiceDetailsWindow mUIServiceDetailsWindow;
-
+        
         private UIServiceDetailsWindow1 mUIServiceDetailsWindow1;
-
+        
         private UIBusinessDesignStudioWindow2 mUIBusinessDesignStudioWindow2;
-
+        
         private UIBusinessDesignStudioWindow11 mUIBusinessDesignStudioWindow11;
-
+        
         private UIWorkflowServiceDetaiWindow mUIWorkflowServiceDetaiWindow;
-
+        
         private UIWorkflowServiceDetaiWindow1 mUIWorkflowServiceDetaiWindow1;
-
+        
         private UIWorkflowServiceDetaiWindow2 mUIWorkflowServiceDetaiWindow2;
-
+        
         private UIProcessErrorWindow mUIProcessErrorWindow;
-
+        
         private UIUntitledNotepadWindow mUIUntitledNotepadWindow;
-
+        
         private UIHttp1270011234servicWindow mUIHttp1270011234servicWindow;
-
+        
         private UIBusinessDesignStudioWindow3 mUIBusinessDesignStudioWindow3;
+        
+        private UIBusinessDesignStudioWindow4 mUIBusinessDesignStudioWindow4;
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'Environment_Wizards_Workflow_Start'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class Environment_Wizards_Workflow_StartParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type 'Control + n' in 'Business Design Studio (DEV2\Michael.Cullen)' window
@@ -1807,34 +1865,34 @@ namespace Dev2.Studio.UI.Tests
         public string UIBusinessDesignStudioWindow1SendKeys = "n";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'Environment_Wizards_Workflow_EnterSampleWorkflowDetails'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class Environment_Wizards_Workflow_EnterSampleWorkflowDetailsParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type 'CodedUITestWorkflow' in 'Service Details' window
         /// </summary>
         public string UIServiceDetailsWindow1SendKeys = "CodedUITestWorkflow";
-
+        
         /// <summary>
         /// Type 'CodedUITestCategory' in 'Service Details' window
         /// </summary>
         public string UIServiceDetailsWindow1SendKeys1 = "CodedUITestCategory";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'AssertForWorkflowDesigner'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class AssertForWorkflowDesignerExpectedValues
     {
-
+        
         #region Fields
         /// <summary>
         /// Verify that the 'AutomationId' property of 'scrollViewer' pane equals 'scrollViewer'
@@ -1842,69 +1900,69 @@ namespace Dev2.Studio.UI.Tests
         public string UIScrollViewerPaneAutomationId = "scrollViewer";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'someMethodForDeployTab'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class someMethodForDeployTabParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Select 'Dev2.Studio.Core.InterfaceImplementors.ServerDTO' in 'UI_SourceServercbx_AutoID' combo box
         /// </summary>
         public string UIUI_SourceServercbx_AComboBoxSelectedItem = "Dev2.Studio.Core.InterfaceImplementors.ServerDTO";
-
+        
         /// <summary>
         /// Expand 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'UI_SourceServer_WORKFLOW SERVICES_AutoID' -> 'UI_SourceServer_SYSTEM_AutoID' tree item
         /// </summary>
         public bool UIUI_SourceServer_SYSTTreeItemExpanded = true;
-
+        
         /// <summary>
         /// Select 'UI_CheckBoxAutocompleteBinder_AutoID' check box
         /// </summary>
         public bool UIUI_CheckBoxAutocomplCheckBoxChecked = true;
-
+        
         /// <summary>
         /// Select 'Dev2.Studio.Core.InterfaceImplementors.ServerDTO' in 'UI_DestinationServercbx_AutoID' combo box
         /// </summary>
         public string UIUI_DestinationServerComboBoxSelectedItem = "Dev2.Studio.Core.InterfaceImplementors.ServerDTO";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'DeployTabSomeStuffItDoes'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class DeployTabSomeStuffItDoesParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Select 'Dev2.Studio.Core.InterfaceImplementors.ServerDTO' in 'UI_SourceServercbx_AutoID' combo box
         /// </summary>
         public string UIUI_SourceServercbx_AComboBoxSelectedItem = "Dev2.Studio.Core.InterfaceImplementors.ServerDTO";
-
+        
         /// <summary>
         /// Expand 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'UI_SourceServer_WORKFLOW SERVICES_AutoID' -> 'UI_SourceServer_HUMAN INTERFACE WORKFLOW_AutoID' tree item
         /// </summary>
         public bool UIUI_SourceServer_HUMATreeItemExpanded = true;
-
+        
         /// <summary>
         /// Select 'UI_CheckBoxMineWebpage_AutoID' check box
         /// </summary>
         public bool UIUI_CheckBoxMineWebpaCheckBoxChecked = true;
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'splurtExists'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class splurtExistsExpectedValues
     {
-
+        
         #region Fields
         /// <summary>
         /// Verify that the 'AutomationId' property of 'PBI 6527' custom control equals 'splurt'
@@ -1912,14 +1970,14 @@ namespace Dev2.Studio.UI.Tests
         public string UIPBI6527CustomAutomationId = "splurt";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'ClickLocalHost'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class ClickLocalHostParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Select 'Dev2.Studio.Core.InterfaceImplementors.ServerDTO' in 'UI_SourceServercbx_AutoID' combo box
@@ -1927,14 +1985,14 @@ namespace Dev2.Studio.UI.Tests
         public string UIUI_SourceServercbx_AComboBoxSelectedItem = "Dev2.Studio.Core.InterfaceImplementors.ServerDTO";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'WorkflowDesigner_ClickNameTextbox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class WorkflowDesigner_ClickNameTextboxParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type '' in 'Dev2ServiceName' text box
@@ -1942,34 +2000,34 @@ namespace Dev2.Studio.UI.Tests
         public string UIDev2ServiceNameEditText = "";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'WorkflowDesigner_TypeTextInNameTextbox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class WorkflowDesigner_TypeTextInNameTextboxParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type '' in 'Dev2ServiceName' text box
         /// </summary>
         public string UIDev2ServiceNameEditText = "";
-
+        
         /// <summary>
         /// Type 'Bug6482' in 'Dev2ServiceName' text box
         /// </summary>
         public string UIDev2ServiceNameEditText1 = "Bug6482";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'TypeTextInNameTextbox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class TypeTextInNameTextboxParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type 'DragMultipleControls' in 'Workflow Service Details' window
@@ -1977,14 +2035,14 @@ namespace Dev2.Studio.UI.Tests
         public string UIWorkflowServiceDetaiWindow1SendKeys = "DragMultipleControls";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'EnterSpamInFilterBox'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class EnterSpamInFilterBoxParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type 'dddddddddddddddddd' in 'UI_SourceServerSearchtxt_AutoID' text box
@@ -1992,14 +2050,14 @@ namespace Dev2.Studio.UI.Tests
         public string UIUI_SourceServerSearcEditText = "dddddddddddddddddd";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'somestuffMethodName'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class somestuffMethodNameParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Type 'test123' in 'UI_SourceServerSearchtxt_AutoID' text box
@@ -2007,14 +2065,14 @@ namespace Dev2.Studio.UI.Tests
         public string UIUI_SourceServerSearcEditText = "test123";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'IEContainsTest'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class IEContainsTestExpectedValues
     {
-
+        
         #region Fields
         /// <summary>
         /// Verify that the 'InnerText' property of 'http://127.0.0.1:1234/services/5782Point1?wid=4ff1...' document contains '- <DataList>
@@ -2092,14 +2150,14 @@ namespace Dev2.Studio.UI.Tests
   </DataList>";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'selectUpInFormatNumbercbbx'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class selectUpInFormatNumbercbbxParams
     {
-
+        
         #region Fields
         /// <summary>
         /// Select 'Up' in 'UI__Rounding_ComboBox_AutoID' combo box
@@ -2107,14 +2165,14 @@ namespace Dev2.Studio.UI.Tests
         public string UIUI__Rounding_ComboBoComboBoxSelectedItem = "Up";
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'MoTest'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class MoTestExpectedValues
     {
-
+        
         #region Fields
         /// <summary>
         /// Verify that the 'Enabled' property of 'Dev2StatusBarAutomationID' text box equals 'True'
@@ -2122,14 +2180,14 @@ namespace Dev2.Studio.UI.Tests
         public bool UIDev2StatusBarAutomatEditEnabled = true;
         #endregion
     }
-
+    
     /// <summary>
     /// Parameters to be passed into 'MyTestAssert'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class MyTestAssertExpectedValues
     {
-
+        
         #region Fields
         /// <summary>
         /// Verify that the 'FriendlyName' property of 'UI_SourceServerRefreshbtn_AutoID' button equals 'UI_SourceServerRefreshbtn_AutoID'
@@ -2137,11 +2195,11 @@ namespace Dev2.Studio.UI.Tests
         public string UIUI_SourceServerRefreButtonFriendlyName = "UI_SourceServerRefreshbtn_AutoID";
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
-
+        
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
@@ -2150,7 +2208,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTabList UIRibbonTabList
         {
@@ -2167,7 +2225,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIRibbonTabList;
             }
         }
-
+        
         public UINavigationViewUserCoCustom UINavigationViewUserCoCustom
         {
             get
@@ -2179,7 +2237,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUINavigationViewUserCoCustom;
             }
         }
-
+        
         public UIItemMenu UIItemMenu
         {
             get
@@ -2191,7 +2249,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemMenu;
             }
         }
-
+        
         public UIDockManagerCustom UIDockManagerCustom
         {
             get
@@ -2203,7 +2261,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDockManagerCustom;
             }
         }
-
+        
         public UIExplorerCustom UIExplorerCustom
         {
             get
@@ -2215,7 +2273,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIExplorerCustom;
             }
         }
-
+        
         public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
         {
             get
@@ -2227,7 +2285,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowItemPresenteCustom;
             }
         }
-
+        
         public UIActivityBuilderCustom UIActivityBuilderCustom
         {
             get
@@ -2239,7 +2297,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIActivityBuilderCustom;
             }
         }
-
+        
         public UIItemCustom UIItemCustom
         {
             get
@@ -2251,7 +2309,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom;
             }
         }
-
+        
         public UIUserControl_1Custom UIUserControl_1Custom
         {
             get
@@ -2263,7 +2321,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUserControl_1Custom;
             }
         }
-
+        
         public WpfCustom UIItemCustom1
         {
             get
@@ -2279,7 +2337,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom1;
             }
         }
-
+        
         public UIZf56a7f909cd342859f4Custom UIZf56a7f909cd342859f4Custom
         {
             get
@@ -2291,7 +2349,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIZf56a7f909cd342859f4Custom;
             }
         }
-
+        
         public UIZ84a8252c3a6046ab9bfCustom UIZ84a8252c3a6046ab9bfCustom
         {
             get
@@ -2303,7 +2361,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIZ84a8252c3a6046ab9bfCustom;
             }
         }
-
+        
         public UIExplorerCustom11 UIExplorerCustom1
         {
             get
@@ -2315,7 +2373,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIExplorerCustom1;
             }
         }
-
+        
         public UIPBI6527Custom UIPBI6527Custom
         {
             get
@@ -2327,7 +2385,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIPBI6527Custom;
             }
         }
-
+        
         public WpfCustom UICAKE1Custom
         {
             get
@@ -2344,7 +2402,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICAKE1Custom;
             }
         }
-
+        
         public UIDeployUserControlCustom1 UIDeployUserControlCustom
         {
             get
@@ -2356,7 +2414,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDeployUserControlCustom;
             }
         }
-
+        
         public UIItemCustom2 UIItemCustom2
         {
             get
@@ -2368,7 +2426,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom2;
             }
         }
-
+        
         public UIZ72b115b394fe4262923Custom UIZ72b115b394fe4262923Custom
         {
             get
@@ -2381,52 +2439,52 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTabList mUIRibbonTabList;
-
+        
         private UINavigationViewUserCoCustom mUINavigationViewUserCoCustom;
-
+        
         private UIItemMenu mUIItemMenu;
-
+        
         private UIDockManagerCustom mUIDockManagerCustom;
-
+        
         private UIExplorerCustom mUIExplorerCustom;
-
+        
         private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-
+        
         private UIActivityBuilderCustom mUIActivityBuilderCustom;
-
+        
         private UIItemCustom mUIItemCustom;
-
+        
         private UIUserControl_1Custom mUIUserControl_1Custom;
-
+        
         private WpfCustom mUIItemCustom1;
-
+        
         private UIZf56a7f909cd342859f4Custom mUIZf56a7f909cd342859f4Custom;
-
+        
         private UIZ84a8252c3a6046ab9bfCustom mUIZ84a8252c3a6046ab9bfCustom;
-
+        
         private UIExplorerCustom11 mUIExplorerCustom1;
-
+        
         private UIPBI6527Custom mUIPBI6527Custom;
-
+        
         private WpfCustom mUICAKE1Custom;
-
+        
         private UIDeployUserControlCustom1 mUIDeployUserControlCustom;
-
+        
         private UIItemCustom2 mUIItemCustom2;
-
+        
         private UIZ72b115b394fe4262923Custom mUIZ72b115b394fe4262923Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UINavigationViewUserCoCustom : WpfCustom
     {
-
-        public UINavigationViewUserCoCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UINavigationViewUserCoCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -2434,7 +2492,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UITvExplorerTree UITvExplorerTree
         {
@@ -2448,25 +2506,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UITvExplorerTree mUITvExplorerTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UITvExplorerTree : WpfTree
     {
-
-        public UITvExplorerTree(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UITvExplorerTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "tvExplorer";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIDev2StudioCoreViewMoTreeItem UIDev2StudioCoreViewMoTreeItem
         {
@@ -2479,7 +2537,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDev2StudioCoreViewMoTreeItem;
             }
         }
-
+        
         public UIUI_SashensServerhttpTreeItem UIUI_SashensServerhttpTreeItem
         {
             get
@@ -2492,27 +2550,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDev2StudioCoreViewMoTreeItem mUIDev2StudioCoreViewMoTreeItem;
-
+        
         private UIUI_SashensServerhttpTreeItem mUIUI_SashensServerhttpTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_localhost (http://127.0.0.1:77/dsf)_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTreeItem UIUI_WORKFLOWSERVICES_TreeItem
         {
@@ -2530,7 +2588,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_WORKFLOWSERVICES_TreeItem;
             }
         }
-
+        
         public WpfTreeItem UIUI_WORKERSERVICES_AuTreeItem
         {
             get
@@ -2547,7 +2605,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_WORKERSERVICES_AuTreeItem;
             }
         }
-
+        
         public WpfTreeItem UIUI_SOURCES_AutoIDTreeItem
         {
             get
@@ -2565,29 +2623,29 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTreeItem mUIUI_WORKFLOWSERVICES_TreeItem;
-
+        
         private WpfTreeItem mUIUI_WORKERSERVICES_AuTreeItem;
-
+        
         private WpfTreeItem mUIUI_SOURCES_AutoIDTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_SashensServerhttpTreeItem : WpfTreeItem
     {
-
-        public UIUI_SashensServerhttpTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_SashensServerhttpTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_Sashens Server (http://rsaklfsashennai:77/dsf)_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTreeItem UIUI_WORKFLOWSERVICES_TreeItem
         {
@@ -2606,25 +2664,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTreeItem mUIUI_WORKFLOWSERVICES_TreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemMenu : WpfMenu
     {
-
-        public UIItemMenu(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfMenuItem UIDisconnectMenuItem
         {
@@ -2641,7 +2699,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDisconnectMenuItem;
             }
         }
-
+        
         public WpfMenuItem UIConnectMenuItem
         {
             get
@@ -2657,7 +2715,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIConnectMenuItem;
             }
         }
-
+        
         public WpfMenuItem UIDeployMenuItem
         {
             get
@@ -2675,22 +2733,22 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfMenuItem mUIDisconnectMenuItem;
-
+        
         private WpfMenuItem mUIConnectMenuItem;
-
+        
         private WpfMenuItem mUIDeployMenuItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDockManagerCustom : WpfCustom
     {
-
-        public UIDockManagerCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDockManagerCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.XamDockManager";
@@ -2698,7 +2756,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIPART_UnpinnedTabAreaTabList UIPART_UnpinnedTabAreaTabList
         {
@@ -2711,7 +2769,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIPART_UnpinnedTabAreaTabList;
             }
         }
-
+        
         public WpfCustom UIToolboxCustom
         {
             get
@@ -2728,7 +2786,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIToolboxCustom;
             }
         }
-
+        
         public WpfCustom UIExplorerCustom
         {
             get
@@ -2746,29 +2804,29 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIPART_UnpinnedTabAreaTabList mUIPART_UnpinnedTabAreaTabList;
-
+        
         private WpfCustom mUIToolboxCustom;
-
+        
         private WpfCustom mUIExplorerCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIPART_UnpinnedTabAreaTabList : WpfTabList
     {
-
-        public UIPART_UnpinnedTabAreaTabList(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIPART_UnpinnedTabAreaTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "PART_UnpinnedTabAreaLeft";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTabPage UIExplorerTabPage
         {
@@ -2785,7 +2843,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIExplorerTabPage;
             }
         }
-
+        
         public WpfTabPage UIToolboxTabPage
         {
             get
@@ -2801,7 +2859,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIToolboxTabPage;
             }
         }
-
+        
         public WpfTabPage UIPropertiesTabPage
         {
             get
@@ -2817,7 +2875,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIPropertiesTabPage;
             }
         }
-
+        
         public WpfTabPage UIMappingTabPage
         {
             get
@@ -2833,7 +2891,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIMappingTabPage;
             }
         }
-
+        
         public WpfTabPage UIDataListTabPage
         {
             get
@@ -2850,26 +2908,26 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTabPage mUIExplorerTabPage;
-
+        
         private WpfTabPage mUIToolboxTabPage;
-
+        
         private WpfTabPage mUIPropertiesTabPage;
-
+        
         private WpfTabPage mUIMappingTabPage;
-
+        
         private WpfTabPage mUIDataListTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerCustom : WpfCustom
     {
-
-        public UIExplorerCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -2877,7 +2935,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIExplorerCustom1 UIExplorerCustom1
         {
@@ -2891,18 +2949,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIExplorerCustom1 mUIExplorerCustom1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerCustom1 : WpfCustom
     {
-
-        public UIExplorerCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ExplorerView";
@@ -2910,7 +2968,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfButton UIConnectButton
         {
@@ -2928,18 +2986,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfButton mUIConnectButton;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowItemPresenteCustom : WpfCustom
     {
-
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -2947,7 +3005,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIFlowchartCustom UIFlowchartCustom
         {
@@ -2961,18 +3019,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIFlowchartCustom mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIFlowchartCustom : WpfCustom
     {
-
-        public UIFlowchartCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
@@ -2980,7 +3038,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIStartNodeCustom
         {
@@ -2999,18 +3057,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIStartNodeCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIActivityBuilderCustom : WpfCustom
     {
-
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
@@ -3018,7 +3076,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIWorkflowItemPresenteCustom1 UIWorkflowItemPresenteCustom
         {
@@ -3032,18 +3090,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIWorkflowItemPresenteCustom1 mUIWorkflowItemPresenteCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowItemPresenteCustom1 : WpfCustom
     {
-
-        public UIWorkflowItemPresenteCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIWorkflowItemPresenteCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -3051,7 +3109,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIFlowchartCustom
         {
@@ -3070,25 +3128,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemCustom : WpfCustom
     {
-
-        public UIItemCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ToolboxUserControl";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIPART_ToolsTree UIPART_ToolsTree
         {
@@ -3102,25 +3160,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIPART_ToolsTree mUIPART_ToolsTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIPART_ToolsTree : WpfTree
     {
-
-        public UIPART_ToolsTree(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIPART_ToolsTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "PART_Tools";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIUtilityTreeItem UIUtilityTreeItem
         {
@@ -3134,25 +3192,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUtilityTreeItem mUIUtilityTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUtilityTreeItem : WpfTreeItem
     {
-
-        public UIUtilityTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUtilityTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Utility";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIUnlimitedApplicationTreeItem UIUnlimitedApplicationTreeItem
         {
@@ -3166,18 +3224,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUnlimitedApplicationTreeItem mUIUnlimitedApplicationTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUnlimitedApplicationTreeItem : WpfTreeItem
     {
-
-        public UIUnlimitedApplicationTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUnlimitedApplicationTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
@@ -3185,7 +3243,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIBaseConversionText UIBaseConversionText
         {
@@ -3199,18 +3257,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIBaseConversionText mUIBaseConversionText;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBaseConversionText : WpfText
     {
-
-        public UIBaseConversionText(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIBaseConversionText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfText.PropertyNames.Name] = "Base Conversion";
@@ -3218,7 +3276,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfText UIBaseConversionText1
         {
@@ -3238,18 +3296,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfText mUIBaseConversionText1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUserControl_1Custom : WpfCustom
     {
-
-        public UIUserControl_1Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DesignerView";
@@ -3257,7 +3315,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfPane UIScrollViewerPane
         {
@@ -3276,18 +3334,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfPane mUIScrollViewerPane;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZf56a7f909cd342859f4Custom : WpfCustom
     {
-
-        public UIZf56a7f909cd342859f4Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZf56a7f909cd342859f4Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -3295,7 +3353,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
         {
@@ -3309,25 +3367,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_TabManager_AutoIDTabList : WpfTabList
     {
-
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UICodedUITestWorkflowTabPage UICodedUITestWorkflowTabPage
         {
@@ -3340,7 +3398,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICodedUITestWorkflowTabPage;
             }
         }
-
+        
         public WpfTabPage UIPBI6527TabPage
         {
             get
@@ -3356,7 +3414,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIPBI6527TabPage;
             }
         }
-
+        
         public WpfTabPage UIDeployResourcesTabPage
         {
             get
@@ -3373,29 +3431,29 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UICodedUITestWorkflowTabPage mUICodedUITestWorkflowTabPage;
-
+        
         private WpfTabPage mUIPBI6527TabPage;
-
+        
         private WpfTabPage mUIDeployResourcesTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICodedUITestWorkflowTabPage : WpfTabPage
     {
-
-        public UICodedUITestWorkflowTabPage(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICodedUITestWorkflowTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "CodedUITestWorkflow";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UICodedUITestWorkflowCustom
         {
@@ -3414,18 +3472,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUICodedUITestWorkflowCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZ84a8252c3a6046ab9bfCustom : WpfCustom
     {
-
-        public UIZ84a8252c3a6046ab9bfCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZ84a8252c3a6046ab9bfCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -3433,7 +3491,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIZ2b1474b917664f67b5bTabList UIZ2b1474b917664f67b5bTabList
         {
@@ -3447,25 +3505,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIZ2b1474b917664f67b5bTabList mUIZ2b1474b917664f67b5bTabList;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZ2b1474b917664f67b5bTabList : WpfTabList
     {
-
-        public UIZ2b1474b917664f67b5bTabList(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZ2b1474b917664f67b5bTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "Z2b1474b917664f67b5b3bd5c2b6319a7";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIToolboxTabPage UIToolboxTabPage
         {
@@ -3479,25 +3537,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIToolboxTabPage mUIToolboxTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIToolboxTabPage : WpfTabPage
     {
-
-        public UIToolboxTabPage(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIToolboxTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Toolbox";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIToolboxCustom UIToolboxCustom
         {
@@ -3511,18 +3569,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIToolboxCustom mUIToolboxCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIToolboxCustom : WpfCustom
     {
-
-        public UIToolboxCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIToolboxCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -3530,7 +3588,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTree UIPART_ToolsTree
         {
@@ -3547,7 +3605,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIPART_ToolsTree;
             }
         }
-
+        
         public UIToolboxText UIToolboxText
         {
             get
@@ -3560,27 +3618,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTree mUIPART_ToolsTree;
-
+        
         private UIToolboxText mUIToolboxText;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIToolboxText : WpfText
     {
-
-        public UIToolboxText(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIToolboxText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfText.PropertyNames.Name] = "Toolbox";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIItemCustom
         {
@@ -3599,18 +3657,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIItemCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerCustom11 : WpfCustom
     {
-
-        public UIExplorerCustom11(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerCustom11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ExplorerView";
@@ -3618,7 +3676,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UINavigationViewUserCoCustom1 UINavigationViewUserCoCustom
         {
@@ -3632,18 +3690,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UINavigationViewUserCoCustom1 mUINavigationViewUserCoCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UINavigationViewUserCoCustom1 : WpfCustom
     {
-
-        public UINavigationViewUserCoCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UINavigationViewUserCoCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -3651,7 +3709,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTree UITvExplorerTree
         {
@@ -3669,18 +3727,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTree mUITvExplorerTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIPBI6527Custom : WpfCustom
     {
-
-        public UIPBI6527Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIPBI6527Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -3688,7 +3746,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UICAKE1Custom UICAKE1Custom
         {
@@ -3701,7 +3759,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICAKE1Custom;
             }
         }
-
+        
         public UIDeployUserControlCustom UIDeployUserControlCustom
         {
             get
@@ -3714,20 +3772,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UICAKE1Custom mUICAKE1Custom;
-
+        
         private UIDeployUserControlCustom mUIDeployUserControlCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE1Custom : WpfCustom
     {
-
-        public UICAKE1Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE1Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerWindow";
@@ -3735,7 +3793,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UICAKE2Custom
         {
@@ -3754,18 +3812,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUICAKE2Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployUserControlCustom : WpfCustom
     {
-
-        public UIDeployUserControlCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployUserControlCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DeployView";
@@ -3773,7 +3831,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfComboBox UIUI_SourceServercbx_AComboBox
         {
@@ -3790,7 +3848,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_SourceServercbx_AComboBox;
             }
         }
-
+        
         public WpfEdit UIUI_SourceServerSearcEdit
         {
             get
@@ -3807,20 +3865,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfComboBox mUIUI_SourceServercbx_AComboBox;
-
+        
         private WpfEdit mUIUI_SourceServerSearcEdit;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployUserControlCustom1 : WpfCustom
     {
-
-        public UIDeployUserControlCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployUserControlCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DeployView";
@@ -3828,7 +3886,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfComboBox UIUI_SourceServercbx_AComboBox
         {
@@ -3846,25 +3904,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfComboBox mUIUI_SourceServercbx_AComboBox;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemCustom2 : WpfCustom
     {
-
-        public UIItemCustom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIZf56a7f909cd342859f4Custom1 UIZf56a7f909cd342859f4Custom
         {
@@ -3878,18 +3936,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIZf56a7f909cd342859f4Custom1 mUIZf56a7f909cd342859f4Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZf56a7f909cd342859f4Custom1 : WpfCustom
     {
-
-        public UIZf56a7f909cd342859f4Custom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZf56a7f909cd342859f4Custom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -3897,7 +3955,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTabList UIUI_TabManager_AutoIDTabList
         {
@@ -3915,18 +3973,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZ72b115b394fe4262923Custom : WpfCustom
     {
-
-        public UIZ72b115b394fe4262923Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZ72b115b394fe4262923Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -3934,7 +3992,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIZ616b910d79e9463786eTabList UIZ616b910d79e9463786eTabList
         {
@@ -3948,25 +4006,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIZ616b910d79e9463786eTabList mUIZ616b910d79e9463786eTabList;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZ616b910d79e9463786eTabList : WpfTabList
     {
-
-        public UIZ616b910d79e9463786eTabList(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZ616b910d79e9463786eTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "Z616b910d79e9463786e5ca145ee2f8bd";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public UIExplorerTabPage UIExplorerTabPage
         {
@@ -3980,25 +4038,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIExplorerTabPage mUIExplorerTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerTabPage : WpfTabPage
     {
-
-        public UIExplorerTabPage(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Explorer";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIExplorerCustom
         {
@@ -4017,16 +4075,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIExplorerCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow1 : WinWindow
     {
-
+        
         public UIBusinessDesignStudioWindow1()
         {
             #region Search Criteria
@@ -4036,11 +4094,11 @@ namespace Dev2.Studio.UI.Tests
             #endregion
         }
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIServiceDetailsWindow : WpfWindow
     {
-
+        
         public UIServiceDetailsWindow()
         {
             #region Search Criteria
@@ -4049,7 +4107,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Service Details");
             #endregion
         }
-
+        
         #region Properties
         public WpfTitleBar UIServiceDetailsTitleBar
         {
@@ -4067,16 +4125,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTitleBar mUIServiceDetailsTitleBar;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIServiceDetailsWindow1 : WinWindow
     {
-
+        
         public UIServiceDetailsWindow1()
         {
             #region Search Criteria
@@ -4086,11 +4144,11 @@ namespace Dev2.Studio.UI.Tests
             #endregion
         }
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow2 : WpfWindow
     {
-
+        
         public UIBusinessDesignStudioWindow2()
         {
             #region Search Criteria
@@ -4099,7 +4157,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIItemCustom1 UIItemCustom
         {
@@ -4112,7 +4170,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom;
             }
         }
-
+        
         public UIExplorerCustom2 UIExplorerCustom
         {
             get
@@ -4124,7 +4182,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIExplorerCustom;
             }
         }
-
+        
         public UINavigationViewUserCoCustom2 UINavigationViewUserCoCustom
         {
             get
@@ -4136,7 +4194,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUINavigationViewUserCoCustom;
             }
         }
-
+        
         public UIItemMenu1 UIItemMenu
         {
             get
@@ -4148,7 +4206,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemMenu;
             }
         }
-
+        
         public UIZea895fb767e54b00992Custom UIZea895fb767e54b00992Custom
         {
             get
@@ -4160,7 +4218,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIZea895fb767e54b00992Custom;
             }
         }
-
+        
         public UIDeployResourcesCustom1 UIDeployResourcesCustom
         {
             get
@@ -4172,7 +4230,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDeployResourcesCustom;
             }
         }
-
+        
         public UISourceNavigationViewCustom UISourceNavigationViewCustom
         {
             get
@@ -4184,7 +4242,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUISourceNavigationViewCustom;
             }
         }
-
+        
         public UITargetNavigationViewCustom UITargetNavigationViewCustom
         {
             get
@@ -4196,7 +4254,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUITargetNavigationViewCustom;
             }
         }
-
+        
         public WpfListItem UIUI_SourceServer_tfsbListItem
         {
             get
@@ -4212,7 +4270,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_SourceServer_tfsbListItem;
             }
         }
-
+        
         public WpfListItem UIUI_DestinationServerListItem
         {
             get
@@ -4228,7 +4286,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_DestinationServerListItem;
             }
         }
-
+        
         public UIUI_DocManager_AutoIDCustom UIUI_DocManager_AutoIDCustom
         {
             get
@@ -4240,7 +4298,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_DocManager_AutoIDCustom;
             }
         }
-
+        
         public UIItemCustom11 UIItemCustom1
         {
             get
@@ -4252,7 +4310,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom1;
             }
         }
-
+        
         public UIActivityBuilderCustom1 UIActivityBuilderCustom
         {
             get
@@ -4264,7 +4322,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIActivityBuilderCustom;
             }
         }
-
+        
         public UIWorkflowItemPresenteCustom3 UIWorkflowItemPresenteCustom
         {
             get
@@ -4276,7 +4334,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowItemPresenteCustom;
             }
         }
-
+        
         public UICAKE1Custom2 UICAKE1Custom
         {
             get
@@ -4288,7 +4346,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICAKE1Custom;
             }
         }
-
+        
         public UICAKE10Custom1 UICAKE10Custom
         {
             get
@@ -4300,7 +4358,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICAKE10Custom;
             }
         }
-
+        
         public UIFlowchartCustom3 UIFlowchartCustom
         {
             get
@@ -4313,57 +4371,57 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIItemCustom1 mUIItemCustom;
-
+        
         private UIExplorerCustom2 mUIExplorerCustom;
-
+        
         private UINavigationViewUserCoCustom2 mUINavigationViewUserCoCustom;
-
+        
         private UIItemMenu1 mUIItemMenu;
-
+        
         private UIZea895fb767e54b00992Custom mUIZea895fb767e54b00992Custom;
-
+        
         private UIDeployResourcesCustom1 mUIDeployResourcesCustom;
-
+        
         private UISourceNavigationViewCustom mUISourceNavigationViewCustom;
-
+        
         private UITargetNavigationViewCustom mUITargetNavigationViewCustom;
-
+        
         private WpfListItem mUIUI_SourceServer_tfsbListItem;
-
+        
         private WpfListItem mUIUI_DestinationServerListItem;
-
+        
         private UIUI_DocManager_AutoIDCustom mUIUI_DocManager_AutoIDCustom;
-
+        
         private UIItemCustom11 mUIItemCustom1;
-
+        
         private UIActivityBuilderCustom1 mUIActivityBuilderCustom;
-
+        
         private UIWorkflowItemPresenteCustom3 mUIWorkflowItemPresenteCustom;
-
+        
         private UICAKE1Custom2 mUICAKE1Custom;
-
+        
         private UICAKE10Custom1 mUICAKE10Custom;
-
+        
         private UIFlowchartCustom3 mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemCustom1 : WpfCustom
     {
-
-        public UIItemCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerWindow";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUserControl_1Custom1 UIUserControl_1Custom
         {
@@ -4377,18 +4435,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUserControl_1Custom1 mUIUserControl_1Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUserControl_1Custom1 : WpfCustom
     {
-
-        public UIUserControl_1Custom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUserControl_1Custom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DesignerView";
@@ -4396,7 +4454,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfPane UIScrollViewerPane
         {
@@ -4415,18 +4473,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfPane mUIScrollViewerPane;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerCustom2 : WpfCustom
     {
-
-        public UIExplorerCustom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -4434,7 +4492,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIExplorerCustom12 UIExplorerCustom1
         {
@@ -4448,18 +4506,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIExplorerCustom12 mUIExplorerCustom1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerCustom12 : WpfCustom
     {
-
-        public UIExplorerCustom12(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerCustom12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ExplorerView";
@@ -4467,7 +4525,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfButton UIConnectButton
         {
@@ -4484,7 +4542,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIConnectButton;
             }
         }
-
+        
         public WpfEdit UIUI_txtSearch_AutoIDEdit
         {
             get
@@ -4501,20 +4559,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfButton mUIConnectButton;
-
+        
         private WpfEdit mUIUI_txtSearch_AutoIDEdit;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UINavigationViewUserCoCustom2 : WpfCustom
     {
-
-        public UINavigationViewUserCoCustom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UINavigationViewUserCoCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -4522,7 +4580,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UITvExplorerTree1 UITvExplorerTree
         {
@@ -4536,25 +4594,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UITvExplorerTree1 mUITvExplorerTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UITvExplorerTree1 : WpfTree
     {
-
-        public UITvExplorerTree1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UITvExplorerTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "tvExplorer";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_localhosthttp1270TreeItem UIUI_localhosthttp1270TreeItem
         {
@@ -4567,7 +4625,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_localhosthttp1270TreeItem;
             }
         }
-
+        
         public WpfTreeItem UIUI_localhosthttplocaTreeItem
         {
             get
@@ -4584,27 +4642,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_localhosthttp1270TreeItem mUIUI_localhosthttp1270TreeItem;
-
+        
         private WpfTreeItem mUIUI_localhosthttplocaTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_localhosthttp1270TreeItem : WpfTreeItem
     {
-
-        public UIUI_localhosthttp1270TreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_localhosthttp1270TreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_localhost (http://127.0.0.1:77/dsf)_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_WORKFLOWSERVICES_TreeItem UIUI_WORKFLOWSERVICES_TreeItem
         {
@@ -4618,18 +4676,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_WORKFLOWSERVICES_TreeItem mUIUI_WORKFLOWSERVICES_TreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_WORKFLOWSERVICES_TreeItem : WpfTreeItem
     {
-
-        public UIUI_WORKFLOWSERVICES_TreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_WORKFLOWSERVICES_TreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_WORKFLOW SERVICES_AutoID";
@@ -4637,7 +4695,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTreeItem UIUI_BPM_CI_AutoIDTreeItem
         {
@@ -4656,25 +4714,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTreeItem mUIUI_BPM_CI_AutoIDTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemMenu1 : WpfMenu
     {
-
-        public UIItemMenu1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemMenu1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfMenuItem UIDeployMenuItem
         {
@@ -4693,18 +4751,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfMenuItem mUIDeployMenuItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZea895fb767e54b00992Custom : WpfCustom
     {
-
-        public UIZea895fb767e54b00992Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIZea895fb767e54b00992Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -4712,7 +4770,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_TabManager_AutoIDTabList1 UIUI_TabManager_AutoIDTabList
         {
@@ -4726,25 +4784,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_TabManager_AutoIDTabList1 mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
     {
-
-        public UIUI_TabManager_AutoIDTabList1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_TabManager_AutoIDTabList1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDeployResourcesTabPage UIDeployResourcesTabPage
         {
@@ -4758,25 +4816,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDeployResourcesTabPage mUIDeployResourcesTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployResourcesTabPage : WpfTabPage
     {
-
-        public UIDeployResourcesTabPage(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployResourcesTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Deploy Resources";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDeployResourcesCustom UIDeployResourcesCustom
         {
@@ -4790,18 +4848,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDeployResourcesCustom mUIDeployResourcesCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployResourcesCustom : WpfCustom
     {
-
-        public UIDeployResourcesCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployResourcesCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -4809,7 +4867,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDeployUserControlCustom2 UIDeployUserControlCustom
         {
@@ -4823,18 +4881,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDeployUserControlCustom2 mUIDeployUserControlCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployUserControlCustom2 : WpfCustom
     {
-
-        public UIDeployUserControlCustom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployUserControlCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DeployView";
@@ -4842,7 +4900,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfComboBox UIUI_SourceServercbx_AComboBox
         {
@@ -4860,18 +4918,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfComboBox mUIUI_SourceServercbx_AComboBox;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployResourcesCustom1 : WpfCustom
     {
-
-        public UIDeployResourcesCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployResourcesCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -4879,7 +4937,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDeployUserControlCustom3 UIDeployUserControlCustom
         {
@@ -4893,18 +4951,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDeployUserControlCustom3 mUIDeployUserControlCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDeployUserControlCustom3 : WpfCustom
     {
-
-        public UIDeployUserControlCustom3(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDeployUserControlCustom3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DeployView";
@@ -4912,7 +4970,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfComboBox UIUI_SourceServercbx_AComboBox
         {
@@ -4929,7 +4987,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_SourceServercbx_AComboBox;
             }
         }
-
+        
         public WpfComboBox UIUI_DestinationServerComboBox
         {
             get
@@ -4945,7 +5003,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_DestinationServerComboBox;
             }
         }
-
+        
         public WpfButton UIDeployButton
         {
             get
@@ -4962,22 +5020,22 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfComboBox mUIUI_SourceServercbx_AComboBox;
-
+        
         private WpfComboBox mUIUI_DestinationServerComboBox;
-
+        
         private WpfButton mUIDeployButton;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UISourceNavigationViewCustom : WpfCustom
     {
-
-        public UISourceNavigationViewCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UISourceNavigationViewCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -4985,7 +5043,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UITvExplorerTree2 UITvExplorerTree
         {
@@ -4999,25 +5057,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UITvExplorerTree2 mUITvExplorerTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UITvExplorerTree2 : WpfTree
     {
-
-        public UITvExplorerTree2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UITvExplorerTree2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "tvExplorer";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDev2StudioCoreViewMoTreeItem1 UIDev2StudioCoreViewMoTreeItem
         {
@@ -5031,25 +5089,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDev2StudioCoreViewMoTreeItem1 mUIDev2StudioCoreViewMoTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem1 : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_SourceServer_localhost (http://localhost:77/dsf)_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_SourceServer_WORKTreeItem UIUI_SourceServer_WORKTreeItem
         {
@@ -5063,18 +5121,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_SourceServer_WORKTreeItem mUIUI_SourceServer_WORKTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_SourceServer_WORKTreeItem : WpfTreeItem
     {
-
-        public UIUI_SourceServer_WORKTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_SourceServer_WORKTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_SourceServer_WORKFLOW SERVICES_AutoID";
@@ -5082,7 +5140,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_SourceServer_SYSTTreeItem UIUI_SourceServer_SYSTTreeItem
         {
@@ -5095,7 +5153,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIUI_SourceServer_SYSTTreeItem;
             }
         }
-
+        
         public UIUI_SourceServer_HUMATreeItem UIUI_SourceServer_HUMATreeItem
         {
             get
@@ -5108,20 +5166,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_SourceServer_SYSTTreeItem mUIUI_SourceServer_SYSTTreeItem;
-
+        
         private UIUI_SourceServer_HUMATreeItem mUIUI_SourceServer_HUMATreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_SourceServer_SYSTTreeItem : WpfTreeItem
     {
-
-        public UIUI_SourceServer_SYSTTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_SourceServer_SYSTTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_SourceServer_SYSTEM_AutoID";
@@ -5129,7 +5187,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_SourceServer_AutoTreeItem UIUI_SourceServer_AutoTreeItem
         {
@@ -5143,18 +5201,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_SourceServer_AutoTreeItem mUIUI_SourceServer_AutoTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_SourceServer_AutoTreeItem : WpfTreeItem
     {
-
-        public UIUI_SourceServer_AutoTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_SourceServer_AutoTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_SourceServer_AutocompleteBinder_AutoID";
@@ -5162,7 +5220,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCheckBox UIUI_CheckBoxAutocomplCheckBox
         {
@@ -5181,18 +5239,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCheckBox mUIUI_CheckBoxAutocomplCheckBox;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_SourceServer_HUMATreeItem : WpfTreeItem
     {
-
-        public UIUI_SourceServer_HUMATreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_SourceServer_HUMATreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_SourceServer_HUMAN INTERFACE WORKFLOW_AutoID";
@@ -5200,7 +5258,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_SourceServer_MineTreeItem UIUI_SourceServer_MineTreeItem
         {
@@ -5214,18 +5272,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_SourceServer_MineTreeItem mUIUI_SourceServer_MineTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_SourceServer_MineTreeItem : WpfTreeItem
     {
-
-        public UIUI_SourceServer_MineTreeItem(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_SourceServer_MineTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_SourceServer_MineWebpage_AutoID";
@@ -5233,7 +5291,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCheckBox UIUI_CheckBoxMineWebpaCheckBox
         {
@@ -5252,18 +5310,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCheckBox mUIUI_CheckBoxMineWebpaCheckBox;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UITargetNavigationViewCustom : WpfCustom
     {
-
-        public UITargetNavigationViewCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UITargetNavigationViewCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -5271,7 +5329,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UITvExplorerTree3 UITvExplorerTree
         {
@@ -5285,25 +5343,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UITvExplorerTree3 mUITvExplorerTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UITvExplorerTree3 : WpfTree
     {
-
-        public UITvExplorerTree3(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UITvExplorerTree3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "tvExplorer";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDev2StudioCoreViewMoTreeItem2 UIDev2StudioCoreViewMoTreeItem
         {
@@ -5316,7 +5374,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDev2StudioCoreViewMoTreeItem;
             }
         }
-
+        
         public UIDev2StudioCoreViewMoTreeItem21 UIDev2StudioCoreViewMoTreeItem2
         {
             get
@@ -5329,27 +5387,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDev2StudioCoreViewMoTreeItem2 mUIDev2StudioCoreViewMoTreeItem;
-
+        
         private UIDev2StudioCoreViewMoTreeItem21 mUIDev2StudioCoreViewMoTreeItem2;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem2 : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_DestinationServer_localhost (http://localhost:77/dsf)_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDev2StudioCoreViewMoTreeItem11 UIDev2StudioCoreViewMoTreeItem1
         {
@@ -5363,18 +5421,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDev2StudioCoreViewMoTreeItem11 mUIDev2StudioCoreViewMoTreeItem1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem11 : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem11(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_DestinationServer_WORKFLOW SERVICES_AutoID";
@@ -5382,7 +5440,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTreeItem UIDev2StudioCoreViewMoTreeItem
         {
@@ -5401,25 +5459,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTreeItem mUIDev2StudioCoreViewMoTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem21 : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem21(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem21(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_DestinationServer_tfsbld (http://rsaklfsvrtfsbld:77/dsf)_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDev2StudioCoreViewMoTreeItem12 UIDev2StudioCoreViewMoTreeItem1
         {
@@ -5433,18 +5491,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDev2StudioCoreViewMoTreeItem12 mUIDev2StudioCoreViewMoTreeItem1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem12 : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem12(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_DestinationServer_WORKFLOW SERVICES_AutoID";
@@ -5452,7 +5510,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDev2StudioCoreViewMoTreeItem3 UIDev2StudioCoreViewMoTreeItem
         {
@@ -5466,18 +5524,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDev2StudioCoreViewMoTreeItem3 mUIDev2StudioCoreViewMoTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDev2StudioCoreViewMoTreeItem3 : WpfTreeItem
     {
-
-        public UIDev2StudioCoreViewMoTreeItem3(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDev2StudioCoreViewMoTreeItem3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_DestinationServer_HUMAN INTERFACE WORKFLOW_AutoID";
@@ -5485,7 +5543,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTreeItem UIDev2StudioCoreViewMoTreeItem1
         {
@@ -5504,18 +5562,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTreeItem mUIDev2StudioCoreViewMoTreeItem1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_DocManager_AutoIDCustom : WpfCustom
     {
-
-        public UIUI_DocManager_AutoIDCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_DocManager_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.XamDockManager";
@@ -5523,7 +5581,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIPART_UnpinnedTabAreaTabList1 UIPART_UnpinnedTabAreaTabList
         {
@@ -5536,7 +5594,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIPART_UnpinnedTabAreaTabList;
             }
         }
-
+        
         public UICAKE17Custom UICAKE17Custom
         {
             get
@@ -5549,27 +5607,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIPART_UnpinnedTabAreaTabList1 mUIPART_UnpinnedTabAreaTabList;
-
+        
         private UICAKE17Custom mUICAKE17Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIPART_UnpinnedTabAreaTabList1 : WpfTabList
     {
-
-        public UIPART_UnpinnedTabAreaTabList1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIPART_UnpinnedTabAreaTabList1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "PART_UnpinnedTabAreaLeft";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfTabPage UIToolboxTabPage
         {
@@ -5586,7 +5644,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIToolboxTabPage;
             }
         }
-
+        
         public WpfTabPage UIExplorerTabPage
         {
             get
@@ -5603,20 +5661,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfTabPage mUIToolboxTabPage;
-
+        
         private WpfTabPage mUIExplorerTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE17Custom : WpfCustom
     {
-
-        public UICAKE17Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE17Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -5624,7 +5682,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UICAKE16Custom UICAKE16Custom
         {
@@ -5638,18 +5696,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UICAKE16Custom mUICAKE16Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE16Custom : WpfCustom
     {
-
-        public UICAKE16Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE16Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -5657,7 +5715,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUI_TabManager_AutoIDTabList2 UIUI_TabManager_AutoIDTabList
         {
@@ -5671,25 +5729,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUI_TabManager_AutoIDTabList2 mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_TabManager_AutoIDTabList2 : WpfTabList
     {
-
-        public UIUI_TabManager_AutoIDTabList2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUI_TabManager_AutoIDTabList2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIIntegrationTestReporTabPage UIIntegrationTestReporTabPage
         {
@@ -5703,25 +5761,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIIntegrationTestReporTabPage mUIIntegrationTestReporTabPage;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIIntegrationTestReporTabPage : WpfTabPage
     {
-
-        public UIIntegrationTestReporTabPage(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIIntegrationTestReporTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "IntegrationTestReporting";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIIntegrationTestReporCustom UIIntegrationTestReporCustom
         {
@@ -5735,18 +5793,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIIntegrationTestReporCustom mUIIntegrationTestReporCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIIntegrationTestReporCustom : WpfCustom
     {
-
-        public UIIntegrationTestReporCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIIntegrationTestReporCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -5754,7 +5812,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UICAKE5Custom
         {
@@ -5773,25 +5831,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUICAKE5Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemCustom11 : WpfCustom
     {
-
-        public UIItemCustom11(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemCustom11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ToolboxUserControl";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIPART_ToolsTree1 UIPART_ToolsTree
         {
@@ -5805,25 +5863,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIPART_ToolsTree1 mUIPART_ToolsTree;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIPART_ToolsTree1 : WpfTree
     {
-
-        public UIPART_ToolsTree1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIPART_ToolsTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "PART_Tools";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUtilityTreeItem1 UIUtilityTreeItem
         {
@@ -5837,25 +5895,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUtilityTreeItem1 mUIUtilityTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUtilityTreeItem1 : WpfTreeItem
     {
-
-        public UIUtilityTreeItem1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUtilityTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Utility";
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIUnlimitedApplicationTreeItem1 UIUnlimitedApplicationTreeItem
         {
@@ -5869,18 +5927,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIUnlimitedApplicationTreeItem1 mUIUnlimitedApplicationTreeItem;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUnlimitedApplicationTreeItem1 : WpfTreeItem
     {
-
-        public UIUnlimitedApplicationTreeItem1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIUnlimitedApplicationTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
@@ -5888,7 +5946,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIBaseConversionText2 UIBaseConversionText
         {
@@ -5902,18 +5960,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIBaseConversionText2 mUIBaseConversionText;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBaseConversionText2 : WpfText
     {
-
-        public UIBaseConversionText2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIBaseConversionText2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfText.PropertyNames.AutomationId] = "Base Conversion";
@@ -5921,7 +5979,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfText UIBaseConversionText1
         {
@@ -5941,18 +5999,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfText mUIBaseConversionText1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIActivityBuilderCustom1 : WpfCustom
     {
-
-        public UIActivityBuilderCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIActivityBuilderCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
@@ -5960,7 +6018,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIWorkflowItemPresenteCustom2 UIWorkflowItemPresenteCustom
         {
@@ -5973,7 +6031,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowItemPresenteCustom;
             }
         }
-
+        
         public UICAKE10Custom UICAKE10Custom
         {
             get
@@ -5985,7 +6043,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUICAKE10Custom;
             }
         }
-
+        
         public UICAKE53Custom UICAKE53Custom
         {
             get
@@ -5998,22 +6056,22 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIWorkflowItemPresenteCustom2 mUIWorkflowItemPresenteCustom;
-
+        
         private UICAKE10Custom mUICAKE10Custom;
-
+        
         private UICAKE53Custom mUICAKE53Custom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowItemPresenteCustom2 : WpfCustom
     {
-
-        public UIWorkflowItemPresenteCustom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIWorkflowItemPresenteCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -6021,7 +6079,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIFlowchartCustom
         {
@@ -6040,18 +6098,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE10Custom : WpfCustom
     {
-
-        public UICAKE10Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE10Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -6059,7 +6117,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIFlowchartCustom
         {
@@ -6078,18 +6136,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE53Custom : WpfCustom
     {
-
-        public UICAKE53Custom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE53Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -6097,7 +6155,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIFlowchartCustom
         {
@@ -6116,18 +6174,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowItemPresenteCustom3 : WpfCustom
     {
-
-        public UIWorkflowItemPresenteCustom3(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIWorkflowItemPresenteCustom3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -6135,7 +6193,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIFlowchartCustom1 UIFlowchartCustom
         {
@@ -6149,18 +6207,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIFlowchartCustom1 mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIFlowchartCustom1 : WpfCustom
     {
-
-        public UIFlowchartCustom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
@@ -6168,7 +6226,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIDsfBaseConvertActiviCustom
         {
@@ -6187,18 +6245,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIDsfBaseConvertActiviCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE1Custom2 : WpfCustom
     {
-
-        public UICAKE1Custom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE1Custom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerWindow";
@@ -6206,7 +6264,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UICAKE1Custom1 UICAKE1Custom1
         {
@@ -6220,18 +6278,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UICAKE1Custom1 mUICAKE1Custom1;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE1Custom1 : WpfCustom
     {
-
-        public UICAKE1Custom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE1Custom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DesignerView";
@@ -6239,7 +6297,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfPane UICAKE2Pane
         {
@@ -6258,18 +6316,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfPane mUICAKE2Pane;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UICAKE10Custom1 : WpfCustom
     {
-
-        public UICAKE10Custom1(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UICAKE10Custom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
@@ -6277,7 +6335,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIFlowchartCustom2 UIFlowchartCustom
         {
@@ -6291,18 +6349,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIFlowchartCustom2 mUIFlowchartCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIFlowchartCustom2 : WpfCustom
     {
-
-        public UIFlowchartCustom2(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIFlowchartCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
@@ -6310,7 +6368,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfCustom UIDsfBaseConvertActiviCustom
         {
@@ -6329,18 +6387,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfCustom mUIDsfBaseConvertActiviCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIFlowchartCustom3 : WpfCustom
     {
-
-        public UIFlowchartCustom3(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIFlowchartCustom3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
@@ -6348,7 +6406,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public UIDsfNumberFormatActivCustom UIDsfNumberFormatActivCustom
         {
@@ -6362,18 +6420,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDsfNumberFormatActivCustom mUIDsfNumberFormatActivCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDsfNumberFormatActivCustom : WpfCustom
     {
-
-        public UIDsfNumberFormatActivCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDsfNumberFormatActivCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfNumberFormatActivityDesigner";
@@ -6381,7 +6439,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WpfComboBox UIUI__Rounding_ComboBoComboBox
         {
@@ -6399,16 +6457,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfComboBox mUIUI__Rounding_ComboBoComboBox;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow11 : WinWindow
     {
-
+        
         public UIBusinessDesignStudioWindow11()
         {
             #region Search Criteria
@@ -6417,7 +6475,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
             #endregion
         }
-
+        
         #region Properties
         public WinEdit UIItemEdit
         {
@@ -6434,16 +6492,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WinEdit mUIItemEdit;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowServiceDetaiWindow : WpfWindow
     {
-
+        
         public UIWorkflowServiceDetaiWindow()
         {
             #region Search Criteria
@@ -6452,7 +6510,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Workflow Service Details");
             #endregion
         }
-
+        
         #region Properties
         public UIWorkflowServiceDetaiTitleBar UIWorkflowServiceDetaiTitleBar
         {
@@ -6466,25 +6524,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIWorkflowServiceDetaiTitleBar mUIWorkflowServiceDetaiTitleBar;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowServiceDetaiTitleBar : WpfTitleBar
     {
-
-        public UIWorkflowServiceDetaiTitleBar(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIWorkflowServiceDetaiTitleBar(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTitleBar.PropertyNames.AutomationId] = "TitleBar";
             this.WindowTitles.Add("Workflow Service Details");
             #endregion
         }
-
+        
         #region Properties
         public WpfButton UICloseButton
         {
@@ -6502,16 +6560,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfButton mUICloseButton;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowServiceDetaiWindow1 : WinWindow
     {
-
+        
         public UIWorkflowServiceDetaiWindow1()
         {
             #region Search Criteria
@@ -6521,11 +6579,11 @@ namespace Dev2.Studio.UI.Tests
             #endregion
         }
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowServiceDetaiWindow2 : BrowserWindow
     {
-
+        
         public UIWorkflowServiceDetaiWindow2()
         {
             #region Search Criteria
@@ -6534,12 +6592,12 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Workflow Service Details");
             #endregion
         }
-
+        
         public void LaunchUrl(System.Uri url)
         {
             this.CopyFrom(BrowserWindow.Launch(url));
         }
-
+        
         #region Properties
         public UIWorkflowServiceDetaiDocument UIWorkflowServiceDetaiDocument
         {
@@ -6553,18 +6611,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIWorkflowServiceDetaiDocument mUIWorkflowServiceDetaiDocument;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIWorkflowServiceDetaiDocument : HtmlDocument
     {
-
-        public UIWorkflowServiceDetaiDocument(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIWorkflowServiceDetaiDocument(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[HtmlDocument.PropertyNames.Id] = null;
@@ -6576,7 +6634,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Workflow Service Details");
             #endregion
         }
-
+        
         #region Properties
         public HtmlEdit UIDev2ServiceNameEdit
         {
@@ -6601,16 +6659,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private HtmlEdit mUIDev2ServiceNameEdit;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIProcessErrorWindow : WpfWindow
     {
-
+        
         public UIProcessErrorWindow()
         {
             #region Search Criteria
@@ -6620,11 +6678,11 @@ namespace Dev2.Studio.UI.Tests
             #endregion
         }
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUntitledNotepadWindow : WinWindow
     {
-
+        
         public UIUntitledNotepadWindow()
         {
             #region Search Criteria
@@ -6633,7 +6691,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Untitled - Notepad");
             #endregion
         }
-
+        
         #region Properties
         public UIItemWindow UIItemWindow
         {
@@ -6647,25 +6705,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIItemWindow mUIItemWindow;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIItemWindow : WinWindow
     {
-
-        public UIItemWindow(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIItemWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WinWindow.PropertyNames.ControlId] = "15";
             this.WindowTitles.Add("Untitled - Notepad");
             #endregion
         }
-
+        
         #region Properties
         public WinEdit UIItemEdit
         {
@@ -6682,16 +6740,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WinEdit mUIItemEdit;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIHttp1270011234servicWindow : BrowserWindow
     {
-
+        
         public UIHttp1270011234servicWindow()
         {
             #region Search Criteria
@@ -6702,12 +6760,12 @@ namespace Dev2.Studio.UI.Tests
                     "7");
             #endregion
         }
-
+        
         public void LaunchUrl(System.Uri url)
         {
             this.CopyFrom(BrowserWindow.Launch(url));
         }
-
+        
         #region Properties
         public HtmlDocument UIHttp1270011234servicDocument
         {
@@ -6732,16 +6790,16 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private HtmlDocument mUIHttp1270011234servicDocument;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow3 : WpfWindow
     {
-
+        
         public UIBusinessDesignStudioWindow3()
         {
             #region Search Criteria
@@ -6750,7 +6808,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
             #endregion
         }
-
+        
         #region Properties
         public UIDebugOutputCustom UIDebugOutputCustom
         {
@@ -6763,7 +6821,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDebugOutputCustom;
             }
         }
-
+        
         public UIExplorerCustom3 UIExplorerCustom
         {
             get
@@ -6776,20 +6834,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UIDebugOutputCustom mUIDebugOutputCustom;
-
+        
         private UIExplorerCustom3 mUIExplorerCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDebugOutputCustom : WpfCustom
     {
-
-        public UIDebugOutputCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
@@ -6797,7 +6855,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
             #endregion
         }
-
+        
         #region Properties
         public WpfEdit UIDev2StatusBarAutomatEdit
         {
@@ -6815,18 +6873,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfEdit mUIDev2StatusBarAutomatEdit;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIExplorerCustom3 : WpfCustom
     {
-
-        public UIExplorerCustom3(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UIExplorerCustom3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ExplorerView";
@@ -6834,7 +6892,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
             #endregion
         }
-
+        
         #region Properties
         public UITheNavigationViewCustom UITheNavigationViewCustom
         {
@@ -6848,18 +6906,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private UITheNavigationViewCustom mUITheNavigationViewCustom;
         #endregion
     }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UITheNavigationViewCustom : WpfCustom
     {
-
-        public UITheNavigationViewCustom(UITestControl searchLimitContainer) :
-            base(searchLimitContainer)
+        
+        public UITheNavigationViewCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -6867,7 +6925,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Business Design Studio (DEV2\\Massimo.Guerrera)");
             #endregion
         }
-
+        
         #region Properties
         public WpfButton UIUI_SourceServerRefreButton
         {
@@ -6885,9 +6943,111 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-
+        
         #region Fields
         private WpfButton mUIUI_SourceServerRefreButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIBusinessDesignStudioWindow4 : WpfWindow
+    {
+        
+        public UIBusinessDesignStudioWindow4()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerCustom4 UIExplorerCustom
+        {
+            get
+            {
+                if ((this.mUIExplorerCustom == null))
+                {
+                    this.mUIExplorerCustom = new UIExplorerCustom4(this);
+                }
+                return this.mUIExplorerCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerCustom4 mUIExplorerCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIExplorerCustom4 : WpfCustom
+    {
+        
+        public UIExplorerCustom4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties["AutomationId"] = "Explorer";
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            #endregion
+        }
+        
+        #region Properties
+        public UIConnectUserControlCustom UIConnectUserControlCustom
+        {
+            get
+            {
+                if ((this.mUIConnectUserControlCustom == null))
+                {
+                    this.mUIConnectUserControlCustom = new UIConnectUserControlCustom(this);
+                }
+                return this.mUIConnectUserControlCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIConnectUserControlCustom mUIConnectUserControlCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
+    public class UIConnectUserControlCustom : WpfCustom
+    {
+        
+        public UIConnectUserControlCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties["AutomationId"] = "ConnectUserControl";
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UIItemButton
+        {
+            get
+            {
+                if ((this.mUIItemButton == null))
+                {
+                    this.mUIItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_ExplorerConnectBtn_AutoID";
+                    this.mUIItemButton.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    #endregion
+                }
+                return this.mUIItemButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUIItemButton;
         #endregion
     }
 }

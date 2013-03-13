@@ -1,6 +1,5 @@
 ﻿using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -1519,24 +1518,6 @@ namespace Dev2.Studio.UI.Tests
         private WebpageServiceWizardUIMap _webpageServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
-
-        #region Connect Window UI Map
-
-        public ConnectViewUIMap ConnectViewUIMap
-        {
-            get
-            {
-                if (_connectViewUIMap == null)
-                {
-                    _connectViewUIMap = new ConnectViewUIMap();
-                }
-                return _connectViewUIMap;
-            }
-        }
-
-        private ConnectViewUIMap _connectViewUIMap;
-
-        #endregion Connect Window UI Map
 
         #region External UI Map
 

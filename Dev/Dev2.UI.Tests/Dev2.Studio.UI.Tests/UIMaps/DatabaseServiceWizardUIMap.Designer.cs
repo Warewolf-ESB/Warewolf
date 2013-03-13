@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.CodedUI.Tests;
+
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 {
     using System;
@@ -81,9 +83,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\Ashley.lewis)";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
         
@@ -108,7 +110,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+                    this.mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
                     #endregion
                 }
                 return this.mUIItemImage;
@@ -133,7 +135,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
             this.SearchProperties["AutomationId"] = "Z5bc03f5226434284a364fdd8116a4038";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
         
@@ -165,7 +167,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
         
@@ -197,7 +199,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Start Page";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
         
@@ -230,7 +232,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
             this.SearchProperties["AutomationId"] = "splurt";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+            this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
         
@@ -243,7 +245,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Business Design Studio (DEV2\\Ashley.lewis)");
+                    this.mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
                     #endregion
                 }
                 return this.mUIItemImage;

@@ -1,4 +1,4 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.ConnectViewUIMapClasses
+﻿namespace Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses
 {
     using System;
     using System.Collections.Generic;
@@ -14,19 +14,7 @@
     using MouseButtons = System.Windows.Forms.MouseButtons;
     
     
-    public partial class ConnectViewUIMap
+    public partial class ServerWizard
     {
-
-        public void InputServerName(string serverName) {
-            EnterServerName(serverName);
-        }
-
-        public void InputServerAddress(string serverAddress) {
-            EnterServerAddress(serverAddress);
-        }
-
-        public void ClickConnectButton() {
-            ConnectBtnClick();
-        }
     }
 }

@@ -76,8 +76,6 @@
     <Compile Include="UIMap.Designer.cs" />
     <Compile Include="UIMapBase.cs" />
     <Compile Include="DatabaseServiceWizard.cs" />
-    <Compile Include="UIMaps\ConnectViewUIMap.cs" />
-    <Compile Include="UIMaps\ConnectViewUIMap.Designer.cs" />
     <Compile Include="UIMaps\DatabaseServiceWizardUIMap.cs">
       <DependentUpon>DatabaseServiceWizardUIMap.uitest</DependentUpon>
     </Compile>
@@ -132,6 +130,18 @@
     <Compile Include="UIMaps\PluginServiceUIMap.Designer.cs" />
     <Compile Include="UIMaps\RibbonUIMap.cs" />
     <Compile Include="UIMaps\RibbonUIMap.Designer.cs" />
+    <Compile Include="UIMaps\SaveWizardDialog.cs">
+      <DependentUpon>SaveWizardDialog.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\SaveWizardDialog.Designer.cs">
+      <DependentUpon>SaveWizardDialog.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\ServerWizard.cs">
+      <DependentUpon>ServerWizard.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\ServerWizard.Designer.cs">
+      <DependentUpon>ServerWizard.uitest</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\ServiceDetailsUIMap.cs">
       <DependentUpon>ServiceDetailsUIMap.uitest</DependentUpon>
     </Compile>
@@ -162,7 +172,6 @@
     <None Include="UIMaps\DatabaseSourceUIMap.uitest" />
     <None Include="UIMaps\FeedbackUIMap.uitest" />
     <None Include="UIMap.uitest" />
-    <None Include="UIMaps\ConnectViewUIMap.uitest" />
     <None Include="UIMaps\DatabaseServiceWizardUIMap.uitest" />
     <None Include="UIMaps\DebugUIMap.uitest" />
     <None Include="UIMaps\DependencyGraph.uitest" />
@@ -171,10 +180,13 @@
     <None Include="UIMaps\ExplorerUIMap.uitest" />
     <None Include="UIMaps\ExternalUIMap.uitest" />
     <None Include="UIMaps\FormatNumberUIMap.uitest" />
+    <None Include="UIMaps\NewConnectionWizard.uitest" />
     <None Include="UIMaps\NewServerUIMap.uitest" />
     <None Include="UIMaps\OutputUIMap.uitest" />
     <None Include="UIMaps\PluginServiceUIMap.uitest" />
     <None Include="UIMaps\RibbonUIMap.uitest" />
+    <None Include="UIMaps\SaveWizardDialog.uitest" />
+    <None Include="UIMaps\ServerWizard.uitest" />
     <None Include="UIMaps\ServiceDetailsUIMap.uitest" />
     <None Include="UIMaps\TabManagerUIMap.uitest" />
     <None Include="UIMaps\TestUIMap.uitest" />
