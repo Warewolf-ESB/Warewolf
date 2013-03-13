@@ -92,97 +92,23 @@ namespace Dev2.Converters.DateAndTime
             //
             // Replace input format parts with Dev2 equivilents
             //
-            //m into our two digit minute format eg 03
-            var mPart = dotNetFormatParts.FindIndex(part => part.Value == "m");
-            while (mPart > -1 && mPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[mPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Minutes"))];
-                mPart = dotNetFormatParts.FindIndex(part => part.Value == "m");
-            }
-            //mm into our two digit minute format eg 03
-            var mmPart = dotNetFormatParts.FindIndex(part => part.Value == "mm");
-            while (mmPart > -1 && mmPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[mmPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Minutes"))];
-                mmPart = dotNetFormatParts.FindIndex(part => part.Value == "mm");
-            }
-            //M into our single digit month format eg 03
-            var MPart = dotNetFormatParts.FindIndex(part => part.Value == "M");
-            while (MPart > -1 && MPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[MPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month in single digit"))];
-                MPart = dotNetFormatParts.FindIndex(part => part.Value == "M");
-            }
-            //MM into our two digit month format eg 03 (Dev2 format interprets MM as a full month name eg March)
-            var MMPart = dotNetFormatParts.FindIndex(part => part.Value == "MM");
-            while (MMPart > -1 && MMPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[MMPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month in 2 digits"))];
-                MMPart = dotNetFormatParts.FindIndex(part => part.Value == "MM");
-            }
-            //MMM into our month text abbreviated format eg 03
-            var MMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMM");
-            while (MMMPart > -1 && MMMPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[MMMPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month text abbreviated"))];
-                MMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMM");
-            }
-            //MMMM into our month test in full format eg 03
-            var MMMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMMM");
-            while (MMMMPart > -1 && MMMMPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[MMMMPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Month text in full"))];
-                MMMMPart = dotNetFormatParts.FindIndex(part => part.Value == "MMMM");
-            }
-            //'h' into our two digit hour format eg '12h'
-            var hPart = dotNetFormatParts.FindIndex(part => part.Value == "h");
-            while (hPart > -1 && hPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[hPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 12 hour format"))];
-                hPart = dotNetFormatParts.FindIndex(part => part.Value == "h");
-            }
-            //'hh' into our two digit hour format eg '12h'
-            var hhPart = dotNetFormatParts.FindIndex(part => part.Value == "hh");
-            while (hhPart > -1 && hhPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[hhPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 12 hour format"))];
-                hhPart = dotNetFormatParts.FindIndex(part => part.Value == "hh");
-            }
-            //'H' into our two digit hour format eg '12h'
-            var HPart = dotNetFormatParts.FindIndex(part => part.Value == "H");
-            while (HPart > -1 && HPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[HPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 24 hour format"))];
-                HPart = dotNetFormatParts.FindIndex(part => part.Value == "H");
-            }
-            //'HH' into our two digit hour format eg '12h'
-            var HHPart = dotNetFormatParts.FindIndex(part => part.Value == "HH");
-            while (HHPart > -1 && HHPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[HHPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Hours in 24 hour format"))];
-                HHPart = dotNetFormatParts.FindIndex(part => part.Value == "HH");
-            }
-            //'tt' into our am or pm format
-            var ttPart = dotNetFormatParts.FindIndex(part => part.Value == "tt");
-            while (ttPart > -1 && ttPart < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[ttPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("am or pm"))];
-                ttPart = dotNetFormatParts.FindIndex(part => part.Value == "tt");
-            }
-            //'ddd' into our abbreviated day of the week format
-            var findAllddd = dotNetFormatParts.FindIndex(part => part.Value == "ddd");
-            while (findAllddd > -1 && findAllddd < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[findAllddd] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Day of Week text abbreviated"))];
-                findAllddd = dotNetFormatParts.FindIndex(part => part.Value == "ddd");
-            }
-            //'dddd' into our full day of the week format
-            var findAlldddd = dotNetFormatParts.FindIndex(part => part.Value == "dddd");
-            while (findAlldddd > -1 && findAlldddd < dotNetFormatParts.Count)
-            {
-                dotNetFormatParts[findAlldddd] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains("Day of Week in full"))];
-                findAlldddd = dotNetFormatParts.FindIndex(part => part.Value == "dddd");
-            }
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "m", "Minutes");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "mm", "Minutes");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "M", "Month in single digit");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "MM", "Month in 2 digits");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "MMM", "Month text abbreviated");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "MMMM", "Month text in full");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "h", "Hours in 12 hour format");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "hh", "Hours in 12 hour format");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "H", "Hours in 24 hour format");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "HH", "Hours in 24 hour format");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "tt", "am or pm");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "ddd", "Day of Week text abbreviated");
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "dddd", "Day of Week in full");
+
+            //
+            // Get input format string for the dotnet parts
+            //
             var dev2Format = "";
             foreach (var part in dotNetFormatParts)
             {
@@ -192,6 +118,17 @@ namespace Dev2.Converters.DateAndTime
                     dev2Format += part.Value;
             }
             return dev2Format;
+        }
+
+        private List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList, string findTokenValue, string describeReplaceWith)
+        {
+            var mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
+            while (mPart > -1 && mPart < currentPartList.Count)
+            {
+                currentPartList[mPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains(describeReplaceWith))];
+                mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
+            }
+            return currentPartList;
         }
 
         #endregion Methods
