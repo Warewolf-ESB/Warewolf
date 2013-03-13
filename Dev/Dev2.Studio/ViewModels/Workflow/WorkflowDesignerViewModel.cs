@@ -365,14 +365,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var modelProperty = modelItem.Properties["ServiceName"];
                 if (modelProperty != null)
                 {
+                    //2013.03.13: Ashley Lewis - BUG 8846
                     var res = modelProperty.ComputedValue;
-
-                    var resource =
-                        _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
-
-                    if (resource != null)
+                    if(res != null)
                     {
-                        Mediator.SendMessage(MediatorMessages.HasWizard, WizardEngine.HasWizard(modelItem, resource as IContextualResourceModel));
+                        var resource = _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
+                        if (resource != null)
+                        {
+                            Mediator.SendMessage(MediatorMessages.HasWizard, WizardEngine.HasWizard(modelItem, resource as IContextualResourceModel));
+                        }
                     }
                 }
             }
@@ -2145,7 +2146,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             //07-12-2012 - Massimo.Guerrera - Added for PBI 6665
             MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivityWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivityWizard, input => ShowActivityWizard(input as ModelItem)));
             // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.GetMappingViewModel, Mediator.RegisterToReceiveMessage(MediatorMessages.GetMappingViewModel, input => GetMappingViewModel(input as ModelItem)));
-
+            
             MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivitySettingsWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivitySettingsWizard, input
                                                                                                                                                                          =>
             {

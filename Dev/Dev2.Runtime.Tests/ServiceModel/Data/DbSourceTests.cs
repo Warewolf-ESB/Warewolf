@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var conn = new DbSource
             {
                 ResourceType = ResourceType.DbSource,
-                Server = "http://192.168.13.42:788/dsf"
+                Server = "192.168.13.42"
             };
             var dbSources = new DbSourcesMock { DatabaseValidationHitCount = 0 };
             var result = dbSources.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);

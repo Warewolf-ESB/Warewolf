@@ -6,6 +6,7 @@ using System.Text;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -67,6 +68,22 @@ namespace Dev2.Core.Tests.Activities.Services
             IContextualResourceModel actual = designerManagementService.GetResourceModel(testItem);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        //2013.02.11: Ashley Lewis - Bug 8846
+        [TestMethod]
+        public void GetResourceModelWhereServiceNamePropertyIsNullExpectedNull()
+        {
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
+            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
+
+            ModelItem testItem = TestModelItemFactory.CreateModelItem(new DsfActivity());
+
+            DesignerManagementService designerManagementService = new DesignerManagementService(resourceRepository.Object);
+
+            IContextualResourceModel actual = designerManagementService.GetResourceModel(testItem);
+
+            Assert.AreEqual(null, actual);
         }
     }
 }

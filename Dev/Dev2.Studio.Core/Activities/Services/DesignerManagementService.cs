@@ -86,7 +86,8 @@ namespace Dev2.Studio.Core.Activities.Services
             IContextualResourceModel resource = null;
             ModelProperty modelProperty = modelItem.Properties.Where(mp => mp.Name == "ServiceName").FirstOrDefault();
 
-            if (modelProperty != null && _resourceRepository != null)
+            //2013.03.13: Ashley Lewis - BUG 8846 - added modelproperty.computedvalue to null check
+            if (modelProperty != null && modelProperty.ComputedValue != null && _resourceRepository != null)
             {
                 resource = _resourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
             }
