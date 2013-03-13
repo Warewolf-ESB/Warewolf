@@ -1,7 +1,6 @@
 ﻿using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -42,24 +41,6 @@ namespace Dev2.Studio.Core {
                 var s = new XmlSerializer(type);
                 return (T) s.Deserialize(reader);
             }
-        }
-
-        public static string SerializeBinary(object obj)
-        {
-            MemoryStream ms = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(ms, obj);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            TextReader tr = new StreamReader(ms);
-            return tr.ReadToEnd();
-        }
-
-        public static T DeserializeBinary<T>(string data)
-        {
-            MemoryStream ms = new MemoryStream(Encoding.Default.GetBytes(data));
-            BinaryFormatter formatter = new BinaryFormatter();
-            return (T)formatter.Deserialize(ms);
         }
     }
 }

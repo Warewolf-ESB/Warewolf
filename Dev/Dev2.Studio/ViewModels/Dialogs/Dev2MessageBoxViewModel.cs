@@ -229,10 +229,10 @@ namespace Dev2.Studio.ViewModels.Dialogs
                     MessageBoxResult val = (MessageBoxResult)Enum.Parse(typeof(MessageBoxResult), element.Attribute("Value").Value);
                     DontShowAgainOptions.Add(key, val);
                 }
-                //DontShowAgainOptions = FilePersistenceProvider.DeserializeBinary<Dictionary<string, MessageBoxResult>>(data);
             }
             catch(Exception)
             {
+                // If deserialization fails then create a blank dicitonary so that when a save occurs it will be saved in teh correct format.
                 DontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
             }
         }
