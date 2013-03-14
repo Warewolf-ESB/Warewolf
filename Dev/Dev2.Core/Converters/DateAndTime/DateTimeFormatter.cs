@@ -84,6 +84,13 @@ namespace Dev2.Converters.DateAndTime
                     // If there is no output format use the input format
                     //
                     string outputFormat = (string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)) ? dateTimeTO.InputFormat : dateTimeTO.OutputFormat;
+                    if (string.IsNullOrWhiteSpace(outputFormat))
+                    {
+                        //07.03.2013: Ashley Lewis - Bug 9167 null to default
+                        //nothingDied = false;
+                        //error = "Format can't be null/empty.";
+                        outputFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
+                    }
 
                     //
                     // Format to output format
