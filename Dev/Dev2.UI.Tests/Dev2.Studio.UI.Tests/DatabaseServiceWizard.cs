@@ -69,41 +69,33 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
         private TestContext testContextInstance;
 
-        [TestMethod]
-        public void DatabaseServiceWizardCreateNewSourceExpectedSourceCreated()
-        {
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
-            System.Threading.Thread.Sleep(5000);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{DOWN}{TAB}{ENTER}{ENTER}CODEDUITESTS{ENTER}{TAB}{TAB}{TAB}codeduitest123{ENTER}{TAB}{ENTER}");
-            var WorkspaceDirectory = myTestBase.ServerExeLocation.Substring(0, myTestBase.ServerExeLocation.LastIndexOf('\\')) + "\\Workspaces";
-
-            var success = false;
-            foreach (var workspace in Directory.GetDirectories(WorkspaceDirectory).ToList())
-            {
-                foreach (var resource in Directory.GetFiles(workspace + "\\Sources").ToList())
-                {
-                    if (resource.Contains("codeduitest123"))
-                    {
-                        success = true;
-                        File.Delete(resource);
-                    }
-                }
-            }
-            Assert.IsTrue(success);
-        }
-
         //2013.03.14: Ashley Lewis - Bug 9217
         [TestMethod]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
             //Initialization
+            //DbSource
             RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
             System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{DOWN}{TAB}{ENTER}{ENTER}CODEDUITESTS{ENTER}{TAB}{TAB}{TAB}codeduitest123{ENTER}{TAB}{ENTER}");
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}");
+            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}CODEDUITESTS{ENTER}");
+            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}codeduitest123{ENTER}");
+            System.Threading.Thread.Sleep(1000);
+            //DbService
+            DatabaseServiceWizardUIMap.ClickFirstAction();
+            DatabaseServiceWizardUIMap.ClickTestAction();
+            DatabaseServiceWizardUIMap.ClickOK();
+            Keyboard.SendKeys("{ENTER}CODEDUITESTS{ENTER}{TAB}{TAB}{TAB}codeduitest123{ENTER}");
 
             //Assert
             Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SERVICES", "CODEDUITESTS", "codeduitest123"));
+            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SOURCES", "CODEDUITESTS", "codeduitest123"));
+
+            //Cleanup
             ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "CODEDUITESTS", "codeduitest123");
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", "CODEDUITESTS", "codeduitest123");
         }
     }
 }

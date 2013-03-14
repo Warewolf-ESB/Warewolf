@@ -41,16 +41,16 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <MouseAction UIObjectName="DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.UIZ5bc03f5226434284a36Custom.UIUI_TabManager_AutoIDTabList.UIStartPageTabPage.UIStartPageCustom.UIItemImage">
+    <MouseAction UIObjectName="DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.UIItemImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="631" Y="133" />
+      <Location X="343" Y="82" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="FuckOff">
+    <TestStepMarkerAction Comment="" MarkerInformation="NewDbSource">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -63,12 +63,48 @@
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="343" Y="82" />
+      <Location X="172" Y="164" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="NewDbSource">
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickFirstAction">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.UIItemImage">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="889" Y="84" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickTestAction">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.UIItemImage">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="767" Y="523" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickOK">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>

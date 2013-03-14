@@ -32,29 +32,55 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
     {
         
         /// <summary>
-        /// FuckOff
-        /// </summary>
-        public void FuckOff()
-        {
-            #region Variable Declarations
-            WpfImage uIItemImage = this.UIBusinessDesignStudioWindow.UIZ5bc03f5226434284a36Custom.UIUI_TabManager_AutoIDTabList.UIStartPageTabPage.UIStartPageCustom.UIItemImage;
-            #endregion
-
-            // Click image
-            Mouse.Click(uIItemImage, new Point(631, 133));
-        }
-        
-        /// <summary>
         /// NewDbSource
         /// </summary>
         public void NewDbSource()
         {
             #region Variable Declarations
-            WpfImage uIItemImage = this.UIBusinessDesignStudioWindow.UIItemImage;
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             #endregion
 
             // Click image
             Mouse.Click(uIItemImage, new Point(343, 82));
+        }
+        
+        /// <summary>
+        /// ClickFirstAction
+        /// </summary>
+        public void ClickFirstAction()
+        {
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(172, 164));
+        }
+        
+        /// <summary>
+        /// ClickTestAction
+        /// </summary>
+        public void ClickTestAction()
+        {
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(889, 84));
+        }
+        
+        /// <summary>
+        /// ClickOK
+        /// </summary>
+        public void ClickOK()
+        {
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(767, 523));
         }
         
         #region Properties
