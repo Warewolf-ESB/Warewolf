@@ -57,7 +57,7 @@ namespace Dev2.Runtime.Configuration
         public SettingsProvider()
         {
             AssemblyHashCode = GetAssemblyHashCode();
-            Configuration = new Settings.Configuration();
+            Configuration = ReadConfiguration();
         }
 
         #endregion
@@ -187,6 +187,30 @@ namespace Dev2.Runtime.Configuration
             // ReSharper disable AssignNullToNotNullAttribute
             return Path.Combine(rootDir, "Settings", "Application.xml");
             // ReSharper restore AssignNullToNotNullAttribute
+        }
+
+        #endregion
+
+        #region ReadConfiguration
+
+        Settings.Configuration ReadConfiguration()
+        {
+            var filePath = GetFilePath();
+            if(File.Exists(filePath))
+            {
+                try
+                {
+                    var xml = XElement.Load(filePath);
+                    return new Settings.Configuration(xml);
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // error occurred so ignore and load empty
+                }
+            }
+            return new Settings.Configuration();
         }
 
         #endregion
