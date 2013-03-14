@@ -56,7 +56,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
-            base.CacheMetadata(metadata);
             //
             // Must use AddChild (which adds children as 'public') otherwise you will get the following exception:
             //
@@ -65,7 +64,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // 't' is not declared. It may be inaccessible due to its protection level
             // 'd' is not declared. It may be inaccessible due to its protection level
             //
+            //2013.03.14: Ashley Lewis - BUG 9165 Changed the order of these operations
             metadata.AddChild(_expression);
+            base.CacheMetadata(metadata);
         }
 
         #endregion
