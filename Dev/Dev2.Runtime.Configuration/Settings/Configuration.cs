@@ -85,7 +85,7 @@ namespace Dev2.Runtime.Configuration.Settings
             MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
             settingsView.DataContext = mainViewModel;
 
-            if (mainViewModel.SelectedSettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
+            if (mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
             {
                 mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
             }
