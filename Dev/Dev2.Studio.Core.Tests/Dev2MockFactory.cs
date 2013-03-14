@@ -244,6 +244,50 @@ namespace Dev2.Core.Tests
             return _mockFrameworkDataChannel;
         }
 
+        static public Mock<IStudioClientContext> SetupIFrameworkDataChannel<T>(INetworkMessage resultMessage) where T : INetworkMessage, new()
+        {
+            Mock<IStudioClientContext> mockFrameworkDataChannel = new Mock<IStudioClientContext>();
+            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
+            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendSynchronousMessage(It.IsAny<T>())).Returns(resultMessage);
+
+            return mockFrameworkDataChannel;
+        }
+
+        static public Mock<IStudioClientContext> SetupIFrameworkDataChannel<T>(Exception messageSendingException) where T : INetworkMessage, new()
+        {
+            Mock<IStudioClientContext>  mockFrameworkDataChannel = new Mock<IStudioClientContext>();
+            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
+            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendSynchronousMessage(It.IsAny<T>())).Throws(messageSendingException);
+
+            return mockFrameworkDataChannel;
+        }
+
+        static public Mock<IEnvironmentModel> SetupEnvironmentModel<T>(INetworkMessage resultMessage) where T : INetworkMessage, new()
+        {
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel<T>(resultMessage).Object);
+
+            return mockEnvironmentModel;
+        }
+
+        static public Mock<IEnvironmentModel> SetupEnvironmentModel<T>(Exception messageSendingException) where T : INetworkMessage, new()
+        {
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel<T>(messageSendingException).Object);
+
+            return mockEnvironmentModel;
+        }
+
         static public Mock<IEnvironmentModel> SetupEnvironmentModel()
         {
             var _mockEnvironmentModel = new Mock<IEnvironmentModel>();

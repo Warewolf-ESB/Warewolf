@@ -191,6 +191,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppResources\Trigger\DelayTextChangedEventTrigger.cs" />
+    <Compile Include="Configuration\RuntimeConfigurationAssemblyRepository.cs" />
+    <Compile Include="Configuration\IRuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
@@ -293,6 +295,7 @@
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
+    <Compile Include="Messages\SettingsSaveCancelMessage.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />

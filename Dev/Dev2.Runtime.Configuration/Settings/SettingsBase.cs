@@ -1,14 +1,62 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
-    public abstract class SettingsBase
+    public abstract class SettingsBase : INotifyPropertyChanged
     {
-        public string SettingName { get; private set; }
+        #region INotifyPropertyChanged Impl
 
-        public string DisplayName { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region Fields
+
+        private string _settingName;
+        private string _displayName;
+
+        #endregion
+
+        #region Properties
+
+        public string SettingName 
+        {
+            get
+            {
+                return _settingName;
+            }
+            private set
+            {
+                _settingName = value;
+                OnPropertyChanged("SettingName");
+            }
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            private set
+            {
+                _displayName = value;
+                OnPropertyChanged("DisplayName");
+            }
+        }
+
+        #endregion
 
         #region CTOR
 
@@ -55,6 +103,5 @@ namespace Dev2.Runtime.Configuration.Settings
         }
 
         #endregion
-
     }
 }

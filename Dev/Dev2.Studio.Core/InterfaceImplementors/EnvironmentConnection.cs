@@ -2,16 +2,25 @@
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
+using Dev2.Diagnostics;
 using Dev2.Network.Execution;
+using Dev2.Network.Messages;
+using Dev2.Network.Messaging;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.Account;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Network.DataList;
 using Dev2.Studio.Core.Network.Execution;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Network;
 using System.Security.Principal;
+using System.Threading;
 
 namespace Dev2.Studio.Core
 {
@@ -222,6 +231,8 @@ namespace Dev2.Studio.Core
 
         private sealed class FrameworkDataChannelWrapper : IStudioClientContext, INetworkOperator, IDisposable
         {
+            #region Fields
+
             private string _username = WindowsIdentity.GetCurrent().User.Value;
             private string _password = "asd";
 
@@ -229,6 +240,17 @@ namespace Dev2.Studio.Core
             private TCPDispatchedClient _client;
             private string _hostNameOrAddress;
             private int _port;
+
+            private ConcurrentDictionary<long, DispatcherFrameToken<INetworkMessage>> _pendingMessages = new ConcurrentDictionary<long, DispatcherFrameToken<INetworkMessage>>();
+            private ServerMessaging _serverMessaging;
+            private long _handles;
+
+            private ConcurrentDictionary<Type, Guid> _messageSubscriptions = new ConcurrentDictionary<Type, Guid>();
+            Guid _errorMessageSubscription;
+
+            #endregion
+
+            #region Properties
 
             public Guid AccountID
             {
@@ -246,39 +268,49 @@ namespace Dev2.Studio.Core
                 }
             }
 
+            #endregion
+
+            #region Constructors
+
             public FrameworkDataChannelWrapper(EnvironmentConnection environment, TCPDispatchedClient client, string hostNameOrAddress, int port)
             {
                 _environment = environment;
                 _client = client;
                 _hostNameOrAddress = hostNameOrAddress;
                 _port = port;
+
+                _serverMessaging = new ServerMessaging();
             }
+
+            #endregion
+
+            #region Methods
 
             public TCPDispatchedClient AcquireAuxiliaryConnection()
             {
-                if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
-                if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                if(_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
+                if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 return _client.CreateAuxiliaryClient();
             }
 
-            public void AddDebugWriter(Dev2.Diagnostics.IDebugWriter writer)
+            public void AddDebugWriter(IDebugWriter writer)
             {
-                if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
-                if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                if(_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
+                if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 _client.AddDebugWriter(writer);
             }
 
-            public void RemoveDebugWriter(Dev2.Diagnostics.IDebugWriter writer)
+            public void RemoveDebugWriter(IDebugWriter writer)
             {
-                if (_client == null) return;
-                if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                if(_client == null) return;
+                if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 try
                 {
                     _client.RemoveDebugWriter(writer);
 
                     IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
-                    if (eventAggregator != null)
+                    if(eventAggregator != null)
                     {
                         eventAggregator.Publish(new DebugStatusMessage(false));
                     }
@@ -291,71 +323,17 @@ namespace Dev2.Studio.Core
 
             public void RemoveDebugWriter(Guid writerID)
             {
-                if (_client == null) return;
-                if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
+                if(_client == null) return;
+                if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 _client.RemoveDebugWriter(writerID);
             }
 
-
-            private bool EnsureConnected()
-            {
-                if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
-                {
-                    throw new Exception("Retrieving client details from the server timed out.");
-                }
-
-                if (!_client.LoggedIn || _client.NetworkState != NetworkState.Online)
-                {
-                    if (_client.NetworkState == NetworkState.Offline)
-                    {
-                        NetworkStateEventArgs args = _client.Connect(_hostNameOrAddress, _port);
-
-                        if (args.ToState == NetworkState.Online)
-                        {
-                            LoginStateEventArgs lArgs = _client.Login(_username, _password);
-                            if (!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
-                            {
-                                throw new Exception("Retrieving client details from the server timed out.");
-                            }
-
-                            if (!lArgs.LoggedIn)
-                            {
-                                //System.Windows.MessageBox.Show(lArgs.Message, "Login Failed", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-
-                                if (!string.IsNullOrEmpty(_environment.Alias))
-                                {
-                                    _environment.DisplayName = string.Format("{0} - (Unavailable) ", _environment.Alias);
-                                }
-
-                                return false;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(_environment.Alias))
-                            {
-                                _environment.DisplayName = string.Format("{0} - (Unavailable) ", _environment.Alias);
-                            }
-
-                            return false;
-                        }
-                    }
-                    else return true;
-                }
-                else return true;
-            }
-
-           
             public string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID)
             {
                 if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
 
-                string payload =  _client.ExecuteCommand(xmlRequest) ?? string.Empty;
+                string payload = _client.ExecuteCommand(xmlRequest) ?? string.Empty;
 
                 // Only return Dev2System.ManagmentServicePayload if present ;)
 
@@ -374,28 +352,7 @@ namespace Dev2.Studio.Core
                     }
                 }
 
-
                 return payload;
-            }
-             
-            public void Dispose()
-            {
-                if (_client != null)
-                {
-                    try
-                    {
-                        _client.Disconnect();
-                    }
-                    catch { }
-
-                    try
-                    {
-                        _client.Dispose();
-                    }
-                    catch { }
-
-                    _client = null;
-                }
             }
 
             public void Send(Packet p)
@@ -404,6 +361,198 @@ namespace Dev2.Studio.Core
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 _client.Send(p);
             }
+
+            /// <summary>
+            /// Sends the synchronous message.
+            /// </summary>
+            /// <typeparam name="T">Message Type</typeparam>
+            /// <param name="message">The message.</param>
+            /// <exception cref="System.InvalidOperationException">A duplicate message handle has been detected in the DataListChannel.</exception>
+            public INetworkMessage SendSynchronousMessage<T>(T message) where T : INetworkMessage, new()
+            {
+                long handle = Interlocked.Increment(ref _handles);
+                DispatcherFrameToken<INetworkMessage> messageToken = new DispatcherFrameToken<INetworkMessage>(new ErrorMessage(handle, "Send message timeout."));
+                if (!_pendingMessages.TryAdd(handle, messageToken))
+                {
+                    throw new InvalidOperationException("A duplicate message handle has been detected in the DataListChannel.");
+                }
+
+                message.Handle = handle;
+
+                try
+                {
+                    EnsureMessageSubscription<T>();
+                    _serverMessaging.MessageBroker.Send(message, _client);
+                }
+                catch
+                {
+                    DispatcherFrameToken<INetworkMessage> tmpToken;
+                    if (!_pendingMessages.TryRemove(handle, out tmpToken))
+                    {
+                        tmpToken.SetResponse(null);
+                    }
+                }
+                return messageToken.WaitForResponse(GlobalConstants.NetworkTimeOut);
+            }
+
+            #endregion
+
+            #region Private Methods
+
+            /// <summary>
+            /// Ensures there is a subscription to the message aggregator for the specified message type.
+            /// </summary>
+            /// <typeparam name="T">The message type.</typeparam>
+            private void EnsureMessageSubscription<T>() where T : INetworkMessage, new()
+            {
+                Guid _messageSubscriptionToken;
+                if (!_messageSubscriptions.TryGetValue(typeof(T), out _messageSubscriptionToken))
+                {
+                    _messageSubscriptionToken = _serverMessaging.MessageAggregator.Subscribe(new Action<T, INetworkOperator>(RecieveSynchronousMessage));
+                    if (!_messageSubscriptions.TryAdd(typeof(T), _messageSubscriptionToken))
+                    {
+                        _serverMessaging.MessageAggregator.Unsubscibe(_messageSubscriptionToken);
+                    }
+                }
+
+                if (_errorMessageSubscription == Guid.Empty)
+                {
+                    _errorMessageSubscription = _serverMessaging.MessageAggregator.Subscribe(new Action<ErrorMessage, INetworkOperator>(RecieveSynchronousMessage));
+                }
+            }
+
+            /// <summary>
+            /// Completes the recieve of a synchronous message.
+            /// </summary>
+            /// <param name="message">The message.</param>
+            /// <param name="context">The network context.</param>
+            private void RecieveSynchronousMessage<T>(T message, INetworkOperator context) where T : INetworkMessage
+            {
+                if (message is ErrorMessage)
+                {
+                    //
+                    // Release all message in the event of an error, this is to prevent the studio from hanging.
+                    //
+                    DispatcherFrameToken<INetworkMessage> messageToken;
+                    if (_pendingMessages.TryRemove(message.Handle, out messageToken))
+                    {
+                        messageToken.SetResponse(null);
+                    }
+                }
+                else
+                {
+                    DispatcherFrameToken<INetworkMessage> messageToken;
+                    if (_pendingMessages.TryRemove(message.Handle, out messageToken))
+                    {
+                        messageToken.SetResponse(message);
+                    }
+                }
+            }
+
+            private bool EnsureConnected()
+            {
+                if(!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+                {
+                    throw new Exception("Retrieving client details from the server timed out.");
+                }
+
+                if(!_client.LoggedIn || _client.NetworkState != NetworkState.Online)
+                {
+                    if(_client.NetworkState == NetworkState.Offline)
+                    {
+                        NetworkStateEventArgs args = _client.Connect(_hostNameOrAddress, _port);
+
+                        if(args.ToState == NetworkState.Online)
+                        {
+                            LoginStateEventArgs lArgs = _client.Login(_username, _password);
+                            if(!_client.WaitForClientDetails()) //Bug 8796, After logging in wait for client details to come through before proceeding
+                            {
+                                throw new Exception("Retrieving client details from the server timed out.");
+                            }
+
+                            if(!lArgs.LoggedIn)
+                            {
+                                //System.Windows.MessageBox.Show(lArgs.Message, "Login Failed", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+
+                                if(!string.IsNullOrEmpty(_environment.Alias))
+                                {
+                                    _environment.DisplayName = string.Format("{0} - (Unavailable) ", _environment.Alias);
+                                }
+
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if(!string.IsNullOrEmpty(_environment.Alias))
+                            {
+                                _environment.DisplayName = string.Format("{0} - (Unavailable) ", _environment.Alias);
+                            }
+
+                            return false;
+                        }
+                    }
+                    else return true;
+                }
+                else return true;
+            }
+
+            #endregion
+
+            #region Clean Up
+           
+            public void Dispose()
+            {
+                // Clear all waiting messages
+                foreach (KeyValuePair<long, DispatcherFrameToken<INetworkMessage>> item in _pendingMessages.ToList())
+                {
+                    DispatcherFrameToken<INetworkMessage> messageToken;
+                    if (_pendingMessages.TryRemove(item.Key, out messageToken))
+            {
+                        messageToken.SetResponse(null);
+                    }
+                }
+
+                // Unsubscrible from message aggregator
+                foreach (Guid item in _messageSubscriptions.Values.ToList())
+                {
+                    _serverMessaging.MessageAggregator.Unsubscibe(item);
+            }
+             
+                if (_errorMessageSubscription != Guid.Empty)
+            {
+                    _serverMessaging.MessageAggregator.Unsubscibe(_errorMessageSubscription);
+                }
+
+                _serverMessaging = null;
+
+                if(_client != null)
+                {
+                    try
+                    {
+                        _client.Disconnect();
+                    }
+                    catch
+                    {
+                    }
+
+                    try
+                    {
+                        _client.Dispose();
+                    }
+                    catch
+                    {
+                    }
+
+                    _client = null;
+                }
+            }
+
+            #endregion
         }
 
         #endregion Private Classes

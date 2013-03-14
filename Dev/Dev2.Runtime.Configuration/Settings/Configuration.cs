@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Dev2.Runtime.Configuration.ComponentModel;
+using Dev2.Runtime.Configuration.ViewModels;
+using Dev2.Runtime.Configuration.Views;
+using System;
+using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Settings
@@ -10,11 +14,13 @@ namespace Dev2.Runtime.Configuration.Settings
     // ------------------------------------------------------------------------------
     public sealed class Configuration
     {
+        #region Fields
+
         public Version Version { get; set; }
 
-        public LoggingSettings Logging { get; private set; }
-        public SecuritySettings Security { get; private set; }
-        public BackupSettings Backup { get; private set; }
+        #endregion
+
+        #region Constructors
 
         public Configuration()
         {
@@ -38,6 +44,21 @@ namespace Dev2.Runtime.Configuration.Settings
             Backup = new BackupSettings(xml.Element(BackupSettings.SettingName));
         }
 
+        #endregion
+
+        #region Properties
+
+        [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
+        public LoggingSettings Logging { get; private set; }
+
+        public SecuritySettings Security { get; private set; }
+
+        public BackupSettings Backup { get; private set; }
+
+        #endregion
+
+        #region Methods
+
         public XElement ToXml()
         {
             var result = new XElement("Settings",
@@ -53,5 +74,25 @@ namespace Dev2.Runtime.Configuration.Settings
         {
             Version = Version == null ? new Version(1, 0) : new Version(Version.Major, Version.Minor + 1);
         }
+
+        #endregion
+
+        #region Static Methods
+
+        public static UserControl EntryPoint(XElement configurationXML, Action<XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
+        {
+            MainView settingsView = new MainView();
+            MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
+            settingsView.DataContext = mainViewModel;
+
+            if (mainViewModel.SettingsObjects.Count > 0)
+            {
+                mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
+            }
+
+            return settingsView;
+        }
+
+        #endregion
     }
 }

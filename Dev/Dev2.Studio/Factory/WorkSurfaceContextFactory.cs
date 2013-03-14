@@ -1,23 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Windows.Controls;
-using Caliburn.Micro;
-using Dev2.Studio.ActivityDesigners;
-using Dev2.Studio.AppResources.AttachedProperties;
-using Dev2.Studio.Core;
+﻿using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.Deploy;
-using Dev2.Studio.ViewModels.Help;
-using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.Views.Help;
+using Dev2.Studio.ViewModels.WorkSurface;
+using System;
 
 namespace Dev2.Studio.Factory
 {
@@ -47,6 +35,13 @@ namespace Dev2.Studio.Factory
         {
             var vm = DeployViewModelFactory.GetDeployViewModel(input);
             var context = CreateWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
+            return context;
+        }
+
+        public static WorkSurfaceContextViewModel CreateRuntimeConfigurationViewModel(IEnvironmentModel environmentModel)
+        {
+            var vm = RuntimeConfigurationViewModelFactory.CreateRuntimeConfigurationViewModel(environmentModel);
+            var context = CreateWorkSurfaceContextViewModel(vm, WorkSurfaceContext.Settings);
             return context;
         }
 

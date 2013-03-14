@@ -26,16 +26,16 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
-using Dev2.Studio.Factory;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
+using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Web;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Administration;
+using Dev2.Studio.Views.Configuration;
 using Dev2.Studio.Views.DataList;
-using Dev2.Studio.Views.Deploy;
 using Dev2.Studio.Views.Explorer;
 using Dev2.Studio.Views.Help;
 using Dev2.Studio.Views.ResourceManagement;
@@ -756,42 +756,42 @@ namespace Dev2.Studio
             {
                 string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
-            ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+                ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
 
                 ErrorResultTO errors = new ErrorResultTO();
 
                 if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
-            {
-                // Bad things happened... Tell the user
+                {
+                    // Bad things happened... Tell the user
                     PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
-                // Stop configuring!!!
-                return;
-            }
+                    // Stop configuring!!!
+                    return;
+                }
 
-            // Push the correct data to the server ;)
+                // Push the correct data to the server ;)
                 if (activityExpression != null && activityExpression.Value == null)
-            {
-                // Its all new, push the empty model
+                {
+                    // Its all new, push the empty model
                     //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
-            }
+                }
                 else if (activityExpression != null && activityExpression.Value != null)
-            {
-                //we got a model, push it in to the Model region ;)
-                // but first, strip and extract the model data ;)
+                {
+                    //we got a model, push it in to the Model region ;)
+                    // but first, strip and extract the model data ;)
 
                     val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
 
                     if (string.IsNullOrEmpty(val))
-                {
+                    {
 
-                            val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                        val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
                     }
                 }
 
-            // Now invoke the Wizard ;)
-            Uri requestUri;
+                // Now invoke the Wizard ;)
+                Uri requestUri;
                 if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
-            {
+                {
                     string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, GlobalConstants.NullDataListID);
 
 
@@ -802,9 +802,9 @@ namespace Dev2.Studio
                 WebSites.ShowWebPageDialog(uriString, _callBackHandler, 824, 508);
                     WebSites.ShowWebPageDialog(uriString, callBackHandler, 824, 508);
 
-                // Wizard finished...
-                try
-                {
+                    // Wizard finished...
+                    try
+                    {
                         // Remove naughty chars...
                         var tmp = callBackHandler.ModelData;
                         // remove the silly Choose... from the string
@@ -815,57 +815,57 @@ namespace Dev2.Studio
                         Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
                         if (dds != null)
-                    {
-                        // Empty check the arms ;)
-                            if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
                         {
-                            dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
-                        }
+                            // Empty check the arms ;)
+                            if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
+                            {
+                                dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
+                            }
 
                             if (string.IsNullOrEmpty(dds.FalseArmText.Trim()))
-                        {
-                            dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
-                        }
+                            {
+                                dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
+                            }
 
-                        // Update the decision node on the workflow ;)
-                        string modelData = dds.ToVBPersistableModel();
+                            // Update the decision node on the workflow ;)
+                            string modelData = dds.ToVBPersistableModel();
 
-                        // build up our injected expression handler ;)
+                            // build up our injected expression handler ;)
                             string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
                             if (activityExpression != null)
-                        {
-                            activityExpression.SetValue(expressionToInject);
-                        }
+                            {
+                                activityExpression.SetValue(expressionToInject);
+                            }
 
-                        // now set arms ;)
-                        ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
+                            // now set arms ;)
+                            ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
                             if (tArm != null)
-                        {
-                            tArm.SetValue(dds.TrueArmText);
-                        }
+                            {
+                                tArm.SetValue(dds.TrueArmText);
+                            }
 
-                        ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
+                            ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
                             if (fArm != null)
-                        {
-                            fArm.SetValue(dds.FalseArmText);
+                            {
+                                fArm.SetValue(dds.FalseArmText);
+                            }
                         }
                     }
-                }
-                catch
-                {
-                    // Bad things happened... Tell the user
-                    //PopupProvider.Show("", "")
-                    PopupProvider.Buttons = MessageBoxButton.OK;
-                    PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
-                    PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
-                    PopupProvider.ImageType = MessageBoxImage.Error;
-                    PopupProvider.Show();
+                    catch
+                    {
+                        // Bad things happened... Tell the user
+                        //PopupProvider.Show("", "")
+                        PopupProvider.Buttons = MessageBoxButton.OK;
+                        PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
+                        PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
+                        PopupProvider.ImageType = MessageBoxImage.Error;
+                        PopupProvider.Show();
+                    }
                 }
             }
-        }
         }
 
         internal void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
@@ -932,7 +932,7 @@ namespace Dev2.Studio
                                             {
 
                                                 var ds = new Dev2Switch { SwitchVariable = val };
-                                                    webModel = JsonConvert.SerializeObject(ds);
+                                                webModel = JsonConvert.SerializeObject(ds);
 
                                             }
 
@@ -1190,7 +1190,7 @@ namespace Dev2.Studio
             //        SetActiveDocument(help);
             //    }
             //}
-            }
+        }
 
         // Travis.Frisinger - 13.08.2012 : Changed to use POST request instead of fetched HTML injection ;)
         internal void ShowWebpartWizard(IPropertyEditorWizard layoutObjectToOpenWizardFor)
@@ -1244,7 +1244,7 @@ namespace Dev2.Studio
                 }
                 catch
                 {
-                }
+            }
             }
         }
 
@@ -1445,24 +1445,46 @@ namespace Dev2.Studio
 
         internal void AddDeployResources(object input)
         {
-            const string tabName = "Deploy Resources";
+            //TODO 1018 Move code to show the settings tab to it's own button
+            const string tabName = "Settings";
 
             FrameworkElement tab = FindTabByName(tabName);
 
             if (tab != null)
             {
                 SetActiveDocument(tab);
-                Mediator.SendMessage(MediatorMessages.SelectItemInDeploy, input);
             }
             else
             {
-                var view = new DeployView { DataContext = DeployViewModelFactory.GetDeployViewModel(input) };
+                RuntimeConfigurationView runtimeConfigurationView = new RuntimeConfigurationView()
+                {
+                    DataContext = new RuntimeConfigurationViewModel(((IEnvironmentModel)input))
+                };
 
-                AttachedPropertyHelper.SetAttachedProperties(view, tabName);
+                AttachedPropertyHelper.SetAttachedProperties(runtimeConfigurationView, tabName);
 
-                Tabs.Add(view);
-                SetActiveDocument(view);
+                Tabs.Add(runtimeConfigurationView);
+                SetActiveDocument(runtimeConfigurationView);
             }
+
+            //const string tabName = "Deploy Resources";
+
+            //FrameworkElement tab = FindTabByName(tabName);
+
+            //if (tab != null)
+            //{
+            //    SetActiveDocument(tab);
+            //    Mediator.SendMessage(MediatorMessages.SelectItemInDeploy, input);
+            //}
+            //else
+            //{
+            //    var view = new DeployView { DataContext = DeployViewModelFactory.GetDeployViewModel(input) };
+
+            //    AttachedPropertyHelper.SetAttachedProperties(view, tabName);
+
+            //    Tabs.Add(view);
+            //    SetActiveDocument(view);
+            //}
         }
 
         #endregion

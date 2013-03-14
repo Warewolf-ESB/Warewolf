@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Dev2.Network.Messaging;
+using Dev2.Network.Messaging.Messages;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Xml.Linq;
-using Dev2.Network.Messaging;
-using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Runtime.Configuration
 {
     /// <summary>
     /// Do NOT instantiate directly - use static <see cref="Instance" /> property instead; use for testing only!
     /// </summary>
-    public class SettingsProvider : NetworkMessageProviderBase<ISettingsMessage>
+    public class SettingsProvider : NetworkMessageProviderBase<SettingsMessage>
     {
         #region Singleton Instance
 
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.Configuration
 
         #region ProcessMessage
 
-        public override ISettingsMessage ProcessMessage(ISettingsMessage request)
+        public override SettingsMessage ProcessMessage(SettingsMessage request)
         {
             if(request == null)
             {
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.Configuration
 
         #region ProcessRead
 
-        ISettingsMessage ProcessRead(ISettingsMessage request)
+        SettingsMessage ProcessRead(SettingsMessage request)
         {
             if(request.AssemblyHashCode != AssemblyHashCode)
             {
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.Configuration
 
         #region ProcessWrite
 
-        ISettingsMessage ProcessWrite(ISettingsMessage request)
+        SettingsMessage ProcessWrite(SettingsMessage request)
         {
             var filePath = GetFilePath();
             var canSave = request.Action == NetworkMessageAction.Overwrite || !File.Exists(filePath);

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Composition;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Network;
 
 namespace Dev2.Studio.Core.Network
@@ -13,7 +12,8 @@ namespace Dev2.Studio.Core.Network
 
         public ServerMessaging()
         {
-            ImportService.SatisfyImports(this);
+            MessageAggregator = ImportService.GetExportValue<IStudioNetworkMessageAggregator>();
+            MessageBroker = ImportService.GetExportValue<INetworkMessageBroker>();
         }
 
         #endregion Constructors
@@ -26,8 +26,7 @@ namespace Dev2.Studio.Core.Network
         /// <value>
         /// The message aggregator.
         /// </value>
-        [Import]
-        public IStudioNetworkMessageAggregator MessageAggregator { get; set; }
+        public IStudioNetworkMessageAggregator MessageAggregator { get; private set; }
 
         /// <summary>
         /// Gets the message broker.
@@ -35,8 +34,7 @@ namespace Dev2.Studio.Core.Network
         /// <value>
         /// The message broker.
         /// </value>
-        [Import]
-        public INetworkMessageBroker MessageBroker { get; set; }
+        public INetworkMessageBroker MessageBroker { get; private set; }
 
         #endregion Public Properties
     }

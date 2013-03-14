@@ -10,7 +10,7 @@ namespace Dev2.Network.Messaging
     /// <author>Trevor.Williams-Ros</author>
     /// <date>2013/03/07</date>
     public abstract class NetworkMessageProviderBase<TNetworkMessage>
-        where TNetworkMessage : INetworkMessage
+        where TNetworkMessage : INetworkMessage, new()
     {
         /// <summary>
         /// Gets the subscription token used by the aggregator.

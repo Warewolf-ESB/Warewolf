@@ -154,7 +154,7 @@ namespace Dev2.Network.Messaging
         /// </summary>
         /// <param name="callback">The callback.</param>
         /// <returns></returns>
-        public Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage
+        public Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage, new()
         {
             if(callback == null)
             {

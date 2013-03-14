@@ -10,7 +10,8 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Text="{Binding Path=LabelText, ElementName=ConnectUserControl}" VerticalAlignment="Center" />
-        <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" Grid.Column="1" x:Name="TheServerComboBox" DisplayMemberPath="Alias" ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" DropDownOpened="OnServerDropDownOpened"  SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="22" VerticalAlignment="Bottom">
+        <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" Grid.Column="1" x:Name="TheServerComboBox" DisplayMemberPath="Alias" ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" DropDownOpened="OnServerDropDownOpened"  SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="22" VerticalAlignment="Bottom"
+                  IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="AutomationProperties.AutomationId">
@@ -24,6 +25,7 @@
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
-        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="2" Content="..." Margin="5,0,0,0" Click="OnConnectClick" />
+        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="2" Content="..." Margin="5,0,0,0" Click="OnConnectClick" 
+                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
     </Grid>
 </UserControl>

@@ -2,8 +2,9 @@
 {
     public enum NetworkMessageAction
     {
-        Read,
-        Write,
-        Overwrite
+        Unknown,
+        Read, // Use to get settings & file is hash mismatch
+        Write, // Use to save settings, first time
+        Overwrite // Use if version conflict when using 'Write' and want to override
     }
 }

@@ -1,28 +1,188 @@
-﻿using System;
+﻿using Dev2.Runtime.Configuration.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Dev2.Runtime.Configuration.ComponentModel;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
     public class LoggingSettings : SettingsBase
     {
+        #region Fields
+
         public const string SettingName = "Logging";
+
+        private bool _isLoggingEnabled;
+        private bool _isVersionLogged;
+        private bool _isTypeLogged;
+        private bool _isDurationLogged;
+        private bool _isDataAndTimeLogged;
+        private bool _isInputLogged;
+        private bool _isOutputLogged;
+        private int _nestedLevelCount;
+        private string _logFileDirectory;
+        private string _serviceInput;
+        private WorkflowDescriptor _postWorkflow;
+        private List<WorkflowDescriptor> _workflows;
+
+        #endregion
 
         #region Properties
 
-        public bool IsLoggingEnabled { get; set; }
-        public bool IsVersionLogged { get; set; }
-        public bool IsTypeLogged { get; set; }
-        public bool IsDurationLogged { get; set; }
-        public bool IsDataAndTimeLogged { get; set; }
-        public bool IsInputLogged { get; set; }
-        public bool IsOutputLogged { get; set; }
-        public int NestedLevelCount { get; set; }
-        public string LogFileDirectory { get; set; }
-        public string ServiceInput { get; set; }
-        public WorkflowDescriptor PostWorkflow { get; private set; }
-        public List<WorkflowDescriptor> Workflows { get; private set; }
+        public bool IsLoggingEnabled
+        {
+            get
+            {
+                return _isLoggingEnabled;
+            }
+            set
+            {
+                _isLoggingEnabled = value;
+                OnPropertyChanged("IsLoggingEnabled");
+            }
+        }
+
+        public bool IsVersionLogged
+        {
+            get
+            {
+                return _isVersionLogged;
+            }
+            set
+            {
+                _isVersionLogged = value;
+                OnPropertyChanged("IsVersionLogged");
+            }
+        }
+
+        public bool IsTypeLogged
+        {
+            get
+            {
+                return _isTypeLogged;
+            }
+            set
+            {
+                _isTypeLogged = value;
+                OnPropertyChanged("IsTypeLogged");
+            }
+        }
+
+        public bool IsDurationLogged
+        {
+            get
+            {
+                return _isDurationLogged;
+            }
+            set
+            {
+                _isDurationLogged = value;
+                OnPropertyChanged("IsDurationLogged");
+            }
+        }
+
+        public bool IsDataAndTimeLogged
+        {
+            get
+            {
+                return _isDataAndTimeLogged;
+            }
+            set
+            {
+                _isDataAndTimeLogged = value;
+                OnPropertyChanged("IsDataAndTimeLogged");
+            }
+        }
+
+        public bool IsInputLogged
+        {
+            get
+            {
+                return _isInputLogged;
+            }
+            set
+            {
+                _isInputLogged = value;
+                OnPropertyChanged("IsInputLogged");
+            }
+        }
+
+        public bool IsOutputLogged
+        {
+            get
+            {
+                return _isOutputLogged;
+            }
+            set
+            {
+                _isOutputLogged = value;
+                OnPropertyChanged("IsOutputLogged");
+            }
+        }
+
+        public int NestedLevelCount
+        {
+            get
+            {
+                return _nestedLevelCount;
+            }
+            set
+            {
+                _nestedLevelCount = value;
+                OnPropertyChanged("NestedLevelCount");
+            }
+        }
+
+        public string LogFileDirectory
+        {
+            get
+            {
+                return _logFileDirectory;
+            }
+            set
+            {
+                _logFileDirectory = value;
+                OnPropertyChanged("LogFileDirectory");
+            }
+        }
+
+        public string ServiceInput
+        {
+            get
+            {
+                return _serviceInput;
+            }
+            set
+            {
+                _serviceInput = value;
+                OnPropertyChanged("ServiceInput");
+            }
+        }
+
+        public WorkflowDescriptor PostWorkflow
+        {
+            get
+            {
+                return _postWorkflow;
+            }
+            set
+            {
+                _postWorkflow = value;
+                OnPropertyChanged("PostWorkflow");
+            }
+        }
+
+        public List<WorkflowDescriptor> Workflows
+        {
+            get
+            {
+                return _workflows;
+            }
+            private set
+            {
+                _workflows = value;
+                OnPropertyChanged("Workflows");
+            }
+        }
 
         #endregion
 

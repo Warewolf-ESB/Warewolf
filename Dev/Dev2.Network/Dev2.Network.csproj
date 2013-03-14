@@ -59,7 +59,6 @@
     <Compile Include="Messaging\IServerNetworkMessageAggregator.cs" />
     <Compile Include="Messaging\IStudioNetworkMessageAggregator.cs" />
     <Compile Include="Messaging\Messages\ErrorMessage.cs" />
-    <Compile Include="Messaging\Messages\ISettingsMessage.cs" />
     <Compile Include="Messaging\Messages\NetworkMessageAction.cs" />
     <Compile Include="Messaging\Messages\NetworkContextDetachedMessage.cs" />
     <Compile Include="Messaging\Messages\NetworkMessageResult.cs" />

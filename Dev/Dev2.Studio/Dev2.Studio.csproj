@@ -332,6 +332,7 @@
     <Compile Include="Factory\DataMappingListFactory.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
     <Compile Include="Factory\InputOutputViewModelFactory.cs" />
+    <Compile Include="Factory\RuntimeConfigurationViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingInputAction.cs" />
@@ -345,11 +346,15 @@
     <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
     <Compile Include="InterfaceImplementors\PopUp.cs" />
+    <Compile Include="ViewModels\Configuration\RuntimeConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\RuntimeConfigurationView.xaml.cs">
+      <DependentUpon>RuntimeConfigurationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
       <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
@@ -733,6 +738,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\RuntimeConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
       <SubType>Designer</SubType>

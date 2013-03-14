@@ -8,7 +8,7 @@ namespace Dev2.Network
         void Publish(INetworkMessage message, bool async = true);
         void Publish(INetworkMessage message, IServerNetworkChannelContext<ContextT> context, bool async = true);
         Guid Subscribe<T>(Action<T, IServerNetworkChannelContext<ContextT>> callback) where T : INetworkMessage, new();
-        Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage;
+        Guid Subscribe<T>(Action<T, NetworkContext> callback) where T : INetworkMessage, new();
         bool Unsubscibe(Guid subscriptionToken);
     }
 }

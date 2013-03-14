@@ -1,5 +1,6 @@
-﻿using System;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
+using Dev2.Network.Messages;
+using System;
 
 namespace Dev2
 {
@@ -9,6 +10,7 @@ namespace Dev2
     public interface IStudioEsbChannel
     {
         string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID);
+        INetworkMessage SendSynchronousMessage<T>(T message) where T : INetworkMessage, new();
     }
 
     public interface IEsbChannel

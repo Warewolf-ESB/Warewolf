@@ -33,7 +33,7 @@
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="H" Modifiers="Alt" />
         <!-- <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="U" Modifiers="Alt" /> -->
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="P" Modifiers="Alt" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="T" Modifiers="Alt" />
+        <KeyBinding Command="{Binding Path=SettingsCommand}" Key="T" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="A" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=StartFeedbackCommand}" Key="F" Modifiers="Alt" />
         <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
@@ -476,6 +476,10 @@
                         <ribbon:RibbonButton Label="Deploy"
                                              LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png"
                                              Command="{Binding Path=DeployCommand}" />
+
+                        <ribbon:RibbonButton Label="Settings"
+                                             LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/settingsIcon.png"
+                                             Command="{Binding Path=SettingsCommand}" />
                     </ribbon:RibbonGroup>
                 </ribbon:RibbonTab>
 

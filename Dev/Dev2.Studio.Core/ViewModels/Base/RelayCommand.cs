@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace Dev2.Studio.Core.ViewModels.Base
@@ -96,7 +93,5 @@ namespace Dev2.Studio.Core.ViewModels.Base
         }
 
         #endregion // ICommand Members
-
-
     }
 }

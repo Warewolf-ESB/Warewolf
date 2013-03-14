@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Dev2.Runtime.Configuration.Tests.XML;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Runtime.Configuration.Tests.XML;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Runtime.Configuration.Tests.Settings
 {
@@ -115,6 +115,5 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         }
 
         #endregion
-
     }
 }

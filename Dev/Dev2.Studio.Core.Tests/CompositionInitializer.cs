@@ -7,6 +7,7 @@ using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels;
@@ -75,6 +76,32 @@ namespace Dev2.Core.Tests
 
             Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
             ImportService.AddExportedValueToContainer(webCommunication.Object);
+
+            return importServiceContext;
+        }
+
+        internal static ImportServiceContext InitializeForSettingsViewModel(Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository, Mock<IDev2WindowManager> windowManager, Mock<IPopUp> popup)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            Mock<IEventAggregator> mockEventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
+
+            Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
+            ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
+
+            Mock<IMainViewModel> mainViewModel = new Mock<IMainViewModel>();
+            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+
+            Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
+            ImportService.AddExportedValueToContainer(webCommunication.Object);
+
+            ImportService.AddExportedValueToContainer(assemblyRepository.Object);
+            ImportService.AddExportedValueToContainer(windowManager.Object);
+            ImportService.AddExportedValueToContainer(popup.Object);
 
             return importServiceContext;
         }

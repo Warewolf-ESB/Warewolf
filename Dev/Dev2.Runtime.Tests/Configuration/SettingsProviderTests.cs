@@ -89,9 +89,11 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessMessageWithValidArgumentsExpectedDoesNotReturnNull()
         {
-            var request = new Mock<ISettingsMessage>();
+            //var request = new Mock<ISettingsMessage>();
+            var request = new SettingsMessage();
             var provider = new SettingsProvider();
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.IsNotNull(result);
         }
 
@@ -102,18 +104,25 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessReadWithInvalidAssemblyHashCodeExpectedReturnsVersionConflictAndAllProperties()
         {
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Read);
-            request.SetupProperty(m => m.Result);
-            request.SetupProperty(m => m.ConfigurationXml);
-            request.SetupProperty(m => m.Assembly);
-            request.SetupProperty(m => m.AssemblyHashCode);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Read);
+            //request.SetupProperty(m => m.Result);
+            //request.SetupProperty(m => m.ConfigurationXml);
+            //request.SetupProperty(m => m.Assembly);
+            //request.SetupProperty(m => m.AssemblyHashCode);
 
-            request.Object.AssemblyHashCode = "xxx";
+            //request.Object.AssemblyHashCode = "xxx";
 
             var provider = new SettingsProvider();
 
-            var result = provider.ProcessMessage(request.Object);
+            var request = new SettingsMessage
+            {
+                AssemblyHashCode = "xxx",
+                Action = NetworkMessageAction.Read
+            };
+
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.AreEqual(NetworkMessageResult.VersionConflict, result.Result);
             Assert.IsNotNull(result.ConfigurationXml);
             Assert.IsNotNull(result.Assembly);
@@ -124,18 +133,24 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessReadWithValidAssemblyHashCodeExpectedReturnsSuccessAndConfigurationXmlOnly()
         {
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Read);
-            request.SetupProperty(m => m.Result);
-            request.SetupProperty(m => m.ConfigurationXml);
-            request.SetupProperty(m => m.Assembly);
-            request.SetupProperty(m => m.AssemblyHashCode);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Read);
+            //request.SetupProperty(m => m.Result);
+            //request.SetupProperty(m => m.ConfigurationXml);
+            //request.SetupProperty(m => m.Assembly);
+            //request.SetupProperty(m => m.AssemblyHashCode);
 
             var provider = new SettingsProvider();
 
-            request.Object.AssemblyHashCode = provider.AssemblyHashCode;
+            var request = new SettingsMessage
+            {
+                AssemblyHashCode = provider.AssemblyHashCode,
+                Action = NetworkMessageAction.Read
+            };
+            //request.Object.AssemblyHashCode = provider.AssemblyHashCode;
 
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.AreEqual(NetworkMessageResult.Success, result.Result);
             Assert.IsNotNull(result.ConfigurationXml);
             Assert.IsNull(result.Assembly);
@@ -151,15 +166,22 @@ namespace Dev2.Tests.Runtime.Configuration
         {
             var configNew = new Dev2.Runtime.Configuration.Settings.Configuration();
 
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Overwrite);
-            request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
-            request.SetupProperty(m => m.Result);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Overwrite);
+            //request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+            //request.SetupProperty(m => m.Result);
+
+            var request = new SettingsMessage
+            {
+                ConfigurationXml = configNew.ToXml(),
+                Action = NetworkMessageAction.Overwrite
+            };
 
             var provider = new SettingsProvider();
             var filePath = provider.GetFilePath();
 
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.AreEqual(NetworkMessageResult.Success, result.Result);
             Assert.IsTrue(File.Exists(filePath));
 
@@ -175,15 +197,22 @@ namespace Dev2.Tests.Runtime.Configuration
         {
             var configNew = new Dev2.Runtime.Configuration.Settings.Configuration();
 
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
-            request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
-            request.SetupProperty(m => m.Result);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+            //request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+            //request.SetupProperty(m => m.Result);
+
+            var request = new SettingsMessage
+            {
+                ConfigurationXml = configNew.ToXml(),
+                Action = NetworkMessageAction.Write
+            };
 
             var provider = new SettingsProvider();
             var filePath = provider.GetFilePath();
 
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.AreEqual(NetworkMessageResult.Success, result.Result);
             Assert.IsTrue(File.Exists(filePath));
 
@@ -200,10 +229,16 @@ namespace Dev2.Tests.Runtime.Configuration
             var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
             var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 0) };
 
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
-            request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
-            request.SetupProperty(m => m.Result);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+            //request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+            //request.SetupProperty(m => m.Result);
+
+            var request = new SettingsMessage
+            {
+                ConfigurationXml = configNew.ToXml(),
+                Action = NetworkMessageAction.Write
+            };
 
             var provider = new SettingsProvider();
             var filePath = provider.GetFilePath();
@@ -212,7 +247,8 @@ namespace Dev2.Tests.Runtime.Configuration
             var xmlOld = configOld.ToXml();
             xmlOld.Save(filePath);
 
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.AreEqual(NetworkMessageResult.Success, result.Result);
             Assert.IsTrue(File.Exists(filePath));
 
@@ -229,10 +265,16 @@ namespace Dev2.Tests.Runtime.Configuration
             var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
             var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
 
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
-            request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
-            request.SetupProperty(m => m.Result);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+            //request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+            //request.SetupProperty(m => m.Result);
+
+            var request = new SettingsMessage
+            {
+                ConfigurationXml = configNew.ToXml(),
+                Action = NetworkMessageAction.Write
+            };
 
             var provider = new SettingsProvider();
             var filePath = provider.GetFilePath();
@@ -241,7 +283,8 @@ namespace Dev2.Tests.Runtime.Configuration
             var xmlOld = configOld.ToXml();
             xmlOld.Save(filePath);
 
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
             Assert.AreEqual(NetworkMessageResult.Success, result.Result);
             Assert.IsTrue(File.Exists(filePath));
 
@@ -259,10 +302,16 @@ namespace Dev2.Tests.Runtime.Configuration
             var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 0) };
             var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
 
-            var request = new Mock<ISettingsMessage>();
-            request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
-            request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
-            request.SetupProperty(m => m.Result);
+            //var request = new Mock<ISettingsMessage>();
+            //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
+            //request.SetupGet(m => m.ConfigurationXml).Returns(configNew.ToXml());
+            //request.SetupProperty(m => m.Result);
+
+            var request = new SettingsMessage
+            {
+                ConfigurationXml = configNew.ToXml(),
+                Action = NetworkMessageAction.Write
+            };
 
             var provider = new SettingsProvider();
             var filePath = provider.GetFilePath();
@@ -273,7 +322,8 @@ namespace Dev2.Tests.Runtime.Configuration
             var xmlOld = configOld.ToXml();
             xmlOld.Save(filePath);
 
-            var result = provider.ProcessMessage(request.Object);
+            //var result = provider.ProcessMessage(request.Object);
+            var result = provider.ProcessMessage(request);
 
             Assert.AreEqual(NetworkMessageResult.VersionConflict, result.Result);
             var diskXml = XElement.Load(filePath);

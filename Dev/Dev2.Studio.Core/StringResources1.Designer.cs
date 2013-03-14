@@ -532,6 +532,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RuntimeConfigurationAssemblies.
+        /// </summary>
+        public static string RuntimeConfigurationAssemblyDirectory {
+            get {
+                return ResourceManager.GetString("RuntimeConfigurationAssemblyDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ResourceUpload.
         /// </summary>
         public static string Services_Add_Resource {

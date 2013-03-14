@@ -541,4 +541,7 @@ Developed By:</value>
   <data name="Navigation_RootNode_Name" xml:space="preserve">
     <value>Explorer</value>
   </data>
+  <data name="RuntimeConfigurationAssemblyDirectory" xml:space="preserve">
+    <value>RuntimeConfigurationAssemblies</value>
+  </data>
 </root>

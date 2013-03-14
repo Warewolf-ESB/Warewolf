@@ -5,6 +5,9 @@ namespace Dev2.Common
 {
     public static class GlobalConstants
     {
+        //Runtime Configuration
+        public const string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
+
         //Dev2MessageBox DontShowAgainKeys
         public const string Dev2MessageBoxDesignSurfaceTabPasteDialog = "1";
 
