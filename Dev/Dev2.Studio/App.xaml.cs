@@ -87,7 +87,7 @@ namespace Dev2.Studio
                 }
 
                 MessageBox.Show(
-                    "An unexpected unrecoverable exception has been encountered. The application will now shut down;");
+                    "An unexpected unrecoverable exception has been encountered. The application will now shut down.");
                 Current.Shutdown();
             }
         }

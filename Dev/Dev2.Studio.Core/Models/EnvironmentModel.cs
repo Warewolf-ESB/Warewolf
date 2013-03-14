@@ -554,6 +554,25 @@ namespace Dev2.Studio.Core.Models
 
                     string payload = _client.ExecuteCommand(xmlRequest);
 
+                    if (payload != null)
+                    {
+                        // Only return Dev2System.ManagmentServicePayload if present ;)
+                        int start = payload.IndexOf("<" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+
+                        if (start > 0)
+                        {
+                            int end = payload.IndexOf("</" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+                            if (start < end && (end - start) > 1)
+                            {
+                                // we can return the trimed payload instead
+
+                                start += (GlobalConstants.ManagementServicePayload.Length + 2);
+
+                                return payload.Substring(start, (end - start));
+                            }
+                        }
+                    }
+
                     return payload;
                 }
 

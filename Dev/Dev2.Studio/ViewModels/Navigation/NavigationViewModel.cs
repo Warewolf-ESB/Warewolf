@@ -331,24 +331,24 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             try
             {
-            if (environment != null && !environment.IsConnected)
-            {
-                Connect(environment);
-            }
+                if (environment != null && !environment.IsConnected)
+                {
+                    Connect(environment);
+                }
 
-            if (environment != null && environment.IsConnected)
-            {
-                //
-                // Load the environemnts resources
-                //
-                environment.LoadResources();
-            }
+                if (environment != null && environment.IsConnected)
+                {
+                    //
+                    // Load the environemnts resources
+                    //
+                    environment.LoadResources();
+                }
 
-            //
-            // Build the resources into a tree
-            //
-            BuildNavigationItemViewModels(environment);
-        }
+                //
+                // Build the resources into a tree
+                //
+                BuildNavigationItemViewModels(environment);
+            }
             finally
             {
                 IsRefreshing = false;

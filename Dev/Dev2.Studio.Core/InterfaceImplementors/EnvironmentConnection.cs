@@ -333,22 +333,24 @@ namespace Dev2.Studio.Core
                 if (_client == null) throw new ObjectDisposedException("FrameworkDataChannelWrapper");
                 if (!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
 
-                string payload = _client.ExecuteCommand(xmlRequest) ?? string.Empty;
+                string payload = _client.ExecuteCommand(xmlRequest);
 
-                // Only return Dev2System.ManagmentServicePayload if present ;)
-
-                int start = payload.IndexOf("<"+GlobalConstants.ManagementServicePayload+">", StringComparison.Ordinal);
-
-                if (start > 0)
+                if (payload != null)
                 {
-                    int end = payload.IndexOf("</"+GlobalConstants.ManagementServicePayload+">", StringComparison.Ordinal);
-                    if (start < end && (end - start) > 1)
+                    // Only return Dev2System.ManagmentServicePayload if present ;)
+                    int start = payload.IndexOf("<" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+
+                    if (start > 0)
                     {
-                        // we can return the trimed payload instead
+                        int end = payload.IndexOf("</" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+                        if (start < end && (end - start) > 1)
+                        {
+                            // we can return the trimed payload instead
 
-                        start += (GlobalConstants.ManagementServicePayload.Length + 2);
+                            start += (GlobalConstants.ManagementServicePayload.Length + 2);
 
-                        return payload.Substring(start, (end - start));
+                            return payload.Substring(start, (end - start));
+                        }
                     }
                 }
 

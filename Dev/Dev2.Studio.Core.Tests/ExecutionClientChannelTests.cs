@@ -48,7 +48,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ChangeRejectedException))]
+        [ExpectedException(typeof(ImportCardinalityMismatchException))]
         public void Instantiate_Where_RequiredMefImportsAreMissing_Expected_Exception()
         {
             Mock<IStudioNetworkMessageAggregator> _studioNetworkMessageAggregator = Dev2MockFactory.SetupStudioNetworkMessageAggregator();
