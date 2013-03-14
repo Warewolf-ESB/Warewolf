@@ -166,6 +166,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             System.Threading.Thread.Sleep(100);
         }
 
+        public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
+        {
+            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            return theControl.Exists;
+        }
+
         /// <summary>
         /// Navigates to a Workflow Item in the Explorer, Right Clicks it, and clicks Properties
         /// </summary>

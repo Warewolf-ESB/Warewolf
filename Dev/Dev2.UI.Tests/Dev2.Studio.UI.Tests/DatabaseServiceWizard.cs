@@ -91,5 +91,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
             Assert.IsTrue(success);
         }
+
+        //2013.03.14: Ashley Lewis - Bug 9217
+        [TestMethod]
+        public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
+        {
+            //Initialization
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
+            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{DOWN}{TAB}{ENTER}{ENTER}CODEDUITESTS{ENTER}{TAB}{TAB}{TAB}codeduitest123{ENTER}{TAB}{ENTER}");
+
+            //Assert
+            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SERVICES", "CODEDUITESTS", "codeduitest123"));
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "CODEDUITESTS", "codeduitest123");
+        }
     }
 }
