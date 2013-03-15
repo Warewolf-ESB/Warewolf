@@ -494,7 +494,7 @@
                         <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
                     </ribbon:RibbonGroup>
 
-                    <ribbon:RibbonGroup Header="Actions">
+                    <ribbon:RibbonGroup Header="Actions" Visibility="Collapsed">
                         <ribbon:RibbonButton Label="Deploy"
                                              LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png"
                                              Command="{Binding Path=DeployCommand}" />

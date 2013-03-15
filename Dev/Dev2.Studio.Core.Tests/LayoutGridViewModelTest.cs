@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Web;
@@ -39,7 +40,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         #region Constructor and TestContext
         private TestContext testContextInstance;
         static Mock<IEventAggregator> _aggregator;
-
+        public static readonly object DataListSingletonTestGuard = new object();
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
@@ -65,8 +66,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _aggregator = new Mock<IEventAggregator>();
-            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel(_aggregator);
+            
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
@@ -79,6 +79,11 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         [TestInitialize()]
         public void EnvironmentTestsInitialize() 
         {
+            Monitor.Enter(DataListSingletonTestGuard);
+            _aggregator = new Mock<IEventAggregator>();
+
+            _aggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
+            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel(_aggregator);
             ImportService.CurrentContext = _importServiceContext;
 
             SetupMocks();
@@ -90,6 +95,11 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddWorkflowDesigner);
         }
 
+        [TestCleanup]
+        public void Cleanup()
+        {
+            Monitor.Exit(DataListSingletonTestGuard);
+        }
         #region Mock Setup
 
         private void SetupMocks() {
