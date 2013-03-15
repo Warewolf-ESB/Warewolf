@@ -19,16 +19,20 @@ namespace Dev2.Studio.Webs.Callbacks
         {
             //2013.03.12: Ashley Lewis - BUG 9208
             var getDynamicResourceType = jsonObj.ResourceType.Value;
-            if(getDynamicResourceType != null)
+            if (getDynamicResourceType != null)
             {
-                if (getDynamicResourceType != Common.ServiceModel.ResourceType.DbSource.ToString())
-                {
-                    ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
-                }
-                else
+                if (getDynamicResourceType == Common.ServiceModel.ResourceType.DbSource.ToString())
                 {
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
                 }
+                else
+                {
+                    ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+                }
+            }
+            else
+            {
+                ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
             }
 
         }
