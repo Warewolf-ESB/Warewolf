@@ -95,6 +95,7 @@
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityAbstractTest.cs" />
     <Compile Include="ActivityTests\DsfFlowNodeTests.cs" />
+    <Compile Include="ActivityTests\ExecuteCommandLineTest.cs" />
     <Compile Include="ActivityTests\FindRecordsActivityTest.cs" />
     <Compile Include="ActivityTests\ForEachActivityTest.cs" />
     <Compile Include="ActivityTests\HighLevel ActivityTests.cs" />
@@ -146,6 +147,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj">
+      <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
+      <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>

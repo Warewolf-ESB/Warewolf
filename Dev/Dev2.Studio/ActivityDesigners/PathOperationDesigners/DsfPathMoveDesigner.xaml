@@ -6,7 +6,8 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
     xmlns:Dev2="clr-namespace:Dev2.UI"
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"                      
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+    xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     MaxWidth="250"
     Width="250">
     <sap:ActivityDesigner.Icon>
@@ -51,6 +52,12 @@
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
+                <Dev2:IntellisenseTextBox.IntellisenseProvider>
+                    <InterfaceImplementors:CompositeIntellisenseProvider>
+                        <InterfaceImplementors:DefaultIntellisenseProvider />
+                        <InterfaceImplementors:FileSystemIntellisenseProvider />
+                    </InterfaceImplementors:CompositeIntellisenseProvider>
+                </Dev2:IntellisenseTextBox.IntellisenseProvider>
             </Dev2:IntellisenseTextBox>
             <Label Content="Destination" Grid.Column="0" Grid.Row="1" />
             <Dev2:IntellisenseTextBox x:Name="DestinationTxt" FilterType="All" DefaultText="[[MoveToPath]]" WrapInBrackets="False" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
@@ -60,6 +67,12 @@
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
+                <Dev2:IntellisenseTextBox.IntellisenseProvider>
+                    <InterfaceImplementors:CompositeIntellisenseProvider>
+                        <InterfaceImplementors:DefaultIntellisenseProvider />
+                        <InterfaceImplementors:FileSystemIntellisenseProvider />
+                    </InterfaceImplementors:CompositeIntellisenseProvider>
+                </Dev2:IntellisenseTextBox.IntellisenseProvider>
             </Dev2:IntellisenseTextBox>
             <Label Content="Result" Grid.Column="0" Grid.Row="2" />
             <Dev2:IntellisenseTextBox x:Name="ResultTxt" FilterType="All" DefaultText="[[Success]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"

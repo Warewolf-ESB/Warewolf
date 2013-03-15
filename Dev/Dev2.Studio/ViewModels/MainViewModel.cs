@@ -193,7 +193,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         private void Deploy()
-        {
+            {
             AddDeployResources(CurrentResourceModel);
         }
 
@@ -225,11 +225,11 @@ namespace Dev2.Studio.ViewModels
                 var recorderFeedbackAction = FeedbackInvoker.CurrentAction as RecorderFeedbackAction;
                 if (recorderFeedbackAction == null)
                 {
-                    return;
-                }
+                return;
+            }
 
                 recorderFeedbackAction.FinishFeedBack();
-            }
+        }
         }
 
         private void AddWorkflowDesigner(object obj)
@@ -282,10 +282,10 @@ namespace Dev2.Studio.ViewModels
                             Height = 600
                         };
                     _win.ShowDialog();
-                }
+            }
                 catch
                 {
-                }
+        }
             }
         }
 
@@ -304,7 +304,7 @@ namespace Dev2.Studio.ViewModels
 
         internal void AddUserInterfaceWorkflow(IContextualResourceModel resource,
                                                IWorkflowDesignerViewModel workflowViemModel)
-        {
+                {
             bool isWebpage = ResourceHelper.IsWebpage(resource);
             Type userInterfaceType = ResourceHelper.GetUserInterfaceType(resource);
             if (userInterfaceType == null) return;
@@ -330,8 +330,8 @@ namespace Dev2.Studio.ViewModels
                 else
                 {
                     AddWebsiteDesigner(webActivity);
-                }
             }
+        }
             else
             {
                 ModelProperty implementationProperty = modelService.Root.Properties["Implementation"];
@@ -366,25 +366,25 @@ namespace Dev2.Studio.ViewModels
                                     ModelItem amodelitem = actionProperty.Value;
 
                                     if (amodelitem != null)
-                                    {
+        {
                                         ModelProperty displayNameProperty = amodelitem.Properties["DisplayName"];
                                         if (displayNameProperty != null)
                                             if (isWebpage)
-                                            {
+            {
                                                 webActivity = WebActivityFactory
                                                     .CreateWebActivity(amodelitem, resource,
                                                                        displayNameProperty.ComputedValue.ToString());
                                                 AddWebPageDesigner(webActivity);
                                             }
                                             else
-                                            {
+                {
                                                 webActivity = WebActivityFactory
                                                     .CreateWebActivity(amodelitem, resource,
                                                                        displayNameProperty.ComputedValue.ToString());
                                                 AddWebsiteDesigner(webActivity);
-                                            }
-                                    }
-                                }
+                }
+            }
+        }
                             }
                         }
                     }
@@ -421,9 +421,9 @@ namespace Dev2.Studio.ViewModels
 
             //Set the active page to signal user interface transitions.
             if (l.LayoutObjects.Any())
-            {
+        {
                 SetActivePage(l.LayoutObjects.First());
-            }
+        }
 
             //SetActive
         }
@@ -433,19 +433,19 @@ namespace Dev2.Studio.ViewModels
         #region Properties
 
         public IEnvironmentModel ActiveEnvironment
-            {
+        {
             get { return _activeEnvironment; }
             set
-                {
+            {
                 if (value != null)
                 {
                     _activeEnvironment = value;
-                }
+                    }
 
                 NotifyOfPropertyChange(() => CanSave);
                 NotifyOfPropertyChange(() => CanDebug);
-            }
-        }
+                    }
+                }
 
         public IContextualResourceModel CurrentResourceModel
         {
@@ -456,8 +456,8 @@ namespace Dev2.Studio.ViewModels
 
                 return ResourceHelper
                     .GetContextualResourceModel(ActiveItem.WorkSurfaceViewModel);
+                }
             }
-        }
 
         [Import]
         public IFeedbackInvoker FeedbackInvoker { get; set; }
@@ -490,7 +490,7 @@ namespace Dev2.Studio.ViewModels
         public bool CanRun
                     {
             get { return IsActiveEnvironmentConnected(); }
-                    }
+        }
 
         public bool CanEdit
         {
@@ -517,8 +517,8 @@ namespace Dev2.Studio.ViewModels
                         activeWorkSurfaceVM is LayoutGridViewModel ||
                         activeWorkSurfaceVM is WebsiteEditorViewModel) &&
                        IsActiveEnvironmentConnected();
-                }
             }
+        }
 
         public ILayoutGridViewModel ActivePage
             {
@@ -526,7 +526,7 @@ namespace Dev2.Studio.ViewModels
             }
 
         public ILayoutObjectViewModel ActiveCell
-        {
+            {
             get { return _activeCell; }
             }
 
@@ -541,7 +541,7 @@ namespace Dev2.Studio.ViewModels
             }
 
         public bool CanDebug
-        {
+            {
             get { return IsActiveEnvironmentConnected(); }
             }
 
@@ -565,8 +565,8 @@ namespace Dev2.Studio.ViewModels
             {
                 return _notImplementedCommand ??
                        (_notImplementedCommand = new RelayCommand(param => MessageBox.Show("Please Implement Me!")));
-                }
             }
+        }
 
         public ICommand AddStudioShortcutsPageCommand
         {
@@ -574,8 +574,8 @@ namespace Dev2.Studio.ViewModels
             {
                 return _addStudioShortcutsPageCommand ??
                        (_addStudioShortcutsPageCommand = new RelayCommand(param => AddStudioShortcutKeysPage()));
-                }
             }
+        }
 
         public ICommand DisplayAboutDialogueCommand
         {
@@ -583,13 +583,13 @@ namespace Dev2.Studio.ViewModels
             {
                 return _displayAboutDialogueCommand ??
                        (_displayAboutDialogueCommand = new RelayCommand(param => DisplayAboutDialogue()));
-                }
             }
+        }
 
         public ICommand StartFeedbackCommand
         {
             get { return _startFeedbackCommand ?? (_startFeedbackCommand = new RelayCommand(param => StartFeedback())); }
-                }
+        }
 
         public ICommand StartStopRecordedFeedbackCommand
         {
@@ -610,7 +610,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 if (_resetLayoutCommand == null)
-                {
+                            {
                     _resetLayoutCommand = new RelayCommand(param =>
                                                            EventAggregator.Publish(
                                                                new ResetLayoutMessage(param as FrameworkElement)),
@@ -691,12 +691,12 @@ namespace Dev2.Studio.ViewModels
         public ICommand ExitCommand
         {
             get
-            {
+                {
                 return _exitCommand ??
                        (_exitCommand =
                         new RelayCommand(param => Exit(), param => true));
             }
-        }
+                }
 
         public ICommand EditCommand
         {
@@ -722,9 +722,9 @@ namespace Dev2.Studio.ViewModels
         }
 
         public ICommand SettingsCommand
-        {
+                {
             get { return _settingsCommand ?? (_settingsCommand = new RelayCommand(param => Settings())); }
-        }
+                }
 
         public ICommand DebugCommand
         {
@@ -851,7 +851,7 @@ namespace Dev2.Studio.ViewModels
                 catch
                 {
                 }
-            }
+                }
             else
             {
                 PopupProvider.Show(
@@ -864,14 +864,14 @@ namespace Dev2.Studio.ViewModels
         {
             var uriString = "/services/" + StudioToWizardBridge.SelectWizard(resourceModel);
             if (resourceModel.ResourceType == ResourceType.WorkflowService || resourceModel.ResourceType == ResourceType.Service)
-            {
+        {
                 uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
             }
             return uriString;
         }
 
         public void ShowEditResourceWizard(object resourceModel)
-        {
+            {
             //Brendon.Page, 2012-12-03. Hack to fix Bug 6367. It was decided by the team that this should be employed because the wizards are going to be 
             //                          reworked in the near future and it was to much work to go an ammend all the javascript to be workspace aware.
             SaveOpenTabs();
@@ -879,9 +879,9 @@ namespace Dev2.Studio.ViewModels
             var resourceModelToEdit = resourceModel as IContextualResourceModel;
 
             if (RootWebSite.ShowDialog(resourceModelToEdit))
-            {
+                {
                 return;
-            }
+                }
 
             bool doesServiceExist = resourceModelToEdit != null &&
                                     resourceModelToEdit.Environment.ResourceRepository.Find(
@@ -898,7 +898,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
                                          "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit));
-                }
+            }
 
                 try
                 {
@@ -915,7 +915,7 @@ namespace Dev2.Studio.ViewModels
                                            MessageBoxImage.Error);
                         // Stop configuring!!!
                         return;
-                    }
+        }
 
                     string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
@@ -927,7 +927,7 @@ namespace Dev2.Studio.ViewModels
                 }
             }
             else
-            {
+        {
                 PopupProvider.Show(
                     "Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.",
                     "Missing Wizard", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -938,15 +938,15 @@ namespace Dev2.Studio.ViewModels
         ///     Saves the open tabs.
         /// </summary>
         private void SaveOpenTabs()
-        {
-            foreach (IContextualResourceModel resourceModel in GetOpenContextualResourceModels())
             {
+            foreach (IContextualResourceModel resourceModel in GetOpenContextualResourceModels())
+                {
                 Save(resourceModel, false);
             }
         }
 
         public void AddDeployResources(object input)
-        {
+                    {
             WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
             bool exist = ActivateWorkSurfaceIfPresent(key);
 
@@ -956,12 +956,12 @@ namespace Dev2.Studio.ViewModels
                 //Mediator.SendMessage(MediatorMessages.SelectItemInDeploy, input);
             }
             else
-            {
+                        {
                 WorkSurfaceContextViewModel context = WorkSurfaceContextFactory.CreateDeployViewModel(input);
                 Items.Add(context);
                 ActivateItem(context);
             }
-        }
+                        }
 
         public void AddSettings(IEnvironmentModel environment)
         {
@@ -985,7 +985,7 @@ namespace Dev2.Studio.ViewModels
                 WorkSurfaceContextViewModel context = WorkSurfaceContextFactory.CreateRuntimeConfigurationViewModel(environment);
                 Items.Add(context);
                 ActivateItem(context);
-            }
+        }
         }
 
         public void ShowHelpTab(string uriToDisplay)
@@ -996,12 +996,12 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void CloseWizard()
-        {
-            if (_win != null)
             {
+            if (_win != null)
+                {
                 _win.Close();
+                }
             }
-        }
 
         public bool RemoveContext(WorkSurfaceKey key)
         {
@@ -1017,7 +1017,7 @@ namespace Dev2.Studio.ViewModels
 
         public static bool QueryDeleteExplorerResource(IContextualResourceModel model, bool hasDependencies,
                                                        out bool openDependencyGraph)
-        {
+            {
             openDependencyGraph = false;
 
             bool shouldRemove = MessageBox.Show
@@ -1030,7 +1030,7 @@ namespace Dev2.Studio.ViewModels
                                 MessageBoxResult.Yes;
 
             if (shouldRemove && hasDependencies)
-            {
+                {
                 var dialog = new DeleteResourceDialog
                     ("Confirm " + model.ResourceType.GetDescription() + " Deletion", "The \""
                                                                                      + model.ResourceName + "\" " +
@@ -1044,10 +1044,10 @@ namespace Dev2.Studio.ViewModels
                 shouldRemove = result.HasValue && result.Value;
 
                 openDependencyGraph = dialog.OpenDependencyGraph;
-            }
+                }
 
             return shouldRemove;
-        }
+            }
 
         public ViewModelDialogResults GetServiceInputDataFromUser(IServiceDebugInfoModel input, out DebugTO debugTO)
         {
@@ -1070,7 +1070,7 @@ namespace Dev2.Studio.ViewModels
             if (input.DebugModeSetting == DebugMode.DebugInteractive)
             {
                 debugTO.IsDebugMode = true;
-            }
+        }
             //Call the InitDebugSession(debugTO);
             var inputDataViewModel = new WorkflowInputDataViewModel(debugTO);
             //2012.10.11: massimo.guerrera - Added for PBI 5781
@@ -1112,7 +1112,7 @@ namespace Dev2.Studio.ViewModels
             // Wizard finished...
             // Now Fetch from DL and push the model into the activityExpression.SetValue();
             try
-            {
+                {
                 string tmp = WebHelper.CleanModelData(_callBackHandler);
                 var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
@@ -1128,7 +1128,7 @@ namespace Dev2.Studio.ViewModels
                 PopupProvider.Show(GlobalConstants.DecisionWizardErrorString,
                                    GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK,
                                    MessageBoxImage.Error);
-            }
+        }
         }
 
         public void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
@@ -1151,7 +1151,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     var ds = new Dev2Switch { SwitchVariable = val };
                     webModel = JsonConvert.SerializeObject(ds);
-                }
+            }
             }
 
             // now invoke the wizard ;)
@@ -1173,7 +1173,7 @@ namespace Dev2.Studio.ViewModels
                 PopupProvider.Show(GlobalConstants.SwitchWizardErrorString,
                                    GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
                                    MessageBoxImage.Error);
-            }
+        }
         }
 
         public void ConfigureSwitchCaseExpression(Tuple<ModelItem, IEnvironmentModel> payload)
@@ -1434,7 +1434,7 @@ namespace Dev2.Studio.ViewModels
             // Clear output
             EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
             //Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
-            
+
             OutputMessage = String.Empty;
 
             var sb = new StringBuilder();
@@ -1705,7 +1705,7 @@ namespace Dev2.Studio.ViewModels
 
                 remove = workflowVM.ResourceModel.IsWorkflowSaved(workflowVM.ServiceDefinition);
                 if (!remove)
-                {
+            {
                     remove = ShowRemovePopup(workflowVM);
             }
                 if (remove) RemoveWorkspaceItem(workflowVM);
@@ -1731,7 +1731,7 @@ namespace Dev2.Studio.ViewModels
             MessageBoxResult res = pop.Show();
 
             switch (res)
-            {
+        {
                 case MessageBoxResult.Yes:
                     //workflowVM.BindToModel();
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel));
@@ -1768,13 +1768,13 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel viewModel = FindWorkSurfaceContextViewModel(key);
 
             if (viewModel != null)
-            {
+        {
                 DeactivateItem(viewModel, true);
             }
         }
 
         public void Handle(DeleteResourceMessage message)
-        {
+            {
             var model = message.ResourceModel as IContextualResourceModel;
             if (model == null) return;
 
@@ -1794,10 +1794,10 @@ namespace Dev2.Studio.ViewModels
                 }
             }
             else if (openDependencyGraph)
-            {
+                {
                 AddDependencyVisualizerDocument(model);
             }
-        }
+                }
 
         public void Handle(ShowDependenciesMessage message)
         {

@@ -1,15 +1,14 @@
-﻿<sap:ActivityDesigner x:Class="Unlimited.Applications.BusinessDesignStudio.Activities.DsfUnzipDesigner"
+﻿<sap:ActivityDesigner x:Class="Unlimited.Applications.BusinessDesignStudio.Activities.DsfExecuteCommandLineActivityDesigner"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
-    xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"  
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
-    xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
+    xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"      
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
-    MaxWidth="230"
-    Width="230">
+    MaxWidth="200"
+    Width="200">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>
@@ -18,7 +17,7 @@
                         <Rect Location="0,0" Size="16,16" ></Rect>
                     </ImageDrawing.Rect>
                     <ImageDrawing.ImageSource>
-                        <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/unzip.png" ></BitmapImage>
+                        <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/CmdToolIcon.png" ></BitmapImage>
                     </ImageDrawing.ImageSource>
                 </ImageDrawing>
             </DrawingBrush.Drawing>
@@ -40,15 +39,24 @@
                 <ColumnDefinition Width="124*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="43" />
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Label Content="Zip Name" Grid.Column="0" Grid.Row="0" />
-            <Dev2:IntellisenseTextBox x:Name="ZipNameTxt" DefaultText="[[PathToUnzip]]" FilterType="All" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+            <Label Content="CMD" Grid.Column="0" Grid.Row="0" />
+            <Dev2:IntellisenseTextBox x:Name="Cmdtxt" 
+                                      DefaultText="CMD"
+                                      VerticalAlignment="Stretch"
+                                      MinHeight="38"
+                                      FilterType="All" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" Grid.Row="0" 
+                                      Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="0,2,1,2" 
+                                      MinWidth="100" 
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_ZipNametxt_AutoID">
+                    <MultiBinding StringFormat="UI_{0}_Cmdtxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
@@ -59,30 +67,21 @@
                     </InterfaceImplementors:CompositeIntellisenseProvider>
                 </Dev2:IntellisenseTextBox.IntellisenseProvider>
             </Dev2:IntellisenseTextBox>
-            <Label Content="Destination" Grid.Column="0" Grid.Row="1" />
-            <Dev2:IntellisenseTextBox x:Name="DestinationTxt" DefaultText="[[UnzipToPath]]" FilterType="All" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_Destinationtxt_AutoID">
-                        <Binding Path="ModelItem.AutomationID"/>
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
-                <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                    <InterfaceImplementors:CompositeIntellisenseProvider>
-                        <InterfaceImplementors:DefaultIntellisenseProvider />
-                        <InterfaceImplementors:FileSystemIntellisenseProvider />
-                    </InterfaceImplementors:CompositeIntellisenseProvider>
-                </Dev2:IntellisenseTextBox.IntellisenseProvider>
-            </Dev2:IntellisenseTextBox>
-            <Label Content="Result" Grid.Column="0" Grid.Row="2" />
-            <Dev2:IntellisenseTextBox x:Name="ResultTxt" FilterType="All" WrapInBrackets="True" DefaultText="[[Success]]" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+            <Label Content="Result" Grid.Column="0" Grid.Row="1" />
+            <Dev2:IntellisenseTextBox x:Name="Resulttxt"
+                                      DefaultText="[[Result]]" 
+                                      WrapInBrackets="True" 
+                                      Grid.Column="1" Grid.Row="1" 
+                                      Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="0,2,1,2" 
+                                      MinWidth="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </Dev2:IntellisenseTextBox>            
         </Grid>
     </StackPanel>
 </sap:ActivityDesigner>

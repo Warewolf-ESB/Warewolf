@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dev2.Activities;
+using System;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Statements;
 using System.Linq;
@@ -84,6 +85,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfFileWrite), "/Images/writefile.png", "Write"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfZip), "/Images/zip.png", "Zip"));
 
+            }
+
+
+            category = GetToolboxCategoryByName("Scripting");
+            if (category != null)
+            {
+                category.Add(new ToolboxItemWrapper(typeof(DsfExecuteCommandLineActivity), "/Images/CmdToolIcon.png", "CMD Line"));
             }
         }
 

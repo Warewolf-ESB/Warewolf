@@ -124,6 +124,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>
@@ -160,6 +161,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
+    <Compile Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml.cs">
+      <DependentUpon>DsfExecuteCommandLineActivityDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -348,6 +352,10 @@
     <Compile Include="InterfaceImplementors\PopUp.cs" />
     <Compile Include="ViewModels\Configuration\RuntimeConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
+    <Compile Include="InterfaceImplementors\FileSystemIntellisenseProvider.cs" />
+    <Compile Include="InterfaceImplementors\FileSystemQuery.cs" />
+    <Compile Include="InterfaceImplementors\IFileSystemQuery.cs" />
+    <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
@@ -571,6 +579,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Wizards\DsfActivityWizCallback.cs" />
+    <Page Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1003,7 +1015,7 @@
     <Resource Include="Images\blockdevice.png" />
     <Resource Include="Images\Good.png" />
     <Resource Include="Images\Help.png" />
-    <Resource Include="Images\konsole.png" />
+    <Resource Include="Images\CmdToolIcon.png" />
     <Resource Include="Images\make.png" />
     <Resource Include="Images\Network.png" />
     <Resource Include="Images\NewFile.png" />

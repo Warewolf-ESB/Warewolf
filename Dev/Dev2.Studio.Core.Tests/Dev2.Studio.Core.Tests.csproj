@@ -157,6 +157,8 @@
     <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
     <Compile Include="Feedback\FeedbackInvokerTests.cs" />
     <Compile Include="Feedback\FeedbackRecorderTests.cs" />
+    <Compile Include="FileSystemIntellisenseProviderTest.cs" />
+    <Compile Include="FileSystemQueryTest.cs" />
     <Compile Include="FrameworkSecurityProviderTest.cs" />
     <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />

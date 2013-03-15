@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Dev2.Activities;
 using Dev2.Studio.ViewModels.Workflow;
+using System;
+using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.ActivityDesigners
@@ -50,7 +49,9 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfFileForEachActivity), typeof (DsfFileForEachActivityDesigner)},
                     {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
                     {typeof (DsfFindRecordsActivity), typeof (DsfFindRecordsActivityDesigner)},
-                    {typeof (DsfNumberFormatActivity), typeof (DsfNumberFormatActivityDesigner)}
+                    {typeof (DsfNumberFormatActivity), typeof (DsfNumberFormatActivityDesigner)},
+                    {typeof (DsfExecuteCommandLineActivity), typeof (DsfExecuteCommandLineActivityDesigner)}
+
                     // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
                 };
 

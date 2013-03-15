@@ -49,8 +49,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
         IWorkflowDesignerViewModel, IDisposable,
-        IHandle<UpdateResourceMessage>,
-        IHandle<AddStringListToDataListMessage>,
+        IHandle<UpdateResourceMessage>, 
+        IHandle<AddStringListToDataListMessage>, 
         IHandle<AddMissingAndFindUnusedDataListItemsMessage>,
         IHandle<AddRemoveDataListItemsMessage>, IHandle<FindMissingDataListItemsMessage>,
         IHandle<ShowActivityWizardMessage>, IHandle<ShowActivitySettingsWizardMessage>,
@@ -372,15 +372,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(res != null)
                     {
                         var resource = _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
-                        if (resource != null)
-                        {
+                    if (resource != null)
+                    {
                             var hasWizard = WizardEngine.HasWizard(modelItem, resource as IContextualResourceModel);
                             EventAggregator.Publish(new HasWizardMessage(hasWizard));
                             //Mediator.SendMessage(MediatorMessages.HasWizard, hasWizard);
-                        }
                     }
                 }
             }
+        }
         }
 
         private void ShowActivitySettingsWizard(ModelItem modelItem)
@@ -857,6 +857,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     break;
                 #endregion DsfCountRecordsetActivity
+
+                #region DsfExecuteCommandLineActivity
+                case ("DsfExecuteCommandLineActivity"):
+                    string commandFileNameString = GetValueFromUnlimitedObject(activityDefinition, "CommandFileName");
+                    string commandResultString = GetValueFromUnlimitedObject(activityDefinition, "CommandResult");
+                    foreach (string item in (FormatDsfActivityField(commandFileNameString)))
+                    {
+                        if (!item.Contains("xpath("))
+                        {
+                            ActivityFields.Add(item);
+                        }
+                    }
+                    foreach (string item in (FormatDsfActivityField(commandResultString)))
+                    {
+                        if (!item.Contains("xpath("))
+                        {
+                            ActivityFields.Add(item);
+                        }
+                    }
+                    break;
+                #endregion DsfExecuteCommandLineActivity
 
                 #region DsfDeleteRecordActivity
                 case ("DsfDeleteRecordActivity"):
@@ -1920,27 +1941,27 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (DataListSingleton.ActiveDataList != null)
                 {
-                    if (!(part.IsScalar))
-                    {
-                        var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
-                        if (!recset.Any())
-                        {
-                            MissingDataParts.Add(part);
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
-                            {
-                                MissingDataParts.Add(part);
-                            }
-                        }
-                    }
-                    else if (DataListSingleton.ActiveDataList.DataList
-                        .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
+                if (!(part.IsScalar))
+                {
+                    var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
+                    if (!recset.Any())
                     {
                         MissingDataParts.Add(part);
                     }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                        {
+                            MissingDataParts.Add(part);
+                        }
+                    }
                 }
+                    else if (DataListSingleton.ActiveDataList.DataList
+                        .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
+                {
+                    MissingDataParts.Add(part);
+                }
+            }
             }
             return MissingDataParts;
         }
@@ -1960,51 +1981,51 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             List<IDataListVerifyPart> MissingWorkflowParts = new List<IDataListVerifyPart>();
             if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
-                foreach (IDataListItemModel dataListItem in DataListSingleton.ActiveDataList.DataList)
+            foreach (IDataListItemModel dataListItem in DataListSingleton.ActiveDataList.DataList)
+            {
+                if (String.IsNullOrEmpty(dataListItem.Name))
                 {
-                    if (String.IsNullOrEmpty(dataListItem.Name))
-                    {
-                        continue;
-                    }
-                    if ((dataListItem.Children.Count > 0))
-                    {
+                    continue;
+                }
+                if ((dataListItem.Children.Count > 0))
+                {
 
-                        if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                    if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                    {
+                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                        if (dataListItem.IsEditable)
                         {
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            if (dataListItem.IsEditable)
-                            {
-                                MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, String.Empty, dataListItem.Description));
-                                foreach (var child in dataListItem.Children)
-                                    if (!(String.IsNullOrEmpty(child.Name)))
-                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                        if (dataListItem.IsEditable)
-                                        {
-                                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
-                                        }
-                            }
-                        }
-                        else foreach (IDataListItemModel child in dataListItem.Children)
-                                if (PartsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
-                                {
+                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, String.Empty, dataListItem.Description));
+                            foreach (var child in dataListItem.Children)
+                                if (!(String.IsNullOrEmpty(child.Name)))
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if (child.IsEditable)
+                                    if (dataListItem.IsEditable)
                                     {
                                         MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
                                     }
-                                }
+                        }
                     }
-                    else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
-                    {
-                        {
-                            if (dataListItem.IsEditable)
+                    else foreach (IDataListItemModel child in dataListItem.Children)
+                            if (PartsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
                             {
                                 //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name, dataListItem.Description));
+                                if (child.IsEditable)
+                                {
+                                    MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
+                                }
                             }
+                }
+                else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
+                {
+                    {
+                        if (dataListItem.IsEditable)
+                        {
+                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name, dataListItem.Description));
                         }
                     }
                 }
+            }
             return MissingWorkflowParts;
         }
 
@@ -2150,7 +2171,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             //07-12-2012 - Massimo.Guerrera - Added for PBI 6665
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivityWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivityWizard, input => ShowActivityWizard(input as ModelItem)));
             // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.GetMappingViewModel, Mediator.RegisterToReceiveMessage(MediatorMessages.GetMappingViewModel, input => GetMappingViewModel(input as ModelItem)));
-            
+
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivitySettingsWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivitySettingsWizard, input
             //                                                                                                                                                             =>
 //            {
@@ -2365,7 +2386,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
-            
+
             IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
             IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
             _filteredDataListParts = MissingDataListParts(workflowFields);
@@ -2467,8 +2488,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(this.ResourceModel == message.CurrentResourceModel)
             {
-                AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            }
+            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+        }
         }
 
         #endregion

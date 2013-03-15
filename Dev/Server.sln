@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql.Tests", "Dev2.Sql.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration", "Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj", "{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration.Tests", "Dev2.Runtime.Configuration.Tests\Dev2.Runtime.Configuration.Tests.csproj", "{56C3C6A6-7325-40FD-945E-C529CABE2579}"
 EndProject
 Global
@@ -101,6 +103,9 @@ Global
 		SccProjectUniqueName17 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
 		SccProjectName17 = Dev2.Runtime.Configuration
 		SccLocalPath17 = Dev2.Runtime.Configuration
+		SccProjectUniqueName18 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
+		SccProjectName18 = ConsoleAppToTestExecuteCommandLineActivity
+		SccLocalPath18 = ConsoleAppToTestExecuteCommandLineActivity
 		SccProjectUniqueName18 = Dev2.Runtime.Configuration.Tests\\Dev2.Runtime.Configuration.Tests.csproj
 		SccProjectName18 = Dev2.Runtime.Configuration.Tests
 		SccLocalPath18 = Dev2.Runtime.Configuration.Tests
@@ -342,6 +347,18 @@ Global
 		{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}.Release|x64.ActiveCfg = Release|Any CPU
 		{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|x86.ActiveCfg = Release|Any CPU
 		{56C3C6A6-7325-40FD-945E-C529CABE2579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56C3C6A6-7325-40FD-945E-C529CABE2579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56C3C6A6-7325-40FD-945E-C529CABE2579}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

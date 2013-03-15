@@ -4,6 +4,7 @@
   <Deployment>
     <DeploymentItem filename="Binaries\CefSharp\" />
     <DeploymentItem filename="Dev2.Sql\bin\Debug\Deploy\" />
+    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
   </Deployment>
   <Execution parallelTestCount="0">
     <TestTypeSpecific>

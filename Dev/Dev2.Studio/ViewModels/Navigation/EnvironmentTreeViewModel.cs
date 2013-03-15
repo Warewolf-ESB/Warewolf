@@ -145,8 +145,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get { return EnvironmentModel != null 
                 && !EnvironmentModel.IsConnected; }
-        }        
-        
+        }
+
         public override bool HasFileMenu
         {
             get { return EnvironmentModel != null 
@@ -291,7 +291,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                         Height = 600
                     };
                     win.ShowDialog();
-                }
+        }
                 catch
                 {
                 }

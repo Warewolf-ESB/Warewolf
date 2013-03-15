@@ -64,6 +64,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Activities" />
@@ -83,6 +84,7 @@
     <Compile Include="Activities\DsfDataSplitActivity.cs" />
     <Compile Include="Activities\DsfDateTimeActivity.cs" />
     <Compile Include="Activities\DsfDateTimeDifferenceActivity.cs" />
+    <Compile Include="Activities\DsfExecuteCommandLineActivity.cs" />
     <Compile Include="Activities\DsfFindRecordsActivity.cs" />
     <Compile Include="Activities\DsfFlowDecisionActivity.cs" />
     <Compile Include="Activities\DsfFlowNodeActivity.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Activities\DsfAssertActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
+    <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\TransformActivity.cs" />
     <Compile Include="Activities\DsfWebSiteActivity.cs" />
     <Compile Include="Activities\DsfActivityAbstract.cs" />
