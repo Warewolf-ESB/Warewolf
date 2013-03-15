@@ -300,7 +300,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         static string BuildUri(IContextualResourceModel resourceModel, string resName)
         {
-            var uriString = "/services/ " + StudioToWizardBridge.SelectWizard(resourceModel);
+            var uriString = "/services/" + StudioToWizardBridge.SelectWizard(resourceModel);
             if (resourceModel.ResourceType == ResourceType.WorkflowService || resourceModel.ResourceType == ResourceType.Service)
             {
                 uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
