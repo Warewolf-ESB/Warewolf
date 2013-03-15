@@ -37,6 +37,10 @@ namespace Dev2.Studio.Webs
                 {
                     resourceType = ResourceType.DbService;
                 }
+                else
+                {
+                    Enum.TryParse(resourceModel.DisplayName,out resourceType);
+                }
             }
             else
             {

@@ -1904,16 +1904,34 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIBusinessDesignStudioWindow4.UIExplorerCustom.UIConnectUserControlCustom.UIItemButton">
+    <MouseAction UIObjectName="UIMap.UIBusinessDesignStudioWindow4.UIRibbonTabList.UIUI_RibbonApplicationMenu">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="7" Y="12" />
+      <Location X="17" Y="4" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickNewServer">
+    <MouseAction UIObjectName="UIMap.UIBusinessDesignStudioWindow4.UIDatabaseProcedureMenuItem">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="111" Y="10" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <MouseAction UIObjectName="UIMap.UIBusinessDesignStudioWindow4.UIItemImage">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="892" Y="536" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="TestTheMenu">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -1922,16 +1940,16 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIBusinessDesignStudioWindow4.UIExplorerCustom.UIConnectUserControlCustom.UIItemButton">
+    <MouseAction UIObjectName="UIMap.UIBusinessDesignStudioWindow4.UIItemImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="6" Y="8" />
+      <Location X="886" Y="520" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickNewServerButton">
+    <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod6">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -4476,57 +4494,95 @@
             </UIObject>
           </Descendants>
         </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIBusinessDesignStudioWindow4" FriendlyName="Business Design Studio (DEV2\Ashley.lewis)" SpecialControlType="None" SessionId="4457718">
+        <TopLevelWindow ControlType="Window" Id="UIBusinessDesignStudioWindow4" FriendlyName="Business Design Studio (DEV2\Hagashen.Naidu)" SpecialControlType="None" SessionId="2231372">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
-            <WindowTitle>Business Design Studio (DEV2\Ashley.lewis)</WindowTitle>
+            <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
           </WindowTitles>
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Business Design Studio (DEV2\Ashley.lewis)</PropertyCondition>
+            <PropertyCondition Name="Name">Business Design Studio (DEV2\Hagashen.Naidu)</PropertyCondition>
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Custom" Id="UIExplorerCustom" FriendlyName="Explorer" SpecialControlType="None">
+            <UIObject ControlType="TitleBar" Id="UIBusinessDesignStudioTitleBar" FriendlyName="Business Design Studio (DEV2\Hagashen.Naidu)" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
-                <WindowTitle>Business Design Studio (DEV2\Ashley.lewis)</WindowTitle>
+                <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">Explorer</PropertyCondition>
+                <PropertyCondition Name="ControlType">TitleBar</PropertyCondition>
+                <PropertyCondition Name="AutomationId">TitleBar</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="TabList" Id="UIRibbonTabList" FriendlyName="ribbon" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                <PropertyCondition Name="AutomationId">ribbon</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Custom" Id="UIConnectUserControlCustom" FriendlyName="ConnectUserControl" SpecialControlType="None">
+                <UIObject ControlType="Menu" Id="UIUI_RibbonApplicationMenu" FriendlyName="UI_RibbonApplicationMenu" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
-                    <WindowTitle>Business Design Studio (DEV2\Ashley.lewis)</WindowTitle>
+                    <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
                   </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
                   <AndCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.ConnectControl</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ConnectUserControl</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Menu</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_RibbonApplicationMenu</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="UIItemButton" FriendlyName="..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Business Design Studio (DEV2\Ashley.lewis)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_ExplorerConnectBtn_AutoID</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
               </Descendants>
+            </UIObject>
+            <UIObject ControlType="MenuItem" Id="UIDatabaseProcedureMenuItem" FriendlyName="Database Procedure" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
+              </WindowTitles>
+              <SearchConfigurations>
+                <SearchConfiguration>Expand</SearchConfiguration>
+              </SearchConfigurations>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                <PropertyCondition Name="Name">Database Procedure</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="Image" Id="UIItemImage" FriendlyName="" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Image</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Business Design Studio (DEV2\Hagashen.Naidu)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Window</PropertyCondition>
+                <PropertyCondition Name="AutomationId">WebBrowserWindow</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>

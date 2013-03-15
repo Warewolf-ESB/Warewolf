@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Windows;
+using Dev2.Studio;
+using Dev2.Studio.Views;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {
@@ -64,5 +67,25 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Layout Tests
+//
+//
+//        [TestMethod]
+//        public void MainViewRibbonWhereNewWorkflowClickedExpectNewResourceCommandFiredWithParameter()
+//        {
+//            //------------Setup for test--------------------------
+//            CompositionInitializer.DefaultInitialize();
+//                        if (Application.Current == null)
+//                        {
+//                            // This code is needed to load the resource dictionaries for the app, with out this the instantiation
+//                            // of any view that uses a resource from app resources will fail.
+//                            App application = new App();
+//                        }
+//            MainView mainView = new MainView();
+//            //------------Execute Test---------------------------
+//            var command = mainView.NewDatabaseProcedure.Command;
+//            var parameter = mainView.NewDatabaseProcedure.CommandParameter;
+//            //------------Assert Results-------------------------
+//            
+//        }
     }
 }

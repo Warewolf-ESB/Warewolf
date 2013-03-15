@@ -100,7 +100,6 @@
     <Compile Include="ESB\DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
     <Compile Include="ESB\Control\IDynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
-    <Compile Include="ESB\DynamicServicesInvoker_OLD.cs" />
     <Compile Include="ESB\Control\DynamicservicesHost.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />

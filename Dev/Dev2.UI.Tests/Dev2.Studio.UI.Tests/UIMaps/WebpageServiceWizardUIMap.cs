@@ -1,4 +1,6 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses
+﻿using System.Threading;
+
+namespace Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses
 {
     using System;
     using System.Collections.Generic;
@@ -35,7 +37,7 @@
         public bool CloseWizard()
         {
             WpfWindow uIWebpageServiceDetailWindow = GetWindow();
-            Keyboard.SendKeys(uIWebpageServiceDetailWindow, "%{F4}");
+            Keyboard.SendKeys(uIWebpageServiceDetailWindow, "{ESC}");
             if (uIWebpageServiceDetailWindow.Exists)
             {
                 return false;

@@ -45,5 +45,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         ICommand RemoveCommand { get; }
         ICommand DisconnectCommand { get; }
         ICommand ConnectCommand { get; }
+        bool HasFileMenu { get; }
+        ICommand NewResourceCommand { get; }
     }
 }

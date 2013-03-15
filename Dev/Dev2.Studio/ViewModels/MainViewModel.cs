@@ -834,12 +834,9 @@ namespace Dev2.Studio.ViewModels
                 Uri requestUri;
                 if (
                     !Uri.TryCreate(environment.WebServerAddress,
-                                   "/services/" + StudioToWizardBridge.SelectWizard(resourceModel) + "?" +
-                                   ResourceKeys.Dev2ServiceType + "=" + resName, out requestUri))
+                                   BuildUri(resourceModel, resName), out requestUri))
                 {
-                    requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
-                                         "/services/" + StudioToWizardBridge.SelectWizard(resourceModel) + "?" +
-                                         ResourceKeys.Dev2ServiceType + "=" + resName);
+                    requestUri = new Uri(new Uri(StringResources.Uri_WebServer), BuildUri(resourceModel, resName));
                 }
 
                 try
@@ -861,6 +858,16 @@ namespace Dev2.Studio.ViewModels
                     "Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.",
                     "Missing Wizard", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        static string BuildUri(IContextualResourceModel resourceModel, string resName)
+        {
+            var uriString = "/services/ " + StudioToWizardBridge.SelectWizard(resourceModel);
+            if (resourceModel.ResourceType == ResourceType.WorkflowService || resourceModel.ResourceType == ResourceType.Service)
+            {
+                uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
+            }
+            return uriString;
         }
 
         public void ShowEditResourceWizard(object resourceModel)

@@ -67,8 +67,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses
         public UIWebpageServiceDetailWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Webpage Service Details";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "WebBrowserWindow";
             this.WindowTitles.Add("Webpage Service Details");
             #endregion
         }

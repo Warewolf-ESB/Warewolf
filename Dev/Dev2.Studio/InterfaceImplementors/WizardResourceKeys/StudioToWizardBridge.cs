@@ -25,7 +25,8 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
 
             // else figure out which source wizard to open
             if (theModel.ResourceType == ResourceType.Source) {
-                if(theModel.ServiceDefinition.IndexOf("Type=\"Plugin\"") > 0){
+                if ((theModel.ServiceDefinition != null && (theModel.ServiceDefinition.IndexOf("Type=\"Plugin\"") > 0) || theModel.DisplayName == "Plugin"))
+                {
                     result = "PluginSourceManagement";
                 }else if(theModel.ServiceDefinition.IndexOf("Type=\"SqlDatabase\"") > 0){
                     result = "DatabaseSourceManagement";
@@ -48,6 +49,10 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
                 result = "Database";
             }
             else if (resourceType == "ResourceService")
+            {
+                result = "Plugin";
+            }            
+            else if (resourceType == "ResourceSource")
             {
                 result = "Plugin";
             }

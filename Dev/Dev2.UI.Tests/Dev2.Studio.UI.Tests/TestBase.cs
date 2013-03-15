@@ -1,4 +1,5 @@
-﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+﻿using System.Windows.Automation;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -34,8 +35,10 @@ using System.Linq;
 using System.Management;
 using System.Threading;
 using System.Windows.Forms;
+using AndCondition = System.Windows.Automation.AndCondition;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Point = System.Drawing.Point;
+using PropertyCondition = System.Windows.Automation.PropertyCondition;
 
 namespace Dev2.CodedUI.Tests
 {
@@ -253,6 +256,7 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ThisMethodIsForTestingRandomTestFragments()
         {
+          
             // RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
             //  VideoUIMapTest.doSomething();
             //  CreateCustomWorkflow("Test123");
@@ -2149,13 +2153,57 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
+        [TestMethod]
+        public void LocalhostContextMenuWhereNewWorkflowClickedExpectNewWorkflowWindow()
+        {
+            //------------Setup for test--------------------------
+            this.DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //------------Execute Test---------------------------
+            this.ExplorerUIMap.Server_RightClick_NewWorkflow("localhost");
+            //------------Assert Results-------------------------
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            string windowTitle = WorkflowWizardUIMap.GetWorkflowWizardName();
+            Assert.AreEqual("Workflow Service Details", windowTitle);
+            this.WorkflowWizardUIMap.CloseWizard();
+        }       
+//                
+        [TestMethod]
+        public void LocalhostContextMenuWhereNewPluginServiceClickedExpectNewWorkflowWindow()
+        {
+            //------------Setup for test--------------------------
+            this.DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //------------Execute Test---------------------------
+            this.ExplorerUIMap.Server_RightClick_NewPluginService("localhost");
+            //------------Assert Results-------------------------
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            string windowTitle = PluginServiceWizardUIMap.GetWorkflowWizardName();
+            Assert.AreEqual("Plugin Service Details", windowTitle);
+            this.PluginServiceWizardUIMap.CloseWizard();
+        }       
+//        
+//        [TestMethod]
+//        public void LocalhostContextMenuWhereNewDatabaseServiceClickedExpectNewWorkflowWindow()
+//        {
+//            //------------Setup for test--------------------------
+//            this.DocManagerUIMap.ClickOpenTabPage("Explorer");
+//            //------------Execute Test---------------------------
+//            this.ExplorerUIMap.Server_RightClick_NewDatabaseService("localhost");
+//            //------------Assert Results-------------------------
+//            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+//            var workflowWizardName = this.WebpageServiceWizardUIMap.GetWorkflowWizardName();
+//            Assert.AreEqual("Webpage Service Details", workflowWizardName);
+//            this.WebpageServiceWizardUIMap.CloseWizard();
+//        }
+
         #region Connecting to Servers
 
         //i. Can I connect to a server - TODO (External Server ?)
         [TestMethod]
         public void CreateServerConnection_Expected_ExplorerContainsNewServer()
         {
+           
             // Commented out since you can no longer DC local server
+
             #region Setup
 
             /* 
@@ -2182,6 +2230,7 @@ namespace Dev2.CodedUI.Tests
             // Here we will have to remove all environment related files incase there is a server name localhost already exists
 
             #endregion Setup
+
             /*
             UITestControl theServer = this.ExplorerUIMap.GetServer("localhost");
             if (theServer == null) //If it exists, connecting must work. If it doesn't - Test is fine

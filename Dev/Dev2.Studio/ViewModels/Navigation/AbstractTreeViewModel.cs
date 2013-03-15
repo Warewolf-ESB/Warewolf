@@ -341,6 +341,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return false; }
         }
 
+        public virtual bool HasFileMenu
+        {
+            get { return false; }
+        }
+
         public virtual string IconPath
         {
             get { return _iconPath; }
@@ -433,6 +438,11 @@ namespace Dev2.Studio.ViewModels.Navigation
                             EventAggregator.Publish(new DeployResourcesMessage(this)),
                                          o => CanDeploy));
             }
+        }
+
+        public virtual ICommand NewResourceCommand
+        {
+            get { return null; }
         }
 
         public virtual ICommand RemoveCommand

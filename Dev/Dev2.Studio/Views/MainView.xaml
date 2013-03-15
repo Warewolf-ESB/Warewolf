@@ -23,6 +23,7 @@
         <KeyBinding Command="{Binding Path=SaveCommand}" Key="F6" />        
         <KeyBinding Command="{Binding Path=EditCommand}" Key="E" Modifiers="Control" />-->
         <KeyBinding Command="{Binding Path=DebugCommand}" Key="F5" />
+        
         <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Alt" />
@@ -39,6 +40,7 @@
         <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
         <KeyBinding Command="{Binding Path=SaveCommand}" Key="S" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=RunCommand}" Key="R" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=DeployCommand}" Key="D" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=DebugCommand}" Key="T" Modifiers="Ctrl" />
@@ -53,7 +55,9 @@
 
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="F4" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding Path=DeployAllCommand}" Key="D" Modifiers="Ctrl+Shift" />
+<!--        <KeyBinding Command="{Binding Path=DeployAllCommand}" Key="D" Modifiers="Ctrl+Shift" />-->
+        <KeyBinding Command="{Binding Path=NewResourceCommand}"  CommandParameter="DatabaseService" Key="D" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding Path=NewResourceCommand}"  CommandParameter="ResourceService" Key="P" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
 
     </ribbon:RibbonWindow.InputBindings>
@@ -429,10 +433,28 @@
                 </ribbon:Ribbon.Resources>
 
                 <ribbon:Ribbon.ApplicationMenu>
-                    <ribbon:RibbonApplicationMenu AutomationProperties.AutomationId="UI_RibbonApplicationMenu">
+                    <ribbon:RibbonApplicationMenu AutomationProperties.AutomationId="UI_RibbonApplicationMenu" IsMainMenu="True" HorizontalAlignment="Left">
+                        <ribbon:RibbonApplicationMenuItem Header="File" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" >
+                            <ribbon:RibbonApplicationMenuItem Header="New Workflow" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
+                            <ribbon:RibbonApplicationMenuItem Header="New Service" >
+<!--                                <ribbon:RibbonApplicationMenuItem Header="Remote Workflow" />-->
+                                <ribbon:RibbonApplicationMenuItem Header="Database Procedure" x:Name="NewDatabaseProcedure"  Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="DatabaseService" x:FieldModifier="public" />
+                                <ribbon:RibbonApplicationMenuItem Header="Plugin"  Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="ResourceService"/>
+                            </ribbon:RibbonApplicationMenuItem>
+                            <ribbon:RibbonApplicationMenuItem Header="Add Source"  Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="Source">
+                                <ribbon:RibbonApplicationMenuItem Header="Remote Warewolf" Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="Server"/>
+                                <ribbon:RibbonApplicationMenuItem Header="Database" Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="DbSource"/>
+                                <ribbon:RibbonApplicationMenuItem Header="Plugin" Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="ResourceSource"/>
+                            </ribbon:RibbonApplicationMenuItem>
+                        </ribbon:RibbonApplicationMenuItem>
                         <ribbon:RibbonApplicationMenuItem Header="Reset Layout" Command="{Binding ResetLayoutCommand}" CommandParameter="{Binding ElementName=dockManager}"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New..." Command="{Binding Path=NewResourceCommand}" CommandParameter="Unknown" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New"/>
-                        <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" Command="{Binding ExitCommand}"/>
+                        <ribbon:RibbonApplicationMenuItem Header="Exit" Command="{Binding ExitCommand}" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" />
                     </ribbon:RibbonApplicationMenu>
                 </ribbon:Ribbon.ApplicationMenu>
 
@@ -545,7 +567,7 @@
                 </ribbon:RibbonTab>-->
 
                 <ribbon:RibbonTab Header="Help" AutomationProperties.AutomationId="Help">
-                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
+                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}" Visibility="Collapsed">
                         <ribbon:RibbonGroup.ItemTemplate>
                             <DataTemplate>
                                 <ribbon:RibbonButton Label="{Binding Label}"

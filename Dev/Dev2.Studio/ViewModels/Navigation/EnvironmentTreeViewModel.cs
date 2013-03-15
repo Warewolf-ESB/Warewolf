@@ -2,14 +2,22 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
+using Dev2.Studio.Webs;
+using Unlimited.Applications.BusinessDesignStudio.Views;
 
 #endregion
 
@@ -30,6 +38,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _disconnectCommand;
         private IEnvironmentModel _environmentModel;
         private RelayCommand _removeCommand;
+        private RelayCommand<string> _newResourceCommand;
 
         #endregion
 
@@ -136,6 +145,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get { return EnvironmentModel != null 
                 && !EnvironmentModel.IsConnected; }
+        }        
+        
+        public override bool HasFileMenu
+        {
+            get { return EnvironmentModel != null 
+                && EnvironmentModel.IsConnected; }
         }
 
         /// <summary>
@@ -226,6 +241,71 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return _connectCommand ??
                        (_connectCommand = new RelayCommand(param => Connect(), o => CanConnect));
             }
+        }        
+        
+        public override ICommand NewResourceCommand
+        {
+            get
+            {
+                return _newResourceCommand ??
+                       (_newResourceCommand = new RelayCommand<string>(NewResource, o => HasFileMenu));
+            }
+        }
+
+        void NewResource(string resourceType)
+        {
+            IContextualResourceModel resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, resourceType,
+                                                                                             resourceType);
+            var resourceViewModel = new ResourceWizardViewModel(resourceModel);
+            if (RootWebSite.ShowDialog(resourceModel))
+            {
+                return;
+            }
+
+            bool doesServiceExist =
+                EnvironmentModel.ResourceRepository.Find(r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
+
+            if (doesServiceExist)
+            {
+                // Travis.Frisinger: 07.90.2012 - Amended to convert studio resources into server resources
+                string resName =
+                    StudioToWizardBridge.ConvertStudioToWizardType(resourceType.ToString(CultureInfo.InvariantCulture),
+                        resourceModel.ServiceDefinition,
+                        resourceModel.Category);
+                //string requestUri = string.Format("{0}/services/{1}?{2}={3}&Dev2NewService=1", MainViewModel.CurrentWebServer, StudioToWizardBridge.SelectWizard(resourceModel), ResourceKeys.Dev2ServiceType, resName);
+
+                Uri requestUri;
+                if (
+                    !Uri.TryCreate(EnvironmentModel.WebServerAddress,
+                        BuildUri(resourceModel, resName), out requestUri))
+                {
+                    requestUri = new Uri(new Uri(StringResources.Uri_WebServer), BuildUri(resourceModel, resName));
+                }
+
+                try
+                {
+                    
+                    var win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri)
+                    {
+                        Width = 850,
+                        Height = 600
+                    };
+                    win.ShowDialog();
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        static string BuildUri(IContextualResourceModel resourceModel, string resName)
+        {
+            var uriString = "/services/ " + StudioToWizardBridge.SelectWizard(resourceModel);
+            if (resourceModel.ResourceType == ResourceType.WorkflowService || resourceModel.ResourceType == ResourceType.Service)
+            {
+                uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
+            }
+            return uriString;
         }
 
         /// <summary>
