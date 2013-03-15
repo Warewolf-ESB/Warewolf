@@ -656,7 +656,7 @@ namespace Dev2.Studio.ViewModels
 
                     if (eventAggregator != null)
                     {
-                        eventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage());
+                        eventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(this.CurrentResourceModel));
                     }
 
                     _viewInBrowserCommand = new RelayCommand(param => ViewInBrowser(),
@@ -1051,7 +1051,8 @@ namespace Dev2.Studio.ViewModels
 
         public ViewModelDialogResults GetServiceInputDataFromUser(IServiceDebugInfoModel input, out DebugTO debugTO)
         {
-            EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage());
+            
+            EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(this.CurrentResourceModel));
 
             var inputData = new WorkflowInputDataWindow();
 
@@ -1312,7 +1313,7 @@ namespace Dev2.Studio.ViewModels
 //                                     ActiveItem.DataListViewModel);
 
             IContextualResourceModel resourceModel = CurrentResourceModel;
-
+            Save(resourceModel,false);
             // 2012.10.17 - 5782: TWR - Use build first so that changes are persisted to the client workspace on the server
             Build(resourceModel);
 
@@ -1378,7 +1379,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-
+            Save(resourceModel, false);
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, 0,
                                                                          DebugMode.DebugInteractive);
@@ -1408,11 +1409,10 @@ namespace Dev2.Studio.ViewModels
                     // Sashen.Naidoo : 14-02-2012 : BUG 8793 : Added asynchronous callback to remove the debugwriter when the the Webserver callback has completed.
                     //                              Previously, everytime the debug method was invoked it would add a debug writer to the clientcontext and
                     //                              this would never be removed
-                    var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
-                    if (eventAggregator != null)
+                    if (EventAggregator != null)
                     {
-                        eventAggregator.Publish(new DebugStatusMessage(true));
+                        EventAggregator.Publish(new DebugStatusMessage(true));
                     }
 
 

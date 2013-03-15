@@ -841,6 +841,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 case ResourceType.WorkflowService:
                     //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
                     EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
+                    EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(resourceModel));
                     break;
 
                 case ResourceType.Source:

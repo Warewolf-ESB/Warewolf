@@ -2365,7 +2365,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
-
+            
             IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
             IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
             _filteredDataListParts = MissingDataListParts(workflowFields);
@@ -2465,7 +2465,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <date>2013/02/06</date>
         public void Handle(AddMissingAndFindUnusedDataListItemsMessage message)
         {
-            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            if(this.ResourceModel == message.CurrentResourceModel)
+            {
+                AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            }
         }
 
         #endregion
@@ -2756,10 +2759,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        #region Overrides of ViewAware
+
+        protected override void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+        }
+
+        #endregion
+
         protected override void OnActivate()
         {
             base.OnActivate();
-            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            
         }
 
         protected override void OnViewAttached(object view, object context)
