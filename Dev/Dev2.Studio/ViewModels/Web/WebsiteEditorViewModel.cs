@@ -15,6 +15,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Exceptions;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -552,8 +553,8 @@ namespace Dev2.Studio.Core.ViewModels
             {
                 //Flush the workflow designer so changes are written back into the Resource Model
                 //so that we can save the workflow at its latest state
-                Mediator.SendMessage(MediatorMessages.SaveResourceModel, _resource);
-
+                //Mediator.SendMessage(MediatorMessages.SaveResourceModel, _resource);
+                EventAggregator.Publish(new SaveResourceModelMessage(_resource));
                 //Create the necessary folder structure on the web server if it does not already exist.
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
@@ -569,7 +570,8 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
-            Mediator.SendMessage(MediatorMessages.CloseWizard, this);
+            EventAggregator.Publish(new CloseWizardMessage(this));
+            //Mediator.SendMessage(MediatorMessages.CloseWizard, this);
         }
 
         public void Cancel()
@@ -773,7 +775,8 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void OpenPropertyEditor()
         {
-            Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
+            EventAggregator.Publish(new ShowWebpartWizardMessage(this));
+            //Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
         }
 
         public void Update()

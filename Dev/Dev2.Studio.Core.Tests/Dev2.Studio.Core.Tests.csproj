@@ -166,7 +166,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainViewTests.cs" />
-    <Compile Include="MediatorTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
@@ -207,7 +206,6 @@
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
-    <Compile Include="Utils\MediatorMessageTrapper.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="ViewModelTests\Configuration\RuntimeConfigurationViewModelTests.cs" />

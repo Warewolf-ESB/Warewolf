@@ -619,7 +619,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Debug()
         {
             EditCommand.Execute(null);
-            Mediator.SendMessage(MediatorMessages.DebugResource, DataContext);
+            EventAggregator.Publish(new DebugResourceMessage(DataContext));
+            //Mediator.SendMessage(MediatorMessages.DebugResource, DataContext);
             RaisePropertyChangedForCommands();
         }
 
@@ -710,7 +711,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowProperties()
         {
-            Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, DataContext);
+            //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, DataContext);
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -732,7 +734,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Run()
         {
-            Mediator.SendMessage(MediatorMessages.ExecuteResource, DataContext);
+            //Mediator.SendMessage(MediatorMessages.ExecuteResource, DataContext);
+            EventAggregator.Publish(new ExecuteResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -743,7 +746,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowHelp()
         {
-            Mediator.SendMessage(MediatorMessages.AddHelpDocument, DataContext);
+            //Mediator.SendMessage(MediatorMessages.AddHelpDocument, DataContext);
+            EventAggregator.Publish(new AddHelpDocumentMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -755,7 +759,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            Mediator.SendMessage(MediatorMessages.SaveResource, DataContext);
+            //Mediator.SendMessage(MediatorMessages.SaveResource, DataContext);
+            EventAggregator.Publish(new SaveResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -790,21 +795,25 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="resourceModel">The resource model.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private static void SendManualEditMessage(IResourceModel resourceModel)
+        private void SendManualEditMessage(IResourceModel resourceModel)
         {
-            switch (resourceModel.ResourceType)
-            {
-                case ResourceType.WorkflowService:
-                    Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
-                    break;
-
-                case ResourceType.Source:
-                    Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
-                    break;
-                case ResourceType.Service:
-                    Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
-                    break;
-            }
+//            switch (resourceModel.ResourceType)
+//            {
+//                case ResourceType.WorkflowService:
+//                    //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
+//                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
+//                    break;
+//
+//                case ResourceType.Source:
+//                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
+//                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+//                    break;
+//                case ResourceType.Service:
+//                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
+//                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+//                    break;
+//            }
+            SendEditMessage(resourceModel);
         }
 
         /// <summary>
@@ -825,18 +834,22 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="resourceModel">The resource model.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private static void SendEditMessage(IResourceModel resourceModel)
+        private void SendEditMessage(IResourceModel resourceModel)
         {
             switch (resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
-                    Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
+                    //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
+                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
                     break;
+
                 case ResourceType.Source:
-                    Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
+                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
                 case ResourceType.Service:
-                    Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
+                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
             }
         }

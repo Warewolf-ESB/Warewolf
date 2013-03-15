@@ -14,24 +14,27 @@ using System.Windows.Shapes;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
-    public partial class DsfForEachActivityDesigner : IDisposable {
+    public partial class DsfForEachActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
+    {
         private bool _isRegistered = false;
         private string mediatorKey = string.Empty;
         public DsfForEachActivityDesigner() {
             InitializeComponent();
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
         }
-
+        protected IEventAggregator EventAggregator { get; set; }
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
-            if (!_isRegistered) {
-                mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
             ModelItem item = newItem as ModelItem;
 
             ModelItem parent = item.Parent;
@@ -64,9 +67,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                 }
             }
         }
+        public void Handle(DataListItemSelectedMessage message)
+        {
+            Highlight(message.DataListItemModel);
+        }
 
         public void Dispose() {
-            Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
+           EventAggregator.Unsubscribe(this);
         }
 
         private void ForEverytxt_LostFocus(object sender, RoutedEventArgs e) {

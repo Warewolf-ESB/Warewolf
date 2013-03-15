@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Caliburn.Micro;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel.Composition;
@@ -21,7 +23,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
     /// Summary description for LayoutGridViewModelTest
     /// </summary>
     [TestClass()]
-    public class LayoutGridViewModelTest {
+    public class LayoutGridViewModelTest:IHandle<AddWorkflowDesignerMessage> {
 
         #region Local Test Variables
 
@@ -31,11 +33,12 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         private Mock<IWebActivity> _mockWebActivity = new Mock<IWebActivity>();
         private Mock<ILayoutObjectViewModel> _mockLayoutObject = new Mock<ILayoutObjectViewModel>();
         private static ImportServiceContext _importServiceContext;
-
+        bool _addWorkflowDesignerMessageReceived = false;
         #endregion Local Test Variables
 
         #region Constructor and TestContext
         private TestContext testContextInstance;
+        static Mock<IEventAggregator> _aggregator;
 
         /// <summary>
         ///Gets or sets the result context which provides
@@ -62,7 +65,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel();
+            _aggregator = new Mock<IEventAggregator>();
+            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel(_aggregator);
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
@@ -81,9 +85,9 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
 
             LayoutGrid = new LayoutGridViewModel(_mockWebActivity.Object);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddWorkflowDesigner);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddWorkflowDesigner);
         }
 
         #region Mock Setup
@@ -435,11 +439,11 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         [TestMethod]
         public void OpenWebsiteCommand() {
             //Act
-            bool messageRecieved = false;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
+            //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             LayoutGrid.OpenWebsiteCommand.Execute(null);
+            _aggregator.Verify(e => e.Publish(It.IsAny<AddWorkflowDesignerMessage>
+               ()), Times.Once());
             //Assert
-            Assert.IsTrue(messageRecieved);
             //_mockMainViewModel.Verify(ver => ver.OpenWebsiteCommand.Execute(null));
         }
 
@@ -620,5 +624,14 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         }
 
         #endregion Methods used by tests
+
+        #region Implementation of IHandle<AddWorkflowDesignerMessage>
+
+        public void Handle(AddWorkflowDesignerMessage message)
+        {
+            _addWorkflowDesignerMessageReceived = true;
+        }
+
+        #endregion
     }
 }

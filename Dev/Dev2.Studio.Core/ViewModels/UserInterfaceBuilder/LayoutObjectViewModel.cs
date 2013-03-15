@@ -8,6 +8,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Unlimited.Framework
@@ -631,7 +632,7 @@ namespace Unlimited.Framework
         {
             if(!string.IsNullOrEmpty(SelectedLayoutObject.WebpartServiceName))
             {
-                Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
+                EventAggregator.Publish(new ShowWebpartWizardMessage(this));
             }
         }
 
@@ -737,7 +738,7 @@ namespace Unlimited.Framework
 
         public void Close()
         {
-            Mediator.SendMessage(MediatorMessages.CloseWizard, this);
+            EventAggregator.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()
@@ -920,4 +921,6 @@ namespace Unlimited.Framework
         }
         #endregion
     }
+
+   
 }

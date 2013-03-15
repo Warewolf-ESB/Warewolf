@@ -1,10 +1,16 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -52,7 +58,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.DoesActivityHaveWizard);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.DoesActivityHaveWizard);
             //MediatorMessageTrapper.RegisterMessageToTrash(MediatorMessages.DoesActivityHaveWizard, true);
         }
         //
@@ -63,11 +69,29 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         }
         //
+
+        internal static ImportServiceContext SetupMefStuff(Mock<IEventAggregator> aggregator)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullStudioAggregateCatalog()
+            });
+
+            var mainViewModel = new Mock<IMainViewModel>();
+            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+            ImportService.AddExportedValueToContainer<IEventAggregator>(aggregator.Object);
+
+            return importServiceContext;
+        }
         #endregion
 
         [TestMethod]
         public void DsfActivityViewModelWhereModelItemIsCorrect_Expected_ViewModelWithPropertiesSet()
         {
+            SetupMefStuff(new Mock<IEventAggregator>());
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
@@ -80,6 +104,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void DsfActivityViewModelWhereModelItemIsNull_Expected_ViewModelWithNoPropertiesSet()
         {
+            SetupMefStuff(new Mock<IEventAggregator>());
             DsfActivityViewModel vm = new DsfActivityViewModel(null);
             Assert.IsTrue(vm.HelpLink == null && vm.IconPath == null);
             vm.Dispose();
@@ -88,12 +113,13 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void DsfActivityViewModelWhereModelItemHasNoHelpLink_Expected_ViewModelHasHelpLinkFalse()
         {
+            SetupMefStuff(new Mock<IEventAggregator>());
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             act.HelpLink = string.Empty;
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
             DsfActivityViewModel vm = new DsfActivityViewModel(modelItem);
-
+            
             Assert.IsTrue(vm.HasHelpLink == false && vm.HelpLink == "");
             vm.Dispose();
         }
@@ -101,6 +127,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void DsfActivityViewModelWhereModelItemHasProperties_Expected_ViewModelPropertyCollectionPopulated()
         {
+            SetupMefStuff(new Mock<IEventAggregator>());
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);

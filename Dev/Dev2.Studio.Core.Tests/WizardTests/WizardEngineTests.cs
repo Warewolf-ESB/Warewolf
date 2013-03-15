@@ -1,10 +1,12 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -41,9 +43,9 @@ namespace Dev2.Core.Tests
             resource.ResourceName = "TestName";
             resource.DisplayName = "TestName";
 
-            wizEng = new WizardEngine();
+            //wizEng = new WizardEngine();
+            //ImportService.SatisfyImports(wizEng);
 
-            ImportService.SatisfyImports(wizEng);
         }
 
         #endregion
@@ -96,9 +98,11 @@ namespace Dev2.Core.Tests
 	<FailureMessage IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
 	<Message IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -125,9 +129,11 @@ namespace Dev2.Core.Tests
 	<FailureMessage IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
 	<Message IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -154,9 +160,11 @@ namespace Dev2.Core.Tests
 	<FailureMessage IsEditable=""true"" Description=""""/>
 	<Message IsEditable=""true"" Description="""" ColumnIODirection=""Input""/>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -181,9 +189,11 @@ namespace Dev2.Core.Tests
 	    <Record2 IsEditable=""true"" Description=""""/>
     </SomeRecords>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -208,9 +218,11 @@ namespace Dev2.Core.Tests
 	    <Record2 IsEditable=""true"" Description=""""/>
     </SomeRecords>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -235,9 +247,11 @@ namespace Dev2.Core.Tests
 	    <Record2 IsEditable=""true"" Description=""""/>
     </SomeRecords>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -262,9 +276,11 @@ namespace Dev2.Core.Tests
 	    <Record2 IsEditable=""true"" Description=""""/>
     </SomeRecords>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -289,9 +305,11 @@ namespace Dev2.Core.Tests
 	    <Record2 IsEditable=""true"" Description=""""/>
     </SomeRecords>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(o =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)o).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -353,9 +371,11 @@ namespace Dev2.Core.Tests
   <DisplayName>Service</DisplayName>
   <DataList />
 </Service>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(cake =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
@@ -419,15 +439,33 @@ namespace Dev2.Core.Tests
   <DisplayName>Service</DisplayName>
   <DataList />
 </Service>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            IResourceModel wizResource = null;
+            GetResourceModelFromAggregator(o =>
+            {
+                wizResource = ((AddWorkflowDesignerMessage)o).Resource;
+            });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
 
             string expectedDataList = @"<DataList></DataList>";
-
+            Assert.IsNotNull(wizResource);
             Assert.IsTrue(wizResource.ResourceName == "TestWorkflow2.wiz" && (wizResource.DataList == expectedDataList));
+        }
+
+        void GetResourceModelFromAggregator(Action<object> action)
+        {
+            Mock<IEventAggregator> aggregator = new Mock<IEventAggregator>();
+            aggregator.Setup(e => e.Publish(It.IsAny<AddWorkflowDesignerMessage>())).Callback(action).Verifiable();
+
+            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel(aggregator);
+
+            DoInitialize();
+        }
+
+        void DoInitialize()
+        {
+            wizEng = new WizardEngine();
+            ImportService.SatisfyImports(wizEng);
         }
 
         #endregion CreateResourceWizard Tests
@@ -437,6 +475,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetActivityWizardInvocationTO_DsfActivity_Postive_Expected_correct_TO_Returned()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource");
             Mock<IContextualResourceModel> testRes2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource2");
             Mock<IEnvironmentModel> envModel = Dev2MockFactory.SetupEnvironmentModel(testRes, new List<IResourceModel>());
@@ -455,6 +494,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetActivityWizardInvocationTO_ToolingActivity_Postive_Expected_correct_TO_Returned()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource");
             Mock<IContextualResourceModel> testRes2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource2");
             Mock<IEnvironmentModel> envModel = Dev2MockFactory.SetupEnvironmentModel(testRes, new List<IResourceModel>());
@@ -496,11 +536,10 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(Exception))]
         public void EditWizard_Where_ResourceIsntWizard_Expected_Exception()
         {
+            DoInitialize();
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
 
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
+            
 
             wizEng.EditWizard(mockResource1.Object, mockResource1.Object);
         }
@@ -508,6 +547,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void EditWizard_Where_ResourceIsWizard_Expected_Wizard_Workflow()
         {
+            DoInitialize();
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
             mockResource3.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
             mockResource3.Setup(moq => moq.DataList).Returns(@"<ADL>
@@ -522,10 +562,7 @@ namespace Dev2.Core.Tests
 	<FailureMessage IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
 	<Message IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
-
+            
             wizEng.EditWizard(mockResource3.Object, mockResource1.Object);
 
             string popupMessage = @"The following items have changed on the Data List of TestWorkflow1: 
@@ -540,6 +577,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void EditWizard_Where_ResourceIsParentOfWizard_Expected_Wizard_Workflow()
         {
+            DoInitialize();
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource3, new List<IResourceModel>());
             mockResource1.Setup(moq => moq.Environment).Returns(environment.Object);
             mockResource3.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
@@ -556,10 +594,7 @@ namespace Dev2.Core.Tests
     <RemoveVar IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
 	<Message IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
-            IContextualResourceModel wizResource = null;
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => wizResource = o as IContextualResourceModel);
-
+            
             wizEng.EditResourceWizard(mockResource1.Object);
 
             string popupMessage = @"The following items have changed on the Data List of TestWorkflow1: 
@@ -580,24 +615,28 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsResourceWizard_Expected_True()
         {
+            DoInitialize();
             Assert.IsTrue(wizEng.IsResourceWizard(mockResource3.Object));
         }
 
         [TestMethod]
         public void IsResourceWizard_Expected_False()
         {
+            DoInitialize();
             Assert.IsFalse(wizEng.IsResourceWizard(mockResource1.Object));
         }
 
         [TestMethod]
         public void IsResourceWizard_Where_ResourceIsNull_Expected_False()
         {
+            DoInitialize();
             Assert.IsFalse(wizEng.IsResourceWizard(null));
         }
 
         [TestMethod]
         public void IsSystemWizard_Expected_True()
         {
+            DoInitialize();
             mockResource1.Setup(moq => moq.ResourceName).Returns("Dev2TestWorkflowWizard");
             Assert.IsTrue(wizEng.IsSystemWizard(mockResource1.Object));
         }
@@ -605,24 +644,28 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsSystemWizard_Expected_False()
         {
+            DoInitialize();
             Assert.IsFalse(wizEng.IsSystemWizard(mockResource1.Object));
         }
 
         [TestMethod]
         public void IsSystemWizard_Where_ResourceIsNull_Expected_False()
         {
+            DoInitialize();
             Assert.IsFalse(wizEng.IsSystemWizard(null));
         }
 
         [TestMethod]
         public void IsWizard_ResourceWizard_Expected_True()
         {
+            DoInitialize();
             Assert.IsTrue(wizEng.IsWizard(mockResource3.Object));
         }
 
         [TestMethod]
         public void IsWizard_SystemWizard_Expected_True()
         {
+            DoInitialize();
             mockResource1.Setup(moq => moq.ResourceName).Returns("Dev2TestWorkflowWizard");
             Assert.IsTrue(wizEng.IsWizard(mockResource1.Object));
         }
@@ -630,12 +673,14 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsWizard_Expected_False()
         {
+            DoInitialize();
             Assert.IsFalse(wizEng.IsWizard(mockResource1.Object));
         }
 
         [TestMethod]
         public void IsWizard_Where_ResourceIsNull_Expected_False()
         {
+            DoInitialize();
             Assert.IsFalse(wizEng.IsWizard(null));
         }
 
@@ -646,6 +691,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetParent_Positive_Expected_Parent_Returned()
         {
+            DoInitialize();
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
             mockResource3.Setup(moq => moq.Environment).Returns(environment.Object);
             IContextualResourceModel parent = wizEng.GetParent(mockResource3.Object);
@@ -655,6 +701,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetParent_NULL_Expected_Null_Returned()
         {
+            DoInitialize();
             IContextualResourceModel parent = wizEng.GetParent(null);
             Assert.IsNull(parent);
         }
@@ -663,6 +710,7 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(Exception), "Can't get a parent for a resource that is not a wizard. The attempt was made on 'TestWorkflow1'.")]
         public void GetParent_NotResourceWizard_Expected_Exception()
         {
+            DoInitialize();
             IContextualResourceModel parent = wizEng.GetParent(mockResource1.Object);
         }
 
@@ -673,6 +721,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void HasWizard_Where_ActivityIsDsfActivityAndResourceHasWizard_Expected_True()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource");
             Mock<IContextualResourceModel> testRes2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource2");
             Mock<IEnvironmentModel> envModel = Dev2MockFactory.SetupEnvironmentModel(testRes, new List<IResourceModel>());
@@ -691,6 +740,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void HasWizard_Where_ActivityIsDsfActivityAndDoesntHaveWizard_Expected_False()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource", false);
             DsfActivity Act = new DsfActivity();
             Act.ServiceName = "testResource";
@@ -706,6 +756,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void HasWizard_Where_ActivityIsCodedActivityAndResourceHasWizard_Expected_True()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "Dev2DsfMultiAssignActivityWizard");
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource", testRes2);
 
@@ -720,6 +771,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void HasWizard_Where_ActivityIsCodedActivityAndResourceDoesntHaveWizard_Expected_False()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource", false);
 
             DsfMultiAssignActivity Act = new DsfMultiAssignActivity();
@@ -734,6 +786,7 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void HasWizard_Where_ActivityIsNull_Expected_Exception()
         {
+            DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource", false);
 
             bool result = wizEng.HasWizard(null, testRes.Object);
@@ -745,6 +798,7 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void HasWizard_Where_HostResourceIsNull_Expected_Exception()
         {
+            DoInitialize();
             DsfMultiAssignActivity Act = new DsfMultiAssignActivity();
             ModelItem testItem = TestModelItemFactory.CreateModelItem(Act);
 

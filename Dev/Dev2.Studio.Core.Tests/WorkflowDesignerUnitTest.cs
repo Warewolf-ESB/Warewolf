@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests
 
         private static object _testGuard = new object();
         WorkflowDesignerViewModel LayoutDesigner;
-        Mock<IMediatorRepo> _mockMediatorRepo = new Mock<IMediatorRepo>();
+        //Mock<IMediatorRepo> _mockMediatorRepo = new Mock<IMediatorRepo>();
 
         #endregion Test Variables
 
@@ -53,8 +53,8 @@ namespace Dev2.Core.Tests
             //_mockMainViewModel.Setup(mainVM => mainVM.ActiveEnvironment).Returns(_moqEnvironment.Object);
             _mockMainViewModel.Setup(mainVM => mainVM.OpenWebsiteCommand.Execute(null)).Verifiable();
 
-            _mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
-            _mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
+            //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
+            //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
 
             _moqEnvironment.Setup(env => env.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
             _moqEnvironment.Setup(env => env.WebServerPort).Returns(1234);
@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            //workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
             Assert.IsTrue(workflowDesigner.WorkflowVerifiedDataParts.FirstOrDefault(c => c.Field == "result") != null);
 
@@ -144,8 +144,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(DataListItem.Object);
             DataListItems.Add(secondDataListItem.Object);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -155,7 +155,7 @@ namespace Dev2.Core.Tests
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+          //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
             Assert.IsTrue(workflowDesigner.WorkflowVerifiedDataParts.Count == 1);
         }
@@ -241,8 +241,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(DataListItem.Object);
             DataListItems.Add(secondDataListItem.Object);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -252,7 +252,7 @@ namespace Dev2.Core.Tests
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+          //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
             Assert.IsTrue(workflowDesigner.WorkflowVerifiedDataParts.Count == 0);
         }
@@ -283,8 +283,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(dataListItem);
             DataListItems.Add(secondDataListItem);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+          //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -295,7 +295,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+           // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.RemoveAllUnusedDataListItems(dataListViewModel);
             Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 0);
 
@@ -327,8 +327,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(dataListItem);
             DataListItems.Add(secondDataListItem);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+          //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -339,7 +339,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+           // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
             workflowDesigner.AddMissingOnlyWithNoPopUp(null);
             Assert.IsTrue(76 == dataListViewModel.ScalarCollection.Count);
@@ -372,8 +372,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(dataListItem);
             DataListItems.Add(secondDataListItem);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+          //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
            // mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -384,7 +384,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+          //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
             Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsUsed);
             Assert.IsTrue(dataListViewModel.ScalarCollection[1].IsUsed);
@@ -517,7 +517,7 @@ namespace Dev2.Core.Tests
             designerAttributes.Add(typeof(TransformActivity), typeof(DsfTransformActivityDesigner));
             designerAttributes.Add(typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner));
             designerAttributes.Add(typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner));
-            wf.MediatorRepo = _mockMediatorRepo.Object;
+           // wf.MediatorRepo = _mockMediatorRepo.Object;
             wf.InitializeDesigner(designerAttributes);
 
             return wf;
@@ -528,7 +528,7 @@ namespace Dev2.Core.Tests
 
             WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resourceModel);
             var designerAttributes = new Dictionary<Type, Type>();
-            wf.MediatorRepo = _mockMediatorRepo.Object;
+            //wf.MediatorRepo = _mockMediatorRepo.Object;
             wf.InitializeDesigner(designerAttributes);
 
             return wf;
@@ -557,8 +557,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(DataListItem.Object);
             DataListItems.Add(secondDataListItem.Object);
 
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -569,7 +569,7 @@ namespace Dev2.Core.Tests
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            //workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
             return workflowDesigner.WorkflowVerifiedDataParts.Count;
         }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Messages
 {
-    public class ShowUnusedDataListVariablesMessage
+    public class ShowUnusedDataListVariablesMessage : IMessage
     {
 
         public ShowUnusedDataListVariablesMessage(IList<IDataListVerifyPart> listOfUnused, IResourceModel resourceModel)

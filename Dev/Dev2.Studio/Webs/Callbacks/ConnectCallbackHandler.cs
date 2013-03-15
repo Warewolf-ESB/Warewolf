@@ -5,6 +5,7 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
@@ -97,8 +98,8 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 CurrentEnvironmentRepository.Save(Server.Environment);
             }
-
-            Mediator.SendMessage(MediatorMessages.AddServerToExplorer, Server.Environment);
+            EventAggregator.Publish(new AddServerToExplorerMessage(Server.Environment));
+            //Mediator.SendMessage(MediatorMessages.AddServerToExplorer, Server.Environment);
         }
 
         #endregion

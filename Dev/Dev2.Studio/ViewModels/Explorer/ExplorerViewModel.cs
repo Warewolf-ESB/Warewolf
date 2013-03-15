@@ -1,5 +1,7 @@
-﻿using Dev2.Studio.Core;
+﻿using Caliburn.Micro;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Navigation;
 using System.ComponentModel.Composition;
@@ -7,7 +9,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
-    public class ExplorerViewModel : BaseViewModel
+    public class ExplorerViewModel : BaseViewModel,IHandle<UpdateExplorerMessage>,IHandle<RemoveEnvironmentMessage>,IHandle<AddServerToExplorerMessage>
     {
         #region Class Members
 
@@ -21,13 +23,13 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public ExplorerViewModel()
         {
-            _mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateExplorer,
-                                                             o => RefreshEnvironments((o is bool) && (bool) o));
+//            _mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateExplorer,
+//                                                             o => RefreshEnvironments((o is bool) && (bool) o));
 
-            Mediator.RegisterToReceiveMessage(MediatorMessages.RemoveServerFromExplorer,
-                                              o => RemoveEnvironment((IEnvironmentModel) o));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddServerToExplorer,
-                                              o => AddEnvironment((IEnvironmentModel) o));
+//            Mediator.RegisterToReceiveMessage(MediatorMessages.RemoveServerFromExplorer,
+//                                              o => RemoveEnvironment((IEnvironmentModel) o));
+//            Mediator.RegisterToReceiveMessage(MediatorMessages.AddServerToExplorer,
+//                                              o => AddEnvironment((IEnvironmentModel) o));
 
             NavigationViewModel = new NavigationViewModel(false);
             LoadEnvironments();
@@ -116,8 +118,8 @@ namespace Dev2.Studio.ViewModels.Explorer
             {
                 NavigationViewModel.AddEnvironment(environment);
             }
-
-            Mediator.SendMessage(MediatorMessages.SetActiveEnvironment, Dev2.Studio.Core.EnvironmentRepository.DefaultEnvironment);
+            EventAggregator.Publish(new SetActiveEnvironmentMessage(Dev2.Studio.Core.EnvironmentRepository.DefaultEnvironment));
+            //Mediator.SendMessage(MediatorMessages.SetActiveEnvironment, Dev2.Studio.Core.EnvironmentRepository.DefaultEnvironment);
         }
 
         /// <summary>
@@ -149,10 +151,39 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         protected override void OnDispose()
         {
-            Mediator.DeRegister(MediatorMessages.UpdateExplorer, _mediatorKey);
+            //Mediator.DeRegister(MediatorMessages.UpdateExplorer, _mediatorKey);
+            EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
 
         #endregion Dispose Handling
+
+        #region Implementation of IHandle<UpdateExplorerMessage>
+
+        public void Handle(UpdateExplorerMessage message)
+        {
+            RefreshEnvironments(message.Update);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<RemoveEnvironmentMessage>
+
+        public void Handle(RemoveEnvironmentMessage message)
+        {
+            RemoveEnvironment(message.EnvironmentModel);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<AddServerToExplorerMessage>
+
+        public void Handle(AddServerToExplorerMessage message)
+        {
+            AddEnvironment(message.EnvironmentModel);
+        }
+
+        #endregion
     }
+
 }

@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.ViewModels.Web;
+﻿using Caliburn.Micro;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.ViewModels.Web;
 using Unlimited.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -16,7 +18,7 @@ namespace Dev2.Core.Tests {
     ///</summary>
 
     [TestClass()]
-    public class LayoutObjectViewModelTest {
+    public class LayoutObjectViewModelTest:IHandle<CloseWizardMessage> {
         public LayoutGridViewModel LayoutGrid;
         Mock<IEnvironmentModel> _moqEnvironment = new Mock<IEnvironmentModel>();
         Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();
@@ -25,6 +27,7 @@ namespace Dev2.Core.Tests {
         int _count;
 
         private TestContext testContextInstance;
+        Mock<IEventAggregator> _eventAggregator;
 
         /// <summary>
         ///Gets or sets the result context which provides
@@ -47,7 +50,11 @@ namespace Dev2.Core.Tests {
         public void MyTestInitialize() {
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-
+            _eventAggregator = Mock.Get(ImportService.GetExportValue<IEventAggregator>());
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
+           
+//            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+//            EventAggregator.Subscribe(this);
             _mockMainViewModel.Setup(mainVM => mainVM.OpenWebsiteCommand.Execute(null)).Verifiable();
 
             _moqEnvironment.Setup(env => env.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
@@ -63,12 +70,15 @@ namespace Dev2.Core.Tests {
            
 
         }
+
+        protected IEventAggregator EventAggregator { get; set; }
+
         //
         //Use TestCleanup to run code after each result has run
         [TestCleanup()]
         public void MyTestCleanup() {
             _count = 0;
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.CloseWizard);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.CloseWizard);
         }
         //
         #endregion
@@ -111,12 +121,13 @@ namespace Dev2.Core.Tests {
         public void Close_Expected_CloseWizardMediatorMessageSent() {
 
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.CloseWizard);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.CloseWizard, input => RecieveMediatorMessage(input));
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.CloseWizard);
+            //Mediator.RegisterToReceiveMessage(MediatorMessages.CloseWizard, input => RecieveMediatorMessage());
             layoutObjectViewModel.Close();
-
+            _eventAggregator.Verify(e => e.Publish(It.Is<CloseWizardMessage>
+                (t => t.ResourceWizardViewModel == layoutObjectViewModel)), Times.Once());
             // Assert that the mediator message was sent
-            Assert.AreEqual(1, _count);
+            //Assert.AreEqual(1, _count);
         }
 
         #endregion Close Tests
@@ -334,11 +345,20 @@ namespace Dev2.Core.Tests {
             return layoutGridViewModel;
         }
 
-        private void RecieveMediatorMessage(object input) {
+        private void RecieveMediatorMessage() {
             _count = _count + 1;
         }
 
 
         #endregion Internal Test Methods
+
+        #region Implementation of IHandle<CloseWizardMessage>
+
+        public void Handle(CloseWizardMessage message)
+        {
+            RecieveMediatorMessage();
+        }
+
+        #endregion
     }
 }

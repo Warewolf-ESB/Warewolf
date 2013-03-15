@@ -23,7 +23,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// for the TreeView (the RootItems property), a bindable
     /// SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>
+    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>,IHandle<DebugWriterWriteMessage>,IHandle<DebugWriterAppendMessage>
     {
         #region Fields
 
@@ -71,9 +71,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             _rootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
             _contentItems = new List<object>();
-
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
+            
+//            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
+//            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
         }
 
         #endregion
@@ -582,8 +582,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     return;
                 }
-
-                Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+                //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
             }
         }
 
@@ -694,5 +694,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion
+
+        #region Implementation of IHandle<DebugWriterWriteMessage>
+
+        public void Handle(DebugWriterWriteMessage message)
+        {
+            Write(message.Content);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<DebugWriterAppendMessage>
+
+        public void Handle(DebugWriterAppendMessage message)
+        {
+            Append(message.Content);
+        }
+
+        #endregion
     }
+
+    
 }

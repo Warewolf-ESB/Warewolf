@@ -1,8 +1,10 @@
-﻿using Dev2.Studio.Core.Activities.TO;
+﻿using Caliburn.Micro;
+using Dev2.Studio.Core.Activities.TO;
 using Dev2.Studio.Core.Activities.Translators;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ErrorHandling;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Activities;
@@ -15,7 +17,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
-    public class DsfActivityViewModel : BaseActivityViewModel, INotifyPropertyChanged, IDisposable
+    public class DsfActivityViewModel : BaseActivityViewModel, INotifyPropertyChanged, IDisposable,IHandle<HasWizardMessage>
     {
         #region Fields
 
@@ -41,8 +43,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             : base(modelItem)
         {
             _modelItem = modelItem;
-            _hasWizKeyToDereg = Mediator.RegisterToReceiveMessage(MediatorMessages.HasWizard,
-                                                  input => HasWizard = (bool)(input));
+            EventAggregator.Subscribe(this);
             // _getMappingKeyToDereg = Mediator.RegisterToReceiveMessage(MediatorMessages.GetMappingViewModel, input => SetMappingViewModel(input as DataMappingViewModel));
             SetViewModelProperties(modelItem);
         }
@@ -198,7 +199,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         private void OpenParent()
         {
-            Mediator.SendMessage(MediatorMessages.EditActivity, _modelItem);
+            EventAggregator.Publish(new EditActivityMessage(_modelItem));
         }
 
         #endregion Commands
@@ -253,8 +254,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                         PropertyCollection.Add(new KeyValuePair<string, string>("Simulation :", transObject.Simulation));
                     }
                 }
-
-                Mediator.SendMessage(MediatorMessages.DoesActivityHaveWizard, _model);
+                EventAggregator.Publish(new DoesActivityHaveWizardMessage(_model));
             }
         }
 
@@ -301,13 +301,19 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             _modelItem = null;
             DataMappingViewModel = null;
 
-            if (!string.IsNullOrEmpty(_hasWizKeyToDereg))
-            {
-                Mediator.DeRegister(MediatorMessages.HasWizard, _hasWizKeyToDereg);
-                //Mediator.DeRegister(MediatorMessages.GetMappingViewModel, _getMappingKeyToDereg);
-            }
+            EventAggregator.Unsubscribe(this);
         }
         #endregion Dispose
 
+        #region Implementation of IHandle<HasWizardMessage>
+
+        public void Handle(HasWizardMessage message)
+        {
+            HasWizard = message.HasWizard;
+        }
+
+        #endregion
     }
+
+   
 }

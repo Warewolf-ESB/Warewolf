@@ -1,9 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using CircularDependencyTool;
 using System.Windows.Controls;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 
 namespace Dev2.Studio.Views.DependencyVisualization
@@ -16,7 +19,9 @@ namespace Dev2.Studio.Views.DependencyVisualization
         public DependencyVisualiserView()
         {
             InitializeComponent();
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
         }
+        public IEventAggregator EventAggregator { get; set; }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e) {
             //2012.10.01: massimo.guerrera - Added for the click through on the dependency viewer
@@ -54,7 +59,8 @@ namespace Dev2.Studio.Views.DependencyVisualization
                                                                      c => c.ResourceName == resourceName);
                         if (resource != null)
                         {
-                            Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                            //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                            EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
                         }
                     }
                 }                

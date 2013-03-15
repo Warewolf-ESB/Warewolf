@@ -24,7 +24,7 @@ namespace Dev2.Core.Tests
         private DataListViewModel _dataListViewModel;
         private Mock<IContextualResourceModel> _mockResourceModel;
 
-        private Mock<IMediatorRepo> _mockMediatorRepo;
+        //private Mock<IMediatorRepo> _mockMediatorRepo;
         private DataListViewModelTestHelper _helper;
 
         #endregion
@@ -38,11 +38,11 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
             _helper = new DataListViewModelTestHelper();
 
-            _mockMediatorRepo = new Mock<IMediatorRepo>();
+            //_mockMediatorRepo = new Mock<IMediatorRepo>();
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
-            _mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
+            //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
+            //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
             _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             //Mock<IMainViewModel> _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();

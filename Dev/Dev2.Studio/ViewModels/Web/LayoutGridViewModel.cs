@@ -2,6 +2,7 @@
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.TO;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
@@ -200,10 +201,7 @@ namespace Dev2.Studio.ViewModels.Web
             {
                 if (_openWebsiteCommand == null)
                 {
-                    _openWebsiteCommand = new RelayCommand<string>((c) =>
-                        {
-                            Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resourceModel);
-                        });
+                    _openWebsiteCommand = new RelayCommand<string>(_=> EventAggregator.Publish(new AddWorkflowDesignerMessage(_resourceModel)));
                 }
                 return _openWebsiteCommand;
             }
@@ -584,7 +582,8 @@ namespace Dev2.Studio.ViewModels.Web
         {
             //Flush the workflow designer so changes are written back into the Resource Model
             //so that we can save the workflow at its latest state
-            Mediator.SendMessage(MediatorMessages.SaveResourceModel, _resourceModel);
+            EventAggregator.Publish(new SaveResourceModelMessage(_resourceModel));
+            //Mediator.SendMessage(MediatorMessages.SaveResourceModel, _resourceModel);
         }
 
         public void RemoveRow(int rowToDelete)
@@ -753,7 +752,8 @@ namespace Dev2.Studio.ViewModels.Web
         public void SetActiveCell(ILayoutObjectViewModel cell)
         {
             _activeCell = cell;
-            Mediator.SendMessage(MediatorMessages.SetActivePage, cell);
+            EventAggregator.Publish(new SetActivePageMessage(cell));
+            //Mediator.SendMessage(MediatorMessages.SetActivePage, cell);
         }
 
         public void UpdateLayout()
@@ -785,9 +785,11 @@ namespace Dev2.Studio.ViewModels.Web
 
             //Browser.Navigate(uri, string.Empty, postData.XmlString);
             WebBrowserNavigateRequestTO webBrowserNavigateRequestTO = new WebBrowserNavigateRequestTO(this, uri.AbsoluteUri, postData.XmlString);
-            Mediator.SendMessage(MediatorMessages.UpdateWebpagePreview, webBrowserNavigateRequestTO);
+            //Mediator.SendMessage(MediatorMessages.UpdateWebpagePreview, webBrowserNavigateRequestTO);
+            EventAggregator.Publish(new UpdateWebpagePreviewMessage(webBrowserNavigateRequestTO));
         }
 
         #endregion
     }
+
 }

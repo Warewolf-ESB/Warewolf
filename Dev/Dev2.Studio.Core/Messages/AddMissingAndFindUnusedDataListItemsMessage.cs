@@ -1,7 +1,7 @@
 ﻿
 namespace Dev2.Studio.Core.Messages
 {
-    public class AddMissingAndFindUnusedDataListItemsMessage
+    public class AddMissingAndFindUnusedDataListItemsMessage : IMessage
     {
 
     }

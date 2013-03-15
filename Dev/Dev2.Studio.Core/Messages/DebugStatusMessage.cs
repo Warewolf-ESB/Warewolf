@@ -1,7 +1,7 @@
 ﻿
 namespace Dev2.Studio.Core.Messages
 {
-    public class DebugStatusMessage
+    public class DebugStatusMessage : IMessage
     {
         public DebugStatusMessage(bool debugStatus)
         {

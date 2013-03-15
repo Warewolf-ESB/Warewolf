@@ -105,8 +105,7 @@ namespace Dev2.Core.Tests
 
             return importServiceContext;
         }
-
-        internal static ImportServiceContext InitializeMockedMainViewModel()
+        internal static ImportServiceContext InitializeMockedMainViewModel(Mock<IEventAggregator> aggregator = null)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -119,7 +118,7 @@ namespace Dev2.Core.Tests
             var mainViewModel = new Mock<IMainViewModel>();
 
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+            ImportService.AddExportedValueToContainer<IEventAggregator>((aggregator == null) ? new EventAggregator() : aggregator.Object);
 
             return importServiceContext;
         }
@@ -318,17 +317,17 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel()
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(Mock<IEventAggregator> aggregator = null)
         {
-            return PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult.OK);
+            return PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult.OK, aggregator);
         }
 
-        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult popupResult)
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult popupResult, Mock<IEventAggregator> aggregator = null)
         {
-            return PopUpProviderForTestsWithMockMainViewModel(new MoqPopup(popupResult));
+            return PopUpProviderForTestsWithMockMainViewModel(new MoqPopup(popupResult), aggregator);
         }
 
-        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MoqPopup moqPopup)
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MoqPopup moqPopup, Mock<IEventAggregator> aggregator = null)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -340,7 +339,7 @@ namespace Dev2.Core.Tests
 
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+            ImportService.AddExportedValueToContainer<IEventAggregator>((aggregator == null) ? new EventAggregator() : aggregator.Object);
             ImportService.AddExportedValueToContainer<IPopUp>(moqPopup);
 
             return importServiceContext;

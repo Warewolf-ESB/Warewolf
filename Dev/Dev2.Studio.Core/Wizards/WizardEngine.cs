@@ -398,8 +398,8 @@ namespace Dev2.Studio.Core.Wizards
             {
                 resource.Category = string.Empty;
                 resource.DataList = wizardDataListString;
-                Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                Mediator.SendMessage(MediatorMessages.SaveResource, resource);
+                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+                EventAggregator.Publish(new SaveResourceMessage(resource));
                 EventAggregator.Publish(new UpdateResourceMessage(resource));
             }
         }
@@ -452,8 +452,8 @@ namespace Dev2.Studio.Core.Wizards
                     IList<string> removedList = new List<string>();
                     resource.DataList = MergeWizardDataListsAndReturnDiffs(resource.DataList, parentDl, out addedList, out removedList);
 
-                    Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                    Mediator.SendMessage(MediatorMessages.SaveResource, resource);
+                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+                    EventAggregator.Publish(new SaveResourceMessage(resource));
 
                     string differencesString = Dev2MessageFactory.CreateStringFromListWithLabel("Added", addedList);
                     differencesString += Dev2MessageFactory.CreateStringFromListWithLabel("Removed", removedList);
@@ -478,7 +478,7 @@ namespace Dev2.Studio.Core.Wizards
                 }
                 else if (IsSystemWizard(resource))
                 {
-                    Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
                 }
                 else
                 {
@@ -729,4 +729,6 @@ namespace Dev2.Studio.Core.Wizards
 
         #endregion Private Methods
     }
+
+    
 }

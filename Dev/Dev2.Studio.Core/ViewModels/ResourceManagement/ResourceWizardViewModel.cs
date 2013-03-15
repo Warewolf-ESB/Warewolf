@@ -239,7 +239,7 @@ namespace Dev2.Studio.Core.ViewModels
 
                 if(newResource && _resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resource);
+                    EventAggregator.Publish(new AddWorkflowDesignerMessage(_resource));
                 }
 
                 //if (!savedByWizard && newResource)
@@ -295,16 +295,18 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
-            Mediator.SendMessage(MediatorMessages.CloseWizard, this);
+            EventAggregator.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()
         {
-            Mediator.SendMessage(MediatorMessages.CloseWizard, this);
+            EventAggregator.Publish(new CloseWizardMessage(this));
         }
 
         #endregion Methods
 
         #endregion IPropertyEditorWizard Implementation
     }
+
+    
 }

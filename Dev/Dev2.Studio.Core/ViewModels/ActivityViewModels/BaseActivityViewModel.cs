@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.Core.ViewModels.Base;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
 using System.Activities.Presentation.Model;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -28,8 +31,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public BaseActivityViewModel(ModelItem modelItem)
         {
             _modelItem = modelItem;
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             SetViewModelProperties(modelItem);
         }
+
+        protected IEventAggregator EventAggregator { get; set; }
 
         #endregion Ctor
 
@@ -172,19 +178,19 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         private void OpenWizard()
         {
-            Mediator.SendMessage(MediatorMessages.ShowActivityWizard, _modelItem);
+            EventAggregator.Publish(new ShowActivityWizardMessage(_modelItem));
         }
 
         private void OpenSettings()
         {
-            Mediator.SendMessage(MediatorMessages.ShowActivitySettingsWizard, _modelItem);
+            EventAggregator.Publish(new ShowActivitySettingsWizardMessage(_modelItem));
         }
 
         private void OpenHelp()
         {
             if (HasHelpLink)
             {
-                Mediator.SendMessage(MediatorMessages.ShowHelpTab, HelpLink);
+                EventAggregator.Publish(new ShowHelpTabMessage(HelpLink));
             }
         }
 
@@ -206,4 +212,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #endregion INotifyPropertyChanged
     }
+
+    
 }

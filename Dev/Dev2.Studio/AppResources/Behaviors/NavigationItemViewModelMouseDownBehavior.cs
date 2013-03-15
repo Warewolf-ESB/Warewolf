@@ -1,4 +1,8 @@
-﻿using Dev2.Studio.Core;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
 using System.Windows;
@@ -15,7 +19,11 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnAttached();
             SubscribeToEvents();
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
         }
+
+        protected IEventAggregator EventAggregator { get; set; }
 
         protected override void OnDetaching()
         {
@@ -128,7 +136,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 //
                 if (SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
                 {
-                    Mediator.SendMessage(MediatorMessages.SetActiveEnvironment, treenode.EnvironmentModel);
+                    EventAggregator.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
                 }
 
                 if (treenode is ResourceTreeViewModel)
@@ -155,4 +163,5 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion Event Handler Methods
     }
+
 }

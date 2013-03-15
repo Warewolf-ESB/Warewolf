@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.Core.ViewModels;
+﻿using Caliburn.Micro;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.Studio.Core.Interfaces;
@@ -26,7 +28,7 @@ namespace Dev2.Core.Tests
     ///to contain all DataListItemViewModelTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class DataListItemViewModelTest {
+    public class DataListItemViewModelTest:IHandle<DataListItemSelectedMessage> {
         
         #region Locals
                 
@@ -200,11 +202,11 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MalformedDataListItemToDsfActivityComparer() {
             string mediatorKey = string.Empty;
-            mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => MediatorRecieveTestMethod());
+            //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => MediatorRecieveTestMethod());
             _dataListItemModel.HasError = true;
             _dataListItemModel.IsSelected = true;
             Assert.AreEqual(0, count);
-            Mediator.DeRegisterAllActionsForMessage(MediatorMessages.DataListItemSelected);
+            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.DataListItemSelected);
             
         }
 
@@ -330,5 +332,13 @@ namespace Dev2.Core.Tests
 
         #endregion Internal Test Methods
 
+        #region Implementation of IHandle<DataListItemSelectedMessage>
+
+        public void Handle(DataListItemSelectedMessage message)
+        {
+            MediatorRecieveTestMethod();
+        }
+
+        #endregion
     }
 }

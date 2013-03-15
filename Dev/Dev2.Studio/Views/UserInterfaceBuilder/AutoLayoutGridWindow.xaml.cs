@@ -22,7 +22,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
     /// <summary>
     ///     Interaction logic for AutoLayoutGrid.xaml
     /// </summary>
-    public partial class AutoLayoutGridWindow : IHandle<TabClosedMessage>
+    public partial class AutoLayoutGridWindow : IHandle<TabClosedMessage>,IHandle<UpdateWebpagePreviewMessage>
     {
         #region Class Members
 
@@ -44,7 +44,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
             webBrowser.Initialize();
             EventAggregator.Subscribe(this);
 
-            Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateWebpagePreview, UpdateWebpagePreview);
+           // Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateWebpagePreview, UpdateWebpagePreview);
             DataContext = viewModel;
             Loaded += AutoLayoutGridWindow_Loaded;
         }
@@ -60,16 +60,15 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         #region Private Methods
 
-        void UpdateWebpagePreview(object o)
+        void UpdateWebpagePreview(IWebBrowserNavigateRequestTO webBrowserNavigateRequestTo)
         {
-            var webBrowserNavigateRequestTO = o as IWebBrowserNavigateRequestTO;
-            if(webBrowserNavigateRequestTO != null && webBrowserNavigateRequestTO.DataContext == DataContext)
+            if(webBrowserNavigateRequestTo != null && webBrowserNavigateRequestTo.DataContext == DataContext)
             {
                 var layoutGridViewModel = DataContext as ILayoutGridViewModel;
                 if(layoutGridViewModel != null && layoutGridViewModel.ResourceModel != null)
                 {
                     ErrorResultTO errors;
-                    webBrowser.Post(webBrowserNavigateRequestTO.Uri, layoutGridViewModel.ResourceModel.Environment, webBrowserNavigateRequestTO.Payload, out errors);
+                    webBrowser.Post(webBrowserNavigateRequestTo.Uri, layoutGridViewModel.ResourceModel.Environment, webBrowserNavigateRequestTo.Payload, out errors);
                 }
             }
         }
@@ -275,5 +274,13 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         #endregion
 
+        #region Implementation of IHandle<UpdateWebpagePreviewMessage>
+
+        public void Handle(UpdateWebpagePreviewMessage message)
+        {
+            UpdateWebpagePreview(message.WebBrowserNavigateRequestTo);
+        }
+
+        #endregion
     }
 }

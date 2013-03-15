@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void Dispose()
         {
             CleanUp();
-            Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
+            //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
         #endregion

@@ -1,8 +1,11 @@
-﻿using Dev2.Studio.Core;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Views.DataList
 {
@@ -14,6 +17,7 @@ namespace Dev2.Studio.Views.DataList
         public DataListView()
         {
             InitializeComponent();
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
         }
 
         #region Events
@@ -82,7 +86,7 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion Events
-
+        public IEventAggregator EventAggregator { get; set; }
         #region Private Methods
 
         private void WriteToResourceModel()
@@ -91,7 +95,8 @@ namespace Dev2.Studio.Views.DataList
             if (vm != null)
             {
                 vm.WriteToResourceModel();
-                Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+                //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+                EventAggregator.Publish(new UpdateIntellisenseMessage());
             }
         }
 

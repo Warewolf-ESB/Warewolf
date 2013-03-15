@@ -51,7 +51,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         IWorkflowDesignerViewModel, IDisposable,
         IHandle<UpdateResourceMessage>,
         IHandle<AddStringListToDataListMessage>,
-        IHandle<AddMissingAndFindUnusedDataListItemsMessage>
+        IHandle<AddMissingAndFindUnusedDataListItemsMessage>,
+        IHandle<AddRemoveDataListItemsMessage>, IHandle<FindMissingDataListItemsMessage>,
+        IHandle<ShowActivityWizardMessage>, IHandle<ShowActivitySettingsWizardMessage>,
+        IHandle<EditActivityMessage>, IHandle<DoesActivityHaveWizardMessage>
     {
         #region Fields
 
@@ -93,7 +96,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             SecurityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
             PopUp = ImportService.GetExportValue<IPopUp>();
-            MediatorRepo = ImportService.GetExportValue<IMediatorRepo>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
             _resourceModel = resource;
             _designerManagementService = new DesignerManagementService(_resourceModel.Environment.ResourceRepository);
@@ -106,8 +108,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
         public IPopUp PopUp { get; set; }
-
-        public IMediatorRepo MediatorRepo { get; set; }
 
         public IWizardEngine WizardEngine { get; set; }
 
@@ -345,11 +345,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                         switch (resource.ResourceType)
                         {
                             case ResourceType.WorkflowService:
-                                Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                                //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
                                 break;
 
                             case ResourceType.Service:
-                                Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resource);
+                                //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resource);
+                                EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
                                 break;
                         }
                     }
@@ -372,7 +374,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var resource = _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
                         if (resource != null)
                         {
-                            Mediator.SendMessage(MediatorMessages.HasWizard, WizardEngine.HasWizard(modelItem, resource as IContextualResourceModel));
+                            var hasWizard = WizardEngine.HasWizard(modelItem, resource as IContextualResourceModel);
+                            EventAggregator.Publish(new HasWizardMessage(hasWizard));
+                            //Mediator.SendMessage(MediatorMessages.HasWizard, hasWizard);
                         }
                     }
                 }
@@ -2137,23 +2141,23 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void InitializeDesigner(IDictionary<Type, Type> designerAttributes)
         {
             //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.AddRemoveDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.AddRemoveDataListItems, input => RemoveAllUnusedDataListItems(input as IDataListViewModel)));
+            //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.AddRemoveDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.AddRemoveDataListItems, input => RemoveAllUnusedDataListItems(input as IDataListViewModel)));
 
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindMissingDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindMissingDataListItems, input =>
-            {
-                AddMissingOnlyWithNoPopUp(input as IDataListViewModel);
-            }));
+//            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindMissingDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindMissingDataListItems, input =>
+//            {
+//                AddMissingOnlyWithNoPopUp(input as IDataListViewModel);
+//            }));
             //07-12-2012 - Massimo.Guerrera - Added for PBI 6665
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivityWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivityWizard, input => ShowActivityWizard(input as ModelItem)));
+            //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivityWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivityWizard, input => ShowActivityWizard(input as ModelItem)));
             // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.GetMappingViewModel, Mediator.RegisterToReceiveMessage(MediatorMessages.GetMappingViewModel, input => GetMappingViewModel(input as ModelItem)));
             
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivitySettingsWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivitySettingsWizard, input
-                                                                                                                                                                         =>
-            {
-                ShowActivitySettingsWizard(input as ModelItem);
-            }));
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.EditActivity, Mediator.RegisterToReceiveMessage(MediatorMessages.EditActivity, input => EditActivity(input as ModelItem)));
-            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.DoesActivityHaveWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.DoesActivityHaveWizard, input => DoesActivityHaveWizard(input as ModelItem)));
+            //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivitySettingsWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivitySettingsWizard, input
+            //                                                                                                                                                             =>
+//            {
+//                ShowActivitySettingsWizard(input as ModelItem);
+//            }));
+           // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.EditActivity, Mediator.RegisterToReceiveMessage(MediatorMessages.EditActivity, input => EditActivity(input as ModelItem)));
+            //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.DoesActivityHaveWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.DoesActivityHaveWizard, input => DoesActivityHaveWizard(input as ModelItem)));
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindUnusedDataListitems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindUnusedDataListitems, input => FindUnusedDataListItems(input as IDataListViewModel)));
             _wd = new WorkflowDesigner();
 
@@ -2504,20 +2508,23 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                         if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                         {
-                            Mediator.SendMessage(MediatorMessages.EditCaseExpression, new Tuple<ModelProperty, IEnvironmentModel>(tmp, _resourceModel.Environment));
+                            //Mediator.SendMessage(MediatorMessages.EditCaseExpression, new Tuple<ModelProperty, IEnvironmentModel>(tmp, _resourceModel.Environment));
+                            EventAggregator.Publish(new EditCaseExpressionMessage(new Tuple<ModelProperty, IEnvironmentModel>(tmp, _resourceModel.Environment)));
                         }
                     }
 
                     // Handle Switch Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        Mediator.SendMessage(MediatorMessages.ConfigureSwitchExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment));
+                        //Mediator.SendMessage(MediatorMessages.ConfigureSwitchExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment));
+                        EventAggregator.Publish(new ConfigureSwitchExpressionMessage(new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment)));
                     }
 
                     // Handle Decision Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
                     {
-                        Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment));
+                        //Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment));
+                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(new Tuple<ModelItem, IEnvironmentModel>(item, _resourceModel.Environment)));
                     }
                 }
 
@@ -2529,13 +2536,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (modelItem.ItemType == typeof(DsfWebPageActivity))
                     {
                         IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel, modelItem.Properties["DisplayName"].ComputedValue.ToString());
-                        Mediator.SendMessage(MediatorMessages.AddWebpageDesigner, webpageActivity);
+                        //Mediator.SendMessage(MediatorMessages.AddWebpageDesigner, webpageActivity);
+                        EventAggregator.Publish(new AddWebpageDesignerMessage(webpageActivity));
                         e.Handled = true;
                     }
                     else if (modelItem.ItemType == typeof(DsfWebSiteActivity))
                     {
                         IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel, modelItem.Properties["DisplayName"].ComputedValue.ToString());
-                        Mediator.SendMessage(MediatorMessages.AddWebsiteDesigner, webpageActivity);
+                        //Mediator.SendMessage(MediatorMessages.AddWebsiteDesigner, webpageActivity);
+                        EventAggregator.Publish(new AddWebsiteDesignerMessage(webpageActivity));
                         e.Handled = true;
                     }
                     //else if (modelItem.ItemType == typeof(DsfActivity))
@@ -2591,7 +2600,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if ((mi.Properties["Key"].Value != null) && mi.Properties["Key"].Value.ToString().Contains("Case"))
                         {
                             Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                            Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, wrapper);
+                            //Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, wrapper);
+                            EventAggregator.Publish(new ConfigureCaseExpressionMessage(wrapper));
                             //Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, mi);
                         }
                     }
@@ -2603,7 +2613,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                         // Travis.Frisinger : 28.01.2013 - Switch Amendments
                         Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                        Mediator.SendMessage(MediatorMessages.ConfigureSwitchExpression, wrapper);
+                        EventAggregator.Publish(new ConfigureSwitchExpressionMessage(wrapper));
                     }
 
                     if (mi.ItemType == typeof(FlowDecision))
@@ -2612,8 +2622,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         SetLastDroppedModelItem(mi);
 
                         Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                        Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, wrapper);
-
+                        //Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, wrapper);
+                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
                         //Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, mi);
                     }
 
@@ -2722,10 +2732,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public new void Dispose()
         {
-            MediatorRepo.deregisterAllItemMessages(this.GetHashCode());
+            //MediatorRepo.deregisterAllItemMessages(this.GetHashCode());
             _wd = null;
             _designerManagementService.Dispose();
-
+            EventAggregator.Unsubscribe(this);
             base.Dispose();
         }
 
@@ -2757,5 +2767,59 @@ namespace Dev2.Studio.ViewModels.Workflow
             base.OnViewAttached(view, context);
             ActivityDesigners.ActivityDesignerHelper.AddDesignerAttributes(this);
         }
+
+        #region Implementation of IHandle<AddRemoveDataListItemsMessage>
+
+        public void Handle(AddRemoveDataListItemsMessage message)
+        {
+            RemoveAllUnusedDataListItems(message.DataListViewModel);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<FindMissingDataListItemsMessage>
+
+        public void Handle(FindMissingDataListItemsMessage message)
+        {
+            AddMissingOnlyWithNoPopUp(message.DataListViewModel);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ShowActivityWizardMessage>
+
+        public void Handle(ShowActivityWizardMessage message)
+        {
+            ShowActivityWizard(message.ModelItem);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ShowActivitySettingsWizardMessage>
+
+        public void Handle(ShowActivitySettingsWizardMessage message)
+        {
+            ShowActivitySettingsWizard(message.ModelItem);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<EditActivityMessage>
+
+        public void Handle(EditActivityMessage message)
+        {
+            EditActivity(message.ModelItem);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<DoesActivityHaveWizardMessage>
+
+        public void Handle(DoesActivityHaveWizardMessage message)
+        {
+            DoesActivityHaveWizard(message.Model);
+        }
+
+        #endregion
     }
 }

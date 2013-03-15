@@ -39,7 +39,6 @@ namespace Dev2.Studio.Core.Factories
             }
 
             activity.ExplicitDataList = null;
-
             return activity;
         }
     }

@@ -8,7 +8,6 @@ using Dev2.Studio.Core.Models;
 namespace Dev2.Studio.Core.ViewModels {
     public interface IWorkflowDesignerViewModel : IDesignerViewModel 
     {
-        IMediatorRepo MediatorRepo { get; set; }
         WorkflowDesigner wfDesigner { get; }
         bool HasErrors { get; set; }
         object SelectedModelItem { get; }

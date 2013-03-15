@@ -230,7 +230,8 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+            EventAggregator.Publish(new UpdateIntellisenseMessage());
+            //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
@@ -284,7 +285,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 Validator.Remove(item);
             }
             WriteToResourceModel();
-            Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+            EventAggregator.Publish(new UpdateIntellisenseMessage());
+            //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
         }
 
         public IList<IDataListItemModel> CreateDataListItems(IList<IDataListVerifyPart> parts, bool isAdd)
@@ -410,7 +412,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 Validator.Remove(item);
             }
             WriteToResourceModel();
-            Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+            EventAggregator.Publish(new UpdateIntellisenseMessage());
+            //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
         }
 
         #endregion Add/Remove Missing Methods
@@ -720,7 +723,8 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void FindUnusedAndMissing()
         {
-            Mediator.SendMessage(MediatorMessages.AddRemoveDataListItems, this);
+            EventAggregator.Publish(new AddRemoveDataListItemsMessage(this));
+            //Mediator.SendMessage(MediatorMessages.AddRemoveDataListItems, this);
         }
 
         /// <summary>
@@ -987,4 +991,5 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion
     }
+
 }

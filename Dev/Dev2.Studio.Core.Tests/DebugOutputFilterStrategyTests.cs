@@ -28,7 +28,7 @@ namespace Dev2.Core.Tests
         [TestInitialize()]
         public void TestInitialize()
         {
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            //MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
         }
 
         #endregion Initialization

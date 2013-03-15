@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests
             _testTreeRoot2.Children.Add(_testTree2_2);
             _testExistingContent.Add(DebugState2_2);
 
-            MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
+            //MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
             
         }
 

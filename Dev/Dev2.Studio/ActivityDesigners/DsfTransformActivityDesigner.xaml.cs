@@ -13,25 +13,31 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities{
     // Interaction logic for DsfTransformActivityDesigner.xaml
-    public partial class DsfTransformActivityDesigner : IDisposable {
+    public partial class DsfTransformActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
+    {
         private bool _isRegistered = false;
         private string mediatorKey = string.Empty;
         public DsfTransformActivityDesigner() {
-            InitializeComponent();
+            InitializeComponent(); 
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
         }
+        
+        protected IEventAggregator EventAggregator { get; set; }
 
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
-            if (!_isRegistered) {
-                mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
+            
 
             ModelItem item = newItem as ModelItem;
 
@@ -81,8 +87,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities{
             //}
         }
 
-        public void Dispose() {
-            Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
+        public void Handle(DataListItemSelectedMessage message)
+        {
+            Highlight(message.DataListItemModel);
+        }
+
+        public void Dispose()
+        {
+            EventAggregator.Unsubscribe(this);
         }
     }
 }

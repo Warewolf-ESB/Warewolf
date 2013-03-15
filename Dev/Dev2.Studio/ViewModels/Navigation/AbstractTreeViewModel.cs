@@ -429,7 +429,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _deployCommand ??
                        (_deployCommand =
-                        new RelayCommand(param => Mediator.SendMessage(MediatorMessages.DeployResources, this),
+                        new RelayCommand(param => 
+                            EventAggregator.Publish(new DeployResourcesMessage(this)),
                                          o => CanDeploy));
             }
         }
@@ -825,6 +826,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             return false;
         }
     }
+
 
     public abstract class AbstractTreeViewModel<T> : AbstractTreeViewModel, ITreeNode<T>
     {

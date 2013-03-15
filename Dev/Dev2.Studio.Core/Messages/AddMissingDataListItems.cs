@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Messages
 {
-    public class AddMissingDataListItems
+    public class AddMissingDataListItems : IMessage
     {
         public AddMissingDataListItems(IList<IDataListVerifyPart> listToAdd, IResourceModel resourceModel)
         {

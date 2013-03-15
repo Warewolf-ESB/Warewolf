@@ -14,26 +14,30 @@ using System.Windows.Shapes;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio;
 using System.Activities.Presentation;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
-    public partial class DsfAssignActivityDesigner : IDisposable {
+    public partial class DsfAssignActivityDesigner : IDisposable,IHandle<DataListItemSelectedMessage>
+    {
         private bool _isRegistered = false;
         private string mediatorKey = string.Empty;
         public DsfAssignActivityDesigner() {
             InitializeComponent();
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
         }
+
+        protected IEventAggregator EventAggregator { get; set; }
 
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
-
-            if (!_isRegistered) {
-                mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
 
             ModelItem item = newItem as ModelItem;            
             
@@ -80,7 +84,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         }
 
         public void Dispose() {
-            Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
+            EventAggregator.Unsubscribe(this);
         }
+
+        #region Implementation of IHandle<DataListItemSelectedMessage>
+
+        public void Handle(DataListItemSelectedMessage message)
+        {
+            Highlight(message.DataListItemModel);
+        }
+
+        #endregion
     }
+
+    
 }

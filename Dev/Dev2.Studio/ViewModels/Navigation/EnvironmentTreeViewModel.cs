@@ -326,8 +326,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private void Remove()
         {
             if (EnvironmentModel == null) return;
-
-            Mediator.SendMessage(MediatorMessages.RemoveServerFromExplorer, EnvironmentModel);
+            EventAggregator.Publish(new RemoveServerFromExplorerMessage(EnvironmentModel));
+            //Mediator.SendMessage(MediatorMessages.RemoveServerFromExplorer, EnvironmentModel);
 
             RaisePropertyChangedForCommands();
         }
@@ -359,4 +359,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
         #endregion
     }
+
+    
 }

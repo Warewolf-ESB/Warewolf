@@ -18,6 +18,7 @@ using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
@@ -71,7 +72,17 @@ namespace Dev2.Studio.ViewModels
     [PartCreationPolicy(CreationPolicy.Shared)]
     //TODO Needs to inherit from conductor, not screen....
     public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
-                                 IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>, IHandle<SettingsSaveCancelMessage>
+                                 IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>,
+                                 IHandle<SaveResourceMessage>,IHandle<DebugResourceMessage>,
+                                 IHandle<ExecuteResourceMessage>,IHandle<SetActiveEnvironmentMessage>,
+                                 IHandle<SetActivePageMessage>,IHandle<CloseWizardMessage>,
+                                 IHandle<ShowEditResourceWizardMessage>,IHandle<AddWorkflowDesignerMessage>,
+                                 IHandle<AddDeployResourcesMessage>,IHandle<ShowHelpTabMessage>,
+                                 IHandle<SaveResourceModelMessage>, IHandle<ConfigureDecisionExpressionMessage>,
+                                 IHandle<ConfigureSwitchExpressionMessage>,IHandle<ConfigureCaseExpressionMessage>,
+                                 IHandle<EditCaseExpressionMessage>,IHandle<ShowWebpartWizardMessage>,
+                                 IHandle<AddWebpageDesignerMessage>, IHandle<AddWebsiteDesignerMessage>,
+                                 IHandle<SettingsSaveCancelMessage>
     {
         #region Fields
 
@@ -161,47 +172,12 @@ namespace Dev2.Studio.ViewModels
         public MainViewModel()
         {
             LoadWorkspaceItems();
-            Mediator.RegisterToReceiveMessage(MediatorMessages.SaveResource,
-                                              o => Save(o as IContextualResourceModel));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugResource, o => Debug(o as IContextualResourceModel));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ExecuteResource, o => Run(o as IContextualResourceModel));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.SetActiveEnvironment,
-                                              o => ActiveEnvironment = o as IEnvironmentModel);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.SetActivePage,
-                                              o => SetActivePage(o as ILayoutObjectViewModel));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.CloseWizard, CloseWizard);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, ShowEditResourceWizard);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, AddWorkflowDesigner);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.DeployResources, AddDeployResources);
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowHelpTab, input => ShowHelpTab(input as string));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.SaveResourceModel,
-                                              input => Save(input as IContextualResourceModel, false));
-
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureDecisionExpression,
-                                              input =>
-                                              ConfigureDecisionExpression(input as Tuple<ModelItem, IEnvironmentModel>));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureSwitchExpression,
-                                              input =>
-                                              ConfigureSwitchExpression(input as Tuple<ModelItem, IEnvironmentModel>));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ConfigureCaseExpression,
-                                              input =>
-                                              ConfigureSwitchCaseExpression(input as Tuple<ModelItem, IEnvironmentModel>));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.EditCaseExpression,
-                                              input =>
-                                              EditSwitchCaseExpression(input as Tuple<ModelProperty, IEnvironmentModel>));
-
-            Mediator.RegisterToReceiveMessage(MediatorMessages.ShowWebpartWizard,
-                                              input => ShowWebpartWizard(input as IPropertyEditorWizard));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWebpageDesigner,
-                                              input => AddWebPageDesigner(input as IWebActivity));
-            Mediator.RegisterToReceiveMessage(MediatorMessages.AddWebsiteDesigner,
-                                              input => AddWebsiteDesigner(input as IWebActivity));
 
             _debugWriter = new DebugWriter
                 (s => Application.Current.Dispatcher.BeginInvoke
                           (DispatcherPriority.Normal, new Action(
                                                           () =>
-                                                          Mediator.SendMessage(MediatorMessages.DebugWriterAppend, s))));
+                                                              EventAggregator.Publish(new DebugWriterAppendMessage(s)))));
 
             _callBackHandler = new Dev2DecisionCallbackHandler();
         }
@@ -230,7 +206,8 @@ namespace Dev2.Studio.ViewModels
         {
             if (CurrentResourceModel != null)
             {
-                Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, CurrentResourceModel);
+                EventAggregator.Publish(new ShowEditResourceWizardMessage(CurrentResourceModel));
+//                Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, CurrentResourceModel);
             }
         }
 
@@ -248,11 +225,11 @@ namespace Dev2.Studio.ViewModels
                 var recorderFeedbackAction = FeedbackInvoker.CurrentAction as RecorderFeedbackAction;
                 if (recorderFeedbackAction == null)
                 {
-                return;
-            }
+                    return;
+                }
 
                 recorderFeedbackAction.FinishFeedBack();
-        }
+            }
         }
 
         private void AddWorkflowDesigner(object obj)
@@ -305,10 +282,10 @@ namespace Dev2.Studio.ViewModels
                             Height = 600
                         };
                     _win.ShowDialog();
-            }
+                }
                 catch
                 {
-        }
+                }
             }
         }
 
@@ -327,7 +304,7 @@ namespace Dev2.Studio.ViewModels
 
         internal void AddUserInterfaceWorkflow(IContextualResourceModel resource,
                                                IWorkflowDesignerViewModel workflowViemModel)
-                {
+        {
             bool isWebpage = ResourceHelper.IsWebpage(resource);
             Type userInterfaceType = ResourceHelper.GetUserInterfaceType(resource);
             if (userInterfaceType == null) return;
@@ -353,8 +330,8 @@ namespace Dev2.Studio.ViewModels
                 else
                 {
                     AddWebsiteDesigner(webActivity);
+                }
             }
-        }
             else
             {
                 ModelProperty implementationProperty = modelService.Root.Properties["Implementation"];
@@ -389,25 +366,25 @@ namespace Dev2.Studio.ViewModels
                                     ModelItem amodelitem = actionProperty.Value;
 
                                     if (amodelitem != null)
-        {
+                                    {
                                         ModelProperty displayNameProperty = amodelitem.Properties["DisplayName"];
                                         if (displayNameProperty != null)
                                             if (isWebpage)
-            {
+                                            {
                                                 webActivity = WebActivityFactory
                                                     .CreateWebActivity(amodelitem, resource,
                                                                        displayNameProperty.ComputedValue.ToString());
                                                 AddWebPageDesigner(webActivity);
                                             }
                                             else
-                {
+                                            {
                                                 webActivity = WebActivityFactory
                                                     .CreateWebActivity(amodelitem, resource,
                                                                        displayNameProperty.ComputedValue.ToString());
                                                 AddWebsiteDesigner(webActivity);
-                }
-            }
-        }
+                                            }
+                                    }
+                                }
                             }
                         }
                     }
@@ -444,9 +421,9 @@ namespace Dev2.Studio.ViewModels
 
             //Set the active page to signal user interface transitions.
             if (l.LayoutObjects.Any())
-        {
+            {
                 SetActivePage(l.LayoutObjects.First());
-        }
+            }
 
             //SetActive
         }
@@ -456,19 +433,19 @@ namespace Dev2.Studio.ViewModels
         #region Properties
 
         public IEnvironmentModel ActiveEnvironment
-        {
+            {
             get { return _activeEnvironment; }
             set
-            {
+                {
                 if (value != null)
                 {
                     _activeEnvironment = value;
-                    }
+                }
 
                 NotifyOfPropertyChange(() => CanSave);
                 NotifyOfPropertyChange(() => CanDebug);
-                    }
-                }
+            }
+        }
 
         public IContextualResourceModel CurrentResourceModel
         {
@@ -479,8 +456,8 @@ namespace Dev2.Studio.ViewModels
 
                 return ResourceHelper
                     .GetContextualResourceModel(ActiveItem.WorkSurfaceViewModel);
-                }
             }
+        }
 
         [Import]
         public IFeedbackInvoker FeedbackInvoker { get; set; }
@@ -513,7 +490,7 @@ namespace Dev2.Studio.ViewModels
         public bool CanRun
                     {
             get { return IsActiveEnvironmentConnected(); }
-        }
+                    }
 
         public bool CanEdit
         {
@@ -529,7 +506,7 @@ namespace Dev2.Studio.ViewModels
             }
 
         public bool CanViewInBrowser
-            {
+        {
             get
             {
                 if (ActiveItem == null || ActiveItem.WorkSurfaceViewModel == null)
@@ -540,16 +517,16 @@ namespace Dev2.Studio.ViewModels
                         activeWorkSurfaceVM is LayoutGridViewModel ||
                         activeWorkSurfaceVM is WebsiteEditorViewModel) &&
                        IsActiveEnvironmentConnected();
+                }
             }
-        }
 
         public ILayoutGridViewModel ActivePage
-        {
+            {
             get { return _activePage; }
             }
 
         public ILayoutObjectViewModel ActiveCell
-            {
+        {
             get { return _activeCell; }
             }
 
@@ -606,8 +583,8 @@ namespace Dev2.Studio.ViewModels
             {
                 return _displayAboutDialogueCommand ??
                        (_displayAboutDialogueCommand = new RelayCommand(param => DisplayAboutDialogue()));
+                }
             }
-        }
 
         public ICommand StartFeedbackCommand
         {
@@ -620,8 +597,8 @@ namespace Dev2.Studio.ViewModels
             {
                 return _startStopRecordedFeedbackCommand ??
                        (_startStopRecordedFeedbackCommand = new RelayCommand(param => StartStopRecordedFeedback()));
-                }
             }
+        }
 
         public ICommand DeployAllCommand
         {
@@ -638,10 +615,10 @@ namespace Dev2.Studio.ViewModels
                                                            EventAggregator.Publish(
                                                                new ResetLayoutMessage(param as FrameworkElement)),
                                                            param => true);
-                            }
-                return _resetLayoutCommand;
-                            }
                 }
+                return _resetLayoutCommand;
+            }
+        }
 
         public ICommand OpenWebsiteCommand
         {
@@ -712,14 +689,14 @@ namespace Dev2.Studio.ViewModels
         }
 
         public ICommand ExitCommand
-                {
+        {
             get
             {
                 return _exitCommand ??
                        (_exitCommand =
                         new RelayCommand(param => Exit(), param => true));
-                }
             }
+        }
 
         public ICommand EditCommand
         {
@@ -727,7 +704,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return _editResourceCommand ??
                        (_editResourceCommand = new RelayCommand(param => Edit(), param => CanEdit));
-        }
+            }
         }
 
         public ICommand SaveCommand
@@ -769,12 +746,12 @@ namespace Dev2.Studio.ViewModels
         }
 
         public bool IsChosenEnvironmentConnected()
-                {
+        {
             // Used for enabling / disabling basic server commands (Eg: Creating a new Workflow)
             if (ActiveEnvironment == null)
             {
                 return false;
-                }
+            }
 
                 return ((ActiveEnvironment != null) && (ActiveEnvironment.IsConnected));
             }
@@ -785,7 +762,7 @@ namespace Dev2.Studio.ViewModels
             if (CurrentResourceModel == null)
             {
                 return false;
-        }
+            }
                 return ((CurrentResourceModel.Environment != null) && (CurrentResourceModel.Environment.IsConnected));
             }
 
@@ -879,12 +856,12 @@ namespace Dev2.Studio.ViewModels
                 }
             }
             else
-                {
+            {
                 PopupProvider.Show(
                     "Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.",
                     "Missing Wizard", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-                }
+        }
 
         public void ShowEditResourceWizard(object resourceModel)
         {
@@ -914,10 +891,10 @@ namespace Dev2.Studio.ViewModels
                 {
                     requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
                                          "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit));
-        }
+                }
 
                 try
-        {
+                {
                     ErrorResultTO errors;
                     string args =
                         StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(),
@@ -925,7 +902,7 @@ namespace Dev2.Studio.ViewModels
                     Guid dataListID = resourceModelToEdit.Environment.UploadToDataList(args, out errors);
 
                     if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
-            {
+                    {
                         // Bad things happened... Tell the user
                         PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK,
                                            MessageBoxImage.Error);
@@ -943,7 +920,7 @@ namespace Dev2.Studio.ViewModels
                 }
             }
             else
-                    {
+            {
                 PopupProvider.Show(
                     "Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.",
                     "Missing Wizard", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -968,8 +945,9 @@ namespace Dev2.Studio.ViewModels
 
             if (exist)
             {
-                Mediator.SendMessage(MediatorMessages.SelectItemInDeploy, input);
-                }
+                EventAggregator.Publish(new SelectItemInDeployMessage(input));
+                //Mediator.SendMessage(MediatorMessages.SelectItemInDeploy, input);
+            }
             else
             {
                 WorkSurfaceContextViewModel context = WorkSurfaceContextFactory.CreateDeployViewModel(input);
@@ -1010,13 +988,13 @@ namespace Dev2.Studio.ViewModels
                  new[] { new Tuple<string, object>("Uri", uriToDisplay) });
         }
 
-        public void CloseWizard(object input)
-            {
+        public void CloseWizard()
+        {
             if (_win != null)
-                {
+            {
                 _win.Close();
-                }
             }
+        }
 
         public bool RemoveContext(WorkSurfaceKey key)
         {
@@ -1032,7 +1010,7 @@ namespace Dev2.Studio.ViewModels
 
         public static bool QueryDeleteExplorerResource(IContextualResourceModel model, bool hasDependencies,
                                                        out bool openDependencyGraph)
-            {
+        {
             openDependencyGraph = false;
 
             bool shouldRemove = MessageBox.Show
@@ -1045,7 +1023,7 @@ namespace Dev2.Studio.ViewModels
                                 MessageBoxResult.Yes;
 
             if (shouldRemove && hasDependencies)
-                {
+            {
                 var dialog = new DeleteResourceDialog
                     ("Confirm " + model.ResourceType.GetDescription() + " Deletion", "The \""
                                                                                      + model.ResourceName + "\" " +
@@ -1062,7 +1040,7 @@ namespace Dev2.Studio.ViewModels
             }
 
             return shouldRemove;
-                }
+        }
 
         public ViewModelDialogResults GetServiceInputDataFromUser(IServiceDebugInfoModel input, out DebugTO debugTO)
         {
@@ -1112,7 +1090,7 @@ namespace Dev2.Studio.ViewModels
             string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
             if (activityExpression != null && activityExpression.Value != null)
-        {
+            {
                 val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
             }
 
@@ -1136,7 +1114,7 @@ namespace Dev2.Studio.ViewModels
                     ActivityHelper.InjectExpression(dds, activityExpression);
                     ActivityHelper.SetArmText(activity, dds);
                 }
-                }
+            }
             catch
             {
                 PopupProvider.Show(GlobalConstants.DecisionWizardErrorString,
@@ -1162,7 +1140,7 @@ namespace Dev2.Studio.ViewModels
             {
                 string val = ActivityHelper.ExtractData(activityExpression.Value.ToString());
                 if (!string.IsNullOrEmpty(val))
-        {
+                {
                     var ds = new Dev2Switch { SwitchVariable = val };
                     webModel = JsonConvert.SerializeObject(ds);
                 }
@@ -1216,7 +1194,7 @@ namespace Dev2.Studio.ViewModels
                                    GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
                                    MessageBoxImage.Error);
             }
-            }
+        }
 
         // 28.01.2013 - Travis.Frisinger : Added for Case Edits
         public void EditSwitchCaseExpression(Tuple<ModelProperty, IEnvironmentModel> payload)
@@ -1231,7 +1209,7 @@ namespace Dev2.Studio.ViewModels
             {
                 string val = switchCaseValue.ComputedValue.ToString();
                 modelData = JsonConvert.SerializeObject(new Dev2Switch { SwitchVariable = val });
-        }
+            }
 
 
             // now invoke the wizard ;)
@@ -1314,14 +1292,17 @@ namespace Dev2.Studio.ViewModels
                 DisplayOutput(OutputMessage, showWindow);
 
             resource.Environment.ResourceRepository.Save(resource);
-                Mediator.SendMessage(MediatorMessages.UpdateDeploy, null);
+            EventAggregator.Publish(new UpdateDeployMessage());
+//                Mediator.SendMessage(MediatorMessages.UpdateDeploy, null);
             }
 
         public void ViewInBrowser()
         {
             if (ActiveItem.DataListViewModel != null)
-                Mediator.SendMessage(MediatorMessages.FindMissingDataListItems,
-                                     ActiveItem.DataListViewModel);
+                EventAggregator.Publish(new FindMissingDataListItemsMessage(ActiveItem.DataListViewModel));
+//
+//                Mediator.SendMessage(MediatorMessages.FindMissingDataListItems,
+//                                     ActiveItem.DataListViewModel);
 
             IContextualResourceModel resourceModel = CurrentResourceModel;
 
@@ -1364,12 +1345,14 @@ namespace Dev2.Studio.ViewModels
 
         public void AddHelpDocument(IResourceModel resource)
         {
-            Mediator.SendMessage(MediatorMessages.AddHelpDocument, resource);
+            EventAggregator.Publish(new AddHelpDocumentMessage(resource));
+            //Mediator.SendMessage(MediatorMessages.AddHelpDocument, resource);
         }
 
         public void AddWorkflowDocument(IResourceModel resource)
         {
-            Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+            EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+            //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
         }
 
         public void AddDependencyVisualizerDocument(IContextualResourceModel resource)
@@ -1398,7 +1381,8 @@ namespace Dev2.Studio.ViewModels
 
             if (viewModelDialogResults == ViewModelDialogResults.Okay)
             {
-                Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
+                EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
+                //Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
 
                 // Try show the output window
 
@@ -1441,9 +1425,9 @@ namespace Dev2.Studio.ViewModels
             }
 
             // Clear output
+            EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
+            //Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
             
-            Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
-
             OutputMessage = String.Empty;
 
             var sb = new StringBuilder();
@@ -1491,7 +1475,8 @@ namespace Dev2.Studio.ViewModels
 
         public void DisplayOutput(string message, bool popupWindow = true)
         {
-            Mediator.SendMessage(MediatorMessages.DebugWriterAppend, message);
+            EventAggregator.Publish(new DebugWriterAppendMessage(message));
+        //    Mediator.SendMessage(MediatorMessages.DebugWriterAppend, message);
         }
 
         public void SetActivePage(ILayoutObjectViewModel cell)
@@ -1627,10 +1612,10 @@ namespace Dev2.Studio.ViewModels
         }
 
         private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
-        {
+            {
             return Items.FirstOrDefault(
                 c => WorkSurfaceKeyEqualityComparer.Current.Equals(key, c.WorkSurfaceKey));
-        }
+            }
 
         private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource)
         {
@@ -1641,7 +1626,8 @@ namespace Dev2.Studio.ViewModels
         public void PerformDebugTask(DebugTO debugTO, IEnvironmentModel environment)
         {
             // Starting new debug session so clear output
-            Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
+            EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
+            //Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
 
             if (!debugTO.IsDebugMode)
             {
@@ -1712,7 +1698,7 @@ namespace Dev2.Studio.ViewModels
 
                 remove = workflowVM.ResourceModel.IsWorkflowSaved(workflowVM.ServiceDefinition);
                 if (!remove)
-            {
+                {
                     remove = ShowRemovePopup(workflowVM);
             }
                 if (remove) RemoveWorkspaceItem(workflowVM);
@@ -1727,7 +1713,7 @@ namespace Dev2.Studio.ViewModels
             e.Cancel = !remove;
         }
 
-        private static bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVM)
+        private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVM)
         {
             IPopUp pop = new PopUp(
                 "Workflow not saved...",
@@ -1738,10 +1724,11 @@ namespace Dev2.Studio.ViewModels
             MessageBoxResult res = pop.Show();
 
             switch (res)
-        {
+            {
                 case MessageBoxResult.Yes:
                     //workflowVM.BindToModel();
-                    Mediator.SendMessage(MediatorMessages.SaveResource, workflowVM.ResourceModel);
+                    EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel));
+                    //Mediator.SendMessage(MediatorMessages.SaveResource, workflowVM.ResourceModel);
                     return true;
                 case MessageBoxResult.No:
                     return true;
@@ -1791,19 +1778,19 @@ namespace Dev2.Studio.ViewModels
                                                             out openDependencyGraph);
 
             if (shouldRemove)
-        {
+            {
                 UnlimitedObject success = model.Environment.ResourceRepository.DeleteResource(model);
                 if (success != null)
-            {
+                {
                     EventAggregator.Publish(new RemoveNavigationResourceMessage(model));
                     RemoveContext(model);
                 }
             }
             else if (openDependencyGraph)
-                {
+            {
                 AddDependencyVisualizerDocument(model);
             }
-                }
+        }
 
         public void Handle(ShowDependenciesMessage message)
         {
@@ -1888,6 +1875,164 @@ namespace Dev2.Studio.ViewModels
 
             WorkspaceItems.Remove(itemToRemove);
             SaveWorkspaceItems();
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SaveResourceMessage>
+
+        public void Handle(SaveResourceMessage message)
+        {
+            Save(message.Resource);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<DebugResourceMessage>
+
+        public void Handle(DebugResourceMessage message)
+        {
+            Debug(message.Resource);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ExecuteResourceMessage>
+
+        public void Handle(ExecuteResourceMessage message)
+        {
+            Run(message.Resource);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SetActiveEnvironmentMessage>
+
+        public void Handle(SetActiveEnvironmentMessage message)
+        {
+            ActiveEnvironment = message.EnvironmentModel;
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SetActivePageMessage>
+
+        public void Handle(SetActivePageMessage message)
+        {
+            SetActivePage(message.LayoutObjectViewModel);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<CloseWizardMessage>
+
+        public void Handle(CloseWizardMessage message)
+        {
+            CloseWizard();
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ShowEditResourceWizardMessage>
+
+        public void Handle(ShowEditResourceWizardMessage message)
+        {
+            ShowEditResourceWizard(message.ResourceModel);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<AddWorkflowDesignerMessage>
+
+        public void Handle(AddWorkflowDesignerMessage message)
+        {
+            AddWorkflowDesigner(message.Resource);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<AddDeployResourcesMessage>
+
+        public void Handle(AddDeployResourcesMessage message)
+        {
+            AddDeployResources(message.Model);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ShowHelpTabMessage>
+
+        public void Handle(ShowHelpTabMessage message)
+        {
+            ShowHelpTab(message.HelpLink);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SaveResourceModelMessage>
+
+        public void Handle(SaveResourceModelMessage message)
+        {
+            Save(message.ResourceModel,false);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
+
+        public void Handle(ConfigureDecisionExpressionMessage message)
+        {
+            ConfigureDecisionExpression(message.Model);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ConfigureSwitchExpressionMessage>
+
+        public void Handle(ConfigureSwitchExpressionMessage message)
+        {
+            ConfigureSwitchExpression(message.Model);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ConfigureCaseExpressionMessage>
+
+        public void Handle(ConfigureCaseExpressionMessage message)
+        {
+            ConfigureSwitchCaseExpression(message.Model);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<EditCaseExpressionMessage>
+
+        public void Handle(EditCaseExpressionMessage message)
+        {
+            EditSwitchCaseExpression(message.Model);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<ShowWebpartWizardMessage>
+
+        public void Handle(ShowWebpartWizardMessage message)
+        {
+            ShowWebpartWizard(message.LayoutObjectViewModel);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<AddWebpageDesignerMessage>
+
+        public void Handle(AddWebpageDesignerMessage message)
+        {
+            AddWebPageDesigner(message.WebActivity);
+        }
+       
+        public void Handle(AddWebsiteDesignerMessage message)
+        {
+            AddWebPageDesigner(message.WebActivity);
         }
 
         #endregion

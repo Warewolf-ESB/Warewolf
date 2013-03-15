@@ -24,7 +24,7 @@ using Dev2.Studio.ViewModels.Workflow;
 namespace Dev2.Studio.ViewModels.Deploy
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
-        IHandle<ResourceCheckedMessage>
+        IHandle<ResourceCheckedMessage>, IHandle<UpdateDeployMessage>, IHandle<SelectItemInDeployMessage>
     {
         #region Class Members
 
@@ -319,16 +319,16 @@ namespace Dev2.Studio.ViewModels.Deploy
             SetupPredicates();
             SetupCommands();
             LoadServers();
-
-            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
-            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
-            {
-                _initialResource = o as IContextualResourceModel;
-                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
-                _initialEnvironment = o as IEnvironmentModel;
-
-                SelectServerFromInitialValue();
-            });
+            
+//            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
+//            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
+//            {
+//                _initialResource = o as IContextualResourceModel;
+//                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
+//                _initialEnvironment = o as IEnvironmentModel;
+//
+//                SelectServerFromInitialValue();
+//            });
 
 
         }
@@ -508,7 +508,8 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Reload the environments resources & update explorer
                 //
                 RefreshEnvironments();
-                Mediator.SendMessage(MediatorMessages.UpdateExplorer, false);
+                EventAggregator.Publish(new UpdateExplorerMessage(false));
+                //Mediator.SendMessage(MediatorMessages.UpdateExplorer, false);
                 DeploySuccessfull = true;
             }
             finally
@@ -583,7 +584,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             //
             // Signal the explorer to update loading any new servers
             //
-            Mediator.SendMessage(MediatorMessages.UpdateExplorer, true);
+            EventAggregator.Publish(new UpdateExplorerMessage(false));
+            //Mediator.SendMessage(MediatorMessages.UpdateExplorer, true);
         }
 
 
@@ -675,8 +677,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         protected override void OnDispose()
         {
-            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
-            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
+//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
+//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
+            EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
 
@@ -686,5 +689,29 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             CalculateStats();
         }
+
+        #region Implementation of IHandle<UpdateDeployMessage>
+
+        public void Handle(UpdateDeployMessage message)
+        {
+            RefreshEnvironments();
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SelectItemInDeployMessage>
+
+        public void Handle(SelectItemInDeployMessage message)
+        {
+            _initialResource = message.Value as IContextualResourceModel;
+            _initialNavigationItemViewModel = message.Value as AbstractTreeViewModel;
+            _initialEnvironment = message.Value as IEnvironmentModel;
+
+            SelectServerFromInitialValue();
+        }
+
+        #endregion
     }
+
+    
 }

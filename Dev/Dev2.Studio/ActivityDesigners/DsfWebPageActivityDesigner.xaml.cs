@@ -1,37 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Activities;
 using System.Activities.Presentation.Model;
-using System.Activities.Statements;
-using Dev2.Studio;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
-    public partial class DsfWebPageActivityDesigner : IDisposable {
-        private bool _isRegistered = false;
-        private string mediatorKey = string.Empty;
+    public partial class DsfWebPageActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
+    {
         public DsfWebPageActivityDesigner()
         {
-            InitializeComponent();
+            InitializeComponent(); EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
         }
+
+        protected IEventAggregator EventAggregator { get; set; }
+
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
-            if (!_isRegistered) {
-                mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
+           
 
             ModelItem item = newItem as ModelItem;
 
@@ -63,8 +51,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             }
         }
 
-        public void Dispose() {
-            Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
+        public void Handle(DataListItemSelectedMessage message)
+        {
+            Highlight(message.DataListItemModel);
+        }
+
+        public void Dispose()
+        {
+            EventAggregator.Unsubscribe(this);
         }
     }
 }

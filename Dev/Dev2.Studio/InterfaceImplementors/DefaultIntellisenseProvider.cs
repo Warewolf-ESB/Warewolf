@@ -1,7 +1,10 @@
-﻿using Dev2.DataList.Contract;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.UI;
 using System;
 using System.Collections.Generic;
@@ -18,7 +21,7 @@ namespace Dev2.Studio.InterfaceImplementors
     /// Provides a concrete implementation of IIntellisenseProvider that provides that same functionality
     /// as the previously implemented IntellisenseTextBox.
     /// </summary>
-    public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider
+    public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider, IHandle<UpdateIntellisenseMessage>
     {
         #region Readonly Members
         internal static readonly DependencyObject DesignTestObject = new DependencyObject();
@@ -62,19 +65,22 @@ namespace Dev2.Studio.InterfaceImplementors
             //_entryDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
             Optional = false;
             HandlesResultInsertion = true;
-
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
             if (DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
                 _isUpdated = true;
                 CreateDataList();
                 //_mediatorKey = Mediator.RegisterToReceiveDispatchedMessage(MediatorMessages.UpdateIntelisense, this, OnUpdateIntellisense);
-                _mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateIntelisense, OnUpdateIntellisense);
             }
         }
+
+        protected IEventAggregator EventAggregator { get; set; }
+
         #endregion
 
         #region Update Handling
-        private void OnUpdateIntellisense(object state)
+        private void OnUpdateIntellisense()
         {
             _isUpdated = true;
             if (_textBox != null) _textBox.UpdateErrorState();
@@ -702,12 +708,7 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_isDisposed) return;
             _isDisposed = true;
 
-            if (_mediatorKey != null)
-            {
-                Mediator.DeRegister(MediatorMessages.UpdateIntelisense, _mediatorKey);
-                _mediatorKey = null;
-            }
-
+            EventAggregator.Unsubscribe(this);
             _cachedDataList = null;
             GC.SuppressFinalize(this);
         }
@@ -719,5 +720,16 @@ namespace Dev2.Studio.InterfaceImplementors
         public bool HandlesResultInsertion { get; set; }
 
         #endregion Properties
+
+        #region Implementation of IHandle<UpdateIntellisenseMessage>
+
+        public void Handle(UpdateIntellisenseMessage message)
+        {
+            OnUpdateIntellisense();
+        }
+
+        #endregion
     }
+
+
 }
