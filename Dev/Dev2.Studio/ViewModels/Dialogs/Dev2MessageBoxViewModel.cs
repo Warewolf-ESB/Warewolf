@@ -24,6 +24,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         private readonly MessageBoxResult _defaultResult;
         private readonly string _dontShowAgainKey;
         private bool _dontShowAgain;
+        private bool _isButtonClickedForClosed;
         
         private static Dictionary<string, MessageBoxResult> DontShowAgainOptions;
 
@@ -172,26 +173,39 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
         public void Ok()
         {
+            _isButtonClickedForClosed = true;
             Result = MessageBoxResult.OK;
             TryClose();
         }
 
         public void Yes()
         {
+            _isButtonClickedForClosed = true;
             Result = MessageBoxResult.Yes;
             TryClose();
         }
 
         public void No()
         {
+            _isButtonClickedForClosed = true;
             Result = MessageBoxResult.No;
             TryClose();
         }
 
         public void Cancel()
         {
+            _isButtonClickedForClosed = true;
             Result = MessageBoxResult.Cancel;
             TryClose();
+        }
+
+        public void Closed()
+        {
+            if (!_isButtonClickedForClosed)
+            {
+                Result = MessageBoxResult.None;
+                TryClose();
+            }
         }
 
         #endregion

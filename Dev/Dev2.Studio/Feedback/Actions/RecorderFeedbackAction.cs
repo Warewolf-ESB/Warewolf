@@ -89,7 +89,15 @@ namespace Dev2.Studio.Feedback.Actions
             try
             {
                 _outputPath = GetOuputPath();
-                Popup.Show("Your actions are now being recorded. When you are ready to send your feedback please click 'Stop recording feedback' in the top right corner.", "Recording In Progress", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBoxResult result = Popup.Show("Your actions are now being recorded. When you are ready to send your feedback please click 'Stop recording feedback' in the top right corner.", "Recording In Progress", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (result == MessageBoxResult.None)
+                {
+                    if (onOncompleted != null)
+                    {
+                        onOncompleted(null);
+                    }
+                    return;
+                }
                 FeedBackRecorder.StartRecording(_outputPath);
             }
             catch (FeedbackRecordingInprogressException feedbackRecordingInprogressException)

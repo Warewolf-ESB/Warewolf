@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         MaxWidth="400" xmlns:attachedBehaviors="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-        Title="{Binding Caption}" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Icon="{Binding Icon, Converter={StaticResource MessageBoxImageToSystemIconConverter}}" >
+        Title="{Binding Caption}" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Icon="{Binding Icon, Converter={StaticResource MessageBoxImageToSystemIconConverter}}" 
+        cal:Message.Attach="[Event Closed] = [Action Closed]">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
