@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Core.AppResources;
+﻿using System;
+using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition;
@@ -33,7 +34,8 @@ namespace Dev2.Studio.Core.Factories{
         {
             IContextualResourceModel resource = CreateResourceModel(environment);
             resource.ResourceName = string.Empty;
-            
+            resource.ID = Guid.NewGuid();
+
             switch (resourceType) {
                 case "Service":
                     resource.ResourceType = ResourceType.Service;
@@ -89,6 +91,7 @@ namespace Dev2.Studio.Core.Factories{
                     resource.ResourceName = resourceName;
                     break;
             }
+
             return resource;
         }
     }
