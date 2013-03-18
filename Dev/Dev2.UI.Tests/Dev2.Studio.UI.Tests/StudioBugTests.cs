@@ -12,6 +12,7 @@ using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -1227,6 +1228,37 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
         }
 
+        // Bug 9165
+        [TestMethod]
+        public void CreateDecisionNodeWithNewWorkflowAndDecisionAsStartNodeExpectedNoValidaitonErrors()
+        {
+            // Create the Workflow
+            myTestBase.CreateCustomWorkflow("Bug9165");
+
+            // Get a point to drag the control onto
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug9165");
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+
+            // Cancel Decision Wizard
+            new DecisionWizardUIMap().ClickCancel();
+
+            // Set as start node
+            UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            Mouse.Click(decisionControl, MouseButtons.Right, ModifierKeys.None, new Point(50, 50));
+            Keyboard.SendKeys("a");
+
+            // Assert no validation errors on workflow
+            var theDesignSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            var validationStatus = theDesignSurface.GetProperty("ItemStatus").ToString();
+            StringAssert.Contains(validationStatus, "ValidationState=Valid", "The design surface should be valid");
+
+            // Clean up
+            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug9165");
+        }
 
         private int GetInstanceUnderParent(UITestControl control)
         {

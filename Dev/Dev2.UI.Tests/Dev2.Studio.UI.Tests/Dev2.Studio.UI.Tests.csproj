@@ -89,6 +89,12 @@
     <Compile Include="UIMaps\DebugUIMap.Designer.cs">
       <DependentUpon>DebugUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="UIMaps\DecisionWizardUIMap.cs">
+      <DependentUpon>DecisionWizardUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\DecisionWizardUIMap.Designer.cs">
+      <DependentUpon>DecisionWizardUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\DependencyGraph.cs">
       <DependentUpon>DependencyGraph.uitest</DependentUpon>
     </Compile>
@@ -171,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="UIMaps\DatabaseSourceUIMap.uitest" />
+    <None Include="UIMaps\DecisionWizardUIMap.uitest" />
     <None Include="UIMaps\FeedbackUIMap.uitest" />
     <None Include="UIMap.uitest" />
     <None Include="UIMaps\DatabaseServiceWizardUIMap.uitest" />

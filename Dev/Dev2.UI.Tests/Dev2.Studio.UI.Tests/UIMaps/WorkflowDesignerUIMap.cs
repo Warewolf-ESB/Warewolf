@@ -618,5 +618,39 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return itelliListItem;
             //PART_ItemList
         }
-    }
+        
+        /// <summary>
+        /// Finds a control on the Workflow Designer
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
+        /// <returns>Returns the control as a UITestControl object</returns>
+        public UITestControl GetFlowchartDesigner(UITestControl theTab)
+        {
+            // Unless the UI drastically changes (In which case most Automation tests will fail),
+            // the order will remain constant
+
+            // Cake names are used until they are replaced by the real names
+            var theCollection = new UITestControlCollection();
+            try
+            {
+                theCollection = theTab.GetChildren();
+            }
+            catch
+            {
+                Assert.Fail("Error - Could not find '" + theTab.Name + "' on the workflow designer!");
+            }
+            UITestControl splurtControl = theCollection[6];
+            UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
+            UITestControl cake2 = splurtChildChildren[0];
+            UITestControlCollection cake2Children = cake2.GetChildren();
+            UITestControl cake38 = cake2Children[3];
+            UITestControlCollection cake38Children = cake38.GetChildren();
+            // Cake38 -> ActivityTypeDesigner -> Cake53 -> FlowchartDesigner -> *Control Here*
+            UITestControl cake53 = cake38Children[0].GetChildren()[0];
+            UITestControlCollection cake53Children = cake53.GetChildren();
+            UITestControl flowchartDesigner = cake53Children[0];
+            return flowchartDesigner;
+        }
+    }        
 }
