@@ -53,7 +53,7 @@ function DecisionViewModel() {
             { displayValue: "Starts With", optionValue: "IsStartsWith", columnCount: 2 },
             { displayValue: "Ends With", optionValue: "IsEndsWith", columnCount: 2 },
             { displayValue: "Contains", optionValue: "IsContains", columnCount: 2 },
-            { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 },
+            { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 }
         ])
     };
     
@@ -80,18 +80,25 @@ function DecisionViewModel() {
         //var $li = $span.parent();
         //self.selectResourcePathElement($span);
         $decisionView.scrollTo($span, 280); // height of container
+        
+        //2013.03.18: Ashley Lewis - Bug 8746 Find the new input box and set focus to it
+        var $newInputBox = $("#decisionRow:last-child input#Col1");
+        $newInputBox.focus();
 
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
-
     };
 
     self.removeRow = function () {
 
         // always keep at least one ;)
-        //if(self.data.TheStack().length > 1){
-        self.data.TheStack.remove(this);
-        //}
+        if(self.data.TheStack().length > 1){
+            //self.data.TheStack.remove(this); - doesnt even work
+            self.data.TheStack.pop();//this should work better
+
+            var $newInputBox = $("#decisionRow:last-child input#Col1");
+            $newInputBox.focus();
+        }
 
     };
 
@@ -195,8 +202,14 @@ function DecisionViewModel() {
         }
     };
 
-    self.onKeyPress = function (event) {
-        if (event.which == 13)
-            event.preventDefault();
+    //2013.03.18: Ashley Lewis - Bug 8746 Handle ctrl+enter, and plain enter as per acceptance criteria
+    self.handleEnterOnInput = function () {
+        if (event.which == 13) {
+            if (!event.ctrlKey) {
+                event.preventDefault();
+            } else {
+                self.addRow();
+            }
+        }
     };
 }

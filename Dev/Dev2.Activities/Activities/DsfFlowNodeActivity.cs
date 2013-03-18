@@ -57,15 +57,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
+            base.CacheMetadata(metadata);
             //
             // Must use AddChild (which adds children as 'public') otherwise you will get the following exception:
             //
             // The private implementation of activity Decision has the following validation error:
             // Compiler error(s) encountered processing expression t.Eq(d.Get("FirstName",AmbientDataList),"Trevor").
             // 't' is not declared. It may be inaccessible due to its protection level
-            // 'd' is not declared. It may be inaccessible due to its protection level                        
-            
-            base.CacheMetadata(metadata);
+            // 'd' is not declared. It may be inaccessible due to its protection level
+            //
             metadata.AddChild(_expression);
         }
 

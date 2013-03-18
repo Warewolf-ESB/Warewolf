@@ -1322,7 +1322,7 @@ namespace Dev2.Studio.ViewModels
             if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation)
                                , UriKind.Absolute, out requestUri)) return;
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 508);
+            _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
 
             // Wizard finished...
             // Now Fetch from DL and push the model into the activityExpression.SetValue();
