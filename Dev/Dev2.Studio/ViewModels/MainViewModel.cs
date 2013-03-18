@@ -869,7 +869,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-            Save(resourceModel, false);
+           
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, 0,
                                                                          DebugMode.DebugInteractive);
@@ -879,6 +879,7 @@ namespace Dev2.Studio.ViewModels
 
             if (viewModelDialogResults == ViewModelDialogResults.Okay)
             {
+                Save(resourceModel, false);
                 EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
                 //Mediator.SendMessage(MediatorMessages.DebugWriterWrite, string.Empty);
 
