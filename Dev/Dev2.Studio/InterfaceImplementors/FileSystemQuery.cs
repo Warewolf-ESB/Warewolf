@@ -54,9 +54,9 @@ namespace Dev2.Studio.InterfaceImplementors
 
         List<string> GetComputerNamesOnNetwork(string searchPath, List<string> queryCollection)
         {
-            if(searchPath != null && searchPath.Contains("\\"))
+            if (searchPath != null && searchPath.Contains("\\"))
             {
-                if(_computerNameCache.Count == 0 || DateTime.Now.Subtract(_gotComputerNamesLast) > _networkQueryTime)
+                if (_computerNameCache.Count == 0 || DateTime.Now.Subtract(_gotComputerNamesLast) > _networkQueryTime)
                 {
                     _computerNameCache = FindNetworkComputers();
                     _gotComputerNamesLast = DateTime.Now;
@@ -76,29 +76,40 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             bool bQueryUncShares = false;
             string sFileServer = string.Empty;
-
-            if(searchPath != null && searchPath.Length > 3)
+            if(String.IsNullOrEmpty(searchPath)) return new List<string>();
+            if(searchPath.Length > 3)
             {
-                bQueryUncShares = GetServerNameFromInput(searchPath, false, ref sFileServer);
+                bQueryUncShares = GetServerNameFromInput(searchPath, ref queryCollection, ref sFileServer);
             }
             if(bQueryUncShares)
             {
                 GetSharesInformationFromSpecifiedServer(sFileServer, queryCollection);
             }
-            else
+            else if(queryCollection.Count==0)
             {
                 queryCollection = GetFilesAndFoldersIncludingNetwork(searchPath, queryCollection, directorySeparatorChar);
             }
             return queryCollection;
         }
 
-        static bool GetServerNameFromInput(string searchPath, bool bQueryUncShares, ref string sFileServer)
+        bool GetServerNameFromInput(string searchPath, ref List<string> queryCollection, ref string sFileServer)
         {
-            if(searchPath[0] == '\\' && searchPath[1] == '\\' && searchPath[searchPath.Length - 1] == '\\' &&
-               searchPath.Substring(2, searchPath.Length - 3).Contains("\\") == false)
+            var fileServer = searchPath.Substring(2, searchPath.Length - 3);
+            var c = searchPath[searchPath.Length - 1];
+            bool bQueryUncShares =false;
+            if(searchPath[0] == '\\' && searchPath[1] == '\\' && c == '\\' && !fileServer.Contains("\\"))
             {
                 bQueryUncShares = true;
-                sFileServer = searchPath.Substring(2, searchPath.Length - 3);
+                sFileServer = fileServer;
+            }
+            else if (searchPath[0] == '\\' && searchPath[1] == '\\' && c != '\\' && !fileServer.Contains("\\"))
+            {
+                fileServer = searchPath.Substring(2);
+                if(_computerNameCache.Count == 0)
+                {
+                    GetComputerNamesOnNetwork("\\",queryCollection);
+                }
+                queryCollection = _computerNameCache.Where(s => s.ToLower().Contains(fileServer.ToLower())).ToList();
             }
             return bQueryUncShares;
         }

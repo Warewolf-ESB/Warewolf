@@ -170,13 +170,8 @@ namespace Dev2.Activities
             using(var process = new Process())
             {
                 var processStartInfo = CreateProcessStartInfo(val);
-                bool processStarted;
                 process.StartInfo = processStartInfo;
-                // process.OutputDataReceived += OutputReceived;
-                // process.ErrorDataReceived += ErrorReceived;
-                processStarted = process.Start();
-                
-                //StreamWriter inputWriter = process.StandardInput;
+                bool processStarted = process.Start();
                 outputReader = process.StandardOutput;
                 errorReader = process.StandardError;
                 if(!ProcessHasStarted(processStarted, process))
@@ -184,10 +179,6 @@ namespace Dev2.Activities
                     return false;
                 }
 
-                // process.BeginOutputReadLine();
-                //process.BeginErrorReadLine();
-                //var output = outputReader.ReadToEnd();
-                //var errorFromProcess = errorReader.ReadToEnd();
                 process.StandardInput.Close();
                 while(!process.HasExited)
                 {
@@ -199,31 +190,16 @@ namespace Dev2.Activities
                             process.Kill();
                             throw new ApplicationException("The process required user input.");
                         }
+                        var processThread = process.Threads[0];
+                        if (processThread.ThreadState == ThreadState.Wait && processThread.WaitReason == ThreadWaitReason.UserRequest)
+                        {
+                            process.Kill();
+                            throw new ApplicationException("The process required user input.");
+                        }
                     }
-
+                    
+                    CheckChildProcesses(process.Id);
                 }
-                CheckChildProcesses(process.Id);
-                //process.WaitForExit();
-//                while(!process.HasExited)
-//                {
-//                    
-//                    foreach(ProcessThread thread in process.Threads)
-//                    {
-//                        
-//                        if(thread.ThreadState == ThreadState.Wait && thread.WaitReason == ThreadWaitReason.UserRequest)
-//                        {
-//                            if(!process.HasExited)
-//                            {
-//                                process.Kill();
-//                                throw new ApplicationException("The process required user input.");
-//                                //allErrors.AddError("Process :" + process.ProcessName + " was not successful as user input was required. Please provide arguments to bypass the user input.");
-//                                //inputWriter.Close();
-//                                
-//                            }
-//                            break;
-//                        }
-//                    }
-//                }
                 process.Close();
             }
             return true;
@@ -231,8 +207,7 @@ namespace Dev2.Activities
 
         void CheckChildProcesses(int id)
         {
-             ManagementObjectSearcher searcher = 
-                    new ManagementObjectSearcher("root\\CIMV2",
+             var searcher = new ManagementObjectSearcher("root\\CIMV2",
                     string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
 
             var managementObjectCollection = searcher.Get();
@@ -245,16 +220,6 @@ namespace Dev2.Activities
                 throw new ApplicationException(string.Format("Process tried to start another process {0}", nameOfProcess));
              }
         }
-
-        //        void ErrorReceived(object sender, DataReceivedEventArgs e)
-//        {
-//            _error.Append(e.Data);
-//        }
-//
-//        void OutputReceived(object sender, DataReceivedEventArgs e)
-//        {
-//            _output.Append(e.Data);
-//        }
 
         bool ProcessHasStarted(bool processStarted, Process process)
         {
@@ -269,7 +234,6 @@ namespace Dev2.Activities
 
         ProcessStartInfo CreateProcessStartInfo(string val)
         {
-           // if(String.IsNullOrEmpty(val)) throw new ArgumentNullException("val","Cannot have null path.");
             if(val.Contains("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
             if(val.Contains("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
             var fileName = Path.GetFileName(val);

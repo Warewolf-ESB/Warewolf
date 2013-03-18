@@ -109,6 +109,17 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\");
             //------------Assert Results-------------------------
             Assert.AreEqual(6, fileSystemQuery.QueryCollection.Count);
+        }    
+    
+        [TestMethod]
+        public void QueryListWherePartialNetworkPathExpectFolderNetworkShareInformation()
+        {
+            //------------Setup for test--------------------------
+            var fileSystemQuery = new FileSystemQuery();
+            //------------Execute Test---------------------------
+            fileSystemQuery.QueryList(@"\\TFS");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3, fileSystemQuery.QueryCollection.Count);
         }
 
         [TestMethod]
