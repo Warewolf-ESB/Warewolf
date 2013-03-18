@@ -118,7 +118,7 @@ namespace Dev2.Studio.Dock
             if (item is WorkSurfaceContextViewModel)
             {
                 var vm = (WorkSurfaceContextViewModel)item;
-                vm.Deactivated += vm_Deactivated;
+                vm.Deactivated += ViewModelDeactivated;
             }
 
 
@@ -134,7 +134,8 @@ namespace Dev2.Studio.Dock
 			}
 		}
 
-        void vm_Deactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)
+        //Juries TODO improve (remove typing tied to contentfactory)
+        private void ViewModelDeactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)
         {
             if (e.WasClosed)
             {
@@ -147,7 +148,12 @@ namespace Dev2.Studio.Dock
                         var toRemove = container.Items.Cast<ContentPane>().ToList()
                             .FirstOrDefault(p => p.Content != null && p.Content.Equals(vm));
                         RemovePane(toRemove);
-                        if (toRemove != null) container.Items.Remove(toRemove);
+                        if (toRemove != null && 
+                            Application.Current != null && 
+                            !Application.Current.Dispatcher.HasShutdownStarted)
+                        {
+                            container.Items.Remove(toRemove);
+                        }
                     }
                 }
             }

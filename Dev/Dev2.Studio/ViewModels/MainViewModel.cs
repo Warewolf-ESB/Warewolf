@@ -1778,8 +1778,9 @@ namespace Dev2.Studio.ViewModels
                 UnlimitedObject success = model.Environment.ResourceRepository.DeleteResource(model);
                 if (success != null)
                 {
-                    EventAggregator.Publish(new RemoveNavigationResourceMessage(model));
                     RemoveContext(model);
+                    ActivateItem(_previousActive);
+                    EventAggregator.Publish(new RemoveNavigationResourceMessage(model));
                 }
             }
             else if (openDependencyGraph)
