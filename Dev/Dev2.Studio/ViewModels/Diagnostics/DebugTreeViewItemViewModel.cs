@@ -137,7 +137,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 var list = new DebugLine();
                 var groups = new Dictionary<string, DebugLineGroup>();
-                foreach (var result in item)
+                foreach (var result in item.FetchResultsList())
                 {
                     if (string.IsNullOrEmpty(result.GroupName))
                     {

@@ -17,6 +17,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfIndexActivity : DsfActivityAbstract<string>
     {
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+        #endregion
 
         #region Properties
 
@@ -94,6 +100,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -121,21 +129,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 #region Iterate and Find Index
 
                 string result = string.Empty;
-                while (outerIteratorCollection.HasMoreData())
+                expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
+                if(dataObject.IsDebug)
                 {
-                    expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
+                    AddDebugInputItem(InField, "Look In Field",expressionsEntry,executionId);
+                    AddDebugInputItem(Characters, string.Empty, itrChar.FetchEntry(), executionId);
+                }
+                int iterationCount = 0;
+                while (outerIteratorCollection.HasMoreData())
+                {                                        
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
                     IDev2DataListEvaluateIterator itrInField = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     innerIteratorCollection.AddIterator(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextRow(itrChar).TheValue;
+                   
                     while (innerIteratorCollection.HasMoreData())
                     {
                         if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
                             var val = innerIteratorCollection.FetchNextRow(itrInField);
-                            if(val != null)
+                            if (val != null)
                             {
                                 IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
 
@@ -143,7 +158,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 result = string.Join(",", returedData);
 
                                 toUpsert.Add(Result, result);
+                                
                                 toUpsert.FlushIterationFrame();
+                                if (dataObject.IsDebug)
+                                {
+                                    AddDebugOutputItem(Result, result, executionId, iterationCount);
+                                }
+                                iterationCount++;
                             }
                         }
                     }
@@ -174,10 +195,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 #endregion
+
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
         }
 
         #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            if(string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Find" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Index });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Of" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);
+
+            if (string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Direction" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Direction });
+                _debugInputs.Add(itemToAdd);
+            }                        
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
 
         #endregion Private Methods
 
@@ -189,45 +255,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Look In Field" });
-            if (!string.IsNullOrEmpty(InField))
-            {
-                itemToAdd.AddRange(CreateDebugItems(InField, dataList));
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Find" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Index });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Of" });
-
-            if (!string.IsNullOrEmpty(Characters))
-            {
-                itemToAdd.AddRange(CreateDebugItems(Characters, dataList));
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Direction" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Direction });
-            results.Add(itemToAdd);
-
-            return results;
+        {            
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            if (!string.IsNullOrEmpty(Result))
-            {
-                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
-            }
-            results.Add(itemToAdd);
-            return results;
+        {            
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs

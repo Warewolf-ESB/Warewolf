@@ -18,14 +18,14 @@ namespace Dev2.Data.Binary_Objects
 
         public BinaryDataListRow(int columnCnt)
         {
-            
+
             _startIdx = new int[columnCnt];
             _columnLen = new int[columnCnt];
             _deferedColumns = new bool[columnCnt];
 
             _colCnt = columnCnt;
 
-            if(columnCnt < DataListConstants.MinRowSize)
+            if (columnCnt < DataListConstants.MinRowSize)
             {
                 _storageCapacity = DataListConstants.MinRowSize;
             }
@@ -51,7 +51,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool IsDeferredRead(int idx)
         {
-            if(idx < _startIdx.Length && idx >= 0)
+            if (idx < _startIdx.Length && idx >= 0)
             {
                 return _deferedColumns[idx];
             }
@@ -61,14 +61,14 @@ namespace Dev2.Data.Binary_Objects
 
         public string FetchValue(int idx)
         {
-            if(idx < _startIdx.Length)
+            if (idx < _startIdx.Length)
             {
                 int start = _startIdx[idx];
                 if (start > DataListConstants.EmptyRowStartIdx)
                 {
                     // we have data cool beans ;)   
                     int len = _columnLen[idx];
-                    if(len > 0)
+                    if (len > 0)
                     {
                         StringBuilder result = new StringBuilder();
                         int end = (start + len);
@@ -81,7 +81,7 @@ namespace Dev2.Data.Binary_Objects
                         return result.ToString();
 
                     }
-                }    
+                }
             }
 
             return string.Empty;
@@ -89,28 +89,28 @@ namespace Dev2.Data.Binary_Objects
 
         public void UpdateValue(string val, int idx)
         {
-            if(val != string.Empty)
+            if (val != string.Empty)
             {
                 int start = _startIdx[idx];
-                if(start > DataListConstants.EmptyRowStartIdx)
+                if (start > DataListConstants.EmptyRowStartIdx)
                 {
                     // we have data, cool beans ;)   
                     int candiateLen = val.Length;
                     int len = _columnLen[idx];
 
                     // if candiate is larger then prev value, we need to append to end of storage ;)   
-                    if(candiateLen > len)
+                    if (candiateLen > len)
                     {
 
                         // first clear the old storage location ;)
-                        for(int i = start; i < len; i++)
+                        for (int i = start; i < len; i++)
                         {
                             _rowData[i] = '\0';
                         }
 
                         // do we have space
                         int requiredSize = (_usedStorage + candiateLen);
-                        if(requiredSize >= _storageCapacity)
+                        if (requiredSize >= _storageCapacity)
                         {
                             // Nope, grow array
                             GrowRow(requiredSize);
@@ -120,7 +120,7 @@ namespace Dev2.Data.Binary_Objects
                         start = FetchStorageStartIdx();
                         int pos = 0;
                         int iterationLen = (start + candiateLen);
-                        for(int i = start; i < iterationLen; i++)
+                        for (int i = start; i < iterationLen; i++)
                         {
                             _rowData[i] = val[pos];
                             pos++;
@@ -138,7 +138,7 @@ namespace Dev2.Data.Binary_Objects
                         // first update data
                         int pos = 0;
                         int overWriteLen = (start + candiateLen);
-                        for(int i = start; i < overWriteLen; i++)
+                        for (int i = start; i < overWriteLen; i++)
                         {
                             _rowData[i] = val[pos];
                             pos++;
@@ -155,7 +155,7 @@ namespace Dev2.Data.Binary_Objects
                     int canidateLen = val.Length;
                     int storageReq = _usedStorage + canidateLen;
 
-                    if(storageReq >= _storageCapacity)
+                    if (storageReq >= _storageCapacity)
                     {
                         // sad panda, we need to grow the storage
                         GrowRow(storageReq);
@@ -165,13 +165,13 @@ namespace Dev2.Data.Binary_Objects
                     start = FetchStorageStartIdx();
                     CharEnumerator itr = val.GetEnumerator();
                     int iterateLen = (start + canidateLen);
-                    for(int i = start; i < iterateLen; i++)
+                    for (int i = start; i < iterateLen; i++)
                     {
                         itr.MoveNext();
                         _rowData[i] = itr.Current;
                     }
 
-                    
+
                     itr.Dispose();
 
                     // finally, update the storage data
@@ -193,10 +193,10 @@ namespace Dev2.Data.Binary_Objects
         public string FetchDeferredLocation(int idx)
         {
             int start = _startIdx[idx];
-            if(start > DataListConstants.EmptyRowStartIdx)
+            if (start > DataListConstants.EmptyRowStartIdx)
             {
                 // we have data cool beans ;)   
-                if(_deferedColumns[idx])
+                if (_deferedColumns[idx])
                 {
                     // we have a defered location ;)
                     return FetchValue(idx);
@@ -211,7 +211,7 @@ namespace Dev2.Data.Binary_Objects
         private void Init()
         {
             // init start indexes and length
-            for(int i = 0; i < _colCnt; i++)
+            for (int i = 0; i < _colCnt; i++)
             {
                 _startIdx[i] = DataListConstants.EmptyRowStartIdx;
                 _columnLen[i] = DataListConstants.EmptyRowStartIdx;
@@ -233,7 +233,7 @@ namespace Dev2.Data.Binary_Objects
             char[] tmp = new char[growthSize];
 
 
-            Array.Copy(_rowData,tmp, _usedStorage);
+            Array.Copy(_rowData, tmp, _usedStorage);
 
             //for(int i = 0; i < _usedStorage; i++)
             //{
@@ -245,7 +245,7 @@ namespace Dev2.Data.Binary_Objects
 
         private int FetchStorageStartIdx()
         {
-            if(_usedStorage == 0)
+            if (_usedStorage == 0)
             {
                 return 0;
             }

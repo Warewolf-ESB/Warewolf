@@ -25,7 +25,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         //public string DisplayValue { get { return _internalObj.DisplayValue; } private set { _internalObj.DisplayValue = value; } }
 
-        public string DisplayValue { 
+        public string DisplayValue
+        {
             get
             {
                 // Sashen.Naidoo
@@ -34,7 +35,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
-                
+
                 if (_internalObj.DisplayValue == null)
                 {
                     return "null";
@@ -50,7 +51,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #region Internal Methods
 
-        internal BinaryDataListItem(string val, string ns, string field, string idx) 
+        internal BinaryDataListItem(string val, string ns, string field, string idx)
         {
             _internalObj.TheValue = val;
             _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
@@ -69,7 +70,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         internal BinaryDataListItem(string val, string ns, string field, int idx)
         {
             _internalObj.TheValue = val;
-            _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace:ns;
+            _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
             _internalObj.FieldName = field;
             _internalObj.ItemCollectionIndex = idx;
             // Travis.Frisinger

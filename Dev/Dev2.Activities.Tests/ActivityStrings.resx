@@ -6014,4 +6014,29 @@ iiiiiiiiiiii</value>
   <data name="DsfActivityOutputMapping" xml:space="preserve">
     <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[CompanyName]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[Numeric(2),num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="[[Numeric(3),num]]" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[Customer(1).FirstName]]" /&gt;&lt;/Outputs&gt;</value>
   </data>
+  <data name="DebugFileOpsDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;&lt;/Name&gt;		
+	&lt;/FileNames&gt;	
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DebugFileOpsDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile1.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile2.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile3.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile4.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
 </root>

@@ -222,10 +222,10 @@ namespace Dev2.Diagnostics
             // ReSharper disable ForCanBeConvertedToForeach
             for(var i = 0; i < items.Count; i++)
             {
-                writer.Write(items[i].Count);
-                for(var j = 0; j < items[i].Count; j++)
+                writer.Write(items[i].FetchResultsList().Count);
+                for (var j = 0; j < items[i].FetchResultsList().Count; j++)
                 {
-                    var itemResult = items[i][j];
+                    var itemResult = items[i].FetchResultsList()[j];
                     writer.Write((int)itemResult.Type);
                     writer.Write(itemResult.Value);
                     writer.Write(itemResult.GroupName);
@@ -269,7 +269,7 @@ namespace Dev2.Diagnostics
                 throw new ArgumentNullException("items");
             }
 
-            foreach(var result in items.SelectMany(debugItem => debugItem.Where(result => !string.IsNullOrEmpty(result.Value) && result.Value.Length > DebugItem.MaxCharDispatchCount)))
+            foreach (var result in items.SelectMany(debugItem => debugItem.FetchResultsList().Where(result => !string.IsNullOrEmpty(result.Value) && result.Value.Length > DebugItem.MaxCharDispatchCount)))
             {
                 result.MoreLink = SaveFile(result.Value);
                 result.Value = result.Value.Substring(0, DebugItem.ActCharDispatchCount);

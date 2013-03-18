@@ -23,6 +23,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </New>
     public class DsfReplaceActivity : DsfActivityAbstract<string>
     {
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -78,7 +85,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>(); 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
@@ -104,27 +112,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int replacementTotal = 0;
             try
             {
+                if (dataObject.IsDebug)
+                {
+                    IDebugItem labelItem = new DebugItem();
+                    labelItem.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = "Fields To Search"});
+                    _debugInputs.Add(labelItem);
+                }
+                // Fetch all fields to search....
+                IList<string> toSearch = FieldsToSearch.Split(',');
                 while (iteratorCollection.HasMoreData())
                 {
-                    // Fetch all fields to search....
-                    IList<string> toSearch = FieldsToSearch.Split(',');
+                    
+                    
                     // now process each field for entire evaluated Where expression....                    
 
                     string findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
                     string replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
                     foreach (string s in toSearch)
                     {
+                        IBinaryDataListEntry entryToReplaceIn;
 
                         toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert,
-                                                            out errors, out replacementCount);
+                                                            out errors, out replacementCount, out entryToReplaceIn);
+                        if(dataObject.IsDebug)
+                        {
+                            AddDebugInputItem(s.Trim(), string.Empty, entryToReplaceIn, executionId);
+                        }
+
                         replacementTotal += replacementCount;
 
                         allErrors.MergeErrors(errors);
                     }
 
                 }
+                if(dataObject.IsDebug)
+                {
+                    AddDebugInputItem(Find, "Find", expressionsEntryFind,executionId);
+                    AddDebugInputItem(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId);
+                }
+
 
                 toUpsert.Add(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+
+                if(dataObject.IsDebug)
+                {
+                    AddDebugOutputItem(Result, replacementTotal.ToString(CultureInfo.InvariantCulture),executionId);
+                }
 
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);
@@ -138,54 +171,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfReplaceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
 
         }
 
+        #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+           
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);            
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
+
+        #endregion
+ 
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
-            results.Add(itemToAdd);
-            IList<string> fieldsList = FieldsToSearch.Split(',');
-            if (fieldsList.Count > 0)
-            {
-                foreach (string s in fieldsList)
-                {
-                    itemToAdd = new DebugItem();
-                    itemToAdd.AddRange(CreateDebugItems(s, dataList));
-                    results.Add(itemToAdd);
-                }
-            }
-
-            itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Find" });
-            itemToAdd.AddRange(CreateDebugItems(Find, dataList));
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Replace With" });
-            itemToAdd.AddRange(CreateDebugItems(ReplaceWith, dataList));
-            results.Add(itemToAdd);
-
-            return results;
+        {           
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            if (!string.IsNullOrEmpty(Result))
-            {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
-                results.Add(itemToAdd);
-            }
-
-            return results;
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs

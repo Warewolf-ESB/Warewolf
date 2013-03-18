@@ -27,8 +27,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public const string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
         #endregion
+        
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
 
         private IList<ActivityDTO> _fieldsCollection;
+        int _indexCounter = 1;
+
         public IList<ActivityDTO> FieldsCollection
         {
             get
@@ -71,13 +75,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugOutputs.Clear();
+            _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListBinder binder = context.GetExtension<IDataListBinder>();
             // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-
+            DispatchDebugState(context, StateType.Before);
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = DataListExecutionID.Get(context);
@@ -96,27 +102,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if (dataObject != null)
                                 {
-                                    string bookmarkName = Guid.NewGuid().ToString();
-                                    eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath",Directory.GetCurrentDirectory());
-                                    Uri hostUri = null;
-                                    if (Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
-                                    {
-                                        eval = eval.Replace("@Host", ServiceHost);
-                                    }
-                                    eval = DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
+                                    eval = GetEnviromentVariable(dataObject, context, eval);                                                                                                         
                                 }
-                            }
+                            }                           
 
                             toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
+                        _indexCounter++;                                               
                     }
-
-                    // Do not merge in a the case of a scoped datalist(ie, foreach) - Bug 8725
-                    //if (dataObject != null && !dataObject.IsDataListScoped)
-                    //{
                     compiler.Upsert(executionID, toUpsert, out errors);
+                    if(dataObject != null && dataObject.IsDebug)
+                    {
+                        List<KeyValuePair<string, IBinaryDataListEntry>> debugItems = compiler.GetDebugData();
+                        int innerCount = 0;
+                        foreach(KeyValuePair<string, IBinaryDataListEntry> keyValuePair in debugItems)
+                        {
+                            AddDebugItem(FieldsCollection[innerCount].FieldName, FieldsCollection[innerCount].FieldValue, keyValuePair.Value, executionID,innerCount,dataObject,context);
+                            innerCount++;
+                        }
+                    }                    
                     allErrors.MergeErrors(errors);
-                    //}
                 }
 
             }
@@ -179,48 +184,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-            int indexCounter = 1;
-            foreach (var activityDto in FieldsCollection.Where(c => !c.CanRemove()))
-            {
-                string variable = activityDto.FieldValue;
-
-                var itemToAdd = new DebugItem
-                {
-                    new DebugItemResult
-                    {
-                        Type = DebugItemResultType.Label, 
-                        Value = indexCounter.ToString(CultureInfo.InvariantCulture)
-                    }, 
-                    new DebugItemResult
-                    {
-                        Type = DebugItemResultType.Variable, 
-                        Value = activityDto.FieldName
-                    }, 
-                    new DebugItemResult
-                    {
-                        Type = DebugItemResultType.Label, 
-                        Value = GlobalConstants.EqualsExpression
-                    }
-                };
-
-                IList<IDebugItemResult> debugItems = CreateDebugItems(variable, dataList);
-
-                foreach (var debugItemResult in debugItems)
-                {
-
-                    if (debugItemResult.Value.ContainsSafe("!~calculation~!") && debugItemResult.Value.ContainsSafe("!~~calculation~!"))
-                    {
-                        debugItemResult.Value = debugItemResult.Value.Replace("!~calculation~!", "").Replace("!~~calculation~!", "");
-                    }
-
-                    itemToAdd.Add(debugItemResult);
-                }
-                indexCounter++;
-                result.Add(itemToAdd);
-            }
-            return result;
+        {            
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs
@@ -273,7 +238,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Private Method
+        #region Private Method    
+    
+        private string GetEnviromentVariable( IDSFDataObject dataObject,NativeActivityContext context,string eval)
+        {
+            if (dataObject != null)
+            {
+                string bookmarkName = Guid.NewGuid().ToString();
+                eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath", Directory.GetCurrentDirectory());
+                Uri hostUri = null;
+                if (Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
+                {
+                    eval = eval.Replace("@Host", ServiceHost);
+                }
+                eval = DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
+            }
+            return eval;
+        }
+
+        private void AddDebugItem(string fieldName, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId,int indexNumToUse,IDSFDataObject dataObject,NativeActivityContext context)
+        {
+            if(valueEntry != null)
+            {
+                if (fieldValue.Contains("@"))
+                {
+                    string eval = GetEnviromentVariable(dataObject, context, fieldValue);                    
+                    IList<IDebugItemResult> results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
+                    IDebugItem itemToAdd = new DebugItem();
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });                     
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = eval });
+                    itemToAdd.AddRange(results);
+                    _debugOutputs.Add(itemToAdd);
+                }
+                else
+                {
+                    DebugItem itemToAdd = new DebugItem();
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = fieldName });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+
+                    itemToAdd.AddRange(CreateDebugItemsFromEntry(fieldValue, valueEntry, executionId, enDev2ArgumentType.Output));
+
+                    _debugOutputs.Add(itemToAdd);        
+                }                
+            }            
+        }       
 
         private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
         {

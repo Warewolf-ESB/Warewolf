@@ -8,7 +8,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
     [Serializable]
     public struct SBinaryDataListEntry
     {
-        private Dev2BinaryDataListStorage _items;
+        private BinaryDataListStorage _items;
         public int _appendIndex;
         IDictionary<string, int> _strToColIdx;
         bool _isEmpty;
@@ -127,7 +127,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                 row.UpdateValue(itm.TheValue, idx);
                                 _items[key] = row;
                             }
-                            else if(itm.IsDeferredRead && idx >= 0)
+                            else if (itm.IsDeferredRead && idx >= 0)
                             {
                                 row.IsDeferredRead(idx);
 
@@ -186,19 +186,19 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void Init(int colCnt)
         {
             //_items = new Dictionary<int, IList<IBinaryDataListItem>>();
-            _items = new Dev2BinaryDataListStorage(Namespace, DataListKey);
-            
+            _items = new BinaryDataListStorage(Namespace, DataListKey);
+
             _isEmpty = true;
             _internalReturnValue = new List<IBinaryDataListItem>(colCnt); // build the object we require to return data in ;)
 
             for (int i = 0; i < colCnt; i++)
             {
                 _internalReturnValue.Add(new BinaryDataListItem(string.Empty, string.Empty));
-                
-                if(Columns != null)
+
+                if (Columns != null)
                 {
                     // Handle recordset
-                _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
+                    _internalReturnValue[i].UpdateRecordset(Namespace); // always the same namespace ;)
                     _internalReturnValue[i].UpdateField(Columns[i].ColumnName); // always the same column for this entry ;)
                 }
                 else
@@ -371,23 +371,23 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             IDictionary<int, IList<IBinaryDataListItem>> result = new Dictionary<int, IList<IBinaryDataListItem>>(Count);
             IIndexIterator ii = Keys;
-            if(IsRecordset)
+            if (IsRecordset)
             {
-                while(ii.HasMore())
-            {
-                IList<IBinaryDataListItem> tmp = new List<IBinaryDataListItem>(Columns.Count);
-                IBinaryDataListRow row;
-                int next = ii.FetchNextIndex();
-                    if(_items.TryGetValue(next, Columns.Count, out row))
+                while (ii.HasMore())
                 {
-                        for(int i = 0; i < Columns.Count; i++)
+                    IList<IBinaryDataListItem> tmp = new List<IBinaryDataListItem>(Columns.Count);
+                    IBinaryDataListRow row;
+                    int next = ii.FetchNextIndex();
+                    if (_items.TryGetValue(next, Columns.Count, out row))
                     {
-                        tmp.Add(new BinaryDataListItem(row.FetchValue(i), Namespace, Columns[i].ColumnName, next));
-                    }
+                        for (int i = 0; i < Columns.Count; i++)
+                        {
+                            tmp.Add(new BinaryDataListItem(row.FetchValue(i), Namespace, Columns[i].ColumnName, next));
+                        }
 
-                    result[next] = tmp;
+                        result[next] = tmp;
+                    }
                 }
-            }
             }
 
             return result;

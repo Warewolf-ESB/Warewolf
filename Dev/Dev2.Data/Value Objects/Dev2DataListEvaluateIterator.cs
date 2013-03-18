@@ -86,5 +86,12 @@ namespace Dev2.DataList.Contract.Value_Objects
         {
             return _entry.Namespace;
         }
+
+        public IBinaryDataListEntry FetchEntry()
+        {
+            return _entry;
+        }
+
+
     }
 }

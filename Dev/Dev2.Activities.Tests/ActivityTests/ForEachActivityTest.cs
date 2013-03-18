@@ -408,7 +408,7 @@ namespace ActivityUnitTests.ActivityTest
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(3, inRes[0].Count);
+            Assert.AreEqual(3, inRes[0].FetchResultsList().Count);
 
             Assert.AreEqual(0, outRes.Count);
         }
@@ -428,7 +428,7 @@ namespace ActivityUnitTests.ActivityTest
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(30, inRes[0].Count);
+            Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
 
             Assert.AreEqual(0, outRes.Count);
         }

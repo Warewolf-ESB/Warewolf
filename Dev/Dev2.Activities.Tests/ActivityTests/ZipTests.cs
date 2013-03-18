@@ -1,4 +1,8 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Threading;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,6 +17,7 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class ZipTests : BaseActivityUnitTest
     {
+        static TestContext myTestContext;
         public ZipTests()
         {
             //
@@ -43,9 +48,12 @@ namespace ActivityUnitTests.ActivityTests
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            myTestContext = testContext;
+        }
+        
         // Use ClassCleanup to run code after all tests in a class have run
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
@@ -58,6 +66,19 @@ namespace ActivityUnitTests.ActivityTests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
+        object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
         #endregion
 
         #region Get Input/Output Tests
@@ -94,26 +115,37 @@ namespace ActivityUnitTests.ActivityTests
         public void Zip_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            DsfZip act = new DsfZip { InputPath = "[[CompanyName]]", OutputPath = "[[CompanyName]]", Result = "[[CompanyName]]" };
+            List<string> fileNames = new List<string>();
+            Guid randomFileName = Guid.NewGuid();
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2.txt"));
+
+            List<string> zipfileNames = new List<string>();
+            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2Zip.zip"));
+
+            foreach (string fileName in fileNames)
+            {
+                File.WriteAllText(fileName, "TestData");
+            }
+
+            DsfZip preact = new DsfZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "[[CompanyName]]Zip.zip"), Result = "[[res]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
-            Assert.AreEqual(8, inRes.Count);
-            Assert.AreEqual(1, inRes[0].Count);
-            Assert.AreEqual(1, inRes[1].Count);
-            Assert.AreEqual(1, inRes[2].Count);
-            Assert.AreEqual(4, inRes[3].Count);
-            Assert.AreEqual(4, inRes[4].Count);
-            Assert.AreEqual(1, inRes[5].Count);
-            Assert.AreEqual(1, inRes[6].Count);
-            Assert.AreEqual(1, inRes[7].Count);
+            Assert.AreEqual(7, inRes.Count);
+            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         /// <summary>
@@ -124,26 +156,56 @@ namespace ActivityUnitTests.ActivityTests
         public void Zip_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            DsfZip act = new DsfZip { InputPath = "[[Numeric(*).num]]", OutputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
+            List<string> fileNames = new List<string>();
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+
+            List<string> zipfileNames = new List<string>();
+            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".zip"));
+            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".zip"));
+
+            foreach (string fileName in fileNames)
+            {
+                File.WriteAllText(fileName, "TestData");
+            }
+            List<List<string>> recsetList = new List<List<string>>();
+            recsetList.Add(fileNames);
+            recsetList.Add(zipfileNames);
+
+            List<string> Recsetnames = new List<string>();
+            Recsetnames.Add("FileNames");
+            Recsetnames.Add("ZipNames");
+
+            List<string> Fieldnames = new List<string>();
+            Fieldnames.Add("Name");
+            Fieldnames.Add("Zips");
+
+            string dataListWithData;
+            string dataListShape;
+
+            CreateDataListWithMultipleRecsetAndCreateShape(recsetList, Recsetnames, Fieldnames, out dataListShape, out dataListWithData);
+
+            DsfZip preact = new DsfZip { InputPath = "[[FileNames(*).Name]]", OutputPath = "[[ZipNames(*).Zips]]", Result = "[[res]]" };
+
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckPathOperationActivityDebugInputOutput(preact, dataListShape,
+                                                                dataListWithData, out inRes, out outRes);
 
 
-            Assert.AreEqual(8, inRes.Count);
-            Assert.AreEqual(1, inRes[0].Count);
-            Assert.AreEqual(1, inRes[1].Count);
-            Assert.AreEqual(1, inRes[2].Count);
-            Assert.AreEqual(31, inRes[3].Count);
-            Assert.AreEqual(31, inRes[4].Count);
-            Assert.AreEqual(1, inRes[5].Count);
-            Assert.AreEqual(1, inRes[6].Count);
-            Assert.AreEqual(1, inRes[7].Count);
+            Assert.AreEqual(7, inRes.Count);
+            Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(7, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
 
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(2, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
         }
 
         #endregion

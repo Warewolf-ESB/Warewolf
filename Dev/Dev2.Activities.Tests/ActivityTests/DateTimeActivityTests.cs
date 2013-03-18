@@ -207,12 +207,12 @@ namespace ActivityUnitTests.ActivityTests
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(4, inRes[0].Count);
-            Assert.AreEqual(2, inRes[1].Count);
-            Assert.AreEqual(3, inRes[2].Count);
-            Assert.AreEqual(2, inRes[3].Count);
+            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(3, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         /// <summary>
@@ -229,12 +229,12 @@ namespace ActivityUnitTests.ActivityTests
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(31, inRes[0].Count);
-            Assert.AreEqual(2, inRes[1].Count);
-            Assert.AreEqual(3, inRes[2].Count);
-            Assert.AreEqual(2, inRes[3].Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(30, outRes[0].Count);
+            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(3, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         #endregion

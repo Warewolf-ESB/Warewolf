@@ -56,6 +56,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
+            if (dataObject.IsDebug)
+            {
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
+                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+                AddDebugInputItem(Password, "Password", passwordEntry, executionId);                
+            }
+
             while (colItr.HasMoreData())
             {
 

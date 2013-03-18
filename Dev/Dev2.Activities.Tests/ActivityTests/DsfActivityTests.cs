@@ -78,18 +78,18 @@ namespace ActivityUnitTests.ActivityTests
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(5, inRes.Count);
-            Assert.AreEqual(4, inRes[0].Count);
-            Assert.AreEqual(4, inRes[1].Count);
-            Assert.AreEqual(4, inRes[2].Count);
-            Assert.AreEqual(4, inRes[3].Count);
-            Assert.AreEqual(4, inRes[4].Count);
+            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[4].FetchResultsList().Count);
 
             Assert.AreEqual(5, outRes.Count);
-            Assert.AreEqual(4, outRes[0].Count);
-            Assert.AreEqual(4, outRes[1].Count);
-            Assert.AreEqual(4, outRes[2].Count);
-            Assert.AreEqual(4, outRes[3].Count);
-            Assert.AreEqual(4, outRes[4].Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(4, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual(4, outRes[2].FetchResultsList().Count);
+            Assert.AreEqual(4, outRes[3].FetchResultsList().Count);
+            Assert.AreEqual(4, outRes[4].FetchResultsList().Count);
 
         }
 

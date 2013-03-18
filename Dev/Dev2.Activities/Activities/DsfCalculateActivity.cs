@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -15,6 +16,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfCalculateActivity : DsfActivityAbstract<string>
     {
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+            #endregion
+
         #region Properties
 
         /// <summary>
@@ -54,6 +62,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary> 
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -66,6 +76,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
+                if(dataObject.IsDebug)
+                {
+                    AddDebugInputItem(executionId);    
+                }                
                 string result = string.Empty;
                 IFunctionEvaluator functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
                 IEvaluationFunction evaluationFunctionTO = MathOpsFactory.CreateEvaluationExpressionTO(Expression);
@@ -74,6 +88,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 compiler.Upsert(executionId, Result, result, out errors);
+                if (dataObject.IsDebug)
+                {
+                    AddDebugOutputItem(Result,result,executionId);
+                }
                 allErrors.MergeErrors(errors);
             }
             finally
@@ -85,6 +103,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCalculateActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+                if (dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
 
         }
@@ -93,37 +115,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-
-        #endregion Private Methods
-
-
-        #region Get Debug Inputs/Outputs
-
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-
+        private void AddDebugInputItem(Guid executionId)
+        {   
             ErrorResultTO errors = new ErrorResultTO();
             DebugItem itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Calculate" });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = Expression });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IBinaryDataListEntry entry = compiler.Evaluate(dataList.UID, enActionType.CalculateSubstitution, Expression, false, out errors);
+            IBinaryDataListEntry entry = compiler.Evaluate(executionId, enActionType.CalculateSubstitution, Expression, false, out errors);
             IBinaryDataListItem item = entry.FetchScalar();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.TheValue });
-            result.Add(itemToAdd);
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.TheValue });            
 
-            return result;
+            _debugInputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        {           
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression,value,dlId,0,enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);                                              
+        }
+
+        #endregion Private Methods
+
+        #region Get Debug Inputs/Outputs
+
+        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        {            
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItems(Result, dataList));
-            result.Add(itemToAdd);
-            return result;
+        {            
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs

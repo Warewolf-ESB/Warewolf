@@ -30,7 +30,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
         {
-
+            
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
@@ -62,6 +62,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             colItr.AddIterator(passItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
+
+            if(dataObject.IsDebug)
+            {
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
+                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
+                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+            }
 
             while (colItr.HasMoreData())
             {

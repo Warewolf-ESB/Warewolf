@@ -73,6 +73,7 @@ namespace Dev2.Common
         public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
         public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 20k rows in the 0 tier cache ;)
         public const int DefaultDataListCreateCacheSizeLvl1 = 30000;
+        public const int DefaultBlobCreateCacheSizeLvl1 = 100;
         public const int DefaultCachePageSizeLvl1 = 1100;
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultIntellisenseCacheLvl1 = 100;

@@ -91,7 +91,6 @@
     <Compile Include="ActivityTests\DataSplitActivityTest_old.cs" />
     <Compile Include="ActivityTests\DateTimeActivityTests.cs" />
     <Compile Include="ActivityTests\DateTimeDifferenceTests.cs" />
-    <Compile Include="ActivityTests\DebugStateTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityAbstractTest.cs" />
     <Compile Include="ActivityTests\DsfFlowNodeTests.cs" />

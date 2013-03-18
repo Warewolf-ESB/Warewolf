@@ -58,6 +58,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
+            if (dataObject.IsDebug)
+            {
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);                
+                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+            }
+
             while (colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -71,6 +78,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     // Travis.Frisinger - 01.02.2013 - Bug 8579
                     // fake it so we have a deferred read ;) -- Slightly silly, but consistent
+                    if(dataObject.IsDebug)
+                    {
+                        DefferedReadFileContents = broker.Get(endpoint, false);
+                    }
                     string result = broker.Get(endpoint, true);
                     MakeDeferredAction(IOpath.Path);
                     outputs[0].OutputStrings.Add(result);

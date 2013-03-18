@@ -24,6 +24,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
         #region Variables
 
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
         private string _forEachElementName;
         private string _displayName;
 
@@ -136,6 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<IDebugItem>();            
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -148,6 +150,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 string elmName = ForEachElementName;
+                if(dataObject.IsDebug)
+                {
+                    IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID, enActionType.User, ForEachElementName, false, out errors);
+                    AddDebugInputItem(ForEachElementName, string.Empty, tmpEntry, executionID);
+                    DispatchDebugState(context,StateType.Before);
+                }
 
                 ForEachBootstrapTO exePayload = FetchExecutionType(elmName, executionID, compiler, out errors);
                 allErrors.MergeErrors(errors);
@@ -298,10 +306,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //        if (idx == 1)
                 //        {
                 //            operationalData.InnerActivity.OrigCodedOutputs = updates;
-                //        }
+        //        }
 
                 //        operationalData.InnerActivity.CurCodedOutputs = updates;
-                //    }
+        //    }
                 //}
 
                 #endregion
@@ -320,7 +328,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
             if (dev2ActivityIoMapping != null)
-            {
+        {
                 dev2ActivityIoMapping.InputMapping = newInputs;
             }
 
@@ -330,7 +338,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 activityIoMapping.OutputMapping = newOutputs;
             }
 
-        }
+            }
 
         //static void AmendInputs(int idx, IList<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
         //{
@@ -481,17 +489,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     //        // amend inputs ;)
                     //        foreach (DsfForEachItem d in data)
-                    //        {
+        //        {
                     //            string input = d.Value;
                     //            input = input.Replace("(" + idx + ")", "(*)");
 
                     //            updates.Add(new Tuple<string, string>(d.Value, input));
-                    //        }
+        //        }
 
                     //        // push updates for Inputs
                     //        tmp2.UpdateForEachOutputs(updates, context);
-                    //    }
-                    //}
+        //    }
+        //}
                     #endregion
                 }
                 else
@@ -558,196 +566,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
 
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
 
-        //#region Ghost Service Handler
-        //private void ActivityCompleted(NativeActivityContext context, ActivityInstance instance, bool result)
-        //{
-        //    IApplicationMessage messageNotification = context.GetExtension<IApplicationMessage>();
-        //    IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
-        //    IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
 
-        //    results.Add(result);
-
-        //    if (results.Where(c => !c).Count() == 0)
-        //    {
-        //        Result.Set(context, true);
-        //    }
-        //    else
-        //    {
-        //        Result.Set(context, false);
-        //    }
-
-        //    IEnumerator<UnlimitedObject> dat = dataTags.Get(context);
-        //    bool more = dat.MoveNext();
-
-        //    if (more)
-        //    {
-        //        if (DataFunc.Handler != null)
-        //        {
-        //            var innerActivity = DataFunc.Handler as DsfActivity;
-        //            if (innerActivity != null)
-        //            {
-        //                _count++;
-        //                string inMap = innerActivity.InputMapping;
-        //                string outMap = innerActivity.OutputMapping;
-        //                if (!string.IsNullOrEmpty(inMap))
-        //                {
-        //                    XmlDocument inxDoc = new XmlDocument();
-        //                    inxDoc.LoadXml(inMap);
-        //                    innerActivity.InputMapping = inxDoc.OuterXml;
-        //                }
-        //                if (!string.IsNullOrEmpty(outMap))
-        //                {
-        //                    XmlDocument outxDoc = new XmlDocument();
-        //                    outxDoc.LoadXml(outMap);
-        //                    innerActivity.OutputMapping = outxDoc.OuterXml;
-        //                }
-        //            }
-
-        //            // Travis.Frisinger : 07.04.2012 - Must set DataObject not rely upon what is passed in via the context!!!
-        //            // We must dynamically remove old data and inject the next record
-        //            string nextPayload = dat.Current.XmlString;
-        //            nextPayload = nextPayload.Replace("<" + ElementName + ">", "").Replace("</" + ElementName + ">", "");
-        //           // string newDL = compiler.ReplaceValue(DataObject.XmlData, ElementName, nextPayload);
-
-        //            //DataObject.XmlData = newDL;
-
-        //            //Notify(messageNotification, string.Format("\r\n<ForEachInput>\r\n{0}\r\n</ForEachInput>\r\n", newDL));
-
-        //            context.ScheduleFunc<string, bool>(DataFunc, string.Empty, ActivityCompleted);
-        //        }
-        //        else
-        //        {
-        //            Notify(messageNotification, string.Format("\r\n<ForEachActivity>No child activity found to execute</ForEachActivity>\r\n"));
-
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Travis.Frisinger : 04.07.2012
-        //        // no more data, reset datalist if need be -- This is for a ghost or recursively bound input variable correction step
-        //        if (PreservedDataList != null)
-        //        {
-        //            dataObject.DataList = PreservedDataList;
-        //            // We need to scrub the last record from the input stream in this case, else it will be transfered in the mapping ;)
-        //            //Added for new datalist 
-        //            ErrorResultTO errors = new ErrorResultTO();
-        //            dataObject.DataListID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, OutputMapping, out errors);
-        //            //string filteredADL = compiler.ShapeOutput(DataObject.XmlData, null, OutputMapping, DataObject.DataList);
-
-        //            // now set as the new and adjusted dataList
-        //            //DataObject.XmlData = filteredADL;
-        //        }
-
-        //        // 31.07.2012 - Travis 
-        //        // Restore the Design time Handler function
-        //        RestoreHandlerFn(context);
-        //    }
-        //}
-        //#endregion
-
-        //private void IndexExecution(NativeActivityContext context, ActivityInstance instance, bool result)
-        //{
-        //    IApplicationMessage messageNotification = context.GetExtension<IApplicationMessage>();
-        //    IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
-        //    IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-        //    if (_count < _numOfIterations)
-        //    {
-        //        _count++;
-        //        if (DataFunc.Handler != null)
-        //        {
-        //            var innerActivity = GetInnerActivity();
-        //            //Check if the inner activity is not null and contains input output mapping isnt null
-        //            if (innerActivity != null && innerActivity.InputMapping != null && innerActivity.OutputMapping != null)
-        //            {
-        //                string inMap = _origInput.Get(context);
-        //                string outMap = _origOutput.Get(context);
-        //                if (!string.IsNullOrEmpty(inMap))
-        //                {
-        //                    XmlDocument inxDoc = new XmlDocument();
-        //                    inxDoc.LoadXml(inMap);
-        //                    //check the inputs to see if they contain star and inject the right index number
-        //                    foreach (XmlNode child in inxDoc.FirstChild.ChildNodes)
-        //                    {
-        //                        string test = child.Attributes["Source"].Value;
-        //                        if (test.Contains("(") && test.Contains(")"))
-        //                        {
-        //                            int startIndex = test.IndexOf("(");
-        //                            int endIndex = test.IndexOf(")");
-        //                            string indexsec = test.Substring(startIndex + 1, endIndex - startIndex - 1);
-        //                            if (indexsec == "*")
-        //                            {
-        //                                //Replace the star with the index number
-        //                                test = test.Replace("*", _count.ToString());
-        //                                child.Attributes["Source"].Value = test;
-        //                            }
-        //                        }
-        //                    }
-        //                    innerActivity.InputMapping = inxDoc.OuterXml;
-        //                }
-
-        //                if (!string.IsNullOrEmpty(outMap))
-        //                {
-        //                    XmlDocument outxDoc = new XmlDocument();
-        //                    outxDoc.LoadXml(outMap);
-        //                    //check the outputs to see if they contain star and inject the right index number
-        //                    foreach (XmlNode child in outxDoc.FirstChild.ChildNodes)
-        //                    {
-        //                        string test = child.Attributes["Value"].Value;
-        //                        if (test.Contains("(") && test.Contains(")"))
-        //                        {
-        //                            int startIndex = test.IndexOf("(");
-        //                            int endIndex = test.IndexOf(")");
-        //                            string indexsec = test.Substring(startIndex + 1, endIndex - startIndex - 1);
-        //                            if (indexsec == "*")
-        //                            {
-        //                                //Replace the star with the index number
-        //                                test = test.Replace("*", _count.ToString());
-        //                                child.Attributes["Value"].Value = test;
-        //                            }
-        //                        }
-        //                    }
-        //                    innerActivity.OutputMapping = outxDoc.OuterXml;
-        //                }
-        //                (DataFunc.Handler as DsfActivity).RemoveInputFromOutput = true;
-        //            }
-        //            //Schedule the function/activity again
-        //            context.ScheduleFunc<string, bool>(DataFunc, string.Empty, IndexExecution);
-
-        //        }
-        //        else
-        //        {
-        //            Notify(messageNotification, string.Format("\r\n<ForEachActivity>No child activity found to execute</ForEachActivity>\r\n"));
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Travis.Frisinger : 04.07.2012
-        //        // no more data, reset datalist if need be -- This is for a ghost or recursively bound input variable correction step
-        //        if (PreservedDataList != null)
-        //        {
-        //            dataObject.DataList = PreservedDataList;
-        //            // We need to scrub the last record from the input stream in this case, else it will be transfered in the mapping ;)
-        //            //Added for new datalist 
-        //            ErrorResultTO errors = new ErrorResultTO();
-        //            dataObject.DataListID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, OutputMapping, out errors);
-        //            //string filteredADL = compiler.ShapeOutput(DataObject.XmlData, null, OutputMapping, DataObject.DataList);
-
-        //            // now set as the new and adjusted dataList
-        //            //DataObject.XmlData = filteredADL;
-        //        }
-
-        //        // 31.07.2012 - Travis 
-        //        // Restore the Design time Handler function in the activity and its mappings arnt null
-        //        var innerActivity = GetInnerActivity();
-        //        if (innerActivity != null && innerActivity.InputMapping != null && innerActivity.OutputMapping != null)
-        //        {
-        //            RestoreHandlerFn(context);
-        //        }
-        //    }
-        //}
+            _debugInputs.Add(itemToAdd);           
+        }  
 
 
         #endregion Private Methodss
@@ -755,12 +589,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItems(ForEachElementName, dataList));
-            results.Add(itemToAdd);
-            return results;
+        {            
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)

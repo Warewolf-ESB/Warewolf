@@ -25,7 +25,7 @@ namespace Dev2.Data.Operations
 
         #region Methods
 
-        public IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx, string expression, string oldString, string newString, bool caseMatch, IDev2DataListUpsertPayloadBuilder<string> payloadBuilder, out ErrorResultTO errors, out int ReplaceCount)
+        public IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx, string expression, string oldString, string newString, bool caseMatch, IDev2DataListUpsertPayloadBuilder<string> payloadBuilder, out ErrorResultTO errors, out int ReplaceCount, out IBinaryDataListEntry entryToReplaceIn)
         {
             ReplaceCount = 0;
             oldString = oldString.Replace("\\", "\\\\");
@@ -34,7 +34,7 @@ namespace Dev2.Data.Operations
             errors = new ErrorResultTO();
             // ReSharper restore RedundantAssignment
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IBinaryDataListEntry entryToReplaceIn = compiler.Evaluate(exIdx, enActionType.User, expression, false, out errors);
+            entryToReplaceIn = compiler.Evaluate(exIdx, enActionType.User, expression, false, out errors);
             allErrors.MergeErrors(errors);
 
             if (entryToReplaceIn != null)

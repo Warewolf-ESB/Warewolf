@@ -179,6 +179,12 @@ namespace Dev2.Server.Datalist {
         #endregion
 
         #region Admin Operations
+
+        /// <summary>
+        /// Fetches the DebugItems created during a upsert
+        /// </summary>
+        List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugItems();
+
         /// <summary>
         /// Fetches the change log for pre ( inputs ) or post execute ( outputs )
         /// </summary>

@@ -138,7 +138,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
             else
             {
-                IBinaryDataListEntry template = new BinaryDataListEntry(key, description, isEditable, ioDir,UID);
+                IBinaryDataListEntry template = new BinaryDataListEntry(key, description, isEditable, ioDir, UID);
                 _templateDict[key] = template;
                 result = true;
                 // create scalar intellisense part ;)
@@ -263,25 +263,25 @@ namespace Dev2.DataList.Contract.Binary_Objects
             bool result = false;
             string key = theNameSpace;
 
-            if(_templateDict.TryGetValue(key, out tmp))
+            if (_templateDict.TryGetValue(key, out tmp))
             {
 
-                if(tmp.IsRecordset)
+                if (tmp.IsRecordset)
                 {
                     //var found = tmp.Columns.FirstOrDefault(column => String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal));
                     IList<Dev2Column> columns = tmp.Columns;
                     Dev2Column found = null;
 
-                    foreach(Dev2Column column in columns)
+                    foreach (Dev2Column column in columns)
                     {
-                        if(String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal))
+                        if (String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal))
                         {
                             found = column;
                             break;
                         }
                     }
 
-                    if(found != null)
+                    if (found != null)
                     {
                         tmp.TryPutRecordItemAtIndex(new BinaryDataListItem(value, theNameSpace, fieldName, idx), idx, out error);
                         _templateDict[key] = tmp; // update dic
@@ -432,7 +432,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-      
+
         /// <summary>
         /// Clears the errors.
         /// </summary>
@@ -443,10 +443,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IBinaryDataListEntry entry;
             string error = string.Empty;
             TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, false), out entry, out error);
-            if(entry != null)
+            if (entry != null)
             {
-            entry.TryPutScalar(new BinaryDataListItem(string.Empty, GlobalConstants.ErrorPayload), out error);
-        }
+                entry.TryPutScalar(new BinaryDataListItem(string.Empty, GlobalConstants.ErrorPayload), out error);
+            }
 
         }
 
@@ -778,7 +778,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void Dispose()
         {
-            if(_templateDict != null)
+            if (_templateDict != null)
             {
                 List<IBinaryDataListEntry> binaryDataListEntries = FetchAllEntries().ToList();
                 binaryDataListEntries.ForEach(entry => entry.Dispose());

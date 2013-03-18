@@ -278,6 +278,11 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
+        //public List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugData()
+        //{
+        //    return 
+        //}
+
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -342,17 +347,9 @@ namespace Dev2.DataList.Contract
         public Guid PushBinaryDataList(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            byte[] payload = new byte[0];
-            BinaryFormatter bf = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, bdl);
-                payload = ms.ToArray();
-                ms.Close();
-                ms.Dispose();
-            }
 
-            return _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._BINARY), payload, string.Empty, out errors);
+            return PushBinaryDataListInServerScope(dlID, bdl, out errors);
+
         }
 
         public Guid PushBinaryDataListInServerScope(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
@@ -838,6 +835,13 @@ namespace Dev2.DataList.Contract
             }
 
             return result;
+        }
+
+        //PBI 8435 - Massimo.Guerrera - Added for getting the debug data for the multiAssign
+
+        public List<KeyValuePair<string,IBinaryDataListEntry>> GetDebugData()
+        {
+            return _svrCompiler.GetDebugItems();
         }
 
         #region New Private Methods

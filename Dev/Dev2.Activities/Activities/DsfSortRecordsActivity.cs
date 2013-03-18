@@ -5,12 +5,19 @@ using Dev2.Diagnostics;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfSortRecordsActivity : DsfActivityAbstract<string>
     {
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+        #endregion
 
         /// <summary>
         /// Gets or sets the sort field.
@@ -40,9 +47,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            //DataObject = context.GetExtension<IDSFDataObject>();
-
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
@@ -65,6 +71,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
                     IBinaryDataListEntry rsData;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
+                    if(dataObject.IsDebug)
+                    {
+                        AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
+                    }
                     allErrors.AddError(error);
                     //IBinaryDataListEntry rsData = compiler.Evaluate(executionID, enActionType.User, fetchStr, true, out errors);
                     if (errors.HasErrors())
@@ -82,6 +92,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Push back against the datalist
                             compiler.PushBinaryDataList(executionID, bdl, out errors);
                             allErrors.MergeErrors(errors);
+                            if(dataObject.IsDebug)
+                            {
+                                bdl.TryGetEntry(rawRecsetName, out rsData, out error);
+                                IDebugItem itemToAdd = new DebugItem();
+                                itemToAdd.AddRange(CreateDebugItemsFromEntry(SortField,rsData,executionID,enDev2ArgumentType.Output));
+                                _debugOutputs.Add(itemToAdd);
+                            }
 
                         }
                         else
@@ -103,12 +120,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
 
             // End Travis.Frisinger New Stuff
         }
 
         #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();            
+
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);
+
+              itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Sort Order" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value =  SelectedSort});
+            _debugInputs.Add(itemToAdd);
+        }        
 
         private string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
@@ -146,30 +189,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region GetDebugInputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-            DebugItem itemToAdd;
-            if (!string.IsNullOrEmpty(SortField))
-            {
-                itemToAdd = new DebugItem
-                    {
-                        new DebugItemResult {Type = DebugItemResultType.Label, Value = "Sort Field"}
-                    };
-
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(SortField, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                result.Add(itemToAdd);
-            }
-            itemToAdd = new DebugItem
-                {
-                    new DebugItemResult {Type = DebugItemResultType.Label, Value = "Sort Order"},
-                    new DebugItemResult {Type = DebugItemResultType.Value, Value = SelectedSort}
-                };
-            result.Add(itemToAdd);
-
-            return result;
+        {            
+            return _debugInputs;
         }
 
         #endregion
@@ -177,19 +198,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region GetDebugOutputs
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-            if (!string.IsNullOrEmpty(SortField))
-            {
-                DebugItem itemToAdd = new DebugItem();
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(SortField, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                result.Add(itemToAdd);
-            }
-
-            return result;
+        {            
+            return _debugOutputs;
         }
 
         #endregion

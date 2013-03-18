@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Data.Operations;
 using Dev2.DataList.Contract;
@@ -12,7 +13,6 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -22,6 +22,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Class Members
 
         private string _result;
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+        int _indexCounter = 1;
 
         #endregion Class Members
 
@@ -81,7 +84,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
+            _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -108,6 +113,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errors);
                         allErrors.MergeErrors(errors);
+                        if(dataObject.IsDebug)
+                        {
+                            AddDebugInputItem(row.InputVariable, row.MergeType, expressionsEntry, row.At,executionId);
+                        }
                         IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
 
                         iteratorCollection.AddIterator(itr);
@@ -126,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             var val = iteratorCollection.FetchNextRow(iterator);
 
-                            if(val != null)
+                            if (val != null)
                             {
                                 string value = val.TheValue;
 
@@ -143,6 +152,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     #region Add Result to DataList
 
                     toUpsert.Add(Result, _mergeOperations.MergedData);
+                    if(dataObject.IsDebug)
+                    {
+                        AddDebugOutputItem(Result, _mergeOperations.MergedData, executionId);
+                    }
+
                     toUpsert.FlushIterationFrame();
                     compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
@@ -164,11 +178,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
+
                 #endregion
             }
         }
 
         #region Private Methods
+
+        private void AddDebugInputItem(string expression, string mergeType, IBinaryDataListEntry inputValueEntry, string mergeChar, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Merge" });
+            
+
+            if (inputValueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, inputValueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "With" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = mergeType });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = mergeChar });            
+
+            _debugInputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();            
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
 
         private void CleanArguments(IList<DataMergeDTO> args)
         {
@@ -282,49 +329,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            int indexToShow = 1;
-            foreach (DataMergeDTO dataMergeDto in MergeCollection)
-            {
-                if (dataMergeDto.MergeType == "None" && dataMergeDto.IndexNumber == MergeCollection.Count &&
-                    dataMergeDto.InputVariable == string.Empty)
-                {
-                    continue;
-                }
-
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Merge" });
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataMergeDto.InputVariable, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "With" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = dataMergeDto.MergeType });
-                if (!string.IsNullOrEmpty(dataMergeDto.At))
-                {
-                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataMergeDto.At, dataList))
-                    {
-                        itemToAdd.Add(debugItemResult);
-                    }
-                }
-                results.Add(itemToAdd);
-                indexToShow++;
-            }
-            return results;
+        {           
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            foreach (IDebugItemResult debugItemResult in CreateDebugItems(Result, dataList))
-            {
-                itemToAdd.Add(debugItemResult);
-            }
-            results.Add(itemToAdd);
-            return results;
+        {            
+            return _debugOutputs;
         }
 
 

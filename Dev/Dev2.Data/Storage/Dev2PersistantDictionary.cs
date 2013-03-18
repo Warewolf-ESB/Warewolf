@@ -1,24 +1,29 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-//T-Ravis is cool ;D
+using Dev2.Data.Storage;
+
 namespace Dev2.Data.Binary_Objects
 {
     public class Dev2PersistantDictionary<T> where T : class
     {
         #region Fields
 
-        private readonly string _completeFilename = @"C:\persist.dic";
+        private const string _ext = ".r2d2";
+        private readonly string _completeFilename = Path.GetTempFileName();
         private FileStream _file;
-        private readonly ConcurrentDictionary<string, string> _lstIndexes = new ConcurrentDictionary<string, string>();
-        private object _opsLock = new object();
-        private static readonly long _compactThresholdSize = 500 * 1024 * 1024;
+        private BinaryDataListIndexStorage _lstIndexes;
+        private readonly object _opsLock = new object();
+        private const long _compactThresholdSize = 500 * 1024 * 1024;
         private long _lastCompactSize;
         private bool _hasBeenRemoveSinceLastCompact = false;
+
+        private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private const string _savePath = @"Dev2\DataListServer\";
+        private static readonly string _dataListPersistPath = Path.Combine(_rootPath, _savePath); 
 
         #endregion Fields
 
@@ -26,12 +31,34 @@ namespace Dev2.Data.Binary_Objects
 
         public Dev2PersistantDictionary(string filename)
         {
-            if(!string.IsNullOrEmpty(filename))
+            if (!string.IsNullOrEmpty(filename))
             {
-                _completeFilename = filename;
+                var fileName = Path.GetFileName(filename);
+                if (fileName != null)
+                {
+                    string fName = fileName.Replace(".tmp", _ext);
+                    _completeFilename = _dataListPersistPath + fName;
+
+                    _lstIndexes = new BinaryDataListIndexStorage(fName);
+                }
             }
 
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        }
+
+        public Dev2PersistantDictionary(string dataPath, string indexPath)
+        {
+
+            if (string.IsNullOrEmpty(dataPath) || string.IsNullOrEmpty(indexPath))
+            {
+                throw new Exception("Null Data and/or Index Path");
+            }
+
+            _lstIndexes = new BinaryDataListIndexStorage(indexPath);
+
+            _completeFilename = dataPath;
+
+            _file = new FileStream(dataPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
         }
 
         #endregion Constructors
@@ -46,7 +73,7 @@ namespace Dev2.Data.Binary_Objects
             }
             set
             {
-                if(value == null)
+                if (value == null)
                 {
                     throw new ArgumentNullException("value", "Cannot add null to dictionary");
                 }
@@ -54,19 +81,16 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        public KeyValuePair<string, T> this[int index]
-        {
-            get
-            {
-                var keyValuePair = _lstIndexes.ElementAt(index);
-                return new KeyValuePair<string, T>(keyValuePair.Key, Read(keyValuePair.Value));
-            }
-        }
-
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
         public int Count
         {
             get
@@ -75,6 +99,12 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
+        /// <summary>
+        /// Gets the keys.
+        /// </summary>
+        /// <value>
+        /// The keys.
+        /// </value>
         public ICollection<string> Keys
         {
             get
@@ -82,6 +112,22 @@ namespace Dev2.Data.Binary_Objects
                 return _lstIndexes.Keys;
             }
         }
+
+        /// <summary>
+        /// Gets the index file path.
+        /// </summary>
+        /// <value>
+        /// The index file path.
+        /// </value>
+        public string IndexFilePath { get { return _lstIndexes.IndexFilePath; } }
+
+        /// <summary>
+        /// Gets the data file path.
+        /// </summary>
+        /// <value>
+        /// The data file path.
+        /// </value>
+        public string DataFilePath { get { return _completeFilename; } }
 
         #endregion
 
@@ -98,8 +144,6 @@ namespace Dev2.Data.Binary_Objects
                     return null;
                 }
 
-                //string val = Encoding.UTF8.GetString(rawData);
-                //var convertFromJsonTo = ConvertFromJsonTo(val);
                 var fromBytes = ConvertFromBytes(rawData);
 
                 return fromBytes;
@@ -118,8 +162,6 @@ namespace Dev2.Data.Binary_Objects
                 long pos;
                 int len;
                 GetPositionLength(key, out pos, out len);
-
-                //long jumpTo = pos - 1 * len;
 
                 _file.Seek(pos, SeekOrigin.Begin);
                 var bytesRead = new byte[len];
@@ -157,33 +199,32 @@ namespace Dev2.Data.Binary_Objects
                         byte[] data = ReadBytes(key);
                         if (data != null && data.Length > 0)
                         {
-                            _lstIndexes[key] = tmpFileStream.Position + "|" + data.Length;
+                            _lstIndexes.AddIndex(key, tmpFileStream.Position, data.Length);
                             tmpFileStream.Write(data, 0, data.Length);
                         }
                         else
                         {
-                            string tmp;
-                            _lstIndexes.TryRemove(key, out tmp);
+                            _lstIndexes.RemoveIndex(key);
                         }
                     }
 
                     tmpFileStream.Close();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("Compacting data to the temp file failed.", e);
             }
 
             // Swap files
-            string backupPath = string.Format("{0}{1}",_completeFilename, ".bak");
+            string backupPath = string.Format("{0}{1}", _completeFilename, ".bak");
 
             try
             {
                 _file.Close();
                 _file.Dispose();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("Unable to close current file for compacting.", e);
             }
@@ -221,9 +262,9 @@ namespace Dev2.Data.Binary_Objects
         {
             BinaryFormatter bf = new BinaryFormatter();
             T convertFromBytes = null;
-            lock(_opsLock)
+            lock (_opsLock)
             {
-                using(MemoryStream ms = new MemoryStream(payload))
+                using (MemoryStream ms = new MemoryStream(payload))
                 {
 
                     ms.Position = 0;
@@ -231,7 +272,7 @@ namespace Dev2.Data.Binary_Objects
                     {
                         convertFromBytes = (T)bf.Deserialize(ms);
                     }
-                    catch(SerializationException e)
+                    catch (SerializationException e)
                     {
                         Console.WriteLine(e);
                     }
@@ -250,9 +291,9 @@ namespace Dev2.Data.Binary_Objects
             try
             {
                 bf.Serialize(ms, payload);
-                
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -263,14 +304,12 @@ namespace Dev2.Data.Binary_Objects
 
         private void GetPositionLength(string key, out long position, out int length)
         {
-            string tmp;
-            if (!_lstIndexes.TryGetValue(key, out tmp))
+            //string tmp;
+
+            if (!_lstIndexes.GetPositionLength(key, out position, out length))
             {
                 throw new Exception(string.Format("Key '{0}' doesn't exist in index.", key));
             }
-
-            position = Convert.ToInt64(tmp.Split(new[] { '|' })[0]);
-            length = Convert.ToInt32(tmp.Split(new[] { '|' })[1]);
         }
 
         #endregion
@@ -279,7 +318,7 @@ namespace Dev2.Data.Binary_Objects
 
         public void Add(string key, T objToAdd)
         {
-            lock(_opsLock)
+            lock (_opsLock)
             {
                 if (_file.Length - _lastCompactSize > _compactThresholdSize)
                 {
@@ -295,29 +334,19 @@ namespace Dev2.Data.Binary_Objects
                     ms.Close();
                 }
 
-                string tmp;
-                if(_lstIndexes.TryGetValue(key, out tmp))
-                {
-                    _lstIndexes[key] = _file.Position + "|" + data.Length;
-                }
-                else
-                {
-                    _lstIndexes.TryAdd(key, _file.Position + "|" + data.Length);
-                }
+                _lstIndexes.AddIndex(key, _file.Position, data.Length);
 
+                // ensure we write to the end of the log ;)
+                _file.Seek(0, SeekOrigin.End);
                 _file.Write(data, 0, data.Length);
             }
         }
 
         public void Remove(string key)
         {
-            lock(_opsLock)
+            lock (_opsLock)
             {
-                string tmp;
-                if (_lstIndexes.TryRemove(key, out tmp))
-                {
-                    _hasBeenRemoveSinceLastCompact = true;
-                }
+                _lstIndexes.RemoveIndex(key);
             }
         }
 
@@ -341,6 +370,9 @@ namespace Dev2.Data.Binary_Objects
             if (!disposing) return;
             _file.Close();
             _file.Dispose();
+            // clean up ;)
+            File.Delete(_completeFilename);
+            //_lstIndexes.Dispose();
         }
 
 

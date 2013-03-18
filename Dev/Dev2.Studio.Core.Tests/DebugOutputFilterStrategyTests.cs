@@ -190,7 +190,9 @@ namespace Dev2.Core.Tests
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesInputOnName_Expected_True()
         {
             var debugState = new DebugState();
-            debugState.Inputs.Add(new DebugItem { new DebugItemResult { Type = DebugItemResultType.Variable, Value = "cake" } });
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "cake" });
+            debugState.Inputs.Add(itemToAdd);
 
             const bool Expected = true;
             var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
@@ -202,7 +204,9 @@ namespace Dev2.Core.Tests
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesOuputOnValue_Expected_True()
         {
             var debugState = new DebugState();
-            debugState.Outputs.Add(new DebugItem { new DebugItemResult { Type = DebugItemResultType.Value, Value = "cake" } });
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "cake" });
+            debugState.Outputs.Add(itemToAdd);
 
             const bool Expected = true;
             var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");

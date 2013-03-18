@@ -440,6 +440,43 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;FileNames&gt;
+        ///		&lt;Name&gt;&lt;/Name&gt;		
+        ///	&lt;/FileNames&gt;	
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string DebugFileOpsDataListShape {
+            get {
+                return ResourceManager.GetString("DebugFileOpsDataListShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;FileNames&gt;
+        ///		&lt;Name&gt;C:\TestResults\testFile1.txt&lt;/Name&gt;		
+        ///	&lt;/FileNames&gt;
+        ///	&lt;FileNames&gt;
+        ///		&lt;Name&gt;C:\TestResults\testFile2.txt&lt;/Name&gt;		
+        ///	&lt;/FileNames&gt;
+        ///	&lt;FileNames&gt;
+        ///		&lt;Name&gt;C:\TestResults\testFile3.txt&lt;/Name&gt;		
+        ///	&lt;/FileNames&gt;
+        ///	&lt;FileNames&gt;
+        ///		&lt;Name&gt;C:\TestResults\testFile4.txt&lt;/Name&gt;		
+        ///	&lt;/FileNames&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string DebugFileOpsDataListWithData {
+            get {
+                return ResourceManager.GetString("DebugFileOpsDataListWithData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;root&gt;
         ///	&lt;recset1&gt;
         ///		&lt;field1&gt;&lt;/field1&gt;

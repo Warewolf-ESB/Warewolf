@@ -2,6 +2,7 @@
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -70,10 +71,11 @@ namespace Dev2.Data.Tests.Operations
             Guid exidx = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestStrings.ReplaceDataListWithData, TestStrings.ReplaceDataListShape, out errors);
             IDev2DataListUpsertPayloadBuilder<string> payloadBuilder = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             IDev2ReplaceOperation _replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
+            IBinaryDataListEntry entry;
             string expected = "World0";
             string expression = "[[results(*).resfield]]";
             int replaceCount;
-            payloadBuilder = _replaceOperation.Replace(exidx, expression, "hello", "World", false, payloadBuilder, out errors, out replaceCount);
+            payloadBuilder = _replaceOperation.Replace(exidx, expression, "hello", "World", false, payloadBuilder, out errors, out replaceCount,out entry);
 
             var frames = payloadBuilder.FetchFrames();
             var frame = frames[0].FetchNextFrameItem();
@@ -89,11 +91,11 @@ namespace Dev2.Data.Tests.Operations
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid exidx = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestStrings.ReplaceDataListWithData, TestStrings.ReplaceDataListShape, out errors);
             IDev2DataListUpsertPayloadBuilder<string> payloadBuilder = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-
+            IBinaryDataListEntry entry;
             IDev2ReplaceOperation _replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             string expression = "[[results(*).resfield]]";
             int replaceCount;
-            payloadBuilder = _replaceOperation.Replace(exidx, expression, "hello", "World", true, payloadBuilder, out errors, out replaceCount);
+            payloadBuilder = _replaceOperation.Replace(exidx, expression, "hello", "World", true, payloadBuilder, out errors, out replaceCount, out entry);
 
             Assert.AreEqual(0, replaceCount);
         }
@@ -105,11 +107,11 @@ namespace Dev2.Data.Tests.Operations
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid exidx = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestStrings.ReplaceDataListWithData, TestStrings.ReplaceDataListShape, out errors);
             IDev2DataListUpsertPayloadBuilder<string> payloadBuilder = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-
+            IBinaryDataListEntry entry;
             IDev2ReplaceOperation _replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             string expression = "[[scalar]]";
             int replaceCount;
-            payloadBuilder = _replaceOperation.Replace(exidx, expression, "test", "World", false, payloadBuilder, out errors, out replaceCount);
+            payloadBuilder = _replaceOperation.Replace(exidx, expression, "test", "World", false, payloadBuilder, out errors, out replaceCount,out entry);
 
             Assert.AreEqual(20, replaceCount);
         }

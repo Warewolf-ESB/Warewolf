@@ -4,8 +4,6 @@ using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
 using Dev2.PathOperations;
-using System.IO;
-using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -14,7 +12,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Internal Struct
 
-        private SBinaryDataListItem _internalObj ;
+        private SBinaryDataListItem _internalObj;
 
         private string _fileData;
         private string _filePath;
@@ -25,8 +23,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #region Properties
 
         // Properly return the data from the file system on demand
-        public string TheValue { 
-            
+        public string TheValue
+        {
+
             get
             {
                 if (string.IsNullOrEmpty(_fileData))
@@ -34,7 +33,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     // Use File Broker ;)
                     BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
                     IActivityIOOperationsEndPoint endPoint = bdlUtil.DeserializeDeferredItem<IActivityIOOperationsEndPoint>(_internalObj.TheValue);
-                    
+
                     IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                     _fileData = broker.Get(endPoint, false);
                 }
@@ -45,7 +44,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             set
             {
                 _fileData = value;
-            } 
+            }
         }
 
         public int ItemCollectionIndex { get { return _internalObj.ItemCollectionIndex; } private set { _internalObj.ItemCollectionIndex = value; } }
@@ -55,14 +54,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public string FieldName { get { return _internalObj.FieldName; } private set { _internalObj.FieldName = value; } }
 
 
-        public string DisplayValue { 
+        public string DisplayValue
+        {
             get
             {
                 if (_internalObj.ItemCollectionIndex >= 0 && _internalObj.DisplayValue.Length < 1)
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
-                
+
                 if (_internalObj.DisplayValue == null)
                 {
                     return "null";
@@ -125,7 +125,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if (_internalObj.ItemCollectionIndex > 0)
             {
-                result = new BinaryDataListFileSystemItem(_internalObj.TheValue, _filePath , _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
+                result = new BinaryDataListFileSystemItem(_internalObj.TheValue, _filePath, _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
             }
             else
             {

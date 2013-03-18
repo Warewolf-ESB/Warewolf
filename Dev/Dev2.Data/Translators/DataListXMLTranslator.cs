@@ -61,49 +61,53 @@ namespace Dev2.Server.DataList.Translators
                         while (idxItr.HasMore() && !entry.IsEmpty())
                         {
 
-                            i = idxItr.FetchNextIndex();
-
-                            IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            errors.AddError(error);
-                            result.Append("<");
-                            result.Append(entry.Namespace);
-                            result.Append(">");
-
-                            foreach (IBinaryDataListItem col in rowData)
+                            while (idxItr.HasMore())
                             {
-                                string fName = col.FieldName;
 
+                                i = idxItr.FetchNextIndex();
+
+                                IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
+                                errors.AddError(error);
                                 result.Append("<");
-                                result.Append(fName);
+                                result.Append(entry.Namespace);
                                 result.Append(">");
 
-                                // Travis.Frisinger 04.02.2013
-                                if (!col.IsDeferredRead)
+                                foreach (IBinaryDataListItem col in rowData)
                                 {
-                                    result.Append(CleanForEmit(col.TheValue));
-                                }
-                                else
-                                {
-                                    // deferred read, just print the location
-                                    if (!string.IsNullOrEmpty(col.TheValue))
+                                    string fName = col.FieldName;
+
+                                    result.Append("<");
+                                    result.Append(fName);
+                                    result.Append(">");
+
+                                    // Travis.Frisinger 04.02.2013
+                                    if (!col.IsDeferredRead)
                                     {
-                                        result.Append(col.FetchDeferredLocation());
+                                        result.Append(CleanForEmit(col.TheValue));
                                     }
                                     else
                                     {
-                                        result.Append(string.Empty);
+                                        // deferred read, just print the location
+                                        if (!string.IsNullOrEmpty(col.TheValue))
+                                        {
+                                            result.Append(col.FetchDeferredLocation());
+                                        }
+                                        else
+                                        {
+                                            result.Append(string.Empty);
+                                        }
+
+
                                     }
-
-
+                                    result.Append("</");
+                                    result.Append(fName);
+                                    result.Append(">");
                                 }
+
                                 result.Append("</");
-                                result.Append(fName);
+                                result.Append(entry.Namespace);
                                 result.Append(">");
                             }
-
-                            result.Append("</");
-                            result.Append(entry.Namespace);
-                            result.Append(">");
                         }
                     }
                     else
@@ -185,6 +189,7 @@ namespace Dev2.Server.DataList.Translators
                             toLoad = "<root>" + toLoad + "</root>";
                             xDoc.LoadXml(toLoad);
                         }
+
                         if (xDoc.DocumentElement != null)
                         {
                             XmlNodeList children = xDoc.DocumentElement.ChildNodes;
@@ -289,7 +294,7 @@ namespace Dev2.Server.DataList.Translators
                     }
                 }
             }
-            return result;
+            return result;    
         }
 
         #region Private Methods
@@ -322,10 +327,10 @@ namespace Dev2.Server.DataList.Translators
                 xDoc.LoadXml(shape);
                 if (xDoc.DocumentElement != null)
                 {
-                    XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                    error = string.Empty;
+                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                error = string.Empty;
 
-                    HashSet<string> procssesNamespaces = new HashSet<string>();
+                HashSet<string> procssesNamespaces = new HashSet<string>();
 
                     result = Dev2BinaryDataListFactory.CreateDataList();
 
@@ -350,7 +355,7 @@ namespace Dev2.Server.DataList.Translators
                                             {
                                                 descAttribute = subc.Attributes["Description"];
                                             }
-
+                                            
                                             if (descAttribute != null)
                                             {
                                                 cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
@@ -403,7 +408,7 @@ namespace Dev2.Server.DataList.Translators
                             }
                         }
                     }
-
+                    
                 }
 
                 // Build System Tag Shape ;)
@@ -411,10 +416,10 @@ namespace Dev2.Server.DataList.Translators
                 {
                     if (result != null)
                     {
-                        result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace,
-                                                    TranslationConstants.systemTags.GetValue(i).ToString(),
-                                                    string.Empty,
-                                                    true,
+                        result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, 
+                                                    TranslationConstants.systemTags.GetValue(i).ToString(), 
+                                                    string.Empty, 
+                                                    true, 
                                                     out error);
                     }
                 }

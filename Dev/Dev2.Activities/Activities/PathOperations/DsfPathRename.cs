@@ -64,6 +64,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
+            if (dataObject.IsDebug)
+            {
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
+                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
+                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+            }
+
             while (colItr.HasMoreData())
             {
 

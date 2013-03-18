@@ -14,14 +14,14 @@ using System.Threading;
 namespace Dev2.Data.Binary_Objects
 {
     [Serializable]
-    public class Dev2BinaryDataListStorage : IDisposable
+    public class BinaryDataListStorage : IDisposable
     {
 
         [NonSerialized]
         static readonly NameValueCollection MemoryCacheConfiguration = new NameValueCollection { { "CacheMemoryLimit", ConfigurationManager.AppSettings["DataListLvl2CacheCapacity"] }, { "PollingInterval", ConfigurationManager.AppSettings["DataListLvl2CachePollInterval"] } };
 
         [NonSerialized]
-        static readonly MemoryCache LevelTwoCache = new MemoryCache("DataList",MemoryCacheConfiguration);
+        static readonly MemoryCache LevelTwoCache = new MemoryCache("DataList", MemoryCacheConfiguration);
 
         [NonSerialized]
         static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicyDataList(RemovedCallback);
@@ -50,7 +50,7 @@ namespace Dev2.Data.Binary_Objects
         //private static object _lockLvl1Guard = new object();
         //private static object _lockLvl2Guard = new object();
         private static bool _backgroundWorkerInited = false;
-        
+
         readonly String _uniqueIdentifierGuid;
         bool _disposed = false;
         int _key = Int32.MaxValue;
@@ -59,7 +59,7 @@ namespace Dev2.Data.Binary_Objects
         public int ColumnSize { get; set; }
 
         // New Row Based Junk
-        public Dev2BinaryDataListStorage(string uniqueIndex, Guid uniqueIdentifier)
+        public BinaryDataListStorage(string uniqueIndex, Guid uniqueIdentifier)
         {
             if (!_backgroundWorkerInited)
             {
@@ -98,12 +98,12 @@ namespace Dev2.Data.Binary_Objects
                     IBinaryDataListRow list;
 
                     // ensure it is in level 2 before it is removed from level 1 so we only need level1 lock ;)
-                    if(LevelOneCache.TryGetValue(key, out list))
+                    if (LevelOneCache.TryGetValue(key, out list))
                     {
                         LevelTwoCache.Set(key, list, CacheItemPolicy);
                         LevelOneCache.TryRemove(key, out list);
                     }
- 
+
                 }
                 _level1Lock.ExitWriteLock();
             }
@@ -126,7 +126,7 @@ namespace Dev2.Data.Binary_Objects
             get
             {
                 IBinaryDataListRow v;
-                TryGetValue(key, ColumnSize, out v); 
+                TryGetValue(key, ColumnSize, out v);
                 return v;
             }
             set
@@ -143,11 +143,16 @@ namespace Dev2.Data.Binary_Objects
                     _level2Lock.ExitWriteLock();
                 }
 
-                LevelThreeCache.Remove(uniqueKey);
+                // only if there is data to clear....
+                if (ItemsAddedToLevelThreeCache)
+                {
+                    LevelThreeCache.Remove(uniqueKey);
+                }
 
-                //Remove(uniqueKey); // ensure we clear it out of the other caches ;)
+
+                _populatedKeys.SetMaxValue(key);    
+
                 
-                _populatedKeys.SetMaxValue(key);
             }
         }
 
@@ -175,16 +180,16 @@ namespace Dev2.Data.Binary_Objects
         static void RemovedCallback(CacheEntryRemovedArguments arguments)
         {
             _level2Lock.EnterWriteLock();
-                CacheEntryRemovedReason cacheEntryRemovedReason = arguments.RemovedReason;
-                bool addEntry = cacheEntryRemovedReason == CacheEntryRemovedReason.Evicted;
-                if(addEntry)
-                {
-                    var cacheItem = arguments.CacheItem;
-                    var value = cacheItem.Value;
-                    var key = cacheItem.Key;
-                    LevelThreeCache.Add(key, (IBinaryDataListRow) value);
-                    ItemsAddedToLevelThreeCache = true;
-                }
+            CacheEntryRemovedReason cacheEntryRemovedReason = arguments.RemovedReason;
+            bool addEntry = cacheEntryRemovedReason == CacheEntryRemovedReason.Evicted;
+            if (addEntry)
+            {
+                var cacheItem = arguments.CacheItem;
+                var value = cacheItem.Value;
+                var key = cacheItem.Key;
+                LevelThreeCache.Add(key, (IBinaryDataListRow)value);
+                ItemsAddedToLevelThreeCache = true;
+            }
             _level2Lock.ExitWriteLock();
         }
 
@@ -192,21 +197,21 @@ namespace Dev2.Data.Binary_Objects
         {
             bool r = false;
             string uniqueKey = GetUniqueKey(key);
-            if(TryGetValueOutOfCaches(out value, uniqueKey))
+            if (TryGetValueOutOfCaches(out value, uniqueKey))
             {
                 r = true;
             }
 
-            if(value == null)
+            if (value == null)
             {
-                value = new BinaryDataListRow(missSize); 
+                value = new BinaryDataListRow(missSize);
                 IBinaryDataListRow items = value;
                 AddToLevelOneCache(uniqueKey, items);
                 r = true;
             }
             else
             {
-                if(!_populatedKeys.Contains(key))
+                if (!_populatedKeys.Contains(key))
                 {
                     // Naughty, we need to push the key, not blank it?!?!
                     _populatedKeys.SetMaxValue(key);
@@ -218,10 +223,10 @@ namespace Dev2.Data.Binary_Objects
         static void AddToLevelOneCache(string uniqueKey, IBinaryDataListRow row)
         {
 
-            if(!row.IsEmpty)
+            if (!row.IsEmpty)
             {
                 _level1Lock.EnterWriteLock();
-                    LevelOneCache.AddOrUpdate(uniqueKey, row, (s, r) => row);
+                LevelOneCache.AddOrUpdate(uniqueKey, row, (s, r) => row);
                 _level1Lock.ExitWriteLock();
                 _keepRunning.Set();
             }
@@ -233,19 +238,19 @@ namespace Dev2.Data.Binary_Objects
 
         bool TryGetValueOutOfCaches(out IBinaryDataListRow value, string uniqueKey)
         {
-            if(TryGetValueFromLevelOneCache(uniqueKey, out value))
+            if (TryGetValueFromLevelOneCache(uniqueKey, out value))
             {
                 return true;
             }
 
-            if(TryGetValueFromLevelTwoCache(uniqueKey, out value))
+            if (TryGetValueFromLevelTwoCache(uniqueKey, out value))
             {
                 return true;
             }
 
-            if(ItemsAddedToLevelThreeCache)
+            if (ItemsAddedToLevelThreeCache)
             {
-                if(TryGetValueFromLevelThreeCache(uniqueKey, out value))
+                if (TryGetValueFromLevelThreeCache(uniqueKey, out value))
                 {
                     return true;
                 }
@@ -264,7 +269,7 @@ namespace Dev2.Data.Binary_Objects
         bool TryGetValueFromLevelTwoCache(string uniqueKey, out IBinaryDataListRow value)
         {
             _level2Lock.EnterReadLock();
-                value = (IBinaryDataListRow)LevelTwoCache.Get(uniqueKey);
+            value = (IBinaryDataListRow)LevelTwoCache.Get(uniqueKey);
             _level2Lock.ExitReadLock();
 
             return value != null;
@@ -275,7 +280,7 @@ namespace Dev2.Data.Binary_Objects
             bool result = false;
 
             _level1Lock.EnterReadLock();
-                result = LevelOneCache.TryGetValue(uniqueKey, out value);
+            result = LevelOneCache.TryGetValue(uniqueKey, out value);
             _level1Lock.ExitReadLock();
 
             return result;
@@ -303,13 +308,13 @@ namespace Dev2.Data.Binary_Objects
         public static bool Remove(string uniqueKey)
         {
             IBinaryDataListRow list;
-            
+
             _level1Lock.EnterWriteLock();
-                LevelOneCache.TryRemove(uniqueKey, out list);
+            LevelOneCache.TryRemove(uniqueKey, out list);
             _level1Lock.ExitWriteLock();
 
             _level2Lock.EnterWriteLock();
-                LevelTwoCache.Remove(uniqueKey);
+            LevelTwoCache.Remove(uniqueKey);
             _level2Lock.ExitWriteLock();
 
             if (ItemsAddedToLevelThreeCache)
@@ -338,7 +343,7 @@ namespace Dev2.Data.Binary_Objects
             GC.SuppressFinalize(this);
         }
 
-        ~Dev2BinaryDataListStorage()
+        ~BinaryDataListStorage()
         {
             Dispose(false);
         }
@@ -349,7 +354,7 @@ namespace Dev2.Data.Binary_Objects
             {
                 return;
             }
-            
+
             _disposed = true;
 
             if (!disposing)
@@ -375,15 +380,21 @@ namespace Dev2.Data.Binary_Objects
 
         void DisposeLevelThreeCache()
         {
-            if(LevelThreeCache != null)
+            if (LevelThreeCache != null)
             {
                 RemoveFromLevelThreeCache();
+            }
+
+            // ensure we clean up file resources ;)
+            if (LevelThreeCache != null)
+            {
+                LevelThreeCache.Dispose();
             }
         }
 
         void DisposeMemoryCache()
         {
-            if(LevelTwoCache != null)
+            if (LevelTwoCache != null)
             {
                 RemoveFromLevelTwoCache();
             }
@@ -391,7 +402,7 @@ namespace Dev2.Data.Binary_Objects
 
         static void RemoveCachePolicyEvent()
         {
-            if(CacheItemPolicy == null) return;
+            if (CacheItemPolicy == null) return;
             //CacheItemPolicy.RemovedCallback -= RemovedCallback;
         }
 
@@ -406,17 +417,17 @@ namespace Dev2.Data.Binary_Objects
 
         void RemoveFromLevelOneCache()
         {
-                IEnumerable<string> keys = LevelOneCache.Keys
-                                                        .Where(key =>
-                                                               key.Contains(_uniqueIndentifier) );
+            IEnumerable<string> keys = LevelOneCache.Keys
+                                                    .Where(key =>
+                                                           key.Contains(_uniqueIndentifier));
 
-                foreach (string key in keys)
-                {
-                    IBinaryDataListRow row;
-                    LevelOneCache.TryRemove(key, out row);
-                }
-                
-        }      
+            foreach (string key in keys)
+            {
+                IBinaryDataListRow row;
+                LevelOneCache.TryRemove(key, out row);
+            }
+
+        }
         void RemoveFromLevelTwoCache()
         {
             IEnumerable<string> keys =
@@ -429,7 +440,6 @@ namespace Dev2.Data.Binary_Objects
             {
                 LevelTwoCache.Remove(key);
             }
-            
         }
 
         void RemoveFromLevelThreeCache()
@@ -445,6 +455,8 @@ namespace Dev2.Data.Binary_Objects
                     LevelThreeCache.Remove(key);
                 }
             }
+
+            //LevelThreeCache.Dispose();
         }
     }
 

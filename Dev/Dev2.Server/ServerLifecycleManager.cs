@@ -1608,10 +1608,10 @@ namespace Unlimited.Applications.DynamicServicesHost
             Write("Starting DataList Server...  ");
 
             DataListFactory.CreateServerDataListCompiler();
-            // Now bootstrap the Dev2BinaryDataListStorage object since it can be silly ;(
-            Dev2BinaryDataListStorage binaryDataListStorage = new Dev2BinaryDataListStorage(GlobalConstants.NullEntryNamespace, Guid.NewGuid());
-            Thread.Sleep(1500);
-            binaryDataListStorage.Dispose();
+            // Now bootstrap the BinaryDataListStorage object since it can be silly ;(
+            //BinaryDataListStorage binaryDataListStorage = new BinaryDataListStorage(GlobalConstants.NullEntryNamespace, Guid.NewGuid());
+            //Thread.Sleep(1500);
+            //binaryDataListStorage.Dispose();
 
             Write("done.");
             WriteLine("");

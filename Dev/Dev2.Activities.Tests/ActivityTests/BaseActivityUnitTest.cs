@@ -127,7 +127,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(DsfDataObject dataObject = null)
+        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -147,7 +147,7 @@ namespace ActivityUnitTests
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
                 if(dataObject != null)
                 {
-                    dataObject.DataListID = ExecutionID;
+                    dataObject.DataListID = ExecutionID;                    
                 }
                 
             }
@@ -169,11 +169,13 @@ namespace ActivityUnitTests
                     ServerID = Guid.NewGuid()
                 };
             }
+            dataObject.IsDebug = isDebug;
 
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);
+            
 
             return dataObject;
         }
@@ -245,8 +247,9 @@ namespace ActivityUnitTests
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+            
+            ExecuteProcess(null,true);
             inputResults = activity.GetDebugInputs(dl);
-            ExecuteProcess();
             outputResults = activity.GetDebugOutputs(dl);
         }
 
@@ -265,8 +268,64 @@ namespace ActivityUnitTests
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+            ExecuteProcess(null, true);
             inputResults = activity.GetDebugInputs(dl);
             outputResults = activity.GetDebugOutputs(dl);
+        }
+
+        public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData,string recsetName,string fieldName,out string dataListShape,out string dataListWithData)
+        {
+            bool result = false;
+
+            dataListShape = "<ADL>";
+            dataListWithData = "<ADL>";
+            #region Create DataList With Data
+            
+            foreach (string rowData in recsetData)
+            {
+                dataListWithData = string.Concat(dataListWithData, "<", recsetName, ">", "<", fieldName, ">", rowData, "</", fieldName, ">", "</", recsetName, ">");
+            }
+            dataListWithData = string.Concat(dataListWithData, "<res></res>", "</ADL>");
+            
+            #endregion
+
+            #region Create Shape
+
+            dataListShape = string.Concat(dataListShape, "<", recsetName, ">", "<", fieldName, ">", "</", fieldName, ">", "</", recsetName, ">", "<res></res></ADL>");
+
+            #endregion
+
+            return result;
+        }
+
+        public bool CreateDataListWithMultipleRecsetAndCreateShape(List<List<string>> recsetData, List<string> recsetName, List<string> fieldName, out string dataListShape, out string dataListWithData)
+        {
+            bool result = false;
+
+            dataListShape = "<ADL>";
+            dataListWithData = "<ADL>";
+            #region Create DataList With Data
+
+            for(int i = 0; i < recsetData.Count; i++)
+            {
+                foreach (string rowData in recsetData[i])
+                {
+                    dataListWithData = string.Concat(dataListWithData, "<", recsetName[i], ">", "<", fieldName[i], ">", rowData, "</", fieldName[i], ">", "</", recsetName[i], ">");
+                }
+                dataListShape = string.Concat(dataListShape, "<", recsetName[i], ">", "<", fieldName[i], ">", "</", fieldName[i], ">", "</", recsetName[i], ">");
+            }
+            
+            dataListWithData = string.Concat(dataListWithData, "<res></res>", "</ADL>");
+
+            #endregion
+
+            #region Create Shape
+
+            dataListShape = string.Concat(dataListShape, "<res></res></ADL>");
+
+            #endregion
+
+            return result;
         }
         #endregion
 

@@ -1924,9 +1924,17 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+        //PBI 8735 - Massimo.Guerrera - Debug items for the multiassign
+        private List<KeyValuePair<string, IBinaryDataListEntry>> debugValues = new List<KeyValuePair<string, IBinaryDataListEntry>>();
+
+        public List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugItems()
+        {
+            return debugValues;
+        }
 
         private Guid Upsert<T>(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<T> payload, out ErrorResultTO errors)
         {
+            debugValues = new List<KeyValuePair<string,IBinaryDataListEntry>>();
             errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Dev2RecordsetIndexScope rsis = new Dev2RecordsetIndexScope();
@@ -1947,6 +1955,7 @@ namespace Dev2.Server.Datalist
                 // Fetch will force a commit if any frames are hanging ;)
                 foreach (IDataListPayloadIterationFrame<T> f in payload.FetchFrames())
                 {
+                    IBinaryDataListEntry entryUsed = null;
                     // iterate per frame fetching frame items
                     while (f.HasData())
                     {
@@ -2242,6 +2251,7 @@ namespace Dev2.Server.Datalist
                                     }
                                 }
                             }
+                            entryUsed = evaluatedValue;
                         }
                         else
                         {
@@ -2280,6 +2290,7 @@ namespace Dev2.Server.Datalist
                                         theEntry.TryPutScalar(evalautedValue.FetchScalar(), out error);
                                     }
                                 }
+                                entryUsed = theEntry;
                             }
                             else
                             {
@@ -2287,13 +2298,12 @@ namespace Dev2.Server.Datalist
                                 allErrors.AddError("Invalid Region " + frameItem.Expression);
                             }
                         }
+                        debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression,entryUsed));
                     }
 
                     // move index values
-                    rsis.MoveIndexesToNextPosition();
-                }
-
-
+                    rsis.MoveIndexesToNextPosition();                
+                }                
 
                 // Now flush all the entries to the bdl for this iteration ;)
                 if (TryPushDataList(bdl, out error))

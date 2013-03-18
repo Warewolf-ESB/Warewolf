@@ -7,11 +7,13 @@ using System.IO;
 using System.Management;
 using System.Text;
 using System.Threading;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
+using Dev2.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using ThreadState = System.Diagnostics.ThreadState;
@@ -20,9 +22,15 @@ namespace Dev2.Activities
 {
     public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>
     {
+        #region Fields
+
         string _commandFileName;
         string _commandResult;
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
 
+        #endregion
+       
         /// <summary>
         /// Gets or sets the name of the recordset.
         /// </summary>  
@@ -80,6 +88,10 @@ namespace Dev2.Activities
             try
             {
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, CommandFileName, false, out errors);
+                if(dataObject.IsDebug)
+                {
+                    AddDebugInputItem(CommandFileName, "Command to execute", expressionsEntry, dlID);
+                }
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -102,7 +114,12 @@ namespace Dev2.Activities
                             if(!ExecuteProcess(val, out errorReader, out outputReader)) return;
 
                             allErrors.AddError(errorReader.ReadToEnd());
-                            toUpsert.Add(CommandResult, outputReader.ReadToEnd());
+                            string readValue = outputReader.ReadToEnd();
+                            toUpsert.Add(CommandResult, readValue);
+                            if(dataObject.IsDebug)
+                            {
+                                AddDebugOutputItem(CommandResult, readValue, dlID);
+                            }
                             errorReader.Close();
                             outputReader.Close();
 
@@ -120,7 +137,7 @@ namespace Dev2.Activities
                             }
                             else
                             {
-                                compiler.Upsert(dlID, toUpsert, out errors);
+                                compiler.Upsert(dlID, toUpsert, out errors);                                
                                 allErrors.MergeErrors(errors);
                             }
                         }
@@ -139,6 +156,10 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                }
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
                 }
             }
            
@@ -282,37 +303,41 @@ namespace Dev2.Activities
         #region Overrides of DsfNativeActivity<string>
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Command to execute" });
-            foreach (IDebugItemResult debugItemResult in CreateDebugItems(CommandFileName, dataList))
-            {
-                itemToAdd.Add(debugItemResult);
-            }
-            result.Add(itemToAdd);
-            return result;
+        {            
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        {            
+            return _debugOutputs;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            var result = new List<IDebugItem>();
-
-            int indexToShow = 1;
-
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
-            if(!string.IsNullOrEmpty(CommandResult))
-            {
-                foreach(IDebugItemResult debugItemResult in CreateDebugItems(CommandResult, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-            }
-            result.Add(itemToAdd);
-            indexToShow++;
 
-            return result;
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
         }
 
         #endregion

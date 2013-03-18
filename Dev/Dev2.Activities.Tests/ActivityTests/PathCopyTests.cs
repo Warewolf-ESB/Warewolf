@@ -1,4 +1,7 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
+﻿using System;
+using System.IO;
+using System.Threading;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,6 +16,7 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class PathCopyTests : BaseActivityUnitTest
     {
+        static TestContext myTestContext;
         public PathCopyTests()
         {
             //
@@ -43,8 +47,11 @@ namespace ActivityUnitTests.ActivityTests
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            myTestContext = testContext;    
+        }
         //
         // Use ClassCleanup to run code after all tests in a class have run
         // [ClassCleanup()]
@@ -58,6 +65,18 @@ namespace ActivityUnitTests.ActivityTests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+        object _testGuard = new object();
+        [TestInitialize]
+        public void TestInit()
+        {
+            Monitor.Enter(_testGuard);
+        }
+
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Monitor.Exit(_testGuard);
+        }
         #endregion
 
         #region GetDebugInputs/Outputs
@@ -70,7 +89,8 @@ namespace ActivityUnitTests.ActivityTests
         public void Copy_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            DsfPathCopy act = new DsfPathCopy { InputPath = "[[CompanyName]]", OutputPath = "[[CompanyName]]", Result = "[[CompanyName]]" };
+            File.WriteAllText(Path.Combine(myTestContext.TestRunDirectory,"Dev2.txt"),"TestData");
+            DsfPathCopy act = new DsfPathCopy { InputPath = string.Concat(myTestContext.TestRunDirectory, "\\", "[[CompanyName]].txt"), OutputPath = string.Concat(myTestContext.TestRunDirectory, "\\", "[[CompanyName]]2.txt"), Result = "[[CompanyName]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
@@ -78,16 +98,14 @@ namespace ActivityUnitTests.ActivityTests
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
-            Assert.AreEqual(6, inRes.Count);
-            Assert.AreEqual(1, inRes[0].Count);
-            Assert.AreEqual(4, inRes[1].Count);
-            Assert.AreEqual(4, inRes[2].Count);
-            Assert.AreEqual(1, inRes[3].Count);
-            Assert.AreEqual(1, inRes[4].Count);
-            Assert.AreEqual(1, inRes[5].Count);
+            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);            
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         /// <summary>
@@ -98,24 +116,40 @@ namespace ActivityUnitTests.ActivityTests
         public void Copy_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            DsfPathCopy act = new DsfPathCopy { InputPath = "[[Numeric(*).num]]", OutputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
+            List<string> fileNames = new List<string>();
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+
+            foreach(string fileName in fileNames)
+            {
+                File.WriteAllText(fileName, "TestData");
+            }
+
+            string dataListWithData;
+            string dataListShape;
+
+            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
+            DsfPathCopy act = new DsfPathCopy { InputPath = "[[FileNames(*).Name]]", OutputPath = string.Concat(myTestContext.TestRunDirectory), Result = "[[res]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckPathOperationActivityDebugInputOutput(act, dataListShape,
+                                                                dataListWithData, out inRes, out outRes);
 
-            Assert.AreEqual(6, inRes.Count);
-            Assert.AreEqual(1, inRes[0].Count);
-            Assert.AreEqual(31, inRes[1].Count);
-            Assert.AreEqual(31, inRes[2].Count);
-            Assert.AreEqual(1, inRes[3].Count);
-            Assert.AreEqual(1, inRes[4].Count);
-            Assert.AreEqual(1, inRes[5].Count);
+            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);            
 
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(4, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual(3, outRes[2].FetchResultsList().Count);
+            Assert.AreEqual(3, outRes[3].FetchResultsList().Count);
         }
 
         #endregion

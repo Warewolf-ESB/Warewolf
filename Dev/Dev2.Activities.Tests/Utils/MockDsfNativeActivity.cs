@@ -50,8 +50,9 @@ namespace Dev2.Tests.Activities.Utils
             if (state == null)
             {
                 IsDebugStateNull = true;
-            }
+            }         
             base.OnExecutedCompleted(context, hasError, isResumable);
+            
         }
 
         #endregion

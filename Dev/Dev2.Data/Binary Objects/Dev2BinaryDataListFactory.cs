@@ -108,7 +108,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         public static IBinaryDataListItem CreateFileSystemItem(string base64Obj, string fileLoc, string ns, string field, int idx)
         {
-            return new BinaryDataListFileSystemItem(base64Obj,fileLoc, ns, field, idx);
+            return new BinaryDataListFileSystemItem(base64Obj, fileLoc, ns, field, idx);
         }
 
         /// <summary>
@@ -118,9 +118,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="fileLoc">The file loc.</param>
         /// <param name="field">The field.</param>
         /// <returns></returns>
-        public static IBinaryDataListItem CreateFileSystemItem(string base64Obj, string fileLoc,string field)
+        public static IBinaryDataListItem CreateFileSystemItem(string base64Obj, string fileLoc, string field)
         {
-            return new BinaryDataListFileSystemItem(base64Obj,fileLoc, field);
+            return new BinaryDataListFileSystemItem(base64Obj, fileLoc, field);
         }
 
 
@@ -177,9 +177,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="desc">The desc.</param>
         /// <param name="dataListKey">The parent ID of the DataList used as part of the key for the items.</param>
         /// <returns></returns>
-        public static IBinaryDataListEntry CreateEntry(string field, string desc,Guid dataListKey)
+        public static IBinaryDataListEntry CreateEntry(string field, string desc, Guid dataListKey)
         {
-            return new BinaryDataListEntry(field, desc,dataListKey);
+            return new BinaryDataListEntry(field, desc, dataListKey);
         }
 
     }

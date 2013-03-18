@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Threading;
+using Dev2;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -104,7 +105,8 @@ namespace ActivityUnitTests.ActivityTest
         // Use TestCleanup to run code after each test has run
         // [TestCleanup()]
         // public void MyTestCleanup() { }
-        //
+        //       
+
         #endregion
 
         #region MultiAssign Functionality Tests
@@ -1193,6 +1195,9 @@ namespace ActivityUnitTests.ActivityTest
             fieldsCollection.Add(new ActivityDTO("[[CompanyName]]", "The Unlimited", 1));
             fieldsCollection.Add(new ActivityDTO("[[Customers(1).FirstName]]", "TestName", 2));
             fieldsCollection.Add(new ActivityDTO("[[Numeric(*).num]]", "123456789", 3));
+            fieldsCollection.Add(new ActivityDTO("[[CompanyName]]", "[[Customers(1).FirstName]]", 4));
+            fieldsCollection.Add(new ActivityDTO("[[Numeric(2).num]]", "[[CompanyName]]", 5));
+            fieldsCollection.Add(new ActivityDTO("[[Numeric(3).num]]", "@Host", 6));
             DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             IList<IDebugItem> inRes;
@@ -1203,10 +1208,13 @@ namespace ActivityUnitTests.ActivityTest
 
             Assert.AreEqual(0, inRes.Count);
 
-            Assert.AreEqual(3, outRes.Count);
-            Assert.AreEqual(4, outRes[0].Count);
-            Assert.AreEqual(4, outRes[1].Count);
-            Assert.AreEqual(4, outRes[2].Count);
+            Assert.AreEqual(6, outRes.Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(4, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual(4, outRes[2].FetchResultsList().Count);
+            Assert.AreEqual(6, outRes[3].FetchResultsList().Count);
+            Assert.AreEqual(6, outRes[4].FetchResultsList().Count);
+            Assert.AreEqual(6, outRes[5].FetchResultsList().Count);
         }
 
         #endregion

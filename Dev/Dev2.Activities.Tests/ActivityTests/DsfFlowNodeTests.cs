@@ -120,11 +120,11 @@ namespace ActivityUnitTests.ActivityTests
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(3, inRes[0].Count);
-            Assert.AreEqual(3, inRes[1].Count);
+            Assert.AreEqual(3, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(3, inRes[1].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(1, outRes[0].Count);
+            Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
         }
 
         #endregion

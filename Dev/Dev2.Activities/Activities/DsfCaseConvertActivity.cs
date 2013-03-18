@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Converters;
@@ -13,13 +14,20 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfCaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
+
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+        private int _indexCounter = 1;
+
+        #endregion
 
         #region Properties
 
@@ -53,6 +61,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
+            _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -81,6 +92,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
                     allErrors.MergeErrors(errors);
 
+                    if (dataObject.IsDebug)
+                    {
+                        AddDebugInputItem(item.StringToConvert, tmp, executionId, item.ConvertType);
+                    }
 
                     if (tmp != null)
                     {
@@ -105,7 +120,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = item.Result;
                                 }
                                 toUpsert.Add(expression, res.TheValue);
-
+                                if (dataObject.IsDebug)
+                                {
+                                    AddDebugOutputItem(expression, res.TheValue, executionId);
+                                }
                             }
                             indexToUpsertTo++;
                         }
@@ -125,10 +143,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+                if (dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
         }
 
         #region Private Methods
+
+        private void AddDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId,string convertType)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Convert" });
+
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));     
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "To" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = convertType });
+
+            _debugInputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
 
         private void CleanArgs()
         {
@@ -241,48 +285,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            int indexCounter = 1;
-            foreach (CaseConvertTO caseConvertTo in ConvertCollection.Where(c => !string.IsNullOrEmpty(c.StringToConvert)))
-            {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Convert" });
-
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(caseConvertTo.StringToConvert, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "To" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = caseConvertTo.ConvertType });
-
-                results.Add(itemToAdd);
-                indexCounter++;
-            }
-
-            return results;
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            int indexCounter = 1;
-            foreach (CaseConvertTO caseConvertTo in ConvertCollection)
-            {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
-
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(caseConvertTo.Result, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                results.Add(itemToAdd);
-                indexCounter++;
-            }
-
-            return results;
+        {           
+            return _debugOutputs;
         }
 
 

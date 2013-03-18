@@ -27,10 +27,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public IList<IDebugItem> GetDebugOutputs()
         {
-            return new List<IDebugItem>
-            {
-                new DebugItem{ new DebugItemResult { Type = DebugItemResultType.Value, Value = Text }}
-            };
+            IList<IDebugItem> result = new List<IDebugItem>();
+            DebugItem itemToAdd = new DebugItem();            
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Text });
+            result.Add(itemToAdd);
+            return result;
         }
 
         #endregion Get Inputs/Outputs

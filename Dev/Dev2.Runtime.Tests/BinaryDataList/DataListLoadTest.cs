@@ -100,6 +100,9 @@ namespace Unlimited.UnitTest.Framework
 
             }
 
+
+            dl1.Dispose();
+
             DateTime end1 = DateTime.Now;
 
             long ticks = (end1.Ticks - start1.Ticks);
@@ -195,7 +198,7 @@ namespace Unlimited.UnitTest.Framework
 
             dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
  
-                DateTime start1 = DateTime.Now;
+            DateTime start1 = DateTime.Now;
             for (int i = 0; i < runs; i++)
                 {
                     dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);

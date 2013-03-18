@@ -20,9 +20,10 @@ namespace Dev2.Tests.Diagnostics
         public void Constructor_With_Array_Expected_InitializesWithArray()
         {
             var result = new DebugItemResult { GroupName = "Hello", Value = "world" };
-            var item = new DebugItem { result };
-            Assert.AreEqual(1, item.Count);
-            Assert.AreSame(result, item[0]);
+            var item = new DebugItem();
+            item.Add(result);
+            Assert.AreEqual(1, item.FetchResultsList().Count);
+            Assert.AreSame(result, item.FetchResultsList()[0]);
         }
 
         #endregion
@@ -32,10 +33,8 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         public void Contains_With_NullFilter_Expected_ReturnsInstance()
         {
-            var item = new DebugItem
-            {
-                new DebugItemResult { GroupName = "Hello", Value = "world"}
-            };
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });           
             var result = item.Contains(null);
             Assert.IsTrue(result);
         }
@@ -43,10 +42,8 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         public void Contains_With_EmptyFilter_Expected_ReturnsInstance()
         {
-            var item = new DebugItem
-            {
-                new DebugItemResult { GroupName = "Hello", Value = "world"}
-            };
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });            
             var result = item.Contains(string.Empty);
             Assert.IsTrue(result);
         }
@@ -54,10 +51,8 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         public void Contains_With_ValidFilter_Expected_ReturnsInstance()
         {
-            var item = new DebugItem
-            {
-                new DebugItemResult { GroupName = "Hello", Value = "world"}
-            };
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });            
             var result = item.Contains("world");
             Assert.IsTrue(result);
         }
@@ -65,10 +60,8 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         public void Contains_With_InvalidFilter_Expected_ReturnsInstance()
         {
-            var item = new DebugItem
-            {
-                new DebugItemResult { GroupName = "Hello", Value = "world"}
-            };
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
             var result = item.Contains("the");
             Assert.IsFalse(result);
         }
@@ -77,10 +70,8 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         public void Contains_With_Filter_Expected_IsCaseInsensitive()
         {
-            var item = new DebugItem
-            {
-                new DebugItemResult { GroupName = "Hello", Value = "world"}
-            };
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
             var result = item.Contains("hel");
             Assert.IsTrue(result);
         }

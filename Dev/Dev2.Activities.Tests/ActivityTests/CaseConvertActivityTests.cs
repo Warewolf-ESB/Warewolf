@@ -322,9 +322,9 @@ namespace ActivityUnitTests.ActivityTests
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(7, inRes[0].Count);
+            Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(4, outRes[0].Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
         }
 
         /// <summary>
@@ -342,9 +342,9 @@ namespace ActivityUnitTests.ActivityTests
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(34, inRes[0].Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(31, outRes[0].Count);
+            Assert.AreEqual(34, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
         }
 
         #endregion

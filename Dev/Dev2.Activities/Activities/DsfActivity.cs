@@ -2,8 +2,8 @@
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Network.Execution;
 using System;
 using System.Activities;
@@ -141,7 +141,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            
             context.Properties.ToObservableCollection(); /// ???? Why is this here....
 
             bool createResumptionPoint = false;
@@ -164,8 +164,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Set Debug Mode Value
                 string debugMode = compiler.EvaluateSystemEntry(executionID, enSystemTag.BDSDebugMode, out errors);
                 allErrors.MergeErrors(errors);
-
+               
                 bool.TryParse(debugMode, out _IsDebug);
+
+                if (_IsDebug)
+                {
+                    DispatchDebugState(context, StateType.Before);
+                }
 
                 // scrub it clean ;)
                 ScrubDataList(compiler, executionID, context.WorkflowInstanceId.ToString(), out errors);
@@ -496,6 +501,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             IList<IDebugItem> results = new List<IDebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
@@ -505,11 +511,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
                 }
-                DebugItem itemToAdd = new DebugItem
-                    {
-                        new DebugItemResult {Type = DebugItemResultType.Label, Value = displayName},                        
-                    };
-                itemToAdd.AddRange(CreateDebugItems(dev2Definition.RawValue, dataList));
+                ErrorResultTO errors = new ErrorResultTO();
+                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);                                                                
+
+                DebugItem itemToAdd = new DebugItem();
+
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = displayName });
+
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue,tmpEntry,dataList.UID,enDev2ArgumentType.Input));
                 results.Add(itemToAdd);
             }
 
@@ -520,16 +529,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
+             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             IList<IDebugItem> results = new List<IDebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
             {
-                DebugItem itemToAdd = new DebugItem
-                    {
-                        new DebugItemResult {Type = DebugItemResultType.Label, Value = dev2Definition.Name},                        
-                    };
+                ErrorResultTO errors = new ErrorResultTO();
+                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
-                itemToAdd.AddRange(CreateDebugItems(dev2Definition.RawValue, dataList));
+                DebugItem itemToAdd = new DebugItem();
+
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
+
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Input));
                 results.Add(itemToAdd);
             }
 

@@ -365,11 +365,11 @@ namespace ActivityUnitTests.ActivityTest
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(31, inRes[0].Count);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
 
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         /// <summary>
@@ -385,11 +385,11 @@ namespace ActivityUnitTests.ActivityTest
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(91, inRes[0].Count);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(90, inRes[1].FetchResultsList().Count);
 
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].Count);
+            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         #endregion

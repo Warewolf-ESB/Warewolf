@@ -146,7 +146,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IsRecordset = true;
             Columns = cols;
-            Namespace = String.IsNullOrEmpty(nameSpace)?GlobalConstants.NullEntryNamespace:nameSpace;
+            Namespace = String.IsNullOrEmpty(nameSpace) ? GlobalConstants.NullEntryNamespace : nameSpace;
             Description = description;
             IsEditable = isEditable;
             ColumnIODirection = ioDir;
@@ -225,17 +225,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             error = "Is not recordset";
             int myIdx = idx;
 
-            if(IsRecordset)
+            if (IsRecordset)
             {
                 IList<IBinaryDataListItem> dummy;
 
-                if(idx <= FetchLastRecordsetIndex() && _internalObj.TryGetValue(myIdx, out dummy) && dummy.Any())
+                if (idx <= FetchLastRecordsetIndex() && _internalObj.TryGetValue(myIdx, out dummy) && dummy.Any())
                 {
                     int colIdx = InternalFetchColumnIndex(item.FieldName);
-                    if(colIdx >= 0)
+                    if (colIdx >= 0)
                     {
                         // entry already exist
-                        _internalObj[myIdx] = new List<IBinaryDataListItem> {item};
+                        _internalObj[myIdx] = new List<IBinaryDataListItem> { item };
                         error = string.Empty;
                         _internalObj.IsEmtpy = false;
                     }
@@ -247,7 +247,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 else
                 {
                     int colIdx = InternalFetchColumnIndex(item.FieldName);
-                    if(colIdx >= 0)
+                    if (colIdx >= 0)
                     {
                         string ns = item.Namespace == string.Empty ? Namespace : item.Namespace;
 
@@ -271,10 +271,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public void TryAppendRecordItem(IBinaryDataListItem item, out string error)
         {
             error = "Is not recordset";
-            if(IsRecordset)
+            if (IsRecordset)
             {
                 Dev2Column colToFind = Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
-                if(colToFind != null)
+                if (colToFind != null)
                 {
                     _internalObj[ItemCollectionSize()] = new List<IBinaryDataListItem> { item };
                     error = string.Empty;
@@ -290,22 +290,22 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public IBinaryDataListItem FetchScalar()
         {
             IBinaryDataListItem result = null;
-            if(IsRecordset)
+            if (IsRecordset)
             {
                 string error;
                 return TryFetchLastIndexedRecordsetUpsertPayload(out error);
             }
-            
-            if(_internalObj.Count > 0)
+
+            if (_internalObj.Count > 0)
             {
                 var binaryDataListItems = _internalObj[0];
-                if(binaryDataListItems.Count > 0)
+                if (binaryDataListItems.Count > 0)
                 {
                     result = binaryDataListItems[0];
                 }
             }
 
-            if(result == null)
+            if (result == null)
             {
                 result = new BinaryDataListItem(string.Empty, Namespace);
                 // place miss into the collection
@@ -318,11 +318,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public void TryPutScalar(IBinaryDataListItem item, out string error)
         {
             error = "Not a scalar";
-            if(!IsRecordset)
+            if (!IsRecordset)
             {
                 // set evaluation scalar
                 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                if(item.FieldName == GlobalConstants.EvalautionScalar)
+                if (item.FieldName == GlobalConstants.EvalautionScalar)
                 // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 {
                     IsEvaluationScalar = true;
@@ -334,7 +334,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 // set managment service payload
                 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                if(item.FieldName == GlobalConstants.ManagementServicePayload)
+                if (item.FieldName == GlobalConstants.ManagementServicePayload)
                 // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 {
                     IsManagmentServicePayload = true;
@@ -473,20 +473,20 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public void Merge(IBinaryDataListEntry toMerge, out string error)
         {
             error = string.Empty;
-            if(IsRecordset && toMerge.IsRecordset)
+            if (IsRecordset && toMerge.IsRecordset)
             {
                 IIndexIterator ii = toMerge.FetchRecordsetIndexes();
-                while(ii.HasMore())
+                while (ii.HasMore())
                 {
                     int next = ii.FetchNextIndex();
                     // merge toMerge into this
-                    foreach(IBinaryDataListItem item in toMerge.FetchRecordAt(next, out error))
+                    foreach (IBinaryDataListItem item in toMerge.FetchRecordAt(next, out error))
                     {
                         TryAppendRecordItem(item, out error);
                     }
                 }
             }
-            else if(!IsRecordset && !toMerge.IsRecordset)
+            else if (!IsRecordset && !toMerge.IsRecordset)
             {
                 TryPutScalar(toMerge.FetchScalar(), out error); // over write this with toMerge
             }
@@ -504,7 +504,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IIndexIterator result = Dev2BinaryDataListFactory.CreateIndexIterator();
 
-            if(IsRecordset)
+            if (IsRecordset)
             {
                 result = _internalObj.Keys;
             }
@@ -520,7 +520,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             int result = 1;
 
-            if(IsRecordset)
+            if (IsRecordset)
             {
                 result = _internalObj.Keys.MaxIndex();
             }
@@ -531,19 +531,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public int FetchAppendRecordsetIndex()
         {
             int result = FetchLastRecordsetIndex();
-            if(result >= 1 && _internalObj._appendIndex > 0)
+            if (result >= 1 && _internalObj._appendIndex > 0)
             {
                 result++; // inc for insert if data already present
             }
-            else if(result == 1 && _internalObj._appendIndex == -1)
+            else if (result == 1 && _internalObj._appendIndex == -1)
             {
                 _internalObj._appendIndex = 2; // first pass
-                if(!_internalObj.IsEmtpy)
+                if (!_internalObj.IsEmtpy)
                 {
                     result++;
                 }
             }
-            else if(result > 1)
+            else if (result > 1)
             {
                 result++;
             }
@@ -561,17 +561,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             error = string.Empty;
 
             // use only wants a specific column retained, not the entire row
-            if(keepCol != null)
+            if (keepCol != null)
             {
                 IList<Dev2Column> newCols = new List<Dev2Column>(Columns.Count) { new Dev2Column(keepCol, string.Empty) };
                 // remove values
                 Columns = newCols;
             }
-            if(keepIdx == GlobalConstants.AllIndexes)
+            if (keepIdx == GlobalConstants.AllIndexes)
             {
                 return;
             }
-            if(!_internalObj.IsEmtpy)
+            if (!_internalObj.IsEmtpy)
             {
                 var loopedIndexIterator = new LoopedIndexIterator(keepIdx, 1);
                 _internalObj.Keys = loopedIndexIterator;
@@ -583,7 +583,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IList<IBinaryDataListItem> cols = FetchRecordAt(idx, field, out error);
             IBinaryDataListItem result = DataListConstants.baseItem.Clone();
 
-            if(cols == null || cols.Count == 0)
+            if (cols == null || cols.Count == 0)
             {
                 error = "Index [ " + idx + " ] is out of bounds";
             }
@@ -612,13 +612,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IIndexIterator ii = _internalObj.Keys;
 
-            if(colName != null)
+            if (colName != null)
             {
                 Dev2Column cc = Columns.FirstOrDefault(c => c.ColumnName == colName);
 
-                if(cc != null)
+                if (cc != null)
                 {
-                    while(ii.HasMore())
+                    while (ii.HasMore())
                     {
                         int next = ii.FetchNextIndex();
                         // now blank all values at this location
@@ -644,9 +644,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IList<Dev2Column> myCols = Columns;
             int i = 0;
 
-            while(i < cols.Count && result)
+            while (i < cols.Count && result)
             {
-                if(!myCols.Contains(cols[i]))
+                if (!myCols.Contains(cols[i]))
                 {
                     result = false;
                 }
@@ -660,9 +660,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             bool result = false;
 
-            if(IsRecordset)
+            if (IsRecordset)
             {
-                if(Columns.FirstOrDefault(c => c.ColumnName == field) != null)
+                if (Columns.FirstOrDefault(c => c.ColumnName == field) != null)
                 {
                     result = true;
                 }
@@ -679,7 +679,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IDictionary<int, IList<IBinaryDataListItem>> toSort = _internalObj.FetchSortData();
             IDictionary<int, IList<IBinaryDataListItem>> sortedData = null;
 
-            if(col != null)
+            if (col != null)
             {
                 int colIdx = Columns.IndexOf(col);
 
@@ -689,21 +689,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     sortedData = IntSort(toSort, colIdx, desc);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // DateTime
                     try
                     {
                         sortedData = DateTimeSort(toSort, colIdx, desc);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         // String
                         try
                         {
                             sortedData = StringSort(toSort, colIdx, desc);
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             // Very naughty thing have happened....
                             error = "Invalid format for sorting on field [ " + field + " ] ";
@@ -724,16 +724,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public bool TryDeleteRows(string index)
         {
             bool result = false;
-            if(IsRecordset && index != null)
+            if (IsRecordset && index != null)
             {
                 int numericIndex;
-                if(!Int32.TryParse(index, out numericIndex))
+                if (!Int32.TryParse(index, out numericIndex))
                 {
-                    if(string.IsNullOrEmpty(index))
+                    if (string.IsNullOrEmpty(index))
                     {
                         result = DeleteLastRow();
                     }
-                    else if(index == "*")
+                    else if (index == "*")
                     {
                         result = DeleteAllRows();
                     }
@@ -758,17 +758,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IList<IBinaryDataListItem> result = null;
             error = string.Empty;
 
-            if(idx != 0 && !_internalObj.TryGetValue(idx, out result))
+            if (idx != 0 && !_internalObj.TryGetValue(idx, out result))
             {
                 // row miss, create it and return it ;)
                 result = CorrectRecordsetFetchMiss(idx, out error);
             }
-            if(result == null)
+            if (result == null)
             {
                 return null;
             }
             IEnumerable<string> colNames;
-            if(String.IsNullOrEmpty(field))
+            if (String.IsNullOrEmpty(field))
             {
                 colNames = Columns.Select(column => column.ColumnName);
             }
@@ -777,15 +777,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 colNames = new List<string> { field };
             }
             IList<IBinaryDataListItem> resultList = new List<IBinaryDataListItem>();
-            foreach(var colName in colNames)
+            foreach (var colName in colNames)
             {
                 List<IBinaryDataListItem> binaryDataListItems = result.Where(item => item.FieldName == colName).ToList();
-                if(binaryDataListItems.Count > 0)
+                if (binaryDataListItems.Count > 0)
                 {
                     resultList.Add(binaryDataListItems[0]);
                 }
             }
-            if(resultList.Count == 0)
+            if (resultList.Count == 0)
             {
                 resultList = CorrectRecordsetFetchMiss(idx, out error);
             }
@@ -833,7 +833,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             int lastRowIndex = FetchLastRecordsetIndex();
 
             // Bug 8725
-            if(!_internalObj.IsEmtpy)
+            if (!_internalObj.IsEmtpy)
             {
                 _internalObj.Remove(lastRowIndex);
             }
@@ -852,9 +852,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             int lastIndex = FetchLastRecordsetIndex();
             if (index <= lastIndex && index > 0)
             {
-                _internalObj[index] =  _internalObj.FetchDeleteRowData();
+                _internalObj[index] = _internalObj.FetchDeleteRowData();
                 _internalObj.Remove(index);
-                        
+
                 result = true;
             }
 
@@ -873,19 +873,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
-            if(!desc)
+            if (!desc)
             {
                 var data = toSort.OrderBy(x =>
                 {
                     long val;
                     string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
+                    if (string.IsNullOrWhiteSpace(tmpVal))
                     {
                         val = long.MinValue;
                     }
                     else
                     {
-                        if(!long.TryParse(tmpVal, out val))
+                        if (!long.TryParse(tmpVal, out val))
                         {
                             throw new Exception();
                         }
@@ -893,7 +893,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     return val;
                 }).ToList();
                 int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+                foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
                     toSwap[idx] = tmp.Value;
                     idx++;
@@ -905,13 +905,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     long val;
                     string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
+                    if (string.IsNullOrWhiteSpace(tmpVal))
                     {
                         val = long.MinValue;
                     }
                     else
                     {
-                        if(!long.TryParse(tmpVal, out val))
+                        if (!long.TryParse(tmpVal, out val))
                         {
                             throw new Exception();
                         }
@@ -919,7 +919,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     return val;
                 }).ToList();
                 int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+                foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
                     toSwap[idx] = tmp.Value;
                     idx++;
@@ -929,7 +929,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             toSort.Clear();
 
             // make the swap
-            foreach(int k in toSwap.Keys)
+            foreach (int k in toSwap.Keys)
             {
                 toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
@@ -949,19 +949,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
-            if(!desc)
+            if (!desc)
             {
                 var data = toSort.OrderBy(x =>
                 {
                     DateTime val;
                     string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
+                    if (string.IsNullOrWhiteSpace(tmpVal))
                     {
                         val = DateTime.MinValue;
                     }
                     else
                     {
-                        if(!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
+                        if (!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
                         {
                             throw new Exception();
                         }
@@ -969,7 +969,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     return val;
                 }).ToList();
                 int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+                foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
                     toSwap[idx] = tmp.Value;
                     idx++;
@@ -981,13 +981,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     DateTime val;
                     string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
+                    if (string.IsNullOrWhiteSpace(tmpVal))
                     {
                         val = DateTime.MinValue;
                     }
                     else
                     {
-                        if(!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
+                        if (!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
                         {
                             throw new Exception();
                         }
@@ -995,7 +995,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     return val;
                 }).ToList();
                 int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
+                foreach (KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
                 {
                     toSwap[idx] = tmp.Value;
                     idx++;
@@ -1005,7 +1005,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             toSort.Clear();
 
             // make the swap
-            foreach(int k in toSwap.Keys)
+            foreach (int k in toSwap.Keys)
             {
                 toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
@@ -1062,7 +1062,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 var data = toSort.OrderBy(x =>
                 {
                     string val = x.Value[colIdx].TheValue;
-                   
+
                     return val;
                 }).ToList();
 
@@ -1125,7 +1125,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         void ClearAll(IIndexIterator idxItr)
         {
             // miss, clear it all out ;)
-            while(idxItr.HasMore())
+            while (idxItr.HasMore())
             {
                 int next = idxItr.FetchNextIndex();
                 _internalObj.Remove(next);
@@ -1143,12 +1143,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IList<IBinaryDataListItem> result = new List<IBinaryDataListItem>();
             error = string.Empty;
             bool isEmtpy = _internalObj[0].Count == 0;
-            foreach(Dev2Column c in Columns)
+            foreach (Dev2Column c in Columns)
             {
                 IBinaryDataListItem tmp = new BinaryDataListItem(string.Empty, Namespace, c.ColumnName, idx);
-                if(error == string.Empty)
+                if (error == string.Empty)
                 {
-                    if(!isEmtpy)
+                    if (!isEmtpy)
                     {
                         TryPutRecordItemAtIndex(tmp, idx, out error);
                     }
@@ -1167,7 +1167,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             GC.SuppressFinalize(this);
         }
 
-         ~BinaryDataListEntry()
+        ~BinaryDataListEntry()
         {
             Dispose(false);
         }

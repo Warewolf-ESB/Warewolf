@@ -369,10 +369,10 @@ namespace ActivityUnitTests.ActivityTest
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(31, inRes[0].Count);
+            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(30, outRes[0].Count);
+            Assert.AreEqual(30, outRes[0].FetchResultsList().Count);
         }
 
         #endregion

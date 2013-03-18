@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -165,6 +161,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion INotifyPropertyChanged Implementaion       
+        #endregion INotifyPropertyChanged Implementaion
     }
 }

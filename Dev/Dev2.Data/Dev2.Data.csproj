@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,28 +76,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Auditing\Dev2AuditFactory.cs" />
-    <Compile Include="Auditing\Dev2DataListAuditor.cs" />
-    <Compile Include="Auditing\IDev2DataListAuditor.cs" />
     <Compile Include="BackgroundDispatcher.cs" />
     <Compile Include="Binary Objects\BinaryDataList.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
-    <Compile Include="Binary Objects\BinaryDataListRow.cs" />
+    <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
+    <Compile Include="Storage\Binary Objects\SBinaryDataListIndex.cs" />
+    <Compile Include="Storage\BinaryDataListBlob.cs" />
+    <Compile Include="Storage\BinaryDataListIndexStorage.cs" />
+    <Compile Include="Storage\BinaryDataListRow.cs" />
     <Compile Include="Binary Objects\BinaryDataListUtil.cs" />
     <Compile Include="Binary Objects\DataListItem.cs" />
-    <Compile Include="Binary Objects\Dev2BinaryDataListStorage.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListFactory.cs" />
-    <Compile Include="Binary Objects\Dev2BinaryRecsetTO.cs" />
+    <Compile Include="Storage\BinaryDataListStorageRoot.cs" />
+    <Compile Include="Storage\BinaryDataListStorage.cs" />
     <Compile Include="Binary Objects\Dev2Column.cs" />
-    <Compile Include="Binary Objects\Dev2PersistantDictionary.cs" />
+    <Compile Include="Storage\Dev2PersistantDictionary.cs" />
     <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Binary Objects\IBinaryDataList.cs" />
     <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\IBinaryDataListItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntryBuilder.cs" />
-    <Compile Include="Binary Objects\IBinaryDataListRow.cs" />
+    <Compile Include="Storage\IBinaryDataListIndexStorage.cs" />
+    <Compile Include="DataListCache\IBinaryDataListRow.cs" />
     <Compile Include="Binary Objects\IIndexIterator.cs" />
     <Compile Include="Binary Objects\IndexIterator.cs" />
     <Compile Include="Binary Objects\IndexList.cs" />
@@ -175,6 +178,7 @@
     <Compile Include="PathOperations\TO\Dev2PutRawOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2UnZipOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2ZipOperationTO.cs" />
+    <Compile Include="Storage\IBinaryDataListStorage.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -265,12 +269,11 @@
     <Compile Include="Parsers\InputLanguageParser.cs" />
     <Compile Include="Parsers\LanguageParser.cs" />
     <Compile Include="Parsers\OutputLanguageParser.cs" />
-    <Compile Include="Persistence\DataListChannelProvider.cs" />
-    <Compile Include="Persistence\DatalistPersistenceProvider.cs" />
-    <Compile Include="Persistence\DataListPersistenceProviderFactory.cs" />
-    <Compile Include="Persistence\DataListTemporalProvider.cs" />
-    <Compile Include="Persistence\IDatalistPersistenceProvider.cs" />
-    <Compile Include="Persistence\OLD_ZIP_DataListTemporalProvider.cs" />
+    <Compile Include="DataListCache\DataListChannelProvider.cs" />
+    <Compile Include="DataListCache\DatalistPersistenceProvider.cs" />
+    <Compile Include="DataListCache\DataListPersistenceProviderFactory.cs" />
+    <Compile Include="DataListCache\DataListTemporalProvider.cs" />
+    <Compile Include="DataListCache\IDatalistPersistenceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\DataListIDProvider.cs" />
     <Compile Include="Server\DataListServer.cs" />

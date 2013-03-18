@@ -27,6 +27,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
         // ReSharper restore InconsistentNaming
 
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
         #endregion Class Members
 
         #region Constructors
@@ -75,8 +78,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
+            var dataObject = context.GetExtension<IDSFDataObject>();            
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var allErrors = new ErrorResultTO();
@@ -96,8 +100,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator expressionIterator = CreateDataListEvaluateIterator(expression, executionId, compiler, colItr, allErrors);
 
                 IDev2DataListEvaluateIterator roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, executionId, compiler, colItr, allErrors);
+                
                 IDev2DataListEvaluateIterator decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
 
+                if(dataObject.IsDebug)
+                {
+                    AddDebugInputItem(expression, "Number To Format",expressionIterator.FetchEntry(),executionId);
+                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Decimal Places", roundingDecimalPlacesIterator.FetchEntry(), executionId);
+
+                    AddDebugInputItem(decimalPlacesToShow, "Decimals To Show", decimalPlacesToShowIterator.FetchEntry(), executionId);
+                }
+                int iterationCounter = 0;
                 // Loop data ;)
                 while (colItr.HasMoreData())
                 {
@@ -112,6 +125,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     toUpsert.Add(Result, result);
                     toUpsert.FlushIterationFrame();
+                    if(dataObject.IsDebug)
+                    {
+                        AddDebugOutputItem(Result, result, executionId, iterationCounter);
+                    }
+                    iterationCounter++;
                 }
 
                 compiler.Upsert(executionId, toUpsert, out errors);
@@ -132,7 +150,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 #endregion
+
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            if (labelText == "Rounding Decimal Places")
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Type" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = RoundingType });                
+            }
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);            
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCounter)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCounter, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
         }
 
         #endregion
@@ -140,49 +195,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            DebugItem itemToAdd = new DebugItem();
-            if (!string.IsNullOrEmpty(Expression))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Number To Format" });
-                itemToAdd.AddRange(CreateDebugItems(Expression, dataList));
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Type" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = RoundingType });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Decimal Places" });
-            if (!string.IsNullOrEmpty(RoundingDecimalPlaces))
-            {
-                itemToAdd.AddRange(CreateDebugItems(RoundingDecimalPlaces, dataList));
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Decimals To Show" });
-            if (!string.IsNullOrEmpty(DecimalPlacesToShow))
-            {
-                itemToAdd.AddRange(CreateDebugItems(DecimalPlacesToShow, dataList));
-            }
-            results.Add(itemToAdd);
-            return results;
+        {            
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            if (!string.IsNullOrEmpty(Result))
-            {
-                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
-            }
-            results.Add(itemToAdd);
-            return results;
+        {            
+            return _debugOutputs;
         }
 
         #endregion

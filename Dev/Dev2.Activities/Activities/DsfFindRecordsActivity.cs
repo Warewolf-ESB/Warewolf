@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
@@ -19,6 +20,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </New>
     public class DsfFindRecordsActivity : DsfActivityAbstract<string>, IRecsetSearch
     {
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -87,8 +95,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
-
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();            
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
@@ -102,6 +110,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionID, enActionType.User, SearchCriteria, false, out errors);
+                if (dataObject.IsDebug)
+                {
+                    IDebugItem itemToAdd = new DebugItem();
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
+                    _debugInputs.Add(itemToAdd);
+                }
                 allErrors.MergeErrors(errors);
 
                 if (bdle != null)
@@ -115,34 +129,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     IBinaryDataList toSearchList = compiler.FetchBinaryDataList(executionID, out errors);
                     allErrors.MergeErrors(errors);
-
-                    IList<string> foundResults = new List<string>();
-
+                    int iterationIndex = 0;
                     foreach (string s in toSearch)
                     {
+                        if(dataObject.IsDebug)
+                        {
+                            IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID,enActionType.User, s,false,out errors);
+                            AddDebugInputItem(s, string.Empty, tmpEntry,executionID);
+                        }
                         // each entry in the recordset
                         while (itr.HasMoreRecords())
                         {
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                             foreach (IBinaryDataListItem c in cols)
                             {
-                                IRecsetSearch searchTO = ConvertToSearchTO(c.TheValue, idx.ToString());
+                                IRecsetSearch searchTO = ConvertToSearchTO(c.TheValue, idx.ToString(CultureInfo.InvariantCulture));
                                 IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errors);
                                 allErrors.MergeErrors(errors);
                                 foreach (string r in results)
                                 {
-                                    toUpsert.Add(Result, r);
-                                    foundResults.Add(r);
+                                    toUpsert.Add(Result, r);                                   
                                     toUpsert.FlushIterationFrame();
+                                    if (dataObject.IsDebug)
+                                    {
+                                        AddDebugOutputItem(Result, r, executionID, iterationIndex);                                        
+                                    }
+                                    iterationIndex++;
                                 }
                             }
                         }
+                    }
 
+                    if(dataObject.IsDebug)
+                    {
+                        AddDebugInputItem(SearchCriteria, "Where", bdle, executionID);
                     }
 
                     // now push the result to the server
                     compiler.Upsert(executionID, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
+                    allErrors.MergeErrors(errors);                   
                 }
             }
             finally
@@ -153,10 +178,50 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
 
         }
         #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            
+            if(labelText == "Where")
+            {
+                itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
+                itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = SearchType });
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+                _debugInputs.Add(itemToAdd);
+                return;
+            }
+
+            
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId,int iterationIndex)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationIndex, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
+
         /// <summary>
         /// Creates a new instance of the SearchTO object
         /// </summary>
@@ -165,59 +230,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return DataListFactory.CreateSearchTO(FieldsToSearch, SearchType, searchCriteria, startIndex, Result, MatchCase);
         }
-        #endregion Private Methods
 
+        #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            var result = new List<IDebugItem>();
-            string[] fieldsList = FieldsToSearch.Split(',');
-            DebugItem itemToAdd = new DebugItem();
-            foreach (string s in fieldsList)
-            {
-
-                itemToAdd = new DebugItem{
-                        new DebugItemResult {Type = DebugItemResultType.Label, Value = "Fields To Search"}
-                    };
-
-                if (!string.IsNullOrEmpty(s))
-                {
-                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(s, dataList))
-                    {
-                        itemToAdd.Add(debugItemResult);
-                    }
-                }
-                result.Add(itemToAdd);
-            }
-
-            itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
-            itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Variable, Value = SearchType });
-            foreach (IDebugItemResult debugItemResult in CreateDebugItems(SearchCriteria, dataList))
-            {
-                itemToAdd.Add(debugItemResult);
-            }
-            result.Add(itemToAdd);
-
-
-            return result;
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            var result = new List<IDebugItem>();
-            if (!string.IsNullOrEmpty(Result))
-            {
-                DebugItem itemToAdd = new DebugItem();
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(Result, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                result.Add(itemToAdd);
-            }
-            return result;
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs

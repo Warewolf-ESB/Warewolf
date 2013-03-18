@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -12,7 +13,6 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -22,7 +22,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         string _sourceString;
 
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+        int _indexCounter = 1;
         private IList<DataSplitDTO> _resultsCollection;
+
         public IList<DataSplitDTO> ResultsCollection
         {
             get
@@ -72,7 +76,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
+            _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -87,6 +93,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (ResultsCollection.Count > 0)
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
+                    if (dataObject.IsDebug)
+                    {
+                        AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);
+                    }
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -100,15 +110,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             toUpsert.HasLiveFlushing = true;
                             toUpsert.LiveFlushingLocation = dlID;
 
-                            if(!string.IsNullOrEmpty(c.TheValue))
+                            if (!string.IsNullOrEmpty(c.TheValue))
                             {
                                 string val = c.TheValue;
-                                IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, compiler, dlID);
+                                IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, compiler, dlID, dataObject.IsDebug);
                                 int opCnt = 0;
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
 
-                                while(tokenizer.HasMoreOps())
+                                while (tokenizer.HasMoreOps())
                                 {
                                     string tmp = tokenizer.NextToken();
 
@@ -118,11 +128,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
 
                                     // Per pass
-                                    if(pos == end)
+                                    if (pos == end)
                                     {
                                         pos = 0;
                                         opCnt++;
                                         toUpsert.FlushIterationFrame();
+                                        if (dataObject.IsDebug)
+                                        {
+                                            AddDebugOutputItem(ResultsCollection[pos].OutputVariable, tmp, pos + 1, dlID);
+                                        }
                                     }
                                     else
                                     {
@@ -131,7 +145,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
 
                                 // flush the final frame ;)
-                                toUpsert.FlushIterationFrame(true);
+
+                                toUpsert.FlushIterationFrame(true);                                
                                 toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
                             }
@@ -146,6 +161,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
+                if (dataObject.IsDebug)
+                {
+                    DispatchDebugState(context, StateType.Before);
+                }
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
@@ -157,114 +176,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-
-        private IDev2Tokenizer CreateSplitPattern(ref string StringToSplit, IList<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID)
+        private void AddSourceStringDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
-            ErrorResultTO errors = new ErrorResultTO();
-            string error = string.Empty;
-            dtb.ToTokenize = StringToSplit;
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "String To Split" });
 
-            for (int i = 0; i < Args.Count; i++)
-            {
-                switch (Args[i].SplitType)
-                {
-                    case "Index":
-                        try
-                        {
-                            IBinaryDataListEntry entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
-                            string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
-                            int indexNum = Convert.ToInt32(index);
-                            if (indexNum > 0)
-                            {
-                                dtb.AddIndexOp(indexNum);
-                            }
-                        }
-                        catch (Exception) { }
-                    break;
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
 
-                    case "End":
-                        dtb.AddEoFOp();
-                    break;
-
-                    case "Space":
-                        dtb.AddTokenOp(" ", Args[i].Include);
-                    break;
-
-                    case "Tab":
-                        dtb.AddTokenOp("\t", Args[i].Include);
-                    break;
-
-                    case "New Line":
-                        if (StringToSplit.Contains("\r\n"))
-                        {
-                            dtb.AddTokenOp("\r\n", Args[i].Include);
-                        }
-                        else if (StringToSplit.Contains("\n"))
-                        {
-                            dtb.AddTokenOp("\n", Args[i].Include);
-                        }
-                        else if (StringToSplit.Contains("\r"))
-                        {
-                            dtb.AddTokenOp("\r", Args[i].Include);
-                        }
-                    break;
-
-                    case "Chars":
-                        if (!string.IsNullOrEmpty(Args[i].At))
-                        {
-                            IBinaryDataListEntry entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
-                            string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
-                            dtb.AddTokenOp(val, Args[i].Include);
-                        }
-                    break;
-                }
-            }
-
-            return dtb.Generate();
+            _debugInputs.Add(itemToAdd);
         }
 
-        private void CleanArguments(IList<DataSplitDTO> Args)
+        private void AddDebugInputItem(string expression, string splitType, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            int count = 0;
-            while (count < Args.Count)
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Split Using" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = splitType });
+
+            if (valueEntry != null)
             {
-                if (Args[count].SplitType == "Index" && string.IsNullOrEmpty(Args[count].At) || Args[count].SplitType == "Chars" && string.IsNullOrEmpty(Args[count].At))
-                {
-                    Args.RemoveAt(count);
-                }
-                else
-                {
-                    count++;
-                }
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
+
+            _debugInputs.Add(itemToAdd);
         }
 
-        #endregion Private Methods
-
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
+        private void AddDebugOutputItem(string expression, string value, int indexCount, Guid dlId)
         {
-            string error = string.Empty;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            string recordsetName = "ResultsCollection";
-            result.TryCreateScalarTemplate(string.Empty, "SourceString", string.Empty, true, out error);
-            result.TryCreateScalarValue(SourceString, "SourceString", out error);
-            result.TryCreateScalarTemplate(string.Empty, "ReverseOrder", string.Empty, true, out error);
-            result.TryCreateScalarValue(ReverseOrder.ToString(), "ReverseOrder", out error);
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach (DataSplitDTO item in ResultsCollection)
-            {
-                result.TryCreateRecordsetValue(item.SplitType, "SplitType", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.At, "At", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.Include.ToString(), "Include", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.OutputVariable, "Result", recordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
+            DebugItem itemToAdd = new DebugItem();
 
-        #endregion Overridden ActivityAbstact Methods
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
 
         private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
         {
@@ -337,6 +283,123 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return currentName;
         }
 
+        private IDev2Tokenizer CreateSplitPattern(ref string StringToSplit, IList<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID, bool isDebug = false)
+        {
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            ErrorResultTO errors = new ErrorResultTO();
+            string error = string.Empty;
+            dtb.ToTokenize = StringToSplit;
+
+            for (int i = 0; i < Args.Count; i++)
+            {
+                IBinaryDataListEntry entry = null;
+                switch (Args[i].SplitType)
+                {
+                    case "Index":
+                        try
+                        {
+                            entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
+                            string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
+                            int indexNum = Convert.ToInt32(index);
+                            if (indexNum > 0)
+                            {
+                                dtb.AddIndexOp(indexNum);
+                            }
+                        }
+                        catch (Exception) { }
+                        break;
+
+                    case "End":
+                        dtb.AddEoFOp();
+                        break;
+
+                    case "Space":
+                        dtb.AddTokenOp(" ", Args[i].Include);
+                        break;
+
+                    case "Tab":
+                        dtb.AddTokenOp("\t", Args[i].Include);
+                        break;
+
+                    case "New Line":
+                        if (StringToSplit.Contains("\r\n"))
+                        {
+                            dtb.AddTokenOp("\r\n", Args[i].Include);
+                        }
+                        else if (StringToSplit.Contains("\n"))
+                        {
+                            dtb.AddTokenOp("\n", Args[i].Include);
+                        }
+                        else if (StringToSplit.Contains("\r"))
+                        {
+                            dtb.AddTokenOp("\r", Args[i].Include);
+                        }
+                        break;
+
+                    case "Chars":
+                        if (!string.IsNullOrEmpty(Args[i].At))
+                        {
+                            entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
+                            string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
+                            dtb.AddTokenOp(val, Args[i].Include);
+                        }
+                        break;
+                }
+
+                if (isDebug)
+                {
+                    AddDebugInputItem(Args[i].At, Args[i].SplitType, entry, DlID);
+                }
+
+                _indexCounter++;
+
+            }
+
+            return dtb.Generate();
+        }
+
+        private void CleanArguments(IList<DataSplitDTO> Args)
+        {
+            int count = 0;
+            while (count < Args.Count)
+            {
+                if (Args[count].SplitType == "Index" && string.IsNullOrEmpty(Args[count].At) || Args[count].SplitType == "Chars" && string.IsNullOrEmpty(Args[count].At))
+                {
+                    Args.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+
+        #endregion Private Methods
+
+        #region Overridden ActivityAbstact Methods
+
+        public override IBinaryDataList GetWizardData()
+        {
+            string error = string.Empty;
+            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
+            string recordsetName = "ResultsCollection";
+            result.TryCreateScalarTemplate(string.Empty, "SourceString", string.Empty, true, out error);
+            result.TryCreateScalarValue(SourceString, "SourceString", out error);
+            result.TryCreateScalarTemplate(string.Empty, "ReverseOrder", string.Empty, true, out error);
+            result.TryCreateScalarValue(ReverseOrder.ToString(), "ReverseOrder", out error);
+            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
+            foreach (DataSplitDTO item in ResultsCollection)
+            {
+                result.TryCreateRecordsetValue(item.SplitType, "SplitType", recordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.At, "At", recordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.Include.ToString(), "Include", recordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.OutputVariable, "Result", recordsetName, item.IndexNumber, out error);
+            }
+            return result;
+        }
+
+        #endregion Overridden ActivityAbstact Methods
+
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
@@ -344,36 +407,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             var result = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "String To Split" });
-            foreach (IDebugItemResult debugItemResult in CreateDebugItems(SourceString, dataList))
-            {
-                itemToAdd.Add(debugItemResult);
-            }
-            result.Add(itemToAdd);
-            int indexToShow = 1;
-            foreach (DataSplitDTO dataSplitDto in ResultsCollection)
-            {
-                if (dataSplitDto.SplitType == "Index" && dataSplitDto.IndexNumber == ResultsCollection.Count &&
-                    dataSplitDto.At == string.Empty)
-                {
-                    continue;
-                }
-                itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Split Using" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = dataSplitDto.SplitType });
-                if (!string.IsNullOrEmpty(dataSplitDto.At))
-                {
-                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.At, dataList))
-                    {
-                        itemToAdd.Add(debugItemResult);
-                    }
-                }
-                result.Add(itemToAdd);
-                indexToShow++;
-            }
-            return result;
+            //DebugItem itemToAdd = new DebugItem();
+            //itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "String To Split" });
+            //foreach (IDebugItemResult debugItemResult in CreateDebugItems(SourceString, dataList))
+            //{
+            //    itemToAdd.Add(debugItemResult);
+            //}
+            //result.Add(itemToAdd);
+            //int indexToShow = 1;
+            //foreach (DataSplitDTO dataSplitDto in ResultsCollection)
+            //{
+            //    if (dataSplitDto.SplitType == "Index" && dataSplitDto.IndexNumber == ResultsCollection.Count &&
+            //        dataSplitDto.At == string.Empty)
+            //    {
+            //        continue;
+            //    }
+            //    itemToAdd = new DebugItem();
+            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
+            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Split Using" });
+            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = dataSplitDto.SplitType });
+            //    if (!string.IsNullOrEmpty(dataSplitDto.At))
+            //    {
+            //        foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.At, dataList))
+            //        {
+            //            itemToAdd.Add(debugItemResult);
+            //        }
+            //    }
+            //    result.Add(itemToAdd);
+            //    indexToShow++;
+            //}
+            return _debugInputs;
         }
 
         #endregion
@@ -384,22 +447,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<IDebugItem>();
 
-            int indexToShow = 1;
-            foreach (DataSplitDTO dataSplitDto in ResultsCollection)
-            {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
-                if (!string.IsNullOrEmpty(dataSplitDto.OutputVariable))
-                {
-                    foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.OutputVariable, dataList))
-                    {
-                        itemToAdd.Add(debugItemResult);
-                    }
-                }
-                result.Add(itemToAdd);
-                indexToShow++;
-            }
-            return result;
+            //int indexToShow = 1;
+            //foreach (DataSplitDTO dataSplitDto in ResultsCollection)
+            //{
+            //    DebugItem itemToAdd = new DebugItem();
+            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
+            //    if (!string.IsNullOrEmpty(dataSplitDto.OutputVariable))
+            //    {
+            //        foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.OutputVariable, dataList))
+            //        {
+            //            itemToAdd.Add(debugItemResult);
+            //        }
+            //    }
+            //    result.Add(itemToAdd);
+            //    indexToShow++;
+            //}
+            return _debugOutputs;
         }
 
         #endregion

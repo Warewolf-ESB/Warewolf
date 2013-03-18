@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -13,8 +14,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfCountRecordsetActivity : DsfActivityAbstract<string>
     {
+        #region Fields
+
         private string _recordsetName;
         private string _countNumber;
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+        #endregion
 
         /// <summary>
         /// Gets or sets the name of the recordset.
@@ -79,7 +86,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -89,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = dlID;
-           // Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
+            // Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
             allErrors.MergeErrors(errors);
 
             // Process if no errors
@@ -108,46 +116,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
 
                     bdl.TryGetEntry(rs, out recset, out err);
+
+                    if(dataObject.IsDebug)
+                    {
+                        AddDebugInputItem(RecordsetName,"Recordset",recset,executionId);
+                    }
+
                     allErrors.AddError(err);
 
                     //if(entry != null)
                     //{
-                        
+
                     //}
 
                     //IBinaryDataListEntry recset = compiler.Evaluate(executionId, enActionType.User, RecordsetName, false, out errors);
-                    if(recset != null)
+                    if (recset != null)
                     {
 
                         allErrors.MergeErrors(errors);
 
-                        if(recset.Columns != null && CountNumber != string.Empty)
+                        if (recset.Columns != null && CountNumber != string.Empty)
                         {
                             string error;
                             // Travis.Frisinger - Re-did work for bug 7853 
-                            if(recset.IsEmpty())
+                            if (recset.IsEmpty())
                             {
                                 compiler.Upsert(executionId, CountNumber, "0", out errors);
+                                if (dataObject.IsDebug)
+                                {
+                                    AddDebugOutputItem(CountNumber, "0", executionId);
+                                }
                             }
-                            else if(recset.FetchRecordAt(1, out error).Count > 0)
+                            else if (recset.FetchRecordAt(1, out error).Count > 0)
                             {
-                                compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(), out errors);
+                                compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(CultureInfo.InvariantCulture), out errors);
+                                if (dataObject.IsDebug)
+                                {
+                                    AddDebugOutputItem(CountNumber, recset.FetchLastRecordsetIndex().ToString(CultureInfo.InvariantCulture), executionId);
+                                }
                             }
 
                             allErrors.MergeErrors(errors);
                         }
-                        else if(recset.Columns == null)
+                        else if (recset.Columns == null)
                         {
                             allErrors.AddError(RecordsetName + " is not a recordset");
                         }
-                        else if(CountNumber == string.Empty)
+                        else if (CountNumber == string.Empty)
                         {
                             allErrors.AddError("Blank result variable");
                         }
-
-                        //compiler.Shape(executionId, enDev2ArgumentType.Output, OutputMapping, out errors);
+                        
                         allErrors.MergeErrors(errors);
-
                     }
                 }
                 else
@@ -166,32 +186,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
         }
+
+        #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            _debugInputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
+
+        #endregion
 
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-
-            if (!string.IsNullOrEmpty(RecordsetName))
-            {
-                var itemToAdd = new DebugItem
-                {
-                    new DebugItemResult { Type = DebugItemResultType.Label, Value = "Recordset" }, 
-                    new DebugItemResult { Type = DebugItemResultType.Variable, Value = RecordsetName }
-                };
-
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(RecordsetName, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                result.Add(itemToAdd);
-            }
-            return result;
+        {            
+            return _debugInputs;
         }
 
         #endregion
@@ -199,20 +236,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region GetDebugOutputs
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            var result = new List<IDebugItem>();
-
-            if (!string.IsNullOrEmpty(CountNumber))
-            {
-                DebugItem itemToAdd = new DebugItem();
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(CountNumber, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-                result.Add(itemToAdd);
-            }
-
-            return result;
+        {            
+            return _debugOutputs;
         }
 
         #endregion

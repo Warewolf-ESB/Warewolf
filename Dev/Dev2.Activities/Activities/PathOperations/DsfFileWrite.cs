@@ -61,6 +61,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
+            if (dataObject.IsDebug)
+            {                
+                AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
+                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+                AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
+            }
+
             while (colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();

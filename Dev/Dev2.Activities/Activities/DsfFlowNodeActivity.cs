@@ -1,4 +1,5 @@
-﻿using Dev2.Activities;
+﻿using Dev2;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -6,7 +7,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Microsoft.VisualBasic.Activities;
-using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Activities.Presentation;
@@ -14,6 +14,7 @@ using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Windows;
+using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -62,11 +63,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // The private implementation of activity Decision has the following validation error:
             // Compiler error(s) encountered processing expression t.Eq(d.Get("FirstName",AmbientDataList),"Trevor").
             // 't' is not declared. It may be inaccessible due to its protection level
-            // 'd' is not declared. It may be inaccessible due to its protection level
-            //
-            //2013.03.14: Ashley Lewis - BUG 9165 Changed the order of these operations
-            metadata.AddChild(_expression);
+            // 'd' is not declared. It may be inaccessible due to its protection level                        
+            
             base.CacheMetadata(metadata);
+            metadata.AddChild(_expression);
         }
 
         #endregion
@@ -75,6 +75,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            if(dataObject != null && dataObject.IsDebug)
+            {
+                DispatchDebugState(context,StateType.Before);
+            }
             context.ScheduleActivity(_expression, OnCompleted, OnFaulted);
         }
 
@@ -187,25 +192,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
                 {
                     if (DataListUtil.IsEvaluated(dev2Decision.Col1))
-                    {
-                        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col1, dataList));
-                        ErrorResultTO errors = new ErrorResultTO();
-
+                    {                                                
                         userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList));
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                     if (DataListUtil.IsEvaluated(dev2Decision.Col2))
-                    {
-                        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col2, dataList));
-                        ErrorResultTO errors = new ErrorResultTO();
-
+                    {                                                
                         userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList));
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                     if (DataListUtil.IsEvaluated(dev2Decision.Col3))
-                    {
-                        itemToAdd.AddRange(CreateDebugItems(dev2Decision.Col3, dataList));
-                        ErrorResultTO errors = new ErrorResultTO();
-
+                    {                                                
                         userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList));
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                 }
                 result.Add(itemToAdd);
@@ -256,20 +255,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-            Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+                Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-            if (_theResult.ToString() == "True")
-            {
-                resultString = dds.TrueArmText;
+                if (_theResult.ToString() == "True")
+                {
+                    resultString = dds.TrueArmText;
+                }
+                else if (_theResult.ToString() == "False")
+                {
+                    resultString = dds.FalseArmText;
+                }
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
+                result.Add(itemToAdd);
             }
-            else if (_theResult.ToString() == "False")
-            {
-                resultString = dds.FalseArmText;
-            }
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
-            result.Add(itemToAdd);
-            }
-            catch(Exception)
+            catch (Exception)
             {
                 //2013.02.11: Ashley lewis - Bug 8725: Task 8730 - This means it is a swith, not a decision
 

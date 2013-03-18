@@ -12,5 +12,7 @@ namespace Dev2.DataList.Contract
         int FetchCurrentIndex();
 
         string FetchRecordset();
+
+        IBinaryDataListEntry FetchEntry();
     }
 }

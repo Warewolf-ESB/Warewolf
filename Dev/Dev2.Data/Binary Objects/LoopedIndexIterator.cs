@@ -10,7 +10,7 @@ namespace Dev2.Data.Binary_Objects
 
         public int Count
         {
-            get { return _itrCnt;  }
+            get { return _itrCnt; }
         }
 
         public bool IsEmpty { get { return _itrCnt > 0; } }
@@ -51,7 +51,7 @@ namespace Dev2.Data.Binary_Objects
         {
             throw new NotImplementedException();
         }
-        
+
         public IIndexIterator Clone()
         {
             return new LoopedIndexIterator(_curPos, _itrCnt);

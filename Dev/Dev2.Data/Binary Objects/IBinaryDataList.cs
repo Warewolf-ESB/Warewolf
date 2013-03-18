@@ -4,7 +4,7 @@ using Dev2.Data.Binary_Objects;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    public interface IBinaryDataList: IDisposable
+    public interface IBinaryDataList : IDisposable
     {
 
         #region Properties

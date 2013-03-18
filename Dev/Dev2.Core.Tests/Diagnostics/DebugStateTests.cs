@@ -132,12 +132,12 @@ namespace Dev2.Tests.Diagnostics
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddMinutes(3)
             };
-            debugStateIn.Inputs.Add(new DebugItem
-            {
-                new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Label, Value = "MyLabel" },
-                new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Variable, Value = "[[MyVar]]" },
-                new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Value, Value = "MyValue" }
-            });
+
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Label, Value = "MyLabel" });
+            itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Variable, Value = "[[MyVar]]" });
+            itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Value, Value = "MyValue" });
+            debugStateIn.Inputs.Add(itemToAdd);
 
             debugStateIn.Write(rw);
             var debugStateOut = new DebugState(rw);
@@ -159,7 +159,7 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(debugStateIn.StartTime, debugStateOut.StartTime);
             Assert.AreEqual(debugStateIn.EndTime, debugStateOut.EndTime);
 
-            Assert.IsTrue(debugStateOut.Inputs[0].SequenceEqual(debugStateIn.Inputs[0], new DebugItemResultEqualityComparer()));
+            Assert.IsTrue(debugStateOut.Inputs[0].FetchResultsList().SequenceEqual(debugStateIn.Inputs[0].FetchResultsList(), new DebugItemResultEqualityComparer()));
         }
 
         #endregion
@@ -186,7 +186,7 @@ namespace Dev2.Tests.Diagnostics
             var debugState = new DebugStateMock();
             debugState.TryCache(new[] { item });
 
-            Assert.AreEqual(DebugItem.ActCharDispatchCount, item[0].Value.Length);
+            Assert.AreEqual(DebugItem.ActCharDispatchCount, item.FetchResultsList()[0].Value.Length);
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace Dev2.Tests.Diagnostics
         {
             var item = CreateDebugItemWithLongValue();
 
-            var expectedContents = item[0].Value;
+            var expectedContents = item.FetchResultsList()[0].Value;
 
             var debugState = new DebugStateMock();
             debugState.TryCache(new[] { item });
@@ -211,12 +211,12 @@ namespace Dev2.Tests.Diagnostics
         // ReSharper restore InconsistentNaming
         {
             var item = CreateDebugItemWithLongValue();
-            item[0].Value = item[0].Value.Substring(0, DebugItem.MaxCharDispatchCount);
+            item.FetchResultsList()[0].Value = item.FetchResultsList()[0].Value.Substring(0, DebugItem.MaxCharDispatchCount);
 
             var debugState = new DebugStateMock();
             debugState.TryCache(new[] { item });
 
-            Assert.AreEqual(DebugItem.MaxCharDispatchCount, item[0].Value.Length);
+            Assert.AreEqual(DebugItem.MaxCharDispatchCount, item.FetchResultsList()[0].Value.Length);
         }
 
         [TestMethod]
@@ -225,7 +225,7 @@ namespace Dev2.Tests.Diagnostics
         // ReSharper restore InconsistentNaming
         {
             var item = CreateDebugItemWithLongValue();
-            item[0].Value = item[0].Value.Substring(0, DebugItem.MaxCharDispatchCount);
+            item.FetchResultsList()[0].Value = item.FetchResultsList()[0].Value.Substring(0, DebugItem.MaxCharDispatchCount);
 
             var debugState = new DebugStateMock();
             debugState.TryCache(new[] { item });
@@ -240,12 +240,12 @@ namespace Dev2.Tests.Diagnostics
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
-            item[0].Value = item[0].Value.Substring(0, ExpectedLength);
+            item.FetchResultsList()[0].Value = item.FetchResultsList()[0].Value.Substring(0, ExpectedLength);
 
             var debugState = new DebugStateMock();
             debugState.TryCache(new[] { item });
 
-            Assert.AreEqual(ExpectedLength, item[0].Value.Length);
+            Assert.AreEqual(ExpectedLength, item.FetchResultsList()[0].Value.Length);
         }
 
         [TestMethod]
@@ -255,7 +255,7 @@ namespace Dev2.Tests.Diagnostics
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
-            item[0].Value = item[0].Value.Substring(0, ExpectedLength);
+            item.FetchResultsList()[0].Value = item.FetchResultsList()[0].Value.Substring(0, ExpectedLength);
 
             var debugState = new DebugStateMock();
             debugState.TryCache(new[] { item });
@@ -299,15 +299,9 @@ namespace Dev2.Tests.Diagnostics
 
         static DebugItem CreateDebugItemWithLongValue()
         {
-            return new DebugItem
-            {
-                new DebugItemResult
-                {
-                    Type = DebugItemResultType.Value,
-                    Value = LongText
-                }
-            };
-
+            DebugItem result = new DebugItem();
+            result.Add(new DebugItemResult{Type = DebugItemResultType.Value,Value = LongText});
+            return result;
         }
 
         #endregion

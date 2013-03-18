@@ -4,12 +4,11 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -25,6 +24,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private bool _isStandardUpsert = true;
         private string _deferredLoc = string.Empty;
 
+        internal IList<IDebugItem> DebugInputs = new List<IDebugItem>();
+        internal IList<IDebugItem> DebugOutputs = new List<IDebugItem>();
+        internal string DefferedReadFileContents = string.Empty;
+
         public DsfAbstractFileActivity(string displayName)
             : base(displayName)
         {
@@ -35,7 +38,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            DebugInputs = new List<IDebugItem>();
+            DebugOutputs = new List<IDebugItem>();
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
@@ -59,25 +63,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outputs = ExecuteConcreteAction(context, out errors);
                     allErrors.MergeErrors(errors);
 
-                    if(outputs.Count > 0)
+                    if (outputs.Count > 0)
                     {
                         //IList<string> expressionList = new List<string>();
                         //IList<string> valueList = new List<string>();
-                        foreach(OutputTO output in outputs)
+                        foreach (OutputTO output in outputs)
                         {
-                            if(output.OutputStrings.Count > 0)
+                            if (output.OutputStrings.Count > 0)
                             {
-                                foreach(string value in output.OutputStrings)
+                                int iterationCount = 0;
+                                foreach (string value in output.OutputStrings)
                                 {
-                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        if(_isStandardUpsert)
+                                        if (_isStandardUpsert)
                                         {
                                             toUpsert.Add(output.OutPutDescription, value);
+                                            if (dataObject.IsDebug)
+                                            {
+                                                AddDebugOutputItem(output.OutPutDescription, value, dlID, iterationCount);
+                                            }
                                         }
                                         else
                                         {
@@ -87,12 +96,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
                                             allErrors.AddError(error);
                                             toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
+                                            if (dataObject.IsDebug)
+                                            {
+                                                AddDebugOutputItem(output.OutPutDescription, DefferedReadFileContents, dlID, iterationCount);
+                                            }
                                         }
+                                        iterationCount++;
                                     }
 
                                 }
 
-                                if(_isStandardUpsert)
+                                if (_isStandardUpsert)
                                 {
                                     toUpsert.FlushIterationFrame();
                                 }
@@ -104,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
 
-                        if(_isStandardUpsert)
+                        if (_isStandardUpsert)
                         {
                             compiler.Upsert(dlID, toUpsert, out errors);
                         }
@@ -129,6 +143,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DisplayAndWriteError("DsfFileActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                    }
+
+                    if(dataObject.IsDebug)
+                    {
+                        DispatchDebugState(context,StateType.Before);
                     }
                 }
             }
@@ -201,63 +220,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            var props = this.GetType().GetProperties();
-
-            foreach (PropertyInfo propertyInfo in props)
-            {
-                Inputs[] inputAttribs = propertyInfo.GetCustomAttributes(typeof(Inputs), true).OfType<Inputs>().ToArray();
-
-                if (inputAttribs.Length == 0)
-                {
-                    continue;
-                }
-
-                string labelVal = string.IsNullOrEmpty(inputAttribs[0].UserVisibleName) ? string.Empty : (" " + inputAttribs[0].UserVisibleName + " ");
-                var val = propertyInfo.GetValue(this, null) as String;
-
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelVal });
-                if (!string.IsNullOrEmpty(val))
-                {
-                    itemToAdd.AddRange(CreateDebugItems(val, dataList));
-                }
-                results.Add(itemToAdd);
-            }
-
-            return results;
+        {            
+            return DebugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            var props = this.GetType().GetProperties();
-
-            foreach (PropertyInfo propertyInfo in props)
-            {
-                Outputs[] outputAttribs = propertyInfo.GetCustomAttributes(typeof(Outputs), true).OfType<Outputs>().ToArray();
-
-                if (outputAttribs.Length == 0)
-                {
-                    continue;
-                }
-
-                var val = propertyInfo.GetValue(this, null) as String;
-
-                DebugItem itemToAdd = new DebugItem();
-                if (!string.IsNullOrEmpty(val))
-                {
-                    itemToAdd.AddRange(CreateDebugItems(val, dataList));
-                }
-                results.Add(itemToAdd);
-            }
-
-            return results;
+        {           
+            return DebugOutputs;
         }
 
         #endregion Get Inputs/Outputs
+
+        #region Internal Methods
+
+        internal void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }
+
+            DebugInputs.Add(itemToAdd);
+        }
+
+        internal void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
+            DebugOutputs.Add(itemToAdd);
+        }
+
+        #endregion
     }
 }

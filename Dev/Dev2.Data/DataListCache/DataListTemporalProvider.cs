@@ -39,13 +39,6 @@ namespace Dev2.DataList.Contract.Persistence {
                 result = true;
             }
 
-            //GCWriter.WriteData("---- Entry ----");
-            //GCWriter.WriteData("Left : " + _repo.Count);
-            //foreach (Guid i in _repo.Keys)
-            //{
-            //    GCWriter.WriteData("Active DL : " + i);
-            //}
-
             return result;
         }
 
@@ -148,23 +141,12 @@ namespace Dev2.DataList.Contract.Persistence {
                             File.Delete(Path.Combine(_dataListPersistPath, id.ToString()));
                         }
                     }
-                    if(tmp!=null) BackgroundDispatcher.Instance.Add(tmp);
-                    //                  
-                    //                    if(tmp != null)
-                    //                    {
-                    //                        var _task = new Task(() => tmp.Dispose(), TaskCreationOptions.None);
-                    //                        _tasks.Add(_task);
-                    //                        _task.ContinueWith(t => _tasks.Remove(t));
-                    //                        _task.Start();
-                    //                    }
-                    //                    _task.Wait();
-                    // TRAVIS ADD
-                    //GCWriter.WriteData("---- Entry ----");
-                    //GCWriter.WriteData("Left : " + _repo.Count);
-                    //foreach (Guid i in _repo.Keys)
-                    //{
-                    //    GCWriter.WriteData("Active DL : " + i);
-                    //}
+
+                    if (tmp != null)
+                    {
+                        BackgroundDispatcher.Instance.Add(tmp);
+                    }
+
                 }
                 catch (Exception)
                 {
@@ -174,14 +156,7 @@ namespace Dev2.DataList.Contract.Persistence {
             }
         }
 
-        ~DataListTemporalProvider()
-        {
-            //TODO decide if this needs to happen
-            //if(_tasks != null)
-            //{
-            //    _task.Dispose();
-            //}
-        }
+   
 
         public void InitPersistence() {
             lock (_persistGuard)

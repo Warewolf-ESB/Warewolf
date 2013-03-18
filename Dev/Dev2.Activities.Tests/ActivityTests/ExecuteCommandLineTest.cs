@@ -5,7 +5,10 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Dev2.Activities;
+using Dev2.Diagnostics;
+using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTest
@@ -438,6 +441,24 @@ namespace ActivityUnitTests.ActivityTest
             //------------Assert Results-------------------------
             GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
             StringAssert.Contains(actual,expected);
+        }
+
+        [TestMethod]        
+        public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
+        {            
+            DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = "ping rsaklfsvrgendev",CommandResult = "[[CompanyName]]"};
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);            
         }
 
         void SetUpForExecution(DsfExecuteCommandLineActivity activity, string testData, string currentDl)

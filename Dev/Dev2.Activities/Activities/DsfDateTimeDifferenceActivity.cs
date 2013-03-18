@@ -18,6 +18,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
     {
+        #region Fields
+
+        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
+        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+
+        #endregion
 
         #region Properties
 
@@ -80,7 +86,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            _debugInputs = new List<IDebugItem>();
+            _debugOutputs = new List<IDebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
@@ -115,6 +122,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(InputFormatEntry);
                 colItr.AddIterator(ifItr);
 
+                if(dataObject.IsDebug)
+                {
+                    AddDebugInputItem(Input1, "Start Date", Input1Entry, executionId);
+                    AddDebugInputItem(Input2, "End Date", Input2Entry, executionId);
+                    AddDebugInputItem(InputFormat, "Input Format", InputFormatEntry, executionId);
+                }
+
                 int indexToUpsertTo = 1;
                 string expression = string.Empty;
 
@@ -141,6 +155,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         toUpsert.Add(expression, result);
+
+                        if(dataObject.IsDebug)
+                        {
+                            AddDebugOutputItem(expression, result, indexToUpsertTo - 1, executionId);    
+                        }                        
                     }
                     else
                     {
@@ -165,10 +184,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context,StateType.Before);
+                }
             }
         }
 
         #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+            }            
+
+            _debugInputs.Add(itemToAdd);
+
+            if (labelText == "Input Format")
+            {
+                itemToAdd = new DebugItem();
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Output In" });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = OutputType });
+                _debugInputs.Add(itemToAdd);
+            }
+        }
+
+        private void AddDebugOutputItem(string expression, string value,int iterationCounter, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCounter, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
 
         /// <summary>
         /// Used for converting the properties of this activity to a DateTimeTO object
@@ -183,65 +236,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Start Date" });
-            if (!string.IsNullOrEmpty(Input1))
-            {
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(Input1, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "End Date" });
-            if (!string.IsNullOrEmpty(Input2))
-            {
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(Input2, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Input Format" });
-            if (!string.IsNullOrEmpty(InputFormat))
-            {
-                foreach (IDebugItemResult debugItemResult in CreateDebugItems(InputFormat, dataList))
-                {
-                    itemToAdd.Add(debugItemResult);
-                }
-            }
-            results.Add(itemToAdd);
-
-            itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Output in" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = OutputType });
-            results.Add(itemToAdd);
-
-            return results;
+        {           
+            return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            IList<IDebugItem> results = new List<IDebugItem>();
-
-            if (!string.IsNullOrEmpty(Result))
-            {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.AddRange(CreateDebugItems(Result, dataList));
-                results.Add(itemToAdd);
-            }
-            return results;
+        {            
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs
@@ -280,7 +281,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-
 
         #region GetForEachInputs/Outputs
 

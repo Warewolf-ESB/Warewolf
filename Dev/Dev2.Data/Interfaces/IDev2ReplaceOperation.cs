@@ -2,6 +2,7 @@
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Builders;
 using System;
+using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Data.Interfaces
 {
@@ -20,9 +21,14 @@ namespace Dev2.Data.Interfaces
         /// <param name="errors">The errors.</param>
         /// <param name="ReplaceCount">The replace count.</param>
         /// <returns></returns>
-        IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx, string expression, string oldString,
-                                                          string newString, bool caseMatch,
-                                                          IDev2DataListUpsertPayloadBuilder<string> payloadBuilder,
-                                                          out ErrorResultTO errors, out int ReplaceCount);
+        IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx,
+            string expression,
+            string oldString,
+            string newString,
+            bool caseMatch,
+            IDev2DataListUpsertPayloadBuilder<string> payloadBuilder,
+            out ErrorResultTO errors,
+            out int ReplaceCount,
+            out IBinaryDataListEntry entryToReplaceIn);
     }
 }
