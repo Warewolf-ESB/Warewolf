@@ -53,7 +53,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void TestDateTimeWithNoInputFormat()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "DefaultDateTimeInputFormatTest");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "DateAndTimeWithNoInputFormat");
 
             string expected = @"<Result>2013/03/13 08:12:25 PM</Result>";
 
