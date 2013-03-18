@@ -2,6 +2,7 @@
 using Dev2.Runtime.Configuration.ViewModels;
 using Dev2.Runtime.Configuration.Views;
 using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Xml.Linq;
 
@@ -12,11 +13,44 @@ namespace Dev2.Runtime.Configuration.Settings
     // - Then add new property for class here and initialize it in constructors
     // - Then add property to ToXml() 
     // ------------------------------------------------------------------------------
-    public sealed class Configuration
+    public sealed class Configuration : INotifyPropertyChanged
     {
+        #region INotifyPropertyChanged Impl
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region Class Members
+
+        private bool _hasChanges;
+
+        #endregion
+
         #region Fields
 
         public Version Version { get; set; }
+
+        public bool HasChanges
+        {
+            get
+            {
+                return _hasChanges;
+            }
+            set
+            {
+                _hasChanges = value;
+                OnPropertyChanged("HasChanges");
+            }
+        }
 
         #endregion
 
@@ -24,10 +58,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public Configuration()
         {
-            Version = new Version(1, 0);
-            Logging = new LoggingSettings();
-            Security = new SecuritySettings();
-            Backup = new BackupSettings();
+            Init(null);
         }
 
         public Configuration(XElement xml)
@@ -37,11 +68,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 throw new ArgumentNullException("xml");
             }
 
-            Version = new Version(xml.AttributeSafe("Version"));
-
-            Logging = new LoggingSettings(xml.Element(LoggingSettings.SettingName));
-            Security = new SecuritySettings(xml.Element(SecuritySettings.SettingName));
-            Backup = new BackupSettings(xml.Element(BackupSettings.SettingName));
+            Init(xml);
         }
 
         #endregion
@@ -73,6 +100,44 @@ namespace Dev2.Runtime.Configuration.Settings
         public void IncrementVersion()
         {
             Version = Version == null ? new Version(1, 0) : new Version(Version.Major, Version.Minor + 1);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void Init(XElement xml)
+        {
+            if (xml == null)
+            {
+                Version = new Version(1, 0);
+                Logging = new LoggingSettings();
+                Security = new SecuritySettings();
+                Backup = new BackupSettings();
+            }
+            else
+            {
+                Version = new Version(xml.AttributeSafe("Version"));
+                Logging = new LoggingSettings(xml.Element(LoggingSettings.SettingName));
+                Security = new SecuritySettings(xml.Element(SecuritySettings.SettingName));
+                Backup = new BackupSettings(xml.Element(BackupSettings.SettingName));                
+            }
+
+            Logging.PropertyChanged += SettingChanged;
+            Security.PropertyChanged += SettingChanged;
+            Backup.PropertyChanged += SettingChanged;
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void SettingChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if (!HasChanges)
+            {
+                HasChanges = true;
+            }
         }
 
         #endregion

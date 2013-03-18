@@ -179,11 +179,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
+        public Settings.Configuration Configuration { get; set; }
+
         #endregion
 
         #region Private Properties
 
-        private Settings.Configuration Configuration { get; set; }
         private Action<XElement> SaveCallback { get; set; }
         private Action CancelCallback { get; set; }
         private Action SettingChangedCallback { get; set; }

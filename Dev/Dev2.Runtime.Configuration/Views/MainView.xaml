@@ -27,14 +27,13 @@
             </TreeView>
             <Grid>
                 <Button HorizontalAlignment="Left" Content="Cancel" Command="{Binding CancelCommand}" Margin="0,3,0,0" Width="50" 
-                        AutomationProperties.AutomationId="UI_SettingsCancelBtn"/>
+                        AutomationProperties.AutomationId="UI_SettingsCancelBtn" IsEnabled="{Binding Configuration.HasChanges}"/>
                 <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" Margin="0,3,0,0" Width="50" 
-                        AutomationProperties.AutomationId="UI_SettingsSaveBtn"/>
+                        AutomationProperties.AutomationId="UI_SettingsSaveBtn" IsEnabled="{Binding Configuration.HasChanges}"/>
             </Grid>
         </StackPanel>
         
         <ContentControl Grid.Column="1" Content="{Binding SettingsView}" Margin="3,0,0,0"  />
-
 
         <Border Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White"
                 Visibility="{Binding ErrorsVisible}">
