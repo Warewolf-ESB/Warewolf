@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
@@ -22,6 +23,7 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
+using Microsoft.VisualBasic.Activities;
 using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
@@ -36,6 +38,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Parsing.Intellisense;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -2238,6 +2241,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
 
             _wd.ModelChanged += WdOnModelChanged;
+
+            // Ensure all the Dev2 namespaces on the current workflow are there
+            EnsureWorkflowState();
         }
 
         private void WdOnModelChanged(object sender, EventArgs eventArgs)
@@ -2318,10 +2324,116 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        /// <summary>
+        /// Clears all imports from an activity
+        /// </summary>
+        private void ClearActivityImports(Activity activity)
+        {
+            VisualBasicSettings vbsettings = VisualBasic.GetSettings(activity);
+            if (vbsettings == null)
+            {
+                vbsettings = new VisualBasicSettings();
+            }
+
+            vbsettings.ImportReferences.Clear();
+
+            VisualBasic.SetSettings(activity, vbsettings);
+        }
+
+        /// <summary>
+        /// Adds an import to an activity
+        /// </summary>
+        private void AddImportToActivity(Activity activity, string assemblyName, string ns)
+        {
+            VisualBasicSettings vbsettings = VisualBasic.GetSettings(activity);
+            if (vbsettings == null)
+            {
+                vbsettings = new VisualBasicSettings();
+            }
+
+            vbsettings.ImportReferences.Add(new VisualBasicImportReference
+            {
+                Assembly = assemblyName,
+                Import = ns
+            });
+
+            VisualBasic.SetSettings(activity, vbsettings);
+        }
+
+        private void AddDev2ImportsToActivity(Activity activity)
+        {
+            //
+            // Add the namespaces that are used by any objects which are added as variables to the workflow.
+            // If this isn't done, when an activity is added to the design surface that uses one of these variables
+            // the workflow shows an error.
+            //
+            Assembly dev2DataAssembly = typeof(Dev2DataListDecisionHandler).Assembly;
+            Assembly dev2CommonAssembly = typeof(GlobalConstants).Assembly;
+
+            AddImportToActivity(activity, dev2CommonAssembly.GetName().Name, "Dev2.Common");
+            AddImportToActivity(activity, dev2DataAssembly.GetName().Name, "Dev2.Data.Decisions.Operations");
+            AddImportToActivity(activity, dev2DataAssembly.GetName().Name, "Dev2.Data.SystemTemplates.Models");
+            AddImportToActivity(activity, dev2DataAssembly.GetName().Name, "Dev2.DataList.Contract");
+            AddImportToActivity(activity, dev2DataAssembly.GetName().Name, "Dev2.DataList.Contract.Binary_Objects");
+        }
+
+        /// <summary>
+        /// Ensures the the workflow has the correct imports and variables
+        /// </summary>
+        private void EnsureWorkflowState()
+        {
+            if (_modelService == null || _modelService.Root == null)
+            {
+                return;
+            }
+
+            ActivityBuilder activityBuilder = _modelService.Root.GetCurrentValue() as ActivityBuilder;
+
+            if (activityBuilder == null)
+            {
+                return;
+            }
+
+            Flowchart chart = activityBuilder.Implementation as Flowchart;
+
+            if (chart == null)
+            {
+                return;
+            }
+
+            EnsureVariables(chart);
+            ClearActivityImports(chart);
+            AddDev2ImportsToActivity(chart);
+        }
+
+        /// <summary>
+        /// Ensures that the only the correct variables exist on the workflow
+        /// </summary>
+        private void EnsureVariables(Flowchart flowchart)
+        {
+            flowchart.Variables.Clear();
+            flowchart.Variables.Add(new Variable<List<string>>{Name = "InstructionList"});
+            flowchart.Variables.Add(new Variable<string>{Name = "LastResult"});
+            flowchart.Variables.Add(new Variable<bool>{Name = "HasError"});
+            flowchart.Variables.Add(new Variable<string>{Name = "ExplicitDataList"});
+            flowchart.Variables.Add(new Variable<bool>{Name = "IsValid"});
+            flowchart.Variables.Add(new Variable<UnlimitedObject>{Name = "d"});
+            flowchart.Variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util>{ Name = "t"});
+            flowchart.Variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
+        }
+
         // Travis.Frisinger : 23.01.2013 - Added A Dev2DataListDecisionHandler Variable
         public ActivityBuilder GetBaseUnlimitedFlowchartActivity()
         {
-            ActivityBuilder emptyWorkflow = new ActivityBuilder()
+            Flowchart flowchart = new Flowchart
+            {
+                DisplayName = _resourceModel.ResourceName
+            };
+
+            EnsureVariables(flowchart);
+            AddDev2ImportsToActivity(flowchart);
+
+            ActivityBuilder emptyWorkflow = new ActivityBuilder
             {
                 Name = _resourceModel.ResourceName,
                 Properties = {
@@ -2329,20 +2441,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ,new DynamicActivityProperty{ Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>)}
                     ,new DynamicActivityProperty{ Name = "ParentServiceName", Type = typeof(InOutArgument<string>)}
                 },
-                Implementation = new Flowchart
-                {
-                    DisplayName = _resourceModel.ResourceName,
-                    Variables = {
-                         new Variable<List<string>>{Name = "InstructionList"},
-                         new Variable<string>{Name = "LastResult"},
-                         new Variable<bool>{Name = "HasError"},
-                         new Variable<string>{Name = "ExplicitDataList"},
-                         new Variable<bool>{Name = "IsValid"},
-                         new Variable<UnlimitedObject>{Name = "d"},
-                         new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util>{ Name = "t"},
-                         new Variable<Dev2DataListDecisionHandler>{Name = "Dev2DecisionHandler"}
-                    }
-                }
+                Implementation = flowchart
             };
 
             return emptyWorkflow;

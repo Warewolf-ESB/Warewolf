@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using Dev2.Common;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using Dev2.Data.Decisions.Operations;
-using Dev2.DataList.Contract;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.Common;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Data.Decision
 {
