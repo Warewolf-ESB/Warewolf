@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Runtime.DurableInstancing;
-using System.Activities;
+using System.Threading;
 using Dev2.DataList.Contract;
 using Dev2.Network.Execution;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
 namespace Dev2.DynamicServices
@@ -81,11 +82,11 @@ namespace Dev2.DynamicServices
 
             Guid parentInstanceID = FetchParentInstanceID(dataTransferObject);
 
-            if (parentInstanceID != Guid.Empty)
+            if(parentInstanceID != Guid.Empty)
             {
                 inputarguments.Add("ParentWorkflowInstanceId", parentInstanceID);
 
-                if (!string.IsNullOrEmpty(dataTransferObject.ParentServiceName))
+                if(!string.IsNullOrEmpty(dataTransferObject.ParentServiceName))
                 {
                     inputarguments.Add("ParentServiceName", dataTransferObject.ParentServiceName);
                 }
@@ -94,13 +95,13 @@ namespace Dev2.DynamicServices
             // Set the old AmbientDatalist as the DataListID ;)
             inputarguments.Add("AmbientDataList", new List<string> { dataTransferObject.DataListID.ToString() });
 
-            if ((parentInstanceID != Guid.Empty && instanceId == Guid.Empty) || string.IsNullOrEmpty(bookmarkName))
+            if((parentInstanceID != Guid.Empty && instanceId == Guid.Empty) || string.IsNullOrEmpty(bookmarkName))
             {
                 wfApp = new WorkflowApplication(workflowActivity, inputarguments);
             }
             else
             {
-                if (!string.IsNullOrEmpty(bookmarkName))
+                if(!string.IsNullOrEmpty(bookmarkName))
                 {
                     wfApp = new WorkflowApplication(workflowActivity);
                 }
@@ -218,7 +219,9 @@ namespace Dev2.DynamicServices
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject;
                 }
-            }else{
+            }
+            else
+            {
                 errors.AddError("Internal System Error : Could not create workflow execution wrapper");
             }
 
@@ -275,7 +278,8 @@ namespace Dev2.DynamicServices
             {
             }
 
-            private void OnCompleted(WorkflowApplicationCompletedEventArgs args) {
+            private void OnCompleted(WorkflowApplicationCompletedEventArgs args)
+            {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
                 
                 // PBI : 5376 Removed line below
@@ -283,7 +287,7 @@ namespace Dev2.DynamicServices
 
                 try
                 {
-                    if (!_isDebug)
+                    if(!_isDebug)
                     {
                         IDictionary<string, object> outputs = args.Outputs;
 
@@ -303,46 +307,37 @@ namespace Dev2.DynamicServices
                         object parentServiceName;
                         outputs.TryGetValue("ParentServiceName", out parentServiceName);
 
-                        parentServiceName = _result.ParentServiceName;
+                        var parentServiceNameStr = string.IsNullOrEmpty(_result.ParentServiceName) ? string.Empty : _result.ParentServiceName;
 
                         //object parentServiceName = outputs["ParentServiceName"];
 
                         object objcreateResumptionPoint;
 
 
-                        if (outputs.TryGetValue("CreateResumuptionPoint", out objcreateResumptionPoint))
+                        if(outputs.TryGetValue("CreateResumuptionPoint", out objcreateResumptionPoint))
                         {
                             createResumptionPoint = (bool)objcreateResumptionPoint;
                         }
 
                         PooledServiceActivity wfActivity = null;
 
-                        if (!String.IsNullOrEmpty(parentServiceName == null ? String.Empty : parentServiceName.ToString()) && Guid.TryParse(parentId.ToString(), out _parentWorkflowInstanceID))
+                        if(!string.IsNullOrEmpty(parentServiceNameStr) && Guid.TryParse(parentId.ToString(), out _parentWorkflowInstanceID))
                         {
-                            if (_parentWorkflowInstanceID != _currentInstanceID)
-                            {
-                                if (_workspace.Host != null)
-                                {
-                                    IEnumerable<DynamicService> services;
-                                    _workspace.Host.LockServices();
-
-                                    try
+                            if(_parentWorkflowInstanceID != _currentInstanceID)
                                     {
-                                        services = _workspace.Host.Services.Where(svc => svc.Name.Equals(parentServiceName == null ? string.Empty : parentServiceName.ToString(), StringComparison.InvariantCultureIgnoreCase));
-                                    }
-                                    finally
+                                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+                                var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicServiceObjectBase>(_workspace.ID, parentServiceNameStr);
+                                if(services != null && services.Count > 0)
                                     {
-                                        _workspace.Host.UnlockServices();
-                                    }
-
-                                    if (services.Any())
+                                    var service = services[0] as DynamicService;
+                                    if(service != null)
                                     {
                                         _currentInstanceID = _parentWorkflowInstanceID;
-                                        var actionSet = services.First().Actions;
+                                        var actionSet = service.Actions;
 
-                                        if (_result.WorkflowResumeable)
+                                        if(_result.WorkflowResumeable)
                                         {
-                                            ServiceAction serviceAction = actionSet.First();
+                                            var serviceAction = actionSet.First();
                                             wfActivity = serviceAction.PopActivity();
 
                                             try
@@ -370,7 +365,8 @@ namespace Dev2.DynamicServices
                 {
                     ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
                 }
-                finally {
+                finally
+                {
                     _waitHandle.Set();
                 }
 

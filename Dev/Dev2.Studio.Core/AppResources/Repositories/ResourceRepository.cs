@@ -423,11 +423,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 foreach (dynamic item in wfServices)
                 {
-                    IResourceModel resource = HydrateResourceModel(resourceType, item);
-                    _workflowDb.Add(resource);
-                    if (ItemAdded != null)
+                    try
                     {
-                        ItemAdded(resource, null);
+                        IResourceModel resource = HydrateResourceModel(resourceType, item);
+                        _workflowDb.Add(resource);
+                        if (ItemAdded != null)
+                        {
+                            ItemAdded(resource, null);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        // Ignore malformed resources
+                        // TODO Log this
                     }
                 }
             }
@@ -435,7 +443,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data)
         {
-            IResourceModel resource = ResourceModelFactory.CreateResourceModel(Environment);
+            IContextualResourceModel resource = ResourceModelFactory.CreateResourceModel(Environment);
             resource.ResourceType = resourceType;
             if (data.XamlDefinition is string)
             {
@@ -448,9 +456,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             resource.DataList = data.GetValue("DataList");
             resource.ID = Guid.Parse(data.GetValue("ID"));
+            
+            resource.ServerID = Guid.Parse(data.GetValue("ServerID"));
 
-            if (resource.ID == Guid.NewGuid())
-                throw new InvalidDataException("Resource doesnt have a valid id, needs to be updated");
+            resource.Version = Version.Parse(data.GetValue("Version"));
 
             if (string.IsNullOrEmpty(resource.ServiceDefinition))
             {

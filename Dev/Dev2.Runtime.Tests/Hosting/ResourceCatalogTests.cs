@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +12,9 @@ using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Hosting
@@ -20,13 +22,41 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestClass]
     public class ResourceCatalogTests
     {
-        const int SaveResourceCount = 5;
+        // Change this if you change the number of resouces saved by SaveResources()
+        const int SaveResourceCount = 6;
+
+        static string _workspacesDir;
+
+        #region ClassInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
+            _workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
             Directory.SetCurrentDirectory(testContext.TestDir);
         }
+
+        #endregion
+
+        #region TestInitialize/Cleanup
+
+        static readonly object TestLock = new object();
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Monitor.Enter(TestLock);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            //DirectoryHelper.CleanUp(_workspacesDir);
+            Monitor.Exit(TestLock);
+        }
+
+        #endregion
+
 
         #region Instance
 
@@ -49,19 +79,14 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                var catalogResources = catalog[workspaceID];
+            SaveResources(workspaceID, out resources);
 
-                Assert.AreEqual(1, catalog.Count);
-                Assert.AreEqual(SaveResourceCount, catalogResources.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
+            var catalog = new ResourceCatalog();
+            var expectedWorkspaceCount = catalog.WorkspaceCount + 1;
+
+            var actualCount = catalog.GetResourceCount(workspaceID);
+            Assert.AreEqual(SaveResourceCount, actualCount);
+            Assert.AreEqual(expectedWorkspaceCount, catalog.WorkspaceCount);
         }
 
         [TestMethod]
@@ -69,78 +94,70 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                catalog.Load(workspaceID);
-                var catalogResources = catalog[workspaceID];
+            SaveResources(workspaceID, out resources);
 
-                Assert.AreEqual(1, catalog.Count);
-                Assert.AreEqual(SaveResourceCount, catalogResources.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
+            var catalog = new ResourceCatalog();
+            var expectedWorkspaceCount = catalog.WorkspaceCount + 1;
+
+            catalog.LoadWorkspace(workspaceID); // Loads from disk
+            var actualCount = catalog.GetResourceCount(workspaceID);
+            Assert.AreEqual(SaveResourceCount, actualCount);
+            Assert.AreEqual(expectedWorkspaceCount, catalog.WorkspaceCount);
         }
 
         #endregion
 
-        #region Load
+        #region LoadWorkspace
 
         [TestMethod]
-        public void LoadWithNewWorkspaceIDExpectedAddsCatalogForWorkspace()
+        public void LoadWorkspaceWithNewWorkspaceIDExpectedAddsCatalogForWorkspace()
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                catalog.Load(workspaceID);
+            SaveResources(workspaceID, out resources);
 
-                Assert.AreEqual(1, catalog.Count);
-                var catalogResources = catalog[workspaceID];
-                Assert.AreEqual(SaveResourceCount, catalogResources.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
+            var catalog = new ResourceCatalog();
+            var expectedWorkspaceCount = catalog.WorkspaceCount + 1;
+            catalog.LoadWorkspace(workspaceID); // Loads from disk
+
+            var actualCount = catalog.GetResourceCount(workspaceID);
+            Assert.AreEqual(SaveResourceCount, actualCount);
+            Assert.AreEqual(expectedWorkspaceCount, catalog.WorkspaceCount);
         }
 
         [TestMethod]
-        public void LoadWithExistingWorkspaceIDExpectedUpdatesCatalogForWorkspace()
+        public void LoadWorkspaceWithExistingWorkspaceIDExpectedUpdatesCatalogForWorkspace()
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                catalog.Load(workspaceID);
-                catalog.Load(workspaceID);
+            SaveResources(workspaceID, out resources);
+            var resource = resources[0];
 
-                Assert.AreEqual(1, catalog.Count);
-                var catalogResources = catalog[workspaceID];
-                Assert.AreEqual(SaveResourceCount, catalogResources.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
+            var catalog = new ResourceCatalog();
+            var expectedWorkspaceCount = catalog.WorkspaceCount + 1;
+
+            catalog.LoadWorkspace(workspaceID); // Loads from disk
+
+            catalog.DeleteResource(workspaceID, resource.ResourceName, ResourceTypeConverter.ToTypeString(resource.ResourceType), resource.AuthorRoles);
+            var actualCount = catalog.GetResourceCount(workspaceID);
+            Assert.AreEqual(SaveResourceCount - 1, actualCount);
+            Assert.AreEqual(expectedWorkspaceCount, catalog.WorkspaceCount);
+
+            catalog.LoadWorkspace(workspaceID); // Loads from disk
+            actualCount = catalog.GetResourceCount(workspaceID);
+            Assert.AreEqual(SaveResourceCount - 1, actualCount);
+            Assert.AreEqual(expectedWorkspaceCount, catalog.WorkspaceCount);
         }
 
         #endregion
 
-        #region LoadAsync
+        #region LoadWorkspaceAsync
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void LoadAsyncWithNullWorkspaceArgumentExpectedThrowsArgumentNullException()
+        public void LoadWorkspaceAsyncWithNullWorkspaceArgumentExpectedThrowsArgumentNullException()
         {
-            var task = ResourceCatalog.LoadAsync(null, true, new string[0]);
+            var task = ResourceCatalog.LoadWorkspaceAsync(null, new string[0]);
             try
             {
                 task.Wait();
@@ -153,9 +170,9 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void LoadAsyncWithNullFoldersArgumentExpectedThrowsArgumentNullException()
+        public void LoadWorkspaceAsyncWithNullFoldersArgumentExpectedThrowsArgumentNullException()
         {
-            var task = ResourceCatalog.LoadAsync("xx", true, null);
+            var task = ResourceCatalog.LoadWorkspaceAsync("xx", null);
             try
             {
                 task.Wait();
@@ -167,67 +184,117 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        public void LoadAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
+        public void LoadWorkspaceAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
-            var task = ResourceCatalog.LoadAsync("xx", true, new string[0]);
+            var task = ResourceCatalog.LoadWorkspaceAsync("xx", new string[0]);
             task.Wait();
             Assert.AreEqual(0, task.Result.Count);
         }
 
         [TestMethod]
-        public void LoadAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
+        public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
             var workspaceID = Guid.NewGuid();
             var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
-            try
+            var sourcesPath = Path.Combine(workspacePath, "Sources");
+            Directory.CreateDirectory(sourcesPath);
+            var resources = SaveResources(sourcesPath, null, false, false, "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer").ToList();
+
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Sources", "Services");
+            task.Wait();
+
+            Assert.AreEqual(3, task.Result.Count);
+
+            foreach(var resource in task.Result)
             {
-                var sourcesPath = Path.Combine(workspacePath, "Sources");
-                Directory.CreateDirectory(sourcesPath);
-                var resources = SaveResources(sourcesPath, "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer").ToList();
-
-                var task = ResourceCatalog.LoadAsync(workspacePath, true, "Sources", "Services");
-                task.Wait();
-
-                Assert.AreEqual(3, task.Result.Count);
-
-                foreach(var resource in task.Result)
-                {
-                    var expected = resources.First(r => r.ResourceName == resource.ResourceName);
-                    Assert.AreEqual(expected.Contents, resource.Contents);
-                    Assert.AreEqual(expected.FilePath, resource.FilePath);
-                }
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
+                var expected = resources.First(r => r.ResourceName == resource.ResourceName);
+                Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
         [TestMethod]
-        public void LoadAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
+        public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
             var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var task = ResourceCatalog.LoadAsync(workspacePath, true, "Sources", "Services");
-                task.Wait();
 
-                Assert.AreEqual(SaveResourceCount, task.Result.Count);
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Sources", "Services");
+            task.Wait();
 
-                foreach(var resource in task.Result)
-                {
-                    var expected = resources.First(r => r.ResourceName == resource.ResourceName);
-                    Assert.AreEqual(expected.Contents, resource.Contents);
-                    Assert.AreEqual(expected.FilePath, resource.FilePath);
-                }
-            }
-            finally
+            Assert.AreEqual(SaveResourceCount, task.Result.Count);
+
+            foreach(var resource in task.Result)
             {
-                TryDeleteDir(workspacePath);
+                var expected = resources.First(r => r.ResourceName == resource.ResourceName);
+                Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
+        }
+
+        [TestMethod]
+        public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resources = SaveResources(path, null, false, false, "Calculate_RecordSet_Subtract", "TestDecisionUnsigned").ToList();
+
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+
+            Assert.AreEqual(1, task.Result.Count);
+
+            foreach(var resource in task.Result)
+            {
+                var expected = resources.First(r => r.ResourceName == resource.ResourceName);
+                Assert.AreEqual(expected.FilePath, resource.FilePath);
+            }
+        }
+
+        [TestMethod]
+        public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Sources");
+            Directory.CreateDirectory(path);
+            var resources = SaveResources(path, null, false, false, "CitiesDatabase").ToList();
+
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Sources");
+            task.Wait();
+
+            Assert.AreEqual(1, task.Result.Count);
+
+            foreach(var resource in task.Result)
+            {
+                var expected = resources.First(r => r.ResourceName == resource.ResourceName);
+                Assert.AreNotEqual(expected.ResourceID, resource.ResourceID);
+            }
+        }
+
+        [TestMethod]
+        public void LoadWorkspaceAsyncWithUpgradableXmlExpectedUpgradesXmlWithoutLocking()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resources = SaveResources(path, null, false, false, "CatalogServiceAllTools").ToList();
+
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+
+            Assert.AreEqual(1, task.Result.Count);
+
+            var actual = task.Result[0];
+            Assert.IsTrue(actual.IsUpgraded);
+
+            // TestCleanup will fail if file is locked! 
         }
 
         #endregion
@@ -239,213 +306,328 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             const int NumWorkspaces = 5;
             const int NumThreadsPerWorkspace = 5;
-            try
+            const int ExpectedWorkspaceCount = NumWorkspaces + 1; // add 1 for server workspace that is auto-loaded
+
+            var catalog = new ResourceCatalog();
+
+            var threadArray = new Thread[NumWorkspaces * NumThreadsPerWorkspace];
+
+            #region Create threads
+
+            for(var i = 0; i < NumWorkspaces; i++)
             {
-                var catalog = new ResourceCatalog();
+                var workspaceID = Guid.NewGuid();
 
-                var threadArray = new Thread[NumWorkspaces * NumThreadsPerWorkspace];
+                List<IResource> resources;
+                SaveResources(workspaceID, out resources);
 
-                #region Create threads
-
-                for(var i = 0; i < NumWorkspaces; i++)
+                for(var j = 0; j < NumThreadsPerWorkspace; j++)
                 {
-                    var workspaceID = Guid.NewGuid();
-                    List<IResource> resources;
-                    SaveResources(workspaceID, out resources);
-
-                    for(var j = 0; j < NumThreadsPerWorkspace; j++)
+                    var t = (i * NumThreadsPerWorkspace) + j;
+                    if(j == 0)
                     {
-                        var t = (i * NumThreadsPerWorkspace) + j;
-                        if(j == 0)
+                        threadArray[t] = new Thread(() =>
                         {
-                            threadArray[t] = new Thread(() =>
-                            {
-                                catalog.Load(workspaceID); // Always loads from disk
-                                var result = catalog[workspaceID]; // Loads from disk if not in memory
-                                Assert.AreEqual(SaveResourceCount, result.Count);
-                            });
-                        }
-                        else
+                            catalog.LoadWorkspace(workspaceID); // Always loads from disk
+                            var actualCount = catalog.GetResourceCount(workspaceID); // Loads from disk if not in memory
+                            Assert.AreEqual(SaveResourceCount, actualCount);
+                        });
+                    }
+                    else
+                    {
+                        threadArray[t] = new Thread(() =>
                         {
-                            threadArray[t] = new Thread(() =>
-                            {
-                                var result = catalog[workspaceID]; // Loads from disk if not in memory
-                                Assert.AreEqual(SaveResourceCount, result.Count);
-                            });
-                        }
+                            var actualCount = catalog.GetResourceCount(workspaceID); // Loads from disk if not in memory
+                            Assert.AreEqual(SaveResourceCount, actualCount);
+                        });
                     }
                 }
-
-                #endregion
-
-
-                //Start the threads.
-                Parallel.For(0, threadArray.Length, i => threadArray[i].Start());
-
-                //Wait until all the threads spawn out and finish.
-                foreach(var t in threadArray)
-                {
-                    t.Join();
-                }
-
-                Assert.AreEqual(NumWorkspaces, catalog.Count);
             }
-            finally
+
+            #endregion
+
+
+            //Start the threads.
+            Parallel.For(0, threadArray.Length, i => threadArray[i].Start());
+
+            //Wait until all the threads spawn out and finish.
+            foreach(var t in threadArray)
             {
-                TryDeleteDir(GlobalConstants.WorkspacePath);
+                t.Join();
+            }
+
+            Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
+        }
+
+        #endregion
+
+        #region SaveResource
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SaveResourceWithNullResourceArgumentExpectedThrowsArgumentNullException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, (IResource)null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SaveResourceWithNullResourceXmlArgumentExpectedThrowsArgumentNullException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, (string)null);
+        }
+
+        [TestMethod]
+        public void SaveResourceWithUnsignedServiceExpectedSignsFile()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Services");
+
+            var xml = XmlResource.Fetch("TestDecisionUnsigned");
+            var resource = new Workflow(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            var signedXml = File.ReadAllText(Path.Combine(path, resource.ResourceName + ".xml"));
+
+            var isValid = HostSecurityProvider.Instance.VerifyXml(signedXml);
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        public void SaveResourceWithSourceWithoutIDExpectedSourceSavedWithID()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Sources");
+
+            var xml = XmlResource.Fetch("CitiesDatabase");
+            var resource = new DbSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".xml"));
+            var attr = xml.Attributes("ID").ToList();
+
+            Assert.AreEqual(1, attr.Count);
+        }
+
+        [TestMethod]
+        public void SaveResourceWithExistingResourceExpectedResourceOverwritten()
+        {
+            var workspaceID = Guid.NewGuid();
+
+            var resource1 = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestOldDb", Server = "TestOldServer", ServerType = enSourceType.SqlDatabase, Version = new Version(1, 0) };
+
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource1);
+
+            var expected = new DbSource { ResourceID = resource1.ResourceID, ResourceName = resource1.ResourceName, DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase, Version = new Version(1, 1) };
+            catalog.SaveResource(workspaceID, expected);
+
+            var contents = catalog.GetResourceContents(workspaceID, expected.ResourceID, expected.Version);
+            var actual = new DbSource(XElement.Parse(contents));
+
+            Assert.AreEqual(expected.ResourceName, actual.ResourceName);
+            Assert.AreEqual(expected.DatabaseName, actual.DatabaseName);
+            Assert.AreEqual(expected.Server, actual.Server);
+            Assert.AreEqual(expected.ServerType, actual.ServerType);
+        }
+
+        [TestMethod]
+        public void SaveResourceWithExistingResourceAndReadonlyExpectedResourceOverwritten()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var resource1 = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestOldDb", Server = "TestOldServer", ServerType = enSourceType.SqlDatabase, Version = new Version(1, 0) };
+
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource1);
+
+            var path = Path.Combine(workspacePath, "Sources", resource1.ResourceName + ".xml");
+            var attributes = File.GetAttributes(path);
+            if((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
+            {
+                File.SetAttributes(path, attributes ^ FileAttributes.ReadOnly);
+            }
+
+            var expected = new DbSource { ResourceID = resource1.ResourceID, ResourceName = resource1.ResourceName, DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase, Version = new Version(1, 1) };
+            catalog.SaveResource(workspaceID, expected);
+
+            var contents = catalog.GetResourceContents(workspaceID, expected.ResourceID, expected.Version);
+            var actual = new DbSource(XElement.Parse(contents));
+
+            Assert.AreEqual(expected.ResourceName, actual.ResourceName);
+            Assert.AreEqual(expected.DatabaseName, actual.DatabaseName);
+            Assert.AreEqual(expected.Server, actual.Server);
+            Assert.AreEqual(expected.ServerType, actual.ServerType);
+        }
+
+        [TestMethod]
+        public void SaveResourceWithNewResourceExpectedResourceWritten()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+
+            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase, Version = new Version(1, 1) };
+            catalog.SaveResource(workspaceID, expected);
+
+            var contents = catalog.GetResourceContents(workspaceID, expected.ResourceID, expected.Version);
+            var actual = new DbSource(XElement.Parse(contents));
+
+            Assert.AreEqual(expected.ResourceName, actual.ResourceName);
+            Assert.AreEqual(expected.DatabaseName, actual.DatabaseName);
+            Assert.AreEqual(expected.Server, actual.Server);
+            Assert.AreEqual(expected.ServerType, actual.ServerType);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
+        public void SaveResourceWithSlashesInResourceNameExpectedThrowsDirectoryNotFoundException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+
+            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "Test\\Source", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase, Version = new Version(1, 1) };
+            catalog.SaveResource(workspaceID, expected);
+        }
+
+        [TestMethod]
+        public void SaveResourceWithNewResourceXmlExpectedResourceWritten()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+
+            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase, Version = new Version(1, 1) };
+            catalog.SaveResource(workspaceID, expected.ToXml().ToString());
+
+            var contents = catalog.GetResourceContents(workspaceID, expected.ResourceID, expected.Version);
+            var actual = new DbSource(XElement.Parse(contents));
+
+            Assert.AreEqual(expected.ResourceName, actual.ResourceName);
+            Assert.AreEqual(expected.DatabaseName, actual.DatabaseName);
+            Assert.AreEqual(expected.Server, actual.Server);
+            Assert.AreEqual(expected.ServerType, actual.ServerType);
+        }
+
+        #endregion
+
+        #region GetResource
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetResourceWithNullResourceNameExpectedThrowsArgumentNullException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.GetResource(workspaceID, null);
+        }
+
+        [TestMethod]
+        public void GetResourceWithResourceNameExpectedReturnsResource()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            foreach(var expected in resources)
+            {
+                var actual = catalog.GetResource(workspaceID, expected.ResourceName);
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(expected.ResourceID, actual.ResourceID);
+                Assert.AreEqual(expected.ResourceName, actual.ResourceName);
+                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
+                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
             }
         }
 
         #endregion
 
-        #region GetContents
+        #region GetResourceContents
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetContentsWithNullResourceExpectedThrowsArgumentNullException()
+        public void GetResourceContentsWithNullResourceExpectedReturnsEmptyString()
         {
+            var catalog = new ResourceCatalog();
+            var result = catalog.GetResourceContents(null);
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        [TestMethod]
+        public void GetResourceContentsWithNullResourceFilePathExpectedReturnsEmptyString()
+        {
+            var catalog = new ResourceCatalog();
+            var result = catalog.GetResourceContents(new Resource());
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        [TestMethod]
+        public void GetResourceContentsWithExistingResourceExpectedReturnsResourceContents()
+        {
+            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            catalog.GetContents(workspaceID, (IResource)null);
+            foreach(var expected in resources)
+            {
+                var actual = catalog.GetResourceContents(expected);
+                Assert.IsNotNull(actual);
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NoNullAllowedException))]
-        public void GetContentsWithNullResourceExpectedThrowsNoNullAllowedException()
+        public void GetResourceContentsWithNonExistentResourceExpectedReturnsEmptyString()
         {
+            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            catalog.GetContents(workspaceID, new Resource());
+            var actual = catalog.GetResourceContents(new Resource { ResourceID = Guid.NewGuid(), FilePath = Path.GetRandomFileName() });
+            Assert.AreEqual(string.Empty, actual);
         }
 
         [TestMethod]
-        public void GetContentsWithExistingResourceExpectedReturnsResourceContents()
+        public void GetResourceContentsWithExistingResourceIDExpectedReturnsResourceContents()
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                foreach(var expected in resources)
-                {
-                    var actual = catalog.GetContents(workspaceID, expected);
-                    Assert.IsNotNull(actual);
-                }
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        [TestMethod]
-        public void GetContentsWithNonExistentResourceExpectedReturnsNull()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                var actual = catalog.GetContents(workspaceID, new Resource { ResourceID = Guid.NewGuid(), FilePath = Path.GetRandomFileName() });
-                Assert.IsNull(actual);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetContentsWithNullResourceNameExpectedThrowsArgumentNullException()
-        {
-            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            catalog.GetContents(workspaceID, (string)null);
-        }
+            foreach(var expected in resources)
+            {
+                var xml = catalog.GetResourceContents(workspaceID, expected.ResourceID, expected.Version);
 
-        [TestMethod]
-        public void GetContentsWithExistingResourceNameExpectedReturnsResourceContents()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                foreach(var expected in resources)
-                {
-                    var actual = catalog.GetContents(workspaceID, expected.ResourceName);
-                    Assert.IsNotNull(actual);
-                }
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
+                var actual = new Resource(XElement.Parse(xml));
+                Assert.AreEqual(expected.ResourceID, actual.ResourceID);
+                Assert.AreEqual(expected.ResourceName, actual.ResourceName);
             }
         }
 
         [TestMethod]
-        public void GetContentsWithNonExistentResourceNameExpectedReturnsNull()
+        public void GetResourceContentsWithNonExistentResourceIDExpectedReturnsEmptyString()
         {
             List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                var actual = catalog.GetContents(workspaceID, "xxx");
-                Assert.IsNull(actual);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            var actual = catalog.GetResourceContents(workspaceID, Guid.NewGuid());
+            Assert.AreEqual(string.Empty, actual);
         }
 
-        [TestMethod]
-        public void GetContentsWithExistingResourceIDExpectedReturnsResourceContents()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                foreach(var expected in resources)
-                {
-                    var actual = catalog.GetContents(workspaceID, expected.ResourceID, expected.Version);
-                    Assert.IsNotNull(actual);
-                }
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        [TestMethod]
-        public void GetContentsWithNonExistentResourceIDExpectedReturnsNull()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                var actual = catalog.GetContents(workspaceID, Guid.NewGuid(), null);
-                Assert.IsNull(actual);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
         #endregion
 
         #region SyncTo
@@ -460,23 +642,16 @@ namespace Dev2.Tests.Runtime.Hosting
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
-            {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
 
-                sourceFile.Delete();
-                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
-                targetFile.Refresh();
-                Assert.IsTrue(targetFile.Exists);
-            }
-            finally
-            {
-                //TryDeleteDir(sourceWorkspacePath);
-                //TryDeleteDir(targetWorkspacePath);
-            }
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var sourceFile = new FileInfo(sourceResource.FilePath);
+            var targetFile = new FileInfo(targetResource.FilePath);
+
+            sourceFile.Delete();
+            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
+            targetFile.Refresh();
+            Assert.IsTrue(targetFile.Exists);
         }
 
         [TestMethod]
@@ -489,35 +664,28 @@ namespace Dev2.Tests.Runtime.Hosting
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
+
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var sourceFile = new FileInfo(sourceResource.FilePath);
+            var targetFile = new FileInfo(targetResource.FilePath);
+
+            var fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
+            fs.Write(new byte[]
             {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
+                200
+            }, 0, 1);
+            fs.Close();
 
-                var fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
-                fs.Write(new byte[]
-                {
-                    200
-                }, 0, 1);
-                fs.Close();
+            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
 
-                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
+            sourceFile.Refresh();
+            targetFile.Refresh();
 
-                sourceFile.Refresh();
-                targetFile.Refresh();
+            var expected = sourceFile.Length;
+            var actual = targetFile.Length;
 
-                var expected = sourceFile.Length;
-                var actual = targetFile.Length;
-
-                Assert.AreEqual(expected, actual);
-            }
-            finally
-            {
-                //TryDeleteDir(sourceWorkspacePath);
-                //TryDeleteDir(targetWorkspacePath);
-            }
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -530,36 +698,29 @@ namespace Dev2.Tests.Runtime.Hosting
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
+
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var sourceFile = new FileInfo(sourceResource.FilePath);
+            var targetFile = new FileInfo(targetResource.FilePath);
+
+            var fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
+            fs.Write(new byte[]
             {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
+                200
+            }, 0, 1);
+            fs.Close();
 
-                var fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
-                fs.Write(new byte[]
-                {
-                    200
-                }, 0, 1);
-                fs.Close();
+            targetFile.Refresh();
+            var expected = targetFile.Length;
 
-                targetFile.Refresh();
-                var expected = targetFile.Length;
+            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
 
-                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
+            targetFile.Refresh();
 
-                targetFile.Refresh();
+            var actual = targetFile.Length;
 
-                var actual = targetFile.Length;
-
-                Assert.AreEqual(expected, actual);
-            }
-            finally
-            {
-                //TryDeleteDir(sourceWorkspacePath);
-                //TryDeleteDir(targetWorkspacePath);
-            }
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -572,23 +733,15 @@ namespace Dev2.Tests.Runtime.Hosting
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
-            {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
 
-                targetFile.Delete();
-                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
-                targetFile.Refresh();
-                Assert.IsFalse(targetFile.Exists);
-            }
-            finally
-            {
-                //TryDeleteDir(sourceWorkspacePath);
-                //TryDeleteDir(targetWorkspacePath);
-            }
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var targetFile = new FileInfo(targetResource.FilePath);
+
+            targetFile.Delete();
+            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
+            targetFile.Refresh();
+            Assert.IsFalse(targetFile.Exists);
         }
 
         [TestMethod]
@@ -601,23 +754,16 @@ namespace Dev2.Tests.Runtime.Hosting
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
-            {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
 
-                sourceFile.Delete();
-                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
-                targetFile.Refresh();
-                Assert.IsTrue(targetFile.Exists);
-            }
-            finally
-            {
-                //TryDeleteDir(sourceWorkspacePath);
-                //TryDeleteDir(targetWorkspacePath);
-            }
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var sourceFile = new FileInfo(sourceResource.FilePath);
+            var targetFile = new FileInfo(targetResource.FilePath);
+
+            sourceFile.Delete();
+            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
+            targetFile.Refresh();
+            Assert.IsTrue(targetFile.Exists);
         }
 
         [TestMethod]
@@ -629,356 +775,638 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = GlobalConstants.GetWorkspacePath(targetWorkspaceID);
-            try
-            {
-                var targetDir = new DirectoryInfo(targetWorkspacePath);
 
-                new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
-                targetDir.Refresh();
-                Assert.IsTrue(targetDir.Exists);
-            }
-            finally
-            {
-                //TryDeleteDir(sourceWorkspacePath);
-                //TryDeleteDir(targetWorkspacePath);
-            }
+            var targetDir = new DirectoryInfo(targetWorkspacePath);
+
+            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
+            targetDir.Refresh();
+            Assert.IsTrue(targetDir.Exists);
+
         }
 
         #endregion
 
-        #region FindByID
+        #region GetPayload
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FindByIDWithNullGuidsExpectedThrowsArgumentNullException()
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void GetPayloadWithNullResourceNameExpectedThrowsInvalidDataContractException()
         {
             var workspaceID = Guid.NewGuid();
             var catalog = new ResourceCatalog();
-            catalog.FindByID(workspaceID, null);
+            catalog.GetPayload(workspaceID, null, null, null);
         }
 
         [TestMethod]
-        public void FindByIDWithGuidsExpectedReturnsResourcesWithTheGivenGuids()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var guids = resources.Take(2).Select(r => r.ResourceID).ToList();
-
-                var catalog = new ResourceCatalog();
-                var foundResources = catalog.FindByID(workspaceID, string.Join(",", guids));
-
-                Assert.AreEqual(2, foundResources.Count);
-                foreach(var actual in guids.Select(guid => foundResources.FirstOrDefault(r => r.ResourceID == guid)))
-                {
-                    Assert.IsNotNull(actual);
-                }
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        [TestMethod]
-        public void FindByIDWithInvalidGuidsExpectedReturnsEmptyList()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var guids = new[] { Guid.NewGuid(), Guid.NewGuid() };
-
-                var catalog = new ResourceCatalog();
-                var foundResources = catalog.FindByID(workspaceID, string.Join(",", guids));
-
-                Assert.AreEqual(0, foundResources.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        #endregion
-
-        #region FindByName
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FindByNameWithNullResourceNameExpectedThrowsArgumentNullException()
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void GetPayloadWithNullTypeExpectedThrowsInvalidDataContractException()
         {
             var workspaceID = Guid.NewGuid();
             var catalog = new ResourceCatalog();
-            catalog.FindByName(workspaceID, ResourceType.Unknown, null);
+            catalog.GetPayload(workspaceID, "xxx", null, null);
         }
-
-        [TestMethod]
-        public void FindByNameWithExistingResourceNameReturnsResource()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var expected = resources[0];
-
-                var catalog = new ResourceCatalog();
-                var actual = catalog.FindByName(workspaceID, expected.ResourceType, expected.ResourceName);
-
-                Assert.IsNotNull(actual);
-                Assert.AreEqual(1, actual.Count);
-                Assert.AreEqual(expected.ResourceID, actual[0].ResourceID);
-                Assert.AreEqual(expected.ResourceName, actual[0].ResourceName);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        [TestMethod]
-        public void FindByNameWithNonExistingResourceNameReturnsNothing()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var expected = resources[0];
-
-                var catalog = new ResourceCatalog();
-                var actual = catalog.FindByName(workspaceID, expected.ResourceType, "xxx");
-
-                Assert.AreEqual(0, actual.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        #endregion
-
-        #region FindBySourceType
-
-        [TestMethod]
-        public void FindBySourceTypeWithValidParametersExpectedReturnsResources()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var expected = resources.First(r => r.ResourceType == ResourceType.PluginSource);
-
-                var catalog = new ResourceCatalog();
-                var actual = catalog.FindBySourceType(workspaceID, enSourceType.Plugin);
-
-                Assert.AreEqual(1, actual.Count);
-                Assert.AreEqual(expected.ResourceID, actual[0].ResourceID);
-                Assert.AreEqual(expected.ResourceName, actual[0].ResourceName);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-
-        [TestMethod]
-        public void FindBySourceTypeWithInvalidParametersExpectedReturnsNothing()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = SaveResources(workspaceID, out resources);
-            try
-            {
-                var catalog = new ResourceCatalog();
-                var actual = catalog.FindBySourceType(workspaceID, enSourceType.Unknown);
-
-                Assert.AreEqual(0, actual.Count);
-            }
-            finally
-            {
-                TryDeleteDir(workspacePath);
-            }
-        }
-        #endregion
-
-        #region Copy
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CopyWithNullResourceNameExpectedThrowsArgumentNullException()
+        public void GetPayloadWithNullTypeExpectedThrowsArgumentNullException()
         {
-            var sourceWorkspaceID = Guid.NewGuid();
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.GetPayload(workspaceID, null, null);
+        }
+
+        [TestMethod]
+        public void GetPayloadWithGuidsExpectedReturnsPayloadForGuids()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var expectedResources = resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList();
+            var guids = expectedResources.Select(r => r.ResourceID).ToList();
+
+            var catalog = new ResourceCatalog();
+            var payloadXml = catalog.GetPayload(workspaceID, string.Join(",", guids), ResourceTypeConverter.TypeWorkflowService);
+
+            VerifyPayload(expectedResources, payloadXml);
+        }
+
+        [TestMethod]
+        public void GetPayloadWithInvalidGuidsExpectedReturnsEmptyPayload()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var guids = new[] { Guid.NewGuid(), Guid.NewGuid() };
+
+            var catalog = new ResourceCatalog();
+            var payloadXml = catalog.GetPayload(workspaceID, string.Join(",", guids), ResourceTypeConverter.TypeWorkflowService);
+
+            VerifyPayload(new List<IResource>(), payloadXml);
+        }
+
+        [TestMethod]
+        public void GetPayloadWithExistingResourceNameExpectedReturnsPayloadForResources()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            foreach(var expected in resources)
+            {
+                var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, ResourceTypeConverter.ToTypeString(expected.ResourceType), null);
+                VerifyPayload(new List<IResource> { expected }, payloadXml);
+            }
+        }
+
+        [TestMethod]
+        public void GetPayloadWithExistingResourceNameAndContainsFalseExpectedReturnsPayloadForResources()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            foreach(var expected in resources)
+            {
+                var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, ResourceTypeConverter.ToTypeString(expected.ResourceType), null, false);
+                VerifyPayload(new List<IResource> { expected }, payloadXml);
+            }
+        }
+
+        [TestMethod]
+        public void GetPayloadWithNonExistentResourceNameExpectedReturnsEmptyString()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            var payloadXml = catalog.GetPayload(workspaceID, "xxx", ResourceTypeConverter.TypeService, null);
+            VerifyPayload(new List<IResource>(), payloadXml);
+        }
+
+        [TestMethod]
+        public void GetPayloadWithValidSourceTypeExpectedReturnsResources()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var expected = resources.First(r => r.ResourceType == ResourceType.PluginSource);
+
+            var catalog = new ResourceCatalog();
+            var payloadXml = catalog.GetPayload(workspaceID, enSourceType.Plugin);
+
+            VerifyPayload(new List<IResource> { expected }, payloadXml);
+        }
+
+        [TestMethod]
+        public void GetPayloadWithInvalidSourceTypeExpectedReturnsNothing()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            var payloadXml = catalog.GetPayload(workspaceID, enSourceType.Unknown);
+
+            VerifyPayload(new List<IResource>(), payloadXml);
+        }
+        #endregion
+
+        #region CopyResource
+
+        [TestMethod]
+        public void CopyResourceWithNullResourceExpectedDoesNotCopyResourceToTarget()
+        {
             var targetWorkspaceID = Guid.NewGuid();
             var catalog = new ResourceCatalog();
-            catalog.Copy(null, sourceWorkspaceID, targetWorkspaceID);
+            var result = catalog.CopyResource(null, targetWorkspaceID);
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
-        public void CopyWithExistingResourceNameExpectedCopiesResourceToTarget()
+        public void CopyResourceWithExistingResourceNameExpectedCopiesResourceToTarget()
         {
             List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            SaveResources(sourceWorkspaceID, out sourceResources);
 
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
-            {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
+            SaveResources(targetWorkspaceID, out targetResources);
 
-                targetFile.Delete();
-                var result = new ResourceCatalog().Copy(sourceResource.ResourceName, sourceWorkspaceID, targetWorkspaceID);
-                Assert.IsTrue(result);
-                targetFile.Refresh();
-                Assert.IsTrue(targetFile.Exists);
-            }
-            finally
-            {
-                TryDeleteDir(sourceWorkspacePath);
-                TryDeleteDir(targetWorkspacePath);
-            }
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var targetFile = new FileInfo(targetResource.FilePath);
+
+            targetFile.Delete();
+            var result = new ResourceCatalog().CopyResource(sourceResource.ResourceID, sourceWorkspaceID, targetWorkspaceID);
+            Assert.IsTrue(result);
+            targetFile.Refresh();
+            Assert.IsTrue(targetFile.Exists);
         }
 
         [TestMethod]
-        public void CopyWithNonExistingResourceNameExpectedDoesNotCopyResourceToTarget()
+        public void CopyResourceWithNonExistingResourceNameExpectedDoesNotCopyResourceToTarget()
         {
             List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            SaveResources(sourceWorkspaceID, out sourceResources);
 
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
-            {
-                var result = new ResourceCatalog().Copy("xxxx", sourceWorkspaceID, targetWorkspaceID);
-                Assert.IsFalse(result);
-            }
-            finally
-            {
-                TryDeleteDir(sourceWorkspacePath);
-                TryDeleteDir(targetWorkspacePath);
-            }
+            SaveResources(targetWorkspaceID, out targetResources);
 
+            var result = new ResourceCatalog().CopyResource(Guid.Empty, sourceWorkspaceID, targetWorkspaceID);
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
-        public void CopyWithNonExistingResourceFilePathExpectedDoesNotCopyResourceToTarget()
+        public void CopyResourceWithNonExistingResourceFilePathExpectedDoesNotCopyResourceToTarget()
         {
             List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            SaveResources(sourceWorkspaceID, out sourceResources);
 
             List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
-            try
-            {
-                var sourceResource = sourceResources[0];
-                var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-                var sourceFile = new FileInfo(sourceResource.FilePath);
-                var targetFile = new FileInfo(targetResource.FilePath);
+            SaveResources(targetWorkspaceID, out targetResources);
 
-                sourceFile.Delete();
-                targetFile.Delete();
+            var sourceResource = sourceResources[0];
+            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
+            var sourceFile = new FileInfo(sourceResource.FilePath);
+            var targetFile = new FileInfo(targetResource.FilePath);
 
-                var result = new ResourceCatalog().Copy(sourceResource.ResourceName, sourceWorkspaceID, targetWorkspaceID);
-                Assert.IsFalse(result);
-                targetFile.Refresh();
-                Assert.IsFalse(targetFile.Exists);
-            }
-            finally
-            {
-                TryDeleteDir(sourceWorkspacePath);
-                TryDeleteDir(targetWorkspacePath);
-            }
+            sourceFile.Delete();
+            targetFile.Delete();
 
+            var result = new ResourceCatalog().CopyResource(sourceResource.ResourceID, sourceWorkspaceID, targetWorkspaceID);
+            Assert.IsFalse(result);
+            targetFile.Refresh();
+            Assert.IsFalse(targetFile.Exists);
         }
 
         #endregion
+
+        #region RollbackResource
+
+        [TestMethod]
+        public void RollbackResourceWithUnsignedVersionExpectedDoesNotRollback()
+        {
+            const string ResourceName = "TestDecisionUnsigned";
+            var toVersion = new Version(9999, 0);
+
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Services");
+            var versionControlPath = Path.Combine(path, "VersionControl");
+            Directory.CreateDirectory(versionControlPath);
+
+            // Save unsigned version 
+            var xml = XmlResource.Fetch(ResourceName);
+            xml.Save(Path.Combine(versionControlPath, ResourceName + ".V" + toVersion.Major + ".xml"));
+
+            // Sign and save
+            var resource = new Workflow(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            // Perform test
+            var rolledBack = catalog.RollbackResource(workspaceID, resource.ResourceID, resource.Version, toVersion);
+
+            Assert.IsFalse(rolledBack);
+        }
+
+        [TestMethod]
+        public void RollbackResourceWithSignedVersionExpectedDoesRollback()
+        {
+            const string ResourceName = "Calculate_RecordSet_Subtract";
+            var toVersion = new Version(9999, 0);
+
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Services");
+            var versionControlPath = Path.Combine(path, "VersionControl");
+            Directory.CreateDirectory(versionControlPath);
+
+            // Save unsigned version 
+            var xml = XmlResource.Fetch(ResourceName);
+            xml.Save(Path.Combine(versionControlPath, ResourceName + ".V" + toVersion.Major + ".xml"));
+
+            // Sign and save
+            var resource = new Workflow(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            // Perform test
+            var rolledBack = catalog.RollbackResource(workspaceID, resource.ResourceID, resource.Version, toVersion);
+
+            Assert.IsTrue(rolledBack);
+        }
+
+        #endregion
+
+        #region DeleteResource
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void DeleteResourceWithNullResourceNameExpectedThrowsInvalidDataContractException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.DeleteResource(workspaceID, null, null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void DeleteResourceWithNullTypeExpectedThrowsInvalidDataContractException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.DeleteResource(workspaceID, "xxx", null);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithWildcardResourceNameExpectedReturnsNoWildcardsAllowed()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            var result = catalog.DeleteResource(workspaceID, "*", ResourceTypeConverter.TypeWorkflowService);
+            Assert.AreEqual(ExecStatus.NoWildcardsAllowed, result.Status);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithNonExistingResourceNameExpectedReturnsNoMatch()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+            var result = catalog.DeleteResource(workspaceID, "xxx", ResourceTypeConverter.TypeWorkflowService);
+            Assert.AreEqual(ExecStatus.NoMatch, result.Status);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithManyExistingResourceNamesExpectedReturnsDuplicateMatch()
+        {
+            const string ResourceName = "Test";
+
+            var workspaceID = Guid.NewGuid();
+
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, new Resource { ResourceID = Guid.NewGuid(), ResourceName = ResourceName, ResourceType = ResourceType.WorkflowService });
+            catalog.SaveResource(workspaceID, new Resource { ResourceID = Guid.NewGuid(), ResourceName = ResourceName, ResourceType = ResourceType.WorkflowService });
+
+            var result = catalog.DeleteResource(workspaceID, ResourceName, ResourceTypeConverter.TypeWorkflowService);
+            Assert.AreEqual(ExecStatus.DuplicateMatch, result.Status);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithOneExistingResourceNameAndInvalidUserRolesExpectedReturnsAccessViolation()
+        {
+            const string ResourceName = "Test";
+
+            var workspaceID = Guid.NewGuid();
+
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, new Resource { ResourceID = Guid.NewGuid(), ResourceName = ResourceName, ResourceType = ResourceType.WorkflowService, AuthorRoles = "Admins" });
+
+            var result = catalog.DeleteResource(workspaceID, ResourceName, ResourceTypeConverter.TypeWorkflowService, "Power Users");
+            Assert.AreEqual(ExecStatus.AccessViolation, result.Status);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithOneExistingResourceNameAndValidUserRolesExpectedReturnsSuccessAndDeletesFileFromDisk()
+        {
+            const string ResourceName = "Test";
+            const string UserRoles = "Admins, Power Users";
+
+            var workspaceID = Guid.NewGuid();
+
+            var catalog = new ResourceCatalog();
+            var resource = new Resource { ResourceID = Guid.NewGuid(), ResourceName = ResourceName, ResourceType = ResourceType.WorkflowService, AuthorRoles = "Admins, Domain Admins" };
+            catalog.SaveResource(workspaceID, resource, UserRoles);
+
+            var file = new FileInfo(resource.FilePath);
+            Assert.IsTrue(file.Exists);
+
+            var result = catalog.DeleteResource(workspaceID, ResourceName, ResourceTypeConverter.TypeWorkflowService, UserRoles);
+            Assert.AreEqual(ExecStatus.Success, result.Status);
+
+            var actual = catalog.GetResource(workspaceID, resource.ResourceID);
+            Assert.IsNull(actual);
+
+            file.Refresh();
+            Assert.IsFalse(file.Exists);
+        }
+
+        #endregion
+
+        #region GetDynamicObjects
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDynamicObjectsWithNullResourceNameExpectedThrowsArgumentNullException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.GetDynamicObjects<DynamicServiceObjectBase>(workspaceID, null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDynamicObjectsWithNullResourceNameAndContainsTrueExpectedThrowsArgumentNullException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var catalog = new ResourceCatalog();
+            catalog.GetDynamicObjects<DynamicServiceObjectBase>(workspaceID, null, true);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDynamicObjectsWithNullResourceExpectedThrowsArgumentNullException()
+        {
+            var catalog = new ResourceCatalog();
+            catalog.GetDynamicObjects((IResource)null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDynamicObjectsWithNullResourcesExpectedThrowsArgumentNullException()
+        {
+            var catalog = new ResourceCatalog();
+            catalog.GetDynamicObjects((IEnumerable<IResource>)null);
+        }
+
+        [TestMethod]
+        public void GetDynamicObjectsWithResourceNameExpectedReturnsObjectGraph()
+        {
+            var workspaceID = Guid.NewGuid();
+            List<IResource> resources;
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+
+            var expected = resources.First(r => r.ResourceType == ResourceType.WorkflowService);
+
+            var graph = catalog.GetDynamicObjects<DynamicService>(workspaceID, expected.ResourceName, true);
+
+            VerifyObjectGraph(new List<IResource> { expected }, graph);
+        }
+
+        [TestMethod]
+        public void GetDynamicObjectsWithResourceExpectedReturnsObjectGraph()
+        {
+            var workspaceID = Guid.NewGuid();
+            List<IResource> resources;
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+
+            var expected = resources.First(r => r.ResourceType == ResourceType.WorkflowService);
+
+            var graph = catalog.GetDynamicObjects(expected);
+
+            VerifyObjectGraph(new List<IResource> { expected }, graph);
+        }
+
+        [TestMethod]
+        public void GetDynamicObjectsWithResourcesExpectedReturnsObjectGraphs()
+        {
+            var workspaceID = Guid.NewGuid();
+            List<IResource> resources;
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+
+            var expecteds = resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList();
+
+            var graph = catalog.GetDynamicObjects(expecteds);
+
+            VerifyObjectGraph(expecteds, graph);
+        }
+
+        [TestMethod]
+        public void GetDynamicObjectsWithWorkspaceIDExpectedReturnsObjectGraphsForWorkspace()
+        {
+            var workspaceID = Guid.NewGuid();
+            List<IResource> resources;
+            SaveResources(workspaceID, out resources);
+
+            var catalog = new ResourceCatalog();
+
+            var graph = catalog.GetDynamicObjects(workspaceID);
+
+            VerifyObjectGraph(resources, graph);
+        }
+        #endregion
+
+        #region RemoveWorkspace
+
+        [TestMethod]
+        public void RemoveWorkspaceWithInvalidIDExpectedDoesNothing()
+        {
+            const int WorkspaceCount = 5;
+            const int ExpectedWorkspaceCount = WorkspaceCount + 1; // add 1 for server workspace that is auto-loaded
+
+            var catalog = new ResourceCatalog();
+
+            var workspaces = new List<Guid>();
+            for(var i = 0; i < WorkspaceCount; i++)
+            {
+                var id = Guid.NewGuid();
+                catalog.LoadWorkspace(id);
+                workspaces.Add(id);
+            }
+
+            Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
+            catalog.RemoveWorkspace(Guid.NewGuid());
+            Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
+        }
+
+        [TestMethod]
+        public void RemoveWorkspaceWithValidIDExpectedRemovesWorkspace()
+        {
+            const int WorkspaceCount = 5;
+            const int ExpectedWorkspaceCount = WorkspaceCount + 1; // add 1 for server workspace that is auto-loaded
+
+            var catalog = new ResourceCatalog();
+
+            var workspaces = new List<Guid>();
+            for(var i = 0; i < WorkspaceCount; i++)
+            {
+                var id = Guid.NewGuid();
+                catalog.LoadWorkspace(id);
+                workspaces.Add(id);
+            }
+            Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
+            catalog.RemoveWorkspace(workspaces[3]);
+            Assert.AreEqual(ExpectedWorkspaceCount - 1, catalog.WorkspaceCount);
+        }
+
+        #endregion
+
         //
         // Static helpers
         //
 
         #region SaveResources
 
-        static string SaveResources(Guid workspaceID, out List<IResource> resources)
+        public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
+        {
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources, services, out resources);
+            var targetWorkspacePath = GlobalConstants.GetWorkspacePath(copyToWorkspaceID);
+            DirectoryHelper.Copy(sourceWorkspacePath, targetWorkspacePath, true);
+        }
+
+        public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
             var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             var sourcesPath = Path.Combine(workspacePath, "Sources");
             var servicesPath = Path.Combine(workspacePath, "Services");
 
-            Directory.CreateDirectory(sourcesPath);
-            Directory.CreateDirectory(servicesPath);
+            Directory.CreateDirectory(Path.Combine(sourcesPath, "VersionControl"));
+            Directory.CreateDirectory(Path.Combine(servicesPath, "VersionControl"));
 
             resources = new List<IResource>();
-            resources.AddRange(SaveResources(sourcesPath, "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer"));
-            resources.AddRange(SaveResources(servicesPath, "CatalogServiceAllTools", "CatalogServiceCitiesDatabase"));
+            resources.AddRange(SaveResources(sourcesPath, versionNo, injectID, signXml, sources));
+            resources.AddRange(SaveResources(servicesPath, versionNo, injectID, signXml, services));
 
             return workspacePath;
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, params string[] resourceNames)
+        static string SaveResources(Guid workspaceID, out List<IResource> resources)
+        {
+            return SaveResources(workspaceID, null, false, false,
+                new[] { "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer" },
+                new[] { "CatalogServiceAllTools", "CatalogServiceCitiesDatabase", "CatalogServiceCalculateRecordSetSubtract" },
+                out resources);
+        }
+
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, params string[] resourceNames)
         {
             var result = new List<IResource>();
             foreach(var resourceName in resourceNames)
             {
                 var xml = XmlResource.Fetch(resourceName);
-                var res = new Resource(xml) { FilePath = Path.Combine(resourcesPath, resourceName + ".xml"), Contents = xml.ToString(SaveOptions.DisableFormatting) };
-                //try
-                //{
-                var file = new FileInfo(res.FilePath);
-                using(var stream = file.OpenWrite())
+                if(injectID)
                 {
-                    var buffer = Encoding.UTF8.GetBytes(xml.ToString());
-                    stream.Write(buffer, 0, buffer.Length);
+                    var idAttr = xml.Attribute("ID");
+                    if(idAttr == null)
+                    {
+                        xml.Add(new XAttribute("ID", Guid.NewGuid()));
+                    }
                 }
-                //File.WriteAllText(res.FilePath, xml.ToString());
+
+                var contents = xml.ToString(SaveOptions.DisableFormatting);
+                if(signXml)
+                {
+                    contents = HostSecurityProvider.Instance.SignXml(contents);
+                }
+                var res = new Resource(xml)
+                {
+                    FilePath = Path.Combine(resourcesPath, resourceName + ".xml")
+                };
+
+                // Just in case sign the xml
+
+                File.WriteAllText(res.FilePath, contents, Encoding.UTF8);
+
+                if(!string.IsNullOrEmpty(versionNo))
+                {
+                    File.WriteAllText(Path.Combine(resourcesPath, string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)), contents, Encoding.UTF8);
+                }
                 result.Add(res);
-                //}
-                //// ReSharper disable EmptyGeneralCatchClause
-                //catch
-                //// ReSharper restore EmptyGeneralCatchClause
-                //{
-                //    // Silently ignore errors
-                //}
             }
             return result;
         }
 
         #endregion
 
-        #region TryDeleteDir
+        #region VerifyPayload
 
-        static void TryDeleteDir(string path)
+        static void VerifyPayload(ICollection<IResource> expectedResources, string payloadXml)
         {
-            // Causes problems!
+            var actualResources = XElement.Parse(payloadXml).Elements().Select(x => new Resource(x)).ToList();
 
-            //if(Directory.Exists(path))
-            //{
-            //    try
-            //    {
-            //        Directory.Delete(path, true);
-            //    }
-            //    catch(IOException)
-            //    {
-            //        // Don't fail test just because this threw an IO exception!
-            //    }
-            //}
+            Assert.AreEqual(expectedResources.Count, actualResources.Count);
+
+            foreach(var expected in expectedResources)
+            {
+                var actual = actualResources.FirstOrDefault(r => r.ResourceID == expected.ResourceID && r.ResourceName == expected.ResourceName);
+                Assert.IsNotNull(actual);
+            }
         }
 
         #endregion
 
+        #region VerifyObjectGraph
+
+
+        static void VerifyObjectGraph<TGraph>(ICollection<IResource> expectedResources, ICollection<TGraph> actualGraphs)
+            where TGraph : DynamicServiceObjectBase
+        {
+            Assert.AreEqual(expectedResources.Count, actualGraphs.Count);
+
+            foreach(var expected in expectedResources)
+            {
+                var actualGraph = actualGraphs.FirstOrDefault(g => g.Name == expected.ResourceName);
+                Assert.IsNotNull(actualGraph);
+
+                var actual = new Resource(XElement.Parse(actualGraph.ResourceDefinition));
+                Assert.AreEqual(expected.ResourceID, actual.ResourceID);
+                Assert.AreEqual(expected.ResourceType, actual.ResourceType);
+                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
+            }
+        }
+
+        #endregion
     }
 }

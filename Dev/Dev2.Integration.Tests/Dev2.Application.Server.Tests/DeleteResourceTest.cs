@@ -54,7 +54,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                         //string versionDirectory = Path.Combine(, "VersionControl");
                         string actualResult = TestHelper.PostDataToWebserver(postData);
 
-                        Assert.AreEqual(true, actualResult.Contains("<Result>Success</Result>"));
+                        Assert.AreEqual(true, actualResult.Contains("Success"));
 
                         initialFiles = Directory.GetFiles(fabrication.GetCommonDirectoryPath(ServerCommonDirectory.Services));
                         var newcount = initialFiles.Count(s => s.Contains(serviceName));

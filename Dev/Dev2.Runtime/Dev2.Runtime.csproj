@@ -100,40 +100,13 @@
     <Compile Include="ESB\DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
     <Compile Include="ESB\Control\IDynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
-    <Compile Include="ESB\Control\DynamicservicesHost.cs" />
+    <None Include="ESB\Control\DynamicservicesHost_OLD.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
     <Compile Include="ESB\Execution\PluginServiceContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
-    <Compile Include="ESB\Management\EsbManagementServiceLocator.cs" />
-    <Compile Include="ESB\Management\IEsbManagementEndpoint.cs" />
-    <Compile Include="ESB\Management\Services\AddResource.cs" />
-    <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
-    <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
-    <Compile Include="ESB\Management\Services\CompileResource.cs" />
-    <Compile Include="ESB\Management\Services\DeleteResource.cs" />
-    <Compile Include="ESB\Management\Services\DeployResource.cs" />
-    <Compile Include="ESB\Management\Services\FindDependencies.cs" />
-    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
-    <Compile Include="ESB\Management\Services\FindDrive.cs" />
-    <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
-    <Compile Include="ESB\Management\Services\FindResource.cs" />
-    <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
-    <Compile Include="ESB\Management\Services\FindResources.cs" />
-    <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
-    <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
-    <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
-    <Compile Include="ESB\Management\Services\GetLatest.cs" />
-    <Compile Include="ESB\Management\Services\GetResource.cs" />
-    <Compile Include="ESB\Management\Services\InterrogatePlugin.cs" />
-    <Compile Include="ESB\Management\Services\Ping.cs" />
-    <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
-    <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
-    <Compile Include="ESB\Management\Services\ReloadResource.cs" />
-    <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
-    <Compile Include="ESB\Management\Sources\ManagementServiceSource.cs" />
     <Compile Include="ESB\WF\FileSystemInstanceStore.cs" />
     <Compile Include="ESB\WF\FileSystemInstanceStoreIO.cs" />
     <Compile Include="ESB\WF\WorkflowApplicationFactory.cs" />
@@ -152,15 +125,6 @@
     <Compile Include="Network\ServerNetworkChannelContext.cs" />
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioTemplates.cs" />
-    <Compile Include="Workspaces\Framework\CompilerException.cs" />
-    <Compile Include="Workspaces\Framework\DuplicateException.cs" />
-    <Compile Include="Workspaces\DynamicServiceRepository.cs" />
-    <Compile Include="Workspaces\Framework\XmlClassSerializer.cs" />
-    <Compile Include="Workspaces\IWorkspace_Server.cs" />
-    <Compile Include="Workspaces\Enums.cs" />
-    <Compile Include="Workspaces\IDynamicServiceRepository.cs" />
-    <Compile Include="Workspaces\IWorkspace.cs" />
-    <Compile Include="Workspaces\IWorkspaceItem.cs" />
     <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Network\StudioAccountProvider.cs" />
     <Compile Include="Network\StudioFileSystem.cs" />
@@ -170,14 +134,6 @@
     <Compile Include="ESB\Control\DynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="TO\ServiceHydrationTO.cs" />
-    <Compile Include="Workspaces\IWorkspaceRepository.cs" />
-    <Compile Include="Workspaces\Workspace.cs" />
-    <Compile Include="Workspaces\WorkspaceItem.cs" />
-    <Compile Include="Workspaces\WorkspaceRepository.cs" />
-    <Compile Include="Workspaces\Workspace_Server.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Workspaces\Workspaces.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -234,9 +190,12 @@
       <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ESB\Management\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

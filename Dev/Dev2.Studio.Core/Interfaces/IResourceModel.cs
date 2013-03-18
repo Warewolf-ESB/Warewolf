@@ -1,5 +1,5 @@
-﻿using System;
-using Dev2.Studio.Core.AppResources.Enums;
+﻿using Dev2.Studio.Core.AppResources.Enums;
+using System;
 using System.Activities;
 using System.Collections.Generic;
 
@@ -34,6 +34,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsDatabaseService { get; set; }
         bool IsResourceService { get; set; }
         bool IsWorkflowSaved(string viewModelServiceDef);
+        Version Version { get; set; }
         void Update(IResourceModel resourceModel);
     }
 }

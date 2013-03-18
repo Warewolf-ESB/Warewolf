@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Build.Tests
@@ -196,9 +196,12 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestMethod()]
         public void AppServerr_Update_Resource_Correctly()
         {
-            string expected = @"<CompilerMessage>Updated Service 'ServiceToBindFrom'</CompilerMessage>";
+            string expected = @"<CompilerMessage>Updated Workflow 'ServiceToBindFrom'</CompilerMessage>";
             string Command = TestResource.Service_Update_Request_String;
+            
+            //Execute twice to ensure that the resource is actually there
             string actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.NewGuid());
+            actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.NewGuid());
 
             actual = TestHelper.CleanUp(actual);
             expected = TestHelper.CleanUp(expected);

@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ESB
                     try
                     {
                         ServiceLocator sl = new ServiceLocator();
-                        DynamicService theService = sl.FindServiceByName(serviceName, _workspace.Host);
+                        DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
 
                         if (theService == null)
                         {
@@ -101,6 +101,8 @@ namespace Dev2.Runtime.ESB
                         else if(theService.Actions.Count <= 1)
                         {
                             ServiceAction theStart = theService.Actions.FirstOrDefault();
+                            MapServiceActionDependencies(theStart, sl);
+
                             ErrorResultTO invokeErrors = new ErrorResultTO();
                             // Invoke based upon type ;)
                             EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
@@ -143,13 +145,14 @@ namespace Dev2.Runtime.ESB
         public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject,string serviceName)
         {
             ServiceLocator sl = new ServiceLocator();
-            DynamicService theService = sl.FindServiceByName(serviceName, _workspace.Host);
+            DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
             EsbExecutionContainer executionContainer = null;
 
 
             if(theService != null && theService.Actions.Any())
             {
-                ServiceAction sa= theService.Actions.FirstOrDefault();
+                ServiceAction sa = theService.Actions.FirstOrDefault();
+                MapServiceActionDependencies(sa, sl);
                 executionContainer = GenerateContainer(sa, dataObject, _workspace);
 
             }
@@ -197,6 +200,40 @@ namespace Dev2.Runtime.ESB
 
             return result;
         }
+
+        private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
+        {
+            if (serviceAction.Cases != null)
+            {
+                foreach (ServiceActionCase sac in serviceAction.Cases.Cases)
+                {
+                    foreach (ServiceAction sa in sac.Actions)
+                    {
+                        MapServiceActionDependencies(sa, serviceLocator);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
+            {
+                serviceAction.Service = serviceLocator.FindServiceByName(serviceAction.ServiceName, _workspace.ID);
+            }
+
+            if (!string.IsNullOrWhiteSpace(serviceAction.SourceName))
+            {
+                serviceAction.Source = serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
+            }
+        }
+
+        // This method was missing after the resource catalogue port, it doesn't seem to be used any more but
+        // just in case it is needed I've left it here.
+        //private void MapActivityToService(WorkflowActivityDef activity, ServiceLocator serviceLocator)
+        //{
+        //    if (!string.IsNullOrWhiteSpace(activity.ServiceName))
+        //    {
+        //        activity.Service = serviceLocator.FindServiceByName(activity.ServiceName, _workspace.ID);
+        //    }
+        //}
 
         #endregion
 

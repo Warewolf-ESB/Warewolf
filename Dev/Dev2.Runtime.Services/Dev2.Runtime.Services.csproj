@@ -43,12 +43,15 @@
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,6 +67,38 @@
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
     <Compile Include="Diagnostics\ValidationResult.cs" />
+    <Compile Include="ESB\Management\EsbManagementServiceLocator.cs" />
+    <Compile Include="ESB\Management\IEsbManagementEndpoint.cs" />
+    <Compile Include="ESB\Management\Services\AddResource.cs" />
+    <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
+    <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
+    <Compile Include="ESB\Management\Services\CompileResource.cs" />
+    <Compile Include="ESB\Management\Services\DeleteResource.cs" />
+    <Compile Include="ESB\Management\Services\DeployResource.cs" />
+    <Compile Include="ESB\Management\Services\FindDependencies.cs" />
+    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
+    <Compile Include="ESB\Management\Services\FindDrive.cs" />
+    <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
+    <Compile Include="ESB\Management\Services\FindResource.cs" />
+    <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
+    <Compile Include="ESB\Management\Services\FindResources.cs" />
+    <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
+    <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
+    <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
+    <Compile Include="ESB\Management\Services\GetLatest.cs" />
+    <Compile Include="ESB\Management\Services\GetResource.cs" />
+    <Compile Include="ESB\Management\Services\InterrogatePlugin.cs" />
+    <Compile Include="ESB\Management\Services\Ping.cs" />
+    <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
+    <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
+    <Compile Include="ESB\Management\Services\ReloadResource.cs" />
+    <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
+    <Compile Include="ESB\Management\Sources\ManagementServiceSource.cs" />
+    <Compile Include="Hosting\DynamicObjectHelper.cs" />
+    <Compile Include="Hosting\ManagementServiceResource.cs" />
+    <Compile Include="Hosting\ResourceTypeConverter.cs" />
+    <Compile Include="Hosting\ResourceCatalogResult.cs" />
+    <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="ServiceModel\Data\IResource.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
@@ -74,6 +109,7 @@
     <Compile Include="Security\ISecureConfig.cs" />
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
+    <Compile Include="ServiceModel\Data\Workflow.cs" />
     <Compile Include="ServiceModel\DbSources.cs" />
     <Compile Include="ServiceModel\Data\Recordset.cs" />
     <Compile Include="ServiceModel\Data\RecordsetCell.cs" />
@@ -108,6 +144,15 @@
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="ServiceModel\WebModel.cs" />
+    <Compile Include="Workspaces\Workspace.cs" />
+    <Compile Include="Workspaces\WorkspaceItem.cs" />
+    <Compile Include="Workspaces\WorkspaceItemAction.cs" />
+    <Compile Include="Workspaces\IWorkspace.cs" />
+    <Compile Include="Workspaces\IWorkspaceItem.cs" />
+    <Compile Include="Workspaces\IWorkspaceRepository.cs" />
+    <Compile Include="Workspaces\IWorkspace_Server.cs" />
+    <Compile Include="Workspaces\WorkspaceRepository.cs" />
+    <Compile Include="Workspaces\Workspace_Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">

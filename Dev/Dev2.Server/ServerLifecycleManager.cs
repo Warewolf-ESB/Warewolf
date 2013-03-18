@@ -1,4 +1,17 @@
-﻿using CommandLine;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Security.Principal;
+using System.ServiceProcess;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using CommandLine;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Reflection;
@@ -13,19 +26,6 @@ using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Security.Principal;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading;
-using System.Xml;
 
 namespace Unlimited.Applications.DynamicServicesHost
 {
@@ -295,7 +295,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             int result = 0;
             bool didBreak = false;
-           
+
 
             if(!SetWorkingDirectory())
             {
@@ -341,6 +341,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
+            // BUG 7850 - Resource catalog (TWR: 2013.03.13)
+            if(!didBreak && !LoadResourceCatalog())
+            {
+                result = 94;
+                didBreak = true;
+            }
+
             // PBI 5389 - Resources Assigned and Allocated to Server
             if(!didBreak && !LoadServerWorkspace())
             {
@@ -351,7 +358,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             if(!didBreak && !LoadSettingsProvider())
             {
-                result = 1;
+                result = 95;
                 didBreak = true;
             }
 
@@ -1549,6 +1556,20 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         #region External Services
 
+        /// <summary>
+        /// BUG 7850 - Loads the resource catalog.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Trevor.Williams-Ros</author>
+        /// <date>2013/03/13</date>
+        bool LoadResourceCatalog()
+        {
+            Write("Loading resource catalog...  ");
+            // First call to instance loads the catalog.
+            var instance = Dev2.Runtime.Hosting.ResourceCatalog.Instance;
+            WriteLine("done.");
+            return true;
+        }
 
         /// <summary>
         /// PBI 1018 - Loads the settings provider.

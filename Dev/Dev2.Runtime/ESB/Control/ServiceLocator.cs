@@ -1,11 +1,8 @@
-﻿using System.IO;
-using System.Runtime.Serialization;
-using Dev2.DynamicServices;
+﻿using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Control
 {
@@ -15,15 +12,15 @@ namespace Dev2.Runtime.ESB.Control
     public class ServiceLocator
     {
         #region New Mgt Methods
+
         /// <summary>
         /// Finds the service by name
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        /// <param name="fromHost">From workspace.</param>
-        /// <returns></returns>
+        /// <param name="workspaceID">The workspace ID.</param>
         /// <exception cref="System.IO.InvalidDataException">Empty or null service passed in</exception>
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
-        public DynamicService FindServiceByName(string serviceName, IDynamicServicesHost fromHost)
+        public DynamicService FindServiceByName(string serviceName, Guid workspaceID)
         {
 
             if(string.IsNullOrEmpty(serviceName))
@@ -31,28 +28,27 @@ namespace Dev2.Runtime.ESB.Control
                 throw new InvalidDataException("Empty or null service passed in");
             }
 
-            if(fromHost == null)
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+            return services.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Finds the source by name
+        /// </summary>
+        /// <param name="sourceName">Name of the source.</param>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <exception cref="System.IO.InvalidDataException">Empty or null service passed in</exception>
+        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
+        public Source FindSourceByName(string sourceName, Guid workspaceID)
+        {
+
+            if (string.IsNullOrEmpty(sourceName))
             {
-                throw new InvalidDataContractException("Null workspace");
+                throw new InvalidDataException("Empty or null service passed in");
             }
 
-            IEnumerable<DynamicService> service;
-            IDynamicServicesHost theHost = fromHost;
-
-            theHost.LockServices();
-
-            try
-            {
-                service = from c in theHost.Services
-                          where c.Name.Trim().Equals(serviceName.Trim(), StringComparison.CurrentCultureIgnoreCase)
-                          select c;
-            }
-            finally
-            {
-                theHost.UnlockServices();
-            }
-
-            return service.ToList().FirstOrDefault();
+            var sources = ResourceCatalog.Instance.GetDynamicObjects<Source>(workspaceID, sourceName);
+            return sources.FirstOrDefault();
         }
 
         #endregion

@@ -7,8 +7,6 @@ namespace Dev2.Runtime.ServiceModel.Data
     /// <summary>
     /// Describes a resource.
     /// </summary>
-    /// <author>Trevor.Williams-Ros</author>
-    /// <date>2013/03/02</date>
     public interface IResource : IEquatable<IResource>
     {
         /// <summary>
@@ -19,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <summary>
         /// The version that uniquely identifies the resource.
         /// </summary>
-        string Version { get; set; }
+        Version Version { get; set; }
 
         /// <summary>
         /// The display name of the resource.
@@ -45,9 +43,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         string FilePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the contents of the resource.
-        /// </summary>   
-        string Contents { get; set; }
+        /// Gets or sets the author roles.
+        /// </summary>
+        string AuthorRoles { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is upgraded.
+        /// </summary>
+        bool IsUpgraded { get; set; }
 
         /// <summary>
         /// Saves this resource to the specified workspace.
@@ -60,5 +63,21 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>
         /// <returns>The XML representation of this resource.</returns>
         XElement ToXml();
+
+        /// <summary>
+        /// Determines whether the given user roles are in the <see cref="AuthorRoles"/>.
+        /// </summary>
+        /// <param name="userRoles">The user roles to be queried.</param>
+        /// <returns>
+        ///   <c>true</c> if the user roles are in the <see cref="AuthorRoles"/>; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsUserInAuthorRoles(string userRoles);
+
+        /// <summary>
+        /// If this instance <see cref="IsUpgraded"/> then sets the ID, Version, Name and ResourceType attributes on the given XML.
+        /// </summary>
+        /// <param name="xml">The XML to be upgraded.</param>
+        /// <returns>The XML with the additional attributes set.</returns>
+        XElement UpgradeXml(XElement xml);
     }
 }

@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
+using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
@@ -9,16 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -47,6 +45,7 @@ namespace Dev2.Studio.Core.Models
         private string _tags;
         private string _unitTestTargetWorkflowService;
         private string _workflowXaml;
+        private Version _version;
 
         #endregion Class Members
 
@@ -86,7 +85,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public Guid ServerID { get; private set; }
+        public Guid ServerID { get; set; }
 
         public bool IsDatabaseService
         {
@@ -109,6 +108,16 @@ namespace Dev2.Studio.Core.Models
         }
 
         public Guid ID { get; set; }
+
+        public Version Version
+        {
+            get { return _version; }
+            set
+            {
+                _version = value;
+                NotifyOfPropertyChange("Version");
+            }
+        }
 
         public bool AllowCategoryEditing
         {
@@ -378,8 +387,8 @@ namespace Dev2.Studio.Core.Models
             WorkflowXaml = resourceModel.WorkflowXaml;
             //UnitTestTargetWorkflowService = resourceModel.UnitTestTargetWorkflowService;
             DataList = resourceModel.DataList;
-
             UpdateIconPath(resourceModel.IconPath);
+            Version = resourceModel.Version;
 
             EventAggregator.Publish(new UpdateResourceDesignerMessage(this));
         }
@@ -391,55 +400,42 @@ namespace Dev2.Studio.Core.Models
 
         public string ToServiceDefinition()
         {
-            dynamic serviceDef = new UnlimitedObject();
+            //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
+            string result;
 
             if (ResourceType == ResourceType.WorkflowService)
             {
-                serviceDef.Service.AddAttrib("Name", ResourceName);
-                dynamic service = serviceDef.Service;
-                foreach (dynamic item in service)
-                {
-                    item.Action.AddAttrib("Name", "InvokeWorkflow");
-                    dynamic action = item.Action;
-                    foreach (dynamic act in action)
-                    {
-                        act.AddAttrib("Type", "Workflow");
-                        act.XamlDefinition = WorkflowXaml;
-                    }
-                }
+                XElement dataList = (DataList == null) ? new XElement("DataList") : XElement.Parse(DataList);
+
+                XElement service = new XElement("Service",
+                    new XAttribute("ID", ID),
+                    new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                    new XAttribute("ServerID", ServerID.ToString()),
+                    new XAttribute("Name", ResourceName ?? string.Empty),
+                    new XAttribute("ResourceType", ResourceType),
+                    new XElement("DisplayName", ResourceName ?? string.Empty),
+                    new XElement("Category", Category ?? string.Empty),
+                    new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
+                    new XElement("Comment", Comment ?? string.Empty),
+                    new XElement("Tags", Tags ?? string.Empty),
+                    new XElement("IconPath", IconPath ?? string.Empty),
+                    new XElement("HelpLink", IconPath ?? string.Empty),
+                    new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
+                    dataList,
+                    new XElement("Action", 
+                        new XAttribute("Name", "InvokeWorkflow"),
+                        new XAttribute("Type", "Workflow"),
+                        new XElement("XamlDefinition", WorkflowXaml ?? string.Empty))
+                    );
+
+                result = service.ToString();
             }
             else
             {
-                serviceDef = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(ServiceDefinition);
-            }
-            dynamic svc = ResourceType == ResourceType.Source ? serviceDef.Source : serviceDef.Service;
-
-            if (svc is UnlimitedObject)
-            {
-                return svc.XmlString;
+                throw new Exception("ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.");
             }
 
-            foreach (dynamic item in svc)
-            {
-                item.AuthorRoles = AuthorRoles;
-                item.Comment = Comment;
-                item.Category = Category;
-                item.Tags = Tags;
-                item.IconPath = IconPath;
-                item.HelpLink = HelpLink;
-                item.UnitTestTargetWorkflowService = UnitTestTargetWorkflowService;
-                item.DisplayName = DisplayName;
-                if (!string.IsNullOrEmpty(DataList))
-                {
-                    if (!string.IsNullOrEmpty(XmlConvert.VerifyXmlChars(DataList)))
-                    {
-                        item.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(DataList));
-                    }
-                }
-            }
-
-
-            return serviceDef.XmlString;
+            return result;
         }
 
         /// <summary>

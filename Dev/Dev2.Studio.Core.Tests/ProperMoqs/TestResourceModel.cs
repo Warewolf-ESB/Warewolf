@@ -141,5 +141,31 @@ namespace Dev2.Core.Tests.ProperMoqs {
         }
 
         #endregion Behaviour Overrides
+
+
+        Guid IContextualResourceModel.ServerID
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
+        public Version Version
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

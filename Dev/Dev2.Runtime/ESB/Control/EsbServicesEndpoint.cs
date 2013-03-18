@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.Runtime.ESB;
+using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Hosting;
+using Dev2.Workspaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
-using System.Threading;
-using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.Runtime.ESB;
-using Dev2.Runtime.ESB.Execution;
-using Dev2.Server.Datalist;
-using Dev2.Workspaces;
-using Unlimited.Framework;
 
 namespace Dev2.DynamicServices
 {
@@ -26,7 +24,7 @@ namespace Dev2.DynamicServices
         Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
         public void Register(string userName)
         {
-            if (_users.ContainsKey(userName))
+            if(_users.ContainsKey(userName))
             {
                 _users.Remove(userName);
             }
@@ -38,7 +36,7 @@ namespace Dev2.DynamicServices
 
         public void Unregister(string userName)
         {
-            if (UserExists(userName))
+            if(UserExists(userName))
             {
                 _users.Remove(userName);
                 NotifyAllClients(string.Format("User '{0}' logged out", userName));
@@ -58,7 +56,7 @@ namespace Dev2.DynamicServices
         public void SendMessage(string userName, string message)
         {
             string suffix = " Said:";
-            if (userName == "System")
+            if(userName == "System")
             {
                 suffix = string.Empty;
             }
@@ -68,13 +66,13 @@ namespace Dev2.DynamicServices
         public void SendPrivateMessage(string userName, string targetUserName, string message)
         {
             string suffix = " Said:";
-            if (userName == "System")
+            if(userName == "System")
             {
                 suffix = string.Empty;
             }
-            if (UserExists(userName))
+            if(UserExists(userName))
             {
-                if (!UserExists(targetUserName))
+                if(!UserExists(targetUserName))
                 {
                     NotifyClient(userName, string.Format("System: Message failed - User '{0}' has logged out ", targetUserName));
                 }
@@ -165,7 +163,7 @@ namespace Dev2.DynamicServices
 
             try
             {
-                if (UserExists(userName))
+                if(UserExists(userName))
                 {
                     _users[userName].CallbackNotification(message);
                 }
@@ -190,7 +188,7 @@ namespace Dev2.DynamicServices
             {
                 //_parallel = new ParallelCommandExecutor(this);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 TraceWriter.WriteTrace("Error Loading Endpoint...");
                 throw ex;
@@ -224,8 +222,18 @@ namespace Dev2.DynamicServices
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                string theShape = theWorkspace.Host.FindServiceShape(dataObject.ServiceName);
-                ErrorResultTO invokeErrors = new ErrorResultTO();
+                string theShape = null;
+                try
+                {
+                    theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+                }
+                catch(Exception)
+                {
+                   errors.AddError(string.Format("Unable to find the shape for service '{0}'.", dataObject.ServiceName));
+                   return resultID;
+                }
+
+                ErrorResultTO invokeErrors;
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
@@ -233,11 +241,13 @@ namespace Dev2.DynamicServices
 
             try
             {
+                ErrorResultTO invokeErrors;
                 // Setup the invoker endpoint ;)
                 var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
 
                 // Should return the top level DLID
-                resultID = invoker.Invoke(dataObject, out errors);
+                resultID = invoker.Invoke(dataObject, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
 
             }
             catch(Exception ex)
@@ -265,9 +275,9 @@ namespace Dev2.DynamicServices
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             // If no DLID, we need to make it based upon the request ;)
-            if (dataObject.DataListID == GlobalConstants.NullDataListID)
+            if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                string theShape = theWorkspace.Host.FindServiceShape(dataObject.ServiceName);
+                string theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
                 ErrorResultTO invokeErrors = new ErrorResultTO();
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
@@ -343,7 +353,7 @@ namespace Dev2.DynamicServices
 
         //    dynamic dynXmlRequest = new UnlimitedObject();
 
-            
+
         //    #region Identify Caller
         //    //OperationContext context = OperationContext.Current;
         //    //MessageProperties properties = context.IncomingMessageProperties;
@@ -452,6 +462,27 @@ namespace Dev2.DynamicServices
         //}
 
         #endregion
+
+        string FindServiceShape(Guid workspaceID, string serviceName)
+        {
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+
+            var tmp = services.FirstOrDefault();
+            var result = "<DataList></DataList>";
+
+            if(tmp != null)
+            {
+                result = tmp.DataListSpecification;
+                //ServiceAction sa = tmp.Actions.FirstOrDefault();
+
+                //if(sa != null)
+                //{
+                //    result = sa.DataListSpecification;
+                //}
+            }
+
+            return result;
+        }
 
         //#region ParallelCommandExecutor
         //private sealed class ParallelCommandExecutor

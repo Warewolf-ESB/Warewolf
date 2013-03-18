@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
@@ -14,6 +15,19 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Resource()
         {
+            EnsureVersion();
+        }
+
+        public Resource(IResource copy)
+        {
+            ResourceID = copy.ResourceID;
+            Version = copy.Version;
+            ResourceName = copy.ResourceName;
+            ResourceType = copy.ResourceType;
+            ResourcePath = copy.ResourcePath;
+            AuthorRoles = copy.AuthorRoles;
+            FilePath = copy.FilePath;
+            EnsureVersion();
         }
 
         public Resource(XElement xml)
@@ -31,10 +45,17 @@ namespace Dev2.Runtime.ServiceModel.Data
                 IsUpgraded = true;
             }
             ResourceID = resourceID;
-            Version = xml.AttributeSafe("Version");
             ResourceType = ParseResourceType(xml.AttributeSafe("ResourceType"));
             ResourceName = xml.AttributeSafe("Name");
+
+            //if (ResourceName == "Emit ComplexType Service")
+            //{
+            //    string s = "";
+            //}
+
             ResourcePath = xml.ElementSafe("Category");
+            EnsureVersion(xml.AttributeSafe("Version"));
+            AuthorRoles = xml.ElementSafe("AuthorRoles");
 
             // This is here for legacy XML!
             if(ResourceType == ResourceType.Unknown)
@@ -67,7 +88,18 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                 #region Check action type
 
-                var action = xml.Element("Action");
+                XElement action = null;
+                var actions = xml.Element("Actions");
+
+                if (actions != null)
+                {
+                    action = actions.Descendants().FirstOrDefault();                    
+                }
+                else
+                {
+                    action = xml.Element("Action");
+                }
+
                 if(action != null)
                 {
                     var actionTypeStr = action.AttributeSafe("Type");
@@ -111,7 +143,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <summary>
         /// The version that uniquely identifies the resource.
         /// </summary>
-        public string Version { get; set; }
+        [JsonConverter(typeof(VersionConverter))]
+        public Version Version { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the resource.
@@ -139,15 +172,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string FilePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the contents of the resource.
-        /// Reads from disk first if contents is null.
+        /// Gets or sets the author roles.
         /// </summary>
         [JsonIgnore]
-        public string Contents
-        {
-            get;
-            set;
-        }
+        public string AuthorRoles { get; set; }
 
         #endregion
 
@@ -159,7 +187,39 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 ResourceID = Guid.NewGuid();
             }
-            ResourceCatalog.Instance.Save(workspaceID, this);
+            ResourceCatalog.Instance.SaveResource(workspaceID, this);
+        }
+
+        #endregion
+
+        #region IsUserInAuthorRoles
+
+        public bool IsUserInAuthorRoles(string userRoles)
+        {
+            if(string.IsNullOrEmpty(userRoles))
+            {
+                return false;
+            }
+
+            if(string.IsNullOrEmpty(AuthorRoles))
+            {
+                return true;
+            }
+
+            var user = userRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            var res = AuthorRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if(user.Contains("Domain Admins"))
+            {
+                return true;
+            }
+
+            if(!user.Any())
+            {
+                return false;
+            }
+
+            return res.Any() && user.Intersect(res).Any();
         }
 
         #endregion
@@ -168,13 +228,15 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public virtual XElement ToXml()
         {
+            EnsureVersion();
             return new XElement(Resources.RootElements[ResourceType],
                 new XAttribute("ID", ResourceID),
-                new XAttribute("Version", Version ?? string.Empty),
+                new XAttribute("Version", Version.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ResourceType),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
-                new XElement("Category", ResourcePath ?? string.Empty)
+                new XElement("Category", ResourcePath ?? string.Empty),
+                new XElement("AuthorRoles", AuthorRoles ?? string.Empty)
                 );
         }
 
@@ -219,7 +281,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return true;
             }
-            return ResourceID.Equals(other.ResourceID) && string.Equals(Version, other.Version);
+            return ResourceID.Equals(other.ResourceID) && Version.Equals(other.Version);
         }
 
         /// <summary>
@@ -271,5 +333,40 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
+
+        #region EnsureVersion
+
+        void EnsureVersion(string versionStr = null)
+        {
+            if(Version == null)
+            {
+                Version version;
+                Version = Version.TryParse(versionStr, out version) ? version : new Version(1, 0);
+            }
+        }
+
+        #endregion
+
+        #region UpgradeXml
+
+        /// <summary>
+        /// If this instance <see cref="IsUpgraded"/> then sets the ID, Version, Name and ResourceType attributes on the given XML.
+        /// </summary>
+        /// <param name="xml">The XML to be upgraded.</param>
+        /// <returns>The XML with the additional attributes set.</returns>
+        public XElement UpgradeXml(XElement xml)
+        {
+            if(IsUpgraded)
+            {
+                xml.SetAttributeValue("ID", ResourceID);
+                xml.SetAttributeValue("Version", Version.ToString());
+                xml.SetAttributeValue("Name", ResourceName ?? string.Empty);
+                xml.SetAttributeValue("ResourceType", ResourceType);
+            }
+            return xml;
+        }
+
+        #endregion
+
     }
 }

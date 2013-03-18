@@ -627,10 +627,10 @@ namespace Dev2.Studio.Core.Models
                         {
                             _serverMessaging.MessageAggregator.Unsubscibe(_messageSubscriptionToken);
                         }
-                    }
+                }
 
                     if (_errorMessageSubscription == Guid.Empty)
-                    {
+                {
                         _errorMessageSubscription = _serverMessaging.MessageAggregator.Subscribe(new Action<ErrorMessage, INetworkOperator>(RecieveSynchronousMessage));
                     }
                 }
@@ -644,7 +644,7 @@ namespace Dev2.Studio.Core.Models
                 {
                     DispatcherFrameToken<INetworkMessage> messageToken;
                     if (_pendingMessages.TryRemove(message.Handle, out messageToken))
-                    {
+                {
                         messageToken.SetResponse(message);
                     }
                 }
@@ -695,7 +695,7 @@ namespace Dev2.Studio.Core.Models
                     {
                         DispatcherFrameToken<INetworkMessage> messageToken;
                         if (_pendingMessages.TryRemove(item.Key, out messageToken))
-                        {
+                {
                             messageToken.SetResponse(null);
                         }
                     }
@@ -704,10 +704,10 @@ namespace Dev2.Studio.Core.Models
                     foreach (Guid item in _messageSubscriptions.Values.ToList())
                     {
                         _serverMessaging.MessageAggregator.Unsubscibe(item);
-                    }
+                }
 
                     if (_errorMessageSubscription != Guid.Empty)
-                    {
+                {
                         _serverMessaging.MessageAggregator.Unsubscibe(_errorMessageSubscription);
                     }
 

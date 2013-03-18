@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         public void ToXmlExpectedCorrectXml()
         {
-            string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Version=""1"" Name=""TravsTestService"" ResourceType=""DbService"">
+            string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Version=""1.0"" Name=""TravsTestService"" ResourceType=""DbService"">
   <Actions>
     <Action Name=""dbo.InsertDummyUser"" Type=""InvokeStoredProc"" SourceID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" SourceName=""testingDBSrc"" SourceMethod=""dbo.InsertDummyUser"">
       <Inputs>
@@ -132,6 +132,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>TravsTestService</DisplayName>
   <Category>WEBPART_WIZARDS</Category>
+  <AuthorRoles></AuthorRoles>
 </Service>";
             XElement testElm = XElement.Parse(xmlDataString);
             DbService dbService = new DbService(testElm);

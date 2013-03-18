@@ -118,14 +118,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Dev2.Runtime\Workspaces\Enums.cs">
-      <Link>Workspaces\Enums.cs</Link>
-    </Compile>
-    <Compile Include="..\Dev2.Runtime\Workspaces\IWorkspaceItem.cs">
+    <Compile Include="..\Dev2.Runtime.Services\Workspaces\IWorkspaceItem.cs">
       <Link>Workspaces\IWorkspaceItem.cs</Link>
     </Compile>
-    <Compile Include="..\Dev2.Runtime\Workspaces\WorkspaceItem.cs">
+    <Compile Include="..\Dev2.Runtime.Services\Workspaces\WorkspaceItem.cs">
       <Link>Workspaces\WorkspaceItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Dev2.Runtime.Services\Workspaces\WorkspaceItemAction.cs">
+      <Link>Workspaces\WorkspaceItemAction.cs</Link>
     </Compile>
     <Compile Include="Account\IUserAccountProvider.cs" />
     <Compile Include="Account\UserAccountProvider.cs" />

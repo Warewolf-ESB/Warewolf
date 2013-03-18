@@ -260,14 +260,13 @@
     <Compile Include="Simulation\SimulationResult.cs" />
     <Compile Include="Util\Dev2ActivityIOIteration.cs" />
     <Compile Include="Util\Dev2XamlCleaner.cs" />
+    <Compile Include="Util\DirectoryHelper.cs" />
     <Compile Include="Web\WebServiceInvoker.cs" />
     <Compile Include="DynamicServices\Objects\BizRule.cs" />
     <Compile Include="Common\RemoteObjectHandler.cs" />
     <Compile Include="DynamicServices\Objects\DynamicService.cs" />
     <Compile Include="DynamicServices\Objects\Base\DynamicServiceObjectBase.cs" />
     <Compile Include="DynamicServices\Interfaces\IDynamicServiceObject.cs" />
-    <Compile Include="DynamicServices\Interfaces\IDynamicServicesHost.cs" />
-    <Compile Include="DynamicServices\Interfaces\IDynamicServicesInvoker.cs" />
     <Compile Include="DynamicServices\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

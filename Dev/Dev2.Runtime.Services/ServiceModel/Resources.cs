@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
@@ -91,7 +90,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     ID = 1,
                     Start = " Name=\"",
-                    End = "\" "
+                    End = "\""
                 }, new ResourceDelimiter
                 {
                     ID = 2,
@@ -140,91 +139,98 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Read
 
+        private static object o = new object();
+
         public static ResourceList Read(Guid workspaceID, ResourceType resourceType)
         {
             var resources = new ResourceList();
             var resourceTypeStr = resourceType.ToString();
 
-            ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+            lock (o)
             {
-                var isResourceType = false;
-                string value;
 
-                if(iteratorResult.Values.TryGetValue(1, out value))
-                {
-                    // Check ResourceType attribute
-                    isResourceType = value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase);
-                }
-                else if(iteratorResult.Values.TryGetValue(5, out value))
-                {
-                    // This is here for legacy XML!
-                    #region Check Type attribute
 
-                    enSourceType sourceType;
-                    if(iteratorResult.Values.TryGetValue(5, out value) && Enum.TryParse(value, out sourceType))
+                ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+                {
+                    var isResourceType = false;
+                    string value;
+
+                    if (iteratorResult.Values.TryGetValue(1, out value))
                     {
-                        switch(sourceType)
-                        {
-                            case enSourceType.SqlDatabase:
-                            case enSourceType.MySqlDatabase:
-                                isResourceType = resourceType == ResourceType.DbSource;
-                                break;
-                            case enSourceType.WebService:
-                                break;
-                            case enSourceType.DynamicService:
-                                isResourceType = resourceType == ResourceType.DbService;
-                                break;
-                            case enSourceType.Plugin:
-                                isResourceType = resourceType == ResourceType.PluginService;
-                                break;
-                            case enSourceType.Dev2Server:
-                                isResourceType = resourceType == ResourceType.Server;
-                                break;
-                        }
+                        // Check ResourceType attribute
+                        isResourceType = value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase);
                     }
+                    else if (iteratorResult.Values.TryGetValue(5, out value))
+                    {
+                        // This is here for legacy XML!
+                        #region Check Type attribute
 
-                    #endregion
-                }
-                if(isResourceType)
+                        enSourceType sourceType;
+                        if (iteratorResult.Values.TryGetValue(5, out value) && Enum.TryParse(value, out sourceType))
+                        {
+                            switch (sourceType)
+                            {
+                                case enSourceType.SqlDatabase:
+                                case enSourceType.MySqlDatabase:
+                                    isResourceType = resourceType == ResourceType.DbSource;
+                                    break;
+                                case enSourceType.WebService:
+                                    break;
+                                case enSourceType.DynamicService:
+                                    isResourceType = resourceType == ResourceType.DbService;
+                                    break;
+                                case enSourceType.Plugin:
+                                    isResourceType = resourceType == ResourceType.PluginService;
+                                    break;
+                                case enSourceType.Dev2Server:
+                                    isResourceType = resourceType == ResourceType.Server;
+                                    break;
+                            }
+                        }
+
+                        #endregion
+                    }
+                    if (isResourceType)
+                    {
+                        // older resources may not have an ID yet!!
+                        iteratorResult.Values.TryGetValue(2, out value);
+                        Guid resourceID;
+                        Guid.TryParse(value, out resourceID);
+
+                        string resourceName;
+                        iteratorResult.Values.TryGetValue(3, out resourceName);
+                        string resourcePath;
+                        iteratorResult.Values.TryGetValue(4, out resourcePath);
+                        resources.Add(ReadResource(resourceID, resourceType, resourceName, resourcePath, iteratorResult.Content));
+                    }
+                    return true;
+                }, new ResourceDelimiter
                 {
-                    // older resources may not have an ID yet!!
-                    iteratorResult.Values.TryGetValue(2, out value);
-                    Guid resourceID;
-                    Guid.TryParse(value, out resourceID);
-
-                    string resourceName;
-                    iteratorResult.Values.TryGetValue(3, out resourceName);
-                    string resourcePath;
-                    iteratorResult.Values.TryGetValue(4, out resourcePath);
-                    resources.Add(ReadResource(resourceID, resourceType, resourceName, resourcePath, iteratorResult.Content));
-                }
-                return true;
-            }, new ResourceDelimiter
-            {
-                ID = 1,
-                Start = " ResourceType=\"",
-                End = "\" "
-            }, new ResourceDelimiter
-            {
-                ID = 2,
-                Start = " ID=\"",
-                End = "\" "
-            }, new ResourceDelimiter
-            {
-                ID = 3,
-                Start = " Name=\"",
-                End = "\" "
-            }, new ResourceDelimiter
-            {
-                ID = 4,
-                Start = "<Category>",
-                End = "</Category>"
-            }, new ResourceDelimiter
-            {
-                ID = 5,
-                Start = " Type=\"",
-                End = "\" "
-            });
+                    ID = 1,
+                    Start = " ResourceType=\"",
+                    End = "\""
+                }, new ResourceDelimiter
+                {
+                    ID = 2,
+                    Start = " ID=\"",
+                    End = "\""
+                }, new ResourceDelimiter
+                {
+                    ID = 3,
+                    Start = " Name=\"",
+                    End = "\""
+                }, new ResourceDelimiter
+                {
+                    ID = 4,
+                    Start = "<Category>",
+                    End = "</Category>"
+                }, new ResourceDelimiter
+                {
+                    ID = 5,
+                    Start = " Type=\"",
+                    End = "\""
+                });
+            }
             return resources;
         }
 
@@ -252,7 +258,7 @@ namespace Dev2.Runtime.ServiceModel
                     return false;
                 }
                 return true;
-            }, new ResourceDelimiter { ID = 1, Start = delimiterStart, End = "\" " });
+            }, new ResourceDelimiter { ID = 1, Start = delimiterStart, End = "\"" });
             return result;
         }
 
@@ -268,7 +274,7 @@ namespace Dev2.Runtime.ServiceModel
             switch(resourceType)
             {
                 case ResourceType.DbSource:
-                    delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\" " };
+                    delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\"" };
                     delimiter.TryGetValue(content, out delimiterValue);
                     return new DbSource
                     {
@@ -281,32 +287,6 @@ namespace Dev2.Runtime.ServiceModel
             }
 
             return new Resource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath };
-        }
-
-        #endregion
-
-        // TODO: Remove save and use ResourceCatalog directly
-        #region Save
-
-        public static void Save(Guid workspaceID, string directoryName, DynamicServiceObjectBase resource)
-        {
-            Save(workspaceID, directoryName, resource.Name, resource.ResourceDefinition);
-        }
-
-        public static void Save(string workspacePath, string directoryName, DynamicServiceObjectBase resource)
-        {
-            Save(workspacePath, directoryName, resource.Name, resource.ResourceDefinition);
-        }
-
-        public static void Save(Guid workspaceID, string directoryName, string resourceName, string resourceXml)
-        {
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
-            Save(workspacePath, directoryName, resourceName, resourceXml);
-        }
-
-        public static void Save(string workspacePath, string directoryName, string resourceName, string resourceXml)
-        {
-            ResourceCatalog.Save(workspacePath, directoryName, resourceName, resourceXml);
         }
 
         #endregion
