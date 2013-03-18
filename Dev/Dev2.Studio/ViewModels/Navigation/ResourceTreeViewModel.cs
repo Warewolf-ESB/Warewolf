@@ -734,7 +734,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Run()
         {
-            //Mediator.SendMessage(MediatorMessages.ExecuteResource, DataContext);
             EventAggregator.Publish(new ExecuteResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
@@ -746,8 +745,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowHelp()
         {
-            //Mediator.SendMessage(MediatorMessages.AddHelpDocument, DataContext);
-            EventAggregator.Publish(new AddHelpDocumentMessage(DataContext));
+            if (DataContext != null && !String.IsNullOrEmpty(DataContext.HelpLink))
+                EventAggregator.Publish(new ShowHelpTabMessage(DataContext.HelpLink));
             RaisePropertyChangedForCommands();
         }
 
@@ -759,7 +758,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            //Mediator.SendMessage(MediatorMessages.SaveResource, DataContext);
             EventAggregator.Publish(new SaveResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }

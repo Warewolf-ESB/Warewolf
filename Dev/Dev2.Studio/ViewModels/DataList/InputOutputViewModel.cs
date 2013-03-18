@@ -15,21 +15,7 @@ namespace Dev2.Studio.ViewModels.DataList {
         private string _defaultValue;
         private bool _required;
         private string _recordSetName;
-        //private ObservableCollection<IDataListItemModel> _dataList;
 
-            
-            
-            //if (RecordSetName == string.Empty) {
-            //    DisplayName = Name;
-            //}
-            //else {
-            //    DisplayName = RecordSetName + "(*)." + Name;
-            //}
-            //if (value == string.Empty) {
-            //    Value = defaultValue;
-            //}
-            //_dataList = DataListSingleton.DataListAsCollection;
-        //}
         #region Properties
         public bool IsSelected
         {
@@ -179,10 +165,6 @@ namespace Dev2.Studio.ViewModels.DataList {
             {
                 DisplayName = RecordSetName + "(*)." + Name;
             }
-            //if (value == string.Empty) {
-            //    Value = defaultValue;
-            //}
-            //_dataList = DataListSingleton.DataListAsCollection;
         }
         
 

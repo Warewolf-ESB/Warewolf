@@ -582,18 +582,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void ResourceNodeHelpCommand_Expected_MediatorAddHelpDocumentMessage()
-        {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.AddHelpDocument, o => messageRecieved = true);
-            resourceVM.HelpCommand.Execute(null);
-            _eventAggregator.Verify(e => e.Publish(It.Is<AddHelpDocumentMessage>
-                 (t => t.Resource == mockResourceModel.Object)), Times.Once());
-        }
-
-        [TestMethod]
         public void ResourceNodeBuildCommand_Expected_EditCommandExecuted_And_MediatorSaveResourceMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.SaveResource, o => messageRecieved = true);
             resourceVM.BuildCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<SaveResourceMessage>
                  (t => t.Resource == mockResourceModel.Object)), Times.Once());
@@ -603,12 +593,9 @@ namespace Dev2.Core.Tests
         public void EditCommand_GivenAResourceOfTypeWorkflowService_Expected_AddWorkflowDesignerMediatorMessage()
         {
             mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-          // _addWorkflowDesignerMessageReceived = false;
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             resourceVM.EditCommand.Execute(mockResourceModel);
             _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkflowDesignerMessage>
                 (t => t.Resource == mockResourceModel.Object)), Times.Once());
-           // Assert.IsTrue(_addWorkflowDesignerMessageReceived);
         }
 
 
@@ -616,24 +603,18 @@ namespace Dev2.Core.Tests
         public void EditCommand_GivenAResourceOfTypeSource_Expected_ShowEditResourceWizardMediatorMessage()
         {
             mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.Source);
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
             resourceVM.EditCommand.Execute(mockResourceModel);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
                 (t => t.ResourceModel == mockResourceModel.Object)), Times.Once());
-            //Assert
-           // Assert.IsTrue(_showEditResourceWizardMessageReceived);
         }
 
         [TestMethod]
         public void EditCommand_GivenAResourceOfTypeService_Expected_ShowEditResourceWizardMediatorMessage()
         {
             mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.Service);
-           // Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
             resourceVM.EditCommand.Execute(mockResourceModel);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
                 (t => t.ResourceModel == mockResourceModel.Object)), Times.Once());
-            //Assert
-            //Assert.IsTrue(_showEditResourceWizardMessageReceived);
         }
 
         //

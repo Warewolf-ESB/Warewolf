@@ -275,7 +275,6 @@
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AbstractTabMessage.cs" />
     <Compile Include="Messages\AddDeployResourcesMessage.cs" />
-    <Compile Include="Messages\AddHelpDocumentMessage.cs" />
     <Compile Include="Messages\AddMissingAndFindUnusedDataListItemsMessage.cs" />
     <Compile Include="Messages\AddMissingDataListItems.cs" />
     <Compile Include="Messages\AddRemoveDataListItemsMessage.cs" />

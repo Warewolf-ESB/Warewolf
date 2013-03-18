@@ -277,6 +277,11 @@
                     <Style x:Key="RibbonGroupActions">
                         <Style.Triggers>
                             <DataTrigger
+                                Binding="{Binding ItemsSource, RelativeSource={RelativeSource Self}}"
+                                Value="{x:Null}">
+                                <Setter Property="ribbon:RibbonGroup.Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger
                                 Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
                                 Value="Unknown">
                                 <Setter Property="ribbon:RibbonGroup.ItemsSource" Value="{x:Null}" />
@@ -459,7 +464,7 @@
                 </ribbon:Ribbon.ApplicationMenu>
 
                 <ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">
-                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}" Visibility="Collapsed">
+                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
                         <ribbon:RibbonGroup.ItemTemplate>
                             <DataTemplate>
                                 <ribbon:RibbonButton Label="{Binding Label}"
@@ -567,7 +572,7 @@
                 </ribbon:RibbonTab>-->
 
                 <ribbon:RibbonTab Header="Help" AutomationProperties.AutomationId="Help">
-                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}" Visibility="Collapsed">
+                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
                         <ribbon:RibbonGroup.ItemTemplate>
                             <DataTemplate>
                                 <ribbon:RibbonButton Label="{Binding Label}"

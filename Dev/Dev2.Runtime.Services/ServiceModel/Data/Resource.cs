@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                 IsUpgraded = true;
                                 break;
                             case enActionType.Workflow:
-                                ResourceType = ResourceType.Workflow;
+                                ResourceType = ResourceType.WorkflowService;
                                 IsUpgraded = true;
                                 break;
                         }

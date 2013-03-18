@@ -186,7 +186,7 @@ namespace Dev2.Studio.ViewModels.Configuration
         public void Cancel()
         {
             //Publish settings save cancel message
-            EventAggregator.Publish(new SettingsSaveCancelMessage());
+            EventAggregator.Publish(new SettingsSaveCancelMessage(CurrentEnvironment));
         }
 
         #endregion
@@ -357,7 +357,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
 
             //Publish settings save cancel message
-            EventAggregator.Publish(new SettingsSaveCancelMessage());
+            EventAggregator.Publish(new SettingsSaveCancelMessage(CurrentEnvironment));
         }
 
         private void ShowErrorAndCancel(string errorMessage, Exception innerException)

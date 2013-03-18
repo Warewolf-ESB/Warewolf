@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.DbSource, "Sources" },
             { ResourceType.PluginService, "Plugins" },
             { ResourceType.PluginSource, "Sources" },
-            { ResourceType.Workflow, "Services" },
+            { ResourceType.WorkflowService, "Services" },
         };
 
         internal static volatile Dictionary<ResourceType, string> RootElements = new Dictionary<ResourceType, string>
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.DbSource, "Source" },
             { ResourceType.PluginService, "Plugin" },
             { ResourceType.PluginSource, "Source" },
-            { ResourceType.Workflow, "Service" },
+            { ResourceType.WorkflowService, "Service" },
         };
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -112,7 +113,14 @@ namespace Dev2.Studio.Dock
             SetTabName(pane, item);
 
 			// always hook the closed
-			pane.Closed += new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
+            pane.Closed += new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
+
+            if (item is WorkSurfaceContextViewModel)
+            {
+                var vm = (WorkSurfaceContextViewModel)item;
+                vm.Deactivated += vm_Deactivated;
+            }
+
 
 			if (this.RemoveItemOnClose)
 			{
@@ -125,6 +133,25 @@ namespace Dev2.Studio.Dock
 					pane.AllowClose = false;
 			}
 		}
+
+        void vm_Deactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)
+        {
+            if (e.WasClosed)
+            {
+                var container = _target as TabGroupPane;
+                if (container != null)
+                {
+                    if (sender is WorkSurfaceContextViewModel)
+                    {
+                        var vm = ((WorkSurfaceContextViewModel)sender).WorkSurfaceViewModel;
+                        var toRemove = container.Items.Cast<ContentPane>().ToList()
+                            .FirstOrDefault(p => p.Content != null && p.Content.Equals(vm));
+                        RemovePane(toRemove);
+                        if (toRemove != null) container.Items.Remove(toRemove);
+                    }
+                }
+            }
+        }
 
         //Juries TODO improve (remove typing tied to contentfactory)
 	    private void SetTabName(ContentPane pane, object item)

@@ -8,6 +8,6 @@
         DbSource,
         PluginService,
         PluginSource,
-        Workflow
+        WorkflowService
     }
 }

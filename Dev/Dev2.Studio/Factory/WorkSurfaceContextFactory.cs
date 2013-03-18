@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Core;
+﻿using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Helpers;
@@ -34,14 +35,14 @@ namespace Dev2.Studio.Factory
         public static WorkSurfaceContextViewModel CreateDeployViewModel(object input)
         {
             var vm = DeployViewModelFactory.GetDeployViewModel(input);
-            var context = CreateWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
+            var context = CreateUniqueWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
             return context;
         }
 
         public static WorkSurfaceContextViewModel CreateRuntimeConfigurationViewModel(IEnvironmentModel environmentModel)
         {
             var vm = RuntimeConfigurationViewModelFactory.CreateRuntimeConfigurationViewModel(environmentModel);
-            var context = CreateWorkSurfaceContextViewModel(vm, WorkSurfaceContext.Settings);
+            var context = CreateWorkSurfaceContextViewModelForServer(vm, WorkSurfaceContext.Settings, environmentModel.DataListChannel.ServerID);
             return context;
         }
 
@@ -55,11 +56,38 @@ namespace Dev2.Studio.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>3/6/2013</date>
-        public static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel<T>
+        public static WorkSurfaceContextViewModel CreateUniqueWorkSurfaceContextViewModel<T>
             (T vm, WorkSurfaceContext workSurfaceContext)
             where T : IWorkSurfaceViewModel
         {
             var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext);
+            return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
+        }
+
+        /// <summary>
+        /// Creates the work surface context view model, only use for surfaces that are unique per server.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="vm">The vm.</param>
+        /// <param name="workSurfaceContext">The work surface context.</param>
+        /// <param name="serverID">The server ID.</param>
+        /// <returns></returns>
+        /// <date>3/6/2013</date>
+        /// <author>
+        /// Jurie.smit
+        /// </author>
+        public static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModelForServer<T>
+            (T vm, WorkSurfaceContext workSurfaceContext, Guid serverID)
+            where T : IWorkSurfaceViewModel
+        {
+            var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext, serverID);
+            return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
+        }
+        private static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel<T>(T vm,
+                                                                                        WorkSurfaceContext workSurfaceContext,
+                                                                                        WorkSurfaceKey key)
+            where T : IWorkSurfaceViewModel
+        {
             var context = new WorkSurfaceContextViewModel(key, vm);
             vm.DisplayName = workSurfaceContext.GetDescription();
             vm.IconPath = workSurfaceContext.GetIconLocation();
@@ -71,7 +99,7 @@ namespace Dev2.Studio.Factory
         {
             var vm = Activator.CreateInstance<T>();
             PropertyHelper.SetValues(vm, initParms);
-            var context = CreateWorkSurfaceContextViewModel(vm, workSurfaceContext);
+            var context = CreateUniqueWorkSurfaceContextViewModel(vm, workSurfaceContext);
             return context;
         }
 
