@@ -17,12 +17,12 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            //2013.03.12: Ashley Lewis - BUG 9208
             var getDynamicResourceType = jsonObj.ResourceType.Value;
             if (getDynamicResourceType != null)
             {
                 if (getDynamicResourceType == Common.ServiceModel.ResourceType.DbSource.ToString())
                 {
+                    //2013.03.12: Ashley Lewis - BUG 9208
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
                 }
                 else
@@ -30,8 +30,8 @@ namespace Dev2.Studio.Webs.Callbacks
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
                 }
             }
-            else
-            {
+                else
+                {
                 ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
             }
 

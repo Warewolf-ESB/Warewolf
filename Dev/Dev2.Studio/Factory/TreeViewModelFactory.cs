@@ -38,7 +38,6 @@ namespace Dev2.Studio.Factory
             {
                 vm = new ResourceTreeViewModel(parent, resource);
             }
-
             return vm;
         }
 
@@ -56,7 +55,9 @@ namespace Dev2.Studio.Factory
 
         public static ITreeNode CreateCategory(string name, ResourceType resourceType, ITreeNode parent)
         {
+            bool updateParentVisibility = parent != null && (parent.Children == null || parent.Children.Count == 0);
             var vm = new CategoryTreeViewModel(name, resourceType, parent);
+
             return vm;
         }
     }

@@ -9,6 +9,7 @@
 // ------------------------------------------------------------------------------
 
 using Dev2.CodedUI.Tests;
+using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 {
@@ -81,6 +82,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
             // Click image
             Mouse.Click(uIItemImage, new Point(767, 523));
+        }
+
+        public void InitializeFullTestServiceAndSource(string serverAndSourceCategoryName, string serverAndSourceName)
+        {
+            //DbSource
+            new RibbonUIMap().ClickRibbonMenuItem("Home", "Database Service");
+            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}");
+            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}" + serverAndSourceCategoryName + "{ENTER}");
+            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + serverAndSourceName + "{ENTER}");
+            System.Threading.Thread.Sleep(1000);
+            //DbService
+            ClickFirstAction();
+            ClickTestAction();
+            ClickOK();
+            Keyboard.SendKeys("{ENTER}" + serverAndSourceCategoryName + "{ENTER}{TAB}{TAB}{TAB}" + serverAndSourceName + "{ENTER}");
         }
         
         #region Properties

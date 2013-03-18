@@ -16,10 +16,18 @@
     self.isEditing = ko.observable(baseViewModel.isEditing);
 
     $.post("Service/Resources/PathsAndNames" + window.location.search, self.data.resourceType(), function (result) {
-        self.resourceFolders(result.Paths);
-        self.resourceFolders.sort(utils.caseInsensitiveSort);
-        self.resourceNames(result.Names);
-        self.resourceNames.sort(utils.caseInsensitiveSort);
+        if (!result.Paths) {
+            self.resourceFolders([]);
+        } else {
+            self.resourceFolders(result.Paths);
+            self.resourceFolders.sort(utils.caseInsensitiveSort);
+        }
+        if (!result.Names) {
+            self.resourceNames([]);
+        } else {
+            self.resourceNames(result.Names);
+            self.resourceNames.sort(utils.caseInsensitiveSort);
+        }
     });
 
     self.resourceNames = ko.observableArray();

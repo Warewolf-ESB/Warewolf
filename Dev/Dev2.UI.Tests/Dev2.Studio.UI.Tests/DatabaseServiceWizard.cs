@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
 using Dev2.CodedUI.Tests;
+using Dev2.Server.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -74,28 +76,42 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
             //Initialization
-            //DbSource
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
-            System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}");
-            System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}CODEDUITESTS{ENTER}");
-            System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}codeduitest123{ENTER}");
-            System.Threading.Thread.Sleep(1000);
-            //DbService
-            DatabaseServiceWizardUIMap.ClickFirstAction();
-            DatabaseServiceWizardUIMap.ClickTestAction();
-            DatabaseServiceWizardUIMap.ClickOK();
-            Keyboard.SendKeys("{ENTER}CODEDUITESTS{ENTER}{TAB}{TAB}{TAB}codeduitest123{ENTER}");
+            var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
+            var serverSourceName = Guid.NewGuid().ToString().Substring(0, 5);
+            DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource("CODEDUITESTS" + serverSourceCategoryName, "codeduitest" + serverSourceName);
 
             //Assert
-            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SERVICES", "CODEDUITESTS", "codeduitest123"));
-            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SOURCES", "CODEDUITESTS", "codeduitest123"));
+            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SERVICES", "CODEDUITESTS" + serverSourceName, "codeduitest" + serverSourceName));
+            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SOURCES", "CODEDUITESTS" + serverSourceName, "codeduitest" + serverSourceName));
 
             //Cleanup
-            ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "CODEDUITESTS", "codeduitest123");
-            ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", "CODEDUITESTS", "codeduitest123");
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "CODEDUITESTS" + serverSourceName, "codeduitest" + serverSourceName);
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", "CODEDUITESTS" + serverSourceName, "codeduitest" + serverSourceName);
+        }
+
+        //2013.03.15: Ashley Lewis - Bug 9217
+        [TestMethod]
+        public void DatabaseServiceWizardCreateNewServiceWithTotallyBlankWorkspaceExpectedServiceCreated()
+        {
+            //Initialize server
+            var serverManipulations = new ServerBugTests();
+            serverManipulations.ClearServerWorkSpace(TestContext.TestRunDirectory);
+            System.Threading.Thread.Sleep(2000);//Give the server time to initialize (shouldn't take long since server workspace is clear)
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.DoRefresh();
+            //Initialize service complete with its own new source
+            var bothServerAndSourceCategoryNames = "CODEDUITESTS" + Guid.NewGuid().ToString().Substring(0, 5);
+            var bothServerAndSourceNames = "codeduitest" + Guid.NewGuid().ToString().Substring(0, 5);
+            DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(bothServerAndSourceCategoryNames, bothServerAndSourceNames);
+
+            //Assert
+            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SERVICES", bothServerAndSourceCategoryNames, bothServerAndSourceNames));
+            Assert.IsTrue(ExplorerUIMap.ServiceExists("localhost", "SOURCES", bothServerAndSourceCategoryNames, bothServerAndSourceNames));
+
+            //Clean up
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", bothServerAndSourceCategoryNames, bothServerAndSourceNames);
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", bothServerAndSourceCategoryNames, bothServerAndSourceNames);
+            serverManipulations.RefillWorkSpaceAfterClear(TestContext.TestRunDirectory);
         }
     }
 }

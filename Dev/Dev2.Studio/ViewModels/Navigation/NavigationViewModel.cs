@@ -403,14 +403,20 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             //if not exist create category
+            bool forceRefresh = false;
             if (newCategoryNode == null)
             {
+                forceRefresh = true;
                 newCategoryNode = TreeViewModelFactory.CreateCategory(newCategoryName,
                                                                       resourceModel.ResourceType, serviceTypeNode);
             }
             //add to category
             if (!ReferenceEquals(newCategoryNode, resourceNode.TreeParent)) newCategoryNode.Add(resourceNode);
 
+            if(forceRefresh)
+            {
+                UpdateSearchFilter(_searchFilter);
+            }
         }
 
         /// <summary>

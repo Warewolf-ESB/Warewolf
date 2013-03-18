@@ -306,6 +306,26 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             System.Threading.Thread.Sleep(500);
         }
 
+        public void ConnectedServer_RightClick_Delete(string serverName)
+        {
+            UITestControl theServer = GetServer(serverName);
+            Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
+            Mouse.Move(p);
+            System.Threading.Thread.Sleep(500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            System.Threading.Thread.Sleep(2500);
+            Keyboard.SendKeys("{Down}");
+            System.Threading.Thread.Sleep(500);
+            Keyboard.SendKeys("{Down}");
+            System.Threading.Thread.Sleep(500);
+            Keyboard.SendKeys("{Down}");
+            System.Threading.Thread.Sleep(500);
+            Keyboard.SendKeys("{Enter}");
+            System.Threading.Thread.Sleep(500);
+        }
+
         public void RightClickShowProjectDependancies(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);

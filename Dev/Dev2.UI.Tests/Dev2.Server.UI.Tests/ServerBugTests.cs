@@ -187,7 +187,7 @@ namespace Dev2.Server.UI.Tests
         //    }
         //}
 
-        private string GetServerEXEFolder()
+        public string GetServerEXEFolder()
         {
             var findDev2Studios = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Server"));
             if (findDev2Studios.Count() != 1)
@@ -219,7 +219,7 @@ namespace Dev2.Server.UI.Tests
             return null;
         }
 
-        private void KillServer()
+        public void KillServer()
         {
             var findDev2Studios = System.Diagnostics.Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Server"));
             if (findDev2Studios.Count() != 1)
@@ -233,6 +233,58 @@ namespace Dev2.Server.UI.Tests
                     p.Kill();
                 }
             }
+        }
+
+        public void ClearServerWorkSpace(string tempDirectory)
+        {
+            var gotServerEXE = GetServerEXEFolder();
+            //Kill server
+            KillServer();
+            //Move server and client workspaces
+            if (Directory.Exists(gotServerEXE + "Plugins"))
+            {
+                Directory.Move(gotServerEXE + "Plugins", tempDirectory + @"\\Plugins");
+            }
+            if (Directory.Exists(gotServerEXE + "Services"))
+            {
+                Directory.Move(gotServerEXE + "Services", tempDirectory + @"\\Services");
+            }
+            if (Directory.Exists(gotServerEXE + "Sources"))
+            {
+                Directory.Move(gotServerEXE + "Sources", tempDirectory + @"\\Sources");
+            }
+            if (Directory.Exists(gotServerEXE + "Workspaces"))
+            {
+                Directory.Move(gotServerEXE + "Workspaces", tempDirectory + @"\\Workspaces");
+            }
+            //Restart server
+            Process.Start(gotServerEXE + @"\\Dev2.Server.exe");
+        }
+
+        public void RefillWorkSpaceAfterClear(string tempDirectory)
+        {
+            var gotServerEXE = GetServerEXEFolder();
+            //Kill server
+            KillServer();
+            //Move server and client workspaces back again
+            if (Directory.Exists(tempDirectory + @"\\Plugins"))
+            {
+                Directory.Move(tempDirectory + @"\\Plugins", gotServerEXE + "Plugins");
+            }
+            if (Directory.Exists(tempDirectory + @"\\Services"))
+            {
+                Directory.Move(tempDirectory + @"\\Services", gotServerEXE + "Services");
+            }
+            if (Directory.Exists(tempDirectory + @"\\Sources"))
+            {
+                Directory.Move(tempDirectory + @"\\Sources", gotServerEXE + "Sources");
+            }
+            if (Directory.Exists(tempDirectory + @"\\Workspaces"))
+            {
+                Directory.Move(tempDirectory + @"\\Workspaces", gotServerEXE + "Workspaces");
+            }
+            //Restart server
+            Process.Start(gotServerEXE + @"\\Dev2.Server.exe");
         }
 
         #region Additional test attributes

@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
 using Dev2.CodedUI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveWizardDialogClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -51,11 +52,11 @@ namespace Dev2.Studio.UI.Tests
         {
             //Initialize
             var connectionWizard = new ServerWizard();
-            var saveWizard = new SaveWizardDialog();
             DockManagerUIMap.ClickOpenTabPage("Explorer");
-            var expected = ExplorerUIMap.AshesServerCount()+2;
+            var expected = ExplorerUIMap.CountServers() + 2;
             var firstNewServer = Guid.NewGuid().ToString().Substring(0, 5);
             var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);
+            var wizardMapping = new DatabaseServiceWizardUIMap();
 
             //Create first server
             ExplorerUIMap.ClickNewServerButton();
@@ -65,14 +66,9 @@ namespace Dev2.Studio.UI.Tests
             System.Threading.Thread.Sleep(100);
             Keyboard.SendKeys("{TAB}{ENTER}");
             System.Threading.Thread.Sleep(100);
-            saveWizard.ClickFirstCategory();
-            Keyboard.SendKeys("{TAB}" + firstNewServer);
-            saveWizard.ClickSave();
-
-            //Reconnect to localhost
-            //ExplorerUIMap.ClickConnectDropdown();
-            //Keyboard.SendKeys("{ENTER}");
-            ExplorerUIMap.ClickRefreshButton();
+            Keyboard.SendKeys("{ENTER}CODEDUITEST" + firstNewServer + "{ENTER}");
+            System.Threading.Thread.Sleep(100);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + firstNewServer + "{ENTER}");
 
             //Try create second server
             ExplorerUIMap.ClickNewServerButton();
@@ -82,16 +78,20 @@ namespace Dev2.Studio.UI.Tests
             System.Threading.Thread.Sleep(100);
             Keyboard.SendKeys("{TAB}{ENTER}");
             System.Threading.Thread.Sleep(100);
-            saveWizard.ClickFirstCategory();
-            Keyboard.SendKeys("{TAB}" + secondNewServer);
-            saveWizard.ClickSave();
+            Keyboard.SendKeys("{ENTER}CODEDUITEST" + secondNewServer + "{ENTER}");
+            System.Threading.Thread.Sleep(100);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + secondNewServer + "{ENTER}");
 
             //Assert
-            Assert.AreEqual(expected, ExplorerUIMap.AshesServerCount());
+            System.Threading.Thread.Sleep(5000);//Servers need time to initialize before they can be counted
+            Assert.AreEqual(expected, ExplorerUIMap.CountServers());
 
             //Clean up
             ExplorerUIMap.Server_RightClick_Delete(firstNewServer);
-            ExplorerUIMap.Server_RightClick_Delete(secondNewServer);
+            ExplorerUIMap.ConnectedServer_RightClick_Delete(secondNewServer);
+            ExplorerUIMap.DoRefresh();
+            new TestBase().DoCleanup("localhost", "SOURCES", "CODEDUITEST" + firstNewServer, firstNewServer);
+            new TestBase().DoCleanup("localhost", "SOURCES", "CODEDUITEST" + secondNewServer, secondNewServer);
         }
 
         #region Additional test attributes

@@ -72,6 +72,24 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return serverDDL;
         }
 
+        public UITestControl GetExplorerConnectBtn()
+        {
+            // Find the explorer main window
+            UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
+            anItem.Find();
+            UITestControlCollection subItems = anItem.GetChildren();
+
+            // Find the explorer sub window
+            UITestControl explorerMenu = new UITestControl(anItem);
+            explorerMenu.SearchProperties["AutomationId"] = "Explorer";
+            explorerMenu.Find();
+
+            UITestControl serverDDL = new UITestControl(explorerMenu);
+            serverDDL.SearchProperties["AutomationId"] = "UI_ExplorerConnectBtn_AutoID";
+            serverDDL.Find();
+            return serverDDL;
+        }
+
         public void GetMenuItem(string menuItemName)
         {
             UITestControl theStudio = this.UIBusinessDesignStudioWindow;
