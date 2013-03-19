@@ -126,5 +126,74 @@ namespace Dev2.Data.Tests.Persistence
             Assert.IsTrue(dur < 2.0);
 
         }
+
+        [TestMethod]
+        public void CanCreate100kWithSillyLongStringInUnder2Second()
+        {
+            BinaryBlobStorage tmp = new BinaryBlobStorage();
+
+            string key = Guid.NewGuid().ToString();
+
+            DateTime start = DateTime.Now;
+
+            for (int i = 0; i < 100000; i++)
+            {
+                SampleObject o = new SampleObject() { TheInt = 100, TheString = "A string value, how evil, esp since it is a very long ugly string, what was i thinking. Oh yeah, I wanted to test my byte journal ;)" };
+
+                tmp.PushObject(key + i, o);
+            }
+
+            DateTime end = DateTime.Now;
+
+            tmp.Dispose();
+
+            double ticsPerSec = TimeSpan.TicksPerSecond;
+            double dur = (end.Ticks - start.Ticks) / ticsPerSec;
+
+            Console.WriteLine(dur);
+
+            Assert.IsTrue(dur < 2.0);
+
+        }
+
+        //[TestMethod]
+        //public void CanCreateAndRead100kInUnder5Second()
+        //{
+        //    BinaryBlobStorage tmp = new BinaryBlobStorage();
+
+        //    string key = Guid.NewGuid().ToString();
+
+        //    DateTime start = DateTime.Now;
+
+        //    for (int i = 0; i < 100000; i++)
+        //    {
+        //        SampleObject o = new SampleObject() { TheInt = 100, TheString = "A string value, how evil " + i };
+
+        //        tmp.PushObject(key + i, o);
+        //    }
+
+        //    // now read them back ;)
+
+        //    for (int i = 0; i < 100000; i++)
+        //    {
+
+        //        SampleObject so = tmp.FetchObject<SampleObject>(key + i);
+
+        //        Assert.AreEqual("A string value, how evil " + i, so.TheString);
+        //        Assert.AreEqual(100, so.TheInt);
+        //    }
+
+        //    DateTime end = DateTime.Now;
+
+        //    tmp.Dispose();
+
+        //    double ticsPerSec = TimeSpan.TicksPerSecond;
+        //    double dur = (end.Ticks - start.Ticks) / ticsPerSec;
+
+        //    Console.WriteLine(dur);
+
+        //    Assert.IsTrue(dur < 2.0);
+
+        //}
     }
 }

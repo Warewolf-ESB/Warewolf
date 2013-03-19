@@ -8,6 +8,7 @@ namespace Dev2.Data.Storage
 {
     /// <summary>
     /// Used to store index data ;)
+    /// This class is to be used in a single thread instance, DO NOT MULTI THREAD!
     /// </summary>
     public class BinaryDataListIndexStorage : IBinaryDataListIndexStorage
     {
@@ -21,17 +22,16 @@ namespace Dev2.Data.Storage
         private static readonly int keyLen = 36;
         private readonly string _idxPath;
         private FileStream _fileStream;
-        //private MemoryStream _cacheStream;
-        private readonly int _packedKeyLen = 48;
+        private readonly int _packedLen = 48;
         private int _totalIndexs;
         private int _peekIndexs;
-
-        private byte[] _indexBuffer;
         private int _indexBufferTotal = 0;
         private long _indexBufferPosition = 0;
+        private byte[] _internalBuffer;
 
         private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private const string _savePath = @"Dev2\DataListServer\";
+        
 
         #endregion
 
@@ -49,16 +49,16 @@ namespace Dev2.Data.Storage
                 ICollection<string> result = new Collection<string>();
 
                 int pos = 0;
-                long readMax = (_totalIndexs * _packedKeyLen);
+                long readMax = (_totalIndexs * _packedLen);
 
-                byte[] buffer = new byte[_packedKeyLen];
+                //[] buffer = new byte[_packedLen];
 
                 while (pos < readMax)
                 {
                     _fileStream.Seek(pos, SeekOrigin.Begin);
-                    _fileStream.Read(buffer, 0, _packedKeyLen);
+                    _fileStream.Read(_internalBuffer, 0, _packedLen);
 
-                    SBinaryDataListIndex idx = BytesToStruct(buffer);
+                    SBinaryDataListIndex idx = BytesToStruct(_internalBuffer);
 
                     if (idx.length != 0)
                     {
@@ -66,7 +66,7 @@ namespace Dev2.Data.Storage
                         result.Add(new string(idx.uniqueKey));
                     }
 
-                    pos += _packedKeyLen; // move index long
+                    pos += _packedLen; // move index long
                 }
 
                 return result;
@@ -88,7 +88,7 @@ namespace Dev2.Data.Storage
 
             _fileStream = new FileStream(_idxPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-            _indexBuffer = new byte[_pageLen];
+            _internalBuffer = new byte[_packedLen];
 
             //_cacheStream = new MemoryStream(_pageLen); // make new of 8 MB
 
@@ -121,10 +121,14 @@ namespace Dev2.Data.Storage
 
             bool res = true;
 
+            // TODO :  Fix this so we get the correct data out ;)
+
+
             if (FindIndex(key) >= 0)
             {
-                position = idx.position;
-                length = idx.length;
+                // At this point we know _internalBuffer is filled with the matching data ;)
+                position = ExtractPositionFromStream(_internalBuffer);
+                length = ExtractLengthFromStream(_internalBuffer);
             }
             else
             {
@@ -154,13 +158,13 @@ namespace Dev2.Data.Storage
             {
                 // we have a hit, update in place ;)
                 _fileStream.Seek(loc, SeekOrigin.Begin);
-                _fileStream.Write(bytes, 0, _packedKeyLen);
+                _fileStream.Write(bytes, 0, _packedLen);
             }
             else
             {
                 // it is a new add ;)
                 _fileStream.Seek(0, SeekOrigin.End);
-                _fileStream.Write(bytes, 0, _packedKeyLen);
+                _fileStream.Write(bytes, 0, _packedLen);
 
                 _totalIndexs++;
                 _peekIndexs++;
@@ -177,10 +181,10 @@ namespace Dev2.Data.Storage
             if ( idxLoc >= 0)
             {
                 // we have a match ;)
-                long pos = (idxLoc * _packedKeyLen);
+                long pos = (idxLoc * _packedLen);
                 byte[] bytes = ConvertIndexToBytes(key, 0, 0);
                 _fileStream.Seek(pos, SeekOrigin.Begin);
-                _fileStream.Write(bytes, 0, _packedKeyLen);
+                _fileStream.Write(bytes, 0, _packedLen);
                 _totalIndexs--;
 
                 // do we need to compact ?
@@ -202,14 +206,6 @@ namespace Dev2.Data.Storage
         void Dispose(bool disposing)
         {
             if (!disposing) return;
-
-            // close buffer ;)
-            //try
-            //{
-            //    _cacheStream.Close();
-            //    _cacheStream.Dispose();
-            //}
-            //catch { }
 
             // clean up ;)
             try
@@ -285,13 +281,12 @@ namespace Dev2.Data.Storage
 
         private byte[] ConvertIndexToBytes(string key, long position, int length)
         {
-            byte[] bytes = new byte[_packedKeyLen];
 
-            Buffer.BlockCopy(BitConverter.GetBytes(position), 0, bytes, 0, 8);
-            Buffer.BlockCopy(BitConverter.GetBytes(length), 0, bytes, 8, 4);
-            Buffer.BlockCopy(Encoding.UTF8.GetBytes(key), 0, bytes, 12, keyLen);
+            Buffer.BlockCopy(BitConverter.GetBytes(position), 0, _internalBuffer, 0, 8);
+            Buffer.BlockCopy(BitConverter.GetBytes(length), 0, _internalBuffer, 8, 4);
+            Buffer.BlockCopy(Encoding.UTF8.GetBytes(key), 0, _internalBuffer, 12, keyLen);
 
-            return bytes;
+            return _internalBuffer;
 
         }
 
@@ -318,6 +313,21 @@ namespace Dev2.Data.Storage
             return idx;
         }
 
+        private char[] ExtractKeyFromStream(byte[] bytes)
+        {
+            return Encoding.UTF8.GetChars(SubRangeOfBytes(bytes, 12, keyLen));
+        }
+
+        private long ExtractPositionFromStream(byte[] bytes)
+        {
+            return  BitConverter.ToInt64(SubRangeOfBytes(bytes,0, 8),0);
+        }
+
+        private int ExtractLengthFromStream(byte[] bytes)
+        {
+            return BitConverter.ToInt32(SubRangeOfBytes(bytes, 8, 4), 0);
+        }
+
         private byte[] SubRangeOfBytes(byte[] bytes, int start, int len)
         {
             byte[] result = new byte[len];
@@ -336,17 +346,17 @@ namespace Dev2.Data.Storage
         private long FindIndex(string searchKey)
         {
             long pos = 0;
-            long readMax = (_totalIndexs * _packedKeyLen);
+            long readMax = (_totalIndexs * _packedLen);
 
             char[] toMatch = searchKey.ToCharArray();
 
             _fileStream.Seek(pos, SeekOrigin.Begin);
             while (pos < readMax)
             {
-                byte[] readBuffer = new byte[_packedKeyLen];
+                byte[] readBuffer = new byte[_packedLen];
                 long readLen;
 
-                // Page in 1MB at a time or len if less ~ 21,800 keys at a time ;)
+                // Page in 8MB at a time or len if less ~ 1.7 million keys at a time ;)
                 if (_fileStream.Length <= _pageLen)
                 {
                     // take it all ;)
@@ -367,14 +377,14 @@ namespace Dev2.Data.Storage
 
                 while (offset < readLen)
                 {
-                    byte[] buffer = SubRangeOfBytes(readBuffer, offset, _packedKeyLen);
+                    _internalBuffer = SubRangeOfBytes(readBuffer, offset, _packedLen);
 
-                    if (KeysMatch(ExtractKeyFromStream(buffer), toMatch))
+                    if (KeysMatch(ExtractKeyFromStream(_internalBuffer), toMatch))
                     {
                         return pos;
                     }
 
-                    offset += _packedKeyLen;
+                    offset += _packedLen;
                 }
 
                 pos += readLen; // move index long
@@ -383,11 +393,7 @@ namespace Dev2.Data.Storage
             return -1;
         }
 
-        private char[] ExtractKeyFromStream(byte[] bytes)
-        {
-            return Encoding.UTF8.GetChars(SubRangeOfBytes(bytes, 12, keyLen));
-        }
-
+       
         private bool KeysMatch(char[] toExamine, char[] target)
         {
             bool result = true;
