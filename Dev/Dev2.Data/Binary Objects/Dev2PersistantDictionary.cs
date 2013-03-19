@@ -15,11 +15,9 @@ namespace Dev2.Data.Binary_Objects
         private const string _ext = ".r2d2";
         private readonly string _completeFilename = Path.GetTempFileName();
         private FileStream _file;
-        private BufferedStream _bufferedFile;
         private BinaryDataListIndexStorage _lstIndexes;
         private readonly object _opsLock = new object();
         private const long _compactThresholdSize = 500 * 1024 * 1024;
-        private const int _fileBufferSize = 10 * 1024 * 1024; // 10MB buffer ;)
         private long _lastCompactSize;
         private bool _hasBeenRemoveSinceLastCompact = false;
 
@@ -35,15 +33,17 @@ namespace Dev2.Data.Binary_Objects
         {
             if (!string.IsNullOrEmpty(filename))
             {
-                
-                _completeFilename = _dataListPersistPath + filename+_ext;
+                var fileName = Path.GetFileName(filename);
+                if (fileName != null)
+                {
+                    string fName = fileName.Replace(".tmp", _ext);
+                    _completeFilename = _dataListPersistPath + fName;
 
-                _lstIndexes = new BinaryDataListIndexStorage(filename);
-
+                    _lstIndexes = new BinaryDataListIndexStorage(fName);
+                }
             }
 
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            _bufferedFile = new BufferedStream(_file, _fileBufferSize);
         }
 
         public Dev2PersistantDictionary(string dataPath, string indexPath)
@@ -59,8 +59,6 @@ namespace Dev2.Data.Binary_Objects
             _completeFilename = dataPath;
 
             _file = new FileStream(dataPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            _bufferedFile = new BufferedStream(_file, _fileBufferSize);
-            
         }
 
         #endregion Constructors
@@ -73,14 +71,12 @@ namespace Dev2.Data.Binary_Objects
             {
                 return Read(key);
             }
-
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException("value", "Cannot add null to dictionary");
                 }
-
                 Add(key, value);
             }
         }
@@ -329,28 +325,18 @@ namespace Dev2.Data.Binary_Objects
                     Compact();
                 }
 
+                //var convertToJson = ConvertToJson(objToAdd);
                 byte[] data = null;
-
-                if (!(objToAdd is byte[]))
+                using (MemoryStream ms = ConvertToStream(objToAdd))
                 {
-                    using (MemoryStream ms = ConvertToStream(objToAdd))
-                    {
-                        data = new byte[ms.Length];
-                        ms.Read(data, 0, (int)ms.Length);
-                        ms.Close();
-                    }
-                }
-                else
-                {
-                    data = (objToAdd as byte[]);
+                    data = new byte[ms.Length];
+                    ms.Read(data, 0, (int)ms.Length);
+                    ms.Close();
                 }
 
                 _lstIndexes.AddIndex(key, _file.Position, data.Length);
 
                 // ensure we write to the end of the log ;)
-                //_bufferedFile.Seek(0, SeekOrigin.End);
-                //_bufferedFile.Write(data, 0, data.Length);
-
                 _file.Seek(0, SeekOrigin.End);
                 _file.Write(data, 0, data.Length);
             }
@@ -382,7 +368,6 @@ namespace Dev2.Data.Binary_Objects
         void Dispose(bool disposing)
         {
             if (!disposing) return;
-            
             _file.Close();
             _file.Dispose();
             // clean up ;)

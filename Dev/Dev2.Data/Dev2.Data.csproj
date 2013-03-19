@@ -81,6 +81,7 @@
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
+    <Compile Include="Storage\Dev2PersistantDictionary.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryDataListIndex.cs" />
     <Compile Include="Storage\BinaryDataListBlob.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Storage\BinaryDataListStorageRoot.cs" />
     <Compile Include="Storage\BinaryDataListStorage.cs" />
     <Compile Include="Binary Objects\Dev2Column.cs" />
-    <Compile Include="Storage\Dev2PersistantDictionary.cs" />
     <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Binary Objects\IBinaryDataList.cs" />
     <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />

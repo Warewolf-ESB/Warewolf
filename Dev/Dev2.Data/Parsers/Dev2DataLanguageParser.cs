@@ -741,6 +741,9 @@ namespace Dev2.DataList.Contract
                                             //06.03.2013: Ashley Lewis - BUG 6731
                                             result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, (!payload.HangingOpen)));
                                         }
+
+
+                                        String.CompareOrdinal("a", "b");
                                     }
                                 }
                             }

@@ -38,6 +38,9 @@
         if (response.SwitchVariable != undefined) {
             self.data.SwitchVariable(response.SwitchVariable);
         }
+		
+		// bind the variable region ;)
+		$("#BindingVariable").html(response.SwitchVariable);
 
     }
 
