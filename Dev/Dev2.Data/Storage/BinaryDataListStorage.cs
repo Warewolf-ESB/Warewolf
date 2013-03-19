@@ -36,7 +36,7 @@ namespace Dev2.Data.Binary_Objects
         static readonly ConcurrentDictionary<string, IBinaryDataListRow> LevelOneCache = new ConcurrentDictionary<string, IBinaryDataListRow>(GlobalConstants.DefaultConcurrentStorageAccsors, GlobalConstants.DefaultDataListCreateCacheSizeLvl1, StringComparer.Ordinal);
 
         [NonSerialized]
-        static readonly Dev2PersistantDictionary<IBinaryDataListRow> LevelThreeCache = new Dev2PersistantDictionary<IBinaryDataListRow>(Path.GetTempFileName());
+        static readonly Dev2PersistantDictionary<IBinaryDataListRow> LevelThreeCache = new Dev2PersistantDictionary<IBinaryDataListRow>(Guid.NewGuid().ToString());
 
         [NonSerialized]
         static readonly BackgroundWorker BackgroundWorker = new BackgroundWorker();

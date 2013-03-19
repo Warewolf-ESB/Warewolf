@@ -13,7 +13,7 @@ namespace Dev2.Data.Binary_Objects
         #region Fields
 
         private const string _ext = ".r2d2";
-        private readonly string _completeFilename = Path.GetTempFileName();
+        private readonly string _completeFilename;
         private FileStream _file;
         private BinaryDataListIndexStorage _lstIndexes;
         private readonly object _opsLock = new object();
@@ -34,14 +34,15 @@ namespace Dev2.Data.Binary_Objects
         {
             if (!string.IsNullOrEmpty(filename))
             {
-                
-                _completeFilename = _dataListPersistPath + filename+_ext;
+
+                _completeFilename = _dataListPersistPath + filename + _ext;
 
                 _lstIndexes = new BinaryDataListIndexStorage(filename);
 
-            }
+                _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-            _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            }
+            
         }
 
         public Dev2PersistantDictionary(string dataPath, string indexPath)

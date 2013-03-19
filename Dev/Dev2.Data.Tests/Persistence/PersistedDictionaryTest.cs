@@ -11,7 +11,7 @@ namespace Dev2.Data.Tests.Persistence
         [TestMethod]
         public void CanAddToFileExpectAddedEntry()
         {
-            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Path.GetTempFileName());
+            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Guid.NewGuid().ToString());
 
             IBinaryDataListRow row = new BinaryDataListRow(5);
             row.UpdateValue("col1", 0);
@@ -36,7 +36,7 @@ namespace Dev2.Data.Tests.Persistence
         [TestMethod]
         public void CanRemoveFromFileExpectNoEntries()
         {
-            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Path.GetTempFileName());
+            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Guid.NewGuid().ToString());
 
             IBinaryDataListRow row = new BinaryDataListRow(5);
             row.UpdateValue("col1", 0);
@@ -58,7 +58,7 @@ namespace Dev2.Data.Tests.Persistence
         [TestMethod]
         public void CanUseIndexerToAddExpectAddedEntry()
         {
-            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Path.GetTempFileName());
+            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Guid.NewGuid().ToString());
 
             IBinaryDataListRow row = new BinaryDataListRow(5);
             row.UpdateValue("col1", 0);
@@ -80,7 +80,7 @@ namespace Dev2.Data.Tests.Persistence
         [TestMethod]
         public void CanFetchValueExpectValidRow()
         {
-            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Path.GetTempFileName());
+            Dev2PersistantDictionary<IBinaryDataListRow> dic = new Dev2PersistantDictionary<IBinaryDataListRow>(Guid.NewGuid().ToString());
 
             IBinaryDataListRow row1 = new BinaryDataListRow(5);
             row1.UpdateValue("col1", 0);
