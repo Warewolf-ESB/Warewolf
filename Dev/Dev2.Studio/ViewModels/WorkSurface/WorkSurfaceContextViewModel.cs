@@ -40,6 +40,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
+        public bool DeleteRequested { get; set; }
+
         public IDataListViewModel DataListViewModel
         {
             get

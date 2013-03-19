@@ -1220,16 +1220,11 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool RemoveContext(WorkSurfaceKey key)
-        {
-            WorkSurfaceContextViewModel context = FindWorkSurfaceContextViewModel(key);
-            return Items.Remove(context);
-        }
-
-        public bool RemoveContext(IContextualResourceModel model)
+        public void DeleteContext(IContextualResourceModel model)
         {
             WorkSurfaceContextViewModel context = FindWorkSurfaceContextViewModel(model);
-            return Items.Remove(context);
+            context.DeleteRequested = true;
+            DeactivateItem(context, true);
         }
 
         public static bool QueryDeleteExplorerResource(IContextualResourceModel model, bool hasDependencies,
@@ -1655,18 +1650,21 @@ namespace Dev2.Studio.ViewModels
         public void CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)
         {
             bool remove = true;
-            IWorkSurfaceViewModel vm = context.WorkSurfaceViewModel;
-            if (vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
+            if (!context.DeleteRequested)
             {
-                var workflowVM = vm as IWorkflowDesignerViewModel;
-                if (workflowVM == null) return;
-
-                remove = workflowVM.ResourceModel.IsWorkflowSaved(workflowVM.ServiceDefinition);
-                if (!remove)
+                IWorkSurfaceViewModel vm = context.WorkSurfaceViewModel;
+                if (vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
-                    remove = ShowRemovePopup(workflowVM);
+                    var workflowVM = vm as IWorkflowDesignerViewModel;
+                    if (workflowVM == null) return;
+
+                    remove = workflowVM.ResourceModel.IsWorkflowSaved(workflowVM.ServiceDefinition);
+                    if (!remove)
+                    {
+                        remove = ShowRemovePopup(workflowVM);
+                    }
+                    if (remove) RemoveWorkspaceItem(workflowVM);
                 }
-                if (remove) RemoveWorkspaceItem(workflowVM);
             }
 
             if (remove)
@@ -1674,6 +1672,7 @@ namespace Dev2.Studio.ViewModels
                 Items.Remove(context);
                 EventAggregator.Publish(new TabClosedMessage(context));
             }
+
             if (e != null)
                 e.Cancel = !remove;
         }
@@ -1769,6 +1768,7 @@ namespace Dev2.Studio.ViewModels
             if (model == null) return;
 
             List<IResourceModel> dependencies = ResourceDependencyService.GetUniqueDependencies(model);
+            dependencies.Remove(model);
             bool openDependencyGraph;
             bool shouldRemove = QueryDeleteExplorerResource(model,
                                                             dependencies != null && dependencies.Count > 0,
@@ -1779,8 +1779,7 @@ namespace Dev2.Studio.ViewModels
                 UnlimitedObject success = model.Environment.ResourceRepository.DeleteResource(model);
                 if (success != null)
                 {
-                    RemoveContext(model);
-                    ActivateItem(_previousActive);
+                    DeleteContext(model);
                     EventAggregator.Publish(new RemoveNavigationResourceMessage(model));
                 }
             }
@@ -1861,10 +1860,10 @@ namespace Dev2.Studio.ViewModels
             if (close)
             {
                 CloseWorkSurfaceContext(item, null);
-
             }
 
-            ActivateItem(_previousActive);
+            if (_previousActive != item)
+                ActivateItem(_previousActive);
 
             base.DeactivateItem(item, close);
         }

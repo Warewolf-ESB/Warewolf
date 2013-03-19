@@ -115,6 +115,7 @@ namespace Dev2.Studio.Dock
 			// always hook the closed
             pane.Closed += new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
 
+            //Juries attach to events when viewmodel is closed/deactivated to close view.
             if (item is WorkSurfaceContextViewModel)
             {
                 var vm = (WorkSurfaceContextViewModel)item;
@@ -146,7 +147,7 @@ namespace Dev2.Studio.Dock
                     {
                         var vm = ((WorkSurfaceContextViewModel)sender).WorkSurfaceViewModel;
                         var toRemove = container.Items.Cast<ContentPane>().ToList()
-                            .FirstOrDefault(p => p.Content != null && p.Content.Equals(vm));
+                            .FirstOrDefault(p => p.Content != null && p.Content == vm);
                         RemovePane(toRemove);
                         if (toRemove != null && 
                             Application.Current != null && 
@@ -156,6 +157,7 @@ namespace Dev2.Studio.Dock
                         }
                     }
                 }
+                
             }
         }
 
