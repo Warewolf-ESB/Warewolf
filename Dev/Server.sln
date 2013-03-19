@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration.
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 17
+		SccNumberOfProjects = 20
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -100,15 +100,15 @@ Global
 		SccProjectUniqueName16 = Dev2.Sql.Tests\\Dev2.Sql.Tests.csproj
 		SccProjectName16 = Dev2.Sql.Tests
 		SccLocalPath16 = Dev2.Sql.Tests
-		SccProjectUniqueName17 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
-		SccProjectName17 = Dev2.Runtime.Configuration
-		SccLocalPath17 = Dev2.Runtime.Configuration
-		SccProjectUniqueName18 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
-		SccProjectName18 = ConsoleAppToTestExecuteCommandLineActivity
-		SccLocalPath18 = ConsoleAppToTestExecuteCommandLineActivity
-		SccProjectUniqueName18 = Dev2.Runtime.Configuration.Tests\\Dev2.Runtime.Configuration.Tests.csproj
-		SccProjectName18 = Dev2.Runtime.Configuration.Tests
-		SccLocalPath18 = Dev2.Runtime.Configuration.Tests
+		SccProjectUniqueName17 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
+		SccProjectName17 = ConsoleAppToTestExecuteCommandLineActivity
+		SccLocalPath17 = ConsoleAppToTestExecuteCommandLineActivity
+		SccProjectUniqueName18 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
+		SccProjectName18 = Dev2.Runtime.Configuration
+		SccLocalPath18 = Dev2.Runtime.Configuration
+		SccProjectUniqueName19 = Dev2.Runtime.Configuration.Tests\\Dev2.Runtime.Configuration.Tests.csproj
+		SccProjectName19 = Dev2.Runtime.Configuration.Tests
+		SccLocalPath19 = Dev2.Runtime.Configuration.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
