@@ -30,7 +30,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel
+    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel,IHandle<CloseWizardMessage>
     {
         #region private fields
 
@@ -39,6 +39,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private IEnvironmentModel _environmentModel;
         private RelayCommand _removeCommand;
         private RelayCommand<string> _newResourceCommand;
+        WebPropertyEditorWindow _win;
 
         #endregion
 
@@ -284,19 +285,27 @@ namespace Dev2.Studio.ViewModels.Navigation
 
                 try
                 {
-                    
-                    var win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri)
+                    _win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri)
                     {
                         Width = 850,
                         Height = 600
                     };
-                    win.ShowDialog();
-        }
+                    _win.ShowDialog();
+                }
                 catch
                 {
                 }
             }
         }
+
+        public void Handle(CloseWizardMessage message)
+        {
+            if (_win != null)
+            {
+                _win.Close();
+            }
+        }
+
 
         static string BuildUri(IContextualResourceModel resourceModel, string resName)
         {

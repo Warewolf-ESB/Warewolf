@@ -275,6 +275,18 @@ namespace Dev2.Core.Tests
         #region Environment
 
         [TestMethod]
+        public void EnvironmentNodeExpectHandlesCloseWizardMessage()
+        {
+            Assert.IsInstanceOfType(environmentVM,typeof(IHandle<CloseWizardMessage>));
+        }
+        
+        [TestMethod]
+        public void EnvironmentNodeExpectHasNewResourceCommand()
+        {
+            Assert.IsNotNull(environmentVM.NewResourceCommand);
+        }
+
+        [TestMethod]
         public void EnvironmentNodeFindChildByResourceType_Expected_RightServiceTypeNode()
         {
             var child = environmentVM.FindChild(ResourceType.WorkflowService);
