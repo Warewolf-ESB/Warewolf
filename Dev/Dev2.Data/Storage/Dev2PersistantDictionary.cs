@@ -18,7 +18,6 @@ namespace Dev2.Data.Binary_Objects
         private BinaryDataListIndexStorage _lstIndexes;
         private readonly object _opsLock = new object();
         private const long _compactThresholdSize = 500 * 1024 * 1024;
-        private const int _fileBufferSize = 10 * 1024 * 1024; // 10MB buffer ;)
         private long _lastCompactSize;
         private bool _hasBeenRemoveSinceLastCompact = false;
 

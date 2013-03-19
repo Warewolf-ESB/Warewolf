@@ -17,13 +17,18 @@ namespace Dev2.Data.Storage
         private static readonly string _compactExt = ".compact";
         private static readonly int _compactKeyCnt = 10000;
         private static readonly double _compactFactor = 0.7; // 30% fragmentation
-        private static readonly int _pageLen = (1024*1024);
+        private static readonly int _pageLen = (1024*1024*8); // 8MB of dadta buffered ;)
         private static readonly int keyLen = 36;
         private readonly string _idxPath;
         private FileStream _fileStream;
+        //private MemoryStream _cacheStream;
         private readonly int _packedKeyLen = 48;
         private int _totalIndexs;
         private int _peekIndexs;
+
+        private byte[] _indexBuffer;
+        private int _indexBufferTotal = 0;
+        private long _indexBufferPosition = 0;
 
         private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private const string _savePath = @"Dev2\DataListServer\";
@@ -83,6 +88,10 @@ namespace Dev2.Data.Storage
 
             _fileStream = new FileStream(_idxPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
+            _indexBuffer = new byte[_pageLen];
+
+            //_cacheStream = new MemoryStream(_pageLen); // make new of 8 MB
+
         }
 
         /// <summary>
@@ -94,10 +103,7 @@ namespace Dev2.Data.Storage
         /// </returns>
         public bool ContainsKey(string key)
         {
-            SBinaryDataListIndex idx = new SBinaryDataListIndex();
-            InitIdx(ref idx);
-
-            return (FindIndex(ref idx, key) >= 0);
+            return (FindIndex(key) >= 0);
 
         }
 
@@ -115,7 +121,7 @@ namespace Dev2.Data.Storage
 
             bool res = true;
 
-            if (FindIndex(ref idx, key) >= 0)
+            if (FindIndex(key) >= 0)
             {
                 position = idx.position;
                 length = idx.length;
@@ -140,20 +146,12 @@ namespace Dev2.Data.Storage
         /// <param name="length">The length.</param>
         public void AddIndex(string key, long position, int length)
         {
-            // init index
-            SBinaryDataListIndex idx = new SBinaryDataListIndex();
-            InitIdx(ref idx);
-
-
             // first find the key if it exist ;)
-            long loc = FindIndex(ref idx, key);
-
-            idx.position = position;
-            idx.length = length;
+            long loc = FindIndex(key);
+            byte[] bytes = ConvertIndexToBytes(key, position, length);
 
             if (loc >= 0)
             {
-                byte[] bytes = ConvertIndexToBytes(ref idx);
                 // we have a hit, update in place ;)
                 _fileStream.Seek(loc, SeekOrigin.Begin);
                 _fileStream.Write(bytes, 0, _packedKeyLen);
@@ -161,9 +159,6 @@ namespace Dev2.Data.Storage
             else
             {
                 // it is a new add ;)
-                
-                idx.uniqueKey = key.ToCharArray();
-                byte[] bytes = ConvertIndexToBytes(ref idx);
                 _fileStream.Seek(0, SeekOrigin.End);
                 _fileStream.Write(bytes, 0, _packedKeyLen);
 
@@ -177,14 +172,13 @@ namespace Dev2.Data.Storage
             SBinaryDataListIndex idx = new SBinaryDataListIndex();
             InitIdx(ref idx);
 
-            long idxLoc = FindIndex(ref idx, key);
+            long idxLoc = FindIndex(key);
 
             if ( idxLoc >= 0)
             {
                 // we have a match ;)
-                InitIdx(ref idx); // clean it, the push back ;)
                 long pos = (idxLoc * _packedKeyLen);
-                byte[] bytes = ConvertIndexToBytes(ref idx);
+                byte[] bytes = ConvertIndexToBytes(key, 0, 0);
                 _fileStream.Seek(pos, SeekOrigin.Begin);
                 _fileStream.Write(bytes, 0, _packedKeyLen);
                 _totalIndexs--;
@@ -208,9 +202,22 @@ namespace Dev2.Data.Storage
         void Dispose(bool disposing)
         {
             if (!disposing) return;
+
+            // close buffer ;)
+            //try
+            //{
+            //    _cacheStream.Close();
+            //    _cacheStream.Dispose();
+            //}
+            //catch { }
+
             // clean up ;)
-            _fileStream.Close();
-            _fileStream.Dispose();
+            try
+            {
+                _fileStream.Close();
+                _fileStream.Dispose();
+            }
+            catch { }
 
             // remove file system resources
             File.Delete(_idxPath);
@@ -276,25 +283,13 @@ namespace Dev2.Data.Storage
 
         }
 
-        private byte[] ConvertIndexToBytes(ref SBinaryDataListIndex idx)
+        private byte[] ConvertIndexToBytes(string key, long position, int length)
         {
-
             byte[] bytes = new byte[_packedKeyLen];
-            byte[] locBytes = BitConverter.GetBytes(idx.position);
-            byte[] lengthBytes = BitConverter.GetBytes(idx.length);
 
-            Array.ConstrainedCopy(locBytes, 0, bytes, 0, locBytes.Length);
-            Array.ConstrainedCopy(lengthBytes, 0, bytes, 8, lengthBytes.Length);
-
-
-            byte[] tmp = new byte[keyLen];
-            for (int i = 0; i < keyLen; i++)
-            {
-                tmp[i] = (byte)idx.uniqueKey[i];
-            }
-
-            Array.ConstrainedCopy(tmp, 0, bytes, 12, keyLen);
-
+            Buffer.BlockCopy(BitConverter.GetBytes(position), 0, bytes, 0, 8);
+            Buffer.BlockCopy(BitConverter.GetBytes(length), 0, bytes, 8, 4);
+            Buffer.BlockCopy(Encoding.UTF8.GetBytes(key), 0, bytes, 12, keyLen);
 
             return bytes;
 
@@ -318,16 +313,7 @@ namespace Dev2.Data.Storage
             
             idx.length = len;
             idx.position = pos;
-
-            byte[] bkey = new byte[keyLen];
-            // 12 - 48
-            Array.ConstrainedCopy(bytes, 12, bkey, 0, keyLen);
-
-            char[] tmp = Encoding.UTF8.GetChars(bkey);
-            if (tmp.Length > 0)
-            {
-                Array.ConstrainedCopy(tmp, 0, idx.uniqueKey, 0, keyLen);
-            }
+            idx.uniqueKey = Encoding.UTF8.GetChars(SubRangeOfBytes(bytes, 12, keyLen));
 
             return idx;
         }
@@ -336,7 +322,7 @@ namespace Dev2.Data.Storage
         {
             byte[] result = new byte[len];
 
-            Array.ConstrainedCopy(bytes, start, result, 0, len);
+            Buffer.BlockCopy(bytes, start, result, 0, len);
 
             return result;
         }
@@ -347,18 +333,18 @@ namespace Dev2.Data.Storage
         /// <param name="idx">The idx.</param>
         /// <param name="searchKey">The search key.</param>
         /// <returns></returns>
-        private long FindIndex(ref SBinaryDataListIndex idx, string searchKey)
+        private long FindIndex(string searchKey)
         {
             long pos = 0;
             long readMax = (_totalIndexs * _packedKeyLen);
 
             char[] toMatch = searchKey.ToCharArray();
 
+            _fileStream.Seek(pos, SeekOrigin.Begin);
             while (pos < readMax)
             {
                 byte[] readBuffer = new byte[_packedKeyLen];
-                _fileStream.Seek(pos, SeekOrigin.Begin);
-
+                
                 long readLen;
 
                 // Page in 1MB at a time or len if less ~ 21,800 keys at a time ;)
@@ -384,10 +370,7 @@ namespace Dev2.Data.Storage
                 {
                     byte[] buffer = SubRangeOfBytes(readBuffer, offset, _packedKeyLen);
 
-                    // now unpack into the idx object ;)
-                    idx = BytesToStruct(buffer);
-
-                    if (KeysMatch(idx.uniqueKey, toMatch))
+                    if (KeysMatch(ExtractKeyFromStream(buffer), toMatch))
                     {
                         return pos;
                     }
@@ -399,6 +382,11 @@ namespace Dev2.Data.Storage
             }
 
             return -1;
+        }
+
+        private char[] ExtractKeyFromStream(byte[] bytes)
+        {
+            return Encoding.UTF8.GetChars(SubRangeOfBytes(bytes, 12, keyLen));
         }
 
         private bool KeysMatch(char[] toExamine, char[] target)
