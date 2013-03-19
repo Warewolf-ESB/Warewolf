@@ -15,7 +15,6 @@ namespace Dev2.Data.Binary_Objects
         private const string _ext = ".r2d2";
         private readonly string _completeFilename = Path.GetTempFileName();
         private FileStream _file;
-        private BufferedStream _bufferedFile;
         private BinaryDataListIndexStorage _lstIndexes;
         private readonly object _opsLock = new object();
         private const long _compactThresholdSize = 500 * 1024 * 1024;
@@ -43,7 +42,6 @@ namespace Dev2.Data.Binary_Objects
             }
 
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            _bufferedFile = new BufferedStream(_file, _fileBufferSize);
         }
 
         public Dev2PersistantDictionary(string dataPath, string indexPath)
@@ -59,7 +57,6 @@ namespace Dev2.Data.Binary_Objects
             _completeFilename = dataPath;
 
             _file = new FileStream(dataPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            _bufferedFile = new BufferedStream(_file, _fileBufferSize);
             
         }
 
