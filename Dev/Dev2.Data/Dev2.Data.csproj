@@ -81,7 +81,9 @@
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
+    <Compile Include="Storage\BinaryBlobStorage.cs" />
     <Compile Include="Storage\Dev2PersistantDictionary.cs" />
+    <Compile Include="Storage\IDev2PersistedDictionaryStorage.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryDataListIndex.cs" />
     <Compile Include="Storage\BinaryDataListBlob.cs" />
@@ -179,6 +181,10 @@
     <Compile Include="PathOperations\TO\Dev2UnZipOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2ZipOperationTO.cs" />
     <Compile Include="Storage\IBinaryDataListStorage.cs" />
+    <Compile Include="Storage\ProtocolBuffers\AProtocolBuffer.cs" />
+    <Compile Include="Storage\ProtocolBuffers\IDev2ProtocolBuffer.cs" />
+    <Compile Include="Storage\ProtocolBuffers\ProtocolBufferFactory.cs" />
+    <Compile Include="Storage\ProtocolBuffers\SampleObject.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>

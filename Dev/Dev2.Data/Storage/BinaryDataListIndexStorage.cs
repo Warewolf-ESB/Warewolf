@@ -344,7 +344,6 @@ namespace Dev2.Data.Storage
             while (pos < readMax)
             {
                 byte[] readBuffer = new byte[_packedKeyLen];
-                
                 long readLen;
 
                 // Page in 1MB at a time or len if less ~ 21,800 keys at a time ;)

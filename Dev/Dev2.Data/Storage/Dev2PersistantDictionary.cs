@@ -33,13 +33,9 @@ namespace Dev2.Data.Binary_Objects
         {
             if (!string.IsNullOrEmpty(filename))
             {
-
                 _completeFilename = _dataListPersistPath + filename + _ext;
-
                 _lstIndexes = new BinaryDataListIndexStorage(filename);
-
                 _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
             }
             
         }
@@ -53,9 +49,7 @@ namespace Dev2.Data.Binary_Objects
             }
 
             _lstIndexes = new BinaryDataListIndexStorage(indexPath);
-
             _completeFilename = dataPath;
-
             _file = new FileStream(dataPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             
         }
