@@ -184,7 +184,7 @@
     <Compile Include="Storage\ProtocolBuffers\AProtocolBuffer.cs" />
     <Compile Include="Storage\ProtocolBuffers\IDev2ProtocolBuffer.cs" />
     <Compile Include="Storage\ProtocolBuffers\ProtocolBufferFactory.cs" />
-    <Compile Include="Storage\ProtocolBuffers\SampleObject.cs" />
+    <Compile Include="Storage\ProtocolBuffers\BufferObjects\SampleObject.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>
