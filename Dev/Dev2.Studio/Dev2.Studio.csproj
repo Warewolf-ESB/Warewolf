@@ -309,6 +309,7 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
+    <Compile Include="AppResources\Utils\Dev2VisualTreeHelperUtils.cs" />
     <Compile Include="Controller\AbstractController.cs" />
     <Compile Include="Controller\IController.cs" />
     <Compile Include="Controller\MainController.cs" />

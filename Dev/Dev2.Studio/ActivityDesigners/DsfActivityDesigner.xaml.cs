@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.AppResources.ExtensionMethods;
+﻿using System.Drawing;
+using System.Windows.Forms;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.AppResources.Utils;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
@@ -16,6 +19,11 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.ViewModels.DataList;
+using DataGrid = System.Windows.Controls.DataGrid;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using Panel = System.Windows.Controls.Panel;
+using Point = System.Windows.Point;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -39,7 +47,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InitializeComponent();
             Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
+            Unloaded += OnUnloaded;            
         }
 
         #endregion Constructor
@@ -62,7 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Private Methods
 
         private void InitializeViewModel()
-        {
+        {            
             if (_viewModel != null)
             {
                 _viewModel.Dispose();
@@ -109,7 +117,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Panel.SetZIndex(uiElement, int.MaxValue);
                 }
-
                 _viewModel.ShowAdorners = true;
             }
         }
@@ -232,7 +239,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             Loaded -= OnLoaded;
-            DataContext = _viewModel;
+            DataContext = _viewModel;      
         }
 
         private void SelectionChanged(Selection item)
@@ -263,16 +270,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             SetInitialInputOutPutMappingHeight();
         }
 
-        private void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowAdorners();
-        }
-
         private void DsfActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {
             if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
             {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+                var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
                     Panel.SetZIndex(uiElement, int.MaxValue - 1);
@@ -282,6 +284,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             HideAdorners();
+        }
+
+        void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            {
+                var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+                if (uiElement != null)
+                {
+                    Panel.SetZIndex(uiElement, int.MinValue + 1);
+                }
+
+                return;
+            }
+
+            ShowAdorners();
         }
 
         private void OutputTxt_KeyUp(object sender, KeyEventArgs e)
@@ -402,6 +420,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _startManualDrag = false;
+        }
+
+        //2013.03.20: Ashley Lewis - Bug 9233 carefully find title bar textbox and add two events
+        void DsfActivityDesigner_OnLayoutUpdated(object sender, EventArgs e)
+        {
+            var child = Dev2VisualTreeHelperUtils.FindVisualChild(this, "Border"); // Pass the border layer
+            if (child != null)
+            {
+                child = Dev2VisualTreeHelperUtils.FindVisualChild(child, "Adorner"); // Pass the adorner layer
+                if (child != null)
+                {
+                    child = Dev2VisualTreeHelperUtils.FindVisualChild(child, "Grid"); // Pass the grid layer
+                    if (child != null)
+                    {
+                        child = Dev2VisualTreeHelperUtils.FindVisualChild(child, "TextBox");
+                        if (child != null)
+                        {
+                            child.GotFocus += ChildOnGotFocus; // Add events to this object
+                            child.LostFocus += ChildOnLostFocus;
+                        }
+                    }
+                }
+            }
+        }
+
+        //2013.03.19: Ashley Lewis - Bug 9233 Hide adorners when editting title
+        void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)
+        {
+            HideAdorners();
+        }
+
+        void ChildOnLostFocus(object sender, RoutedEventArgs e)
+        {
+            ShowAdorners();
         }
 
         #endregion Event Handlers
