@@ -67,7 +67,7 @@ namespace Dev2.DataList.Contract.Builders
             while (scopedFrame.HasData())
             {
                 DataListPayloadFrameTO<string> tmp = scopedFrame.FetchNextFrameItem();
-                string exp = tmp.Expression.Replace("(*)", "()"); // force conversion ;)
+                string exp = tmp.Expression; //.Replace("(*)", "()"); // force conversion ;)
                 string val = (tmp.Value as string);
 
                 IIntellisenseResult token = tc.ParseTokenForMatch(exp, _bdl.FetchIntellisenseParts());
@@ -82,19 +82,15 @@ namespace Dev2.DataList.Contract.Builders
                     if (rs != _lastRs && !string.IsNullOrEmpty(rs))
                     {
                         // Flush any existing row data for a different recordset ;)
-                        //if (_rowData != null)
-                        //{
-                        //    // flush the rowData out ;)
-                        //    _entry.TryPutRecordRowAt(_rowData, _upsertIdx, out error);
-                        //    if (error != string.Empty)
-                        //    {
-                        //        throw new Exception(error);
-                        //    }
+                        if (_rowData != null)
+                        {
+                            if (!token.Option.IsScalar)
+                            {
+                                DumpColAtATime();
+                            }
 
-                        //    // push the exising version of the DataList on change ;)
-                        //    c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
-                        //    amendedData = false;
-                        //}
+                            amendedData = false;
+                        }
 
                         _bdl.TryGetEntry(rs, out _entry, out error);
                         if (error != string.Empty || _entry == null)
@@ -121,9 +117,19 @@ namespace Dev2.DataList.Contract.Builders
 
                         IBinaryDataListItem itm = _rowData[colIdx];
 
-                        idxType = DataListUtil.GetRecordsetIndexType(idx);
-                        //idxType = DataListUtil.GetRecordsetIndexType(idx);
-                        _upsertIdx = dris.FetchRecordsetIndex(token, _entry, isFramed);
+                        idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
+                        
+                        int tmpIdx = dris.FetchRecordsetIndex(token, _entry, isFramed);
+
+                        if (tmpIdx != _upsertIdx)
+                        {
+                            // silly users making algorithms slow ;(
+                            // we need to dump data at this point... 1 fliping column at a time
+                            DumpColAtATime();
+
+                        }
+
+                        _upsertIdx = tmpIdx;
 
                         if (_upsertIdx == 0)
                         {
@@ -136,7 +142,7 @@ namespace Dev2.DataList.Contract.Builders
                             Int32.TryParse(idx, out _upsertIdx);
                         }
 
-                        //itm.UpdateRecordset(rs);
+                        
                         itm.UpdateIndex(_upsertIdx);
                         itm.UpdateField(field);
                         itm.UpdateValue(val);
@@ -192,6 +198,25 @@ namespace Dev2.DataList.Contract.Builders
 
             // clear out the buffer
             ClearRowBuffer();
+        }
+
+        private void DumpColAtATime()
+        {
+            string error;
+            // silly users making algorithms slow ;(
+            // we need to dump data at this point... 1 fliping column at a time
+            foreach (IBinaryDataListItem item in _rowData)
+            {
+                if (item.ItemCollectionIndex != -1)
+                {
+                    _entry.TryPutRecordItemAtIndex(item, item.ItemCollectionIndex, out error);
+                }
+            }
+
+            // then we need to re-init the collection
+            int cnt = _rowData.Count;
+            _rowData = new List<IBinaryDataListItem>(cnt);
+            InitRowBuffer(cnt);
         }
 
         private void InitRowBuffer(int cnt)

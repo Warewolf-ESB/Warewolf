@@ -31,7 +31,6 @@ namespace Dev2.Server.Datalist
 
         internal ServerDataListCompiler(IDataListServer dlServ)
         {
-
             _dlServer = dlServ;
         }
 
@@ -49,6 +48,17 @@ namespace Dev2.Server.Datalist
         }
         #endregion
 
+        /// <summary>
+        /// PLEASE NOTE THE META-DATA RETURNED FROM THIS METHOD IS TRANSIENT, THIS MEANS IT WILL ONLY BE EVENTUALLY CONSISTENT
+        /// DO NOT RELY UPON IT FOR UI DRIVEN DETAILS, PLEASE WRITE YOUR OWN HELPER METHODS TO ACHIEVE YOUR GOAL
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="curDLID"></param>
+        /// <param name="typeOf"></param>
+        /// <param name="expression"></param>
+        /// <param name="errors"></param>
+        /// <param name="returnExpressionIfNoMatch"></param>
+        /// <returns></returns>
         public IBinaryDataListEntry Evaluate(NetworkContext ctx, Guid curDLID, enActionType typeOf, string expression, out ErrorResultTO errors, bool returnExpressionIfNoMatch = false)
         {
 
@@ -1175,12 +1185,6 @@ namespace Dev2.Server.Datalist
 
             errors = allErrors;
 
-            // Avoid nulls ;)
-            //if (result == null)
-            //{
-            //    result = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty);
-            //}
-
             return result;
         }
 
@@ -1294,27 +1298,6 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
-        ///// <summary>
-        ///// Fetches the auditor.
-        ///// </summary>
-        ///// <param name="id">The id.</param>
-        ///// <returns></returns>
-        //private IDev2DataListAuditor FetchAuditor(Guid id)
-        //{
-        //    IDev2DataListAuditor result;
-
-        //    lock (id.ToString())
-        //    {
-        //        if (!_auditing.TryGetValue(id, out result))
-        //        {
-        //            result = Dev2AuditFactory.CreateAuditor();
-        //            _auditing[id] = result;
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
         /// <summary>
         /// Determines whether the specified payload is evaluated.
         /// NOTE: This method also exist in the DataListUtil class
@@ -1332,6 +1315,7 @@ namespace Dev2.Server.Datalist
 
         /// <summary>
         /// Internals the data list evaluate.
+        /// PLEASE NOTE THE META-DATA RETURNED FROM THIS METHOD IS TRANSIENT, THIS MEANS IT WILL ONLY BE EVENTUALLY CONSISTENT
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
@@ -1341,9 +1325,6 @@ namespace Dev2.Server.Datalist
             {
                 string lastFetch2;
 
-
-                //string result = string.Empty;
-                //IBinaryDataListEntry lastFetch = Dev2BinaryDataListFactory.CreateEntry(string.Empty, string.Empty,bdl.UID);
                 IBinaryDataListEntry lastFetch = null;
                 ErrorResultTO allErrors = new ErrorResultTO();
                 
@@ -1364,9 +1345,6 @@ namespace Dev2.Server.Datalist
                 {
                     iterationTotal = FetchEvaluationIterationCount(expression);
                 }
-
-                //bool tokenSub = RequiresTokenSub(bdl, out error);
-
 
                 bool foundMatch = true;
                 bool hasError = false;
@@ -1391,7 +1369,6 @@ namespace Dev2.Server.Datalist
                 if (isEvaluated(eval))
                 {
                     // if evaluate to root do so, else evaluate the expression fully
-                    //while ( ((toRoot && !DataListUtil.isRootVariable(expression)) || (isRecursiveOp(expression) && foundMatch)) ) {
                     IList<string> RecursiveVals = new List<string>();
                     while (loopEval())
                     {
@@ -1399,7 +1376,6 @@ namespace Dev2.Server.Datalist
                         IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(expression, bdl.FetchIntellisenseParts());
                         foreach (IIntellisenseResult p in expressionParts)
                         {
-
                             string displayValue = p.Option.DisplayValue;
                             string field = p.Option.Field;
                             string rs = p.Option.Recordset;
@@ -1431,11 +1407,7 @@ namespace Dev2.Server.Datalist
                                     allErrors.AddError(error);
                                 }
 
-                                if (!fetchOk)
-                                {
-                                    allErrors.AddError(error);
-                                }
-                                else
+                                if (fetchOk)
                                 {
                                     matchCnt++;
                                     foundMatch = true;
@@ -1538,7 +1510,6 @@ namespace Dev2.Server.Datalist
                                         else
                                         {
                                             // they want the entire recordset? -- blank expression
-
                                             expression = expression.Replace(displayValue, string.Empty);
                                             // Check for an index and remove all but this index ;)
                                             if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
@@ -1644,7 +1615,6 @@ namespace Dev2.Server.Datalist
                                         }
                                     }
                                 }
-
                             }
                         }
 
@@ -1658,11 +1628,7 @@ namespace Dev2.Server.Datalist
                     }
                 }
 
-                if (hasError)
-                {
-                    // if has error, do not mutate expression
-                }
-                else
+                if (!hasError)
                 {
                     // nothing was evaluated, meep
                     if (matchCnt == 0 && isEvaluated(expression) && !toRoot && !isIterationDriven)
@@ -1711,7 +1677,6 @@ namespace Dev2.Server.Datalist
                 // finally, bundle up the expression as the result if it has not been evaluated fully ;)
                 if (expression != string.Empty && expression != " ") //Bug 7836
                 {
-
                     // we just need to return the expression as is in a IBinaryDataListEntry, but respect the defered read action
                     string fieldName = GlobalConstants.NullEntryNamespace+Guid.NewGuid().ToString();
                     IBinaryDataListEntry tmp = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty, bdl.UID);

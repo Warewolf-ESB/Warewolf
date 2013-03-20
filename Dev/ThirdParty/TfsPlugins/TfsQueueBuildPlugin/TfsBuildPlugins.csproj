@@ -58,6 +58,7 @@
     <XamlAppDef Include="QueueBuildActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>Dev2.TfsBuildPlugin</CustomToolNamespace>
     </XamlAppDef>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

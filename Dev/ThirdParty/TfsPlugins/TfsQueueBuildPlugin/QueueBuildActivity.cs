@@ -9,7 +9,7 @@ using Microsoft.TeamFoundation.Client;
 namespace Dev2.TfsBuildPlugin
 {
 
-    [BuildActivity(HostEnvironmentOption.Agent)]
+    [BuildActivity(HostEnvironmentOption.All)]
     public sealed class QueueBuildActivity : CodeActivity
     {
         [RequiredArgument]
