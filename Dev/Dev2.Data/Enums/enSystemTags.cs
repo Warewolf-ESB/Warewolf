@@ -92,6 +92,7 @@ namespace Dev2.DataList.Contract
         EvaluateIteration,
         SubstituteTokens,
         SystemModel,
+        wid,
         PostData
     }
 }

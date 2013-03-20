@@ -69,59 +69,58 @@ namespace Dev2.Common.Common
 
         static void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
-            Console.Write(fsi.FullName);
             var fileAttributes = fsi.Attributes & FileAttributes.System;
             if(fileAttributes == FileAttributes.System)
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if(fsi.FullName.ToLower() == @"C:\".ToLower())
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             } 
             if(fsi.FullName.ToLower() == @"C:\Windows\System".ToLower())
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.System), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Windows), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86),StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.AdminTools), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
             if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Programs), StringComparison.OrdinalIgnoreCase))
             {
-                throw new NotSupportedException("Not allowed to delete system files/directories.");
+                throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
             }
         }
     }
