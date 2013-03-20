@@ -359,7 +359,7 @@
                                 </ActivityAction>
                               </mtbwa:InvokeProcess.OutputDataReceived>
                             </mtbwa:InvokeProcess>
-                            <Delay DisplayName="Delay For Server to Start" Duration="00:30:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                            <Delay DisplayName="Delay For Server to Start" Duration="00:01:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
                           </Sequence>
                           <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" sap2010:WorkflowViewState.IdRef="If_20" mtbwt:BuildTrackingParticipant.Importance="Low">
                             <If.Then>
