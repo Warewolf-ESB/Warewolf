@@ -189,6 +189,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(dataObject.IsDebug)
                 {
                     DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.After);
                 }
             }
         }
@@ -206,7 +207,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (valueEntry != null)
             {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+                IList<IDebugItemResult> res = CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input);
+                itemToAdd.AddRange(res);
             }
 
             _debugInputs.Add(itemToAdd);
@@ -227,7 +229,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region GetDebugInputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {            
+        {
+            foreach(IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FlushStringBuilder();
+            }
             return _debugInputs;
         }
 
@@ -236,7 +242,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region GetDebugOutputs
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {            
+        {
+            foreach (IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
             return _debugOutputs;
         }
 

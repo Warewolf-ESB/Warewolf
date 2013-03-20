@@ -824,7 +824,7 @@ namespace Dev2.DataList.Contract
 
             if (!string.IsNullOrEmpty(value))
             {
-                if (value.Contains("(") && value.Contains(")."))
+                if (value.Contains("(") && value.Contains(")"))
                 {
                     result = true;
                 }

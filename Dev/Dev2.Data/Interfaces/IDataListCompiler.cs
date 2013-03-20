@@ -357,14 +357,14 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         string FetchSystemModelAsWebModel<T>(Guid dlID, out ErrorResultTO errors);
 
-        /// <summary>
-        /// Converts from selected Type to binary
-        /// </summary>
-        /// <param name="dlID">The dl ID.</param>
-        /// <param name="payload">The payload.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid PushBinaryDataList(Guid dlID, byte[] payload, out ErrorResultTO errors);
+        ///// <summary>
+        ///// Converts from selected Type to binary
+        ///// </summary>
+        ///// <param name="dlID">The dl ID.</param>
+        ///// <param name="payload">The payload.</param>
+        ///// <param name="errors">The errors.</param>
+        ///// <returns></returns>
+        //Guid PushBinaryDataList(Guid dlID, byte[] payload, out ErrorResultTO errors);
 
         /// <summary>
         /// Pushes the binary data list.

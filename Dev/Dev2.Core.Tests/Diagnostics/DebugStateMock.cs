@@ -1,4 +1,5 @@
-﻿using Dev2.Diagnostics;
+﻿using System.Collections.Generic;
+using Dev2.Diagnostics;
 
 namespace Dev2.Tests.Diagnostics
 {
@@ -7,11 +8,18 @@ namespace Dev2.Tests.Diagnostics
         public int SaveFileHitCount { get; set; }
         public string SaveFileContents { get; private set; }
 
-        public override string SaveFile(string contents)
+        //9142 TODO
+        public string SaveFile(string contents)
         {
             SaveFileHitCount++;
             SaveFileContents = contents;
             return null;
+        }
+
+        //9142 TODO
+        public void TryCache(IList<IDebugItem> items)
+        {
+            
         }
     }
 }

@@ -204,7 +204,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-
+                if(dataObject.IsDebug)
+                {
+                    DispatchDebugState(context, StateType.After);
+                }
             }
         }
 
@@ -589,12 +592,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {            
+        {
+            foreach (IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FlushStringBuilder();
+            }
             return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
+        {            
             return DebugItem.EmptyList;
         }
 

@@ -306,7 +306,7 @@ namespace Dev2.Studio.Core
                 if(!EnsureConnected()) throw new InvalidOperationException("Connection to server could not be established.");
                 try
                 {
-                    _client.RemoveDebugWriter(writer);
+                    //_client.RemoveDebugWriter(writer);
 
                     IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 

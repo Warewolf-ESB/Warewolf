@@ -8,8 +8,11 @@ namespace Dev2.Diagnostics
     public interface IDebugItem
     {
         bool Contains(string filterText);
-        void Add(IDebugItemResult itemToAdd);
+        void Add(IDebugItemResult itemToAdd, bool isDeserialize = false);
         void AddRange(IList<IDebugItemResult> itemsToAdd);
-        IList<IDebugItemResult> FetchResultsList();
+        IList<IDebugItemResult> FetchResultsList();        
+        void FlushStringBuilder();
+        void TryCache(IDebugItemResult item);
+        string SaveFile(string contents, string fileName);
     }
 }

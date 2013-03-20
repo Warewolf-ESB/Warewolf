@@ -3,6 +3,7 @@ using System.Windows;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -27,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public const string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
         #endregion
-        
+
         private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
 
         private IList<ActivityDTO> _fieldsCollection;
@@ -83,6 +84,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            toUpsert.IsDebug = dataObject.IsDebug;
             DispatchDebugState(context, StateType.Before);
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -100,27 +102,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             if (eval.Contains("@"))
                             {
-                                if (dataObject != null)
-                                {
-                                    eval = GetEnviromentVariable(dataObject, context, eval);                                                                                                         
-                                }
-                            }                           
+                                eval = GetEnviromentVariable(dataObject, context, eval);
+                            }
 
                             toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
-                        _indexCounter++;                                               
+                        _indexCounter++;
                     }
                     compiler.Upsert(executionID, toUpsert, out errors);
-                    if(dataObject != null && dataObject.IsDebug)
+
+                    if (dataObject.IsDebug)
                     {
-                        List<KeyValuePair<string, IBinaryDataListEntry>> debugItems = compiler.GetDebugData();
                         int innerCount = 0;
-                        foreach(KeyValuePair<string, IBinaryDataListEntry> keyValuePair in debugItems)
-                        {
-                            AddDebugItem(FieldsCollection[innerCount].FieldName, FieldsCollection[innerCount].FieldValue, keyValuePair.Value, executionID,innerCount,dataObject,context);
+                        foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                        {                            
+                            AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue, debugOutputTO.FromEntry, executionID, innerCount, dataObject, context);
                             innerCount++;
-                        }
-                    }                    
+                            debugOutputTO.FromEntry.Dispose();
+                            debugOutputTO.TargetEntry.Dispose();
+                        }                                            
+                    }
                     allErrors.MergeErrors(errors);
                 }
 
@@ -132,6 +133,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfWebpageActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                }
+                if (dataObject != null && dataObject.IsDebug)
+                {
+                    DispatchDebugState(context, StateType.After);
                 }
             }
 
@@ -184,7 +189,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {            
+        {
+            foreach (IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
             return _debugOutputs;
         }
 
@@ -238,9 +247,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Private Method    
-    
-        private string GetEnviromentVariable( IDSFDataObject dataObject,NativeActivityContext context,string eval)
+        #region Private Method
+
+        private string GetEnviromentVariable(IDSFDataObject dataObject, NativeActivityContext context, string eval)
         {
             if (dataObject != null)
             {
@@ -256,16 +265,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return eval;
         }
 
-        private void AddDebugItem(string fieldName, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId,int indexNumToUse,IDSFDataObject dataObject,NativeActivityContext context)
+        private void AddDebugItem(IBinaryDataListEntry fieldEntry, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId, int indexNumToUse, IDSFDataObject dataObject, NativeActivityContext context)
         {
-            if(valueEntry != null)
+            if (valueEntry != null)
             {
                 if (fieldValue.Contains("@"))
                 {
-                    string eval = GetEnviromentVariable(dataObject, context, fieldValue);                    
+                    string eval = GetEnviromentVariable(dataObject, context, fieldValue);
                     IList<IDebugItemResult> results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
                     IDebugItem itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });                     
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = eval });
                     itemToAdd.AddRange(results);
@@ -275,15 +284,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DebugItem itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
+                    string fieldName = FieldsCollection[indexNumToUse].FieldName;
+                    if(fieldEntry.IsRecordset && (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName) == enRecordsetIndexType.Blank))
+                    {
+                        fieldName = fieldName.Replace("().", string.Concat("(",fieldEntry.FetchAppendRecordsetIndex().ToString(CultureInfo.InvariantCulture),")."));
+                    }
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = fieldName });
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
 
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(fieldValue, valueEntry, executionId, enDev2ArgumentType.Output));
+                    itemToAdd.AddRange(CreateDebugItemsFromEntry(fieldValue, valueEntry, executionId, enDev2ArgumentType.Output, valueEntry.FetchAppendRecordsetIndex()));
 
-                    _debugOutputs.Add(itemToAdd);        
-                }                
-            }            
-        }       
+                    _debugOutputs.Add(itemToAdd);
+                }
+            }
+        }
 
         private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
         {

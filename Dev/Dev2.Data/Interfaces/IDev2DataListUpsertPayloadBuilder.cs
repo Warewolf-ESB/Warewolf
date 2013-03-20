@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract.Interfaces;
 
 namespace Dev2.DataList.Contract.Builders
@@ -10,6 +11,14 @@ namespace Dev2.DataList.Contract.Builders
     {
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the is Debug.
+        /// </summary>
+        /// <value>
+        /// If the execution is in debug.
+        /// </value>
+        bool IsDebug { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance has live flushing.
@@ -26,6 +35,14 @@ namespace Dev2.DataList.Contract.Builders
         /// The live flushing location.
         /// </value>
         Guid LiveFlushingLocation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the debug outputs.
+        /// </summary>
+        /// <value>
+        /// The list of DebugOutputTO's.
+        /// </value>
+        IList<DebugOutputTO> DebugOutputs { get; set;}
 
         #endregion
 

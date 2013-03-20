@@ -183,11 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Upsert the entire payload                            
                         }
                     }
-                }
-                if (dataObject.IsDebug)
-                {
-                    DispatchDebugState(context, StateType.Before);
-                }
+                }                
             }
             catch (Exception e)
             {
@@ -200,6 +196,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                }
+                if (dataObject.IsDebug)
+                {
+                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(context, StateType.After);
                 }
             }
         }
@@ -247,12 +248,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {           
+        {
+            foreach (IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FlushStringBuilder();
+            }
             return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {           
+        {
+            foreach (IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
             return _debugOutputs;
         }
 

@@ -299,6 +299,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
+                if (_IsDebug)
+                {
+                    DispatchDebugState(context, StateType.After);
+                }
                 dataObject.ParentInstanceID = _previousParentID;
                 compiler.ClearErrors(dataObject.DataListID);
             }
@@ -522,6 +526,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 results.Add(itemToAdd);
             }
 
+            foreach (IDebugItem debugInput in results)
+            {
+                debugInput.FlushStringBuilder();
+            }
+
             return results;
         }
 
@@ -543,6 +552,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Input));
                 results.Add(itemToAdd);
+            }
+
+            foreach (IDebugItem debugOutput in results)
+            {
+                debugOutput.FlushStringBuilder();
             }
 
             return results;

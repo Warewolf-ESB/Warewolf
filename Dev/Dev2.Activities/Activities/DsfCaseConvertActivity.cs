@@ -146,6 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebug)
                 {
                     DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.After);
                 }
             }
         }
@@ -285,11 +286,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
+            foreach (IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FlushStringBuilder();
+            }
             return _debugInputs;
         }
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {           
+        {
+            foreach (IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
             return _debugOutputs;
         }
 

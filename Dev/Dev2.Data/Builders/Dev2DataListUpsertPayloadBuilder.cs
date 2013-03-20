@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.TO;
 using Dev2.Common;
@@ -10,18 +11,19 @@ namespace Dev2.DataList.Contract.Builders
     /// <summary>
     /// Frames an activities iteration scope allowing for complex DL ops
     /// </summary>
-    public  class PayloadIterationFrame<T> : IDataListPayloadIterationFrame<T>
+    public class PayloadIterationFrame<T> : IDataListPayloadIterationFrame<T>
     {
         private readonly IList<DataListPayloadFrameTO<T>> _cache = new List<DataListPayloadFrameTO<T>>();
         private int _idx = 0;
 
-        internal PayloadIterationFrame(){
+        internal PayloadIterationFrame()
+        {
         }
 
         public bool Add(string exp, T val)
         {
             bool result = false;
-            
+
             if (val != null && exp != null && exp != string.Empty)
             {
                 _cache.Add(new DataListPayloadFrameTO<T>(exp, val));
@@ -41,19 +43,45 @@ namespace Dev2.DataList.Contract.Builders
             return (_idx < _cache.Count);
         }
     }
-    
+
     /// <summary>
     /// This class is responsible for building up the Upsert payloads [ expressions and values ]
     /// </summary>
     /// <typeparam name="T"></typeparam>
     internal class Dev2DataListUpsertPayloadBuilder<T> : IDev2DataListUpsertPayloadBuilder<T>
     {
-
+        private IList<DebugOutputTO> _debugOutputs = new List<DebugOutputTO>();
         private readonly IList<IDataListPayloadIterationFrame<T>> _data = new List<IDataListPayloadIterationFrame<T>>();
         private IDataListPayloadIterationFrame<T> _scopedFrame = new PayloadIterationFrame<T>();
         private readonly bool _iterativePayload;
         private LiveFlushIterator _flushIterator;
-        
+
+        /// <summary>
+        /// Gets or sets the is Debug.
+        /// </summary>
+        /// <value>
+        /// If the execution is in debug.
+        /// </value>
+        public bool IsDebug { get; set; }
+
+        /// <summary>
+        /// Gets or sets the debug outputs.
+        /// </summary>
+        /// <value>
+        /// The list of DebugOutputTO's.
+        /// </value>
+        public IList<DebugOutputTO> DebugOutputs
+        {
+            get
+            {
+                return _debugOutputs;
+            }
+            set
+            {
+                _debugOutputs = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance has live flushing.
         /// </summary>
@@ -80,7 +108,7 @@ namespace Dev2.DataList.Contract.Builders
         /// </summary>
         public void FlushIterationFrame(bool terminalFlush = false)
         {
-            if(!HasLiveFlushing)
+            if (!HasLiveFlushing)
             {
                 _data.Add(_scopedFrame);
                 _scopedFrame = new PayloadIterationFrame<T>();
@@ -109,7 +137,7 @@ namespace Dev2.DataList.Contract.Builders
             bool result = false;
 
             result = _scopedFrame.Add(exp, val);
-            
+
             return result;
         }
 
@@ -150,6 +178,5 @@ namespace Dev2.DataList.Contract.Builders
                 _flushIterator.PublishLiveIterationData();
             }
         }
-
     }
 }

@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
+using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -100,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-
+                    string tmp = string.Empty;
                     while (itr.HasMoreRecords())
                     {
                         IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
@@ -117,14 +118,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 int opCnt = 0;
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
+                                
 
                                 while (tokenizer.HasMoreOps())
                                 {
-                                    string tmp = tokenizer.NextToken();
+                                     tmp = tokenizer.NextToken();                                   
 
                                     if (!string.IsNullOrEmpty(ResultsCollection[pos].OutputVariable))
                                     {
-                                        toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);
+                                        toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);                                        
                                     }
 
                                     // Per pass
@@ -132,11 +134,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         pos = 0;
                                         opCnt++;
+                                        //IList<IDataListPayloadIterationFrame<string>> frames = toUpsert.FetchFrames(false);                                        
+
                                         toUpsert.FlushIterationFrame();
-                                        if (dataObject.IsDebug)
-                                        {
-                                            AddDebugOutputItem(ResultsCollection[pos].OutputVariable, tmp, pos + 1, dlID);
-                                        }
+                                        
+                                        //if (dataObject.IsDebug)
+                                        //{
+                                        //    foreach(IDataListPayloadIterationFrame<string> dataListPayloadIterationFrame in frames)
+                                        //    {
+                                        //        AddDebugOutputItem(dataListPayloadIterationFrame.FetchNextFrameItem().Expression, dataListPayloadIterationFrame.FetchNextFrameItem().Value, pos + 1, dlID);    
+                                        //    }                                            
+                                        //}
                                     }
                                     else
                                     {
@@ -146,7 +154,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 // flush the final frame ;)
 
-                                toUpsert.FlushIterationFrame(true);                                
+                                toUpsert.FlushIterationFrame(true);
+                                if (dataObject.IsDebug)
+                                {
+                                    int innerCount = 1;
+                                    foreach(DataSplitDTO dataSplitDto in ResultsCollection)
+                                    {
+                                        string expression = dataSplitDto.OutputVariable;
+                                        if (expression.Contains("()."))
+                                        {
+                                            expression = expression.Replace("().", "(*).");
+                                        }
+
+                                        IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
+                                                                                
+                                        AddDebugOutputItemFromEntry(expression, entry, innerCount, dlID);
+                                        innerCount++;
+                                    }
+                                    
+                                }
                                 toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
                             }
@@ -164,6 +190,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(context, StateType.After);
                 }
                 // Handle Errors
                 if (allErrors.HasErrors())
@@ -209,6 +236,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
 
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
+
+        private void AddDebugOutputItemFromEntry(string expression, IBinaryDataListEntry value, int indexCount, Guid dlId)
+        {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
+
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, value, dlId, enDev2ArgumentType.Output, -1));
             _debugOutputs.Add(itemToAdd);
         }
 
@@ -406,36 +443,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            var result = new List<IDebugItem>();
-            //DebugItem itemToAdd = new DebugItem();
-            //itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "String To Split" });
-            //foreach (IDebugItemResult debugItemResult in CreateDebugItems(SourceString, dataList))
-            //{
-            //    itemToAdd.Add(debugItemResult);
-            //}
-            //result.Add(itemToAdd);
-            //int indexToShow = 1;
-            //foreach (DataSplitDTO dataSplitDto in ResultsCollection)
-            //{
-            //    if (dataSplitDto.SplitType == "Index" && dataSplitDto.IndexNumber == ResultsCollection.Count &&
-            //        dataSplitDto.At == string.Empty)
-            //    {
-            //        continue;
-            //    }
-            //    itemToAdd = new DebugItem();
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Split Using" });
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = dataSplitDto.SplitType });
-            //    if (!string.IsNullOrEmpty(dataSplitDto.At))
-            //    {
-            //        foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.At, dataList))
-            //        {
-            //            itemToAdd.Add(debugItemResult);
-            //        }
-            //    }
-            //    result.Add(itemToAdd);
-            //    indexToShow++;
-            //}
+            foreach (IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FlushStringBuilder();
+            }
             return _debugInputs;
         }
 
@@ -445,23 +456,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            var result = new List<IDebugItem>();
-
-            //int indexToShow = 1;
-            //foreach (DataSplitDTO dataSplitDto in ResultsCollection)
-            //{
-            //    DebugItem itemToAdd = new DebugItem();
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexToShow.ToString(CultureInfo.InvariantCulture) });
-            //    if (!string.IsNullOrEmpty(dataSplitDto.OutputVariable))
-            //    {
-            //        foreach (IDebugItemResult debugItemResult in CreateDebugItems(dataSplitDto.OutputVariable, dataList))
-            //        {
-            //            itemToAdd.Add(debugItemResult);
-            //        }
-            //    }
-            //    result.Add(itemToAdd);
-            //    indexToShow++;
-            //}
+            foreach (IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
             return _debugOutputs;
         }
 

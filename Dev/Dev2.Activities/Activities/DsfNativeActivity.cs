@@ -243,32 +243,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataListExecutionID = dataObject.DataListID;
             }
 
-            try
-            {
-                //Bug 8918 : Added so that debug only runs when executing in debug - Massimo.Guerrera
-                if (dataObject != null && dataObject.IsDebug)
-                {
-                    DispatchDebugState(context, StateType.After);
-                }
-            }
-            finally
-            {
-                if (!isResumable && !dataObject.IsDataListScoped)
-                {
-                    //compiler.ForceDeleteDataListByID(dataListExecutionID);
-                    //compiler.DeleteDataListByID(dataListExecutionID);
-                }
-                else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
-                {
-                    // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
-                    dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                    compiler.ForceDeleteDataListByID(dataListExecutionID);
-                }
 
-                if (!dataObject.IsDataListScoped)
-                {
-                    dataObject.ParentInstanceID = _previousParentInstanceID;
-                }
+            if (!isResumable && !dataObject.IsDataListScoped)
+            {
+                //compiler.ForceDeleteDataListByID(dataListExecutionID);
+                //compiler.DeleteDataListByID(dataListExecutionID);
+            }
+            else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
+            {
+                // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
+                dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
+                compiler.ForceDeleteDataListByID(dataListExecutionID);
+            }
+
+            if (!dataObject.IsDataListScoped)
+            {
+                dataObject.ParentInstanceID = _previousParentInstanceID;
             }
         }
 
@@ -617,7 +607,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Create Debug Item
 
-        public IList<IDebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType)
+        public IList<IDebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
         {
             IList<IDebugItemResult> results = new List<IDebugItemResult>();
 
@@ -641,7 +631,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     expression = expression.Replace("!~calculation~!", string.Empty).Replace("!~~calculation~!", string.Empty);
                 }
 
-                if (dlEntry.IsRecordset)
+                if (dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star || (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     foreach (var debugItem in CreateRecordsetDebugItems(expression, dlEntry))
                     {
@@ -656,13 +646,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out errors);
                         IBinaryDataListEntry tmpEntry;
                         string error;
-
-                        dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(expression), out tmpEntry, out error);
-                        if (tmpEntry != null)
+                        if (indexToUse == -1)
                         {
-                            expression = expression.Replace("().", string.Concat("(", tmpEntry.FetchAppendRecordsetIndex() - 1, ")."));
+                            dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(expression), out tmpEntry, out error);
+                            if (tmpEntry != null)
+                            {
+                                expression = expression.Replace("().", string.Concat("(", tmpEntry.FetchAppendRecordsetIndex() - 1, ")."));
+                            }
                         }
-
+                        else
+                        {
+                            expression = expression.Replace("().", string.Concat("(", indexToUse, ")."));
+                        }
                     }
                     IBinaryDataListItem item = dlEntry.FetchScalar();
                     foreach (var debugItem in CreateScalarDebugItems(expression, item.TheValue, dlId))

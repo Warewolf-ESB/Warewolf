@@ -216,7 +216,7 @@ namespace Dev2.Diagnostics
 
         void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
         {
-            TryCache(items);
+            //TryCache(items);
 
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
@@ -252,7 +252,7 @@ namespace Dev2.Diagnostics
                         GroupName = reader.ReadString(),
                         GroupIndex = reader.ReadInt32(),
                         MoreLink = reader.ReadString()
-                    });
+                    },true);
                 }
                 items.Add(item);
             }
@@ -260,42 +260,42 @@ namespace Dev2.Diagnostics
 
         #endregion
 
-        #region TryCache
+        //#region TryCache
 
-        public void TryCache(IList<IDebugItem> items)
-        {
-            if(items == null)
-            {
-                throw new ArgumentNullException("items");
-            }
+        //public void TryCache(IList<IDebugItem> items)
+        //{
+        //    if(items == null)
+        //    {
+        //        throw new ArgumentNullException("items");
+        //    }
 
-            foreach (var result in items.SelectMany(debugItem => debugItem.FetchResultsList().Where(result => !string.IsNullOrEmpty(result.Value) && result.Value.Length > DebugItem.MaxCharDispatchCount)))
-            {
-                result.MoreLink = SaveFile(result.Value);
-                result.Value = result.Value.Substring(0, DebugItem.ActCharDispatchCount);
-            }
-        }
+        //    foreach (var result in items.SelectMany(debugItem => debugItem.FetchResultsList().Where(result => !string.IsNullOrEmpty(result.Value) && result.Value.Length > DebugItem.MaxCharDispatchCount)))
+        //    {
+        //        result.MoreLink = SaveFile(result.Value);
+        //        result.Value = result.Value.Substring(0, DebugItem.ActCharDispatchCount);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region SaveFile
+        //#region SaveFile
 
-        public virtual string SaveFile(string contents)
-        {
-            if(string.IsNullOrEmpty(contents))
-            {
-                throw new ArgumentNullException("contents");
-            }
+        //public virtual string SaveFile(string contents)
+        //{
+        //    if(string.IsNullOrEmpty(contents))
+        //    {
+        //        throw new ArgumentNullException("contents");
+        //    }
 
-            var fileName = string.Format("{0}-{1}-{2}-{3}.txt", Name, StateType, DateTime.Now.ToString("s"), Guid.NewGuid());
-            fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
+        //    var fileName = string.Format("{0}-{1}-{2}-{3}.txt", Name, StateType, DateTime.Now.ToString("s"), Guid.NewGuid());
+        //    fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
 
-            var path = Path.Combine(_tempPath, fileName);
-            File.WriteAllText(path, contents);
+        //    var path = Path.Combine(_tempPath, fileName);
+        //    File.WriteAllText(path, contents);
 
-            return new Uri(path).AbsoluteUri;
-        }
+        //    return new Uri(path).AbsoluteUri;
+        //}
 
-        #endregion
+        //#endregion
     }
 }
