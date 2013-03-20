@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 if(Directory.Exists(workspacePath))
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }
@@ -71,7 +72,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 DeleteDirectory(dir);
             }
 
-            Directory.Delete(target_dir, false);
+            DirectoryHelper.CleanUp(target_dir);
         }
 
         private Guid generateADLGuid()
@@ -174,7 +175,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 if(Directory.Exists(workspacePath))
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }

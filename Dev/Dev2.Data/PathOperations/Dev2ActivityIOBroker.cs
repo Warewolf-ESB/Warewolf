@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using Dev2.Common.Common;
+using Dev2.Data.Binary_Objects;
 using Ionic.Zip;
 using System;
 using System.Collections.Generic;
@@ -452,7 +453,7 @@ namespace Dev2.PathOperations
                 }
 
                 // remove locally staged files
-                Directory.Delete(tmpDir, true);
+                DirectoryHelper.CleanUp(tmpDir);
             }
             else
             {

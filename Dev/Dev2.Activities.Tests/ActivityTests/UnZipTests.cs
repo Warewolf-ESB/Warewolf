@@ -117,17 +117,18 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "Dev2.txt"));            
+            var guid = Guid.NewGuid();
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, guid+ "Dev2.txt"));            
 
             List<string> zipfileNames = new List<string>();
-            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "Dev2Zip.zip"));            
+            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, guid + "Dev2Zip.zip"));            
 
             foreach (string fileName in fileNames)
             {
                 File.WriteAllText(fileName, "TestData");
-            }           
+            }
 
-            DsfZip preact = new DsfZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, "[[CompanyName]]Zip.zip"), Result = "[[res]]" };
+            DsfZip preact = new DsfZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]]Zip.zip"), Result = "[[res]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
@@ -140,7 +141,7 @@ namespace ActivityUnitTests.ActivityTests
                 File.Delete(fileName);
             }
 
-            DsfUnZip act = new DsfUnZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, "[[CompanyName]]Zip.zip"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, "[[CompanyName]].txt"), Result = "[[res]]" };
+            DsfUnZip act = new DsfUnZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]]Zip.zip"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]].txt"), Result = "[[res]]" };
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

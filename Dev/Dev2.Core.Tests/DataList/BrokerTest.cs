@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Dev2.Session;
@@ -51,7 +52,7 @@ namespace Unlimited.UnitTest.Framework.DataList
         {
             if (Directory.Exists(rootFolder + @"\Dev2\"))
             {
-                Directory.Delete(rootFolder + @"\Dev2\", true);
+                DirectoryHelper.CleanUp(rootFolder + @"\Dev2\");
             }
         }
         #endregion

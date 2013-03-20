@@ -1,4 +1,5 @@
-﻿using Dev2.DynamicServices;
+﻿using Dev2.Common.Common;
+using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -33,7 +34,7 @@ namespace Dev2.Tests.Runtime
         {
             if (Directory.Exists(TestPath))
             {
-                Directory.Delete(TestPath, true);
+                DirectoryHelper.CleanUp(TestPath);
             }
         }
 

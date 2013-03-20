@@ -162,6 +162,7 @@
     <Compile Include="Diagnostics\DebugStateMock.cs" />
     <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="Diagnostics\DebugItemTests.cs" />
+    <Compile Include="DirectoryHelperTests.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />

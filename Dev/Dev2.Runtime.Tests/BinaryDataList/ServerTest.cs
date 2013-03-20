@@ -119,8 +119,8 @@ namespace Dev2.DynamicServices.Test {
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformed, out errors);
             //enSystemTag
             
-            using(obj)
-            {
+//            using(obj)
+//            {
                 IBinaryDataListEntry entry = null;
                 if(obj.TryGetEntry("rs1", out entry, out error))
                 {
@@ -132,7 +132,7 @@ namespace Dev2.DynamicServices.Test {
                 {
                     Assert.Fail("Error");
                 }
-            }
+            //}
         }
 
         [TestMethod]

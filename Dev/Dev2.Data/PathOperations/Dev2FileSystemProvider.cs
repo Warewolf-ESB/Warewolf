@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Security.Permissions;
+using Dev2.Common.Common;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
@@ -157,7 +158,8 @@ namespace Dev2.PathOperations {
                         result = true;
                     }
                     else if (Directory.Exists(src.Path)) {
-                        Directory.Delete(src.Path, true);
+                        DisplayAndWriteError(src.Path);
+                        DirectoryHelper.CleanUp(src.Path);
                         result = true;
                     }
                     else {
@@ -187,7 +189,7 @@ namespace Dev2.PathOperations {
                                     }
                                     else {
                                         if (Directory.Exists(src.Path)) {
-                                            Directory.Delete(src.Path, true);
+                                            DirectoryHelper.CleanUp(src.Path);
                                             result = true;
                                         }
                                     }
@@ -210,7 +212,8 @@ namespace Dev2.PathOperations {
             catch (Exception) {
                 // might be a directory instead
                 if (!RequiresAuth(src)) {
-                    Directory.Delete(src.Path, true);
+                    DisplayAndWriteError(src.Path);
+                    DirectoryHelper.CleanUp(src.Path);
                     result = true;
                 }
                 else {
@@ -228,7 +231,7 @@ namespace Dev2.PathOperations {
                                 using (WindowsImpersonationContext impersonatedUser = newID.Impersonate()) {
                                     // Do the operation here
 
-                                    Directory.Delete(src.Path, true);
+                                    DirectoryHelper.CleanUp(src.Path);
                                     result = true;
 
                                     // remove impersonation now
@@ -249,6 +252,11 @@ namespace Dev2.PathOperations {
             }
 
             return result;
+        }
+
+        void DisplayAndWriteError(string path)
+        {
+            System.Diagnostics.Trace.WriteLine(string.Format("Attempt to delete: {0}", path));
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]

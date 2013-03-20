@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
@@ -72,7 +73,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 if(Directory.Exists(workspacePath))
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }
@@ -95,7 +96,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 if(Directory.Exists(workspacePath))
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }
@@ -121,7 +122,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 if(Directory.Exists(workspacePath))
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }
@@ -171,7 +172,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 if(Directory.Exists(workspacePath))
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Runtime.ConstrainedExecution;
+using Dev2.Common.Common;
 using Dev2.Tests;
 using Microsoft.Win32.SafeHandles;
 using System.IO;
@@ -103,7 +104,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         }
 
         public static void DeleteTmpDir(string path) {
-            Directory.Delete(path, true);
+            DirectoryHelper.CleanUp(path);
         }
 
         public static string CreateTmpDirectory() {
@@ -298,7 +299,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate()) {
                             // Do the operation here
                             if (Dev2ActivityIOPathUtils.IsDirectory(path)) {
-                                Directory.Delete(path, true);
+                                DirectoryHelper.CleanUp(path);
                             }
                             else {
                                 File.Delete(path);

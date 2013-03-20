@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
+using Dev2.Common.Common;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +29,7 @@ namespace Dev2.Tests.Runtime.Configuration
             var dir = Path.GetDirectoryName(filePath);
             if(dir != null && Directory.Exists(dir))
             {
-                Directory.Delete(dir, true);
+                DirectoryHelper.CleanUp(dir);
             }
             Monitor.Exit(WriterLock);
         }

@@ -89,8 +89,9 @@ namespace ActivityUnitTests.ActivityTests
         public void Copy_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            File.WriteAllText(Path.Combine(myTestContext.TestRunDirectory,"Dev2.txt"),"TestData");
-            DsfPathCopy act = new DsfPathCopy { InputPath = string.Concat(myTestContext.TestRunDirectory, "\\", "[[CompanyName]].txt"), OutputPath = string.Concat(myTestContext.TestRunDirectory, "\\", "[[CompanyName]]2.txt"), Result = "[[CompanyName]]" };
+            var newGuid = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(myTestContext.TestRunDirectory,newGuid+"Dev2.txt"),"TestData");
+            DsfPathCopy act = new DsfPathCopy { InputPath = string.Concat(myTestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(myTestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = "[[CompanyName]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;

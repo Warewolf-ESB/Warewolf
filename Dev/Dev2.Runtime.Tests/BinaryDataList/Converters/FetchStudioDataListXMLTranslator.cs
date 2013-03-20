@@ -13,9 +13,11 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
     public class FetchStudioDataListXMLTranslator
     {
         object _testGuard = new object();
+        static IDataListCompiler _compiler;
         [TestInitialize]
         public void TestInit()
         {
+            _compiler = DataListFactory.CreateDataListCompiler();
             Monitor.Enter(_testGuard);
         }
         [TestCleanup]
@@ -24,7 +26,7 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
             Monitor.Exit(_testGuard);
         }
 
-        private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        //private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
 
         private Guid CreateDataList(enDev2ColumnArgumentDirection dir)
         {
@@ -45,7 +47,7 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
             dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true,true, dir, out error);
 
             dl1.TryCreateScalarTemplate(string.Empty, "myScalar", string.Empty, true, true,dir, out error);
-            dl1.Dispose();
+           // dl1.Dispose();
             return (_compiler.PushBinaryDataList(dl1.UID, dl1, out errors));
 
         }
