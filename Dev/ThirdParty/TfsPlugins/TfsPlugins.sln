@@ -1,27 +1,36 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TfsBuildPlugins", "TfsQueueBuildPlugin\TfsBuildPlugins.csproj", "{98EC024C-6439-44B1-8B1E-29E457B2201F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuild", "QueueBuild\QueueBuild.csproj", "{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildTest", "QueueBuildTest\QueueBuildTest.csproj", "{56D75D3B-DFC8-4E1C-9889-7443F0E5850F}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = TfsQueueBuildPlugin\\TfsBuildPlugins.csproj
-		SccProjectName1 = TfsQueueBuildPlugin
-		SccLocalPath1 = TfsQueueBuildPlugin
+		SccProjectUniqueName1 = QueueBuild\\QueueBuild.csproj
+		SccProjectName1 = QueueBuild
+		SccLocalPath1 = QueueBuild
+		SccProjectUniqueName2 = QueueBuildTest\\QueueBuildTest.csproj
+		SccProjectName2 = QueueBuildTest
+		SccLocalPath2 = QueueBuildTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{98EC024C-6439-44B1-8B1E-29E457B2201F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98EC024C-6439-44B1-8B1E-29E457B2201F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98EC024C-6439-44B1-8B1E-29E457B2201F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98EC024C-6439-44B1-8B1E-29E457B2201F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D75D3B-DFC8-4E1C-9889-7443F0E5850F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D75D3B-DFC8-4E1C-9889-7443F0E5850F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D75D3B-DFC8-4E1C-9889-7443F0E5850F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D75D3B-DFC8-4E1C-9889-7443F0E5850F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
