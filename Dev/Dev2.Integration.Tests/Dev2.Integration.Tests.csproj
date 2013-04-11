@@ -180,6 +180,9 @@
     <Reference Include="Warewolf.Sql">
       <HintPath>..\Binaries\SqlResources\Warewolf\Warewolf.Sql.dll</HintPath>
     </Reference>
+    <Reference Include="Warewolf2.sql">
+      <HintPath>..\Binaries\SqlResources\Warewolf\Warewolf2.sql.dll</HintPath>
+    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>
@@ -445,11 +448,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>del "$(TargetDir)Warewolf.Sql.*"
-
-</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
