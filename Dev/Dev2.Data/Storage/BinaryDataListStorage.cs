@@ -269,7 +269,15 @@ namespace Dev2.Data.Binary_Objects
         bool TryGetValueFromLevelTwoCache(string uniqueKey, out IBinaryDataListRow value)
         {
             _level2Lock.EnterReadLock();
-            value = (IBinaryDataListRow)LevelTwoCache.Get(uniqueKey);
+            if (LevelTwoCache.GetCount() > 0)
+            {
+                value = (IBinaryDataListRow) LevelTwoCache.Get(uniqueKey);
+            }
+            else
+            {
+                value = null;
+            }
+
             _level2Lock.ExitReadLock();
 
             return value != null;
@@ -277,7 +285,7 @@ namespace Dev2.Data.Binary_Objects
 
         bool TryGetValueFromLevelOneCache(string uniqueKey, out IBinaryDataListRow value)
         {
-            bool result = false;
+            bool result;
 
             _level1Lock.EnterReadLock();
             result = LevelOneCache.TryGetValue(uniqueKey, out value);

@@ -80,7 +80,7 @@ Michael's surname name is Cullen
 
             if (!ResponseData.Contains(expected))
             {
-                Assert.Inconclusive("The test should pass.");
+                Assert.Fail("The test should pass.");
             }
         }
     }

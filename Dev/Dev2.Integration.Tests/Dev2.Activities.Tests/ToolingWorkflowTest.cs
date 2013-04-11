@@ -68,9 +68,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             string Expected = string.Empty;
 
-            //Assert.AreEqual(Expected, ResponseData);
+            Assert.AreEqual(Expected, ResponseData);
 
-            Assert.Inconclusive("Implement once all tooling is sane");
+            //Assert.Inconclusive("Implement once all tooling is sane");
         }
     }
 }
