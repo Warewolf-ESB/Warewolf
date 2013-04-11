@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         {
 
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNestedForEachTest");
-            string expected = @"<innerScalar>11</innerScalar><recset><rec></rec></recset><recset><rec></rec></recset><recset><rec></rec></recset><recset><rec></rec></recset><recset><rec>RecVal5</rec></recset><testing><test></test></testing><testing><test>TestVal2</test></testing>";
+            string expected = @"<innerScalar>11</innerScalar>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
