@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
         public void FindDirectoryService_ValidPath() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=C:\");
-            string expected = "\"title\":\"Documents and Settings\", \"isFolder\": true";
+            string expected = "\"title\":\"Windows\", \"isFolder\": true";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             Assert.IsTrue(responseData.Contains(expected), "Could not locate Directory Data");
@@ -68,7 +68,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         public void FindDirectoryService_ValidCredentials()
         {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=c:\&Domain=DEV2&Username=" + TestResource.PathOperations_Correct_Username + "&Password=" + TestResource.PathOperations_Correct_Password);
-            string expected = "\"title\":\"Documents and Settings\", \"isFolder\": true";
+            string expected = "\"title\":\"Windows\", \"isFolder\": true";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             Assert.IsTrue(responseData.Contains(expected), "Could not locate Directory Data");
