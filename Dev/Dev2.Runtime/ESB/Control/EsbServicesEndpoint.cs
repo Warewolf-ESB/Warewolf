@@ -227,9 +227,9 @@ namespace Dev2.DynamicServices
                 {
                     theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
-                   errors.AddError(string.Format("Unable to find the shape for service '{0}'.", dataObject.ServiceName));
+                   errors.AddError(string.Format("Unable to find the service '{0}'.", dataObject.ServiceName));
                    return resultID;
                 }
 

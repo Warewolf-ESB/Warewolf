@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var result = string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceName) + FindDependenciesRecursive(resourceName, theWorkspace.ID) + "</graph>";
-            return "<root>" + result + "</root>";
+            return result;
         }
 
         public string HandlesType()

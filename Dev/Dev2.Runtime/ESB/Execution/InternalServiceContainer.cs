@@ -57,7 +57,6 @@ namespace Dev2.Runtime.ESB.Execution
                     compiler.UpsertSystemTag(DataObject.DataListID, enSystemTag.ManagmentServicePayload, res, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     result = DataObject.DataListID;
-
                 }
                 else
                 {

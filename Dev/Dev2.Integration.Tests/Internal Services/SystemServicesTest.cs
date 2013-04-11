@@ -68,24 +68,7 @@ namespace Dev2.Integration.Tests.Internal_Services
             string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceName=Bug6619");
 
             // The expected graph to be returned 
-            string expected = @"<graph title=""Dependency Graph Of Bug6619"">
-  <node id=""Bug6619"" x="""" y="""" broken=""false"">
-    <dependency id=""Bug6619Dep"" />
-  </node>
-  <node id=""Bug6619"" x="""" y="""" broken=""false"">
-    <dependency id=""Bug6619"" />
-  </node>
-  <node id=""Bug6619Dep"" x="""" y="""" broken=""false"">
-    <dependency id=""Bug6619Dep2"" />
-  </node>
-  <node id=""Bug6619Dep"" x="""" y="""" broken=""false"">
-    <dependency id=""Bug6619Dep"" />
-  </node>
-  <node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node>
-  <node id=""Bug6619Dep2"" x="""" y="""" broken=""false"">
-    <dependency id=""Bug6619Dep2"" />
-  </node>
-</graph>";
+            const string expected = @"<graph title=""Dependency Graph Of Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 

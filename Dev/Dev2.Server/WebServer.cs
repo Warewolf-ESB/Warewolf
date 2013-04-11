@@ -627,6 +627,7 @@ namespace Dev2
             }
 
             ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO allErrors = new ErrorResultTO();
             IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID);
             // ensure service gets set ;)
             if (dataObject.ServiceName == null)
@@ -634,29 +635,38 @@ namespace Dev2
                 dataObject.ServiceName = serviceName;
             }
 
-            Guid executionDLID = _esbEndpoint.ExecuteRequest(dataObject, clientGuid, out errors);
 
-            // Handle errors returned ;)
-            if (errors.HasErrors())
-            {
-                ErrorResultTO errors2;
-                compiler.UpsertSystemTag(executionDLID, enSystemTag.Error, errors.MakeDataListReady(), out errors2);
-            }
+            Guid executionDlid = _esbEndpoint.ExecuteRequest(dataObject, clientGuid, out errors);
+            allErrors.MergeErrors(errors);
+
+            //// Handle errors returned ;)
+            //if (errors.HasErrors())
+            //{
+            //    ErrorResultTO errors2;
+            //    all
+            //    compiler.UpsertSystemTag(executionDlid, enSystemTag.Error, errors.MakeDataListReady(), out errors2);
+            //}
 
             // Fetch and convert DL
-            if(executionDLID != GlobalConstants.NullDataListID)
+            if(executionDlid != GlobalConstants.NullDataListID)
             {
-                executePayload = compiler.ConvertFrom(executionDLID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+                executePayload = compiler.ConvertFrom(executionDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+                allErrors.MergeErrors(errors);
+                compiler.UpsertSystemTag(executionDlid, enSystemTag.Error, errors.MakeDataListReady(), out allErrors);
+                
             }
             else
             {
-                executePayload = "<FatalError> An internal error occured while executing the service request</FatalError>";
+
+                executePayload = "<FatalError> <Message> An internal error occured while executing the service request </Message>";
+                executePayload +=  allErrors.MakeDataListReady();
+                executePayload += "</FatalError>";
             }
 
             // Clean up the datalist from the server
             if (!dataObject.WorkflowResumeable)
             {
-                compiler.ForceDeleteDataListByID(executionDLID);
+                compiler.ForceDeleteDataListByID(executionDlid);
             }
 
             // TODO : Allow return type to be specified as a parameter... Default to XML
