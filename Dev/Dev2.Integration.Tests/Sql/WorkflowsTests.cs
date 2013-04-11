@@ -10,6 +10,11 @@ namespace Dev2.Integration.Tests.Sql
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
+
+            /*
+             *    It was once upon a time, then someone placed a post build event to delete the dll, I removed this and all is good ;)
+             */
+
             // Warewolf.Sql.dll is NOT in bin directory so must be loaded manually!!
             //AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             //{
