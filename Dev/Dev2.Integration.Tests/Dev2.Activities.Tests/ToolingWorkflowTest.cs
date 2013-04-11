@@ -62,15 +62,63 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void AllToolsTestExpectPass()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "AllTools");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Tool Testing");
             
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            string Expected = string.Empty;
+            string Expected = @"<Test>
+<Result>For Each: PASS</Result>
+</Test>
+<Test>
+<Result>Switch: PASS</Result>
+</Test>
+<Test>
+<Result>Decision: PASS</Result>
+</Test>
+<Test>
+<Result>Count Records: PASS</Result>
+</Test>
+<Test>
+<Result>Delete Record: PASS</Result>
+</Test>
+<Test>
+<Result>Sort Records: PASS</Result>
+</Test>
+<Test>
+<Result>Find Record Index: PASS</Result>
+</Test>
+<Test>
+<Result>Assign: PASS</Result>
+</Test>
+<Test>
+<Result>Base Conversion: PASS</Result>
+</Test>
+<Test>
+<Result>Case Convert: PASS</Result>
+</Test>
+<Test>
+<Result>Data Merge: PASS</Result>
+</Test>
+<Test>
+<Result>Data Split: PASS</Result>
+</Test>
+<Test>
+<Result>Date and Time: PASS</Result>
+</Test>
+<Test>
+<Result>Date and Time Difference: PASS</Result>
+</Test>
+<Test>
+<Result>Find Index: PASS</Result>
+</Test>
+<Test>
+<Result>Format Number: PASS</Result>
+</Test>
+<Test>
+<Result>Replace: PASS</Result>
+</Test>";
 
-            Assert.AreEqual(Expected, ResponseData);
-
-            //Assert.Inconclusive("Implement once all tooling is sane");
+            Assert.IsTrue(ResponseData.Contains(Expected));
         }
     }
 }
