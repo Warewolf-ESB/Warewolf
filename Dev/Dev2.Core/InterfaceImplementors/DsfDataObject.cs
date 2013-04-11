@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Persistence;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
@@ -21,6 +22,7 @@ namespace Dev2.DynamicServices
         private string _parentWorkflowInstanceId = string.Empty;
         private bool _workflowResumeable;
         private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
+        private ErrorResultTO _errors;
 
         #endregion Class Members
 
@@ -30,86 +32,94 @@ namespace Dev2.DynamicServices
 
         public DsfDataObject(string xmldata, Guid dataListID)
         {
-            if(!string.IsNullOrEmpty(xmldata))
+            if (!string.IsNullOrEmpty(xmldata))
             {
                 dynamic dataObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmldata);
 
-                bool isDebug;
-                var debugString = dataObject.GetValue("IsDebug") as string;
-                if(!string.IsNullOrEmpty(debugString))
+                if (!dataObject.HasError)
                 {
-                    bool.TryParse(debugString, out isDebug);
+                    bool isDebug;
+                    var debugString = dataObject.GetValue("IsDebug") as string;
+                    if (!string.IsNullOrEmpty(debugString))
+                    {
+                        bool.TryParse(debugString, out isDebug);
+                    }
+                    else
+                    {
+                        bool.TryParse(dataObject.GetValue("BDSDebugMode"), out isDebug);
+                    }
+                    IsDebug = isDebug;
+
+                    var isOnDemandSimulation = false;
+                    var onDemandSimulationString = dataObject.GetValue("IsOnDemandSimulation") as string;
+                    if (!string.IsNullOrEmpty(onDemandSimulationString))
+                    {
+                        bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
+                    }
+                    IsOnDemandSimulation = isOnDemandSimulation;
+
+                    _parentServiceName = dataObject.GetValue("ParentServiceName");
+                    _parentWorkflowInstanceId = dataObject.GetValue("ParentWorkflowInstanceId");
+
+                    Guid executionCallbackID;
+                    Guid.TryParse(dataObject.GetValue("ExecutionCallbackID"), out executionCallbackID);
+                    ExecutionCallbackID = executionCallbackID;
+
+                    Guid bookmarkExecutionCallbackID;
+                    Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
+                    BookmarkExecutionCallbackID = bookmarkExecutionCallbackID;
+
+                    if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
+                    {
+                        BookmarkExecutionCallbackID = ExecutionCallbackID;
+                    }
+
+                    ParentInstanceID = dataObject.GetValue("ParentInstanceID");
+
+                    if (dataObject.Bookmark is string)
+                    {
+                        Bookmark = dataObject.Bookmark;
+                    }
+                    if (dataObject.InstanceId is string)
+                    {
+
+                        Guid instID;
+
+                        if (Guid.TryParse(dataObject.InstanceId, out instID))
+                        {
+                            InstanceID = instID;
+                        }
+                    }
+
+                    //
+                    // Extract merge data form request
+                    //
+                    ExtractInMergeDataFromRequest(dataObject);
+                    ExtractOutMergeDataFromRequest(dataObject);
+
+                    // set the ID ;)
+                    DataListID = dataListID;
+
+                    // set the IsDataListScoped flag ;)
+                    bool isScoped;
+                    bool.TryParse(dataObject.GetValue("IsDataListScoped"), out isScoped);
+                    IsDataListScoped = isScoped;
+
+                    // Set incoming service name ;)
+                    if (dataObject.Service is string)
+                    {
+                        ServiceName = dataObject.Service;
+                    }
+                    // finally set raw payload
+                    RawPayload = xmldata;
                 }
                 else
                 {
-                    bool.TryParse(dataObject.GetValue("BDSDebugMode"), out isDebug);
+                    var error = dataObject.GetValue("Error") as string;
+                    Errors.AddError(error);
                 }
-                IsDebug = isDebug;
-
-                var isOnDemandSimulation = false;
-                var onDemandSimulationString = dataObject.GetValue("IsOnDemandSimulation") as string;
-                if(!string.IsNullOrEmpty(onDemandSimulationString))
-                {
-                    bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
-                }               
-                IsOnDemandSimulation = isOnDemandSimulation;
-
-                _parentServiceName = dataObject.GetValue("ParentServiceName");
-                _parentWorkflowInstanceId = dataObject.GetValue("ParentWorkflowInstanceId");
-
-                Guid executionCallbackID;
-                Guid.TryParse(dataObject.GetValue("ExecutionCallbackID"), out executionCallbackID);
-                ExecutionCallbackID = executionCallbackID;
-
-                Guid bookmarkExecutionCallbackID;
-                Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
-                BookmarkExecutionCallbackID = bookmarkExecutionCallbackID;
-
-                if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
-                {
-                    BookmarkExecutionCallbackID = ExecutionCallbackID;
-                }
-
-                ParentInstanceID = dataObject.GetValue("ParentInstanceID");
-
-                if(dataObject.Bookmark is string)
-                {
-                    Bookmark = dataObject.Bookmark;
-                }
-                if(dataObject.InstanceId is string)
-                {
-
-                    Guid instID;
-
-                    if(Guid.TryParse(dataObject.InstanceId, out instID))
-                    {
-                        InstanceID = instID;
-                    }
-                }
-
-                //
-                // Extract merge data form request
-                //
-                ExtractInMergeDataFromRequest(dataObject);
-                ExtractOutMergeDataFromRequest(dataObject);
-
-                // set the ID ;)
-                DataListID = dataListID;
-
-                // set the IsDataListScoped flag ;)
-                bool isScoped;
-                bool.TryParse(dataObject.GetValue("IsDataListScoped"), out isScoped);
-                IsDataListScoped = isScoped;
-
-                // Set incoming service name ;)
-                if(dataObject.Service is string)
-                {
-                    ServiceName = dataObject.Service;
-                }
+                RawPayload = dataObject.xmlData.ToString();
             }
-
-            // finally set raw payload
-            RawPayload = xmldata;
         }
 
         #endregion Constructor
@@ -124,6 +134,12 @@ namespace Dev2.DynamicServices
         public Guid WorkspaceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
+
+        public ErrorResultTO Errors
+        {
+            get { return _errors ?? (_errors = new ErrorResultTO()); }
+            set { _errors = value; }
+        }
 
         public Guid DatalistOutMergeID { get; set; }
         public enTranslationDepth DatalistOutMergeDepth { get; set; }

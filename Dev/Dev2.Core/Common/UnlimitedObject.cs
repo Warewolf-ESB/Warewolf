@@ -1471,15 +1471,22 @@ namespace Unlimited.Framework
                 return new UnlimitedObject("Empty");
             }
 
-            dynamic dataObject;
+            UnlimitedObject dataObject;
 
             try
             {
                 dataObject = new UnlimitedObject(XElement.Parse(xmlData));
             }
-            catch (Exception)
+            catch (XmlException ex)
             {
-                dataObject = new UnlimitedObject(XElement.Parse("<DataList>" + xmlData + "</DataList>"));
+                try
+                {
+                    dataObject = new UnlimitedObject(XElement.Parse("<DataList>" + xmlData + "</DataList>"));
+                }
+                catch (XmlException)
+                {
+                    dataObject = new UnlimitedObject(XElement.Parse("<XmlData><Error>" + ex.Message + "</Error></XmlData>"));
+                }
             }
             //dataObject.Load(xmlData);
 

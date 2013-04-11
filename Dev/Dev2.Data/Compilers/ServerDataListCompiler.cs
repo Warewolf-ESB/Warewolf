@@ -607,7 +607,6 @@ namespace Dev2.Server.Datalist
             IBinaryDataList result;
             DataListTranslatedPayloadTO returnVal = null;
             ErrorResultTO allErrors = new ErrorResultTO();
-            errors = new ErrorResultTO();
             string error = string.Empty;
 
             result = TryFetchDataList(curDLID, out error);

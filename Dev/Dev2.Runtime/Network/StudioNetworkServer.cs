@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Xml;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Network;
@@ -103,13 +104,20 @@ namespace Dev2.DynamicServices {
         #region ExecuteRequest Handling
         protected override string OnExecuteCommand(StudioNetworkSession context, string payload, Guid datalistID)
         {
-            IDSFDataObject dataObject = new DsfDataObject(payload, datalistID);
+            IDSFDataObject dataObject = null;
             ErrorResultTO errors = new ErrorResultTO();
 
-            string dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            string result = compiler.ConvertFrom(new Guid(dlID), DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
-            return result;
+            dataObject = new DsfDataObject(payload, datalistID);
+
+            if (!dataObject.Errors.HasErrors())
+            {
+                string dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                string result = compiler.ConvertFrom(new Guid(dlID), DataListFormat.CreateFormat(GlobalConstants._XML),
+                                                     enTranslationDepth.Data, out errors);
+                return result;
+            }
+            else return dataObject.Errors.MakeUserReady();
         }
 
         protected override void OnExecuteCommand(StudioNetworkSession context, ByteBuffer payload, Packet writer) {

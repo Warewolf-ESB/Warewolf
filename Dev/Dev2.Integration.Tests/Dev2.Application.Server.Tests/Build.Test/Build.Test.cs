@@ -211,12 +211,7 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestMethod]
         public void DsfRequest_MalformedXml_Expected_ErrorInDsfREsponse()
         {
-            string expected = @"<XmlData>
-          <Error>Unexpected end of file has occurred. The following elements are not closed: x, x. Line 1, position 62.</Error>
-          <DynamicServiceFrameworkMessage>
-            <Error>Error in request - inbound message contains error tag</Error>
-          </DynamicServiceFrameworkMessage>
-        </XmlData>";
+            string expected = @"<Error><InnerError>Unexpected end of file has occurred. The following elements are not closed: x, x. Line 1, position 62.</InnerError></Error>";
             string xmlRequest = string.Format("<x><Service>{0}</Service><x>", Guid.NewGuid().ToString());
             string actual = _dataChannel.ExecuteCommand(xmlRequest, Guid.Empty, Guid.NewGuid());
 
