@@ -33,7 +33,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("Directory is required and not provided");
             }
 
-
             IntPtr accessToken = IntPtr.Zero;
             const int LOGON32_PROVIDER_DEFAULT = 0;
             const int LOGON32_LOGON_INTERACTIVE = 2;
