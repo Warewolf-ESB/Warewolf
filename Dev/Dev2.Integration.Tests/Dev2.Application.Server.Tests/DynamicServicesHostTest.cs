@@ -59,6 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestPluginNull_Expected_AnonymousSend()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
@@ -68,6 +69,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestPluginNonNull_Expected_FromInResult()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");

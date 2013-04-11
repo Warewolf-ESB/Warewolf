@@ -65,8 +65,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string result = TestHelper.PostDataToWebserver(postData);
 
             // It is JSON if the first two chars are [{, else it will be HTML
-            StringAssert.Contains(result, "<JSON>[{");
-            StringAssert.Contains(result, "}]</JSON>");
+            StringAssert.Contains(result, "[{");
+            StringAssert.Contains(result, "}]");
 //            Assert.IsTrue(result.IndexOf("[{") == 0);
 
         }
