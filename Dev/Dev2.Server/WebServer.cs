@@ -691,14 +691,14 @@ namespace Dev2
                     start += GlobalConstants.OpenJSON.Length;
 
                     result = CleanupHtml(result.Substring(start, (end - start)));
+                    if(!String.IsNullOrEmpty(result))
+                    {
+                        return new StringCommunicationResponseWriter(result, "application/json");
+                    }
                 }
-
-                return new StringCommunicationResponseWriter(result, "application/json");
             }
-            
-
             // STANDARD XML
-            return new StringCommunicationResponseWriter(result, "text/xml");
+            return new StringCommunicationResponseWriter(executePayload, "text/xml");
 
         }
         #endregion
