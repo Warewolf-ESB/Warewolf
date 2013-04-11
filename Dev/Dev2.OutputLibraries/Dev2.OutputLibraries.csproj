@@ -309,8 +309,9 @@
       <Link>locales\zh-TW.pak</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <!-- Handle our custom SQL dll -->
-    <None Include="..\Binaries\SqlResources\Warewolf.Sql.dll">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Binaries\SqlResources\Warewolf\Warewolf.Sql.dll">
       <Link>Warewolf.Sql.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
