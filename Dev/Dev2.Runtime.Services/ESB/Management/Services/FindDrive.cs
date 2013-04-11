@@ -27,11 +27,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("Password", out password);
             values.TryGetValue("Domain", out domain);
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(domain))
-            {
-                throw new InvalidDataContractException("Username or Password or Domain not provided");
-            }
-
             IntPtr accessToken = IntPtr.Zero;
             const int LOGON32_PROVIDER_DEFAULT = 0;
             const int LOGON32_LOGON_INTERACTIVE = 2;
@@ -59,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        result.Append(Marshal.GetLastWin32Error());
+                        result.Append("<result>Logon failure: unknown user name or bad password</result>");
                     }
                 }
                 else

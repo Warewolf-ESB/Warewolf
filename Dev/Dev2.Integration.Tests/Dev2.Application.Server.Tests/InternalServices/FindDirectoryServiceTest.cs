@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
         public void FindDirectoryService_ValidPath() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=C:\");
-            string expected = "{\"title\":\"$RECYCLE.BIN\"";
+            string expected = "\"title\":\"Documents and Settings\", \"isFolder\": true";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             Assert.IsTrue(responseData.Contains(expected), "Could not locate Directory Data");

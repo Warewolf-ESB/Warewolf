@@ -72,7 +72,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
         public void FindDriveService_InvalidCredentials() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDriveService?Domain=DEV2&Username=john.doe&Password=P@ssword");
-            string expected = @"<Result>System.ComponentModel.Win32Exception (0x80004005): Logon failure: unknown user name or bad password</Result>";
+            string expected = @"<Result>Logon failure: unknown user name or bad password</Result>";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(responseData, expected);
