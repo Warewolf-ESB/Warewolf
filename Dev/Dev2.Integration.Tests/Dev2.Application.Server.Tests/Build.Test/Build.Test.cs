@@ -196,7 +196,7 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestMethod()]
         public void AppServerr_Update_Resource_Correctly()
         {
-            string expected = @"<CompilerMessage>Updated Workflow 'ServiceToBindFrom'</CompilerMessage>";
+            string expected = @"<CompilerMessage>Updated Workflow Service 'ServiceToBindFrom'</CompilerMessage>";
             string Command = TestResource.Service_Update_Request_String;
             
             //Execute twice to ensure that the resource is actually there
