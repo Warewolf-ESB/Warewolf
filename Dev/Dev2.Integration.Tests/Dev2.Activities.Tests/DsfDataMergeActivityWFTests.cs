@@ -67,21 +67,6 @@ Michael's surname name is Cullen
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             StringAssert.Contains(ResponseData, expected);
-        }
-
-        // Created by Michael
-        // Created so Bug 7835 does not happen
-        [TestMethod]
-        public void DataMergeWithComplexExpression_Expected_TestPasses()
-        {
-            string PostData = String.Format("{0}{1}", WebserverURI, "LanguageParserEvaluatingComplexExpressionTest");
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
-            string expected = "<result>Barneys,Walliss,</result>";
-
-            if (!ResponseData.Contains(expected))
-            {
-                Assert.Fail("The test should pass.");
-            }
-        }
+        }       
     }
 }
