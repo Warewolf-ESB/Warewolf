@@ -135,7 +135,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
                         postData = String.Format("{0}{1}", _serverFactory.ServerAddress, serviceName);
                         actualResult = TestHelper.PostDataToWebserver(postData);
-                        string expectedNotFound = "<Result>Workflow 'DeleteWorkflowTest2' was not found.</Result>";
+                        string expectedNotFound = "<InnerError>Unable to find the service 'DeleteWorkflowTest2'.</InnerError>";
                         actualResult = actualResult.Replace("\r", "").Replace("\n", "");
                         StringAssert.Contains(actualResult, expectedNotFound);
                     }
