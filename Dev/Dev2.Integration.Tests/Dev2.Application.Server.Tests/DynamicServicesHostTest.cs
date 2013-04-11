@@ -52,7 +52,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestDBNullLogicEmptyNullConvertOffValue_Expected_AAA()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=notActive&nullLogicValue=");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
 
             Assert.IsTrue((result.IndexOf("<result>AAA</result>") > 0),"Assigned null, when it should have been empty");
