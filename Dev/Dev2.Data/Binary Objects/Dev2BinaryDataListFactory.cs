@@ -21,15 +21,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         /// <summary>
-        /// Creates the index iterator.
-        /// </summary>
-        /// <returns></returns>
-        public static IIndexIterator CreateIndexIterator()
-        {
-            return new IndexIterator(new HashSet<int>(), 1);
-        }
-
-        /// <summary>
         /// Creates the looped index iterator.
         /// </summary>
         /// <param name="val">The val.</param>

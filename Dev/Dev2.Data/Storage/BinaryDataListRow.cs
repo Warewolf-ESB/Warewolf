@@ -1,6 +1,7 @@
 ﻿using System;
 using Dev2.Data.SystemTemplates;
 using System.Text;
+using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -45,7 +46,7 @@ namespace Dev2.Data.Binary_Objects
         {
             get
             {
-                return (_usedStorage == 0);
+                return (_startIdx.ToList().All(idx => idx == DataListConstants.EmptyRowStartIdx));
             }
         }
 
@@ -184,8 +185,8 @@ namespace Dev2.Data.Binary_Objects
             else
             {
                 // clear the existing storage requirements out ;)
-                _startIdx[idx] = DataListConstants.EmptyRowStartIdx;
-                _columnLen[idx] = DataListConstants.EmptyRowStartIdx;
+                _startIdx[idx] = 0;
+                _columnLen[idx] = 0;
                 // TODO : Blank the data too ;)
             }
         }

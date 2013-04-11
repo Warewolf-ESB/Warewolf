@@ -355,19 +355,44 @@ namespace ActivityUnitTests.ActivityTest
         public void AssignRecordSetWithEvaluatedMultOutOfBoundBothIndexExpressionMultRecords()
         {
             _fieldCollection.Clear();
-            _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec(100).opt]]", _fieldCollection.Count));
-            _fieldCollection.Add(new ActivityDTO("[[cRec(100).display]]", "[[gRec(100).display]]", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("[[cRec(3).opt]]", "[[gRec(3).opt]]", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("[[cRec(3).display]]", "[[gRec(3).display]]", _fieldCollection.Count));
 
-            SetupArguments(
-                            ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
-                          , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
+            SetupArguments(@"<ADL>
+<gRec>
+<opt>Value1</opt>
+<display>display1</display>
+</gRec>
+<gRec>
+<opt>Value2</opt>
+<display>display2</display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>"
+                          ,@"<ADL>
+<gRec>
+<opt>Value1</opt>
+<display>display1</display>
+</gRec>
+<gRec>
+<opt>Value2</opt>
+<display>display2</display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>"
                           , _fieldCollection
                           );
             IDSFDataObject result = ExecuteProcess();
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
             // first and row 100
-            Assert.IsTrue(actual.Count == 2 && actual.First() == string.Empty);
+            Assert.IsTrue(actual.Count == 2 && actual.First() == string.Empty && actual.Last() == string.Empty);
         }
 
         [TestMethod]

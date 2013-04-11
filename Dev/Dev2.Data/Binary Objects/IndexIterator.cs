@@ -6,34 +6,31 @@ namespace Dev2.Data.Binary_Objects
     [Serializable]
     public class IndexIterator : IIndexIterator
     {
-        private readonly HashSet<int> _gaps;
-        private int _maxValue;
         private int _curValue;
+        public IndexList IndexList { get; set; }
 
         public int Count
         {
-            get { return (_maxValue - _gaps.Count); }
+            get { return (IndexList.Count()); }
         }
 
         public bool IsEmpty { get { return (_curValue - Count == 0); } }
 
-
         public IndexIterator(HashSet<int> gaps, int maxValue)
         {
-            _gaps = gaps;
-            _maxValue = maxValue;
+            IndexList = new IndexList(gaps, maxValue);
             _curValue = 1;
         }
 
         public bool HasMore()
         {
             int canidate = _curValue;
-            while (_gaps.Contains(canidate))
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
 
-            return (canidate <= _maxValue);
+            return (canidate <= IndexList.MaxValue);
         }
 
         public int FetchNextIndex()
@@ -43,7 +40,7 @@ namespace Dev2.Data.Binary_Objects
             int result = _curValue;
             // assign a new curValue
             // _curValue++;
-            while (_gaps.Contains(canidate))
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
@@ -57,48 +54,32 @@ namespace Dev2.Data.Binary_Objects
 
         public int MaxIndex()
         {
-            int result = _maxValue;
-            while (_gaps.Contains(result))
-            {
-                result--;
-            }
-
-            _maxValue = result; // reset to new value ;)
-
-            return _maxValue;
+            return IndexList.GetMaxIndex();
         }
 
         public int MinIndex()
         {
-            int result = 1;
-            while (_gaps.Contains(result))
-            {
-                result++;
-            }
-
-            return result;
+            return IndexList.GetMinIndex();
         }
 
         public void AddGap(int idx)
         {
-            _gaps.Add(idx);
+            IndexList.Gaps.Add(idx);
         }
-
 
         public void RemoveGap(int idx)
         {
-            _gaps.Remove(idx);
+            IndexList.Gaps.Remove(idx);
         }
 
         public IIndexIterator Clone()
         {
-
             HashSet<int> gaps = new HashSet<int>();
-            foreach (int g in _gaps)
+            foreach (int g in IndexList.Gaps)
             {
                 gaps.Add(g);
             }
-            return new IndexIterator(gaps, _maxValue);
+            return new IndexIterator(gaps, IndexList.MaxValue);
         }
 
     }

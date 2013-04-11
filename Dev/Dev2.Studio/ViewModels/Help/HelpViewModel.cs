@@ -37,8 +37,17 @@ namespace Dev2.Studio.ViewModels.Help
 
             var helpView = (HelpView)view;
             _browser = helpView.BDSBrowser;
-            _browser.Load(Uri);
-        } 
+
+            if (_browser.IsBrowserInitialized)
+            {
+                _browser.Load(Uri);
+            }
+            else
+            {
+                _browser.Initialized += (sender, e) => _browser.Load(Uri);
+                _browser.BeginInit();
+            }
+        }
 
         public void Handle(TabClosedMessage message)
         {

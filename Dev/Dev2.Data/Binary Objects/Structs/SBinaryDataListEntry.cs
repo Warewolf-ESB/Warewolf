@@ -151,10 +151,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public IIndexIterator Keys
         {
             get { return _items.Keys; }
-            set
-            {
-                _items.Keys = value;
-            }
         }
 
         public Guid DataListKey { get; set; }
@@ -162,6 +158,10 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         #endregion
 
         #region Public Methods
+        public void SetMaxValue(int idx)
+        {
+            _items.SetMaxValue(idx);
+        }
 
         public void RemoveDeferedRead(IBinaryDataListItem binaryDataListItem)
         {

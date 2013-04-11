@@ -232,45 +232,53 @@ namespace ActivityUnitTests
 
         #region Activity Debug Input/Output Test Methods
 
+        private object _lock = new object();
+
         public void CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
         {
-            ErrorResultTO errors;
-            TestStartNode = new FlowStep
+            lock (_lock)
             {
-                Action = activity
-            };
+                ErrorResultTO errors;
+                TestStartNode = new FlowStep
+                {
+                    Action = activity
+                };
 
-            TestData = dataListWithData;
-            CurrentDl = dataListShape;
+                TestData = dataListWithData;
+                CurrentDl = dataListShape;
 
-            Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
-            
-            ExecuteProcess(null,true);
-            inputResults = activity.GetDebugInputs(dl);
-            outputResults = activity.GetDebugOutputs(dl);
+                Compiler = DataListFactory.CreateDataListCompiler();
+                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+                IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+
+                ExecuteProcess(null, true);
+                inputResults = activity.GetDebugInputs(dl);
+                outputResults = activity.GetDebugOutputs(dl);
+            }
         }
 
         public void CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
         {
-            ErrorResultTO errors;
-            TestStartNode = new FlowStep
+            lock (_lock)
             {
-                Action = activity
-            };
+                ErrorResultTO errors;
+                TestStartNode = new FlowStep
+                {
+                    Action = activity
+                };
 
-            TestData = dataListWithData;
-            CurrentDl = dataListShape;
+                TestData = dataListWithData;
+                CurrentDl = dataListShape;
 
-            Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
-            ExecuteProcess(null, true);
-            inputResults = activity.GetDebugInputs(dl);
-            outputResults = activity.GetDebugOutputs(dl);
+                Compiler = DataListFactory.CreateDataListCompiler();
+                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+                IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+                ExecuteProcess(null, true);
+                inputResults = activity.GetDebugInputs(dl);
+                outputResults = activity.GetDebugOutputs(dl);
+            }
         }
 
         public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData,string recsetName,string fieldName,out string dataListShape,out string dataListWithData)

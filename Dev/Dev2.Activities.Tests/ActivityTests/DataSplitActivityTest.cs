@@ -501,8 +501,8 @@ namespace ActivityUnitTests.ActivityTest
         {
 
             _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Index", "15", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Chars", "|", 2));
 
             TestStartNode = new FlowStep
             {
@@ -515,12 +515,13 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual1 = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual2 = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error);
 
-            actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error));
+            //actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error));
 
-            Assert.AreEqual("896", actual[1]);
-            Assert.AreEqual("Branson|0812457", actual[3]);
+            Assert.AreEqual("Branson", actual1[0]);
+            Assert.AreEqual("0812457896", actual2[0]);
         }
 
         [TestMethod]

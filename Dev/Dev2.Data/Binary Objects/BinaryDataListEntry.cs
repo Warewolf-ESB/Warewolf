@@ -502,13 +502,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         public IIndexIterator FetchRecordsetIndexes()
         {
-            IIndexIterator result = Dev2BinaryDataListFactory.CreateIndexIterator();
-
-            if (IsRecordset)
-            {
-                result = _internalObj.Keys;
-            }
-
+            var  result = _internalObj.Keys;
             return result;
         }
 
@@ -567,14 +561,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 // remove values
                 Columns = newCols;
             }
-            if (keepIdx == GlobalConstants.AllIndexes)
-            {
-                return;
-            }
+            if (keepIdx == GlobalConstants.AllIndexes) return;
+
             if (!_internalObj.IsEmtpy)
             {
-                var loopedIndexIterator = new LoopedIndexIterator(keepIdx, 1);
-                _internalObj.Keys = loopedIndexIterator;
+                while (_internalObj.Keys.HasMore())
+                {
+                    var gapToInsert = _internalObj.Keys.FetchNextIndex();
+                    if (keepIdx != gapToInsert) _internalObj.Keys.AddGap(gapToInsert);
+                    else break;
+                }
+                _internalObj.SetMaxValue(keepIdx);
             }
         }
 

@@ -75,7 +75,7 @@ namespace Dev2.Data.Binary_Objects
 
             _uniqueIdentifierGuid = uniqueIdentifier.ToString();
             _uniqueIndentifier = uniqueIndex + _uniqueIdentifierGuid;
-            _populatedKeys = new IndexList();
+            _populatedKeys = new IndexList(null, 1);
         }
 
         void MoveItemsIntoMemoryCacheBackground(object sender, DoWorkEventArgs e)
@@ -109,7 +109,6 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-
         string GetUniqueKey(int key)
         {
             if (_key != key)
@@ -119,7 +118,6 @@ namespace Dev2.Data.Binary_Objects
             }
             return _uniqueKey;
         }
-
 
         public IBinaryDataListRow this[int key]
         {
@@ -149,10 +147,36 @@ namespace Dev2.Data.Binary_Objects
                     LevelThreeCache.Remove(uniqueKey);
                 }
 
+                SetMaxValue(key);
+                _populatedKeys.RemoveGap(key);
+            }
+        }
 
-                _populatedKeys.SetMaxValue(key);    
-
-                
+        public void SetMaxValue(int idx)
+        {
+            if (idx < _populatedKeys.MaxValue)
+            {
+                // remove gaps
+                if (_populatedKeys.Gaps.Contains(idx))
+                {
+                    _populatedKeys.RemoveGap(idx);
+                }
+            }
+            else if (idx >= _populatedKeys.MaxValue)
+            {
+                // set new max
+                int dif = (idx - _populatedKeys.MaxValue);
+                if (dif >= 1)
+                {
+                    // find the gaps ;)
+                    for (int i = 0; i < dif; i++)
+                    {
+                        var val = _populatedKeys.MaxValue + i;
+                        if (this[val] == null || this[val].IsEmpty)
+                            _populatedKeys.AddGap(val);
+                    }
+                }
+                _populatedKeys.MaxValue = idx;
             }
         }
 
@@ -162,20 +186,15 @@ namespace Dev2.Data.Binary_Objects
             {
                 return _populatedKeys.FetchIterator();
             }
-            set
-            {
-                _populatedKeys.SetIterator(value);
-            }
         }
 
         public int Count
         {
             get
             {
-                return _populatedKeys.Count();
+                return Keys.Count;
             }
         }
-
 
         static void RemovedCallback(CacheEntryRemovedArguments arguments)
         {
@@ -214,7 +233,7 @@ namespace Dev2.Data.Binary_Objects
                 if (!_populatedKeys.Contains(key))
                 {
                     // Naughty, we need to push the key, not blank it?!?!
-                    _populatedKeys.SetMaxValue(key);
+                    SetMaxValue(key);
                 }
             }
             return r;
@@ -334,18 +353,6 @@ namespace Dev2.Data.Binary_Objects
             return true;
         }
 
-
-
-        public void Clear()
-        {
-
-            RemoveFromLevelOneCache();
-            RemoveFromLevelTwoCache();
-            RemoveFromLevelThreeCache();
-            _populatedKeys = new IndexList();
-        }
-
-
         public void Dispose()
         {
             Dispose(true);
@@ -435,8 +442,8 @@ namespace Dev2.Data.Binary_Objects
                 IBinaryDataListRow row;
                 LevelOneCache.TryRemove(key, out row);
             }
-
         }
+
         void RemoveFromLevelTwoCache()
         {
             IEnumerable<string> keys =

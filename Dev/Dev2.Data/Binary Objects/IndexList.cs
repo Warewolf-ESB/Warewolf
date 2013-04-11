@@ -7,53 +7,59 @@ namespace Dev2.Data.Binary_Objects
     [Serializable]
     public class IndexList
     {
-        public int MaxValue { get; private set; }
+        public int MaxValue { get;  set; }
         public int MinValue { get; private set; }
-        private readonly HashSet<int> _gaps;
-        IIndexIterator _indexIterator;
 
-        public IndexList()
+        public HashSet<int> Gaps {get; set;}
+
+        private IndexList()
         {
-            _gaps = new HashSet<int>();
-            MinValue = 1;
-            MaxValue = 1;
+            
         }
 
-
-        public void SetMaxValue(int idx)
+        public IndexList(HashSet<int> gaps, int maxValue)
         {
-            if (idx < MaxValue)
+            if (gaps == null) gaps = new HashSet<int>();
+            Gaps = gaps;
+            MinValue = 1;
+            MaxValue = maxValue;
+        }
+
+        public int GetMaxIndex()
+        {
+            int result = MaxValue;
+            while (Gaps.Contains(result) && result > 1)
             {
-                // remove gaps
-                if (_gaps.Contains(idx))
-                {
-                    _gaps.Remove(idx);
-                }
+                result--;
             }
-            else
+
+            return result;
+        }
+
+        public int GetMinIndex()
+        {
+            int result = 1;
+            while (Gaps.Contains(result))
             {
-                // set new max
-                int dif = (idx - MaxValue);
-                if (dif > 1)
-                {
-                    // find the gaps ;)
-                    for (int i = 1; i < dif; i++)
-                    {
-                        _gaps.Add((MaxValue + i));
-                    }
-                }
-                MaxValue = idx;
+                result++;
             }
+
+            return result;
         }
 
         public void AddGap(int idx)
         {
-            _gaps.Add(idx);
+            Gaps.Add(idx);
+        }
+
+        public void RemoveGap(int idx)
+        {
+            Gaps.Remove(idx);
         }
 
         public bool Contains(int idx)
         {
-            bool result = (idx <= MaxValue && idx >= 0 && !_gaps.Contains(idx));
+            bool result = (idx <= MaxValue && idx >= 0 && !Gaps.Contains(idx));
 
             return result;
         }
@@ -61,23 +67,13 @@ namespace Dev2.Data.Binary_Objects
         public int Count()
         {
             // Travis.Frisinger - Count bug change
-            return (MaxValue - _gaps.Count);
-        }
-
-        public void SetIterator(IIndexIterator indexIterator)
-        {
-            _indexIterator = indexIterator;
+            return (MaxValue - Gaps.Count);
         }
 
         public IIndexIterator FetchIterator()
         {
-            if (_indexIterator == null)
-            {
-                return new IndexIterator(_gaps, MaxValue);
-            }
-            return _indexIterator;
+            return new IndexIterator(Gaps, MaxValue);
         }
-
     }
 }
 
