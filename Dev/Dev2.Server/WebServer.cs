@@ -609,34 +609,25 @@ namespace Dev2
 
             // strip out &amp; and replace correctly
             //string correctedURI = d.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
-            string correctedURI = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
+            string correctedUri = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
             string executePayload = null;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid clientGuid = Guid.Empty;
+            Guid clientGuid;
 
             if (clientID != null)
             {
-
                 if (!Guid.TryParse(clientID, out clientGuid))
                 {
-
                     clientGuid = Workspaces.WorkspaceRepository.Instance.ServerWorkspace.ID;
-
-                    // executePayload = _esbEndpoint.ExecuteCommand(correctedURI, Workspaces.WorkspaceRepository.Instance.Get(clientGuid) ?? Workspaces.WorkspaceRepository.Instance.ServerWorkspace, GlobalConstants.NullDataListID);
                 }
-                else
-                {
-                    //executePayload = _esbEndpoint.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
-            }
             }
             else
             {
-                //executePayload = _esbEndpoint.ExecuteCommand(correctedURI, GlobalConstants.NullDataListID);
                 clientGuid = Workspaces.WorkspaceRepository.Instance.ServerWorkspace.ID;
             }
 
             ErrorResultTO errors = new ErrorResultTO();
-            IDSFDataObject dataObject = new DsfDataObject(correctedURI, GlobalConstants.NullDataListID);
+            IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID);
             // ensure service gets set ;)
             if (dataObject.ServiceName == null)
             {
@@ -668,42 +659,24 @@ namespace Dev2
                 compiler.ForceDeleteDataListByID(executionDLID);
             }
 
-            //dynamic result = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(executePayload);
-
-            // Stop returning 404 on failure....
-            //if (result.HasError)
-            //{
-            //    if (result.Error is string)
-            //    {
-            //        if (result.Error.Equals(WebServerResources.ERROR_404_Message, StringComparison.InvariantCultureIgnoreCase))
-            //        {
-            //            return new NotFoundCommunicationResponseWriter();
-            //        }
-            //    }
-            //}
-
             // TODO : Allow return type to be specified as a parameter... Default to XML
             string result = executePayload;
 
-            if (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) >= 0)
+            // CHECK for FORM VIEW -- OLD UGLY HTML Payload ;(
+            int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
+            int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
+            int len = (end - start);
+            if (len > 0)
             {
-                int start = (executePayload.IndexOf("<Dev2System.FormView>") + 21);
-                int end = (executePayload.IndexOf("</Dev2System.FormView>"));
-                int len = (end - start);
-                if (len > 0)
-                {
-                    string tmp = executePayload.Substring(start, (end - start));
-                    result = CleanupHtml(tmp);
-                    string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                    return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, result));
+                string tmp = executePayload.Substring(start, (end - start));
+                result = CleanupHtml(tmp);
+                string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
+                return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, result));
 
-                }
-                else
-                {
-                    return new StringCommunicationResponseWriter(result, "text/xml");
-                }
             }
-            else if (executePayload.IndexOf("</JSON>") >= 0)
+
+            // JSON Data ;)
+            if (executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
             {
                 // we have a JSON payload, quite a silly way to do this...
                 //json = json.Replace("\r\n", string.Empty).Replace(",])", "])");
@@ -711,10 +684,10 @@ namespace Dev2
                 //return new StringCommunicationResponseWriter(json, "application/json");
                 //json = json.Replace("\r\n", string.Empty).Replace(",])", "])");
 
-                int start = result.IndexOf(GlobalConstants.OpenJSON);
+                start = result.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
                 if (start >= 0)
                 {
-                    int end = result.IndexOf(GlobalConstants.CloseJSON);
+                    end = result.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
                     start += GlobalConstants.OpenJSON.Length;
 
                     result = CleanupHtml(result.Substring(start, (end - start)));
@@ -722,10 +695,11 @@ namespace Dev2
 
                 return new StringCommunicationResponseWriter(result, "application/json");
             }
-            else
-            {
-                return new StringCommunicationResponseWriter(result, "text/xml");
-            }
+            
+
+            // STANDARD XML
+            return new StringCommunicationResponseWriter(result, "text/xml");
+
         }
         #endregion
 

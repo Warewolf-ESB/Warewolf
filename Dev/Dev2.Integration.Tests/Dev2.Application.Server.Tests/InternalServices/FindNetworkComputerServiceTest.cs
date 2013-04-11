@@ -65,7 +65,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string result = TestHelper.PostDataToWebserver(postData);
 
             // It is JSON if the first two chars are [{, else it will be HTML
-            Assert.IsTrue(result.IndexOf("[{") == 0);
+            Assert.IsTrue(result.IndexOf("[{", System.StringComparison.Ordinal) == 0, "Invalid JSON Returned");
 
         }
     }
