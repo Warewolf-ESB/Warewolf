@@ -12,7 +12,7 @@ namespace Dev2.Integration.Tests.MEF
         public TestAggregateCatalog()
         {
             //this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEventAggregator))));
-            this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(Bootstrapper))));
+            //this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(Bootstrapper))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEnvironmentModel))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkMessage))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkExecutionChannel))));
