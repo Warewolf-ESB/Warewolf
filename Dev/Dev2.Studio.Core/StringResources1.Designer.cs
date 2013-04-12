@@ -352,11 +352,29 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This variable is duplicating the name of a recordset. You cannot enter any duplicate names in the Data List.
+        /// </summary>
+        public static string ErrorMessageDuplicateRecordset {
+            get {
+                return ResourceManager.GetString("ErrorMessageDuplicateRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You cannot enter duplicate names in the Data List.
         /// </summary>
         public static string ErrorMessageDuplicateValue {
             get {
                 return ResourceManager.GetString("ErrorMessageDuplicateValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This recordset is duplicating the name of a variable. You cannot enter any duplicate names in the Data List.
+        /// </summary>
+        public static string ErrorMessageDuplicateVariable {
+            get {
+                return ResourceManager.GetString("ErrorMessageDuplicateVariable", resourceCulture);
             }
         }
         

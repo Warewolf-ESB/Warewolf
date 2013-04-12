@@ -462,6 +462,12 @@
   <data name="ErrorMessageDuplicateValue" xml:space="preserve">
     <value>You cannot enter duplicate names in the Data List</value>
   </data>
+  <data name="ErrorMessageDuplicateVariable" xml:space="preserve">
+    <value>This recordset is duplicating the name of a variable. You cannot enter any duplicate names in the Data List</value>
+  </data>
+  <data name="ErrorMessageDuplicateRecordset" xml:space="preserve">
+    <value>This variable is duplicating the name of a recordset. You cannot enter any duplicate names in the Data List</value>
+  </data>
   <data name="ErrorMessageInvalidChar" xml:space="preserve">
     <value>You have entered invalid characters</value>
   </data>

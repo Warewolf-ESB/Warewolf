@@ -342,12 +342,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     if(!string.IsNullOrEmpty(name))
                     {
-                        XmlConvert.VerifyName(name);
-                        if(ErrorMessage != StringResources.ErrorMessageDuplicateValue)
-                        {
-                            RemoveError();
-                        }
+                    XmlConvert.VerifyName(name);
+                    if (ErrorMessage != StringResources.ErrorMessageDuplicateValue && ErrorMessage != StringResources.ErrorMessageDuplicateVariable && ErrorMessage != StringResources.ErrorMessageDuplicateRecordset)
+                    {
+                        RemoveError();
                     }
+                }
                 }
                 catch
                 {

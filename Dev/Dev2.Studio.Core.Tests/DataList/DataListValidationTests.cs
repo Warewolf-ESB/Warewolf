@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Studio.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.DataList;
@@ -102,6 +103,40 @@ namespace Dev2.Core.Tests.DataList
             Validator.Add(newItem);
 
             Assert.IsFalse(newItem.HasError);
+        }
+
+        //2013.04.10: Ashley Lewis - Bug 9168
+        [TestMethod]
+        public void AddRecordsetWithDuplicateScalarExpectedRecordsetHasDuplicateVariableErrorMessage()
+        {   
+            //Initialization
+            Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar"));
+
+            //Execute
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestScalar");
+            IDataListItemModel newItemsChild = DataListItemModelFactory.CreateDataListModel("Field");
+            newItem.Children.Add(newItemsChild);
+            Validator.Add(newItem);
+
+            //Assert
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateVariable, newItem.ErrorMessage,"Recordset shows incorrect error when there is a duplicate scalar");
+        }
+
+        [TestMethod]
+        public void AddScalarWithDuplicateRecordsetExpectedScalarHasDuplicateRecordsetErrorMessage()
+        {
+            //Initialization
+            IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
+            IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
+            existingRecordset.Children.Add(existingRecordsetChild);
+            Validator.Add(existingRecordset);
+
+            //Execute
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestRecordset");
+            Validator.Add(newItem);
+
+            //Assert
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateRecordset, newItem.ErrorMessage, "Scalar shows incorrect error when there is a duplicate recordset");
         }
 
         #endregion Add Tests
