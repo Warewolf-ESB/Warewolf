@@ -571,7 +571,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             while (_internalObj.Keys.HasMore() && gapToInsert < keepIdx)
             {
                 gapToInsert = _internalObj.Keys.FetchNextIndex();
-                if (gapToInsert != keepIdx) _internalObj.Keys.AddGap(gapToInsert);
+                if (gapToInsert != keepIdx)
+                {
+                    _internalObj.Keys.AddGap(gapToInsert);
+                }
             }
 
             _internalObj.SetMaxValue(keepIdx);
