@@ -305,7 +305,7 @@ namespace Dev2.Studio.ViewModels
             Type userInterfaceType = ResourceHelper.GetUserInterfaceType(resource);
             if (userInterfaceType == null) return;
 
-            var modelService = workflowViemModel.wfDesigner.Context.Services.GetService<ModelService>();
+            var modelService = workflowViemModel.Designer.Context.Services.GetService<ModelService>();
 
             IEnumerable<ModelItem> items = modelService.Find(modelService.Root, userInterfaceType);
 

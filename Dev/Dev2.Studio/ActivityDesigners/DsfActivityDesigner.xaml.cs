@@ -15,11 +15,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.ViewModels.DataList;
-using DataGrid = System.Windows.Controls.DataGrid;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using Panel = System.Windows.Controls.Panel;
-using Point = System.Windows.Point;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -28,12 +23,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Class Members
 
-        private DsfActivityViewModel _viewModel;
         private IDesignerManagementService _designerManagementService;
-        private Selection _workflowDesignerSelection;
+        private bool _inputOutPutMappingHeightInitialized;
         private Point _mousedownPoint = new Point(0, 0);
         private bool _startManualDrag;
-        private bool _inputOutPutMappingHeightInitialized;
+        private DsfActivityViewModel _viewModel;
+        private Selection _workflowDesignerSelection;
 
         #endregion Class Members
 
@@ -72,16 +67,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _viewModel.Dispose();
             }
 
-            _viewModel = new DsfActivityViewModel(ModelItem);
+            IContextualResourceModel resourceModel = null;
+
             if (_designerManagementService != null)
             {
-                IContextualResourceModel resourceModel = _designerManagementService.GetResourceModel(ModelItem);
+                resourceModel = _designerManagementService.GetResourceModel(ModelItem);
+            }
+
+            _viewModel = new DsfActivityViewModel(ModelItem, resourceModel);
+
+
                 if (resourceModel != null)
                 {
-                    IWebActivity webAct = WebActivityFactory.CreateWebActivity(ModelItem, resourceModel, ModelItemUtils.GetProperty("ServiceName", ModelItem) as string);
+                IWebActivity webAct = WebActivityFactory.CreateWebActivity
+                    (ModelItem, resourceModel,
+                     ModelItemUtils.GetProperty("ServiceName", ModelItem) as string);
+
                     _viewModel.DataMappingViewModel = new DataMappingViewModel(webAct);
                 }
-            }
+
             DataContext = _viewModel;
         }
 
@@ -106,22 +110,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void ShowAdorners()
         {
-            if (_viewModel != null)
-            {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (_viewModel == null) return;
+
+            var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
                     Panel.SetZIndex(uiElement, int.MaxValue);
                 }
                 _viewModel.ShowAdorners = true;
             }
-        }
 
         private void HideAdorners()
         {
-            if (_viewModel != null)
-            {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (_viewModel == null) return;
+
+            var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
                     Panel.SetZIndex(uiElement, int.MinValue);
@@ -129,7 +132,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 _viewModel.ShowAdorners = false;
             }
-        }
 
         private void SetInitialInputOutPutMappingHeight()
         {
@@ -141,12 +143,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //
             // Get the controls
             //
-            FrameworkElement contentHost = this.FindNameAcrossNamescopes("contentHost") as FrameworkElement;
-            DataGrid inputMappings = this.FindNameAcrossNamescopes("inputMappings") as DataGrid;
-            DataGrid outputMappings = this.FindNameAcrossNamescopes("outputMappings") as DataGrid;
-            ContentControl contentPresenter = this.FindNameAcrossNamescopes("resizeContent") as ContentControl;
+            FrameworkElement contentHost = this.FindNameAcrossNamescopes("contentHost");
+            var inputMappings = this.FindNameAcrossNamescopes("inputMappings") as DataGrid;
+            var outputMappings = this.FindNameAcrossNamescopes("outputMappings") as DataGrid;
+            var contentPresenter = this.FindNameAcrossNamescopes("resizeContent") as ContentControl;
 
-            if (inputMappings == null || outputMappings == null || contentPresenter == null || contentHost == null || _viewModel == null)
+            if (inputMappings == null || outputMappings == null || contentPresenter == null || contentHost == null ||
+                _viewModel == null)
             {
                 return;
             }
@@ -160,7 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (_viewModel.DataMappingViewModel != null && _viewModel.DataMappingViewModel.Inputs != null &&
                 _viewModel.DataMappingViewModel.Inputs.Count > 0)
             {
-                DataGridRow dataGridRow =
+                var dataGridRow =
                     inputMappings.ItemContainerGenerator.ContainerFromItem(_viewModel.DataMappingViewModel.Inputs[0]) as
                     DataGridRow;
 
@@ -169,7 +172,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return;
                 }
 
-                DataGridColumnHeadersPresenter dataGridColumnHeadersPresenter = inputMappings.FindNameAcrossNamescopes("PART_ColumnHeadersPresenter") as DataGridColumnHeadersPresenter;
+                var dataGridColumnHeadersPresenter = inputMappings
+                                                         .FindNameAcrossNamescopes("PART_ColumnHeadersPresenter") as
+                                                     DataGridColumnHeadersPresenter;
 
                 if (dataGridColumnHeadersPresenter == null)
                 {
@@ -190,8 +195,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (_viewModel.DataMappingViewModel != null && _viewModel.DataMappingViewModel.Outputs != null &&
                 _viewModel.DataMappingViewModel.Outputs.Count > 0)
             {
-                DataGridRow dgr =
-                    outputMappings.ItemContainerGenerator.ContainerFromItem(_viewModel.DataMappingViewModel.Outputs[0]) as
+                var dgr =
+                    outputMappings.ItemContainerGenerator.ContainerFromItem(_viewModel.DataMappingViewModel.Outputs[0])
+                    as
                     DataGridRow;
 
                 if (dgr == null)
@@ -199,7 +205,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return;
                 }
 
-                DataGridColumnHeadersPresenter dataGridColumnHeadersPresenter = outputMappings.FindNameAcrossNamescopes("PART_ColumnHeadersPresenter") as DataGridColumnHeadersPresenter;
+                var dataGridColumnHeadersPresenter = outputMappings
+                                                         .FindNameAcrossNamescopes("PART_ColumnHeadersPresenter") as
+                                                     DataGridColumnHeadersPresenter;
 
                 if (dataGridColumnHeadersPresenter == null)
                 {
@@ -217,7 +225,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (outputRowCount + inputRowCount > 12)
             {
                 double difference = contentHost.ActualHeight - inputMappings.ActualHeight - outputMappings.ActualHeight;
-                contentPresenter.Height = difference + (outputRowHeight * 5) + (inputRowHeight * 5) + outputHeaderHeight + inputHeaderHeight;
+                contentPresenter.Height = difference + (outputRowHeight*5) + (inputRowHeight*5) + outputHeaderHeight +
+                                          inputHeaderHeight;
             }
 
             _inputOutPutMappingHeightInitialized = true;
@@ -268,7 +277,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void DsfActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            if (_workflowDesignerSelection != null &&
+                _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
             {
                 var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
@@ -282,9 +292,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             HideAdorners();
         }
 
-        void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        private void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            if (_workflowDesignerSelection != null &&
+                _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
             {
                 var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
@@ -318,7 +329,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void _designerManagementService_RestoreAllRequested(object sender, EventArgs e)
         {
-            DsfActivityViewModel viewModel = DataContext as DsfActivityViewModel;
+            var viewModel = DataContext as DsfActivityViewModel;
             if (viewModel == null)
             {
                 return;
@@ -329,7 +340,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void _designerManagementService_ExpandAllRequested(object sender, EventArgs e)
         {
-            DsfActivityViewModel viewModel = DataContext as DsfActivityViewModel;
+            var viewModel = DataContext as DsfActivityViewModel;
             if (viewModel == null)
             {
                 return;
@@ -342,7 +353,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void _designerManagementService_CollapseAllRequested(object sender, EventArgs e)
         {
-            DsfActivityViewModel viewModel = DataContext as DsfActivityViewModel;
+            var viewModel = DataContext as DsfActivityViewModel;
             if (viewModel == null)
             {
                 return;
@@ -356,7 +367,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
+            var inputElement = sender as IInputElement;
             if (inputElement == null)
             {
                 return;
@@ -364,7 +375,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             Mouse.Capture(sender as IInputElement, CaptureMode.SubTree);
 
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
+            if (_workflowDesignerSelection != null &&
+                _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
             {
                 Selection.SelectOnly(Context, ModelItem);
             }
@@ -376,7 +388,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
+            var inputElement = sender as IInputElement;
             if (inputElement == null)
             {
                 return;
@@ -388,7 +400,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UIElement_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
+            var inputElement = sender as IInputElement;
             if (inputElement == null)
             {
                 return;
@@ -419,7 +431,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         //2013.03.20: Ashley Lewis - Bug 9233 carefully find title bar textbox and add two events
-        void DsfActivityDesigner_OnLayoutUpdated(object sender, EventArgs e)
+        private void DsfActivityDesigner_OnLayoutUpdated(object sender, EventArgs e)
         {
             var deepChild = this.FindChildByToString("Border", true); // Pass the border layer
             if (deepChild != null)
@@ -442,12 +454,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         //2013.03.19: Ashley Lewis - Bug 9233 Hide adorners when editting title
-        void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)
+        private void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)
         {
             HideAdorners();
         }
 
-        void ChildOnLostFocus(object sender, RoutedEventArgs e)
+        private void ChildOnLostFocus(object sender, RoutedEventArgs e)
         {
             ShowAdorners();
         }
@@ -455,6 +467,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Event Handlers
 
         #region Tear Down
+
+        public void Dispose()
+        {
+            CleanUp();
+        }
 
         private void CleanUp()
         {
@@ -474,11 +491,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _viewModel = null;
 
             DataContext = null;
-        }
-
-        public void Dispose()
-        {
-            CleanUp();
         }
 
         #endregion Tear Down

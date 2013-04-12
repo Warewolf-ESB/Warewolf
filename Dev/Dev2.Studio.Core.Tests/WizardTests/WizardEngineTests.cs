@@ -720,7 +720,7 @@ namespace Dev2.Core.Tests
             Act.OutputMapping = @"<Outputs><Output Name=""FailureMessage"" MapsTo=""FailureMessage"" Value=""[[FailureMessage]]"" /><Output Name=""Message"" MapsTo=""Message"" Value=""[[Message]]"" /></Outputs>";
             ModelItem testItem = TestModelItemFactory.CreateModelItem(Act);
 
-            bool result = wizEng.HasWizard(testItem, testRes.Object);
+            bool result = wizEng.HasWizard(testItem, testRes.Object.Environment);
 
             Assert.IsTrue(result);
         }
@@ -736,7 +736,7 @@ namespace Dev2.Core.Tests
             Act.OutputMapping = @"<Outputs><Output Name=""FailureMessage"" MapsTo=""FailureMessage"" Value=""[[FailureMessage]]"" /><Output Name=""Message"" MapsTo=""Message"" Value=""[[Message]]"" /></Outputs>";
             ModelItem testItem = TestModelItemFactory.CreateModelItem(Act);
 
-            bool result = wizEng.HasWizard(testItem, testRes.Object);
+            bool result = wizEng.HasWizard(testItem, testRes.Object.Environment);
 
             Assert.IsFalse(result);
         }
@@ -751,7 +751,7 @@ namespace Dev2.Core.Tests
             DsfMultiAssignActivity Act = new DsfMultiAssignActivity();
             ModelItem testItem = TestModelItemFactory.CreateModelItem(Act);
 
-            bool result = wizEng.HasWizard(testItem, testRes.Object);
+            bool result = wizEng.HasWizard(testItem, testRes.Object.Environment);
 
             Assert.IsTrue(result);
         }
@@ -765,7 +765,7 @@ namespace Dev2.Core.Tests
             DsfMultiAssignActivity Act = new DsfMultiAssignActivity();
             ModelItem testItem = TestModelItemFactory.CreateModelItem(Act);
 
-            bool result = wizEng.HasWizard(testItem, testRes.Object);
+            bool result = wizEng.HasWizard(testItem, testRes.Object.Environment);
 
             Assert.IsFalse(result);
         }
@@ -777,7 +777,7 @@ namespace Dev2.Core.Tests
             DoInitialize();
             Mock<IContextualResourceModel> testRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "testResource", false);
 
-            bool result = wizEng.HasWizard(null, testRes.Object);
+            bool result = wizEng.HasWizard(null, testRes.Object.Environment);
 
             Assert.IsFalse(result);
         }

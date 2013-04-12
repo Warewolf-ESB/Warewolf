@@ -450,7 +450,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-
         #region Read/WriteTextAsync
 
         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  

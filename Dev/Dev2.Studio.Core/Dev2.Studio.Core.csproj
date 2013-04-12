@@ -293,12 +293,10 @@
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourceMessage.cs" />
     <Compile Include="Messages\DeployResourcesMessage.cs" />
-    <Compile Include="Messages\DoesActivityHaveWizardMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />
     <Compile Include="Messages\ExecuteResourceMessage.cs" />
     <Compile Include="Messages\FindMissingDataListItemsMessage.cs" />
-    <Compile Include="Messages\HasWizardMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
     <Compile Include="Messages\DebugStatusMessage.cs" />
@@ -396,7 +394,6 @@
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
-    <Compile Include="ViewModels\ActivityViewModels\BaseActivityViewModel.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\Administration\Dev2DialogueViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />

@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core.Wizards.Interfaces
         /// <returns>
         ///   <c>true</c> if the specified activity has wizard; otherwise, <c>false</c>.
         /// </returns>
-        bool HasWizard(ModelItem activity, IContextualResourceModel hostResource);
+        bool HasWizard(ModelItem activity, IEnvironmentModel environmentModel);
 
         /// <summary>
         /// Command to create a wizard.

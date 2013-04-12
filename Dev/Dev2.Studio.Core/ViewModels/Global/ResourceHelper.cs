@@ -348,5 +348,13 @@ namespace Dev2.Studio.Core {
             return userInterfaceType;
         }
 
+        public static string GetWizardName(IContextualResourceModel resource)
+        {
+            if (resource == null) return string.Empty;
+            if (string.IsNullOrWhiteSpace(resource.ResourceName)) return string.Empty;
+
+            return resource.ResourceName + ".wiz";
+        }
+
     }
 }

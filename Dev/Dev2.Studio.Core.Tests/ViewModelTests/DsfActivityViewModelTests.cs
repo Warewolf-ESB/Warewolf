@@ -95,7 +95,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem);
+            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object);
 
             Assert.IsTrue(vm.HasWizard == false && vm.HelpLink == "http://d");
             vm.Dispose();
@@ -105,7 +105,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModelWhereModelItemIsNull_Expected_ViewModelWithNoPropertiesSet()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            DsfActivityViewModel vm = new DsfActivityViewModel(null);
+            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+            DsfActivityViewModel vm = new DsfActivityViewModel(null, mockRes.Object);
             Assert.IsTrue(vm.HelpLink == null && vm.IconPath == null);
             vm.Dispose();
         }
@@ -118,7 +119,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             act.HelpLink = string.Empty;
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem);
+            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object);
             
             Assert.IsTrue(vm.HasHelpLink == false && vm.HelpLink == "");
             vm.Dispose();
@@ -131,7 +132,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem);
+            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object);
 
             Assert.IsTrue(vm.PropertyCollection.Count == 3);
             vm.Dispose();

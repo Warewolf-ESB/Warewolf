@@ -249,16 +249,16 @@ namespace Dev2.Studio.Core.Wizards
         /// <returns>
         ///   <c>true</c> if the specified activity has wizard; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasWizard(ModelItem activity, IContextualResourceModel hostResource)
+        public bool HasWizard(ModelItem activity, IEnvironmentModel environmentModel)
         {
             if (activity == null)
             {
                 throw new ArgumentNullException("activity");
             }
 
-            if (hostResource == null)
+            if (environmentModel == null)
             {
-                throw new ArgumentNullException("hostResource");
+                throw new ArgumentNullException("IEnvironmentModel");
             }
 
             bool result = false;
@@ -266,17 +266,24 @@ namespace Dev2.Studio.Core.Wizards
             //
             // Get the wizard endpoint
             //
-            string wizardName;
-            if (activity.ItemType == typeof(DsfActivity))
+            string wizardName = String.Empty;
+            bool isDsfActivity = activity.ItemType == typeof (DsfActivity);
+            if (isDsfActivity)
             {
-                wizardName = GetResourceWizardName(activity.Properties["ServiceName"].ComputedValue.ToString());
+                var serviceNameProperty = activity.Properties["ServiceName"];
+                if (serviceNameProperty != null && serviceNameProperty.ComputedValue != null)
+                {
+                    wizardName = GetResourceWizardName(serviceNameProperty.ComputedValue.ToString());          
+                }
             }
             else
             {
                 wizardName = GetCodedActivityWizardName(activity.ItemType.Name);
             }
 
-            IContextualResourceModel resource = hostResource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
+            var resource = environmentModel.ResourceRepository
+                .FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
+
             if (resource != null)
             {
                 result = true;
