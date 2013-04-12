@@ -29,10 +29,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
         #endregion
 
+        #region Fields
+
         private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
 
         private IList<ActivityDTO> _fieldsCollection;
-        int _indexCounter = 1;
+
+        #endregion
+
+        #region Properties
 
         public IList<ActivityDTO> FieldsCollection
         {
@@ -47,7 +52,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-
         public bool UpdateAllOccurrences { get; set; }
         public bool CreateBookmark { get; set; }
         public string ServiceHost { get; set; }
@@ -60,26 +64,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        #endregion
+
+        #region Ctor
+
         public DsfMultiAssignActivity()
             : base("Assign")
         {
             _fieldsCollection = new List<ActivityDTO>();
         }
 
-        //private bool _IsDebug = false;
+        #endregion        
+
+        #region Overridden NativeActivity Methods
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
-            base.CacheMetadata(metadata);
-            //metadata.AddDelegate(_delegate);
+            base.CacheMetadata(metadata);            
         }
 
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugOutputs.Clear();
-            _indexCounter = 1;
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListBinder binder = context.GetExtension<IDataListBinder>();
+            var indexCounter = 1;
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();            
             // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -107,7 +115,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
-                        _indexCounter++;
+                        indexCounter++;
                     }
                     compiler.Upsert(executionID, toUpsert, out errors);
 
@@ -142,26 +150,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public void RemoveItem()
+        public override enFindMissingType GetFindMissingType()
         {
-            List<int> BlankCount = new List<int>();
-            foreach (dynamic item in FieldsCollection)
-            {
-                if (String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue))
-                {
-                    BlankCount.Add(item.IndexNumber);
-                }
-            }
-            if (BlankCount.Count > 1 && FieldsCollection.Count > 2)
-            {
-                FieldsCollection.Remove(FieldsCollection[BlankCount[0] - 1]);
-                for (int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
-                {
-                    dynamic tmp = FieldsCollection[i] as dynamic;
-                    tmp.IndexNumber = i + 1;
-                }
-            }
+            return enFindMissingType.DataGridActivity;
         }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+
+            //foreach (Tuple<string, string> t in updates)
+            //{
+            //    // locate all updates for this tuple
+            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
+
+            //    // issues updates
+            //    foreach (var a in items)
+            //    {
+            //        a.FieldValue = t.Item2;
+            //    }
+            //}
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+            //foreach (Tuple<string, string> t in updates)
+            //{
+            //    // locate all updates for this tuple
+            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldValue.Equals(t.Item1));
+
+            //    // issues updates
+            //    foreach (var a in items)
+            //    {
+            //        a.FieldName = t.Item2;
+            //    }
+            //}
+        }
+
+        #endregion        
 
         #region Overridden ActivityAbstact Methods
 
@@ -198,39 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
-
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
-        {
-
-            //foreach (Tuple<string, string> t in updates)
-            //{
-            //    // locate all updates for this tuple
-            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
-
-            //    // issues updates
-            //    foreach (var a in items)
-            //    {
-            //        a.FieldValue = t.Item2;
-            //    }
-            //}
-        }
-
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
-        {
-            //foreach (Tuple<string, string> t in updates)
-            //{
-            //    // locate all updates for this tuple
-            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldValue.Equals(t.Item1));
-
-            //    // issues updates
-            //    foreach (var a in items)
-            //    {
-            //        a.FieldName = t.Item2;
-            //    }
-            //}
-        }
-
-
+       
         #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
@@ -243,6 +236,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName)).Select(c => c.FieldName).ToArray();
             return GetForEachItems(context, StateType.After, items);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void RemoveItem()
+        {
+            List<int> BlankCount = new List<int>();
+            foreach (dynamic item in FieldsCollection)
+            {
+                if (String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue))
+                {
+                    BlankCount.Add(item.IndexNumber);
+                }
+            }
+            if (BlankCount.Count > 1 && FieldsCollection.Count > 2)
+            {
+                FieldsCollection.Remove(FieldsCollection[BlankCount[0] - 1]);
+                for (int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
+                {
+                    dynamic tmp = FieldsCollection[i] as dynamic;
+                    tmp.IndexNumber = i + 1;
+                }
+            }
         }
 
         #endregion

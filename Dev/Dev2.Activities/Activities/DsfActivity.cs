@@ -307,6 +307,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DsfActivity;
+        }
+
         #endregion
 
         #region Private Methods

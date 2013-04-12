@@ -14,11 +14,7 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
 using System.Threading;
-using System.Windows;
-
 
 #endregion
 

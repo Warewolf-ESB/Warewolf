@@ -8,6 +8,8 @@ using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -134,6 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the name of the archive.
         /// </summary>
         [Inputs("Archive Name")]
+        [FindMissing]
         public string ArchiveName
         {
             get;
@@ -144,6 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the archive password.
         /// </summary>
         [Inputs("Archive Password")]
+        [FindMissing]
         public string ArchivePassword
         {
             get;
@@ -154,6 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the compression ratio.
         /// </summary>
         [Inputs("Compession Ratio")]
+        [FindMissing]
         public string CompressionRatio
         {
             get;
@@ -164,6 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the input path.
         /// </summary>
         [Inputs("Input Path")]
+        [FindMissing]
         public string InputPath
         {
             get;
@@ -174,6 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the output path.
         /// </summary>
         [Inputs("Output Path")]
+        [FindMissing]
         public string OutputPath
         {
             get;

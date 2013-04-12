@@ -85,179 +85,6 @@ namespace Dev2.Core.Tests
 
         #endregion GetBaseUnlimitedFlowchartActivity Tests
 
-        #region Find Missing Tests
-        /// <summary>
-        /// Tests Find Missing is able to find workflow items not in the datalist
-        /// </summary>
-        [TestMethod]
-        public void FindMissingDataListObject_ItemNotExists_ExpectedListContainingMissingDataListItem()
-        {
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            // For some reason I was unable to retrieve the value for the below from the string resource file
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(mockResourceModel.Object);
-
-            OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
-            Mock<IDataListItemModel> DataListItem = new Mock<IDataListItemModel>();
-            DataListItem.Setup(list => list.Name).Returns("testing");
-            DataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-            DataListItems.Add(DataListItem.Object);
-            mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
-            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            workflowDesigner.PopUp = mockPopUp.Object;
-            //workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
-            workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
-            Assert.IsTrue(workflowDesigner.WorkflowVerifiedDataParts.FirstOrDefault(c => c.Field == "result") != null);
-
-        }
-
-        /// <summary>
-        /// Tests that find missing is able to find items not used in workflow but are in datalist
-        /// </summary>
-        [TestMethod]
-        public void RemoveUnused_ItemExists_ExpectedListOfPartsPopulated()
-        {
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(mockResourceModel.Object);
-
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
-            OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
-            Mock<IDataListItemModel> DataListItem = new Mock<IDataListItemModel>();
-            Mock<IDataListItemModel> secondDataListItem = new Mock<IDataListItemModel>();
-            //19.09.2012: massimo.guerrera - amended to include desciptions
-            DataListItem.Setup(list => list.Name).Returns("result");
-            DataListItem.Setup(list => list.Description).Returns("result desciption");
-            DataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-            secondDataListItem.Setup(list => list.Name).Returns("testing");
-            secondDataListItem.Setup(list => list.Description).Returns("testing description");
-            secondDataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-
-            DataListItems.Add(DataListItem.Object);
-            DataListItems.Add(secondDataListItem.Object);
-
-            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
-
-            //Juries 8810 TODO
-            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
-            workflowDesigner.PopUp = mockPopUp.Object;
-          //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
-            workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
-            Assert.IsTrue(workflowDesigner.WorkflowVerifiedDataParts.Count == 1);
-        }
-
-        /// <summary>
-        /// Tests that find missing does not return partially formed datalist parts
-        /// </summary>
-        [TestMethod]
-        public void AddRemoveDataListParts_InvalidDataListpart_Expected_No_Items_To_Add()
-        {
-            //Mock<IContextualResourceModel> mockResourceModel = new Mock<IContextualResourceModel>();
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-
-            //Requires Specific XAML
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(@"<Activity mc:Ignorable=""sap"" x:Class=""ServiceToBindFrom"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
-  <x:Members>
-    <x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" />
-    <x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" />
-    <x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" />
-  </x:Members>
-  <sap:VirtualizedContainerService.HintSize>778,1014</sap:VirtualizedContainerService.HintSize>
-  <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
-  <Flowchart sap:VirtualizedContainerService.HintSize=""738,974"" mva:VisualBasic.Settings=""Assembly references and imported namespaces serialized as XML namespaces"">
-    <Flowchart.Variables>
-      <Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" />
-      <Variable x:TypeArguments=""x:String"" Name=""LastResult"" />
-      <Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" />
-      <Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" />
-      <Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" />
-      <Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />
-      <Variable x:TypeArguments=""uaba:Util"" Name=""t"" />
-    </Flowchart.Variables>
-    <sap:WorkflowViewStateService.ViewState>
-      <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-        <x:Boolean x:Key=""IsExpanded"">False</x:Boolean>
-        <av:Point x:Key=""ShapeLocation"">270,2.5</av:Point>
-        <av:Size x:Key=""ShapeSize"">60,75</av:Size>
-        <av:PointCollection x:Key=""ConnectorLocation"">300,77.5 300,107.5 150,107.5 150,276</av:PointCollection>
-        <x:Double x:Key=""Height"">938.5</x:Double>
-        <x:Double x:Key=""Width"">724</x:Double>
-      </scg:Dictionary>
-    </sap:WorkflowViewStateService.ViewState>
-    <Flowchart.StartNode>
-      <FlowStep x:Name=""__ReferenceID0"">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-            <av:Point x:Key=""ShapeLocation"">20.5,276</av:Point>
-            <av:Size x:Key=""ShapeSize"">259,443</av:Size>
-            <av:PointCollection x:Key=""ConnectorLocation"">271.5,280 301.5,280 301.5,342 450,342 450,372</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <uaba:DsfAssignActivity CurrentResult=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""True"" AmbientDataList=""[AmbientDataList]"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" FieldName=""[[RECORDSET([[).FIELD]]"" FieldValue=""{}{{&#xA;     var max = &quot;[[result]]&quot;;&#xA;&#xA;     if(max.length &lt; 1){&#xA;&#x9;max = 10;&#xA;     }&#xA;     var i = 0;&#xA;     var id = &quot;&lt;Data&gt;&quot;;&#xA;     var value = new Array();&#xA;     for(var i  = 0; i &lt;= max; i++){&#xA;        id += &quot;&lt;regions&gt;&quot;;&#xA;        id += &quot;&lt;id&gt;&quot;+i+&quot;&lt;/id&gt;&quot;;&#xA;        id += &quot;&lt;name&gt;region&quot;+i + &quot;&lt;/name&gt;&quot;;&#xA;        id += &quot;&lt;/regions&gt;&quot;;&#xA;       }&#xA;  id += &quot;&lt;/Data&gt;&quot;;&#xA;}}"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""259,443"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" UpdateAllOccurrences=""True"" />
-      </FlowStep>
-    </Flowchart.StartNode>
-    <x:Reference>__ReferenceID0</x:Reference>
-    <FlowStep>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-          <av:Point x:Key=""ShapeLocation"">393.5,33</av:Point>
-          <av:Size x:Key=""ShapeSize"">200,22</av:Size>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <uaba:DsfCommentActivity DisplayName=""DEF"" sap:VirtualizedContainerService.HintSize=""200,22"" Text=""01-02-2012 : Travis.Frisinger@dev2.co.za&#xA;&#xA;A testing service used to ensure&#xA;databinding works for both datagrid&#xA;and radio button, checkbox, and drop down."" />
-    </FlowStep>
-  </Flowchart>
-</Activity>");
-
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(mockResourceModel.Object);
-
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
-            OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
-            Mock<IDataListItemModel> DataListItem = new Mock<IDataListItemModel>();
-            Mock<IDataListItemModel> secondDataListItem = new Mock<IDataListItemModel>();
-            //19.09.2012: massimo.guerrera - amended to include desciptions
-            DataListItem.Setup(list => list.Name).Returns("result");
-            DataListItem.Setup(list => list.Description).Returns("result desciption");
-            DataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-            secondDataListItem.Setup(list => list.Name).Returns("testing");
-            secondDataListItem.Setup(list => list.Description).Returns("testing description");
-            secondDataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-
-            DataListItems.Add(DataListItem.Object);
-            DataListItems.Add(secondDataListItem.Object);
-
-            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
-
-            //Juries 8810 TODO
-            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
-            workflowDesigner.PopUp = mockPopUp.Object;
-          //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
-            workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
-            Assert.IsTrue(workflowDesigner.WorkflowVerifiedDataParts.Count == 0);
-        }
-
-        #endregion Find Missing Tests
-
         #region Remove Unused Tests
 
         /// <summary>
@@ -295,6 +122,7 @@ namespace Dev2.Core.Tests
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
            // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             workflowDesigner.RemoveAllUnusedDataListItems(dataListViewModel);
             Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 0);
 
@@ -567,9 +395,8 @@ namespace Dev2.Core.Tests
 
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
-            workflowDesigner.PopUp = mockPopUp.Object;
-            //workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
-            workflowDesigner.AddRemoveDataListItems(mockDataListViewModel.Object);
+            workflowDesigner.PopUp = mockPopUp.Object;                      
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();            
             return workflowDesigner.WorkflowVerifiedDataParts.Count;
         }
 

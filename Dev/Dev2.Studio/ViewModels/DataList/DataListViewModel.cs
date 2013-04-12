@@ -177,9 +177,13 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (part.IsScalar)
                 {
-                    IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
-                    ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
-                    Validator.Add(scalar);
+
+                    if (ScalarCollection.FirstOrDefault(c => c.Name == part.Field) == null)
+                    {
+                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
+                        ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
+                        Validator.Add(scalar);
+                    }
                 }
                 else
                 {
@@ -188,16 +192,19 @@ namespace Dev2.Studio.ViewModels.DataList
 
                     if (recsetToAddTo != null)
                     {
-                        IDataListItemModel child = DataListItemModelFactory.CreateDataListModel(part.Field, part.Description, recsetToAddTo);
-                        if (recsetToAddTo.Children.Count > 0)
+                        if (recsetToAddTo.Children.FirstOrDefault(c => c.Name == part.Field) == null)
                         {
-                            recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                            IDataListItemModel child = DataListItemModelFactory.CreateDataListModel(part.Field, part.Description, recsetToAddTo);
+                            if (recsetToAddTo.Children.Count > 0)
+                            {
+                                recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                            }
+                            else
+                            {
+                                recsetToAddTo.Children.Add(child);
+                            }
+                            recsetToAddTo.Validator.Add(child);
                         }
-                        else
-                        {
-                            recsetToAddTo.Children.Add(child);
-                        }
-                        recsetToAddTo.Validator.Add(child);
                     }
                     else if (tmpRecset != null)
                     {
@@ -230,63 +237,51 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventAggregator.Publish(new UpdateIntellisenseMessage());
-            //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+            EventAggregator.Publish(new UpdateIntellisenseMessage());            
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
             AddBlankRow(null);
         }
 
-        public void RemoveUnusedDataListItems(IList<IDataListVerifyPart> parts)
+        public void RemoveUnusedDataListItems()
         {
-            RemoveUnusedDataListItems(parts, false);
-        }
-
-        public void RemoveUnusedDataListItems(IList<IDataListVerifyPart> parts, bool async)
-        {
-            IList<IDataListItemModel> tmpRecsets = new List<IDataListItemModel>();
-            foreach (IDataListVerifyPart part in parts)
+            var unusedScalars = ScalarCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedScalars.Any())
             {
-                if (part.IsScalar)
+                foreach (IDataListItemModel dataListItemModel in unusedScalars)
                 {
-                    IDataListItemModel scalarToRemove = ScalarCollection.FirstOrDefault(c => c.Name == part.Field);
-                    if (scalarToRemove != null)
-                    {
-                        ScalarCollection.Remove(scalarToRemove);
-                        Validator.Remove(scalarToRemove);
-                    }
+                    ScalarCollection.Remove(dataListItemModel);
+                    Validator.Remove(dataListItemModel);
                 }
-                else
+            }
+            var unusedRecordsets = RecsetCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedRecordsets.Any())
+            {
+                foreach (IDataListItemModel dataListItemModel in unusedRecordsets)
                 {
-                    IDataListItemModel recsetToRemove = RecsetCollection.FirstOrDefault(c => c.Name == part.Recordset && c.IsRecordset);
-                    if (string.IsNullOrEmpty(part.Field))
+                    RecsetCollection.Remove(dataListItemModel);
+                    Validator.Remove(dataListItemModel);
+                }
+            }
+            foreach (IDataListItemModel recset in RecsetCollection)
+            {
+                if (recset.Children.Count > 0)
+                {
+                    var unusedRecsetChildren = recset.Children.Where(c => c.IsUsed == false).ToList();
+                    if (unusedRecsetChildren.Any())
                     {
-                        if (recsetToRemove != null)
+                        foreach (IDataListItemModel unusedRecsetChild in unusedRecsetChildren)
                         {
-                            tmpRecsets.Add(recsetToRemove);
-                        }
-                    }
-                    else
-                    {
-                        IDataListItemModel childToRemove = recsetToRemove.Children.FirstOrDefault(c => c.Name == part.Field && c.IsField);
-                        if (childToRemove != null)
-                        {
-                            recsetToRemove.Children.Remove(childToRemove);
-                            recsetToRemove.Validator.Remove(childToRemove);
+                            recset.Children.Remove(unusedRecsetChild);
+                            recset.Validator.Remove(unusedRecsetChild);
                         }
                     }
                 }
             }
 
-            foreach (IDataListItemModel item in tmpRecsets)
-            {
-                RecsetCollection.Remove(item);
-                Validator.Remove(item);
-            }
             WriteToResourceModel();
-            EventAggregator.Publish(new UpdateIntellisenseMessage());
-            //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
+            EventAggregator.Publish(new UpdateIntellisenseMessage());            
         }
 
         public IList<IDataListItemModel> CreateDataListItems(IList<IDataListVerifyPart> parts, bool isAdd)
@@ -973,7 +968,26 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (message.ResourceModel == Resource)
             {
-                SetUnusedDataListItems(message.ListOfUnused);
+                if (message.ListOfUnused != null && message.ListOfUnused.Count != 0)
+                {
+                    SetUnusedDataListItems(message.ListOfUnused);
+                }
+                else
+                {
+                    foreach (IDataListItemModel dataListItemModel in ScalarCollection)
+                    {
+                        dataListItemModel.IsUsed = true;
+                    }
+
+                    foreach (IDataListItemModel dataListItemModel in RecsetCollection)
+                    {
+                        dataListItemModel.IsUsed = true;
+                        foreach (IDataListItemModel listItemModel in dataListItemModel.Children)
+                        {
+                            listItemModel.IsUsed = true;
+                        }
+                    }
+                }
             }
         }
 
@@ -985,7 +999,8 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (message.ResourceModel == Resource)
             {
-                AddMissingDataListItems(message.ListToAdd);
+                if (message.ListToAdd != null && message.ListToAdd.Count != 0)
+                    AddMissingDataListItems(message.ListToAdd);
             }
         }
 

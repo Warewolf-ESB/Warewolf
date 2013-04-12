@@ -9,6 +9,8 @@ using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -180,6 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the password.
         /// </summary>
         [Inputs("Password")]
+        [FindMissing]
         public string Password
         {
             get;
@@ -190,6 +193,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the username.
         /// </summary>
         [Inputs("Username")]
+        [FindMissing]
         public string Username
         {
             get;
@@ -200,6 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the result.
         /// </summary>
         [Outputs("Result")]
+        [FindMissing]
         public new string Result
         {
             get;
@@ -209,7 +214,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets a value indicating whether this instance is not cert verifiable.
         /// </summary>
-        [Inputs("Is Not Certificate Verifiable")]
+        [Inputs("Is Not Certificate Verifiable")]        
         public bool IsNotCertVerifiable
         {
             get;

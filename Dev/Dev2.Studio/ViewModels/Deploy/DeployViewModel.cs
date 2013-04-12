@@ -57,9 +57,6 @@ namespace Dev2.Studio.ViewModels.Deploy
         private bool _initialLoad = true;
         private bool _selectingAndExpandingFromNavigationItem;
 
-        private string _mediatorKeyUpdateDeploy;
-        private string _mediatorKeySelectItemInDeploy;
-
         private int _sourceDeployItemCount;
         private int _destinationDeployItemCount;
 

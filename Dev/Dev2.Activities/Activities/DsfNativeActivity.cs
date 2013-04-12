@@ -605,6 +605,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        #region GetFindMissingEnum
+
+        public virtual enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.StaticActivity;
+        }
+
+        #endregion
+
         #region Create Debug Item
 
         public IList<IDebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
@@ -827,5 +836,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         #endregion
-    }
+    }    
 }

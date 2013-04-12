@@ -12,6 +12,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -50,18 +52,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Properties
 
         [Inputs("Expression")]
+        [FindMissing]
         public string Expression { get; set; }
 
-        [Inputs("RoundingType")]
+        [Inputs("RoundingType")]        
         public string RoundingType { get; set; }
 
         [Inputs("RoundingDecimalPlaces")]
+        [FindMissing]
         public string RoundingDecimalPlaces { get; set; }
 
         [Inputs("DecimalPlacesToShow")]
+        [FindMissing]
         public string DecimalPlacesToShow { get; set; }
 
         [Outputs("Result")]
+        [FindMissing]
         public new string Result { get; set; }
 
         protected override bool CanInduceIdle

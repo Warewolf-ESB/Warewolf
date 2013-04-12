@@ -51,6 +51,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+        #region Overridden NativeActivity Methods
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
@@ -150,6 +152,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
+        }
+
+        #endregion
 
         #region Private Methods
 

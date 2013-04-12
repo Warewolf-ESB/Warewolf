@@ -9,6 +9,7 @@ using System.Activities;
 using System.Collections;
 using System.Collections.Generic;
 using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Unlimited.Framework;
@@ -37,6 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Properties
 
         [Inputs("FromDisplayName")]
+        [FindMissing]
         public string FromDisplayName
         {
             get
@@ -51,6 +53,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         [Inputs("ForEachElementName")]
+        [FindMissing]
         public string ForEachElementName
         {
             get

@@ -563,12 +563,7 @@ namespace Dev2.Core.Tests
 	<Message IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
             
-            wizEng.EditWizard(mockResource3.Object, mockResource1.Object);
-
-            string popupMessage = @"The following items have changed on the Data List of TestWorkflow1: 
- 
- Added: NUD2347, number, vehicleColor, Fines().Speed, Fines().Date, Fines().Location, Registrations().Speed, Registrations().Date, Registrations().Location
--------------------------------------------------";
+            wizEng.EditWizard(mockResource3.Object, mockResource1.Object);           
 
             //Assert.IsTrue(wizResource.ResourceName == "TestWorkflow1.wiz" && (wizEng.Popup.Description == popupMessage));
             Assert.Inconclusive("Namespace to  FieldName");
@@ -595,14 +590,7 @@ namespace Dev2.Core.Tests
 	<Message IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
             
-            wizEng.EditResourceWizard(mockResource1.Object);
-
-            string popupMessage = @"The following items have changed on the Data List of TestWorkflow1: 
- 
- Added: NUD2347, number, vehicleColor, Fines().Speed, Fines().Date, Fines().Location, Registrations().Speed, Registrations().Date, Registrations().Location
-------------------------------------------------- 
- Removed: Host, Port, From, To, Subject, BodyType, Body, Attachment, FailureMessage, RemoveVar, Message
--------------------------------------------------";
+            wizEng.EditResourceWizard(mockResource1.Object);            
 
             //Assert.IsTrue(wizResource.ResourceName == "TestWorkflow1.wiz" && (wizEng.Popup.Description == popupMessage));
             Assert.Inconclusive("Namespace to  FieldName");

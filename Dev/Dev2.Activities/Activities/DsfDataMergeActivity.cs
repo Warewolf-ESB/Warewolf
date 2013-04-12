@@ -77,6 +77,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        #region Overridden NativeActivity Methods
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
@@ -187,6 +189,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 #endregion
             }
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.MixedActivity;
+        }
+
+        #endregion
 
         #region Private Methods
 

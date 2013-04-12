@@ -1,5 +1,7 @@
 ﻿using Dev2.Interfaces;
 using System.ComponentModel;
+using Dev2.Util;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -39,8 +41,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string WatermarkTextVariable { get; set; }
 
+        [FindMissing]
         public string Padding { get; set; }
-
+        
         public string Alignment { get; set; }
 
         public bool EnableAt
@@ -69,6 +72,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        [FindMissing]
         public string InputVariable
         {
             get
@@ -95,6 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        [FindMissing]
         public string At
         {
             get

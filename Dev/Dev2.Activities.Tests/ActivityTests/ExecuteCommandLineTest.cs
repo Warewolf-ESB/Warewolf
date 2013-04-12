@@ -189,9 +189,7 @@ namespace ActivityUnitTests.ActivityTest
             TestStartNode = new FlowStep
             {
                 Action = activity
-            };
-            string actual;
-            string error;
+            };         
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
@@ -236,8 +234,6 @@ namespace ActivityUnitTests.ActivityTest
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
@@ -258,9 +254,7 @@ namespace ActivityUnitTests.ActivityTest
             TestStartNode = new FlowStep
             {
                 Action = activity
-            };
-            string actual;
-            string error;
+            };         
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();

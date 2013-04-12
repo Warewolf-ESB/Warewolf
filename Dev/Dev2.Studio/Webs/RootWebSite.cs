@@ -4,7 +4,6 @@ using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
 
 namespace Dev2.Studio.Webs

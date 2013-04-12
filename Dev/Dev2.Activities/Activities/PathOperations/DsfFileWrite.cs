@@ -8,6 +8,8 @@ using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -100,7 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="DsfFileWrite" /> is append.
         /// </summary>
-        [Inputs("Append")]
+        [Inputs("Append")]        
         public bool Append
         {
             get;
@@ -111,6 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the file contents.
         /// </summary>
         [Inputs("File Contents")]
+        [FindMissing]
         public string FileContents
         {
             get;
@@ -121,6 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the output path.
         /// </summary>
         [Inputs("Output Path")]
+        [FindMissing]
         public string OutputPath
         {
             get;

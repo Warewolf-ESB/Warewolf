@@ -125,6 +125,12 @@
     <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
     <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
     <Compile Include="Activities\PathOperations\DsfZip.cs" />
+    <Compile Include="Enums\enFindMissingType.cs" />
+    <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
+    <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\MixedActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\StaticActivityFindMissingStrategy.cs" />
     <Compile Include="Hosting\WorkflowInstanceInfo.cs" />
     <Compile Include="Builders\TemplateFragmentInjectionInstructionBuilder.cs" />
     <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />
@@ -159,6 +165,7 @@
     <Compile Include="Factories\DTOFactory.cs" />
     <Compile Include="Interfaces\ICollectionActivity.cs" />
     <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
+    <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
     <Compile Include="Interfaces\IWebpageRenderWorker.cs" />
     <Compile Include="Interfaces\IWizardEditable.cs" />
@@ -196,6 +203,7 @@
     <Compile Include="Utilities\Inputs.cs" />
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\QuickSort.cs" />
+    <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>

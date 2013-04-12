@@ -1,6 +1,7 @@
 ﻿using Dev2.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Util;
 
 namespace Dev2
 {
@@ -37,7 +38,7 @@ namespace Dev2
 
         /// <summary>
         /// Current base type
-        /// </summary>
+        /// </summary>        
         public string FromType
         {
             get
@@ -53,7 +54,7 @@ namespace Dev2
 
         /// <summary>
         /// Target base conversion type
-        /// </summary>
+        /// </summary>       
         public string ToType
         {
             get
@@ -70,6 +71,7 @@ namespace Dev2
         /// <summary>
         /// The Input to use for the from
         /// </summary>
+        [FindMissing]
         public string FromExpression
         {
             get
@@ -86,6 +88,7 @@ namespace Dev2
         /// <summary>
         /// Where to place the result, will be the same as From until wizards are created
         /// </summary>
+        [FindMissing]
         public string ToExpression
         {
             get

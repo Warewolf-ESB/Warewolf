@@ -45,17 +45,14 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion FilterCondition
 
         #region Instance Fields
+
         private bool _isDisposed;
         private bool _isUpdated;
         private bool _hasCachedDatalist;
-        //private object _mediatorKey;
-        private string _mediatorKey;
         private string _cachedDataList;
         private IntellisenseTextBox _textBox;
         private readonly SyntaxTreeBuilder _builder = new SyntaxTreeBuilder();
 
-        //private StringValueCollection<IntellisenseTokenDefinition> _recordDefinitions;
-        //private StringValueCollection<IntellisenseTokenDefinition> _entryDefinitions;
         #endregion
 
         #region Constructor

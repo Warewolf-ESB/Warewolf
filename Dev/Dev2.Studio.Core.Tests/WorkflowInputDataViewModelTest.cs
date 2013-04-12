@@ -243,10 +243,8 @@ namespace Dev2.Core.Tests {
         }
 
         private IList<IDataListItem> CreateTestDataListItemRecords(int numberOfRecords, int recordFieldCount)
-        {
-            int recordCount = 14;
-            IList<IDataListItem> recordSets = new List<IDataListItem>();
-            int tempCount;
+        {           
+            IList<IDataListItem> recordSets = new List<IDataListItem>();          
             for (int i = 1; i <= numberOfRecords; i++)
             {
                 for (int j = 1; j <= recordFieldCount; j++)

@@ -42,7 +42,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
         protected override void CacheMetadata(NativeActivityMetadata metadata) {
             base.CacheMetadata(metadata);
-            fields.Add(new ActivityDTO("[[FormView]]", Html, 0));
+            fields.Add(new ActivityDTO("[[FormView]]", Html, 0));            
             _assignActivity = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = fields, InputMapping = null};
 
             // FieldName = "FormView", FieldValue = Html, Add = true };

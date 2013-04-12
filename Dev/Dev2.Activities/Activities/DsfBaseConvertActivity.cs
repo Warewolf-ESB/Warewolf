@@ -54,6 +54,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+        #region Overridden NativeActivity Methods
+
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -204,6 +206,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
+        }
+
+        #endregion
 
         #region Private Methods
 

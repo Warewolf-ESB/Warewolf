@@ -11,6 +11,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -30,18 +32,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the date time string the user enters into the "InField" box
         /// </summary>
         [Inputs("InField")]
+        [FindMissing]
         public string InField { get; set; }
 
         /// <summary>
         /// The property that holds the input format string the user enters into the "Index" dropdownbox
         /// </summary>
-        [Inputs("Index")]
+        [Inputs("Index")]        
         public string Index { get; set; }
 
         /// <summary>
         /// The property that holds the output format string the user enters into the "Characters" box
         /// </summary>
         [Inputs("Characters")]
+        [FindMissing]
         public string Characters { get; set; }
 
         /// <summary>
@@ -54,6 +58,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
+        [FindMissing]
         public new string Result { get; set; }
 
         /// <summary>
@@ -66,6 +71,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the start index that the user enters into the "StartIndex" textbox
         /// </summary>
         [Inputs("StartIndex")]
+        [FindMissing]
         public string StartIndex { get; set; }
 
 

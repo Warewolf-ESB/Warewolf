@@ -14,6 +14,8 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using ThreadState = System.Diagnostics.ThreadState;
@@ -35,6 +37,7 @@ namespace Dev2.Activities
         /// Gets or sets the name of the recordset.
         /// </summary>  
         [Inputs("CommandFileName")]
+        [FindMissing]
         public string CommandFileName
         {
             get
@@ -48,6 +51,7 @@ namespace Dev2.Activities
         }
 
         [Outputs("CommandResult")]
+        [FindMissing]
         public string CommandResult
         {
             get

@@ -2,6 +2,8 @@
 using Dev2.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Util;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -31,6 +33,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string WatermarkTextValue { get; set; }
 
+        [FindMissing]
         public string FieldName
         {
             get
@@ -45,6 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        [FindMissing]
         public string FieldValue
         {
             get

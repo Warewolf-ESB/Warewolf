@@ -20,6 +20,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
+        #region Fields
 
         string _sourceString;
 
@@ -27,6 +28,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
         int _indexCounter = 1;
         private IList<DataSplitDTO> _resultsCollection;
+
+        #endregion
+
+        #region Properties
 
         public IList<DataSplitDTO> ResultsCollection
         {
@@ -64,11 +69,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        #endregion
+
+        #region Ctor
+
         public DsfDataSplitActivity()
             : base("Data Split")
         {
             ResultsCollection = new List<DataSplitDTO>();
         }
+
+        #endregion
+
+        #region Overridden NativeActivity Methods
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -200,6 +213,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.MixedActivity;
+        }
+
+        #endregion
 
         #region Private Methods
 

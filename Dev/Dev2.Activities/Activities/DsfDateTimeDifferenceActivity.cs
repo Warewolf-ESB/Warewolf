@@ -12,6 +12,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -31,30 +33,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the date time string the user enters into the "Input1" box
         /// </summary>
         [Inputs("Input1")]
+        [FindMissing]
         public string Input1 { get; set; }
 
         /// <summary>
         /// The property that holds the input format string the user enters into the "Input2" box
         /// </summary>
         [Inputs("Input2")]
+        [FindMissing]
         public string Input2 { get; set; }
 
         /// <summary>
         /// The property that holds the output format string the user enters into the "Input Format" box
         /// </summary>
         [Inputs("InputFormat")]
+        [FindMissing]
         public string InputFormat { get; set; }
 
         /// <summary>
         /// The property that holds the time modifier string the user selects in the "Output In" combobox
         /// </summary>
-        [Inputs("OutputType")]
+        [Inputs("OutputType")]        
         public string OutputType { get; set; }
 
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
+        [FindMissing]
         public new string Result { get; set; }
 
         #endregion Properties

@@ -2,6 +2,8 @@
 using Dev2.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Util;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -84,6 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        [FindMissing]
         public string OutputVariable
         {
             get
@@ -110,6 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        [FindMissing]
         public string At
         {
             get

@@ -12,6 +12,8 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -36,18 +38,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Property for holding a string the user enters into the "In Fields" box
         /// </summary>
         [Inputs("FieldsToSearch")]
+        [FindMissing]
         public string FieldsToSearch { get; set; }
 
         /// <summary>
-        /// Property for holding a string the user selects in the "Find" drop down box
+        /// Property for holding a string the user selects in the "Find" box
         /// </summary>
         [Inputs("Find")]
+        [FindMissing]
         public string Find { get; set; }
 
         /// <summary>
         /// Property for holding a string the user enters into the "Replace With" box
         /// </summary>
         [Inputs("ReplaceWith")]
+        [FindMissing]
         public string ReplaceWith { get; set; }
 
         /// <summary>
@@ -60,6 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Property for holding a string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
+        [FindMissing]
         public new string Result { get; set; }
 
         #endregion Properties

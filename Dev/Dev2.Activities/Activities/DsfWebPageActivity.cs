@@ -323,9 +323,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // 25.07.2012 - Travis.Frisinger : Check for design mode binding
             //string serviceName = Compiler.ExtractSystemTag(enSystemTag.Service, preExecuteADL);
             string serviceName = compiler.EvaluateSystemEntry(executionId, enSystemTag.Service, out errors);
-            allErrors.MergeErrors(errors);
-
-            string webserver = "http://127.0.0.1:1234";
+            allErrors.MergeErrors(errors);         
 
             string parentService = compiler.EvaluateSystemEntry(executionId, enSystemTag.ParentServiceName, out errors);
             allErrors.MergeErrors(errors);

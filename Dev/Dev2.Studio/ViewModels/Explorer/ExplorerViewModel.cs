@@ -12,8 +12,7 @@ namespace Dev2.Studio.ViewModels.Explorer
     public class ExplorerViewModel : BaseViewModel,IHandle<UpdateExplorerMessage>,IHandle<RemoveEnvironmentMessage>,IHandle<AddServerToExplorerMessage>
     {
         #region Class Members
-
-        private readonly string _mediatorKey;
+        
         private RelayCommand _connectCommand;
         private RelayCommand _environmentChangedCommand;
 

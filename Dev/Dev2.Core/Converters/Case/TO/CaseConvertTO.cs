@@ -1,6 +1,7 @@
 ﻿using Dev2.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Util;
 
 namespace Dev2
 {
@@ -32,7 +33,7 @@ namespace Dev2
         #endregion Ctor
 
         #region Properties
-
+        [FindMissing]
         public string StringToConvert
         {
             get
@@ -71,15 +72,16 @@ namespace Dev2
             }
         }
 
+        [FindMissing]
         public string Result
         {
             get
             {
                 //Add the below code when the wizard comes in
-                //if (string.IsNullOrWhiteSpace(_result))
-                //{
-                _result = StringToConvert;
-                //}
+                if (string.IsNullOrWhiteSpace(_result))
+                {
+                    _result = StringToConvert;
+                }
                 return _result;
             }
             set
@@ -91,6 +93,7 @@ namespace Dev2
 
         public int IndexNumber { get; set; }
 
+        [FindMissing]
         public string ExpressionToConvert { get; set; }
 
         public string WatermarkTextVariable { get; set; }

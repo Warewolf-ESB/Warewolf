@@ -13,6 +13,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -32,18 +34,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the date time string the user enters into the "Input" box
         /// </summary>
         [Inputs("DateTime")]
+        [FindMissing]
         public string DateTime { get; set; }
 
         /// <summary>
         /// The property that holds the input format string the user enters into the "Input Format" box
         /// </summary>
         [Inputs("InputFormat")]
+        [FindMissing]
         public string InputFormat { get; set; }
 
         /// <summary>
         /// The property that holds the output format string the user enters into the "Output Format" box
         /// </summary>
         [Inputs("OutputFormat")]
+        [FindMissing]
         public string OutputFormat { get; set; }
 
         /// <summary>
@@ -56,6 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the time modifier string the user enters into the "Amount" box
         /// </summary>
         [Inputs("TimeModifierAmountDisplay")]
+        [FindMissing]
         public string TimeModifierAmountDisplay { get; set; }
 
         /// <summary>
@@ -67,6 +73,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
+        [FindMissing]
         public new string Result { get; set; }
 
         #endregion Properties
@@ -133,12 +140,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(tmaItr);
 
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug)
                 {
-                    AddDebugInputItem(DateTime,"Start Date",dtItr.FetchEntry(),executionId);
+                    AddDebugInputItem(DateTime, "Start Date", dtItr.FetchEntry(), executionId);
                     AddDebugInputItem(InputFormat, "Input Format", ifItr.FetchEntry(), executionId);
                     AddDebugInputItem(TimeModifierAmountDisplay, "Add", tmaItr.FetchEntry(), executionId);
-                    AddDebugInputItem(OutputFormat, "Output Format", ofItr.FetchEntry(), executionId);                    
+                    AddDebugInputItem(OutputFormat, "Output Format", ofItr.FetchEntry(), executionId);
                 }
 
                 // Loop data ;)
@@ -170,9 +177,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             expression = Result;
                         }
                         toUpsert.Add(expression, result);
-                        if(dataObject.IsDebug)
+                        if (dataObject.IsDebug)
                         {
-                            AddDebugOutputItem(expression, result, executionId, indexToUpsertTO-1);
+                            AddDebugOutputItem(expression, result, executionId, indexToUpsertTO - 1);
                         }
                         toUpsert.FlushIterationFrame();
                     }
@@ -199,9 +206,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug)
                 {
-                    DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
@@ -212,23 +219,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
             DebugItem itemToAdd = new DebugItem();
-            
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });            
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
 
             if (valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
-            
-            if(labelText == "Add")
+
+            if (labelText == "Add")
             {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = TimeModifierType });            
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = TimeModifierType });
             }
 
             _debugInputs.Add(itemToAdd);
         }
 
-        private void AddDebugOutputItem(string expression, string value, Guid dlId,int indexToUpsertTo)
+        private void AddDebugOutputItem(string expression, string value, Guid dlId, int indexToUpsertTo)
         {
             DebugItem itemToAdd = new DebugItem();
 

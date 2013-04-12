@@ -113,25 +113,79 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 3);
         }
+        
+        [TestMethod]
+        public void AddMissingDataListItems_AddRecordSetWhenDataListContainsScalarWithSameName()
+        {
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("Province");
+            part.Setup(c => c.DisplayValue).Returns("[[Province]]");
+            part.Setup(c => c.Description).Returns("A state in a republic");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.Field).Returns("");
+            parts.Add(part.Object);
 
-        //massimo.guerrera - Commented out till bug 5024 is done
-        //[TestMethod]
-        //public void AddMissingDataListItems_AddRecordSetWhenDataListContainsScalarWithSameName()
-        //{
-        //    IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
-        //    var part = new Mock<IDataListVerifyPart>();
-        //    part.Setup(c => c.Recordset).Returns("Province");
-        //    part.Setup(c => c.DisplayValue).Returns("[[Province]]");
-        //    part.Setup(c => c.Description).Returns("A state in a republic");
-        //    part.Setup(c => c.IsScalar).Returns(false);
-        //    part.Setup(c => c.Field).Returns("");
-        //    parts.Add(part.Object);
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            _dataListViewModel.AddMissingDataListItems(parts);
 
-        //    _dataListViewModel.AddMissingDataListItems(parts, false);
-        //    _dataListViewModel.AddMissingDataListItems(parts);
+            Assert.IsTrue(_dataListViewModel.DataList.Count == 5 && !_dataListViewModel.DataList[3].HasError);
+        }
 
-        //    Assert.IsTrue(_dataListViewModel.DataList.Count == 5 && !_dataListViewModel.DataList[3].HasError);
-        //}
+        [TestMethod]
+        public void AddMissingScalarItemWhereItemsAlreadyExistsInDataListExpectedNoItemsAdded()
+        {
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Field).Returns("Province");
+            part.Setup(c => c.Description).Returns("A state in a republic");
+            part.Setup(c => c.IsScalar).Returns(true);
+            parts.Add(part.Object);         
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            //Second add trying to add the same items to the data list again
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
+        }
+
+        [TestMethod]
+        public void AddMissingRecordsetItemWhereItemsAlreadyExistsInDataListExpectedNoItemsAdded()
+        {
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("Province");
+            part.Setup(c => c.DisplayValue).Returns("[[Province]]");
+            part.Setup(c => c.Description).Returns("A state in a republic");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.Field).Returns("");
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            //Second add trying to add the same items to the data list again
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 3);
+        }
+
+        [TestMethod]
+        public void AddMissingRecordsetChildItemWhereItemsAlreadyExistsInDataListExpectedNoItemsAdded()
+        {
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("Province");
+            part.Setup(c => c.DisplayValue).Returns("[[Province]]");
+            part.Setup(c => c.Description).Returns("A state in a republic");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.Field).Returns("field1");
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            //Second add trying to add the same items to the data list again            
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[2].Children.Count == 1);
+        }
 
         #endregion Add Missing Tests
 
@@ -155,7 +209,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             int beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
-            _dataListViewModel.RemoveUnusedDataListItems(parts, false);
+            _dataListViewModel.SetUnusedDataListItems(parts);
+            _dataListViewModel.RemoveUnusedDataListItems();
             int afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
         }
@@ -180,7 +235,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             int beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
-            _dataListViewModel.RemoveUnusedDataListItems(parts, false);
+            _dataListViewModel.SetUnusedDataListItems(parts);
+            _dataListViewModel.RemoveUnusedDataListItems();
             int afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
         }

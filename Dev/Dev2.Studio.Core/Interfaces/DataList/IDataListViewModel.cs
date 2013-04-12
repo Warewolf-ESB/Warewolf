@@ -77,9 +77,8 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         /// <summary>
         /// Removes the unused data list items.
-        /// </summary>
-        /// <param name="parts">The parts.</param>
-        void RemoveUnusedDataListItems(IList<IDataListVerifyPart> parts);
+        /// </summary>     
+        void RemoveUnusedDataListItems();
 
         /// <summary>
         /// Validates the names.

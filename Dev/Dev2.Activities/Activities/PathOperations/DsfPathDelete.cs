@@ -8,6 +8,8 @@ using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -96,6 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the input path.
         /// </summary>
         [Inputs("Input Path")]
+        [FindMissing]
         public string InputPath
         {
             get;

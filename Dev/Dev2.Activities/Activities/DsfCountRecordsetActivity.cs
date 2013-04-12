@@ -8,6 +8,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -27,6 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the name of the recordset.
         /// </summary>  
         [Inputs("RecordsetName")]
+        [FindMissing]
         public string RecordsetName
         {
             get
@@ -37,17 +40,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _recordsetName = value;
             }
-        }
-
-        //private Variable<string> _recordSetName = new Variable<string>();
-        //private Variable<string> _countNumber2 = new Variable<string>();
-
-        //public InOutArgument<string> RecordsetName { get; set; }
+        }       
 
         /// <summary>
         /// Gets or sets the count number.
         /// </summary>  
         [Outputs("CountNumber")]
+        [FindMissing]
         public string CountNumber
         {
             get
@@ -58,9 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _countNumber = value;
             }
-        }
-
-        //public InOutArgument<string> CountNumber { get; set; }
+        }    
 
         public DsfCountRecordsetActivity()
             : base("Count Records")
@@ -68,15 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             RecordsetName = string.Empty;
             CountNumber = string.Empty;
             this.DisplayName = "Count Records";
-        }
-
-        //public override void PreConfigureActivity()
-        //{
-        //    base.PreConfigureActivity();
-
-        //    RecordsetName = new InOutArgument<string>(_recordSetName);
-        //    CountNumber = new InOutArgument<string>(_countNumber2);
-        //}
+        }       
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -122,14 +111,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(RecordsetName,"Recordset",recset,executionId);
                     }
 
-                    allErrors.AddError(err);
-
-                    //if(entry != null)
-                    //{
-
-                    //}
-
-                    //IBinaryDataListEntry recset = compiler.Evaluate(executionId, enActionType.User, RecordsetName, false, out errors);
+                    allErrors.AddError(err);                    
+                    
                     if (recset != null)
                     {
 

@@ -11,6 +11,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -33,36 +35,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Property for holding a string the user enters into the "In Fields" box
         /// </summary>
         [Inputs("FieldsToSearch")]
+        [FindMissing]
         public string FieldsToSearch { get; set; }
 
         /// <summary>
         /// Property for holding a string the user selects in the "Where" drop down box
         /// </summary>
-        [Inputs("SearchType")]
+        [Inputs("SearchType")]        
         public string SearchType { get; set; }
 
         /// <summary>
         /// Property for holding a string the user enters into the "Match" box
         /// </summary>
         [Inputs("SearchCriteria")]
+        [FindMissing]
         public string SearchCriteria { get; set; }
 
         /// <summary>
         /// Property for holding a string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
+        [FindMissing]
         public new string Result { get; set; }
 
         /// <summary>
         /// Property for holding a string the user enters into the "Start Index" box
         /// </summary>
         [Inputs("StartIndex")]
+        [FindMissing]
         public string StartIndex { get; set; }
 
         /// <summary>
         /// Property for holding a bool the user chooses with the "MatchCase" Checkbox
         /// </summary>
-        [Inputs("MatchCase")]
+        [Inputs("MatchCase")]        
         public bool MatchCase { get; set; }
 
         #endregion Properties

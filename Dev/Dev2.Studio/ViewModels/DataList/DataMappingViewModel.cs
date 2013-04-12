@@ -25,11 +25,6 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Locals
 
-        private const string InputsOpenTag = "<Inputs>";
-        private const string InputsCloseTag = "</Inputs>";
-        private const string OutputsOpenTag = "<Outputs>";
-        private const string OutputsCloseTag = "</Outputs>";
-
         private IWebActivity _activity;
         private ObservableCollection<IInputOutputViewModel> _outputs;
         private ObservableCollection<IInputOutputViewModel> _inputs;
@@ -45,8 +40,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private IInputOutputViewModel _currentlySelectedOutput;
         private IInputOutputViewModel _currentlySelectedInput;
         private IDataListViewModel _dataListViewModel;
-
-        private string _dataMappingUpdatedMediatorToken;
 
         #endregion Locals
 

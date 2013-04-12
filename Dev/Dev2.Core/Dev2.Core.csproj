@@ -260,6 +260,7 @@
     <Compile Include="Simulation\SimulationResult.cs" />
     <Compile Include="Util\Dev2ActivityIOIteration.cs" />
     <Compile Include="Util\Dev2XamlCleaner.cs" />
+    <Compile Include="Util\FindMissingAttribute.cs" />
     <Compile Include="Web\WebServiceInvoker.cs" />
     <Compile Include="DynamicServices\Objects\BizRule.cs" />
     <Compile Include="Common\RemoteObjectHandler.cs" />

@@ -6,6 +6,8 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Enums;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,12 +25,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the sort field.
         /// </summary>
         [Inputs("SortField")]
+        [FindMissing]
         public string SortField { get; set; }
 
         /// <summary>
         /// Gets or sets the selected sort.
         /// </summary>
-        [Inputs("SelectedSort")]
+        [Inputs("SelectedSort")]        
         public string SelectedSort { get; set; }
 
         public DsfSortRecordsActivity()

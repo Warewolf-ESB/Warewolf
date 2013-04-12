@@ -340,10 +340,13 @@ namespace Dev2.Studio.Core.Models.DataList
 
                 try
                 {
-                    XmlConvert.VerifyName(name);
-                    if (ErrorMessage != StringResources.ErrorMessageDuplicateValue)
+                    if(!string.IsNullOrEmpty(name))
                     {
-                        RemoveError();
+                        XmlConvert.VerifyName(name);
+                        if(ErrorMessage != StringResources.ErrorMessageDuplicateValue)
+                        {
+                            RemoveError();
+                        }
                     }
                 }
                 catch

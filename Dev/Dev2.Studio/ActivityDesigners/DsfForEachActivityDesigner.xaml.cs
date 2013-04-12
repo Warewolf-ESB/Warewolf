@@ -25,8 +25,6 @@ using Dev2.Studio.Core.Messages;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     public partial class DsfForEachActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
     {
-        private bool _isRegistered = false;
-        private string mediatorKey = string.Empty;
         public DsfForEachActivityDesigner() {
             InitializeComponent();
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();

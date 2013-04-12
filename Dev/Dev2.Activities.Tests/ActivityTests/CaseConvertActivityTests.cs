@@ -363,12 +363,9 @@ namespace ActivityUnitTests.ActivityTests
             IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
             string error = string.Empty;
             GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
-
-            // This should be an index of 2
-            string actualValue = actual[1].TheValue;
-
-            //Assert.AreEqual(actualValue, actualValue);
-            // actual Assert
+           
+            string actualValue = actual[2].TheValue;
+            
             Assert.AreEqual(expected, actualValue);
         }
 

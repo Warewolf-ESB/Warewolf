@@ -4,6 +4,9 @@ using Dev2.Composition;
 using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
+using Dev2.Enums;
+using Dev2.Factories;
+using Dev2.Interfaces;
 using Dev2.Studio.AppResources.AttachedProperties;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
@@ -23,6 +26,8 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
+using Dev2.Util;
+using Dev2.Utilities;
 using Microsoft.VisualBasic.Activities;
 using System;
 using System.Activities;
@@ -52,8 +57,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
         IWorkflowDesignerViewModel, IDisposable,
-        IHandle<UpdateResourceMessage>, 
-        IHandle<AddStringListToDataListMessage>, 
+        IHandle<UpdateResourceMessage>,
+        IHandle<AddStringListToDataListMessage>,
         IHandle<AddMissingAndFindUnusedDataListItemsMessage>,
         IHandle<AddRemoveDataListItemsMessage>, IHandle<FindMissingDataListItemsMessage>,
         IHandle<ShowActivityWizardMessage>, IHandle<ShowActivitySettingsWizardMessage>,
@@ -372,18 +377,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     //2013.03.13: Ashley Lewis - BUG 8846
                     var res = modelProperty.ComputedValue;
-                    if(res != null)
+                    if (res != null)
                     {
                         var resource = _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
-                    if (resource != null)
-                    {
+                        if (resource != null)
+                        {
                             var hasWizard = WizardEngine.HasWizard(modelItem, resource as IContextualResourceModel);
                             EventAggregator.Publish(new HasWizardMessage(hasWizard));
                             //Mediator.SendMessage(MediatorMessages.HasWizard, hasWizard);
+                        }
                     }
                 }
             }
-        }
         }
 
         private void ShowActivitySettingsWizard(ModelItem modelItem)
@@ -531,8 +536,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         // We will be assuming that a workflow field is a recordset based on 2 criteria:
         // 1. If the field contains a set of parenthesis
         // 2. If the field contains a period, it is a recordset with a field.
-
-        private IList<IDataListVerifyPart> BuildWorkflowFields()
+        IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             DataListVerifyPartDuplicationParser DataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
             _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>(DataPartVerifyDuplicates);
@@ -543,40 +547,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 foreach (var flowNode in flowNodes)
                 {
-                    List<string> workflowFields = new List<string>();
-                    try
-                    {
-                        var activity = flowNode.Properties["Action"].ComputedValue;
-                        var activityType = GetActivityType(activity);
-                        if (activityType != null)
-                        {
-                            workflowFields = GetActivityElements(activity, activityType);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        try
-                        {
-                            string propertyName = string.Empty;
-                            if (flowNode.ItemType.Name == "FlowDecision")
-                            {
-                                propertyName = "Condition";
-                            }
-                            else if (flowNode.ItemType.Name == "FlowSwitch`1")
-                            {
-                                propertyName = "Expression";
-                            }
-                            var activity = flowNode.Properties[propertyName].ComputedValue;
-                            if (activity != null)
-                            {
-                                workflowFields = GetDecisionElements(activity);
-                            }
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                    }
+                    var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
                     foreach (var field in workflowFields)
                     {
                         BuildDataPart(field);
@@ -587,6 +558,44 @@ namespace Dev2.Studio.ViewModels.Workflow
             return flattenedList;
         }
 
+        List<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
+        {
+            var workflowFields = new List<string>();
+
+            var modelProperty = flowNode.Properties["Action"];
+            if (modelProperty != null)
+            {
+                var activity = modelProperty.ComputedValue;
+                workflowFields = GetActivityElements(activity);
+            }
+            else
+            {
+                string propertyName = string.Empty;
+                switch (flowNode.ItemType.Name)
+                {
+                    case "FlowDecision":
+                        propertyName = "Condition";
+                        break;
+                    case "FlowSwitch`1":
+                        propertyName = "Expression";
+                        break;
+                }
+                var property = flowNode.Properties[propertyName];
+                if (property != null)
+                {
+                    var activity = property.ComputedValue;
+                    if (activity != null)
+                    {
+                        workflowFields = GetDecisionElements(activity);
+                    }
+                }
+                else
+                {
+                    return workflowFields;
+                }
+            }
+            return workflowFields;
+        }
         private List<String> GetDecisionElements(dynamic decision)
         {
             List<string> DecisionFields = new List<string>();
@@ -609,12 +618,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 DecisionFields.Add(DataListUtil.StripBracketsFromValue(p.Option.DisplayValue));
             }
 
-
             return DecisionFields;
-
         }
-
-
 
         private void BuildDataPart(string DataPartFieldData)
         {
@@ -669,1272 +674,40 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private List<String> GetActivityElements(object activity, Type activityType)
+        private List<String> GetActivityElements(object activity)
         {
-            string stringContainerDSFActivity;
-            UnlimitedObject activityDefinition;
-            object InnerActivity;
-            Type InnerActivityType;
-            IList<string> variable = new List<String>();
             DsfActivityAbstract<string> assign = activity as DsfActivityAbstract<string>;
             DsfActivityAbstract<bool> other = activity as DsfActivityAbstract<bool>;
-
+            enFindMissingType findMissingType;
 
             if (assign != null)
             {
-                activityDefinition = new UnlimitedObject(assign);
+                findMissingType = assign.GetFindMissingType();
             }
 
             else if (other != null)
             {
-                activityDefinition = new UnlimitedObject(other);
+                findMissingType = other.GetFindMissingType();
             }
             else
             {
                 return new List<String>();
             }
 
-            List<string> ActivityFields = new List<string>();
-            activityType = GetActivityType(activity);
+            List<string> activityFields = new List<string>();
 
-            switch (activityType.Name)
+            Dev2FindMissingStrategyFactory stratFac = new Dev2FindMissingStrategyFactory();
+
+            IFindMissingStrategy strategy = stratFac.CreateFindMissingStrategy(findMissingType);
+
+            foreach (string activityField in strategy.GetActivityFields(activity))
             {
-                #region DsfAssignActivity
-                case ("DsfAssignActivity"):
-                    stringContainerDSFActivity = activityDefinition.GetValue("FieldName");
-                    string fieldvalue = activityDefinition.GetValue("FieldValue");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(fieldvalue)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfAssignActivity
-
-                #region DsfSortRecordsActivity
-                case ("DsfSortRecordsActivity"):
-                    stringContainerDSFActivity = activityDefinition.GetValue("RecordsetName");
-                    string recsetSortField = activityDefinition.GetValue("SortField");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(recsetSortField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfSortRecordsActivity
-
-                #region DsfDataSplitActivity
-                case ("DsfDataSplitActivity"):
-                    XmlDocument dataSplitXdoc = new XmlDocument();
-                    dataSplitXdoc.LoadXml(activityDefinition.XmlString);
-                    XmlNodeList outputList = dataSplitXdoc.SelectNodes("//OutputVariable");
-                    XmlNodeList atList = dataSplitXdoc.SelectNodes("//At");
-
-                    for (int i = 0; i < outputList.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(outputList[i].InnerText))
-                        {
-                            stringContainerDSFActivity = outputList[i].InnerText;
-                            string multifieldvalue = atList[i].InnerText;
-                            if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                            {
-                                stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                            }
-                            foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                            {
-                                if (!item.Contains("xpath("))
-                                {
-                                    ActivityFields.Add(item);
-                                }
-                            }
-                            foreach (string item in (FormatDsfActivityField(multifieldvalue)))
-                            {
-                                if (!item.Contains("xpath("))
-                                {
-                                    ActivityFields.Add(item);
-                                }
-                            }
-                        }
-                    }
-
-                    string sourceString = GetValueFromUnlimitedObject(activityDefinition, "SourceString");
-                    foreach (string item in (FormatDsfActivityField(sourceString)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-
-                    break;
-                #endregion DsfDataSplitActivity
-
-                #region DsfDataMergeActivity
-                case ("DsfDataMergeActivity"):
-                    dataSplitXdoc = new XmlDocument();
-                    dataSplitXdoc.LoadXml(activityDefinition.XmlString);
-                    outputList = dataSplitXdoc.SelectNodes("//InputVariable");
-                    atList = dataSplitXdoc.SelectNodes("//At");
-                    string resultText = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    for (int i = 0; i < outputList.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(outputList[i].InnerText))
-                        {
-                            stringContainerDSFActivity = outputList[i].InnerText;
-                            string multifieldvalue = atList[i].InnerText;
-
-                            foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                            {
-                                if (!item.Contains("xpath("))
-                                {
-                                    ActivityFields.Add(item);
-                                }
-                            }
-                            foreach (string item in (FormatDsfActivityField(multifieldvalue)))
-                            {
-                                if (!item.Contains("xpath("))
-                                {
-                                    ActivityFields.Add(item);
-                                }
-                            }
-                        }
-                        foreach (string item in (FormatDsfActivityField(resultText)))
-                        {
-                            if (!item.Contains("xpath("))
-                            {
-                                ActivityFields.Add(item);
-                            }
-                        }
-                    }
-                    break;
-                #endregion DsfDataMergeActivity
-
-                #region DsfCountRecordsetActivity
-                case ("DsfCountRecordsetActivity"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "RecordsetName");
-                    string countOutput = GetValueFromUnlimitedObject(activityDefinition, "CountNumber");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(countOutput)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfCountRecordsetActivity
-
-                #region DsfExecuteCommandLineActivity
-                case ("DsfExecuteCommandLineActivity"):
-                    string commandFileNameString = GetValueFromUnlimitedObject(activityDefinition, "CommandFileName");
-                    string commandResultString = GetValueFromUnlimitedObject(activityDefinition, "CommandResult");
-                    foreach (string item in (FormatDsfActivityField(commandFileNameString)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(commandResultString)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfExecuteCommandLineActivity
-
-                #region DsfDeleteRecordActivity
-                case ("DsfDeleteRecordActivity"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "RecordsetName");
-                    countOutput = GetValueFromUnlimitedObject(activityDefinition, "Result");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(countOutput)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfDeleteRecordActivity
-
-                #region DsfFindRecordsActivity
-                case ("DsfFindRecordsActivity"):
-
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "FieldsToSearch");
-
-                    string match = GetValueFromUnlimitedObject(activityDefinition, "SearchCriteria");
-                    string result = GetValueFromUnlimitedObject(activityDefinition, "Result");
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(match)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(result)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfFindRecordsActivity
-
-                #region DsfReplaceActivity
-                case ("DsfReplaceActivity"):
-
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "FieldsToSearch");
-                    string find = GetValueFromUnlimitedObject(activityDefinition, "Find");
-                    string replaceVal = GetValueFromUnlimitedObject(activityDefinition, "ReplaceWith");
-                    result = GetValueFromUnlimitedObject(activityDefinition, "Result");
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(find)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(replaceVal)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(result)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfReplaceActivity
-
-                #region DsfIndexActivity
-                case ("DsfIndexActivity"):
-                    string inField = GetValueFromUnlimitedObject(activityDefinition, "InField");
-                    string index = GetValueFromUnlimitedObject(activityDefinition, "Index");
-                    string characters = GetValueFromUnlimitedObject(activityDefinition, "Characters");
-                    string direction = GetValueFromUnlimitedObject(activityDefinition, "Direction");
-                    string activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(inField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(index)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(characters)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(direction)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfIndexActivity
-
-                #region DsfCalculateActivity
-                case ("DsfCalculateActivity"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "Expression");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfCalculateActivity
-
-                #region DsfDateTimeActivity
-                case ("DsfDateTimeActivity"):
-                    string dateTime = GetValueFromUnlimitedObject(activityDefinition, "DateTime");
-                    string inputFormat = GetValueFromUnlimitedObject(activityDefinition, "InputFormat");
-                    string outputFormat = GetValueFromUnlimitedObject(activityDefinition, "OutputFormat");
-                    string timeModifier = GetValueFromUnlimitedObject(activityDefinition, "TimeModifierAmountDisplay");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(dateTime)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputFormat)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputFormat)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(timeModifier)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfDateTimeActivity
-
-                #region DsfNumberFormatActivity
-                case ("DsfNumberFormatActivity"):
-                    string expression = GetValueFromUnlimitedObject(activityDefinition, "Expression");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-                    string decimalPlacesToShow = GetValueFromUnlimitedObject(activityDefinition, "DecimalPlacesToShow");
-                    string roundingPlaces = GetValueFromUnlimitedObject(activityDefinition, "RoundingDecimalPlaces");
-
-                    foreach (string item in (FormatDsfActivityField(expression)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(decimalPlacesToShow)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(roundingPlaces)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfNumberFormatActivity
-
-                #region DsfDateTimeDifferenceActivity
-                case ("DsfDateTimeDifferenceActivity"):
-
-                    string input1 = GetValueFromUnlimitedObject(activityDefinition, "Input1");
-                    string input2 = GetValueFromUnlimitedObject(activityDefinition, "Input2");
-                    inputFormat = GetValueFromUnlimitedObject(activityDefinition, "InputFormat");
-                    string outputType = GetValueFromUnlimitedObject(activityDefinition, "OutputType");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-
-                    foreach (string item in (FormatDsfActivityField(input1)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(input2)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputFormat)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputType)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfDateTimeDifferenceActivity
-
-                #region DsfFileRead
-
-                case ("DsfFileRead"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    string userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    string password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfFileRead
-
-                #region DsfFileWrite
-                case ("DsfFileWrite"):
-
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    string fileContents = GetValueFromUnlimitedObject(activityDefinition, "FileContents");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(fileContents)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfFileWrite
-
-                #region DsfFolderRead
-                case ("DsfFolderRead"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfFolderRead
-
-                #region DsfPathCopy
-                case ("DsfPathCopy"):
-
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    string outputPath = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfPathCopy
-
-                #region DsfPathCreate
-                case ("DsfPathCreate"):
-
-                    outputPath = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfPathCreate
-
-                #region DsfPathDelete
-                case ("DsfPathDelete"):
-
-                    string inputPath = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfPathDelete
-
-                #region DsfPathMove
-                case ("DsfPathMove"):
-
-                    outputPath = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    inputPath = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfPathMove
-
-                #region DsfPathRename
-                case ("DsfPathRename"):
-
-                    outputPath = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    inputPath = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfPathRename
-
-                #region DsfUnZip
-                case ("DsfUnZip"):
-
-                    outputPath = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    inputPath = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    string archivePassword = GetValueFromUnlimitedObject(activityDefinition, "ArchivePassword");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(archivePassword)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfUnZip
-
-                #region DsfZip
-                case ("DsfZip"):
-
-                    outputPath = GetValueFromUnlimitedObject(activityDefinition, "OutputPath");
-                    inputPath = GetValueFromUnlimitedObject(activityDefinition, "InputPath");
-                    userName = GetValueFromUnlimitedObject(activityDefinition, "UserName");
-                    password = GetValueFromUnlimitedObject(activityDefinition, "Password");
-                    archivePassword = GetValueFromUnlimitedObject(activityDefinition, "ArchivePassword");
-                    string archiveName = GetValueFromUnlimitedObject(activityDefinition, "ArchiveName");
-                    string compressionRatio = GetValueFromUnlimitedObject(activityDefinition, "CompressionRatio");
-                    activityResultField = GetValueFromUnlimitedObject(activityDefinition, "Result");
-
-
-                    foreach (string item in (FormatDsfActivityField(activityResultField)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(userName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(password)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(inputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(outputPath)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(archivePassword)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(archiveName)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    foreach (string item in (FormatDsfActivityField(compressionRatio)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfZip
-
-                #region DsfCaseConvertActivity
-                case ("DsfCaseConvertActivity"):
-                    XmlDocument xdoc = new XmlDocument();
-                    xdoc.LoadXml(activityDefinition.XmlString);
-                    XmlNodeList nameList = xdoc.SelectNodes("//StringToConvert");
-
-                    for (int i = 0; i < nameList.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(nameList[i].InnerText))
-                        {
-                            stringContainerDSFActivity = nameList[i].InnerText;
-                            if (stringContainerDSFActivity.StartsWith("[[") && stringContainerDSFActivity.EndsWith("]]"))
-                            {
-                                foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                                {
-                                    if (!item.Contains("xpath("))
-                                    {
-                                        ActivityFields.Add(item);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                #endregion DsfCaseConvertActivity
-
-                #region DsfBaseConvertActivity
-                case ("DsfBaseConvertActivity"):
-                    xdoc = new XmlDocument();
-                    xdoc.LoadXml(activityDefinition.XmlString);
-                    nameList = xdoc.SelectNodes("//FromExpression");
-
-                    for (int i = 0; i < nameList.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(nameList[i].InnerText))
-                        {
-                            stringContainerDSFActivity = nameList[i].InnerText;
-                            if (stringContainerDSFActivity.StartsWith("[[") && stringContainerDSFActivity.EndsWith("]]"))
-                            {
-                                foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                                {
-                                    if (!item.Contains("xpath("))
-                                    {
-                                        ActivityFields.Add(item);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                #endregion DsfCaseConvertActivity
-
-                #region DsfMultiAssignActivity
-                case ("DsfMultiAssignActivity"):
-                    xdoc = new XmlDocument();
-                    xdoc.LoadXml(activityDefinition.XmlString);
-                    nameList = xdoc.SelectNodes("//FieldName");
-                    XmlNodeList valueList = xdoc.SelectNodes("//FieldValue");
-
-                    for (int i = 0; i < nameList.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(nameList[i].InnerText))
-                        {
-                            stringContainerDSFActivity = nameList[i].InnerText;
-                            string multifieldvalue = valueList[i].InnerText;
-                            if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                            {
-                                stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                            }
-                            foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                            {
-                                if (!item.Contains("xpath("))
-                                {
-                                    ActivityFields.Add(item);
-                                }
-                            }
-                            foreach (string item in (FormatDsfActivityField(multifieldvalue)))
-                            {
-                                if (!item.Contains("xpath("))
-                                {
-                                    ActivityFields.Add(item);
-                                }
-                            }
-                        }
-                    }
-                    break;
-                #endregion DsfMultiAssignActivity
-
-                #region DsfForEachActivity
-                case ("DsfForEachActivity"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "ForEachElementName");
-                    if (stringContainerDSFActivity.Contains("[[") && stringContainerDSFActivity.Contains("]]"))
-                    {
-                        ActivityFields.AddRange(FormatDsfActivityField(stringContainerDSFActivity));
-                    }
-
-                    DsfForEachActivity forEachActivity = activity as DsfForEachActivity;
-                    InnerActivity = forEachActivity.DataFunc.Handler;
-                    if (InnerActivity != null)
-                    {
-                        InnerActivityType = GetActivityType(InnerActivity);
-                        foreach (string item in (GetActivityElements(InnerActivity, InnerActivityType)))
-                        {
-                            if (!item.Contains("xpath("))
-                            {
-                                ActivityFields.Add(item);
-                            }
-                        }
-                    }
-                    break;
-                #endregion DsfForEachActivity
-
-                #region DsfFileForEachActivity
-                case ("DsfFileForEachActivity"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "ForEachElementName");
-                    ActivityFields.AddRange(FormatDsfActivityField(stringContainerDSFActivity));
-                    DsfFileForEachActivity fileForEachActivity = activity as DsfFileForEachActivity;
-                    InnerActivity = fileForEachActivity.DataFunc.Handler;
-                    InnerActivityType = GetActivityType(InnerActivity);
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (GetActivityElements(InnerActivity, InnerActivityType)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfFileForEachActivity
-
-                #region DsfTransformActivity
-                case ("TransformActivity"):
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "RootTag");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "Transformation");
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "TransformationElementName");
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    stringContainerDSFActivity = GetValueFromUnlimitedObject(activityDefinition, "TransformElementName");
-                    if (!stringContainerDSFActivity.StartsWith("[[") && !stringContainerDSFActivity.EndsWith("]]"))
-                    {
-                        stringContainerDSFActivity = "[[" + stringContainerDSFActivity + "]]";
-                    }
-                    foreach (string item in (FormatDsfActivityField(stringContainerDSFActivity)))
-                    {
-                        if (!item.Contains("xpath("))
-                        {
-                            ActivityFields.Add(item);
-                        }
-                    }
-                    break;
-                #endregion DsfTransformActivity
-
-                #region DsfActivity
-                case ("DsfActivity"):
-
-                    if (!activityDefinition.RootName.Equals("dsfwebpageactivity", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        try
-                        {
-                            XElement root = activityDefinition.xmlData;
-                            XElement serviceNameNode = root.Descendants().FirstOrDefault(c => c.Name.ToString().Equals("ServiceName", StringComparison.InvariantCultureIgnoreCase));
-                            string serviceNameElement = serviceNameNode.Value;
-                            if (serviceNameElement.StartsWith("[[") && serviceNameElement.EndsWith("]]"))
-                            {
-                                serviceNameElement = serviceNameElement.Replace("[[", "");
-                                serviceNameElement = serviceNameElement.Replace("]]", "");
-                                ActivityFields.Add(serviceNameElement);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            //TODO:Justification needed for empty catch
-                        }
-                        try
-                        {
-                            XElement root = activityDefinition.xmlData;
-                            XElement isWorkflow = root.Descendants().FirstOrDefault(c => c.Name.ToString().Equals("IsWorkflow", StringComparison.InvariantCultureIgnoreCase));
-                            XElement inputMappingNode = root.Descendants().FirstOrDefault(c => c.Name.ToString().Equals("inputmapping", StringComparison.InvariantCultureIgnoreCase));
-                            XElement inputMapping = XElement.Parse(inputMappingNode.Value);
-                            string inputElement = "Input";
-                            IEnumerable<XElement> inputs = inputMapping.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(inputElement, StringComparison.InvariantCultureIgnoreCase));
-                            List<string> namesOfInputs = new List<string>();
-                            foreach (XElement element in inputs)
-                            {
-                                //19.09.2012: massimo.guerrera - Change made due to a change in expected behaviour, the names in the input mapping shouldnt be added when add missing is clicked 
-                                //if (isWorkflow.Value == "true")
-                                //{
-                                //    variable = FormatDsfActivityField("[[" + element.Attribute("Name").Value + "]]");
-                                //    if (variable.Count > 0)
-                                //    {
-                                //        namesOfInputs.AddRange(variable);
-                                //    }
-                                //}
-
-                                variable = FormatDsfActivityField(element.Attribute("Source").Value);
-                                if (variable.Count > 0)
-                                {
-                                    namesOfInputs.AddRange(variable);
-                                }
-                            }
-                            ActivityFields.AddRange(namesOfInputs);
-                        }
-                        catch (Exception)
-                        {
-                            //TODO:Justification needed for empty catch
-                        }
-
-                        try
-                        {
-                            XElement root = activityDefinition.xmlData;
-                            XElement outputMappingNode = root.Descendants().FirstOrDefault(c => c.Name.ToString().Equals("outputmapping", StringComparison.InvariantCultureIgnoreCase));
-                            XElement outputMapping = XElement.Parse(outputMappingNode.Value);
-                            string outputElement = "Output";
-                            IEnumerable<XElement> outputs = outputMapping.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(outputElement, StringComparison.InvariantCultureIgnoreCase));
-                            List<string> namesOfOutputs = new List<string>();
-                            foreach (XElement element in outputs)
-                            {
-                                variable = FormatDsfActivityField(element.Attribute("Value").Value);
-                                if (variable.Count > 0)
-                                {
-                                    namesOfOutputs.AddRange(variable);
-                                }
-                            }
-                            ActivityFields.AddRange(namesOfOutputs);
-                        }
-                        catch (Exception)
-                        {
-                            //TODO:Justification needed for empty catch
-                        }
-                    }
-                    else if (activityDefinition.RootName.Equals("dsfwebpageactivity", StringComparison.InvariantCultureIgnoreCase))
-                    {
-
-                    }
-
-                    break;
-
-                #endregion
-
-                #region DsfWebPageActivity
-
-                case ("DsfWebPageActivity"):
-                    // Sashen: Must be a better way - using the exact element name does make it awful.
-                    string sanitizedWebpageObject = activityDefinition.GetElement("XMLConfiguration").XmlString.Replace("&gt;", ">").Replace("&lt;", "<");
-                    string webpageData = DataListFactory.GenerateMappingFromWebpage(sanitizedWebpageObject, "", enDev2ArgumentType.Input);
-                    XElement webpageElements = XElement.Parse(webpageData);
-                    webpageElements.Elements().ToList().ForEach(c => ActivityFields.Add(c.Attribute("Name").Value));
-                    break;
-
-                #endregion
-
-                default:
-                    break;
-
+                if (!string.IsNullOrEmpty(activityField))
+                {
+                    activityFields.AddRange((FormatDsfActivityField(activityField)).Where(item => !item.Contains("xpath(")));
+                }
             }
-            return ActivityFields;
-        }
-
-        private Type GetActivityType(object ActivityItem)
-        {
-            return ActivityItem.GetType();
+            return activityFields;
         }
 
         private List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
@@ -1944,27 +717,27 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (DataListSingleton.ActiveDataList != null)
                 {
-                if (!(part.IsScalar))
-                {
-                    var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
-                    if (!recset.Any())
+                    if (!(part.IsScalar))
                     {
-                        MissingDataParts.Add(part);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                        var recset = DataListSingleton.ActiveDataList.DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
+                        if (!recset.Any())
                         {
                             MissingDataParts.Add(part);
                         }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                            {
+                                MissingDataParts.Add(part);
+                            }
+                        }
                     }
-                }
                     else if (DataListSingleton.ActiveDataList.DataList
                         .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
-                {
-                    MissingDataParts.Add(part);
+                    {
+                        MissingDataParts.Add(part);
+                    }
                 }
-            }
             }
             return MissingDataParts;
         }
@@ -1984,51 +757,51 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             List<IDataListVerifyPart> MissingWorkflowParts = new List<IDataListVerifyPart>();
             if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
-            foreach (IDataListItemModel dataListItem in DataListSingleton.ActiveDataList.DataList)
-            {
-                if (String.IsNullOrEmpty(dataListItem.Name))
+                foreach (IDataListItemModel dataListItem in DataListSingleton.ActiveDataList.DataList)
                 {
-                    continue;
-                }
-                if ((dataListItem.Children.Count > 0))
-                {
-
-                    if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                    if (String.IsNullOrEmpty(dataListItem.Name))
                     {
-                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                        if (dataListItem.IsEditable)
+                        continue;
+                    }
+                    if ((dataListItem.Children.Count > 0))
+                    {
+
+                        if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
-                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, String.Empty, dataListItem.Description));
-                            foreach (var child in dataListItem.Children)
-                                if (!(String.IsNullOrEmpty(child.Name)))
+                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                            if (dataListItem.IsEditable)
+                            {
+                                MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, String.Empty, dataListItem.Description));
+                                foreach (var child in dataListItem.Children)
+                                    if (!(String.IsNullOrEmpty(child.Name)))
+                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                        if (dataListItem.IsEditable)
+                                        {
+                                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
+                                        }
+                            }
+                        }
+                        else foreach (IDataListItemModel child in dataListItem.Children)
+                                if (PartsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
+                                {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if (dataListItem.IsEditable)
+                                    if (child.IsEditable)
                                     {
                                         MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
                                     }
-                        }
+                                }
                     }
-                    else foreach (IDataListItemModel child in dataListItem.Children)
-                            if (PartsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
+                    else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
+                    {
+                        {
+                            if (dataListItem.IsEditable)
                             {
                                 //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                if (child.IsEditable)
-                                {
-                                    MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name, child.Name, child.Description));
-                                }
+                                MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name, dataListItem.Description));
                             }
-                }
-                else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
-                {
-                    {
-                        if (dataListItem.IsEditable)
-                        {
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            MissingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name, dataListItem.Description));
                         }
                     }
                 }
-            }
             return MissingWorkflowParts;
         }
 
@@ -2042,7 +815,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             Node[] nodes = intellisenseParser.Build(activityField);
             if (intellisenseParser.EventLog.HasEventLogs)
             {
-                string test = intellisenseParser.EventLog.GetEventLogs().First().ErrorStart.Contents;
                 //2013.01.23: Ashley Lewis - Removed this condition for Bug 6413
                 //if (intellisenseParser.EventLog.GetEventLogs().First().ErrorStart.Contents == "{{")
                 //{
@@ -2137,13 +909,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart)
         {
-            try
+            if (!_uniqueWorkflowParts.ContainsValue(nameOfPart))
             {
                 _uniqueWorkflowParts.Add(part, nameOfPart);
-            }
-            catch (ArgumentException)
-            {
-                //TODO: Justify why there is an empty catch
             }
         }
 
@@ -2167,20 +935,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.AddRemoveDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.AddRemoveDataListItems, input => RemoveAllUnusedDataListItems(input as IDataListViewModel)));
 
-//            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindMissingDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindMissingDataListItems, input =>
-//            {
-//                AddMissingOnlyWithNoPopUp(input as IDataListViewModel);
-//            }));
+            //            MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindMissingDataListItems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindMissingDataListItems, input =>
+            //            {
+            //                AddMissingOnlyWithNoPopUp(input as IDataListViewModel);
+            //            }));
             //07-12-2012 - Massimo.Guerrera - Added for PBI 6665
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivityWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivityWizard, input => ShowActivityWizard(input as ModelItem)));
             // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.GetMappingViewModel, Mediator.RegisterToReceiveMessage(MediatorMessages.GetMappingViewModel, input => GetMappingViewModel(input as ModelItem)));
 
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.ShowActivitySettingsWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.ShowActivitySettingsWizard, input
             //                                                                                                                                                             =>
-//            {
-//                ShowActivitySettingsWizard(input as ModelItem);
-//            }));
-           // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.EditActivity, Mediator.RegisterToReceiveMessage(MediatorMessages.EditActivity, input => EditActivity(input as ModelItem)));
+            //            {
+            //                ShowActivitySettingsWizard(input as ModelItem);
+            //            }));
+            // MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.EditActivity, Mediator.RegisterToReceiveMessage(MediatorMessages.EditActivity, input => EditActivity(input as ModelItem)));
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.DoesActivityHaveWizard, Mediator.RegisterToReceiveMessage(MediatorMessages.DoesActivityHaveWizard, input => DoesActivityHaveWizard(input as ModelItem)));
             //MediatorRepo.addKey(this.GetHashCode(), MediatorMessages.FindUnusedDataListitems, Mediator.RegisterToReceiveMessage(MediatorMessages.FindUnusedDataListitems, input => FindUnusedDataListItems(input as IDataListViewModel)));
             _wd = new WorkflowDesigner();
@@ -2412,13 +1180,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void EnsureVariables(Flowchart flowchart)
         {
             flowchart.Variables.Clear();
-            flowchart.Variables.Add(new Variable<List<string>>{Name = "InstructionList"});
-            flowchart.Variables.Add(new Variable<string>{Name = "LastResult"});
-            flowchart.Variables.Add(new Variable<bool>{Name = "HasError"});
-            flowchart.Variables.Add(new Variable<string>{Name = "ExplicitDataList"});
-            flowchart.Variables.Add(new Variable<bool>{Name = "IsValid"});
-            flowchart.Variables.Add(new Variable<UnlimitedObject>{Name = "d"});
-            flowchart.Variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util>{ Name = "t"});
+            flowchart.Variables.Add(new Variable<List<string>> { Name = "InstructionList" });
+            flowchart.Variables.Add(new Variable<string> { Name = "LastResult" });
+            flowchart.Variables.Add(new Variable<bool> { Name = "HasError" });
+            flowchart.Variables.Add(new Variable<string> { Name = "ExplicitDataList" });
+            flowchart.Variables.Add(new Variable<bool> { Name = "IsValid" });
+            flowchart.Variables.Add(new Variable<UnlimitedObject> { Name = "d" });
+            flowchart.Variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> { Name = "t" });
             flowchart.Variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
         }
 
@@ -2445,42 +1213,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             };
 
             return emptyWorkflow;
-        }
-
-        //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
-        public void AddRemoveDataListItems(IDataListViewModel dataListViewModel)
-        {
-            if (ResourceModel == dataListViewModel.Resource)
-            {
-                IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
-
-                _filteredDataListParts = MissingDataListParts(workflowFields);
-
-                if (_removeParts.Count == 0 && _filteredDataListParts.Count == 0)
-                {
-                    PopUp.Header = "Message";
-                    PopUp.Description = "No missing or unused DataList items found!";
-                    PopUp.ImageType = MessageBoxImage.Information;
-                    PopUp.Buttons = MessageBoxButton.OK;
-                    var respones = PopUp.Show();
-                    return;
-                }
-                else
-                {
-                    PopUp.Header = "Message";
-                    PopUp.Description = string.Format("{0} item(s) are about to be removed and {1} item(s) added to the DataList. Would you like to proceed?", _removeParts.Count, _filteredDataListParts.Count);
-                    PopUp.ImageType = MessageBoxImage.Information;
-                    PopUp.Buttons = MessageBoxButton.YesNo;
-                    MessageBoxResult response = PopUp.Show();
-                    if (response == MessageBoxResult.Yes)
-                    {
-                        dataListViewModel.AddMissingDataListItems(_filteredDataListParts);
-                        dataListViewModel.RemoveUnusedDataListItems(_removeParts);
-                    }
-                }
-            }
-
         }
 
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
@@ -2518,11 +1250,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void RemoveAllUnusedDataListItems(IDataListViewModel dataListViewModel)
         {
             if (dataListViewModel != null && ResourceModel == dataListViewModel.Resource)
-            {
-                IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                IList<IDataListVerifyPart> _removeParts = MissingWorkflowItems(workflowFields);
-
-                dataListViewModel.RemoveUnusedDataListItems(_removeParts);
+            {              
+                dataListViewModel.RemoveUnusedDataListItems();
             }
         }
 
@@ -2585,10 +1314,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <date>2013/02/06</date>
         public void Handle(AddMissingAndFindUnusedDataListItemsMessage message)
         {
-            if(this.ResourceModel == message.CurrentResourceModel)
+            if (this.ResourceModel == message.CurrentResourceModel)
             {
-            AddMissingWithNoPopUpAndFindUnusedDataListItems();
-        }
+                AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            }
         }
 
         #endregion
@@ -2669,38 +1398,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //Mediator.SendMessage(MediatorMessages.AddWebsiteDesigner, webpageActivity);
                         EventAggregator.Publish(new AddWebsiteDesignerMessage(webpageActivity));
                         e.Handled = true;
-                    }
-                    //else if (modelItem.ItemType == typeof(DsfActivity))
-                    //{
-                    //    var test = modelItem.Properties["ServiceName"].ComputedValue;
-
-                    //    var resource = _workflowModel.Environment.Resources.FindSingle(c => c.ResourceName == test.ToString());
-
-                    //    if (resource != null)
-                    //    {
-                    //        switch (resource.ResourceType)
-                    //        {
-                    //            case enResourceType.WorkflowService:
-                    //                Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                    //                break;
-
-                    //            case enResourceType.Service:
-                    //                Mediator.SendMessage(MediatorMessages.AddResourceDocument, resource);
-                    //                break;
-                    //        }
-                    //    }
-                    //}
-                    //else if (e.Source is DesignerView && modelItem.ItemType.InheritsOrImplements(typeof(DsfActivityAbstract<>)))
-                    //{
-                    //    DependencyObject dp = e.OriginalSource as DependencyObject;
-
-                    //    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
-                    //    {
-                    //        ShowActivityWizard(modelItem);
-                    //    }
-
-                    //    e.Handled = true;
-                    //}
+                    }                  
                 }
             }
         }
@@ -2722,10 +1420,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         if ((mi.Properties["Key"].Value != null) && mi.Properties["Key"].Value.ToString().Contains("Case"))
                         {
-                            Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                            //Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, wrapper);
-                            EventAggregator.Publish(new ConfigureCaseExpressionMessage(wrapper));
-                            //Mediator.SendMessage(MediatorMessages.ConfigureCaseExpression, mi);
+                            Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);                            
+                            EventAggregator.Publish(new ConfigureCaseExpressionMessage(wrapper));                            
                         }
                     }
 
@@ -2744,10 +1440,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //This line is necessary to fix the issue were decisions and switches didn't have the correct positioning when dragged on
                         SetLastDroppedModelItem(mi);
 
-                        Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                        //Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, wrapper);
-                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
-                        //Mediator.SendMessage(MediatorMessages.ConfigureDecisionExpression, mi);
+                        Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);                    
+                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));                        
                     }
 
                     if (mi.ItemType == typeof(FlowStep))
@@ -2887,13 +1581,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
-        #endregion
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-            
-        }
+        #endregion       
 
         protected override void OnViewAttached(object view, object context)
         {

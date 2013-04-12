@@ -14,8 +14,7 @@ namespace Dev2.Data.Storage
     {
 
         #region Fields
-
-        private static readonly string _compactExt = ".compact";
+ 
         private static readonly int _compactKeyCnt = 10000;
         private static readonly double _compactFactor = 0.7; // 30% fragmentation
         private static readonly int _pageLen = (1024*1024*8); // 8MB of dadta buffered ;)
@@ -24,9 +23,7 @@ namespace Dev2.Data.Storage
         private FileStream _fileStream;
         private readonly int _packedLen = 48;
         private int _totalIndexs;
-        private int _peekIndexs;
-        private int _indexBufferTotal = 0;
-        private long _indexBufferPosition = 0;
+        private int _peekIndexs; 
         private byte[] _internalBuffer;
 
         private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

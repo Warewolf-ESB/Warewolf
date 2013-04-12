@@ -25,8 +25,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities{
     // Interaction logic for DsfTransformActivityDesigner.xaml
     public partial class DsfTransformActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
     {
-        private bool _isRegistered = false;
-        private string mediatorKey = string.Empty;
         public DsfTransformActivityDesigner() {
             InitializeComponent(); 
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();

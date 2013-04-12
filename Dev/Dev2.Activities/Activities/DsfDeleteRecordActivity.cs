@@ -7,6 +7,8 @@ using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,6 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the name of the recordset.
         /// </summary>  
         [Inputs("RecordsetName")]
+        [FindMissing]
         public string RecordsetName
         {
             get
@@ -39,6 +42,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the count number.
         /// </summary>  
         [Outputs("Result")]
+        [FindMissing]
         public new string Result
         {
             get
