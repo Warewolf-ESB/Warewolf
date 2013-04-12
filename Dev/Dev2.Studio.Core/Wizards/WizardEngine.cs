@@ -278,8 +278,11 @@ namespace Dev2.Studio.Core.Wizards
             }
             else
             {
-                wizardName = GetCodedActivityWizardName(activity.ItemType.Name);
+                wizardName = GetCodedActivityWizardName(activity.ItemType.Name); 
             }
+
+            if (String.IsNullOrWhiteSpace(wizardName))
+                return false;
 
             var resource = environmentModel.ResourceRepository
                 .FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;

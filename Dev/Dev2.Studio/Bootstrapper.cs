@@ -131,8 +131,6 @@ namespace Dev2.Studio
             start = CheckWindowsService();
 #endif
 
-            Dev2SplashScreen.Close(TimeSpan.FromSeconds(1));
-
             if (start)
             {
                 base.OnStartup(sender, e);
