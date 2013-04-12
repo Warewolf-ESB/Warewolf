@@ -405,7 +405,7 @@ namespace Dev2.Studio.Core.Models
 
             if (ResourceType == ResourceType.WorkflowService)
             {
-                XElement dataList = (DataList == null) ? new XElement("DataList") : XElement.Parse(DataList);
+                XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
 
                 XElement service = new XElement("Service",
                     new XAttribute("ID", ID),
@@ -419,7 +419,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("Comment", Comment ?? string.Empty),
                     new XElement("Tags", Tags ?? string.Empty),
                     new XElement("IconPath", IconPath ?? string.Empty),
-                    new XElement("HelpLink", IconPath ?? string.Empty),
+                    new XElement("HelpLink", HelpLink ?? string.Empty),
                     new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                     dataList,
                     new XElement("Action", 

@@ -573,6 +573,10 @@ namespace Dev2.UI
             Unloaded += OnUnloaded;
 
             DataObject.AddPastingHandler(this, OnPaste);
+
+            //08.04.2013: Ashley Lewis - To test for Bug 9238 Moved this from OnInitialized() to allow for a more contextless initialization
+            _toolTip = new ToolTip();
+            _listBox = new ListBox();
         }
 
         #endregion
@@ -581,8 +585,7 @@ namespace Dev2.UI
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            _toolTip = new System.Windows.Controls.ToolTip();
-            _toolTip.ToolTipOpening += new ToolTipEventHandler(ToolTip_ToolTipOpening);
+            _toolTip.ToolTipOpening += ToolTip_ToolTipOpening;
             ToolTip = _toolTip;
 
             _toolTip.Placement = PlacementMode.Right;
@@ -832,7 +835,9 @@ namespace Dev2.UI
 
         private void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
-            if (!DesignerProperties.GetIsInDesignMode(this) && _listBox != null)
+            //08.04.2013: Ashley Lewis - Bug 9238
+            //if (_listBox == null) _listBox = new ListBox();
+            if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 bool calculateMode = false;
 
@@ -1075,7 +1080,7 @@ namespace Dev2.UI
         #region Validation Handling
         private void EnsureErrorStatus()
         {
-            if (_lastResultHasError != HasError) HasError = _lastResultHasError;
+            HasError = _lastResultHasError;
         }
         #endregion
 

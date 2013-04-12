@@ -1351,6 +1351,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     DependencyObject dp = e.OriginalSource as DependencyObject;
                     string itemFn = item.ItemType.FullName;
 
+                    //2013.03.20: Ashley Lewis - Bug 9202 Don't open any 'scroll' wizards
+                    if (dp != null && dp.ToString().Contains("Scroll"))
+                        WizardEngineAttachedProperties.SetDontOpenWizard(dp, true);
+
                     // Handle Case Edits
                     if (item != null && itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal)
                         && !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))

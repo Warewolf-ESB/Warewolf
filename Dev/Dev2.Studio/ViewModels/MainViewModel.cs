@@ -1128,22 +1128,24 @@ namespace Dev2.Studio.ViewModels
 
                 try
                 {
-                    ErrorResultTO errors;
+                    //ErrorResultTO errors;
                     string args =
                         StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(),
                                                                     resourceModelToEdit);
-                    Guid dataListID = resourceModelToEdit.Environment.UploadToDataList(args, out errors);
+                    string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, args);
+                    //09.04.2013: Ashley Lewis - Bug 9198 Avoid using UploadToDataList(args)
+                    //Guid dataListID = resourceModelToEdit.Environment.UploadToDataList(args, out errors);
 
-                    if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
-                    {
-                        // Bad things happened... Tell the user
-                        PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK,
-                                           MessageBoxImage.Error);
-                        // Stop configuring!!!
-                        return;
-                    }
+                    //if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
+                    //{
+                    //    // Bad things happened... Tell the user
+                    //    PopupProvider.Show(errors.MakeDisplayReady(), "Webpart Wizard Error", MessageBoxButton.OK,
+                    //                       MessageBoxImage.Error);
+                    //    // Stop configuring!!!
+                    //    return;
+                    //}
 
-                    string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
+                    //string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
 
                     _win = new WebPropertyEditorWindow(resourceViewModel, uriString) {Width = 850, Height = 600};
                     _win.ShowDialog();

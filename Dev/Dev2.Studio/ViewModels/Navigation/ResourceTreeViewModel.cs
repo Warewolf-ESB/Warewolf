@@ -135,8 +135,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _dataContext; }
             set
             {
-                if (_dataContext == value) return;
-
                 _dataContext = value;
                 NotifyOfPropertyChange(() => DataContext);
                 NotifyOfPropertyChange(() => IconPath);

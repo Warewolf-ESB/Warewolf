@@ -3,6 +3,7 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.InterfaceImplementors;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.IntellisenseProvider = intellisenseProvider.Object;
             textBox.Text = "[[City([[Scalar]]).Na";
 
-            // When exepctions are thrown, no results are to be displayed
+            // When exceptions are thrown, no results are to be displayed
             Assert.AreEqual(0, textBox.Items.Count);
             //The desired result is that an exception isn't thrown
 
@@ -135,7 +136,18 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
             Assert.IsFalse(eventRaised, "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
         }
-        
+
+        //08.04.2013: Ashley Lewis - Bug 9238
+        [TestMethod]
+        public void UpdateTextboxLayoutWithInvalidTextExpectedHasError()
+        {
+            //Initialize
+            var textBox = new IntellisenseTextBox { IntellisenseProvider = new DefaultIntellisenseProvider(), Text = "[[ ]]" };
+
+            //Assert
+            Assert.IsTrue(textBox.HasError, "Invalid textbox is not showing an error");
+        }
+
         #endregion Test Initialization
     }
 }

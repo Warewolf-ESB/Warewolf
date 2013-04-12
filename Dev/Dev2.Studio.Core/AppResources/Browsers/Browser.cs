@@ -126,6 +126,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #region FormatUrl
 
+        [Obsolete("use FormatUrl(string uriString, string args)")]
         public static string FormatUrl(string uriString, Guid dataListID)
         {
             if(dataListID == Guid.Empty)
@@ -133,6 +134,17 @@ namespace Dev2.Studio.Core.AppResources.Browsers
                 return uriString;
             }
             uriString += (uriString.IndexOf('?') == -1 ? "?" : "&") + "dlid=" + dataListID;
+            return uriString;
+        }
+
+        //09.03.2013: Ashley Lewis - Bug 9198 New FormatUrl method takes all args to avoid using UploadToDataList(Args)
+        public static string FormatUrl(string uriString, string args)
+        {
+            if (string.IsNullOrEmpty(args))
+            {
+                return uriString;
+            }
+            uriString += (uriString.IndexOf('?') == -1 ? "?" : "&") + args;
             return uriString;
         }
 

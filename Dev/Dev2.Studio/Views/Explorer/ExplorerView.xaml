@@ -107,7 +107,16 @@
                                 <local:NavigationItemViewModelDragDropBehavior />
                             </i:Interaction.Behaviors>
                             <TextBlock Width="3"/>
-                            <Image Width="24" Height="24" Margin="0,0,0,0" Source="{Binding ., Converter={StaticResource NavigationViewModelToImageConverter}}" />
+                            <Image Width="24" Height="24" Margin="0,0,0,0">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="IconPath"/>
+                                            <Binding Path="."/>
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">

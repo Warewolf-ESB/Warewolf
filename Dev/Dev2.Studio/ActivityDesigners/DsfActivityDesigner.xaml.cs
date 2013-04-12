@@ -1,12 +1,8 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.AppResources.Utils;
+﻿using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using System;
 using System.Activities.Presentation;
@@ -425,20 +421,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //2013.03.20: Ashley Lewis - Bug 9233 carefully find title bar textbox and add two events
         void DsfActivityDesigner_OnLayoutUpdated(object sender, EventArgs e)
         {
-            var child = Dev2VisualTreeHelperUtils.FindVisualChild(this, "Border"); // Pass the border layer
-            if (child != null)
+            var deepChild = this.FindChildByToString("Border", true); // Pass the border layer
+            if (deepChild != null)
             {
-                child = Dev2VisualTreeHelperUtils.FindVisualChild(child, "Adorner"); // Pass the adorner layer
-                if (child != null)
+                deepChild = deepChild.FindChildByToString("Adorner", true); // Pass the adorner layer
+                if (deepChild != null)
                 {
-                    child = Dev2VisualTreeHelperUtils.FindVisualChild(child, "Grid"); // Pass the grid layer
-                    if (child != null)
+                    deepChild = deepChild.FindChildByToString("Grid", true); // Pass the grid layer
+                    if (deepChild != null)
                     {
-                        child = Dev2VisualTreeHelperUtils.FindVisualChild(child, "TextBox");
-                        if (child != null)
+                        deepChild = deepChild.FindChildByToString("TextBox", true);
+                        if (deepChild != null)
                         {
-                            child.GotFocus += ChildOnGotFocus; // Add events to this object
-                            child.LostFocus += ChildOnLostFocus;
+                            (deepChild as UIElement).GotFocus += ChildOnGotFocus; // Add events to this object
+                            (deepChild as UIElement).LostFocus += ChildOnLostFocus;
                         }
                     }
                 }

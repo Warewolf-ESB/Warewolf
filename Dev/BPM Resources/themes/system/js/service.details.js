@@ -12,35 +12,43 @@ function initServiceDetails(webServer, editService, editServiceType, sourceName,
 		$("#Dev2ServiceDetailsServerDialog").hide();
 	
 		if(editService != ''){
-			//$("#Dev2ServiceName").val(editService);
+			//09.04.2013: Ashley Lewis - Bug 9189 build up form data with jquery selectors 
+			$("#Dev2ServiceName").val(editService);
+			$("#Dev2ServiceDetailsCategory").val(category);
+			$("#Dev2ServiceDetailsHelp").val(help);
+			$("#Dev2ServiceDetailsIcon").val(icon);
+			$("#Dev2ServiceDetailsDescription").val(desc);
+			$("#Dev2ServiceDetailsTags").val(tags);
+			
 			$("#Dev2ServiceName").attr("readonly", "readonly");
 			nameOk = true;
 			
-			var serviceData = fetchMapping(webServer, editService, "*");
+			//09.04.2013: Ashley Lewis - Bug 9198 fetchMapping returns a fatal error :(
+			// var serviceData = fetchMapping(webServer, editService, "*");
 			
-			// Name="travwebpage"
-			// && srcChanged != "changed"
-			if(serviceData.toLowerCase().indexOf('name="'+editService.toLowerCase()+'"') > 0){
-				$("#Dev2ServiceDetailsDoneButton").css("display", "inline");
+			// // Name="travwebpage"
+			// // && srcChanged != "changed"
+			// if(serviceData.toLowerCase().indexOf('name="'+editService.toLowerCase()+'"') > 0){
+				// $("#Dev2ServiceDetailsDoneButton").css("display", "inline");
 				
-				// flip step 3 button 
-				if(isWorkerServiceType(editServiceType) && srcChange != "changed"){
-					$("#Dev2ServiceDetailsStep3").removeClass("hiddenBtn");
-					// we also need to adjust the next button to step 2
-					// Dev2ServiceDetailsNext
-					$("#Dev2ServiceDetailsNext").attr("value","Step 2");
-					$("#Dev2ServiceDetailsNext").html("Go To Step 2");
-				}
+				// // flip step 3 button 
+				// if(isWorkerServiceType(editServiceType) && srcChange != "changed"){
+					// $("#Dev2ServiceDetailsStep3").removeClass("hiddenBtn");
+					// // we also need to adjust the next button to step 2
+					// // Dev2ServiceDetailsNext
+					// $("#Dev2ServiceDetailsNext").attr("value","Step 2");
+					// $("#Dev2ServiceDetailsNext").html("Go To Step 2");
+				// }
 				
-				// lock the done button
-				if(srcChange == "changed"){
-					$("#Dev2ServiceDetailsDoneButton").css("display", "none");
-					// Dev2ServiceDetailsStep3
-					//$("#Dev2ServiceDetailsStep3").css("display", "none");
-				}
-			}else{
-				$("#Dev2ServiceDetailsDoneButton").css("display", "none");
-			}
+				// // lock the done button
+				// if(srcChange == "changed"){
+					// $("#Dev2ServiceDetailsDoneButton").css("display", "none");
+					// // Dev2ServiceDetailsStep3
+					// //$("#Dev2ServiceDetailsStep3").css("display", "none");
+				// }
+			// }else{
+				// $("#Dev2ServiceDetailsDoneButton").css("display", "none");
+			// }
 			if(isWorkerServiceType(editServiceType)){
 				$("#Dev2ServiceDetailsNext").removeClass("hiddenBtn");
 			}

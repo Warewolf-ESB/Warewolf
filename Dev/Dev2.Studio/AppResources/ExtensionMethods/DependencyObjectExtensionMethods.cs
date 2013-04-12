@@ -38,5 +38,19 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                 current = VisualTreeHelper.GetParent(current);
             }
         }
+
+        public static DependencyObject FindChildByToString(this DependencyObject parent, string criteria, bool partialMatch = false)
+        {
+            if (parent != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(parent, i) as UIElement;
+                    if (child != null && (child.ToString() == criteria || (partialMatch && child.ToString().Contains(criteria))))
+                        return child;
+                }
+            }
+            return null;
+        }
     }
 }

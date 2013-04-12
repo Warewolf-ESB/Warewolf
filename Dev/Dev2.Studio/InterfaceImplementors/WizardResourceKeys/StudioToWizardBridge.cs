@@ -143,7 +143,7 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
 
             string serviceDef = rm.ServiceDefinition;
 
-            if (serviceDef.IndexOf("SourceName=") > 0) {
+            if (serviceDef.IndexOf(" SourceName=") > 0) {
                 // we have 
                 string sourceName = DataListUtil.ExtractAttribute(serviceDef, "Action", "SourceName");
                 string sourceMethod = DataListUtil.ExtractAttribute(serviceDef, "Action", "SourceMethod");
