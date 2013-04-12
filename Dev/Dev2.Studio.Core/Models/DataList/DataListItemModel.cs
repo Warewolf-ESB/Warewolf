@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -343,7 +344,9 @@ namespace Dev2.Studio.Core.Models.DataList
                     if(!string.IsNullOrEmpty(name))
                     {
                     XmlConvert.VerifyName(name);
-                    if (ErrorMessage != StringResources.ErrorMessageDuplicateValue && ErrorMessage != StringResources.ErrorMessageDuplicateVariable && ErrorMessage != StringResources.ErrorMessageDuplicateRecordset)
+                    if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) && 
+                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) && 
+                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture))
                     {
                         RemoveError();
                     }

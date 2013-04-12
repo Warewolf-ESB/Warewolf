@@ -69,10 +69,14 @@ namespace Dev2.Studio.Core.DataList
             if (itemToAdd == null || String.IsNullOrWhiteSpace(itemToAdd.Name)) return;
 
             //2013.04.10: Ashley Lewis - Bug 9168 Moved child validation to before parent validation (recordsets lose their errors during child validation)
-            if (itemToAdd.IsField)
+            if(itemToAdd.IsField)
+            {
                 ValidateRecordSetChildren(itemToAdd.Parent);
-            else if (itemToAdd.IsRecordset)
+            }
+            else if(itemToAdd.IsRecordset)
+            {
                 ValidateRecordSetChildren(itemToAdd);
+            }
 
             IList<IDataListItemModel> matchingList = null;
 
@@ -83,9 +87,9 @@ namespace Dev2.Studio.Core.DataList
             }
             else
             {
-                //2013.04.10: Ashley Lewis - Bug 9168 Not only are there duplicates detected but at least one of them is a different type to itemToAdd
-                if (matchingList.Count(c => itemToAdd.IsRecordset == !c.IsRecordset) > 0)
+                if (matchingList.Any(c => itemToAdd.IsRecordset == !c.IsRecordset))
                 {
+                    //2013.04.10: Ashley Lewis - Bug 9168 Not only are there duplicates detected but at least one of them is a different type to itemToAdd
                     matchingList.Add(itemToAdd);
                     foreach (IDataListItemModel item in matchingList)
                     {
