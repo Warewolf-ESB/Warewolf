@@ -561,18 +561,20 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 // remove values
                 Columns = newCols;
             }
-            if (keepIdx == GlobalConstants.AllIndexes) return;
 
-            if (!_internalObj.IsEmtpy)
+            if (keepIdx == GlobalConstants.AllIndexes || _internalObj.IsEmtpy)
             {
-                while (_internalObj.Keys.HasMore())
-                {
-                    var gapToInsert = _internalObj.Keys.FetchNextIndex();
-                    if (keepIdx != gapToInsert) _internalObj.Keys.AddGap(gapToInsert);
-                    else break;
-                }
-                _internalObj.SetMaxValue(keepIdx);
+                return;
             }
+
+            var gapToInsert = 0;
+            while (_internalObj.Keys.HasMore() && gapToInsert < keepIdx)
+            {
+                gapToInsert = _internalObj.Keys.FetchNextIndex();
+                if (gapToInsert != keepIdx) _internalObj.Keys.AddGap(gapToInsert);
+            }
+
+            _internalObj.SetMaxValue(keepIdx);
         }
 
         public IBinaryDataListItem TryFetchRecordsetColumnAtIndex(string field, int idx, out string error)

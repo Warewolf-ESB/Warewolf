@@ -10,7 +10,7 @@ namespace Dev2.Data.Binary_Objects
         public int MaxValue { get;  set; }
         public int MinValue { get; private set; }
 
-        public HashSet<int> Gaps {get; set;}
+        public HashSet<int> Gaps {get; private set;}
 
         private IndexList()
         {

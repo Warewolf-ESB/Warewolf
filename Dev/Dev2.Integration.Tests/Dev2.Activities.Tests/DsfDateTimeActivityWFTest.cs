@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string expected = @"<now>11 04 2013 09:30:54.0 AM</now>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
+              
             Regex regex = new Regex(@">\s*<");
 
             expected = regex.Replace(expected, "><");

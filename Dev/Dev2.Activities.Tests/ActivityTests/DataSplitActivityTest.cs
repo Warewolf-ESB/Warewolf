@@ -497,7 +497,7 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         [TestMethod]
-        public void RecordsetsWithVaryingIndexes_Expected_Split_And_Insert_At_Different_Indexes()
+        public void RecordsetsWithVaryingIndexesExpectedSplitAndInsertAtDifferentIndexes()
         {
 
             _resultsCollection.Clear();
