@@ -56,6 +56,7 @@ using Dev2.Studio.Views.Administration;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Views.UserInterfaceBuilder;
 using Dev2.Studio.Webs;
+using Dev2.Studio.Webs.Callbacks;
 using Dev2.Utilities;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
@@ -1126,21 +1127,16 @@ namespace Dev2.Studio.ViewModels
                                          "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit));
                 }
 
-                try
-                {
-                    //ErrorResultTO errors;
                     string args =
                         StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(),
                                                                     resourceModelToEdit);
+
+                //09.04.2013: Ashley Lewis - For Bug 9198 Passed args in uri to avoid using UploadToDataList(args)
                     string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, args);
 
                     _win = new WebPropertyEditorWindow(resourceViewModel, uriString) {Width = 850, Height = 600};
                     _win.ShowDialog();
                 }
-                catch
-                {
-                }
-            }
             else
             {
                 PopupProvider.Show(
