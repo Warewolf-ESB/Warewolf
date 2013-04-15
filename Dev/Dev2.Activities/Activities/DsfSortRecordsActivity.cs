@@ -87,7 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         // Check for fields
-                        if (rsData.HasField(sortField))
+                        if (rsData != null && rsData.HasField(sortField))
                         {
                             rsData.Sort(sortField, descOrder, out error);
                             errors.AddError(error);

@@ -1,9 +1,9 @@
-﻿using Dev2.Studio.Core.Interfaces.DataList;
-using System.ComponentModel;
+﻿using Caliburn.Micro;
+using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
 {
-    public abstract class BaseDataListItemModel : INotifyPropertyChanged
+    public abstract class BaseDataListItemModel : PropertyChangedBase
     {
         #region Fields
 
@@ -26,7 +26,7 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _displayName = value;
                 Name = value;
-                OnPropertyChanged("DisplayName");
+                NotifyOfPropertyChange(() => DisplayName);
             }
         }
 
@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core.Models.DataList
             private set
             {
                 _name = ValidateName(value);
-                OnPropertyChanged("Name");
+                NotifyOfPropertyChange(() => Name);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _isExpanded = value;
-                OnPropertyChanged("IsExpanded");
+                NotifyOfPropertyChange(() => IsExpanded);
             }
         }
 
@@ -62,7 +62,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _children = value;
-                OnPropertyChanged("Children");
+                NotifyOfPropertyChange(() => Children);
             }
         }
 
@@ -73,30 +73,5 @@ namespace Dev2.Studio.Core.Models.DataList
         public abstract string ValidateName(string name);
 
         #endregion Abstract Methods
-
-        #region INotifyPropertyChanged Members
-
-        /// <summary>
-        /// Raised when a property on this object has a new value.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Raises this object's PropertyChanged event.
-        /// </summary>
-        /// <param name="propertyName">The property that has a new value.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            //this.VerifyPropertyName(propertyName);
-
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                var e = new PropertyChangedEventArgs(propertyName);
-                handler(this, e);
-            }
-        }
-
-        #endregion INotifyPropertyChanged Members
     }
 }

@@ -18,7 +18,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Fields
         //private string uri = "http://localhost:786/dsf/";
         private string _iconPath = string.Empty;
-        string _previousParentID;
+        string _previousInstanceID;
         #endregion
 
         #region Constructors
@@ -152,33 +152,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            Guid executionID = DataListExecutionID.Get(context);
+            Guid datalistID = DataListExecutionID.Get(context);
             ParentServiceName = dataObject.ServiceName;
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
+
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                string executionServiceName = ServiceName;
-
                 // Set Debug Mode Value
-                string debugMode = compiler.EvaluateSystemEntry(executionID, enSystemTag.BDSDebugMode, out errors);
+                string debugMode = compiler.EvaluateSystemEntry(datalistID, enSystemTag.BDSDebugMode, out errors);
                 allErrors.MergeErrors(errors);
                
                 bool.TryParse(debugMode, out _IsDebug);
 
-                if (_IsDebug)
+                if (_IsDebug || dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.Before);
                 }
 
                 // scrub it clean ;)
-                ScrubDataList(compiler, executionID, context.WorkflowInstanceId.ToString(), out errors);
+                ScrubDataList(compiler, datalistID, context.WorkflowInstanceId.ToString(), out errors);
                 allErrors.MergeErrors(errors);
 
                 // set the parent service
-                _previousParentID = dataObject.ParentInstanceID;
-                dataObject.ParentServiceName = executionServiceName;
+                _previousInstanceID = dataObject.ParentInstanceID;
+         
+                dataObject.ParentServiceName = ServiceName;
                 dataObject.ParentInstanceID = InstanceID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
@@ -195,7 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         // PBI 7913
-                        if (executionID != GlobalConstants.NullDataListID)
+                        if (datalistID != GlobalConstants.NullDataListID)
                         {
                             // 1) I need to build iterators to loop
                             Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
@@ -204,7 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // only iterate if we are not invoking from a for each ;)
                             if (!dataObject.IsDataListScoped)
                             {
-                                iterateTotal = FetchMaxIterations(compiler, executionID, out tmpErrors);
+                                iterateTotal = FetchMaxIterations(compiler, datalistID, out tmpErrors);
                             }
                             allErrors.MergeErrors(tmpErrors);
 
@@ -219,35 +219,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
 
                                 // Inputs adjustment as the request
-                                Guid subExeID = compiler.Shape(executionID, enDev2ArgumentType.Input, myInputMapping, out errors);
+                                Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, myInputMapping, out tmpErrors);
+                                allErrors.MergeErrors(tmpErrors);
+
                                 dataObject.DataListID = subExeID;
                                 dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
-                                // Execute Request
-                                esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+                                // Execute Request 
+                                var resultID = esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
-                                compiler.SetParentID(subExeID, executionID);
+                                //if scoped reuse the same datalist form before execution
+                                if (dataObject.IsDataListScoped)
+                                {
+                                    resultID = subExeID;
+                                }
 
+                                compiler.SetParentID(resultID, datalistID);
                                 //  Do Output shaping
-                                compiler.Shape(subExeID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                                allErrors.MergeErrors(errors);
+                                compiler.Shape(resultID, enDev2ArgumentType.Output, OutputMapping, out tmpErrors);
+                                allErrors.MergeErrors(tmpErrors);
 
-                                compiler.DeleteDataListByID(subExeID); // remove sub service DL
+                                if (!dataObject.IsDataListScoped)
+                                    compiler.DeleteDataListByID(resultID); // remove sub service DL     
+
                                 iterateIdx++;
                             }
 
-                            dataObject.DataListID = executionID; // re-set DL ID
+                            dataObject.DataListID = datalistID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
 
                     }
 
-                    bool whereErrors = compiler.HasErrors(executionID);
+                    bool whereErrors = compiler.HasErrors(datalistID);
 
                     if (!whereErrors)
                     {
-                        string entry = compiler.EvaluateSystemEntry(executionID, enSystemTag.FormView, out errors);
+                        string entry = compiler.EvaluateSystemEntry(datalistID, enSystemTag.FormView, out errors);
                         allErrors.MergeErrors(errors);
 
                         if (entry != string.Empty)
@@ -299,11 +308,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
-                if (_IsDebug)
+
+                if (_IsDebug || dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.After);
                 }
-                dataObject.ParentInstanceID = _previousParentID;
+                dataObject.ParentInstanceID = _previousInstanceID;
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }
@@ -400,7 +410,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             // force all scalars mappings to execute once ;)
-            if (!foundRS && defs.Count > 0)
+            if (!foundRS)
             {
                 itTotal = 2;
             }

@@ -225,7 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ServiceName = tmpServiceName;
                 //string exeResult = dsfChannel.ExecuteCommand(instruction, dataObject.WorkspaceID, dataObject.DataListID);
 
-                if(!compiler.HasErrors(dialoutID) && dialoutID == executionId)
+                if(!compiler.HasErrors(dialoutID))
                 {
                     string val = compiler.EvaluateSystemEntry(executionId, enSystemTag.FormView, out errors);
 

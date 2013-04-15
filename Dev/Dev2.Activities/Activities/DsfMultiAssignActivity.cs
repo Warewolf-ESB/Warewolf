@@ -126,8 +126,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {                            
                             AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue, debugOutputTO.FromEntry, executionID, innerCount, dataObject, context);
                             innerCount++;
-                            debugOutputTO.FromEntry.Dispose();
-                            debugOutputTO.TargetEntry.Dispose();
+                            if (debugOutputTO.FromEntry != null)
+                                debugOutputTO.FromEntry.Dispose();
+                            if (debugOutputTO.TargetEntry != null)
+                                debugOutputTO.TargetEntry.Dispose();
                         }                                            
                     }
                     allErrors.MergeErrors(errors);
@@ -303,7 +305,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DebugItem itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
                     string fieldName = FieldsCollection[indexNumToUse].FieldName;
-                    if(fieldEntry.IsRecordset && (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName) == enRecordsetIndexType.Blank))
+                    if(fieldEntry != null && fieldEntry.IsRecordset && 
+                        (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName) 
+                        == enRecordsetIndexType.Blank))
                     {
                         fieldName = fieldName.Replace("().", string.Concat("(",fieldEntry.FetchAppendRecordsetIndex().ToString(CultureInfo.InvariantCulture),")."));
                     }

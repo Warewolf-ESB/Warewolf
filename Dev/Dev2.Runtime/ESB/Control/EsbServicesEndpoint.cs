@@ -270,24 +270,49 @@ namespace Dev2.DynamicServices
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
             errors = new ErrorResultTO();
+            string theShape;
+            Guid oldID = new Guid();
+            Guid innerDatalistID = new Guid();
+            ErrorResultTO invokeErrors;
 
             // Account for silly webpages...
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             // If no DLID, we need to make it based upon the request ;)
-            if(dataObject.DataListID == GlobalConstants.NullDataListID)
-            {
-                string theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
-                ErrorResultTO invokeErrors = new ErrorResultTO();
-                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
+            if (dataObject.DataListID == GlobalConstants.NullDataListID)
+            { 
+                theShape= FindServiceShape(workspaceID, dataObject.ServiceName);
+                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), 
+                    dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
             }
 
+            if (!dataObject.IsDataListScoped)
+            {
+                theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+                innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                    dataObject.RawPayload, theShape, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
+                                                      enDataListMergeTypes.Union, enTranslationDepth.Data,
+                                                      true, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                oldID = dataObject.DataListID;
+                dataObject.DataListID = mergedID;
+            }
+
+
             EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName);
             Guid result = dataObject.DataListID;
 
-            if(executionContainer != null)
+            if (!dataObject.IsDataListScoped)
+            {
+                compiler.DeleteDataListByID(oldID);
+                compiler.DeleteDataListByID(innerDatalistID);
+            }
+
+            if (executionContainer != null)
             {
                 result = executionContainer.Execute(out errors);
             }
@@ -463,7 +488,7 @@ namespace Dev2.DynamicServices
 
         #endregion
 
-        string FindServiceShape(Guid workspaceID, string serviceName)
+        public static string FindServiceShape(Guid workspaceID, string serviceName)
         {
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
 
@@ -473,12 +498,6 @@ namespace Dev2.DynamicServices
             if(tmp != null)
             {
                 result = tmp.DataListSpecification;
-                //ServiceAction sa = tmp.Actions.FirstOrDefault();
-
-                //if(sa != null)
-                //{
-                //    result = sa.DataListSpecification;
-                //}
             }
 
             return result;

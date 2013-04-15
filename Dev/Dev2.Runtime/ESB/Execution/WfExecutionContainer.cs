@@ -22,9 +22,7 @@ namespace Dev2.Runtime.ESB.Execution
             WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
-            errors = new ErrorResultTO();
             Guid instanceId = Guid.Empty;
-            Guid parentInstanceId;
             string bookmark = string.Empty;
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -43,14 +41,7 @@ namespace Dev2.Runtime.ESB.Execution
             if (tmp != null)
             {
                 Guid.TryParse(tmp.FetchScalar().TheValue, out instanceId);
-            }
-
-            tmp = compiler.Evaluate(DataObject.DataListID, DataList.Contract.enActionType.System,
-                                        enSystemTag.ParentWorkflowInstanceId.ToString(), false, out errors);
-            if (tmp != null)
-            {
-                Guid.TryParse(tmp.FetchScalar().TheValue, out parentInstanceId);
-            }
+            }       
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;

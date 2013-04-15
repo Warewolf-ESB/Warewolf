@@ -76,9 +76,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private IContextualResourceModel _resourceModel;
         private readonly IDesignerManagementService _designerManagementService;
 
-        private RelayCommand _newWorkflowCommand;
-        private RelayCommand _editWorkflowCommand;
-
         private RelayCommand _collapseAllCommand;
         private RelayCommand _expandAllCommand;
 
@@ -88,13 +85,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private Point _lastDroppedPoint;
         private ModelItem _lastDroppedModelItem = null;
         private UserControl _popupContent;
-
-        #endregion
-
-        #region Events
-
-        public event ResourceEventHandler OnRequestCreateNewResource;
-        public event ResourceEventHandler OnRequestEditResource;
 
         #endregion
 
@@ -236,28 +226,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         #endregion
 
         #region Commands
-
-        public ICommand NewWorkflowCommand
-        {
-            get {
-                return _newWorkflowCommand ??
-                       (_newWorkflowCommand = new RelayCommand(
-                            param => { if (OnRequestCreateNewResource != null) 
-                                OnRequestCreateNewResource(_resourceModel); }));
-            }
-        }
-
-        public ICommand EditWorkflowCommand
-        {
-            get
-            {
-                if (_editWorkflowCommand == null)
-                {
-                    _editWorkflowCommand = new RelayCommand(param => { if (OnRequestEditResource != null) OnRequestEditResource(_resourceModel); }, param => true);
-                }
-                return _editWorkflowCommand;
-            }
-        }
 
         public ICommand CollapseAllCommand
         {
@@ -669,10 +637,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (!string.IsNullOrEmpty(activityField))
                         {
                     activityFields.AddRange((FormatDsfActivityField(activityField)).Where(item => !item.Contains("xpath(")));
-                            }
-                                }
+                        }
+                    }
             return activityFields;
-                                }
+                        }
 
         private List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
         {
@@ -877,7 +845,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _uniqueWorkflowParts.Add(part, nameOfPart);
             }
-            }
+        }
 
         #endregion
 

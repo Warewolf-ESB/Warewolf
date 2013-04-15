@@ -64,7 +64,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _isUsed = value;
-                OnPropertyChanged("IsUsed");
+                NotifyOfPropertyChange(() => IsUsed);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _lastIndexedName = value;
-                OnPropertyChanged("LastIndexedName");
+                NotifyOfPropertyChange(() => LastIndexedName);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _isSelected = value;
-                OnPropertyChanged("IsSelected");
+                NotifyOfPropertyChange(() => IsSelected);
             }
         }
 
@@ -103,7 +103,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _description = value;
-                OnPropertyChanged("Description");
+                NotifyOfPropertyChange(() => Description);
             }
         }
 
@@ -116,7 +116,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _parent = value;
-                OnPropertyChanged("Parent");
+                NotifyOfPropertyChange(() => Parent);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _hasError = value;
-                OnPropertyChanged("HasError");
+                NotifyOfPropertyChange(() => HasError);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _errorMessage = value;
-                OnPropertyChanged("ErrorMessage");
+                NotifyOfPropertyChange(() => ErrorMessage);
             }
         }
 
@@ -159,7 +159,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _isEditable = value;
-                OnPropertyChanged("IsEditable");
+                NotifyOfPropertyChange(() => IsEditable);
             }
         }
 
@@ -173,77 +173,21 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _columnIODir = value;
 
-                OnPropertyChanged("ColumnIODirection");
-                OnPropertyChanged("Input");
-                OnPropertyChanged("Output");
-
-                //SetChildColumnIODirectionValues(value);
+                NotifyIOPropertyChanged();
             }
         }
-
-        //public bool? RecordsetInput
-        //{
-        //    get
-        //    {
-        //        if (Children.Where(d => !d.IsBlank).All(d => d.ColumnIODirection == enDev2ColumnArgumentDirection.Both || d.ColumnIODirection == enDev2ColumnArgumentDirection.Input))
-        //        {
-        //            return true;
-        //        }
-
-        //        if (Children.Where(d => !d.IsBlank).Any(d => d.ColumnIODirection == enDev2ColumnArgumentDirection.Both || d.ColumnIODirection == enDev2ColumnArgumentDirection.Input))
-        //        {
-        //            return null;
-        //        }
-
-        //        return false;
-        //    }
-        //    set
-        //    {
-        //        SetColumnIODirectionFromInput(value.GetValueOrDefault());
-        //        SetChildInputValues(value.GetValueOrDefault());
-        //    }
-        //}
-
-        //public bool? RecordsetOutput
-        //{
-        //    get
-        //    {
-        //        if (Children.Where(d => !d.IsBlank).All(d => d.ColumnIODirection == enDev2ColumnArgumentDirection.Both || d.ColumnIODirection == enDev2ColumnArgumentDirection.Output))
-        //        {
-        //            return true;
-        //        }
-
-        //        if (Children.Where(d => !d.IsBlank).Any(d => d.ColumnIODirection == enDev2ColumnArgumentDirection.Both || d.ColumnIODirection == enDev2ColumnArgumentDirection.Output))
-        //        {
-        //            return null;
-        //        }
-
-        //        return false;
-        //    }
-        //    set
-        //    {
-
-        //        SetColumnIODirectionFromOutput(value.GetValueOrDefault());
-        //        SetChildOutputValues(value.GetValueOrDefault());
-        //    }
-        //}
 
         public bool Input
         {
             get
             {
-                return (_columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Input);
+                return (_columnIODir == enDev2ColumnArgumentDirection.Both 
+                    || _columnIODir == enDev2ColumnArgumentDirection.Input);
             }
             set
             {
-                SetColumnIODirectionFromInput(value);
+                SetColumnIODirection(value, enDev2ColumnArgumentDirection.Input);
                 SetChildInputValues(value);
-                //SetChildColumnIODirectionValues(_columnIODir);
-                //DataListItemModel parent = Parent as DataListItemModel;
-                //if (parent != null && !parent.UpdatingChildren)
-                //{
-                //    parent.UpdateRecordsetInputOutput();
-                //}
             }
         }
 
@@ -251,18 +195,13 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                return (_columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Output);
+                return (_columnIODir == enDev2ColumnArgumentDirection.Both 
+                    || _columnIODir == enDev2ColumnArgumentDirection.Output);
             }
             set
             {
-                SetColumnIODirectionFromOutput(value);
+                SetColumnIODirection(value, enDev2ColumnArgumentDirection.Output);
                 SetChildOutputValues(value);
-                //SetChildColumnIODirectionValues(_columnIODir);
-                //DataListItemModel parent = Parent as DataListItemModel;
-                //if (parent != null && !parent.UpdatingChildren)
-                //{
-                //    parent.UpdateRecordsetInputOutput();
-                //}
             }
         }
 
@@ -275,7 +214,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _isVisable = value;
-                OnPropertyChanged("IsVisable");
+                NotifyOfPropertyChange(() => IsVisable);
             }
         }
 
@@ -360,22 +299,6 @@ namespace Dev2.Studio.Core.Models.DataList
             return name;
         }
 
-
-        //private void SetChildColumnIODirectionValues(enDev2ColumnArgumentDirection value)
-        //{
-        //    UpdatingChildren = true;
-
-        //    if (Children != null)
-        //    {
-        //        foreach (var child in Children)
-        //        {
-        //            child.ColumnIODirection = value;
-        //        }
-        //    }
-
-        //    UpdatingChildren = false;
-        //}
-
         private void SetChildInputValues(bool value)
         {
             UpdatingChildren = true;
@@ -406,82 +329,31 @@ namespace Dev2.Studio.Core.Models.DataList
             UpdatingChildren = false;
         }
 
-        private void SetColumnIODirectionFromInput(bool value)
+        private void SetColumnIODirection(bool value, enDev2ColumnArgumentDirection direction)
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
             if (!value)
             {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.Output;
-                }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Input)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.None;
-                }
+                _columnIODir = (enDev2ColumnArgumentDirection)(_columnIODir - direction);
             }
             else
             {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Output)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.Both;
-                }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.Input;
-                }
+                _columnIODir = _columnIODir + (int)direction;
             }
 
             if (original != _columnIODir)
             {
-                OnPropertyChanged("ColumnIODirection");
-                OnPropertyChanged("Input");
-                OnPropertyChanged("Output");
+                NotifyIOPropertyChanged();
             }
         }
 
-        private void SetColumnIODirectionFromOutput(bool value)
+        private void NotifyIOPropertyChanged()
         {
-            enDev2ColumnArgumentDirection original = _columnIODir;
-
-            if (!value)
-            {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.Input;
-                }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Output)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.None;
-                }
-            }
-            else
-            {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Input)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.Both;
-                }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
-                {
-                    _columnIODir = enDev2ColumnArgumentDirection.Output;
-                }
-            }
-
-            if (original != _columnIODir)
-            {
-                OnPropertyChanged("ColumnIODirection");
-                OnPropertyChanged("Input");
-                OnPropertyChanged("Output");
-            }
+            NotifyOfPropertyChange(() => ColumnIODirection);
+            NotifyOfPropertyChange(() => Input);
+            NotifyOfPropertyChange(() => Output);
         }
-
-        //public void UpdateRecordsetInputOutput()
-        //{
-        //    OnPropertyChanged("RecordsetInput");
-        //    OnPropertyChanged("RecordsetOutput");
-        //}
-
         #endregion
     }
 }

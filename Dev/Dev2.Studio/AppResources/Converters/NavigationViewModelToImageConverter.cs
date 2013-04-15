@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Studio.AppResources.Converters
@@ -22,10 +23,13 @@ namespace Dev2.Studio.AppResources.Converters
         {
             try
             {
-                var iconpath = (string)values[0];
+                var iconpath = values[0] as string;
+                if (iconpath != null)
+                    iconpath = (string) values[0];
+
                 var navigationItemViewModel = values[1] as AbstractTreeViewModel;
                 if (navigationItemViewModel == null)
-                    throw new Exception("Invalid converter parameters");
+                    return null;
 
                 Uri uri;
                 if (!Uri.TryCreate(iconpath, UriKind.Absolute, out uri))
@@ -35,9 +39,9 @@ namespace Dev2.Studio.AppResources.Converters
 
                 return new BitmapImage(uri);
             }
-            catch(Exception)
+            catch (Exception e)
             {
-                throw new Exception("Converter only valid with strings");
+                return new BitmapImage();
             }
         }
 

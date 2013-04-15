@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Dev2.Data.Binary_Objects
 {
     /// <summary>
@@ -6,9 +8,9 @@ namespace Dev2.Data.Binary_Objects
     /// </summary>
     public enum enDev2ColumnArgumentDirection
     {
-        Input, 
-        Output,
-        Both,
-        None
+        None = 0,
+        Input = 1, 
+        Output = 2,
+        Both = 3,
     }
 }
