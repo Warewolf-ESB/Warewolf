@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findNetworkComputersService = new DynamicService();
             findNetworkComputersService.Name = HandlesType();
-            findNetworkComputersService.DataListSpecification = "<root></root>";
+            findNetworkComputersService.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction findNetworkComputersAction = new ServiceAction();
             findNetworkComputersAction.Name = HandlesType();

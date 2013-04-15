@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService pluingInterrogatorServicesBinder = new DynamicService();
             pluingInterrogatorServicesBinder.Name = HandlesType();
-            pluingInterrogatorServicesBinder.DataListSpecification =  "<root><AssemblyLocation/><AssemblyName/><Method/><Args/></root>";
+            pluingInterrogatorServicesBinder.DataListSpecification = "<DataList><AssemblyLocation/><AssemblyName/><Method/><Args/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction pluingInterrogatorServiceActionBinder = new ServiceAction();
             pluingInterrogatorServiceActionBinder.Name = HandlesType();

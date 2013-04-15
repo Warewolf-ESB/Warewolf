@@ -84,8 +84,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DefferedReadFileContents = broker.Get(endpoint, false);
                     }
-                    string result = broker.Get(endpoint, true);
-                    MakeDeferredAction(IOpath.Path);
+                    string result = broker.Get(endpoint);
+                    //MakeDeferredAction(IOpath.Path);
                     outputs[0].OutputStrings.Add(result);
                 }
                 catch(Exception e)

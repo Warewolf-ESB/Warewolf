@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findDriveService = new DynamicService();
             findDriveService.Name = HandlesType();
-            findDriveService.DataListSpecification = "<root><Domain/><Username/><Password/></root>";
+            findDriveService.DataListSpecification = "<DataList><Domain/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction findDriveServiceAction = new ServiceAction();
             findDriveServiceAction.Name = HandlesType();

@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findDirectoryService = new DynamicService();
             findDirectoryService.Name = HandlesType();
-            findDirectoryService.DataListSpecification = "<root><Domain/><Username/><Password/><DirectoryPath/></root>";
+            findDirectoryService.DataListSpecification = "<DataList><Domain/><Username/><Password/><DirectoryPath/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction findDirectoryServiceAction = new ServiceAction();
             findDirectoryServiceAction.Name = HandlesType();

@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findServerUsernameService = new DynamicService();
             findServerUsernameService.Name = HandlesType();
-            findServerUsernameService.DataListSpecification = "<root></root>";
+            findServerUsernameService.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
             
 
             ServiceAction findServerUsernameServiceAction = new ServiceAction();

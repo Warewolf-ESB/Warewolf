@@ -53,6 +53,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
 
         #region Iteration Number Tests
 
+        //TODO:Speak to barney about if we need the foreach anymore
         [TestMethod]
         public void ForEachNumber() {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNumber");
@@ -83,11 +84,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         #endregion Iteration Number Tests
 
         #region Scalar Tests
-
+        
         [TestMethod]
         public void ForEachInputOutputMappingTest() {          
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachScalarTest");
-            string expected = @"<var>5</var><recset><rec2></rec2><rec1>1</rec1></recset><recset><rec2></rec2><rec1>2</rec1></recset><recset><rec2></rec2><rec1>3</rec1></recset><recset><rec2></rec2><rec1>4</rec1></recset><recset><rec2></rec2><rec1>5</rec1></recset><recset><rec2></rec2><rec1>6</rec1></recset>";
+            string expected = @"<var>5</var><recset><rec1>1</rec1></recset><recset><rec1>2</rec1></recset><recset><rec1>3</rec1></recset><recset><rec1>4</rec1></recset><recset><rec1>5</rec1></recset><recset><rec1>6</rec1></recset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

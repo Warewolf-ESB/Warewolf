@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -8,7 +7,6 @@ using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
-using Dev2.DataList.Contract.Translators;
 
 namespace Dev2.Server.DataList.Translators
 {
@@ -160,63 +158,77 @@ namespace Dev2.Server.DataList.Translators
                                     // spin through each element in the XML
                                     foreach (XmlNode c in children)
                                     {
-                                        if (!DataListUtil.isSystemTag(c.Name))
+                                        var hasCorrectIoDirection = true;
+                                        if (c.Attributes != null)
                                         {
-                                            // scalars and recordset fetch
-                                            if (result.TryGetEntry(c.Name, out entry, out error))
+                                            var columnIoDirectionAttribute = c.Attributes["ColumnIODirection"];
+                                            if (columnIoDirectionAttribute != null)
                                             {
-                                                if (entry.IsRecordset)
+                                                var columnIoDirectionValue = columnIoDirectionAttribute.Value;
+                                                var hasCorrectIoDirectionFromAttribute = columnIoDirectionValue == enDev2ColumnArgumentDirection.Output.ToString() || columnIoDirectionValue == enDev2ColumnArgumentDirection.Both.ToString();
+                                                hasCorrectIoDirection = hasCorrectIoDirectionFromAttribute;
+                                            }
+                                        }
+
+                                        if (DataListUtil.isSystemTag(c.Name) && !hasCorrectIoDirection)
+                                        {
+                                            continue;
+                                        }
+                                        // scalars and recordset fetch
+                                        if (result.TryGetEntry(c.Name, out entry, out error))
+                                        {
+                                            if (entry.IsRecordset)
+                                            {
+                                                // fetch recordset index
+                                                int fetchIdx = 0;
+                                                if (indexCache.TryGetValue(c.Name, out fetchIdx))
                                                 {
-                                                    // fetch recordset index
-                                                    int fetchIdx = 0;
-                                                    if (indexCache.TryGetValue(c.Name, out fetchIdx))
-                                                    {
-                                                        idx = fetchIdx;
-                                                    }
-                                                    else
-                                                    {
-                                                        idx = 1; //re-set idx on cache miss ;)
-                                                    }
-                                                    // process recordset
-                                                    XmlNodeList nl = c.ChildNodes;
-                                                    if (nl != null)
-                                                    {
-                                                        foreach (XmlNode subc in nl)
-                                                        {
-                                                            entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
-
-                                                            if (!string.IsNullOrEmpty(error))
-                                                            {
-                                                                errors.AddError(error);
-                                                            }
-                                                        }
-                                                        // update this recordset index
-                                                        indexCache[c.Name] = ++idx;
-                                                    }
-
+                                                    idx = fetchIdx;
                                                 }
                                                 else
                                                 {
-                                                    // process scalar
-                                                    entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-
-                                                    if (!string.IsNullOrEmpty(error))
-                                                    {
-                                                        errors.AddError(error);
-                                                    }
+                                                    idx = 1; //re-set idx on cache miss ;)
                                                 }
+                                                // process recordset
+                                                XmlNodeList nl = c.ChildNodes;
+                                                if (nl != null)
+                                                {
+                                                    foreach (XmlNode subc in nl)
+                                                    {
+                                                        entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
+
+                                                        if (!string.IsNullOrEmpty(error))
+                                                        {
+                                                            errors.AddError(error);
+                                                        }
+                                                    }
+                                                    // update this recordset index
+                                                    indexCache[c.Name] = ++idx;
+                                                }
+
                                             }
                                             else
                                             {
-                                                errors.AddError(error);
-                                                entry = null;
+                                                // process scalar
+                                                entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
+
+                                                if (!string.IsNullOrEmpty(error))
+                                                {
+                                                    errors.AddError(error);
+                                                }
                                             }
                                         }
+                                        else
+                                        {
+                                            errors.AddError(error);
+                                            entry = null;
+                                        }
                                     }
-
                                 }
+
                             }
                         }
+
                     }
                     catch (Exception e)
                     {
@@ -301,7 +313,7 @@ namespace Dev2.Server.DataList.Translators
                                             {
                                                 Enum.TryParse(columnIODirection.Value, true, out columnDirection);
                                             }
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true,false,columnDirection, out myError))
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, false, columnDirection, out myError))
                                             {
                                                 error = myError;
                                             }
@@ -328,7 +340,7 @@ namespace Dev2.Server.DataList.Translators
                                 if (descAttribute != null)
                                 {
                                     var columnDirection = enDev2ColumnArgumentDirection.None;
-                                    if(columnIODirection != null)
+                                    if (columnIODirection != null)
                                     {
                                         Enum.TryParse(columnIODirection.Value, true, out columnDirection);
                                     }
@@ -352,5 +364,83 @@ namespace Dev2.Server.DataList.Translators
         }
         #endregion
 
+
+
+        public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
+            errors = new ErrorResultTO();
+            string error;
+
+            IBinaryDataList targetDL = BuildTargetShape(filterShape, out error);
+
+            IList<string> itemKeys = targetDL.FetchAllKeys();
+
+            foreach (string key in itemKeys)
+            {
+                IBinaryDataListEntry entry = null;
+                if (payload.TryGetEntry(key, out entry, out error))
+                {
+
+                    if (entry.IsRecordset)
+                    {
+                        int cnt = entry.FetchLastRecordsetIndex();
+                        for (int i = 1; i <= cnt; i++)
+                        {
+                            IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
+                            if (error != string.Empty)
+                            {
+                                errors.AddError(error);
+                            }
+                            result.Append("<");
+                            result.Append(entry.Namespace);
+                            result.Append(">");
+
+                            foreach (IBinaryDataListItem col in rowData)
+                            {
+                                string fName = col.FieldName;
+
+                                result.Append("<");
+                                result.Append(fName);
+                                result.Append(">");
+                                result.Append(col.TheValue);
+                                result.Append("</");
+                                result.Append(fName);
+                                result.Append(">");
+                            }
+
+                            result.Append("</");
+                            result.Append(entry.Namespace);
+                            result.Append(">");
+                        }
+                    }
+                    else
+                    {
+                        string fName = entry.Namespace;
+                        IBinaryDataListItem val = entry.FetchScalar();
+                        if (val != null)
+                        {
+                            result.Append("<");
+                            result.Append(fName);
+                            result.Append(">");
+                            result.Append(val.TheValue);
+                            result.Append("</");
+                            result.Append(fName);
+                            result.Append(">");
+                        }
+                    }
+                }
+
+            }
+
+            result.Append("</" + _rootTag + ">");
+
+            return result.ToString();
+        }
     }
 }

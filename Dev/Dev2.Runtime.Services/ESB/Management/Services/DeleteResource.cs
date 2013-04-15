@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var deleteResourceService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<root><ResourceName/><ResourceType/><Roles/></root>"
+                DataListSpecification = "<DataList><ResourceName/><ResourceType/><Roles/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var deleteResourceAction = new ServiceAction

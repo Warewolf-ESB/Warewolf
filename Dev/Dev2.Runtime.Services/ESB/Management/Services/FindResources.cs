@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findAllService = new DynamicService();
             findAllService.Name = HandlesType();
-            findAllService.DataListSpecification = "<root><Type/><Roles/><ResourceName/></root>";
+            findAllService.DataListSpecification = "<DataList><Type/><Roles/><ResourceName/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction findAllServiceAction = new ServiceAction();
             findAllServiceAction.Name = HandlesType();

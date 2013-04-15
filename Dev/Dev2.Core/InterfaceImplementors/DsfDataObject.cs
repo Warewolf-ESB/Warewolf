@@ -203,6 +203,8 @@ namespace Dev2.DynamicServices
 
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
+        
+        public bool IsWebpage { get; set; }
 
         #endregion Properties
 

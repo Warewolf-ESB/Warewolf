@@ -108,9 +108,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFileOffFileSystemTest");
-            //string expected = @"<DataList><FileReadResult>ABC</FileReadResult><WriteFileRes>Successful</WriteFileRes><DeleteFileRes>Successful</DeleteFileRes><CreateFileRes></CreateFileRes><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            string expected = @"<FileReadResult>ABC</FileReadResult><WriteFileRes>Successful</WriteFileRes><DeleteFileRes>Successful</DeleteFileRes>";
             // A deferred read is expected RE Travis's feedback rom The Unlimited
-            string expected = "Contents not visible because this value is a deferred read of";
+            //string expected = "Contents not visible because this value is a deferred read of";
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             StringAssert.Contains(ResponseData, expected);
@@ -124,7 +124,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void WriteToFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "WriteToFileOnFileSysytemTest");
-            string expected = @"<DataList><WriteFileRes>Successful</WriteFileRes><DeleteFileRes>Successful</DeleteFileRes><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            string expected = @"<WriteFileRes>Successful</WriteFileRes><DeleteFileRes>Successful</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -154,7 +154,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFolderFromFileSystemTest");
-            string expected = @"<DataList><CreateFileRes1>Successful</CreateFileRes1><CreateFileRes2>Successful</CreateFileRes2><DeleteFileRes>Successful</DeleteFileRes><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult><ReadRes></ReadRes><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            string expected = @"<CreateFileRes1>Successful</CreateFileRes1><CreateFileRes2>Successful</CreateFileRes2><DeleteFileRes>Successful</DeleteFileRes><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -248,7 +248,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void RenameFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "RenameFolderOnFileSystemTest");
-            string expected = @"<DataList><CreateFileRes>Successful</CreateFileRes><RenameFileRes>Successful</RenameFileRes><DeleteFileRes>Successful</DeleteFileRes><DeleteFileRes2></DeleteFileRes2><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            string expected = @"<CreateFileRes>Successful</CreateFileRes><RenameFileRes>Successful</RenameFileRes><DeleteFileRes>Successful</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -263,7 +263,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void UnZip()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "UnZipOnFileSystemTest");
-            string expected = @"<DataList><CreateFileRes>Successful</CreateFileRes><ZipFileRes>Successful</ZipFileRes><UnZipFileRes>Successful</UnZipFileRes><DeleteFileRes1>Successful</DeleteFileRes1><DeleteFileRes2>Successful</DeleteFileRes2><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            string expected = @"<CreateFileRes>Successful</CreateFileRes><ZipFileRes>Successful</ZipFileRes><UnZipFileRes>Successful</UnZipFileRes><DeleteFileRes1>Successful</DeleteFileRes1><DeleteFileRes2>Successful</DeleteFileRes2>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -278,7 +278,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ZipFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ZipFolderOnFileSystemTest");
-            string expected = @"<DataList><DeleteFileRes>Successful</DeleteFileRes><ZipFileRes>Successful</ZipFileRes><CreateFileRes>Successful</CreateFileRes><Dev2System.FormView></Dev2System.FormView><Dev2System.InstanceId></Dev2System.InstanceId>";
+            string expected = @"<DeleteFileRes>Successful</DeleteFileRes><ZipFileRes>Successful</ZipFileRes><CreateFileRes>Successful</CreateFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

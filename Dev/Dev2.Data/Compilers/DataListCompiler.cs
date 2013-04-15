@@ -11,9 +11,7 @@ using Dev2.Server.Datalist;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -69,6 +67,15 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.CloneDataList(curDLID, out errors);
         }
 
+        /// <summary>
+        /// Used to evalaute an expression against a given datalist
+        /// </summary>
+        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="typeOf">The type of evaluation.</param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="toRoot"></param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public IBinaryDataListEntry Evaluate(Guid curDLID, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -368,6 +375,14 @@ namespace Dev2.DataList.Contract
             return GlobalConstants.NullDataListID;
         }
 
+        /// <summary>
+        /// Converts to selected Type from binary
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public string ConvertFrom(Guid curDLID, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors)
         {
 
@@ -379,6 +394,19 @@ namespace Dev2.DataList.Contract
             }
 
             return string.Empty;            
+        }
+
+        /// <summary>
+        /// Converts the and filter.
+        /// </summary>
+        /// <param name="curDlid">The cur DLID.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="filterShape">The filter shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors)
+        {
+            return _svrCompiler.ConvertAndFilter(null, curDlid, filterShape, typeOf, out errors);
         }
 
         public T ConvertFromJsonToModel<T>(string payload)

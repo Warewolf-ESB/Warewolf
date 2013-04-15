@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var checkPermissionsService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<root><Path/><Username/><Password/></root>"
+                DataListSpecification = "<DataList><Path/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var checkPermissionsServiceAction = new ServiceAction

@@ -37,6 +37,12 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-     
+
+
+
+        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

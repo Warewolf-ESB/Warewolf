@@ -163,6 +163,17 @@ namespace Dev2.Server.Datalist {
         DataListTranslatedPayloadTO ConvertFrom(NetworkContext ctx, Guid curDLID, enTranslationDepth depth, DataListFormat typeOf, out ErrorResultTO errors);
 
         /// <summary>
+        /// Converts the and filter.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="filterShape">The filter shape.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        string ConvertAndFilter(NetworkContext ctx, Guid curDLID, string filterShape, DataListFormat typeOf, out ErrorResultTO errors);
+
+        /// <summary>
         /// Fetches the translator types.
         /// </summary>
         /// <returns></returns>

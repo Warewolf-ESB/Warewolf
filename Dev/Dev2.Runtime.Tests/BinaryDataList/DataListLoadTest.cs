@@ -108,10 +108,9 @@ namespace Unlimited.UnitTest.Framework
             long ticks = (end1.Ticks - start1.Ticks);
             double result1 = (ticks / _ticksPerSec);
 
-            Console.WriteLine(result1 + " seconds for " + runs + " to clone ");
+            Console.WriteLine(result1 + @" seconds for " + runs + @" to clone ");
 
             Assert.IsTrue(result1 <= 2.5); // Given .01 buffer ;) WAS : 0.065
-            // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!
    
         }
 

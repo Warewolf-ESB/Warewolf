@@ -26,5 +26,11 @@ namespace Dev2.Data.Translators
         {
             throw new System.NotImplementedException();
         }
+
+
+        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

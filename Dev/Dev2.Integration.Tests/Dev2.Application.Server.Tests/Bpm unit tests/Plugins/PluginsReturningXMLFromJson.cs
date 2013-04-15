@@ -6,6 +6,7 @@ using System.Xml.Linq;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Plugins
 {
     [TestClass]
+    [Ignore]
     public class PluginsReturningXMLFromJson
     {
         // Bug 8378

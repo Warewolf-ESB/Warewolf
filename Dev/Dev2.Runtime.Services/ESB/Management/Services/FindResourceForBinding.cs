@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findServicesBinder = new DynamicService();
             findServicesBinder.Name = HandlesType();
-            findServicesBinder.DataListSpecification = "<root><Type/><Roles/><ResourceName/></root>";
+            findServicesBinder.DataListSpecification = "<DataList><Type/><Roles/><ResourceName/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction findServiceActionBinder = new ServiceAction();
             findServiceActionBinder.Name = HandlesType();

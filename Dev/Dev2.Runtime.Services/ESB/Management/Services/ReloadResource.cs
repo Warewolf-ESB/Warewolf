@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService reloadResourceServicesBinder = new DynamicService();
             reloadResourceServicesBinder.Name = HandlesType();
-            reloadResourceServicesBinder.DataListSpecification = "<root><ResourceName/><ResourceType/></root>";
+            reloadResourceServicesBinder.DataListSpecification = "<DataList><ResourceName/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction reloadResourceServiceActionBinder = new ServiceAction();
             reloadResourceServiceActionBinder.Name = HandlesType();

@@ -127,7 +127,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                         var serviceName = "DeleteWorkflowTest2";
                         string postData = String.Format("{0}{1}", _serverFactory.ServerAddress, serviceName);
                         string actualResult = TestHelper.PostDataToWebserver(postData);
-                        Assert.AreEqual(true, actualResult.Contains("DeleteWorkflowTest2"));
+                        Assert.AreEqual(true, actualResult.Contains("DataList"));
 
                         string xmlString = BuildDeleteRequestXml(serviceName, "WorkflowService");
                         postData = String.Format("{0}{1}?{2}", _serverFactory.ServerAddress, "DeleteResourceService", xmlString);
@@ -161,7 +161,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
          
                         postData = String.Format("{0}{1}", _serverFactory.ServerAddress, serviceName);
                         actualResult = TestHelper.PostDataToWebserver(postData);
-                        Assert.AreEqual(true, actualResult.Contains("DeleteWorkflowTest2"));
+                        Assert.AreEqual(true, actualResult.Contains("DataList"));
                     }
                 }
             }

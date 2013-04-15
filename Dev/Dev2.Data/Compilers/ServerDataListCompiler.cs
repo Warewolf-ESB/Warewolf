@@ -646,6 +646,50 @@ namespace Dev2.Server.Datalist
             return returnVal;
         }
 
+        public string ConvertAndFilter(NetworkContext ctx, Guid curDLID, string filterShape, DataListFormat typeOf, out ErrorResultTO errors)
+        {
+            IBinaryDataList result;
+            string res = string.Empty;
+            ErrorResultTO allErrors = new ErrorResultTO();
+            string error = string.Empty;
+
+            result = TryFetchDataList(curDLID, out error);
+
+            if (result != null)
+            {
+                try
+                {
+
+                    IDataListTranslator t = _dlServer.GetTranslator(typeOf);
+                    if (t != null)
+                    {
+                        res = t.ConvertAndFilter(result, filterShape, out errors);
+                        if (errors.HasErrors())
+                        {
+                            allErrors.MergeErrors(errors);
+                        }
+                    }
+                    else
+                    {
+                        allErrors.AddError("Invalid DataListFormt [ " + typeOf + " ] ");
+                    }
+                }
+                catch (Exception e)
+                {
+                    allErrors.AddError(e.Message);
+                }
+            }
+            else
+            {
+                allErrors.AddError(error);
+            }
+
+            // assign error var
+            errors = allErrors;
+
+            return res;
+        }
+
         public void SetParentUID(Guid curDLID, Guid parentID, out ErrorResultTO errors)
         {
             string error = string.Empty;

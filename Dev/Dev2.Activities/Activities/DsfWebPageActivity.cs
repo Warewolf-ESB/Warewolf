@@ -127,14 +127,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
             List<LayoutObject> layoutObjects = new List<LayoutObject>();
-
+            
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
+            dataObject.IsWebpage = true;
             if(IsPreview)
             {
                 try

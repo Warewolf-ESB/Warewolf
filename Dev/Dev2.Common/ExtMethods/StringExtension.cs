@@ -20,8 +20,17 @@ namespace Dev2.Common.ExtMethods
         public static string Unescape(this string payload)
         {
             XmlDocument doc = new XmlDocument();
-            string xml = string.Format("<dummycake>{0}</dummycake>", payload);
-            doc.LoadXml(xml);
+            try
+            {
+                doc.LoadXml(payload);
+                return doc.InnerXml;
+            }
+            catch(Exception ex)
+            {
+                string xml = string.Format("<dummycake>{0}</dummycake>", payload);
+
+                doc.LoadXml(xml);
+            }
             return doc.DocumentElement.InnerText;
         }
 

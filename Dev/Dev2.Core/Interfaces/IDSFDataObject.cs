@@ -39,6 +39,9 @@ namespace Dev2
         bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
         string RawPayload { get; set; }
 
+        // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped
+        bool IsWebpage { get; set; }
+
         IDSFDataObject Clone();
     }
 }

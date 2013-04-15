@@ -167,7 +167,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 2.Mr</field></Contacts><Contacts><field>Enzo</field></Contacts><Contacts><field>Ferrari</field></Contacts><Contacts><field>0821169853
 3.Mrs</field></Contacts><Contacts><field>Jenny</field></Contacts><Contacts><field>Smith</field></Contacts><Contacts><field>0762458963
 4.Ms</field></Contacts><Contacts><field>Kerrin</field></Contacts><Contacts><field>deSilvia</field></Contacts><Contacts><field>0724587310
-5.Sir</field></Contacts><Contacts><field>Richard</field></Contacts><Contacts><field>Branson</field></Contacts><Contacts><field>0812457896</field></Contacts><RecordCount>20</RecordCount>";
+5.Sir</field></Contacts><Contacts><field>Richard</field></Contacts><Contacts><field>Branson</field></Contacts><Contacts><field>0812457896</field></Contacts>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

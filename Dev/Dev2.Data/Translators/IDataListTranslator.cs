@@ -42,5 +42,14 @@ namespace Dev2.DataList.Contract
         /// <returns>An array of bytes that represent the datalist in the standard format.</returns>
         IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors);
 
+        /// <summary>
+        /// Converts the and filter.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="filterShape">The filter shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors);
+
     }
 }

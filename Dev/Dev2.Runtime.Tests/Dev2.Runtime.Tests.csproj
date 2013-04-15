@@ -81,6 +81,7 @@
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="Configuration\NetworkContextMock.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
+    <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="Hosting\ResourceCatalogTests.cs" />
@@ -202,7 +203,9 @@
     <EmbeddedResource Include="XML\CatalogServiceCitiesDatabase.xml" />
     <EmbeddedResource Include="XML\CatalogSourceTestServer.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\TestForEachOutput.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

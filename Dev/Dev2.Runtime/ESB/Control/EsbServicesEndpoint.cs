@@ -1,4 +1,7 @@
-﻿using Dev2.Common;
+﻿using System.IO;
+using System.Xml.Linq;
+using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Execution;
@@ -24,7 +27,7 @@ namespace Dev2.DynamicServices
         Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
         public void Register(string userName)
         {
-            if(_users.ContainsKey(userName))
+            if (_users.ContainsKey(userName))
             {
                 _users.Remove(userName);
             }
@@ -36,7 +39,7 @@ namespace Dev2.DynamicServices
 
         public void Unregister(string userName)
         {
-            if(UserExists(userName))
+            if (UserExists(userName))
             {
                 _users.Remove(userName);
                 NotifyAllClients(string.Format("User '{0}' logged out", userName));
@@ -56,7 +59,7 @@ namespace Dev2.DynamicServices
         public void SendMessage(string userName, string message)
         {
             string suffix = " Said:";
-            if(userName == "System")
+            if (userName == "System")
             {
                 suffix = string.Empty;
             }
@@ -66,13 +69,13 @@ namespace Dev2.DynamicServices
         public void SendPrivateMessage(string userName, string targetUserName, string message)
         {
             string suffix = " Said:";
-            if(userName == "System")
+            if (userName == "System")
             {
                 suffix = string.Empty;
             }
-            if(UserExists(userName))
+            if (UserExists(userName))
             {
-                if(!UserExists(targetUserName))
+                if (!UserExists(targetUserName))
                 {
                     NotifyClient(userName, string.Format("System: Message failed - User '{0}' has logged out ", targetUserName));
                 }
@@ -163,7 +166,7 @@ namespace Dev2.DynamicServices
 
             try
             {
-                if(UserExists(userName))
+                if (UserExists(userName))
                 {
                     _users[userName].CallbackNotification(message);
                 }
@@ -188,7 +191,7 @@ namespace Dev2.DynamicServices
             {
                 //_parallel = new ParallelCommandExecutor(this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TraceWriter.WriteTrace("Error Loading Endpoint...");
                 throw ex;
@@ -209,7 +212,6 @@ namespace Dev2.DynamicServices
         /// </summary>
         /// <param name="dataObject">The data object.</param>
         /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="dataListID">The data list ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
@@ -220,14 +222,15 @@ namespace Dev2.DynamicServices
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             // If no DLID, we need to make it based upon the request ;)
-            if(dataObject.DataListID == GlobalConstants.NullDataListID)
+            if (dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 string theShape = null;
                 try
                 {
                     theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+
                 }
-                catch(Exception e)
+                catch (Exception)
                 {
                    errors.AddError(string.Format("Unable to find the service '{0}'.", dataObject.ServiceName));
                    return resultID;
@@ -250,7 +253,7 @@ namespace Dev2.DynamicServices
                 errors.MergeErrors(invokeErrors);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(ex.Message);
             }
@@ -325,168 +328,44 @@ namespace Dev2.DynamicServices
 
         }
 
-        #endregion
+        /// <summary>
+        /// Fetches the execution payload.
+        /// </summary>
+        /// <param name="dataObj">The data obj.</param>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="targetFormat">The target format.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public string FetchExecutionPayload(IDSFDataObject dataObj,DataListFormat targetFormat, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            string targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName);
+            string result = string.Empty;
 
-        #region Public Entry Point
+            if (targetShape != null)
+            {
+                string translatorShape = ManipulateDataListShapeForOutput(targetShape);
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                ErrorResultTO invokeErrors;
+                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat,translatorShape, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+            }
+            else
+            {
+                errors.AddError("Could not locate service shape for " + dataObj.ServiceName);
+            }
 
-        ///// <summary>
-        ///// Entry point for all client requests
-        ///// </summary>
-        ///// <param name="XmlRequest">string for well-formed XML containing the request data</param>
-        ///// <returns>string containing the response(s) to the request</returns>
-        //public string ExecuteRequest(string xmlRequest, Guid dataListID)
-        //{
-
-        //    // Break this to facilitate Better DataList managent
-        //    string executionPayload = ExecuteRequest(xmlRequest, WorkspaceRepository.Instance.ServerWorkspace, dataListID);
-
-        //    // 2012.10.17 - 5782: TWR - Added call with server workspace parameter
-        //    return executionPayload;
-        //}
-
-        ///// <summary>
-        ///// Entry point for all client requests
-        ///// </summary>
-        ///// <param name="XmlRequest">string for well-formed XML containing the request data</param>
-        ///// <returns>string containing the response(s) to the request</returns>
-        //public string ExecuteRequest(string xmlRequest, Guid workID, Guid dataListID) {
-
-        //    // Break this to facilitate Better DataList managent
-        //    string executionPayload = ExecuteRequest(xmlRequest, WorkspaceRepository.Instance.Get(workID), dataListID);
-
-        //    // 2012.10.17 - 5782: TWR - Added call with server workspace parameter
-        //    return executionPayload;
-        //}
-
-        ///// <summary>
-        ///// Entry point for all client requests
-        ///// </summary>
-        ///// <param name="XmlRequest">string for well-formed XML containing the request data</param>
-        ///// <returns>string containing the response(s) to the request</returns>
-        //public string ExecuteRequest(string xmlRequest, IWorkspace workspace, Guid dataListID)
-        //{
-        //    // 2012.10.17 - 5782: TWR - Added workspace parameter
-
-        //    //TODO: Add security validation
-        //    //Create allowed callers section in the service definition 
-        //    //that must store a list if I.P addresses that are allowed to 
-        //    //call this service.
-        //    //If the caller is not in the allowed callers list then 
-        //    //reject this request immediately.
-
-
-        //    dynamic dynXmlRequest = new UnlimitedObject();
-
-
-        //    #region Identify Caller
-        //    //OperationContext context = OperationContext.Current;
-        //    //MessageProperties properties = context.IncomingMessageProperties;
-        //    //RemoteEndpointMessageProperty endpoint = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-
-        //    #endregion
-
-        //    try
-        //    {
-        //        dynXmlRequest = new UnlimitedObject();
-        //        dynXmlRequest.Load(xmlRequest);
-
-        //        //TraceWriter.WriteTrace(this, string.Format("Executing Service '{0}'...", dynXmlRequest.Service), Resources.TraceMessageType_Message);
-
-        //        if (dynXmlRequest.HasError && dynXmlRequest.Error.Length > 0)
-        //        {
-        //            dynXmlRequest.DynamicServiceFrameworkMessage.Error = "Error in request - inbound message contains error tag";
-        //            return dynXmlRequest.XmlString;
-        //        }
-
-
-        //    }
-        //    catch (XmlException handlerEx)
-        //    {
-
-        //        ExceptionHandling.WriteEventLogEntry(
-        //             Resources.DynamicService_EventLogTarget
-        //             , Resources.DynamicService_EventLogSource
-        //             , handlerEx.ToString()
-        //             , EventLogEntryType.Error);
-
-        //        return dynXmlRequest.XmlString;
-        //    }
-
-        //    string result = string.Empty;
-        //    Guid resultID = GlobalConstants.NullDataListID;
-        //    ErrorResultTO errors = new ErrorResultTO();
-
-        //    try
-        //    {
-        //        // 2012.10.17 - 5782: TWR - Added workspace parameter
-        //        IDynamicServicesInvoker invoker = new DynamicServicesInvoker(this, this, _loggingEnabled, workspace);
-
-        //        // Should return the top level DLID
-        //        resultID = invoker.Invoke(workspace.Host, dynXmlRequest, dataListID, out errors);
-        //        if (errors.HasErrors()) {
-        //            result = errors.MakeUserReady();
-        //    }
-
-        //        //result = serviceResult.XmlString;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        result = "<Error>" + e.Message + "</Error>";
-        //        TraceWriter.WriteTrace("Payload [ " + dynXmlRequest + " ] caused [ " + e.Message + " ]");
-        //    }finally{
-        //        // PBI : 5376 
-        //        if(dataListID == GlobalConstants.NullDataListID){
-        //            // Plant any errors that have bubbled
-        //            if (errors.HasErrors()) {
-        //                string error = string.Empty;
-        //                IBinaryDataListItem tmpI = Dev2BinaryDataListFactory.CreateBinaryItem(errors.MakeDataListReady(), "Error");
-        //                IBinaryDataListEntry tmpE = Dev2BinaryDataListFactory.CreateEntry("Error", string.Empty);
-        //                tmpE.TryPutScalar(tmpI, out error);
-        //                _svrCompiler.Upsert(null, resultID, (GlobalConstants.SystemTagNamespace + "." + enSystemTag.Error), tmpE, out errors);
-        //            }
-
-        //            // top level ;)
-        //            // Else return the string
-        //            DataListTranslatedPayloadTO data = _svrCompiler.ConvertFrom(null, resultID, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._XML), out errors);
-
-        //            if (data != null) {
-        //                result = data.FetchAsString();
-        //            } else {
-        //                result = "<Error>Cannot fetch final DataList [ " + resultID + " ]</Error>";
-        //            }
-
-        //            // Clean up ;)
-        //            _svrCompiler.DeleteDataListByID(resultID, true);
-        //        }else{
-        //            ErrorResultTO mergeErrors = new ErrorResultTO();
-        //            // merge data back into this DataList
-        //            if (dataListID != resultID) {
-        //                TraceWriter.WriteTrace("Fatal DynamicServiceEndpoint Invoke... Failed to return input datalist!");
-        //                errors.AddError("FATAL ERROR : Execution Mis-Match");
-        //                result = GlobalConstants.NullDataListID.ToString();
-        //            } else {
-        //                result = resultID.ToString();
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
-        //public bool ExecuteParallel(IEsbActivityInstruction[] instructions)
-        //{
-        //    int performed = _parallel.Perform(instructions);
-        //    return performed == instructions.Length;
-        //}
-
-        //private string ExecuteCommandParallel(string xmlRequest, Guid dataListID)
-        //{
-        //    return string.Empty;
-        //    //return ExecuteRequest(xmlRequest, dataListID);
-        //}
+            return result;
+        }
 
         #endregion
 
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <returns></returns>
         public string FindServiceShape(Guid workspaceID, string serviceName)
         {
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
@@ -494,7 +373,7 @@ namespace Dev2.DynamicServices
             var tmp = services.FirstOrDefault();
             var result = "<DataList></DataList>";
 
-            if(tmp != null)
+            if (tmp != null)
             {
                 result = tmp.DataListSpecification;
             }
@@ -502,114 +381,59 @@ namespace Dev2.DynamicServices
             return result;
         }
 
-        //#region ParallelCommandExecutor
-        //private sealed class ParallelCommandExecutor
+        //public Guid ServiceOutputFormatter(Guid workspaceID, Guid dataListID, string serviceName)
         //{
-        //    private EsbServicesEndpoint _owner;
-        //    private IEsbActivityInstruction[] _instructions;
-        //    private ParameterizedThreadStart _threadStart;
-        //    private ManualResetEvent _wait;
-        //    private object _performGuard;
-        //    private object _counterGuard;
+        //    Guid result = Guid.Empty;
+        //    string theShape = FindServiceShape(workspaceID, serviceName);
 
-        //    private int _length;
-        //    private int _counter;
+        //    theShape = ManipulateDataListShapeForOutput(theShape);
 
-        //    public ParallelCommandExecutor(EsbServicesEndpoint owner)
-        //    {
-        //        _owner = owner;
-        //        _performGuard = new object();
-        //        _counterGuard = new object();
-        //        _threadStart = OnThreadStart;
-        //        _wait = new ManualResetEvent(false);
-        //    }
+        //    ErrorResultTO invokeErrors;
 
-        //    public int Perform(IEsbActivityInstruction[] instructions)
-        //    {
-        //        int performed = 0;
+        //    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-        //        lock (_performGuard)
-        //        {
-        //            _wait.Reset();
-        //            _counter = 0;
-        //            _instructions = instructions;
-        //            _length = _instructions.Length;
+        //    string dlString = compiler.ConvertFrom(dataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
 
-        //            int totalThreads = 6;
+        //    result = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dlString, theShape, out invokeErrors);
 
-        //            if (_length < totalThreads)
-        //            {
-        //                totalThreads = _length;
-        //            }
-
-        //            int batchSize = _length / totalThreads;
-        //            int remainder = _length - (batchSize * totalThreads);
-        //            int offset = 0;
-
-
-        //            if (_length > 0)
-        //            {
-        //                for (int i = 0; i < totalThreads - 1; i++)
-        //                {
-        //                    ArraySegment<IEsbActivityInstruction> array = new ArraySegment<IEsbActivityInstruction>(_instructions, offset, batchSize);
-        //                    offset += batchSize;
-        //                    new Thread(_threadStart).Start(array);
-        //                }
-
-        //                {
-        //                    ArraySegment<IEsbActivityInstruction> array = new ArraySegment<IEsbActivityInstruction>(_instructions, offset, batchSize + remainder);
-        //                    offset += batchSize;
-        //                    new Thread(_threadStart).Start(array);
-        //                }
-
-        //                _wait.WaitOne();
-        //            }
-
-        //            performed = _counter;
-        //            _instructions = null;
-        //        }
-
-        //        return performed;
-        //    }
-
-        //    private void OnThreadStart(object obj)
-        //    {
-        //        int increment = 1;
-
-        //        if (obj is ArraySegment<IEsbActivityInstruction>)
-        //        {
-        //            ArraySegment<IEsbActivityInstruction> arraySegment = (ArraySegment<IEsbActivityInstruction>)obj;
-        //            increment = arraySegment.Count;
-        //            IEsbActivityInstruction[] rawArray = arraySegment.Array;
-
-        //            for (int i = 0; i < arraySegment.Count; i++)
-        //            {
-        //                IEsbActivityInstruction activity = rawArray[i + arraySegment.Offset];
-        //                activity.Result = _owner.ExecuteCommandParallel(activity.Instruction, activity.DataListID);
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            IEsbActivityInstruction activity = obj as IEsbActivityInstruction;
-        //            activity.Result = _owner.ExecuteCommandParallel(activity.Instruction, activity.DataListID);
-        //        }
-
-
-        //        bool resume = false;
-
-        //        lock (_counterGuard)
-        //        {
-        //            if ((_counter += increment) == _length)
-        //            {
-        //                resume = true;
-        //            }
-        //        }
-
-        //        if (resume) _wait.Set();
-        //    }
-
+        //    return result;
         //}
-        //#endregion
+
+        /// <summary>
+        /// Manipulates the data list shape for output.
+        /// </summary>
+        /// <param name="preShape">The pre shape.</param>
+        /// <returns></returns>
+        private string ManipulateDataListShapeForOutput(string preShape)
+        {
+            XDocument xDoc = XDocument.Load(new StringReader(preShape));
+
+            XElement rootEl = xDoc.Element("DataList");
+            if (rootEl == null) return xDoc.ToString();
+
+            rootEl.Elements().Where(el =>
+            {
+                var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+                    var removeCondition = firstOrDefault != null &&
+                                          (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
+                                           firstOrDefault.Value == enDev2ColumnArgumentDirection.None.ToString());
+                return (removeCondition && !el.HasElements);
+            }).Remove();
+
+            var xElements = rootEl.Elements().Where(el => el.HasElements);
+            var enumerable = xElements as IList<XElement> ?? xElements.ToList();
+            enumerable.Elements().Where(element =>
+            {
+                var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
+                    var removeCondition = xAttribute != null &&
+                                          (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
+                                           xAttribute.Value == enDev2ColumnArgumentDirection.None.ToString());
+                return removeCondition;
+            }).Remove();
+            enumerable.Where(element => !element.HasElements).Remove();
+            return xDoc.ToString();
+        }
+
+
     }
 }

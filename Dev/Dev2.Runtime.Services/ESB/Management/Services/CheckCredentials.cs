@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var checkCredentialsService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<root><Domain/><Username/><Password/></root>"
+                DataListSpecification = "<DataList><Domain/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var checkCredentialsServiceAction = new ServiceAction

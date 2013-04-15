@@ -303,6 +303,15 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         string ConvertFrom(Guid curDLID, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors);
 
+        /// <summary>
+        /// Converts the and filter.
+        /// </summary>
+        /// <param name="curDlid">The cur DLID.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="filterShape">The filter shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from to.

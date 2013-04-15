@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Plugins
 {
     [TestClass]
+    [Ignore]
     public class PluginsReturningPathsFromXML
     {
         // Bug 7820

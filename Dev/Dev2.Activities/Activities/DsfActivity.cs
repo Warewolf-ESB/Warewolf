@@ -225,7 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 dataObject.DataListID = subExeID;
                                 dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
-                                // Execute Request 
+                                // Execute Request
                                 var resultID = esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 

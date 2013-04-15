@@ -107,7 +107,7 @@
 
 
 
-//            //// 2012.10.17 - 5782: TWR - Moved from DynamicServicesEndpoint constructor
+//            //// 2012.10.17 - 5782: TWR - Moved from EsbServicesEndpoint constructor
 //            //var defaultSources = GetDefaultSources();
 //            //ReservedSources = defaultSources;
 //            //defaultSources.ForEach(c => Sources.Add(c));
@@ -1945,7 +1945,7 @@
 //        }
 //        #endregion
 
-//        #region 2012.10.17 - 5782: TWR - Moved from DynamicServicesEndpoint --> GetDefaultSources, GetDefaultServices
+//        #region 2012.10.17 - 5782: TWR - Moved from EsbServicesEndpoint --> GetDefaultSources, GetDefaultServices
 
 //        #region GetDefaultSources
 

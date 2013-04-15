@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService deployResourceDynamicService = new DynamicService();
             deployResourceDynamicService.Name = HandlesType();
-            deployResourceDynamicService.DataListSpecification = "<root><ResourceDefinition/><Roles/></root>";
+            deployResourceDynamicService.DataListSpecification = "<DataList><ResourceDefinition/><Roles/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction deployResourceServiceAction = new ServiceAction();
             deployResourceServiceAction.Name = HandlesType();

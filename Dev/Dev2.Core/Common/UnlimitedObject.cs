@@ -1475,7 +1475,8 @@ namespace Unlimited.Framework
 
             try
             {
-                dataObject = new UnlimitedObject(XElement.Parse(xmlData));
+                var xElement = XElement.Parse(xmlData); 
+                dataObject = new UnlimitedObject(xElement);
             }
             catch (XmlException ex)
             {

@@ -169,7 +169,6 @@ namespace Dev2.Integration.Tests.Build.Tests
             var urls = new[]
             {
                 String.Format("{0}{1}", ServerSettings.WebserverURI, "%3Ctest%3E/test"),
-                String.Format("{0}{1}", ServerSettings.WebserverURI, "!@#$%^&*"),
                 String.Format("{0}{1}", ServerSettings.WebserverURI, "/")
             };
 

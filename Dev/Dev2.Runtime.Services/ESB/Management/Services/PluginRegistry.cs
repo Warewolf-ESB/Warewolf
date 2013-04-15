@@ -184,7 +184,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService pluginMetaDataService = new DynamicService();
             pluginMetaDataService.Name = HandlesType();
-            pluginMetaDataService.DataListSpecification = "<root><AssemblyLocation/><ProtectionLevel/><NameSpace/><MethodName/></root>";
+            pluginMetaDataService.DataListSpecification = "<DataList><AssemblyLocation/><ProtectionLevel/><NameSpace/><MethodName/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction pluginMetaDataAction = new ServiceAction();
             pluginMetaDataAction.Name = HandlesType();
