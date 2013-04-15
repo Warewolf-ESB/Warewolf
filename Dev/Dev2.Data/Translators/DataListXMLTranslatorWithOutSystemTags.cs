@@ -100,14 +100,6 @@ namespace Dev2.Server.DataList.Translators
 
             result.Append("</" + _rootTag + ">");
 
-            //// build up final payload
-            //byte[] bResult = new byte[result.Length];
-            //for (int i = 0; i < bResult.Length; i++) {
-            //    bResult[i] = Convert.ToByte(result[i]);
-            //}
-
-            //return bResult;
-
             DataListTranslatedPayloadTO tmp = new DataListTranslatedPayloadTO(result.ToString());
 
             return tmp;
@@ -116,20 +108,20 @@ namespace Dev2.Server.DataList.Translators
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            string payload = System.Text.Encoding.UTF8.GetString(input);
+            string payload = Encoding.UTF8.GetString(input);
             string error = string.Empty;
 
             IBinaryDataList result = new BinaryDataList();
 
             // build shape
-            if (payload == null || targetShape == null)
+            if (targetShape == null)
             {
                 errors.AddError("Null payload or shape");
             }
             else
             {
                 result = BuildTargetShape(targetShape, out error);
-                if (error != null && error != string.Empty)
+                if (!string.IsNullOrEmpty(error))
                 {
                     errors.AddError(error);
                 }
@@ -154,76 +146,76 @@ namespace Dev2.Server.DataList.Translators
 
                         if (!string.IsNullOrEmpty(toLoad))
                         {
-                            XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-
-                            HashSet<string> procssesNamespaces = new HashSet<string>();
-                            IDictionary<string, int> indexCache = new Dictionary<string, int>();
-
-                            if (children != null)
+                            if (xDoc.DocumentElement != null)
                             {
-                                IBinaryDataListEntry entry = null;
-                                int idx = 1; // recset index
+                                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
 
-                                // spin through each element in the XML
-                                foreach (XmlNode c in children)
+                                IDictionary<string, int> indexCache = new Dictionary<string, int>();
+
+                                if (children != null)
                                 {
-                                    if (!DataListUtil.isSystemTag(c.Name))
+                                    IBinaryDataListEntry entry = null;
+                                    int idx = 1; // recset index
+
+                                    // spin through each element in the XML
+                                    foreach (XmlNode c in children)
                                     {
-                                        // scalars and recordset fetch
-                                        if (result.TryGetEntry(c.Name, out entry, out error))
+                                        if (!DataListUtil.isSystemTag(c.Name))
                                         {
-                                            if (entry.IsRecordset)
+                                            // scalars and recordset fetch
+                                            if (result.TryGetEntry(c.Name, out entry, out error))
                                             {
-                                                // fetch recordset index
-                                                int fetchIdx = 0;
-                                                if (indexCache.TryGetValue(c.Name, out fetchIdx))
+                                                if (entry.IsRecordset)
                                                 {
-                                                    idx = fetchIdx;
+                                                    // fetch recordset index
+                                                    int fetchIdx = 0;
+                                                    if (indexCache.TryGetValue(c.Name, out fetchIdx))
+                                                    {
+                                                        idx = fetchIdx;
+                                                    }
+                                                    else
+                                                    {
+                                                        idx = 1; //re-set idx on cache miss ;)
+                                                    }
+                                                    // process recordset
+                                                    XmlNodeList nl = c.ChildNodes;
+                                                    if (nl != null)
+                                                    {
+                                                        foreach (XmlNode subc in nl)
+                                                        {
+                                                            entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
+
+                                                            if (!string.IsNullOrEmpty(error))
+                                                            {
+                                                                errors.AddError(error);
+                                                            }
+                                                        }
+                                                        // update this recordset index
+                                                        indexCache[c.Name] = ++idx;
+                                                    }
+
                                                 }
                                                 else
                                                 {
-                                                    idx = 1; //re-set idx on cache miss ;)
-                                                }
-                                                // process recordset
-                                                XmlNodeList nl = c.ChildNodes;
-                                                if (nl != null)
-                                                {
-                                                    foreach (XmlNode subc in nl)
+                                                    // process scalar
+                                                    entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
+
+                                                    if (!string.IsNullOrEmpty(error))
                                                     {
-                                                        entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
-
-                                                        if (error != null && error != string.Empty)
-                                                        {
-                                                            errors.AddError(error);
-                                                        }
+                                                        errors.AddError(error);
                                                     }
-                                                    // update this recordset index
-                                                    indexCache[c.Name] = ++idx;
                                                 }
-
                                             }
                                             else
                                             {
-                                                // process scalar
-                                                entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-
-                                                if (error != null && error != string.Empty)
-                                                {
-                                                    errors.AddError(error);
-                                                }
+                                                errors.AddError(error);
+                                                entry = null;
                                             }
                                         }
-                                        else
-                                        {
-                                            errors.AddError(error);
-                                            entry = null;
-                                        }
                                     }
+
                                 }
-
                             }
-
-                            
                         }
                     }
                     catch (Exception e)
