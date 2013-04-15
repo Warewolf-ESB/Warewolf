@@ -44,7 +44,9 @@ namespace Dev2.Studio.Core
                 switch (Math.Sign(this[i].CompareTo(item)))
                 {
                     case 0:
-                        throw new InvalidOperationException("Cannot insert duplicated items");
+                        //TODO at least log this!
+                        //throw new InvalidOperationException("Cannot insert duplicated items");
+                        return;
                     case 1:
                         base.InsertItem(i, item);
                         return;
