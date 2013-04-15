@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core
                     case 0:
                         //TODO at least log this!
                         //throw new InvalidOperationException("Cannot insert duplicated items");
-                        return;
+                        break;
                     case 1:
                         base.InsertItem(i, item);
                         return;
