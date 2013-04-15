@@ -1119,9 +1119,7 @@ namespace Dev2.Studio.ViewModels
                 var resourceViewModel = new ResourceWizardViewModel(resourceModelToEdit);
 
                 Uri requestUri;
-                if (
-                    !Uri.TryCreate(resourceModelToEdit.Environment.WebServerAddress,
-                                   "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit), out requestUri))
+                if (!Uri.TryCreate(resourceModelToEdit.Environment.WebServerAddress, "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit), out requestUri))
                 {
                     requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
                                          "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit));

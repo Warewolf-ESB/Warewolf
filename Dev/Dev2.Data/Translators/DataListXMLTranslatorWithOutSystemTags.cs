@@ -32,7 +32,7 @@ namespace Dev2.Server.DataList.Translators
         {
             if (payload == null)
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException("payload");
             }
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
