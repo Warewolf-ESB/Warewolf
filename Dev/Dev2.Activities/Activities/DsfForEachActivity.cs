@@ -620,6 +620,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             throw new NotImplementedException();
         }
 
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.ForEach;
+        }
+
         #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)

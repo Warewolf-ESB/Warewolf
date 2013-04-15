@@ -6,6 +6,7 @@ namespace Dev2.Enums
         DataGridActivity,
         StaticActivity,
         MixedActivity,
-        DsfActivity
+        DsfActivity,
+        ForEach
     }
 }

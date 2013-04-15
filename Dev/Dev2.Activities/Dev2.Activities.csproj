@@ -129,6 +129,7 @@
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\ForEachActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\MixedActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\StaticActivityFindMissingStrategy.cs" />
     <Compile Include="Hosting\WorkflowInstanceInfo.cs" />
