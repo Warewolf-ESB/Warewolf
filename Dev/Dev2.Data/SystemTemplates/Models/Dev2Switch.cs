@@ -36,6 +36,15 @@ namespace Dev2.Data.SystemTemplates.Models
         /// </value>
         public string SwitchVariable { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets the switch expression.
+        /// </summary>
+        /// <value>
+        /// The switch expression.
+        /// </value>
+        public string SwitchExpression { get; set; }
+
         /// <summary>
         /// To the web model.
         /// </summary>

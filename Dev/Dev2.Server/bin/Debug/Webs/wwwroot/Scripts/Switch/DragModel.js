@@ -7,7 +7,9 @@
 
     self.data = {
 
-        SwitchVariable: ko.observable("")
+        SwitchVariable: ko.observable(""),
+		
+		SwitchExpression : ko.observable("")
 
     };
 
@@ -39,8 +41,16 @@
             self.data.SwitchVariable(response.SwitchVariable);
         }
 		
-		// bind the variable region ;)
-		$("#BindingVariable").html(response.SwitchVariable);
+		if(response.SwitchExpression != undefined){
+			// bind the variable region ;)
+			$("#BindingVariable").html(response.SwitchExpression);
+			self.data.SwitchExpression(response.SwitchExpression);
+		}else{
+			// bind the variable region ;)
+			$("#BindingVariable").html("");
+		}
+		
+		
 
     }
 

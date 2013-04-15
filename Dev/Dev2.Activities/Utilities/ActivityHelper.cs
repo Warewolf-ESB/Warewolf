@@ -71,6 +71,7 @@ namespace Dev2.Utilities
                 if (keyProperty != null)
                 {
                     keyProperty.SetValue(ds.SwitchVariable);
+                    
                 }
             }
         }

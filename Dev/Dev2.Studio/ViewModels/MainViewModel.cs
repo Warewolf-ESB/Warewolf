@@ -1453,6 +1453,8 @@ namespace Dev2.Studio.ViewModels
 
             if (activity == null) return;
 
+
+
             ModelProperty activityExpression =
                 activity.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
 
@@ -1490,11 +1492,13 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ConfigureSwitchCaseExpression(Tuple<ModelItem, IEnvironmentModel> payload)
+        public void ConfigureSwitchCaseExpression(Tuple<ConfigureCaseExpressionTO, IEnvironmentModel> payload)
         {
             IEnvironmentModel environment = payload.Item2;
-            ModelItem switchCase = payload.Item1;
-            string modelData = JsonConvert.SerializeObject(DataListConstants.DefaultCase);
+            ModelItem switchCase = payload.Item1.TheItem;
+
+            string modelData = JsonConvert.SerializeObject(new Dev2Switch() { SwitchVariable = "" , SwitchExpression = payload.Item1.ExpressionText});
+
 
             // now invoke the wizard ;)
             Uri requestUri;
@@ -1532,7 +1536,6 @@ namespace Dev2.Studio.ViewModels
                 string val = switchCaseValue.ComputedValue.ToString();
                 modelData = JsonConvert.SerializeObject(new Dev2Switch {SwitchVariable = val});
             }
-
 
             // now invoke the wizard ;)
             Uri requestUri;

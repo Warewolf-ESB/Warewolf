@@ -1356,9 +1356,44 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     if ((mi.Parent.Parent.Parent != null) && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
                     {
+                        #region Extract the Switch Expression ;)
+
+                        ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
+
+                        var tmpModelItem = activityExpression.Value;
+
+                        var switchExpressionValue = string.Empty;
+
+                        if (tmpModelItem != null)
+                        {
+                            var tmpProperty = tmpModelItem.Properties["ExpressionText"];
+
+                            if (tmpProperty != null)
+                            {
+                                var tmp = tmpProperty.Value.ToString();
+                                // Dev2DecisionHandler.Instance.FetchSwitchData("[[res]]",AmbientDataList)
+
+                                if (!string.IsNullOrEmpty(tmp))
+                                {
+                                    int start = tmp.IndexOf("(");
+                                    int end = tmp.IndexOf(",");
+
+                                    if (start < end && start >= 0)
+                                    {
+                                        start += 2;
+                                        end -= 1;
+                                        switchExpressionValue = tmp.Substring(start, (end - start));
+                                    }
+                                    
+                                }
+                            }
+                        }
+
+                        #endregion
+
                         if ((mi.Properties["Key"].Value != null) && mi.Properties["Key"].Value.ToString().Contains("Case"))
                         {
-                            Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
+                            Tuple<ConfigureCaseExpressionTO, IEnvironmentModel> wrapper = new Tuple<ConfigureCaseExpressionTO, IEnvironmentModel>(new ConfigureCaseExpressionTO() { TheItem = mi, ExpressionText = switchExpressionValue}, _resourceModel.Environment);
                             EventAggregator.Publish(new ConfigureCaseExpressionMessage(wrapper));
                         }
                     }
