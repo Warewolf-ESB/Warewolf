@@ -1,7 +1,12 @@
-<Service Name="Count Records" ID="06281918-b6d5-4194-8ff3-b4feb9dbef67" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Count Records"
+﻿<Service ID="a55f49e0-d262-4011-8ba5-e0810ca126b0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Count Records" ResourceType="WorkflowService"><DisplayName>Count Records</DisplayName><Category>TESTS</Category><AuthorRoles></AuthorRoles><Comment></Comment><Tags></Tags><IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath><HelpLink>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</HelpLink><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><DataList><Result Description="" IsEditable="True" ColumnIODirection="Output" /><New Description="" IsEditable="True" ColumnIODirection="None"><Count Description="" IsEditable="True" ColumnIODirection="None" /></New></DataList><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="Count Records"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.Common"
+ xmlns:ddc="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
+ xmlns:ddcb="clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"
  xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
+ xmlns:dddo="clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"
+ xmlns:ddsm="clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
  xmlns:s="clr-namespace:System;assembly=mscorlib"
@@ -34,7 +39,7 @@
         &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
         &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
         &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
-        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 352,77.5 352,50&lt;/av:PointCollection&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 352,77.5 352,48&lt;/av:PointCollection&gt;
         &lt;x:Double x:Key="Height"&gt;1006&lt;/x:Double&gt;
         &lt;x:Double x:Key="Width"&gt;756&lt;/x:Double&gt;
       &lt;/scg:Dictionary&gt;
@@ -44,11 +49,11 @@
         &lt;sap:WorkflowViewStateService.ViewState&gt;
           &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
             &lt;av:Point x:Key="ShapeLocation"&gt;352,4&lt;/av:Point&gt;
-            &lt;av:Size x:Key="ShapeSize"&gt;256,92&lt;/av:Size&gt;
-            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;480,96 480,126 300,126 300,127&lt;/av:PointCollection&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;278,88&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;491,92 491,122 300,122 300,127&lt;/av:PointCollection&gt;
           &lt;/scg:Dictionary&gt;
         &lt;/sap:WorkflowViewStateService.ViewState&gt;
-        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="256,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="143e1e6f-4f49-4b74-837a-6b37fed10078" UpdateAllOccurrences="False"&gt;
+        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="278,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="143e1e6f-4f49-4b74-837a-6b37fed10078" UpdateAllOccurrences="False"&gt;
           &lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;
             &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
           &lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;
@@ -122,7 +127,7 @@
                 &lt;FlowStep.Next&gt;
                   &lt;FlowDecision x:Name="__ReferenceID2" sap:VirtualizedContainerService.HintSize="70,87"&gt;
                     &lt;FlowDecision.Condition&gt;
-                      &lt;uaba:DsfFlowDecisionActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Decision" ExpressionText="Dev2DecisionHandler.Instance.ExecuteDecisionStack(&amp;quot;{!TheStack!:[{!Col1!:![[New(2).Count]]!,!Col2!:!1!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[New(1).Count!,!Col2!:!0!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:2,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!Pass!,!FalseArmText!:!Fail!}&amp;quot;,AmbientDataList)" HasError="[HasError]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="5cb50e86-933b-4b78-b2f2-1ff4819e46b2"&gt;
+                      &lt;uaba:DsfFlowDecisionActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Decision" ExpressionText="Dev2DecisionHandler.Instance.ExecuteDecisionStack(&amp;quot;{!TheStack!:[{!Col1!:![[New(2).Count]]!,!Col2!:!1!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[New(1).Count]]!,!Col2!:!0!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:2,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!Pass!,!FalseArmText!:!Fail!}&amp;quot;,AmbientDataList)" HasError="[HasError]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="5cb50e86-933b-4b78-b2f2-1ff4819e46b2"&gt;
                         &lt;uaba:DsfFlowDecisionActivity.AmbientDataList&gt;
                           &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
                         &lt;/uaba:DsfFlowDecisionActivity.AmbientDataList&gt;
@@ -137,7 +142,7 @@
                         &lt;x:String x:Key="FalseLabel"&gt;Fail&lt;/x:String&gt;
                         &lt;av:Point x:Key="ShapeLocation"&gt;265,346.5&lt;/av:Point&gt;
                         &lt;av:Size x:Key="ShapeSize"&gt;70,87&lt;/av:Size&gt;
-                        &lt;av:PointCollection x:Key="TrueConnector"&gt;265,390 169.895,390 169.895,464&lt;/av:PointCollection&gt;
+                        &lt;av:PointCollection x:Key="TrueConnector"&gt;265,390 172.395,390 172.395,464&lt;/av:PointCollection&gt;
                       &lt;/scg:Dictionary&gt;
                     &lt;/sap:WorkflowViewStateService.ViewState&gt;
                     &lt;FlowDecision.True&gt;
@@ -145,11 +150,11 @@
                         &lt;sap:WorkflowViewStateService.ViewState&gt;
                           &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
                             &lt;av:Point x:Key="ShapeLocation"&gt;33.395,464&lt;/av:Point&gt;
-                            &lt;av:Size x:Key="ShapeSize"&gt;273,92&lt;/av:Size&gt;
-                            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;169.895,556 169.895,586 170,586 170,616.04&lt;/av:PointCollection&gt;
+                            &lt;av:Size x:Key="ShapeSize"&gt;278,88&lt;/av:Size&gt;
+                            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;172.395,552 172.395,582 170,582 170,616.04&lt;/av:PointCollection&gt;
                           &lt;/scg:Dictionary&gt;
                         &lt;/sap:WorkflowViewStateService.ViewState&gt;
-                        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="686ade5c-211f-4672-9c5b-54b468964fd7" UpdateAllOccurrences="False"&gt;
+                        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="278,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="686ade5c-211f-4672-9c5b-54b468964fd7" UpdateAllOccurrences="False"&gt;
                           &lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;
                             &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
                           &lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;
@@ -313,4 +318,4 @@
     &lt;x:Reference&gt;__ReferenceID6&lt;/x:Reference&gt;
     &lt;x:Reference&gt;__ReferenceID7&lt;/x:Reference&gt;
   &lt;/Flowchart&gt;
-&lt;/Activity&gt;</XamlDefinition></Action><AuthorRoles></AuthorRoles><Comment></Comment><Category>TESTS</Category><Tags></Tags><IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><DisplayName>Workflow</DisplayName><DataList><Result Description="" IsEditable="True" ColumnIODirection="Output" /><New Description="" IsEditable="True" ColumnIODirection="None"><Count Description="" IsEditable="True" ColumnIODirection="None" /></New></DataList><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>MEEQh6TCIEduwpDVdDgFkiabff0=</DigestValue></Reference></SignedInfo><SignatureValue>jrhMK1hz4z5WhTX6gecZhmDwac2fbI6GsCUZ0dCjVG7EGjrnc4rPKkTC71JkAdHVc/JiN2mNJBpM58ZX4+cfa9a1D9OEJauzRNGe/5NYvTsEC86SHlekcj1aE47oNN7f1bf05GCc+qjeHATm9K/3CMBfViyZ82S2hByhQZEyeL8=</SignatureValue></Signature></Service>
+&lt;/Activity&gt;</XamlDefinition></Action><BizRule /><WorkflowActivityDef /><Source /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>e8Ql0cafzykonA6k3xLMihLi7h0=</DigestValue></Reference></SignedInfo><SignatureValue>MvIW1/4JF25b1uXWqyPEdWdvp1E7nYXIQxn71DOPNFUEzbjrUN+ZdEWmokNTTI5sNYRSfEZFkS3FytnlmitjYdEOiJym2V5vrAW3pfrvRep2QPGDxWSFYTjB4uv7+3YagBeWXqRBfi6krI6CZ8rX50gNHH02s3jr1sHyqDjMbu0=</SignatureValue></Signature></Service>
