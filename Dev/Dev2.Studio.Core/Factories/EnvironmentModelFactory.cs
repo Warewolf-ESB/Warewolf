@@ -1,27 +1,27 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using System;
+using Dev2.Studio.Core.Network;
 
 namespace Dev2.Studio.Core.Factories
 {
     public static class EnvironmentModelFactory
     {
+        public static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort,
+            IFrameworkSecurityContext securityContext, IEventAggregator eventAggregator)
+        {
+            var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort, eventAggregator);
+            return new EnvironmentModel(environmentConnection) { ID = id, Name = alias };
+        }
+
         public static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
         {
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+            var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
 
-            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-
-            environment.ID = id;
-            environment.DsfAddress = applicationServerUri;
-            environment.Name = alias;
-            environment.WebServerPort = webServerPort;
-
-            return environment;
+            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext, eventAggregator);
         }
 
         public static IEnvironmentModel CreateEnvironmentModel(IServer server)
@@ -30,22 +30,12 @@ namespace Dev2.Studio.Core.Factories
 
             if(server != null)
             {
-                IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-                IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-                IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
-
-                environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-
                 Guid id;
                 if(!Guid.TryParse(server.ID, out id))
                 {
                     id = Guid.NewGuid();
                 }
-
-                environment.ID = id;
-                environment.DsfAddress = server.AppUri;
-                environment.Name = server.Alias;
-                environment.WebServerPort = server.WebUri.Port;
+                environment = CreateEnvironmentModel(id, server.AppUri, server.Alias, server.WebUri.Port);
                 server.Environment = environment;
             }
 
@@ -54,20 +44,16 @@ namespace Dev2.Studio.Core.Factories
 
         public static IEnvironmentModel CreateEnvironmentModel(IEnvironmentModel sourceEnvironment)
         {
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
-
-            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
+            IEnvironmentModel environment = null;
 
             if(sourceEnvironment != null)
             {
-                ImportService.SatisfyImports(environment);
-
-                environment.ID = Guid.NewGuid();
-                environment.DsfAddress = sourceEnvironment.DsfAddress;
-                environment.Name = sourceEnvironment.Name;
-                environment.WebServerPort = sourceEnvironment.WebServerPort;
+                environment = CreateEnvironmentModel(Guid.NewGuid(),
+                    sourceEnvironment.Connection.AppServerUri,
+                    sourceEnvironment.Name,
+                    sourceEnvironment.Connection.WebServerUri.Port,
+                    sourceEnvironment.Connection.SecurityContext,
+                    sourceEnvironment.Connection.EventAggregator);
             }
 
             return environment;

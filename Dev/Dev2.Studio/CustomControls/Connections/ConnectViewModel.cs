@@ -255,7 +255,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
                             if(serverAddress.IsLoopback)
                             {
-                                if(EnvironmentRepository.All().Any(c => c.DsfAddress.IsLoopback))
+                                if(EnvironmentRepository.All().Any(c => c.Connection.AppServerUri.IsLoopback))
                                 {
                                     error = "Loopback Environment Already Exists";
                                     AddError("LoopbackEnvironmentAlreadyExists", error);
@@ -276,7 +276,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                                 RemoveError("DuplicatePort");
                             }
 
-                            if(EnvironmentRepository.All().Any(c => c.DsfAddress == new Uri(DsfAddress)))
+                            if(EnvironmentRepository.All().Any(c => c.Connection.AppServerUri == new Uri(DsfAddress)))
                             {
 
                                 error = "Environment Already Exists";

@@ -1,5 +1,7 @@
 ﻿//5559 Update these tests
 
+using System;
+using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -7,8 +9,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 //using System.Windows.Media.Imaging;
 
 namespace Dev2.Core.Tests
@@ -74,13 +74,13 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = _importServiceContext;
 
-            _environmentConnection.Setup(envConn => envConn.Connect()).Verifiable();
-            _environmentConnection.Setup(envConn => envConn.Address).Returns(new Uri("http://localhost:77/dsf"));
+            _environmentConnection.Setup(envConn => envConn.Connect(It.IsAny<bool>())).Verifiable();
+            _environmentConnection.Setup(envConn => envConn.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             _environmentConnection.Setup(envConn => envConn.IsConnected).Returns(true);
             _environmentConnection.Setup(envConn => envConn.DataChannel.ExecuteCommand("someTez", Guid.NewGuid(), GlobalConstants.NullDataListID)).Returns("<x><result>tmpResult</result></x>").Verifiable();
             _environmentModel.Setup(envModel => envModel.ResourceRepository).Returns(_resourceRepo.Object);
             _environmentModel.Setup(envConn => envConn.Connect());
-            _environmentModel.Setup(envConn => envConn.DsfAddress).Returns(new Uri("http://localhost:77/dsf"));
+            _environmentModel.Setup(envConn => envConn.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             _environmentModel.Setup(envConn => envConn.IsConnected).Returns(true);
             _environmentModel.Setup(envConn => envConn.DsfChannel.ExecuteCommand("someTez", Guid.NewGuid(), GlobalConstants.NullDataListID)).Returns("<x><result>tmpResult</result></x>").Verifiable();
 

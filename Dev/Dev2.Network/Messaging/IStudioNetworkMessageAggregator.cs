@@ -1,6 +1,6 @@
-﻿using Dev2.Network.Messages;
-using System;
+﻿using System;
 using System.Network;
+using Dev2.Network.Messaging;
 
 namespace Dev2.Network
 {

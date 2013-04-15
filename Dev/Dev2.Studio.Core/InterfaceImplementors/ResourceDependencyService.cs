@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             request.Service = "FindDependencyService";
             request.ResourceName = resourceModel.ResourceName;
 
-            var workspaceID = ((IStudioClientContext)resourceModel.Environment.DsfChannel).AccountID;
+            var workspaceID = ((IStudioClientContext)resourceModel.Environment.DsfChannel).WorkspaceID;
 
             var result = resourceModel.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 

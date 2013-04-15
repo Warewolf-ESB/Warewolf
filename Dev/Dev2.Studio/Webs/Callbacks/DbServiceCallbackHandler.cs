@@ -66,7 +66,7 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             Uri requestUri;
-            if(!Uri.TryCreate(environmentModel.WebServerAddress, relativeUri, out requestUri))
+            if(!Uri.TryCreate(environmentModel.Connection.WebServerUri, relativeUri, out requestUri))
             {
                 requestUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
             }

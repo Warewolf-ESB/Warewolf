@@ -52,7 +52,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             test.Service = "FindDependencyService";
             test.ResourceName = ResourceModel.ResourceName;
 
-            var workspaceID = ((IStudioClientContext)ResourceModel.Environment.DsfChannel).AccountID;
+            var workspaceID = ((IStudioClientContext)ResourceModel.Environment.DsfChannel).WorkspaceID;
             dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(ResourceModel.Environment.DsfChannel.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
 
             if (data == null)

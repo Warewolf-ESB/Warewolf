@@ -9,14 +9,12 @@ namespace Dev2.Studio.Core.Interfaces
         Guid ID { get; set; }
         string Name { get; set; }
         bool IsConnected { get; }
-        Uri DsfAddress { get; set; }
+
         IStudioEsbChannel DsfChannel { get;  }
         INetworkExecutionChannel ExecutionChannel { get; }
         INetworkDataListChannel DataListChannel { get; }
-        IEnvironmentConnection EnvironmentConnection { get; set; }
+        IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; set; }
-        Uri WebServerAddress { get; }
-        int WebServerPort { get; set; }
 
         void Connect();
         void Disconnect();

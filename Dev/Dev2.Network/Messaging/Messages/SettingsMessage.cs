@@ -1,14 +1,11 @@
-﻿using Dev2.Network.Messages;
-using System;
+﻿using System;
 using System.Xml.Linq;
 
 namespace Dev2.Network.Messaging.Messages
 {
-    public class SettingsMessage : INetworkMessage
+    public class SettingsMessage : NetworkMessage
     {
         #region Properties
-
-        public long Handle { get; set; }
 
         public byte[] Assembly { get; set; }
 
@@ -25,8 +22,8 @@ namespace Dev2.Network.Messaging.Messages
 
         #region Read
 
-        public void Read(IByteReaderBase reader)
-        {
+        public override void Read(IByteReaderBase reader)
+        {            
             AssemblyHashCode = reader.ReadString();
 
             string configurationXml = reader.ReadString();
@@ -69,7 +66,7 @@ namespace Dev2.Network.Messaging.Messages
 
         #region Write
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(AssemblyHashCode);
             writer.Write((ConfigurationXml != null) ? ConfigurationXml.ToString() : "</NoData>");

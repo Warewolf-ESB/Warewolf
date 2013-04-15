@@ -1,35 +1,35 @@
 ﻿using System;
+using System.Security.Principal;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
 {
     [TestClass]
     public class DataListChannel
     {
+
         [TestMethod]
         public void ReadNonExistentDataList_Expected_Null()
         {
             //
-            // Setup MEF context
-            //
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-
-            //
             // Setup test data
             //
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
 
             //
             // Connect to the server
             //
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            var conn = CreateConnection();
             conn.Connect();
 
             //
@@ -49,11 +49,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
         public void WriteAndReadDataList_Expected_UIDsAreEqual()
         {
             //
-            // Setup MEF context
-            //
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-
-            //
             // Setup test data
             //
             ErrorResultTO errors = new ErrorResultTO();
@@ -62,8 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             //
             // Connect to the server
             //
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            var conn = CreateConnection();
             conn.Connect();
 
             //
@@ -88,11 +82,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
         public void WriteDeleteAndReadDataList_Expected_NullOnRead()
         {
             //
-            // Setup MEF context
-            //
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-
-            //
             // Setup test data
             //
             ErrorResultTO errors = new ErrorResultTO();
@@ -101,8 +90,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             //
             // Connect to the server
             //
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            var conn = CreateConnection();
             conn.Connect();
 
             //
@@ -127,5 +115,24 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
 
             Assert.IsNull(resultDataList);
         }
+
+
+        #region CreateConnection
+
+        static TcpConnection CreateConnection(bool isAuxiliary = false)
+        {
+            return CreateConnection(ServerSettings.DsfAddress, isAuxiliary);
+        }
+
+        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        {
+            var securityContetxt = new Mock<IFrameworkSecurityContext>();
+            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), eventAggregator.Object, isAuxiliary);
+        }
+
+        #endregion
     }
 }

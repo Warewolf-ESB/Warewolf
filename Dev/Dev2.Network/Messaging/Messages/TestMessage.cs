@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2.Network.Messages;
 
 namespace Dev2.Network.Messaging.Messages
 {
     /// <summary>
     /// System message used for testing
     /// </summary>
-    public class TestMessage : INetworkMessage
+    public class TestMessage : NetworkMessage
     {
         #region Constructors
 
@@ -27,7 +26,6 @@ namespace Dev2.Network.Messaging.Messages
 
         #region Properties
 
-        public long Handle { get; set; }
         public string StringVal { get; set; }
         public int IntVal { get; set; }
 
@@ -35,13 +33,13 @@ namespace Dev2.Network.Messaging.Messages
 
         #region INetworkMessage
 
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             StringVal = reader.ReadString();
             IntVal = reader.ReadInt32();
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(StringVal);
             writer.Write(IntVal);

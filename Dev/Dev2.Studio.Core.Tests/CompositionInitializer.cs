@@ -38,6 +38,9 @@ namespace Dev2.Core.Tests
             });
 
             ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(securityContext.Object);
 
             IMainViewModel mainViewModel = new MainViewModel();
             ImportService.AddExportedValueToContainer(mainViewModel);

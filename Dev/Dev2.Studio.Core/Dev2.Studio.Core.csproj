@@ -66,6 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dev2.Data\bin\Debug\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
@@ -237,7 +240,7 @@
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="Interfaces\IResourceDependencyService.cs" />
-    <Compile Include="InterfaceImplementors\EnvironmentConnection.cs" />
+    <None Include="InterfaceImplementors\EnvironmentConnection.cs" />
     <Compile Include="InterfaceImplementors\MockSecurityProvider.cs" />
     <Compile Include="Factories\WebResourceRepositoryFactory.cs" />
     <Compile Include="InterfaceImplementors\FrameworkSecurityProvider.cs" />
@@ -331,6 +334,7 @@
     <Compile Include="Messages\UpdateResourceDesignerMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWebpagePreviewMessage.cs" />
+    <None Include="Models\EnvironmentModel_Old.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
@@ -358,14 +362,22 @@
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
-    <Compile Include="Network\DataList\DataListClientChannel.cs" />
-    <Compile Include="Network\Execution\ExecutionClientChannel.cs" />
+    <Compile Include="Network\Channels\DataChannel.cs" />
+    <Compile Include="Network\Channels\DataListClientChannel.cs" />
+    <Compile Include="Network\Channels\ExecutionClientChannel.cs" />
     <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
     <Compile Include="Network\IServiceLocator.cs" />
+    <Compile Include="Network\ITcpClientHost.cs" />
     <Compile Include="Network\ServerMessaging.cs" />
     <Compile Include="Network\ServiceLocator.cs" />
     <Compile Include="Network\StudioNetworkChannelContext.cs" />
+    <Compile Include="Network\TcpAsyncExtenstions.cs" />
+    <Compile Include="Network\TcpClientAdapter.cs" />
+    <Compile Include="Network\TcpClientHost.cs" />
+    <Compile Include="Network\TcpConnection.cs" />
     <Compile Include="Network\TCPDispatchedClient.cs" />
+    <Compile Include="Network\TcpConnectionBase.cs" />
+    <Compile Include="Network\TcpLoginBroker.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

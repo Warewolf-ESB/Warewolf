@@ -1,19 +1,18 @@
-﻿using Dev2.Studio.Core;
-using Dev2.Studio.Core.Actions;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.TO;
-using Dev2.Studio.Core.ViewModels.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Actions;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.TO;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 using Unlimited.Framework;
 
@@ -55,7 +54,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public LayoutGridViewModel(IWebActivity webActivity)
         {
-            if (webActivity == null)
+            if(webActivity == null)
             {
                 throw new ArgumentNullException("Webpage cannot be null", "Webpage ModelItem");
             }
@@ -67,7 +66,7 @@ namespace Dev2.Studio.ViewModels.Web
             InitializeGrid();
 
             var websiteResource = webActivity.ResourceModel.Environment.ResourceRepository.All().FirstOrDefault(c => c.ResourceName.Equals((_webPageModelItem as dynamic).WebsiteServiceName, StringComparison.InvariantCultureIgnoreCase));
-            if (websiteResource != null)
+            if(websiteResource != null)
             {
                 SelectedWebsite = websiteResource;
             }
@@ -88,7 +87,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_undoCommand == null)
+                if(_undoCommand == null)
                 {
                     _undoCommand = new RelayCommand(c => Undo(), c => _actionManager.CanUndo);
                 }
@@ -100,7 +99,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_redoCommand == null)
+                if(_redoCommand == null)
                 {
                     _redoCommand = new RelayCommand(c => Redo(), c => _actionManager.CanRedo);
                 }
@@ -113,7 +112,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_moveUpCommand == null)
+                if(_moveUpCommand == null)
                 {
                     _moveUpCommand = new RelayCommand(c => MoveUp());
                 }
@@ -125,7 +124,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_moveDownCommand == null)
+                if(_moveDownCommand == null)
                 {
                     _moveDownCommand = new RelayCommand(c => MoveDown());
                 }
@@ -137,7 +136,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_moveRightCommand == null)
+                if(_moveRightCommand == null)
                 {
                     _moveRightCommand = new RelayCommand(c => MoveRight());
                 }
@@ -150,7 +149,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_moveLeftCommand == null)
+                if(_moveLeftCommand == null)
                 {
                     _moveLeftCommand = new RelayCommand(c => MoveLeft());
                 }
@@ -162,7 +161,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_copyCommand == null)
+                if(_copyCommand == null)
                 {
                     _copyCommand = new RelayCommand(c => Copy(), c => CanCopyOrCut);
                 }
@@ -175,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_cutCommand == null)
+                if(_cutCommand == null)
                 {
                     _cutCommand = new RelayCommand(c => Cut(), c => CanCopyOrCut);
                 }
@@ -187,7 +186,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_pasteCommand == null)
+                if(_pasteCommand == null)
                 {
                     _pasteCommand = new RelayCommand(c => Paste(), c => CanPaste);
                 }
@@ -199,9 +198,9 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_openWebsiteCommand == null)
+                if(_openWebsiteCommand == null)
                 {
-                    _openWebsiteCommand = new RelayCommand<string>(_=> EventAggregator.Publish(new AddWorkflowDesignerMessage(_resourceModel)));
+                    _openWebsiteCommand = new RelayCommand<string>(_ => EventAggregator.Publish(new AddWorkflowDesignerMessage(_resourceModel)));
                 }
                 return _openWebsiteCommand;
             }
@@ -243,7 +242,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if ((_activeCell != null) && !string.IsNullOrEmpty(_activeCell.WebpartServiceName))
+                if((_activeCell != null) && !string.IsNullOrEmpty(_activeCell.WebpartServiceName))
                 {
                     return true;
                 }
@@ -268,7 +267,7 @@ namespace Dev2.Studio.ViewModels.Web
             set
             {
                 _selectedWebsite = value;
-                if (_webPageModelItem != null)
+                if(_webPageModelItem != null)
                 {
                     _webPageModelItem.WebsiteServiceName = SelectedWebsite == null ? StringResources.Webpage_Default_Website : _selectedWebsite.ResourceName;
                     UpdateModelItem();
@@ -281,7 +280,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_webPageModelItem != null)
+                if(_webPageModelItem != null)
                 {
                     return (_webPageModelItem as dynamic).MetaTags;
                 }
@@ -289,7 +288,7 @@ namespace Dev2.Studio.ViewModels.Web
             }
             set
             {
-                if (_webPageModelItem != null)
+                if(_webPageModelItem != null)
                 {
                     _webPageModelItem.MetaTags = value;
                     base.OnPropertyChanged("MetaTags");
@@ -302,7 +301,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_webPageModelItem != null)
+                if(_webPageModelItem != null)
                 {
                     return (_webPageModelItem as dynamic).FormEncodingType;
                 }
@@ -310,7 +309,7 @@ namespace Dev2.Studio.ViewModels.Web
             }
             set
             {
-                if (_webPageModelItem != null)
+                if(_webPageModelItem != null)
                 {
                     _webPageModelItem.FormEncodingType = value;
                     base.OnPropertyChanged("FormEncodingType");
@@ -390,7 +389,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             get
             {
-                if (_webPageModelItem != null)
+                if(_webPageModelItem != null)
                 {
                     return (_webPageModelItem as dynamic).XMLConfiguration;
                 }
@@ -436,7 +435,7 @@ namespace Dev2.Studio.ViewModels.Web
         internal void InitializeGrid()
         {
 
-            if (SelectedWebsite == null)
+            if(SelectedWebsite == null)
             {
                 SelectedWebsite =
                     _resourceModel.Environment.ResourceRepository.All().FirstOrDefault(
@@ -448,12 +447,12 @@ namespace Dev2.Studio.ViewModels.Web
 
             dynamic xmlConfig = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(XmlConfiguration);
 
-            if (xmlConfig.Rows is UnlimitedObject)
+            if(xmlConfig.Rows is UnlimitedObject)
             {
                 xmlConfig.Rows = 4;
             }
 
-            if (xmlConfig.Cols is UnlimitedObject)
+            if(xmlConfig.Cols is UnlimitedObject)
             {
                 xmlConfig.Cols = 4;
             }
@@ -461,12 +460,12 @@ namespace Dev2.Studio.ViewModels.Web
             int.TryParse(xmlConfig.Rows, out _rows);
             int.TryParse(xmlConfig.Cols, out _columns);
 
-            if (string.IsNullOrEmpty(XmlConfiguration) || (XmlConfiguration == "<WebParts/>"))
+            if(string.IsNullOrEmpty(XmlConfiguration) || (XmlConfiguration == "<WebParts/>"))
             {
 
-                for (int row = 0; row < _rows; row++)
+                for(int row = 0; row < _rows; row++)
                 {
-                    for (int col = 0; col < _columns; col++)
+                    for(int col = 0; col < _columns; col++)
                     {
                         ILayoutObjectViewModel obj = LayoutObjectViewModelFactory.CreateLayoutObject(this, col, row);
                         _layoutObject.Add(obj);
@@ -483,19 +482,19 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void BindXmlConfigurationToGrid()
         {
-            if (!string.IsNullOrEmpty(_webPageModelItem.XMLConfiguration))
+            if(!string.IsNullOrEmpty(_webPageModelItem.XMLConfiguration))
             {
                 dynamic xmlconfig = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(_webPageModelItem.XMLConfiguration);
                 dynamic objWebpartList = xmlconfig.WebPart;
                 //IF WEBPARTS EXIST THEN REBIND GRID
-                if (objWebpartList.GetType() != typeof(UnlimitedObject))
+                if(objWebpartList.GetType() != typeof(UnlimitedObject))
                 {
-                    foreach (dynamic wp in objWebpartList)
+                    foreach(dynamic wp in objWebpartList)
                     {
                         BindLayoutObjectToXml(wp);
                     }
                 }
-                if (_layoutObject.Any())
+                if(_layoutObject.Any())
                 {
                     _rows = _layoutObject.Max(c => c.GridRow) + 1;
                     _columns = _layoutObject.Max(c => c.GridColumn) + 1;
@@ -514,13 +513,13 @@ namespace Dev2.Studio.ViewModels.Web
             LayoutObject.GridRow = int.Parse(wp.RowIndex);
 
             IEnumerable<IResourceModel> resourceMatch = _resourceModel.Environment.ResourceRepository.All().Where(c => c.ResourceName.Equals(LayoutObject.WebpartServiceName, StringComparison.InvariantCultureIgnoreCase));
-            if (resourceMatch.Any())
+            if(resourceMatch.Any())
             {
                 LayoutObject.IconPath = resourceMatch.First().IconPath;
             }
-            if (wp is UnlimitedObject)
+            if(wp is UnlimitedObject)
             {
-                if (wp is string)
+                if(wp is string)
                 {
                     config = wp;
                 }
@@ -538,7 +537,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void UpdateModelItem()
         {
-            if (_layoutObject.Count == 0) { return; }
+            if(_layoutObject.Count == 0) { return; }
             StringBuilder configuration = new StringBuilder();
             configuration.Append("<WebPage>");
             configuration.Append(string.Format("<WebPageServiceName>{0}</WebPageServiceName>", _resourceModel.ResourceName));
@@ -550,14 +549,14 @@ namespace Dev2.Studio.ViewModels.Web
                 configuration.Append("<WebPartServiceName>" + tle.WebpartServiceName + "</WebPartServiceName>");
                 configuration.Append("<ColumnIndex>" + tle.GridColumn + "</ColumnIndex>");
                 configuration.Append("<RowIndex>" + tle.GridRow + "</RowIndex>");
-                if (!string.IsNullOrEmpty(tle.XmlConfiguration) && (tle.XmlConfiguration.Contains("<Dev2WebpartConfig>")))
+                if(!string.IsNullOrEmpty(tle.XmlConfiguration) && (tle.XmlConfiguration.Contains("<Dev2WebpartConfig>")))
                 {
                     string theConfig = tle.XmlConfiguration;
                     theConfig = theConfig.Remove(0, theConfig.IndexOf("<Dev2WebpartConfig>"));
                     theConfig = theConfig.Substring(0, theConfig.IndexOf("</Dev2WebpartConfig>") + 20);
                     configuration.Append(theConfig);
                 }
-                else if (!string.IsNullOrEmpty(tle.XmlConfiguration) && (tle.XmlConfiguration.Contains("<Dev2XMLResult>")))
+                else if(!string.IsNullOrEmpty(tle.XmlConfiguration) && (tle.XmlConfiguration.Contains("<Dev2XMLResult>")))
                 {
                     string theConfig = tle.XmlConfiguration;
                     theConfig = theConfig.Remove(0, theConfig.IndexOf("<Dev2XMLResult>"));
@@ -570,7 +569,7 @@ namespace Dev2.Studio.ViewModels.Web
             configuration.Append("</WebParts>");
             configuration.Append("</WebPage>");
 
-            if (_webPageModelItem != null)
+            if(_webPageModelItem != null)
             {
                 _webPageModelItem.XMLConfiguration = configuration.ToString();
                 Deploy();
@@ -588,7 +587,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void RemoveRow(int rowToDelete)
         {
-            if (LayoutObjects.Max(c => c.GridRow) > 0)
+            if(LayoutObjects.Max(c => c.GridRow) > 0)
             {
 
                 LayoutObjects
@@ -612,7 +611,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             LayoutObjects.ToList().ForEach(c => c.IsSelected = false);
             ILayoutObjectViewModel first = LayoutObjects.FirstOrDefault();
-            if (first != null)
+            if(first != null)
             {
                 first.IsSelected = true;
             }
@@ -633,7 +632,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void RemoveColumn(int columnToDelete)
         {
-            if (LayoutObjects.Max(c => c.GridColumn) > 0)
+            if(LayoutObjects.Max(c => c.GridColumn) > 0)
             {
 
                 LayoutObjects
@@ -652,12 +651,12 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void MoveUp()
         {
-            if (!IsAnyCellSelected)
+            if(!IsAnyCellSelected)
             {
                 return;
             }
             ILayoutObjectViewModel currentCell = ActiveCell;
-            if (currentCell.CellAbove != null)
+            if(currentCell.CellAbove != null)
             {
                 currentCell.IsSelected = false;
                 currentCell.CellAbove.IsSelected = true;
@@ -666,12 +665,12 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void MoveDown()
         {
-            if (!IsAnyCellSelected)
+            if(!IsAnyCellSelected)
             {
                 return;
             }
             ILayoutObjectViewModel currentCell = ActiveCell;
-            if (currentCell.CellBelow != null)
+            if(currentCell.CellBelow != null)
             {
                 currentCell.IsSelected = false;
                 currentCell.CellBelow.IsSelected = true;
@@ -681,12 +680,12 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void MoveLeft()
         {
-            if (!IsAnyCellSelected)
+            if(!IsAnyCellSelected)
             {
                 return;
             }
             ILayoutObjectViewModel currentCell = ActiveCell;
-            if (currentCell.CellLeft != null)
+            if(currentCell.CellLeft != null)
             {
                 currentCell.IsSelected = false;
                 currentCell.CellLeft.IsSelected = true;
@@ -695,12 +694,12 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void MoveRight()
         {
-            if (!IsAnyCellSelected)
+            if(!IsAnyCellSelected)
             {
                 return;
             }
             ILayoutObjectViewModel currentCell = ActiveCell;
-            if (currentCell.CellRight != null)
+            if(currentCell.CellRight != null)
             {
                 currentCell.IsSelected = false;
                 currentCell.CellRight.IsSelected = true;
@@ -735,7 +734,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Undo()
         {
-            if (_actionManager.CanUndo)
+            if(_actionManager.CanUndo)
             {
                 _actionManager.Undo();
             }
@@ -743,7 +742,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Redo()
         {
-            if (_actionManager.CanRedo)
+            if(_actionManager.CanRedo)
             {
                 _actionManager.Redo();
             }
@@ -772,13 +771,13 @@ namespace Dev2.Studio.ViewModels.Web
         {
             dynamic postData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(XmlConfiguration);
             postData.RemoveElementsByTagName("WebsiteServiceName");
-            if (SelectedWebsite != null)
+            if(SelectedWebsite != null)
             {
                 postData.WebsiteServiceName = SelectedWebsite.ResourceName;
             }
 
             Uri uri;
-            if (!Uri.TryCreate(_resourceModel.Environment.WebServerAddress, "/services/Web Preview", out uri))
+            if(!Uri.TryCreate(_resourceModel.Environment.Connection.WebServerUri, "/services/Web Preview", out uri))
             {
                 Uri.TryCreate(new Uri(StringResources.Uri_WebServer), "/services/Web Preview", out uri);
             }

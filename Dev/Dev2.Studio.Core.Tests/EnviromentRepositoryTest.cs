@@ -1,17 +1,17 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace Dev2.Core.Tests
 {
@@ -21,112 +21,66 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class EnviromentRepositoryTest
     {
-        #region Variables
+        // Needed for DefaultEnvironment initialization!!!
+        static ImportServiceContext _importServiceContext;
 
-        /// <summary>
-        /// Created variables used in tests globally 
-        /// </summary>
-        readonly Mock<IEnvironmentModel> _environmentmodel = new Mock<IEnvironmentModel>();
-        Mock<IEnvironmentConnection> _environmentConnection = new Mock<IEnvironmentConnection>();
-        IFrameworkRepository<IEnvironmentModel> _repos;
         readonly Object _lock = new object();
-        const string Test = "result";
-
-        static ImportServiceContext ImportServiceContext;
-
         private static readonly object TestGuard = new object();
 
-        #endregion Variables
 
-        #region Properties
-
-        public IEnvironmentModel EnvironmentModel { get; set; }
-
-        #endregion Properties
-
-        #region Constructor and TestContext
-
-        TestContext testContextInstance;
-
-        // <summary>
-        //Gets or sets the result context which provides
-        //information about and functionality for the current result run.
-        //</summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
-
-        #endregion Constructor and TestContext
-
-        #region Additional result attributes
+        #region MyClass/TestInitialize
 
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            ImportServiceContext = CompositionInitializer.InitializeMockedMainViewModel();
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
+
+            var eventAggregator = new Mock<IEventAggregator>();
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+            ImportService.AddExportedValueToContainer(securityContext.Object);
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+
+            _importServiceContext = importServiceContext;
         }
 
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()] 
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each result 
         [TestInitialize()]
-        public void EnvironmentRepositoryTestsInitialize()
+        public void MyTestInitialize()
         {
             Monitor.Enter(TestGuard);
-
-            lock(_lock)
-            {
-                ImportService.CurrentContext = ImportServiceContext;
-
-                _repos = new EnvironmentRepository();
-
-                //Clear out any exiting environments
-                foreach (var item in _repos.All().ToList())
-                {
-                    _repos.Remove(item);
-                }
-
-                _environmentmodel.Setup(prop => prop.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
-                _environmentmodel.Setup(prop => prop.Name).Returns(Test);
-                _environmentmodel.Setup(prop => prop.WebServerPort).Returns(1234);
-                _environmentmodel.Setup(prop => prop.Connect());
-
-                EnvironmentModel = _environmentmodel.Object;
-            }
+            ImportService.CurrentContext = _importServiceContext;
         }
-
 
         [TestCleanup]
         public void MyTestCleanup()
         {
             Monitor.Exit(TestGuard);
         }
-        
+
 
         #endregion
 
         #region Connect Tests
 
-        //5559 check test
-        /// <summary>
-        /// Unit result that connects to a availible environment
-        /// </summary>
         [TestMethod()]
         public void Connect_EnvironmentAvailable_EnvironmentAddedToEnvironmentRepositoryAsAvailable()
         {
             lock(_lock)
             {
+                var repos = new EnvironmentRepository();
+                var env = CreateMockEnvironment();
+
                 //Arrange
-                _repos.Save(_environmentmodel.Object);
+                repos.Save(env.Object);
+
                 //Act
-                ICollection<IEnvironmentModel> returnedEnv = _repos.All();
-                var ret = returnedEnv.First(c => c.Name == Test);
+                var returnedEnv = repos.All();
+                var ret = returnedEnv.FirstOrDefault(c => c.Name == env.Object.Name);
                 //Assert
-                Assert.AreEqual(_environmentmodel.Object.Name, ret.Name);
+                Assert.IsNotNull(ret);
             }
         }
 
@@ -139,12 +93,15 @@ namespace Dev2.Core.Tests
         {
             lock(_lock)
             {
+                var repos = new EnvironmentRepository();
+                var env = CreateMockEnvironment();
+
                 //Arrange
-                _environmentmodel.Setup(prop => prop.IsConnected).Returns(false);
-                _repos.Save(_environmentmodel.Object);
+                env.Setup(prop => prop.IsConnected).Returns(false);
+                repos.Save(env.Object);
                 //Act
-                ICollection<IEnvironmentModel> returnedEnv = _repos.All();
-                var ret = returnedEnv.First(c => c.Name == Test);
+                ICollection<IEnvironmentModel> returnedEnv = repos.All();
+                var ret = returnedEnv.First(c => c.Name == env.Object.Name);
                 //Assert
                 Assert.IsFalse(ret.IsConnected);
             }
@@ -163,12 +120,14 @@ namespace Dev2.Core.Tests
         {
             lock(_lock)
             {
+                var repos = new EnvironmentRepository();
+                
                 Mock<IEnvironmentModel> envModel = new Mock<IEnvironmentModel>();
                 envModel.Setup(c => c.Name).Returns("result");
 
-                _repos.Save(envModel.Object);
+                repos.Save(envModel.Object);
 
-                Assert.IsTrue(_repos.All().Count == 1);
+                Assert.IsTrue(repos.All().Count == 1);
             }
 
         }
@@ -179,15 +138,17 @@ namespace Dev2.Core.Tests
         {
             lock(_lock)
             {
+                var repos = new EnvironmentRepository();
+               
                 Mock<IEnvironmentModel> envModel = Dev2MockFactory.SetupEnvironmentModel();
                 envModel.Setup(model => model.Name).Returns("Test");
                 //Save the First Environment Model to the Repo
-                _repos.Save(envModel.Object);
+                repos.Save(envModel.Object);
 
                 //Save the Environment Again
-                _repos.Save(envModel.Object);
+                repos.Save(envModel.Object);
 
-                Assert.IsInstanceOfType(_repos.FindSingle(repo => repo.Name == "Test"), typeof(IEnvironmentModel));
+                Assert.IsInstanceOfType(repos.FindSingle(repo => repo.Name == "Test"), typeof(IEnvironmentModel));
             }
         }
 
@@ -203,13 +164,15 @@ namespace Dev2.Core.Tests
                 envModel.Setup(model => model.Name).Returns("Test");
                 secondEntryEnvModel.Setup(model => model.Name).Returns("SecondEnvironmentModel");
 
+                var repos = new EnvironmentRepository();
+                
                 //Save the First Environment Model to the Repo
-                _repos.Save(envModel.Object);
+                repos.Save(envModel.Object);
 
                 //Save the Environment Again
-                _repos.Save(secondEntryEnvModel.Object);
+                repos.Save(secondEntryEnvModel.Object);
 
-                Assert.AreEqual(2, _repos.All().Count);
+                Assert.AreEqual(2, repos.All().Count);
             }
         }
 
@@ -218,9 +181,9 @@ namespace Dev2.Core.Tests
         #region Remove Tests
 
         //5559 check test
-         //<summary>
-         //Unit result that Removes an environment
-         //</summary>
+        //<summary>
+        //Unit result that Removes an environment
+        //</summary>
         [TestMethod()]
         public void RemoveEnvironmentFromSavedEnvironments()
         {
@@ -236,19 +199,22 @@ namespace Dev2.Core.Tests
 
         //5559 check test
         //[TestMethod]
-        public void RemoveEnvironmentEnvironmentDoesNotExist_Expected_NoEnvironmentsRemovedFromRepository() 
+        public void RemoveEnvironmentEnvironmentDoesNotExist_Expected_NoEnvironmentsRemovedFromRepository()
         {
             lock(_lock)
             {
+                var repos = new EnvironmentRepository();
+                var env = CreateMockEnvironment();
+
                 //Act
-                ICollection<IEnvironmentModel> returnedEnv = _repos.All();
-                _repos.Save(_environmentmodel.Object);
+                ICollection<IEnvironmentModel> returnedEnv = repos.All();
+                repos.Save(env.Object);
 
                 Mock<IEnvironmentModel> secondEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
                 secondEnvironmentModel.Setup(e => e.Name).Returns("NonExistantEnvironment");
 
-                _repos.Remove(secondEnvironmentModel.Object);
-                int envs = _repos.All().Count;
+                repos.Remove(secondEnvironmentModel.Object);
+                int envs = repos.All().Count;
 
                 //Assert
                 Assert.IsTrue(envs == 1);
@@ -392,7 +358,7 @@ namespace Dev2.Core.Tests
         public void ReadFile_With_OneEnvironment_Expected_ReturnsOneEnvironment()
         {
 
-            lock (_lock)
+            lock(_lock)
             {
                 var path = EnvironmentRepository.GetEnvironmentsFilePath();
 
@@ -457,7 +423,7 @@ namespace Dev2.Core.Tests
             //    // Create file with one entry
             //    rep = new EnvironmentRepository(new[]
             //    {
-            //        new EnvironmentModel { EnvironmentConnection = new EnvironmentConnection(), ID = Guid.NewGuid(), DsfAddress = new Uri("http://127.0.0.1:77/dsf"), Name = "Test1", WebServerPort = 1234 }
+            //        new EnvironmentModel { EnvironmentConnection = new EnvironmentConnection(), ID = Guid.NewGuid(), Connection.AppServerUri = new Uri("http://127.0.0.1:77/dsf"), Name = "Test1", WebServerPort = 1234 }
             //    });
             //    rep.WriteFile();
 
@@ -479,35 +445,35 @@ namespace Dev2.Core.Tests
         string BackupFile(string path)
         {
             // Wait until it is safe to enter.
-                var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
-                if(File.Exists(bakPath))
-                {
-                    File.Delete(bakPath);
-                }
-                if(File.Exists(path))
-                {
-                    File.Move(path, bakPath);
-                }
-                return bakPath;
+            var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
+            if(File.Exists(bakPath))
+            {
+                File.Delete(bakPath);
+            }
+            if(File.Exists(path))
+            {
+                File.Move(path, bakPath);
+            }
+            return bakPath;
         }
 
         void RestoreFile(string path, string bakPath)
         {
-                if(File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-                if(File.Exists(bakPath))
-                {
-                    File.Move(bakPath, path);
-                }
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            if(File.Exists(bakPath))
+            {
+                File.Move(bakPath, path);
+            }
             // Release the Mutex.
         }
 
         void DeleteFile(string path)
         {
 
-                File.Delete(path);
+            File.Delete(path);
         }
 
         #endregion
@@ -517,59 +483,33 @@ namespace Dev2.Core.Tests
         public static readonly string Server1Source = "<Source ID=\"{70238921-FDC7-4F7A-9651-3104EEDA1211}\" Name=\"MyDevServer\" Type=\"Dev2Server\" ConnectionString=\"AppServerUri=http://127.0.0.1:77/dsf;WebServerPort=1234\" ServerID=\"d53bbcc5-4794-4dfa-b096-3aa815692e66\"><TypeOf>Dev2Server</TypeOf><DisplayName>My Dev Server</DisplayName></Source>";
         public static readonly string Server1ID = "{70238921-FDC7-4F7A-9651-3104EEDA1211}";
 
-        public Mock<IEnvironmentModel> CreateMockEnvironment(params string[] sources)
+        public static Mock<IEnvironmentModel> CreateMockEnvironment(params string[] sources)
         {
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
-            lock(_lock)
-            {
-                var dsfChannel = new Mock<IStudioClientContext>();
-                dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
-                dsfChannel.Setup(c => c.AccountID).Returns(It.IsAny<Guid>());
+            var eventAggregator = new Mock<IEventAggregator>();
 
-                var rand = new Random();
-                var securityContext = new Mock<IFrameworkSecurityContext>();
-                securityContext.Setup(s => s.Roles).Returns(new string[0]);
+            var rand = new Random();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
+            connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
+            connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
 
-                var env = new Mock<IEnvironmentModel>();
-                env.Setup(e => e.EnvironmentConnection).Returns(new EnvironmentConnection { SecurityContext = securityContext.Object });
-                env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
-                env.Setup(e => e.ID).Returns(Guid.NewGuid());
-                env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
-                env.Setup(e => e.DsfAddress).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-                env.Setup(e => e.WebServerAddress).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-                env.Setup(e => e.WebServerPort).Returns(rand.Next(1, 100));
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.Connection).Returns(connection.Object);
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
 
-                return env;
-            }
+            return env;
         }
 
         #endregion
 
-        #region CreateTestEnvironmentWithSecurityContext
-
-        public EnvironmentModel CreateTestEnvironmentWithSecurityContext()
-        {
-            lock(_lock)
-            {
-                var securityContext = new Mock<IFrameworkSecurityContext>();
-                securityContext.Setup(s => s.Roles).Returns(new string[0]);
-
-                var eventAggregator = new Mock<IEventAggregator>();
-
-                IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
-
-                return new EnvironmentModel(eventAggregator.Object, securityContext.Object, environmentConnection)
-                {
-                    EnvironmentConnection = new EnvironmentConnection { SecurityContext = securityContext.Object },
-                    ID = Guid.NewGuid(),
-                    DsfAddress = new Uri("http://127.0.0.1:77/dsf"),
-                    Name = "Test1",
-                    WebServerPort = 1234
-                };
-            }
-        }
-
-        #endregion
     }
 
 

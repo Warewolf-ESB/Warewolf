@@ -2,7 +2,7 @@
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
-using Dev2.Network.Messages;
+using Dev2.Network.Messaging;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -248,7 +248,7 @@ namespace Dev2.Core.Tests
         {
             Mock<IStudioClientContext> mockFrameworkDataChannel = new Mock<IStudioClientContext>();
             mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
-            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendSynchronousMessage(It.IsAny<T>())).Returns(resultMessage);
+            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendMessage(It.IsAny<T>())).Returns(resultMessage);
 
             return mockFrameworkDataChannel;
         }
@@ -257,7 +257,7 @@ namespace Dev2.Core.Tests
         {
             Mock<IStudioClientContext>  mockFrameworkDataChannel = new Mock<IStudioClientContext>();
             mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
-            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendSynchronousMessage(It.IsAny<T>())).Throws(messageSendingException);
+            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendMessage(It.IsAny<T>())).Throws(messageSendingException);
 
             return mockFrameworkDataChannel;
         }
@@ -268,8 +268,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel<T>(resultMessage).Object);
 
             return mockEnvironmentModel;
@@ -281,8 +281,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel<T>(messageSendingException).Object);
 
             return mockEnvironmentModel;
@@ -294,8 +294,8 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel_EmptyReturn().Object);
 
             return _mockEnvironmentModel;
@@ -308,7 +308,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
 
             return _mockEnvironmentModel;
         }
@@ -320,7 +320,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.WebServerAddress).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
 
             return _mockEnvironmentModel;
         }

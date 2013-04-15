@@ -1,19 +1,18 @@
-﻿using Dev2.Network.Messages;
-using System;
+﻿using System;
+using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Tests.Dev2.Network
 {
-    public class MockNetworkMessage : INetworkMessage
+    public class MockNetworkMessage : NetworkMessage
     {
         #region Implementation of INetworkMessage
 
-        public long Handle { get; set; }
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             Handle = reader.ReadInt64();
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(Handle);
         }

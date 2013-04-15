@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
 using Dev2.Studio.Core.Interfaces;
 
@@ -13,11 +10,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             IContextualResourceModel resource = value as IContextualResourceModel;
             Uri uri;
-            if (resource != null)
+            if(resource != null)
             {
-                if (!Uri.TryCreate(resource.IconPath, UriKind.Absolute, out uri))
+                if(!Uri.TryCreate(resource.IconPath, UriKind.Absolute, out uri))
                 {
-                    uri = new Uri(new Uri(resource.Environment.WebServerAddress, "icons/"), resource.IconPath);
+                    uri = new Uri(new Uri(resource.Environment.Connection.WebServerUri, "icons/"), resource.IconPath);
                 }
             }
             else

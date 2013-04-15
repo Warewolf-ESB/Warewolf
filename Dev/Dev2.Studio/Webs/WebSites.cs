@@ -10,7 +10,7 @@ namespace Dev2.Studio.Webs
 
         public static Window CreateWebPageDialog(this IEnvironmentModel environment, string website, string relativeUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600)
         {
-            var uriString = string.Format("{0}{1}/{2}", environment.WebServerAddress, website.Trim('/'), relativeUriString.Trim('/'));
+            var uriString = string.Format("{0}{1}/{2}", environment.Connection.WebServerUri, website.Trim('/'), relativeUriString.Trim('/'));
             return CreateWebPageDialog(uriString, callbackHandler, width, height);
         }
 

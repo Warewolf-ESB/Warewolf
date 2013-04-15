@@ -109,21 +109,22 @@ namespace System.Network
         #region ExecuteCommand Handling
         private void OnExecuteStringCommandReceived(INetworkOperator op, T context, ByteBuffer reader)
         {
-            int serial = reader.ReadInt32();
-            string payload = reader.ReadString();
-            Guid datalistID = reader.ReadGuid(); // PBI : 5376 Add -- TODO : Hook up the client side....
-            string result = OnExecuteCommand(context, payload, datalistID);
+            var serial = reader.ReadInt64();
+            var datalistID = reader.ReadGuid(); // PBI : 5376 Add -- TODO : Hook up the client side....
+            var payload = reader.ReadString();
+            var result = OnExecuteCommand(context, payload, datalistID);
 
-            Packet p = new Packet(InternalTemplates.Client_OnExecuteStringCommandReceived);
+            var p = new Packet(InternalTemplates.Client_OnExecuteStringCommandReceived);
             p.Write(serial);
+            p.Write(datalistID);
             p.Write(result);
             op.Send(p);
         }
 
         private void OnExecuteBinaryCommandReceived(INetworkOperator op, T context, ByteBuffer reader)
         {
-            int serial = reader.ReadInt32();
-            Packet result = new Packet(InternalTemplates.Client_OnExecuteBinaryCommandReceived);
+            var serial = reader.ReadInt64();
+            var result = new Packet(InternalTemplates.Client_OnExecuteBinaryCommandReceived);
             result.Write(serial);
             OnExecuteCommand(context, reader, result);
             op.Send(result);

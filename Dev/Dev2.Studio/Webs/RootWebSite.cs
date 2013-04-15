@@ -103,7 +103,7 @@ namespace Dev2.Studio.Webs
             WebsiteCallbackHandler pageHandler;
             double width;
             double height;
-            var workspaceID = ((IStudioClientContext)environment.DsfChannel).AccountID;
+            var workspaceID = ((IStudioClientContext)environment.DsfChannel).WorkspaceID;
 
             switch(resourceType)
             {

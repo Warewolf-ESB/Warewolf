@@ -1,5 +1,5 @@
 ﻿using Dev2.Composition;
-using Dev2.Network.Messages;
+using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Configuration;
@@ -263,7 +263,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             INetworkMessage result;
             try
             {
-                result = CurrentEnvironment.DsfChannel.SendSynchronousMessage(settingsMessage);
+                result = CurrentEnvironment.DsfChannel.SendMessage(settingsMessage);
             }
             catch (Exception e)
             {
@@ -314,7 +314,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             INetworkMessage result;
             try
             {
-                result = CurrentEnvironment.DsfChannel.SendSynchronousMessage(settingsMessage);
+                result = CurrentEnvironment.DsfChannel.SendMessage(settingsMessage);
             }
             catch (Exception e)
             {

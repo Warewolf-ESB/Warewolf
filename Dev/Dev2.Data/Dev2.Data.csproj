@@ -81,6 +81,7 @@
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
+    <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Storage\BinaryBlobStorage.cs" />
     <Compile Include="Storage\Dev2PersistantDictionary.cs" />
     <Compile Include="Storage\IDev2PersistedDictionaryStorage.cs" />

@@ -1,13 +1,17 @@
-﻿using Dev2.Composition;
+﻿using System.Security.Principal;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Build.Tests
@@ -47,15 +51,23 @@ namespace Dev2.Integration.Tests.Build.Tests
         }
 
         #region Server Listening Tests
+        static IEnvironmentConnection SetupEnvironmentConnection()
+        {
+            var securityMock = new Mock<IFrameworkSecurityContext>();
+            securityMock.Setup(context => context.UserIdentity).Returns(WindowsIdentity.GetCurrent);
+            var eventAggregator = new Mock<IEventAggregator>();
+            TcpConnection connection = new TcpConnection(securityMock.Object, new Uri(ServerSettings.DsfAddress), 77, eventAggregator.Object);
+            return connection;
+        }
 
         [TestMethod]
         public void EnsureServerListensOnLocalhost_ExpectedConnectionSuccessful()
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "cake");
+            var setupEnvironmentConnection = SetupEnvironmentConnection();
+            IEnvironmentConnection conn = setupEnvironmentConnection;
 
-            conn.Address = new Uri(ServerSettings.DsfAddress);
             conn.Connect();
             Assert.IsTrue(conn.IsConnected);
             conn.Disconnect();
@@ -66,9 +78,9 @@ namespace Dev2.Integration.Tests.Build.Tests
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "cake");
+            var setupEnvironmentConnection = SetupEnvironmentConnection();
+            IEnvironmentConnection conn = setupEnvironmentConnection;
 
-            conn.Address = new Uri(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));
             conn.Connect();
             Assert.IsTrue(conn.IsConnected);
             conn.Disconnect();
@@ -84,14 +96,11 @@ namespace Dev2.Integration.Tests.Build.Tests
         [TestInitialize]
         public void EnvironmentTestsInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+//            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             //MefImportSatisfier mefImportSatisfier = new MefImportSatisfier();
-            _connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
-
-            Uri uri = new Uri(DsfChannelUrl);
-
-
-            _connection.Address = uri;
+            //_connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
+            var setupEnvironmentConnection = SetupEnvironmentConnection();
+            _connection = setupEnvironmentConnection;
             _connection.Connect();
             _dataChannel = _connection.DataChannel;
 
@@ -114,7 +123,7 @@ namespace Dev2.Integration.Tests.Build.Tests
             dataObj.ResourceType = ResourceType.WorkflowService;
             dataObj.Roles = string.Join(",", _mockSecurityProvider.Roles);
 
-            string result = _dataChannel.ExecuteCommand(dataObj.XmlString, Guid.Empty, Guid.NewGuid());
+            string result = _dataChannel.ExecuteCommand(dataObj.XmlString, Guid.Empty, Guid.Empty);
             dynamic resultingObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
             dynamic wfServices = resultingObject.Service;
@@ -133,7 +142,7 @@ namespace Dev2.Integration.Tests.Build.Tests
             dataObj.ResourceType = ResourceType.Service;
             dataObj.Roles = string.Join(",", _mockSecurityProvider.Roles);
 
-            string result = _dataChannel.ExecuteCommand(dataObj.XmlString, Guid.Empty, Guid.NewGuid());
+            string result = _dataChannel.ExecuteCommand(dataObj.XmlString, Guid.Empty, Guid.Empty);
             dynamic resultingObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
             dynamic wfServices = resultingObject.Service;
@@ -152,7 +161,7 @@ namespace Dev2.Integration.Tests.Build.Tests
             dataObj.ResourceType = ResourceType.Source;
             dataObj.Roles = string.Join(",", _mockSecurityProvider.Roles);
 
-            string result = _dataChannel.ExecuteCommand(dataObj.XmlString, Guid.Empty, Guid.NewGuid());
+            string result = _dataChannel.ExecuteCommand(dataObj.XmlString, Guid.Empty, Guid.Empty);
             dynamic resultingObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
             dynamic wfServices = resultingObject.Source;
@@ -199,8 +208,8 @@ namespace Dev2.Integration.Tests.Build.Tests
             string Command = TestResource.Service_Update_Request_String;
             
             //Execute twice to ensure that the resource is actually there
-            string actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.NewGuid());
-            actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.NewGuid());
+            string actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
+            actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
 
             actual = TestHelper.CleanUp(actual);
             expected = TestHelper.CleanUp(expected);
@@ -222,11 +231,6 @@ namespace Dev2.Integration.Tests.Build.Tests
 
         #endregion Studio Server Integration
 
-        private IEnvironmentConnection CreateLocalEnvironment()
-        {
-            IEnvironmentConnection envConn = new EnvironmentConnection();
-            envConn.Address = new Uri(ServerSettings.DsfAddress);
-            return envConn;
-        }
+        
     }
 }

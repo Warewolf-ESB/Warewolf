@@ -642,7 +642,7 @@ namespace Unlimited.Framework
             if(LayoutObjectGrid != null)
             {
                 Uri postUri;
-                if(!Uri.TryCreate(LayoutObjectGrid.ResourceModel.Environment.WebServerAddress, uri, out postUri))
+                if(!Uri.TryCreate(LayoutObjectGrid.ResourceModel.Environment.Connection.WebServerUri, uri, out postUri))
                 {
                     if(!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
                     {
@@ -922,5 +922,5 @@ namespace Unlimited.Framework
         #endregion
     }
 
-   
+
 }

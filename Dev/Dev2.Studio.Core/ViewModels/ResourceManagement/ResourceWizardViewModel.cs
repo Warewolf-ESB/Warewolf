@@ -153,7 +153,7 @@ namespace Dev2.Studio.Core.ViewModels
         public void Dev2Set(string data, string uri)
         {
             Uri postUri;
-            if(!Uri.TryCreate(_resource.Environment.WebServerAddress, uri, out postUri))
+            if(!Uri.TryCreate(_resource.Environment.Connection.WebServerUri, uri, out postUri))
             {
                 if(!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
                 {
@@ -308,5 +308,5 @@ namespace Dev2.Studio.Core.ViewModels
         #endregion IPropertyEditorWizard Implementation
     }
 
-    
+
 }

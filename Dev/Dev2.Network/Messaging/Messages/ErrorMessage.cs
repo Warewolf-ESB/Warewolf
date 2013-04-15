@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Network.Messages;
 
 namespace Dev2.Network.Messaging.Messages
 {
-    public class ErrorMessage : INetworkMessage
+    public class ErrorMessage : NetworkMessage
     {
         #region Constructors
 
@@ -18,25 +14,26 @@ namespace Dev2.Network.Messaging.Messages
         {
             Message = message;
             Handle = handle;
+            HasError = true;
+            ErrorMessage = message;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public long Handle { get; set; }
         public string Message { get; set; }
 
         #endregion Properties
 
         #region INetworkMessage
 
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             Message = reader.ReadString();
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(Message);
         }

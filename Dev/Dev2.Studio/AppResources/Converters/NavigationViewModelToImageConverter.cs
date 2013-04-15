@@ -34,7 +34,7 @@ namespace Dev2.Studio.AppResources.Converters
                 Uri uri;
                 if (!Uri.TryCreate(iconpath, UriKind.Absolute, out uri))
                 {
-                    uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.WebServerAddress, "icons/"), iconpath);
+                    uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.Connection.WebServerUri, "icons/"), iconpath);
                 }
 
                 return new BitmapImage(uri);

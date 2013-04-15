@@ -100,16 +100,25 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.AccountID).Returns(It.IsAny<Guid>());
+            dsfChannel.Setup(c => c.WorkspaceID).Returns(It.IsAny<Guid>());
             dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("").Verifiable();
 
             var targetEnv = new Mock<IEnvironmentModel>();
             targetEnv.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
 
+            var rand = new Random();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            targetEnv.Setup(e => e.Connection).Returns(connection.Object);
+
+
             var handler = new ConnectCallbackHandler();
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
 
-            dsfChannel.Verify(c => c.ExecuteCommand(
+            connection.Verify(c => c.ExecuteCommand(
                 It.Is<string>(xml =>
                               xml.IndexOf("<Service>AddResourceService</Service>", StringComparison.InvariantCultureIgnoreCase) != -1
                               && xml.IndexOf("<ResourceXml>&lt;Source ID=\"" + ConnectionID + "\"", StringComparison.InvariantCultureIgnoreCase) != -1

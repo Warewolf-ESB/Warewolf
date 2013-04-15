@@ -8,6 +8,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Factory;
@@ -26,6 +27,8 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class TreeViewModelsTest
     {
+        TcpConnection _testConnection;
+
         #region Variables
 
         Mock<IEventAggregator> _eventAggregator;
@@ -61,11 +64,14 @@ namespace Dev2.Core.Tests
             _eventAggregator = new Mock<IEventAggregator>();
             _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
 
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            _testConnection = new TcpConnection(securityContext.Object, new Uri("http://127.0.0.1:77/dsf"), 1234, _eventAggregator.Object);
+
             ImportService.CurrentContext =
                 CompositionInitializer.InializeWithEventAggregator(_eventAggregator.Object);
 
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.SetupGet(x => x.DsfAddress).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
 
             mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
@@ -293,7 +299,7 @@ namespace Dev2.Core.Tests
         public void EnvironmentNodeCantDisconnectLocalHost()
         {
             mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
-            mockEnvironmentModel.SetupGet(c => c.EnvironmentConnection).Returns(new EnvironmentConnection());
+            mockEnvironmentModel.SetupGet(c => c.Connection).Returns(_testConnection);
             mockEnvironmentModel.SetupGet(c => c.Name).Returns(StringResources.DefaultEnvironmentName);         
             Assert.IsTrue(environmentVM.CanDisconnect == false);
         }
@@ -302,7 +308,7 @@ namespace Dev2.Core.Tests
         public void EnvironmentNodeCanDisconnectOtherHosts()
         {
             mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
-            mockEnvironmentModel.SetupGet(c => c.EnvironmentConnection).Returns(new EnvironmentConnection());
+            mockEnvironmentModel.SetupGet(c => c.Connection).Returns(_testConnection);
             mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
             Assert.IsTrue(environmentVM.CanDisconnect == true);
         }
@@ -322,7 +328,7 @@ namespace Dev2.Core.Tests
         public void EnvironmentNodeDisconnectCommand_Expected_EnvironmentModelDisconnectMethodExecuted()
         {
             mockEnvironmentModel.Setup(c => c.Disconnect()).Verifiable();
-            mockEnvironmentModel.SetupGet(c => c.EnvironmentConnection).Returns(new EnvironmentConnection());
+            mockEnvironmentModel.SetupGet(c => c.Connection).Returns(_testConnection);
             mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
             var cmd = environmentVM.DisconnectCommand;
             cmd.Execute(null);

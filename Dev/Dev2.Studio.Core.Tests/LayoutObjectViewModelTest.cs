@@ -57,8 +57,8 @@ namespace Dev2.Core.Tests {
 //            EventAggregator.Subscribe(this);
             _mockMainViewModel.Setup(mainVM => mainVM.OpenWebsiteCommand.Execute(null)).Verifiable();
 
-            _moqEnvironment.Setup(env => env.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
-            _moqEnvironment.Setup(env => env.WebServerPort).Returns(1234);
+            _moqEnvironment.Setup(env => env.Connection.WebServerUri).Returns(new Uri("http://localhost:1234"));
+            _moqEnvironment.Setup(env => env.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             _moqEnvironment.Setup(env => env.Name).Returns("Test");
             _moqEnvironment.Setup(env => env.Connect()).Verifiable();
             _moqEnvironment.Setup(env => env.IsConnected).Returns(true);

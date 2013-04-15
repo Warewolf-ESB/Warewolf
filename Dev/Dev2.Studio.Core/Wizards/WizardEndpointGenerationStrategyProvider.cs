@@ -119,7 +119,7 @@ namespace Dev2.Studio.Core.Wizards
             string relativeUri = "/services/" + wizardName + queryString;
 
             Uri endpointUri;
-            if (!Uri.TryCreate(resource.Environment.WebServerAddress, relativeUri, out endpointUri))
+            if(!Uri.TryCreate(resource.Environment.Connection.WebServerUri, relativeUri, out endpointUri))
             {
                 endpointUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
             }
@@ -153,7 +153,7 @@ namespace Dev2.Studio.Core.Wizards
             string relativeUri = "/services/" + wizardName + queryString;
 
             Uri endpointUri;
-            if (!Uri.TryCreate(enviromentModel.WebServerAddress, relativeUri, out endpointUri))
+            if(!Uri.TryCreate(enviromentModel.Connection.WebServerUri, relativeUri, out endpointUri))
             {
                 endpointUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
             }
@@ -186,7 +186,7 @@ namespace Dev2.Studio.Core.Wizards
             string relativeUri = "/services/" + _activityGeneralSettingsWizardName + queryString;
 
             Uri endpointUri;
-            if (!Uri.TryCreate(enviromentModel.WebServerAddress, relativeUri, out endpointUri))
+            if(!Uri.TryCreate(enviromentModel.Connection.WebServerUri, relativeUri, out endpointUri))
             {
                 endpointUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
             }
@@ -220,7 +220,7 @@ namespace Dev2.Studio.Core.Wizards
             string relativeUri = "/services/" + serviceName + queryString;
 
             Uri endpointUri;
-            if (!Uri.TryCreate(enviromentModel.WebServerAddress, relativeUri, out endpointUri))
+            if(!Uri.TryCreate(enviromentModel.Connection.WebServerUri, relativeUri, out endpointUri))
             {
                 endpointUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
             }
@@ -244,7 +244,7 @@ namespace Dev2.Studio.Core.Wizards
             string relativeUri = "/services/" + serviceName + queryString;
 
             Uri endpointUri;
-            if (!Uri.TryCreate(enviromentModel.WebServerAddress, relativeUri, out endpointUri))
+            if(!Uri.TryCreate(enviromentModel.Connection.WebServerUri, relativeUri, out endpointUri))
             {
                 endpointUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
             }

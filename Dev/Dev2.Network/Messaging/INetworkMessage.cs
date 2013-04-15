@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Dev2.Network.Messages
+namespace Dev2.Network.Messaging
 {
     public interface INetworkMessage
     {
         long Handle { get; set; }
+        bool HasError { get; set; }
+        string ErrorMessage { get; set; }
+
         void Read(IByteReaderBase reader);
         void Write(IByteWriterBase writer);
     }
+
 }

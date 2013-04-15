@@ -58,15 +58,14 @@ namespace Dev2.Core.Tests
         {
             // BUG: 8786 - TWR - 2013.02.20
             var eventAggregator = new Mock<IEventAggregator>();
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
+            environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));
+            environmentConnection.Setup(c => c.AppServerUri).Returns(() => new Uri("http://localhost:77/dsf"));
 
-            var envModel = new EnvironmentModel(eventAggregator.Object, securityContext.Object, environmentConnection.Object)
+            var envModel = new EnvironmentModel(environmentConnection.Object)
             {
-                ID = Guid.NewGuid(),
-                DsfAddress = new Uri("http://localhost:1234/dsf"),
-                WebServerPort = 77,
+                ID = Guid.NewGuid()
             };
             var sourceDef = envModel.ToSourceDefinition();
             var sourceXml = XElement.Parse(sourceDef);

@@ -1,36 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Core.Tests;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using Unlimited.Framework;
-using Dev2.Studio.Core.Interfaces;
 using Moq;
-using System.Reflection;
-using Dev2.Core.Tests;
-using System.Collections.Generic;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core;
-using Dev2.Composition;
-using System.ComponentModel.Composition.Primitives;
-using Dev2.Studio.Core.ViewModels;
 
-namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudio {
+namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudio
+{
     /// <summary>
     /// Summary description for LayoutGridViewModelTest
     /// </summary>
     [TestClass()]
-    public class LayoutGridViewModelTest:IHandle<AddWorkflowDesignerMessage> {
+    public class LayoutGridViewModelTest : IHandle<AddWorkflowDesignerMessage>
+    {
 
         #region Local Test Variables
 
         private ILayoutGridViewModel LayoutGrid;
         private Mock<IEnvironmentModel> _mockEnvironment = Dev2MockFactory.SetupEnvironmentModel();
-        private Mock<IStudioClientContext> _mockFrameworkDataChannel = Dev2MockFactory.SetupIFrameworkDataChannel(); 
+        private Mock<IStudioClientContext> _mockFrameworkDataChannel = Dev2MockFactory.SetupIFrameworkDataChannel();
         private Mock<IWebActivity> _mockWebActivity = new Mock<IWebActivity>();
         private Mock<ILayoutObjectViewModel> _mockLayoutObject = new Mock<ILayoutObjectViewModel>();
         private static ImportServiceContext _importServiceContext;
@@ -45,11 +39,14 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -62,11 +59,11 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first result in the class
-        
+
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            
+
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
@@ -77,7 +74,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// We are setting MEF up here to retrieve all exports and use them for dependency injection
         /// </summary>
         [TestInitialize()]
-        public void EnvironmentTestsInitialize() 
+        public void EnvironmentTestsInitialize()
         {
             Monitor.Enter(DataListSingletonTestGuard);
             _aggregator = new Mock<IEventAggregator>();
@@ -102,7 +99,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         }
         #region Mock Setup
 
-        private void SetupMocks() {
+        private void SetupMocks()
+        {
             Mock<IContextualResourceModel> _mockRes = new Mock<IContextualResourceModel>();
             _mockRes.Setup(c => c.ResourceName).Returns("result");
             _mockRes.Setup(c => c.Category).Returns("WEBSITE");
@@ -112,8 +110,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
             Mock<IResourceRepository> _mockResRepository = new Mock<IResourceRepository>();
             _mockResRepository.Setup(c => c.All()).Returns(col);
 
-            _mockEnvironment.Setup(env => env.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
-            _mockEnvironment.Setup(env => env.WebServerPort).Returns(1234);
+            _mockEnvironment.Setup(env => env.Connection.WebServerUri).Returns(new Uri("http://localhost:1234"));
+            _mockEnvironment.Setup(env => env.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             _mockEnvironment.Setup(env => env.Name).Returns("result");
             _mockEnvironment.Setup(env => env.Connect()).Verifiable();
             _mockEnvironment.Setup(env => env.IsConnected).Returns(true);
@@ -135,7 +133,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Positive result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void DefaultLayoutGridCreate_ExpectedGridCreated() {
+        public void DefaultLayoutGridCreate_ExpectedGridCreated()
+        {
             //Assert
             Assert.IsTrue(LayoutGrid.LayoutObjects.Count == 16 && LayoutGrid.LayoutObjects != null && LayoutGrid.LayoutObjects[0] != null);
         }
@@ -145,7 +144,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateLayoutGrid_NullWebActivity_Expected_ArgumentNullExceptionThrown() {
+        public void CreateLayoutGrid_NullWebActivity_Expected_ArgumentNullExceptionThrown()
+        {
             LayoutGrid = new LayoutGridViewModel(null);
         }
 
@@ -155,19 +155,21 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// <summary>
         /// Move up command result case for LayoutGridViewModelTest
         /// </summary>
-       [TestMethod]
-        public void MoveUpCommand_LayoutObjectBeforeCurrentIsSelected() {
+        [TestMethod]
+        public void MoveUpCommand_LayoutObjectBeforeCurrentIsSelected()
+        {
 
             LayoutGrid.LayoutObjects[5].IsSelected = true;
             LayoutGrid.MoveUpCommand.Execute(null);
-            
+
             Assert.IsTrue(LayoutGrid.LayoutObjects[1].IsSelected);
         }
         /// <summary>
         /// Move up command with no cell selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveUpWithNoSelectedCell_ExpectedNoCellSelection() {
+        public void MoveUpWithNoSelectedCell_ExpectedNoCellSelection()
+        {
             //Act
             LayoutGrid.MoveUpCommand.Execute(null);
             //Assert
@@ -177,7 +179,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move down command with no cell selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveDownWithNoSelectedCell_ExpectedNoCellSelection() {
+        public void MoveDownWithNoSelectedCell_ExpectedNoCellSelection()
+        {
             //Act
             LayoutGrid.MoveDownCommand.Execute(null);
             //Assert
@@ -187,7 +190,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move left command with no cell selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveLeftWithNoSelectedCell_ExpectedNoCellSelected() {
+        public void MoveLeftWithNoSelectedCell_ExpectedNoCellSelected()
+        {
             //Act
             LayoutGrid.MoveLeftCommand.Execute(null);
             //Assert
@@ -197,7 +201,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move right command with n cell selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveRightWithNoSelectedCell_NoCellSelected() {
+        public void MoveRightWithNoSelectedCell_NoCellSelected()
+        {
             //Act
             LayoutGrid.MoveRightCommand.Execute(null);
             //Assert
@@ -207,19 +212,21 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Multiple move commands with no cell selected result case LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MultipleMoveWithNoInitialSelectedCell_NoCellSelected() {
+        public void MultipleMoveWithNoInitialSelectedCell_NoCellSelected()
+        {
             //Act
             LayoutGrid.MoveUpCommand.Execute(null);
             LayoutGrid.MoveRightCommand.Execute(null);
             //Assert
             Assert.IsTrue(!LayoutGrid.IsAnyCellSelected);
         }
-        
+
         /// <summary>
         /// Move right command with the cell on the last column selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveRightOnLastColumn_SameCellSelected() { 
+        public void MoveRightOnLastColumn_SameCellSelected()
+        {
             //Act
             //LayoutGrid.SetActiveCell(LayoutGrid.LayoutObjects.Last());
             LayoutGrid.LayoutObjects.Last().IsSelected = true;
@@ -232,7 +239,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move up command with the cell on the first row selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveUpOnFirstRow_ExpectedSameCellSelected() {
+        public void MoveUpOnFirstRow_ExpectedSameCellSelected()
+        {
             //Act
             LayoutGrid.LayoutObjects.First().IsSelected = true;
             LayoutGrid.MoveUpCommand.Execute(null);
@@ -243,7 +251,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move down command with the cell on the last row selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveDownOnLastRow_ExpectedSameCellSelected() {
+        public void MoveDownOnLastRow_ExpectedSameCellSelected()
+        {
             //Act
             LayoutGrid.LayoutObjects.Last().IsSelected = true;
             LayoutGrid.MoveDownCommand.Execute(null);
@@ -255,7 +264,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move left command with the cell on the first column selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveLeftOnFirstColumn_ExpectedSameCellSelected() {
+        public void MoveLeftOnFirstColumn_ExpectedSameCellSelected()
+        {
             //Act
             LayoutGrid.LayoutObjects.First().IsSelected = true;
             LayoutGrid.MoveLeftCommand.Execute(null);
@@ -267,7 +277,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move down command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveDownCommand_ExpectedCellBelowCurrentSelected() {
+        public void MoveDownCommand_ExpectedCellBelowCurrentSelected()
+        {
             //Act
             LayoutGrid.LayoutObjects[1].IsSelected = true;
 
@@ -279,7 +290,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move left result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveLeftCommand_ExpectedCellAboveInGridSelected() {
+        public void MoveLeftCommand_ExpectedCellAboveInGridSelected()
+        {
             //Act
             LayoutGrid.LayoutObjects[1].IsSelected = true;
             LayoutGrid.MoveLeftCommand.Execute(null);
@@ -291,7 +303,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move right result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void MoveRightCommand_ExpectedCell() {
+        public void MoveRightCommand_ExpectedCell()
+        {
             //Act
             LayoutGrid.LayoutObjects[1].IsSelected = true;
             LayoutGrid.MoveRightCommand.Execute(null);
@@ -303,7 +316,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Add column to the right command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void AddColumnRightCommand() {
+        public void AddColumnRightCommand()
+        {
             //Act
             LayoutGrid.LayoutObjects[3].IsSelected = true;
             LayoutGrid.LayoutObjects.First(c => c.IsSelected == true).AddColumnRightCommand.Execute(null);
@@ -314,7 +328,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Add column to the left command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void AddColumnLeftCommand() {
+        public void AddColumnLeftCommand()
+        {
             //Act
             LayoutGrid.LayoutObjects[3].IsSelected = true;
             LayoutGrid.LayoutObjects[3].AddColumnLeftCommand.Execute(null);
@@ -326,7 +341,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Remove row result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void RemoveRow() {
+        public void RemoveRow()
+        {
             //Act
             LayoutGrid.RemoveRow(1);
             //Assert
@@ -337,7 +353,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Remove column result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void RemoveColumn() {
+        public void RemoveColumn()
+        {
             //Act
             LayoutGrid.RemoveColumn(1);
             //Assert
@@ -348,7 +365,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Delete column result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void DeleteColumnCommand() {
+        public void DeleteColumnCommand()
+        {
             //Act
             LayoutGrid.SetDefaultSelected();
             LayoutGrid.LayoutObjects.First(col => col.IsSelected == true).DeleteColumnCommand.Execute(null);
@@ -359,7 +377,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Delete row command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void DeleteRowCommand() {
+        public void DeleteRowCommand()
+        {
             //Act
             LayoutGrid.SetDefaultSelected();
             LayoutGrid.LayoutObjects.First(col => col.IsSelected == true).DeleteRowCommand.Execute(null);
@@ -370,7 +389,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Delete row command with only one cell left result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void DeleteRowWithOnlyOneCellLeft() {
+        public void DeleteRowWithOnlyOneCellLeft()
+        {
             //Act
             LayoutGrid.SetDefaultSelected();
             LayoutGrid.LayoutObjects.First(col => col.IsSelected == true).DeleteRowCommand.Execute(null);
@@ -384,7 +404,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Delete column command with only one cell left result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void DeleteColumnWithOnlyOneCellLeft() {
+        public void DeleteColumnWithOnlyOneCellLeft()
+        {
             //Act
             LayoutGrid.SetDefaultSelected();
             LayoutGrid.LayoutObjects.First(col => col.IsSelected == true).DeleteColumnCommand.Execute(null);
@@ -398,7 +419,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Add row above command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void AddRowAboveCommand() {
+        public void AddRowAboveCommand()
+        {
             //Act
             LayoutGrid.LayoutObjects[5].IsSelected = true;
             LayoutGrid.LayoutObjects.First(col => col.IsSelected == true).AddRowAboveCommand.Execute(null);
@@ -409,7 +431,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Add row below command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void AddRowBelowCommand() {
+        public void AddRowBelowCommand()
+        {
             //Act
             LayoutGrid.LayoutObjects[5].IsSelected = true;
             LayoutGrid.LayoutObjects.First(col => col.IsSelected == true).AddRowBelowCommand.Execute(null);
@@ -422,7 +445,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Clear all cells command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void ClearAllCommand() {
+        public void ClearAllCommand()
+        {
             //Act
             Add_Webpart(0);
             Add_Webpart(1);
@@ -436,7 +460,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Set default selected result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void SetDefaultSelected() {
+        public void SetDefaultSelected()
+        {
             //Act
             LayoutGrid.SetDefaultSelected();
             //Assert
@@ -447,7 +472,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Calls the OpenWebsiteCommand() and check if the method has been called
         /// </summary>
         [TestMethod]
-        public void OpenWebsiteCommand() {
+        public void OpenWebsiteCommand()
+        {
             //Act
             //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             LayoutGrid.OpenWebsiteCommand.Execute(null);
@@ -461,7 +487,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Calls the BindXmlConfigurationToGrid() and check if the method has been called
         /// </summary>
         [TestMethod]
-        public void BindXmlConfigurationToGrid() {
+        public void BindXmlConfigurationToGrid()
+        {
             //Act
             Add_Webpart(0);
             LayoutGrid.BindXmlConfigurationToGrid();
@@ -473,7 +500,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Update the model item result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void UpDateModelItem() {
+        public void UpDateModelItem()
+        {
             //Act
             string expected = Add_Webpart(0);
             LayoutGrid.UpdateModelItem();
@@ -486,7 +514,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Creating a new UI element result
         /// </summary>
         [TestMethod]
-        public void AddNewUIElement() {
+        public void AddNewUIElement()
+        {
             //Act            
             LayoutGrid.AddNewUIElement(LayoutGrid.LayoutObjects[1], "Button", @"C:\Development\BusinessDesignStudio.Unit.Tests-branch-Mo\BusinessDesignStudio.Unit.Tests\Test References\icon.png");
             //Assert
@@ -497,7 +526,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Setting a active cell result in the Layoutgrid View Model
         /// </summary>
         [TestMethod]
-        public void SetActiveCell() {
+        public void SetActiveCell()
+        {
             //Act
             LayoutGrid.SetActiveCell(LayoutGrid.LayoutObjects[2]);
             //Assert
@@ -508,7 +538,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Move method result for the Layoutgrid View Model
         /// </summary>
         [TestMethod]
-        public void Move() {
+        public void Move()
+        {
             //Act
             LayoutGrid.Move(LayoutGrid.LayoutObjects[0], LayoutGrid.LayoutObjects[1]);
             //Assert
@@ -522,7 +553,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Adding a web part to the grid result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void Add_Webpart() {
+        public void Add_Webpart()
+        {
             //Act
             string expected = Add_Webpart(0);
             //Assert
@@ -538,7 +570,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Cut method result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void Cut() {
+        public void Cut()
+        {
             //Act
             Add_Webpart(0);
             LayoutGrid.Cut();
@@ -550,7 +583,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Copy and paste commands result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void CopyCommand_PasteCommand() {
+        public void CopyCommand_PasteCommand()
+        {
             //Act
             Add_Webpart(0);
             Copy_Paste();
@@ -561,7 +595,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Undo command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void UndoCommand() {
+        public void UndoCommand()
+        {
             //Act
             Add_Webpart(0);
             Copy_Paste();
@@ -573,7 +608,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// Redo command result case for LayoutGridViewModelTest
         /// </summary>
         [TestMethod]
-        public void RedoCommand() {
+        public void RedoCommand()
+        {
             //Act
             string expected = Add_Webpart(0);
             Copy_Paste();
@@ -603,7 +639,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// <summary>
         /// Method for adding a webpart to the layoutGrid
         /// </summary>
-        public string Add_Webpart(int objNumber) {
+        public string Add_Webpart(int objNumber)
+        {
             LayoutGrid.LayoutObjects[objNumber].IsSelected = true;
             LayoutGrid.LayoutObjects[objNumber].WebpartServiceName = "Button";
             LayoutGrid.LayoutObjects[objNumber].WebpartServiceDisplayName = "Test Button";
@@ -625,7 +662,8 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         /// <summary>
         /// Method for copying and pasteing cell content from one cell to another
         /// </summary>
-        public void Copy_Paste() {
+        public void Copy_Paste()
+        {
             LayoutGrid.LayoutObjects[0].IsSelected = true;
             LayoutGrid.LayoutObjects.First(cell => cell.IsSelected == true).CopyCommand.Execute(null);
             LayoutGrid.LayoutObjects[0].IsSelected = false;

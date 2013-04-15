@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using Dev2.Studio.Core.Interfaces;
-using System.Net.Sockets;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -43,7 +43,7 @@ namespace Dev2.Studio.Core.Network
 
             var data = string.Empty;
 
-            var relativeUrl = string.Format("/services/{0}?wid={1}", resourceModel.ResourceName, clientContext.AccountID);
+            var relativeUrl = string.Format("/services/{0}?wid={1}", resourceModel.ResourceName, clientContext.WorkspaceID);
             if(!string.IsNullOrEmpty(payload))
             {
                 if(method == WebServerMethod.GET)
@@ -57,7 +57,7 @@ namespace Dev2.Studio.Core.Network
             }
 
             Uri url;
-            if(!Uri.TryCreate(resourceModel.Environment.WebServerAddress, relativeUrl, out url))
+            if(!Uri.TryCreate(resourceModel.Environment.Connection.WebServerUri, relativeUrl, out url))
             {
                 Uri.TryCreate(new Uri(StringResources.Uri_WebServer), relativeUrl, out url);
             }
@@ -80,13 +80,13 @@ namespace Dev2.Studio.Core.Network
 
         public static bool IsServerUp(IContextualResourceModel resourceModel)
         {
-            string host = resourceModel.Environment.WebServerAddress.AbsoluteUri;
-            int port = resourceModel.Environment.WebServerAddress.Port;
+            string host = resourceModel.Environment.Connection.WebServerUri.AbsoluteUri;
+            int port = resourceModel.Environment.Connection.WebServerUri.Port;
             try
             {
                 // Do NOT use TcpClient(ip, port) else it causes a 1 second delay when you initially resolve to an IPv6 IP
                 // http://msdn.microsoft.com/en-us/library/115ytk56.aspx - Remarks
-                using (TcpClient client = new TcpClient())
+                using(TcpClient client = new TcpClient())
                 {
                     client.Connect(host, port);
                     return true;

@@ -68,7 +68,7 @@ using Action = System.Action;
 
 namespace Dev2.Studio.ViewModels
 {
-    [Export(typeof (IMainViewModel))]
+    [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
                                  IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>,
@@ -203,7 +203,7 @@ namespace Dev2.Studio.ViewModels
             if (CurrentResourceModel != null)
             {
                 EventAggregator.Publish(new ShowEditResourceWizardMessage(CurrentResourceModel));
-//                Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, CurrentResourceModel);
+                //                Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, CurrentResourceModel);
             }
         }
 
@@ -250,9 +250,9 @@ namespace Dev2.Studio.ViewModels
                 string relativeUri = string.Format("services/{0}.wiz",
                                                    layoutObjectToOpenWizardFor.SelectedLayoutObject.WebpartServiceName);
                 Uri requestUri;
-                if (!Uri.TryCreate(environment.WebServerAddress, relativeUri, out requestUri))
+                if (!Uri.TryCreate(environment.Connection.WebServerUri, relativeUri, out requestUri))
                 {
-                    requestUri = new Uri(environment.WebServerAddress, relativeUri);
+                    requestUri = new Uri(environment.Connection.WebServerUri, relativeUri);
                 }
 
                 try
@@ -334,7 +334,7 @@ namespace Dev2.Studio.ViewModels
                 ModelProperty implementationProperty = modelService.Root.Properties["Implementation"];
                 if (modelService.Root.Content != null)
                 {
-                    var fc = (Flowchart) modelService.Root.Content.ComputedValue;
+                    var fc = (Flowchart)modelService.Root.Content.ComputedValue;
                     var fs = new FlowStep();
                     dynamic wsa = Activator.CreateInstance(userInterfaceType);
                     fs.Action = wsa;
@@ -462,7 +462,7 @@ namespace Dev2.Studio.ViewModels
         [Import]
         public IFeedBackRecorder FeedBackRecorder { get; set; }
 
-        [Import(typeof (IWizardEngine))]
+        [Import(typeof(IWizardEngine))]
         public IWizardEngine WizardEngine { get; set; }
 
         [Import]
@@ -794,16 +794,16 @@ namespace Dev2.Studio.ViewModels
 
             resource.Environment.ResourceRepository.Save(resource);
             EventAggregator.Publish(new UpdateDeployMessage());
-//                Mediator.SendMessage(MediatorMessages.UpdateDeploy, null);
+            //                Mediator.SendMessage(MediatorMessages.UpdateDeploy, null);
         }
 
         public void ViewInBrowser()
         {
             if (ActiveItem.DataListViewModel != null)
                 EventAggregator.Publish(new FindMissingDataListItemsMessage(ActiveItem.DataListViewModel));
-//
-//                Mediator.SendMessage(MediatorMessages.FindMissingDataListItems,
-//                                     ActiveItem.DataListViewModel);
+            //
+            //                Mediator.SendMessage(MediatorMessages.FindMissingDataListItems,
+            //                                     ActiveItem.DataListViewModel);
 
             IContextualResourceModel resourceModel = CurrentResourceModel;
             Save(resourceModel, false);
@@ -813,10 +813,10 @@ namespace Dev2.Studio.ViewModels
             if (resourceModel != null && resourceModel.Environment != null)
             {
                 string relativeUrl = string.Format("/services/{0}?wid={1}", resourceModel.ResourceName,
-                                                   ((IStudioClientContext) resourceModel.Environment.DsfChannel)
-                                                       .AccountID);
+                                                   ((IStudioClientContext)resourceModel.Environment.DsfChannel)
+                                                       .WorkspaceID);
                 Uri url;
-                if (!Uri.TryCreate(resourceModel.Environment.WebServerAddress, relativeUrl, out url))
+                if (!Uri.TryCreate(resourceModel.Environment.Connection.WebServerUri, relativeUrl, out url))
                 {
                     Uri.TryCreate(new Uri(StringResources.Uri_WebServer), relativeUrl, out url);
                 }
@@ -861,7 +861,7 @@ namespace Dev2.Studio.ViewModels
 
             ActivateOrCreateUniqueWorkSurface<DependencyVisualiserViewModel>
                 (WorkSurfaceContext.DependencyVisualiser,
-                 new[] {new Tuple<string, object>("ResourceModel", resource)});
+                 new[] { new Tuple<string, object>("ResourceModel", resource) });
         }
 
         public void Debug(IContextualResourceModel resourceModel)
@@ -870,7 +870,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-           
+
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, 0,
                                                                          DebugMode.DebugInteractive);
@@ -959,7 +959,7 @@ namespace Dev2.Studio.ViewModels
 
             buildRequest.ResourceXml = model.ToServiceDefinition();
 
-            Guid workspaceID = ((IStudioClientContext) model.Environment.DsfChannel).AccountID;
+            Guid workspaceID = ((IStudioClientContext)model.Environment.DsfChannel).WorkspaceID;
 
             string result =
                 model.Environment.DsfChannel.
@@ -993,7 +993,7 @@ namespace Dev2.Studio.ViewModels
 
             string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
-                                                             , new[] {new Tuple<string, object>("Uri", path)});
+                                                             , new[] { new Tuple<string, object>("Uri", path) });
         }
 
         /// <summary>
@@ -1059,7 +1059,7 @@ namespace Dev2.Studio.ViewModels
 
                 Uri requestUri;
                 if (
-                    !Uri.TryCreate(environment.WebServerAddress,
+                    !Uri.TryCreate(environment.Connection.WebServerUri,
                                    BuildUri(resourceModel, resName), out requestUri))
                 {
                     requestUri = new Uri(new Uri(StringResources.Uri_WebServer), BuildUri(resourceModel, resName));
@@ -1119,22 +1119,24 @@ namespace Dev2.Studio.ViewModels
                 var resourceViewModel = new ResourceWizardViewModel(resourceModelToEdit);
 
                 Uri requestUri;
-                if (!Uri.TryCreate(resourceModelToEdit.Environment.WebServerAddress, "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit), out requestUri))
+                if (
+                    !Uri.TryCreate(resourceModelToEdit.Environment.Connection.WebServerUri,
+                                   "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit), out requestUri))
                 {
                     requestUri = new Uri(new Uri(StringResources.Uri_WebServer),
                                          "/services/" + StudioToWizardBridge.SelectWizard(resourceModelToEdit));
                 }
 
-                    string args =
-                        StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(),
-                                                                    resourceModelToEdit);
+                string args =
+                    StudioToWizardBridge.BuildStudioEditPayload(resourceModelToEdit.ResourceType.ToString(),
+                                                                resourceModelToEdit);
 
                 //09.04.2013: Ashley Lewis - For Bug 9198 Passed args in uri to avoid using UploadToDataList(args)
-                    string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, args);
+                string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, args);
 
-                    _win = new WebPropertyEditorWindow(resourceViewModel, uriString) {Width = 850, Height = 600};
-                    _win.ShowDialog();
-                }
+                _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
+                _win.ShowDialog();
+            }
             else
             {
                 PopupProvider.Show(
@@ -1192,7 +1194,7 @@ namespace Dev2.Studio.ViewModels
             if (!string.IsNullOrWhiteSpace(uriToDisplay))
                 ActivateOrCreateUniqueWorkSurface<HelpViewModel>
                     (WorkSurfaceContext.Help,
-                     new[] {new Tuple<string, object>("Uri", uriToDisplay)});
+                     new[] { new Tuple<string, object>("Uri", uriToDisplay) });
         }
 
         public void CloseWizard()
@@ -1234,7 +1236,7 @@ namespace Dev2.Studio.ViewModels
                                                                                      +
                                                                                      model.ResourceType.GetDescription() +
                                                                                      "?",
-                     true) {Owner = Application.Current.MainWindow};
+                     true) { Owner = Application.Current.MainWindow };
                 bool? result = dialog.ShowDialog();
                 shouldRemove = result.HasValue && result.Value;
 
@@ -1328,76 +1330,75 @@ namespace Dev2.Studio.ViewModels
 
                 // Now invoke the Wizard ;)
                 Uri requestUri;
-                if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
+                if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.DecisionWizardLocation)
+                                   , UriKind.Absolute, out requestUri)) return;
+
+                _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
+
+                // Wizard finished...
+                try
                 {
-                    //string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, GlobalConstants.NullDataListID);
+                    // Remove naughty chars...
+                    string tmp = WebHelper.CleanModelData(_callBackHandler);
+                    // remove the silly Choose... from the string
+                    tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp);
+                    // remove [[]], &, !
+                    tmp = Dev2DecisionStack.RemoveNaughtyCharsFromModel(tmp);
 
-                    _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
+                    Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
-                    // Wizard finished...
-                    try
+                    if (dds != null)
                     {
-                        // Remove naughty chars...
-                        string tmp = WebHelper.CleanModelData(_callBackHandler);
-                        // remove the silly Choose... from the string
-                        tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp);
-                        // remove [[]], &, !
-                        tmp = Dev2DecisionStack.RemoveNaughtyCharsFromModel(tmp);
-
-                        Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
-
-                        if (dds != null)
+                        // Empty check the arms ;)
+                        if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
                         {
-                            // Empty check the arms ;)
-                            if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
-                            {
-                                dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
-                            }
+                            dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
+                        }
 
-                            if (string.IsNullOrEmpty(dds.FalseArmText.Trim()))
-                            {
-                                dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
-                            }
+                        if (string.IsNullOrEmpty(dds.FalseArmText.Trim()))
+                        {
+                            dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
+                        }
 
-                            // Update the decision node on the workflow ;)
-                            string modelData = dds.ToVBPersistableModel();
+                        // Update the decision node on the workflow ;)
+                        string modelData = dds.ToVBPersistableModel();
 
-                            // build up our injected expression handler ;)
-                            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+                        // build up our injected expression handler ;)
+                        string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
-                            if (activityExpression != null)
-                            {
-                                activityExpression.SetValue(expressionToInject);
-                            }
+                        if (activityExpression != null)
+                        {
+                            activityExpression.SetValue(expressionToInject);
+                        }
 
-                            // now set arms ;)
-                            ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
+                        // now set arms ;)
+                        ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
 
-                            if (tArm != null)
-                            {
-                                tArm.SetValue(dds.TrueArmText);
-                            }
+                        if (tArm != null)
+                        {
+                            tArm.SetValue(dds.TrueArmText);
+                        }
 
-                            ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
+                        ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
 
-                            if (fArm != null)
-                            {
-                                fArm.SetValue(dds.FalseArmText);
-                            }
+                        if (fArm != null)
+                        {
+                            fArm.SetValue(dds.FalseArmText);
                         }
                     }
-                    catch
-                    {
-                        // Bad things happened... Tell the user
-                        //PopupProvider.Show("", "")
-                        PopupProvider.Buttons = MessageBoxButton.OK;
-                        PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
-                        PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
-                        PopupProvider.ImageType = MessageBoxImage.Error;
-                        PopupProvider.Show();
-                    }
+                }
+                catch
+                {
+                    // Bad things happened... Tell the user
+                    //PopupProvider.Show("", "")
+                    PopupProvider.Buttons = MessageBoxButton.OK;
+                    PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
+                    PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
+                    PopupProvider.ImageType = MessageBoxImage.Error;
+                    PopupProvider.Show();
                 }
             }
+
 
             #region Non-working Refactor
             //IEnvironmentModel environment = wrapper.Item2;
@@ -1465,14 +1466,14 @@ namespace Dev2.Studio.ViewModels
                 string val = ActivityHelper.ExtractData(activityExpression.Value.ToString());
                 if (!string.IsNullOrEmpty(val))
                 {
-                    var ds = new Dev2Switch {SwitchVariable = val};
+                    var ds = new Dev2Switch { SwitchVariable = val };
                     webModel = JsonConvert.SerializeObject(ds);
                 }
             }
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDropWizardLocation),
+            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDropWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
             _callBackHandler = WebHelper.ShowWebpage(requestUri, webModel, 770, 175);
@@ -1497,12 +1498,12 @@ namespace Dev2.Studio.ViewModels
             IEnvironmentModel environment = payload.Item2;
             ModelItem switchCase = payload.Item1.TheItem;
 
-            string modelData = JsonConvert.SerializeObject(new Dev2Switch() { SwitchVariable = "" , SwitchExpression = payload.Item1.ExpressionText});
+            string modelData = JsonConvert.SerializeObject(new Dev2Switch() { SwitchVariable = "", SwitchExpression = payload.Item1.ExpressionText });
 
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),
+            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
             _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
@@ -1534,12 +1535,12 @@ namespace Dev2.Studio.ViewModels
             if (switchCaseValue != null)
             {
                 string val = switchCaseValue.ComputedValue.ToString();
-                modelData = JsonConvert.SerializeObject(new Dev2Switch {SwitchVariable = val});
+                modelData = JsonConvert.SerializeObject(new Dev2Switch { SwitchVariable = val });
             }
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),
+            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
             _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
@@ -1615,7 +1616,7 @@ namespace Dev2.Studio.ViewModels
                 IEnvironmentModel environment =
                     EnvironmentRepository
                         .FindSingle(e => e.IsConnected && e.DsfChannel is IStudioClientContext
-                                         && ((IStudioClientContext) e.DsfChannel).ServerID == item.ServerID);
+                                         && ((IStudioClientContext)e.DsfChannel).ServerID == item.ServerID);
 
                 if (environment == null || environment.ResourceRepository == null) continue;
 
@@ -1714,8 +1715,8 @@ namespace Dev2.Studio.ViewModels
 
                 dataObject.Service = debugTO.ServiceName;
 
-                var ctx = (IStudioClientContext) environment.DsfChannel;
-                string msg = environment.DsfChannel.ExecuteCommand(dataObject.XmlString, ctx.AccountID,
+                var ctx = (IStudioClientContext)environment.DsfChannel;
+                string msg = environment.DsfChannel.ExecuteCommand(dataObject.XmlString, ctx.WorkspaceID,
                                                                    GlobalConstants.NullDataListID);
                 if (msg == null)
                 {
@@ -1731,7 +1732,7 @@ namespace Dev2.Studio.ViewModels
         {
             string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.ShortcutKeys
-                                                             , new[] {new Tuple<string, object>("Uri", path)});
+                                                             , new[] { new Tuple<string, object>("Uri", path) });
         }
 
         public void DisplayAboutDialogue()
@@ -2045,8 +2046,8 @@ namespace Dev2.Studio.ViewModels
             IWorkspaceItem workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == model.ResourceName);
             if (workspaceItem != null) return;
 
-            var context = (IStudioClientContext) model.Environment.DsfChannel;
-            workspaceItem = new WorkspaceItem(context.AccountID, context.ServerID)
+            var context = (IStudioClientContext)model.Environment.DsfChannel;
+            workspaceItem = new WorkspaceItem(context.WorkspaceID, context.ServerID)
                 {
                     ServiceName = model.ResourceName,
                     ServiceType =

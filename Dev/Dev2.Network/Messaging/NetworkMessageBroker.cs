@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Network;
-using Dev2.Network.Messages;
 
 namespace Dev2.Network.Messaging
 {
@@ -17,19 +16,19 @@ namespace Dev2.Network.Messaging
         {
             if(message == null)
             {
-                throw new InvalidOperationException("Netowrk operator is null.");
+                throw new InvalidOperationException("Message is null.");
             }
 
             if(networkOperator == null)
             {
-                throw new InvalidOperationException("Netowrk operator is null.");
+                throw new InvalidOperationException("Network operator is null.");
             }
 
             //
             // Create packet and write data to it
             //
             Packet p = new Packet(PacketTemplates.Both_OnNetworkMessageRevieved);
-            p.Write(typeof(T).AssemblyQualifiedName);
+            p.Write(message.GetType().AssemblyQualifiedName);
             p.Write(message.Handle);
             message.Write(p);
 

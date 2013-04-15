@@ -1,5 +1,4 @@
 ﻿using System;
-using Dev2.Network.Messages;
 using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Network.Messaging

@@ -1,11 +1,15 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Security.Principal;
+using System.Xml;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Integration.Tests;
 using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Xml;
+using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Tests
@@ -39,7 +43,7 @@ namespace Dev2.Studio.Core.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            if (_environmentModel != null)
+            if(_environmentModel != null)
             {
                 _environmentModel = null;
             }
@@ -56,11 +60,8 @@ namespace Dev2.Studio.Core.Tests
         [TestMethod]
         public void EnvironmentConnection_ConnectToAvailableServer_Expected_ConnectionSuccesful()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            IEnvironmentConnection conn = CreateConnection();
 
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-
-            conn.Address = new Uri(ServerSettings.DsfAddress);
             conn.Connect();
             Assert.IsTrue(conn.IsConnected);
             conn.Disconnect();
@@ -76,14 +77,12 @@ namespace Dev2.Studio.Core.Tests
         [TestMethod]
         public void EnvironmentConnection_FindResources_Expected()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             string xmlString = CreateDataObject("FindResourceService", "*");
 
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
-            if (conn.IsConnected)
+            if(conn.IsConnected)
             {
                 string returnData = conn.DataChannel.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
@@ -101,13 +100,11 @@ namespace Dev2.Studio.Core.Tests
         [TestMethod]
         public void EnvironmentConnection_AddResource_NewResource_Expected_NewResourceAddedToServer()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             string xmlString = CreateDataObject("FindResourceService", "*");
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
-            if (conn.IsConnected)
+            if(conn.IsConnected)
             {
                 string returnData = conn.DataChannel.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
@@ -128,14 +125,12 @@ namespace Dev2.Studio.Core.Tests
         [TestMethod]
         public void EnvironmentConnection_GetResource_Expected_RetrieveResourceFromServer()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             string serviceName = "IntegrationTestWebsite";
             string xmlString = CreateDataObject("GetResourceService", serviceName);
-            IEnvironmentConnection conn = new EnvironmentConnection(Guid.NewGuid().ToString(), "asd");
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
-            if (conn.IsConnected)
+            if(conn.IsConnected)
             {
                 string returnData = conn.DataChannel.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains(serviceName));
@@ -155,12 +150,12 @@ namespace Dev2.Studio.Core.Tests
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = serviceName;
-            if (serviceName == "FindResourceService" || serviceName == "GetResourceService")
+            if(serviceName == "FindResourceService" || serviceName == "GetResourceService")
             {
                 dataObj.ResourceName = resourceName;
                 dataObj.ResourceType = ResourceType.WorkflowService;
             }
-            else if (serviceName == "AddResourceService")
+            else if(serviceName == "AddResourceService")
             {
                 dataObj.ResourceXml = XmlTextReader.Create(xmlFileLocation).ReadContentAsString();
             }
@@ -169,5 +164,25 @@ namespace Dev2.Studio.Core.Tests
             return dataObj.XmlString;
         }
         #endregion Private Test Methods
+
+
+        #region CreateConnection
+
+        static TcpConnection CreateConnection(bool isAuxiliary = false)
+        {
+            return CreateConnection(ServerSettings.DsfAddress, isAuxiliary);
+        }
+
+        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        {
+            var securityContetxt = new Mock<IFrameworkSecurityContext>();
+            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), eventAggregator.Object, isAuxiliary);
+        }
+
+        #endregion
+
     }
 }

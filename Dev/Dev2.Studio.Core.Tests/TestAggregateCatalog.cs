@@ -15,6 +15,7 @@ namespace Dev2.Core.Tests
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IEnvironmentModel))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkMessageBroker))));
             this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkExecutionChannel))));
+            this.Catalogs.Add(new AssemblyCatalog(Assembly.GetAssembly(typeof(IFrameworkSecurityContext))));
         }
     }
 

@@ -1,11 +1,10 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Integration.Tests.MEF;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+﻿using System;
+using System.Security.Principal;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using Moq;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 {
@@ -15,55 +14,28 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         #region Connect Tests
 
         [TestMethod]
-        public void EnvironmentModel_ConnectToAvailableServersAuxiliryChannelOnLocalhost_Expected_ConnectionSuccesful()
+        public void EnvironmentModelConnectToAvailableServersAuxiliaryChannelOnLocalhostExpectedConnectionSuccesful()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
-
-            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-            
-            //Explicitly set the environment connection so that it uses a random username
-            environment.EnvironmentConnection = new EnvironmentConnection(Guid.NewGuid().ToString(), "cake");
-            environment.Name = "conn";
-            environment.DsfAddress = new Uri(ServerSettings.DsfAddress);
-
-            IEnvironmentModel auxEnvironment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-            ImportService.SatisfyImports(auxEnvironment);
-            auxEnvironment.Name = "auxconn";
-            auxEnvironment.DsfAddress = new Uri(ServerSettings.DsfAddress);
-
-            environment.Connect();
-            Assert.IsTrue(environment.IsConnected);
-
-            auxEnvironment.Connect(environment);
-            Assert.IsTrue(auxEnvironment.IsConnected);
-
-            auxEnvironment.Disconnect();
-            environment.Disconnect();
+            TestAuxilliaryConnections(ServerSettings.DsfAddress);
         }
 
         [TestMethod]
-        public void EnvironmentModel_ConnectToAvailableServersAuxiliryChannelOnPCName_Expected_ConnectionSuccesful()
+        public void EnvironmentModelConnectToAvailableServersAuxiliaryChannelOnPCNameExpectedConnectionSuccesful()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            TestAuxilliaryConnections(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));
+        }
 
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
+        #endregion Connect Tests
 
-            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-            //Explicitly set the environment connection so that it uses a random username
-            environment.EnvironmentConnection = new EnvironmentConnection(Guid.NewGuid().ToString(), "cake");
-            environment.Name = "conn";
-            environment.DsfAddress = new Uri(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));
+        #region TestAuxilliaryConnections
 
-            IEnvironmentModel auxEnvironment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-            ImportService.SatisfyImports(auxEnvironment);
-            auxEnvironment.Name = "auxconn";
-            auxEnvironment.DsfAddress = new Uri(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));
+        static void TestAuxilliaryConnections(string appServerUri)
+        {
+            var connection = CreateConnection(appServerUri, true);
+            var environment = new EnvironmentModel(connection) { Name = "conn" };
+
+            var auxConnection = CreateConnection(appServerUri, true);
+            var auxEnvironment = new EnvironmentModel(auxConnection) { Name = "auxconn" };
 
             environment.Connect();
             Assert.IsTrue(environment.IsConnected);
@@ -75,6 +47,20 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             environment.Disconnect();
         }
 
-        #endregion Connect Tests
+        #endregion
+
+        #region CreateConnection
+
+        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        {
+            var securityContetxt = new Mock<IFrameworkSecurityContext>();
+            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), eventAggregator.Object, isAuxiliary);
+        }
+
+        #endregion
+
     }
 }

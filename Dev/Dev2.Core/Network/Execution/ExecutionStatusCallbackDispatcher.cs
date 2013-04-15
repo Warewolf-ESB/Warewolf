@@ -1,51 +1,64 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
 
 namespace Dev2.Network.Execution
 {
-    [Export(typeof(IExecutionStatusCallbackDispatcher))]
     public class ExecutionStatusCallbackDispatcher : IExecutionStatusCallbackDispatcher, IDisposable
     {
         #region Class Members
 
-        private object _disposeGuard = new object();
-        private bool _isDisposed = false;
+        private readonly object _disposeGuard = new object();
+        private bool _isDisposed;
 
-        private ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>> _callbacks;
-        private static ExecutionStatusCallbackDispatcher _instance = new ExecutionStatusCallbackDispatcher();
+        private readonly ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>> _callbacks = new ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>>();
 
         #endregion Class Members
 
         #region Constructor
 
+        // For testing only!!!
         public ExecutionStatusCallbackDispatcher()
         {
-            _callbacks = new ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>>();
         }
 
         #endregion Constructor
 
-        #region Static Properties
+        #region Singleton Instance
+
+        //
+        // Multi-threaded implementation - see http://msdn.microsoft.com/en-us/library/ff650316.aspx
+        //
+        // This approach ensures that only one instance is created and only when the instance is needed. 
+        // Also, the variable is declared to be volatile to ensure that assignment to the instance variable
+        // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
+        // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
+        //
+        static volatile ExecutionStatusCallbackDispatcher _instance;
+        static readonly object SyncRoot = new Object();
 
         /// <summary>
-        /// Gets the instance.
+        /// Gets the repository instance.
         /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
         public static ExecutionStatusCallbackDispatcher Instance
         {
             get
             {
+                if(_instance == null)
+                {
+                    lock(SyncRoot)
+                    {
+                        if(_instance == null)
+                        {
+                            _instance = new ExecutionStatusCallbackDispatcher();
+                        }
+                    }
+                }
                 return _instance;
             }
         }
 
-        #endregion Static Properties
+        #endregion
 
         #region Methods
 
@@ -58,14 +71,14 @@ namespace Dev2.Network.Execution
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public bool Add(Guid callbackID, Action<ExecutionStatusCallbackMessage> callback)
         {
-            if (callback == null)
+            if(callback == null)
             {
                 throw new ArgumentNullException("callback");
             }
 
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
@@ -81,9 +94,9 @@ namespace Dev2.Network.Execution
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public bool Remove(Guid callbackID)
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
@@ -101,18 +114,18 @@ namespace Dev2.Network.Execution
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public void RemoveRange(IList<Guid> callbackID)
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
             }
 
-            Action<ExecutionStatusCallbackMessage> tmpCallback;
-            foreach (KeyValuePair<Guid, Action<ExecutionStatusCallbackMessage>> item in _callbacks)
+            foreach(KeyValuePair<Guid, Action<ExecutionStatusCallbackMessage>> item in _callbacks)
             {
-                _callbacks.TryRemove(item.Key, out tmpCallback);   
+                Action<ExecutionStatusCallbackMessage> tmpCallback;
+                _callbacks.TryRemove(item.Key, out tmpCallback);
             }
         }
 
@@ -124,21 +137,21 @@ namespace Dev2.Network.Execution
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public void Post(ExecutionStatusCallbackMessage message)
         {
-            if (message == null)
+            if(message == null)
             {
                 throw new ArgumentNullException("message");
             }
 
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
             }
 
             Action<ExecutionStatusCallbackMessage> callback;
-            if (_callbacks.TryGetValue(message.CallbackID, out callback))
+            if(_callbacks.TryGetValue(message.CallbackID, out callback))
             {
                 callback.BeginInvoke(message, null, null);
             }
@@ -152,21 +165,21 @@ namespace Dev2.Network.Execution
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public void Send(ExecutionStatusCallbackMessage message)
         {
-            if (message == null)
+            if(message == null)
             {
                 throw new ArgumentNullException("message");
             }
 
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
             }
 
             Action<ExecutionStatusCallbackMessage> callback;
-            if (_callbacks.TryGetValue(message.CallbackID, out callback))
+            if(_callbacks.TryGetValue(message.CallbackID, out callback))
             {
                 callback(message);
             }
@@ -179,7 +192,7 @@ namespace Dev2.Network.Execution
         /// <param name="messageType">Type of the message.</param>
         public void Post(Guid callbackID, ExecutionStatusCallbackMessageType messageType)
         {
-            if (callbackID != Guid.Empty)
+            if(callbackID != Guid.Empty)
             {
                 Post(new ExecutionStatusCallbackMessage(callbackID, messageType));
             }
@@ -194,9 +207,9 @@ namespace Dev2.Network.Execution
         /// </summary>
         public void Dispose()
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     return;
                 }

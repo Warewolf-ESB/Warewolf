@@ -1,10 +1,10 @@
-﻿using Dev2.Studio.Core.AppResources.Exceptions;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Network;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Dev2.Studio.Core.AppResources.Exceptions;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -43,7 +43,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected void OnItemAdded()
         {
-            if (ItemAdded != null)
+            if(ItemAdded != null)
             {
                 ItemAdded(this, new System.EventArgs());
             }
@@ -52,23 +52,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void Load()
         {
             _db.Clear();
-            if (!string.IsNullOrEmpty(_resource.ResourceName))
+            if(!string.IsNullOrEmpty(_resource.ResourceName))
             {
-                if (string.IsNullOrEmpty(StringResources.Supported_WebResource_Folders))
+                if(string.IsNullOrEmpty(StringResources.Supported_WebResource_Folders))
                 {
                     throw new ArgumentNullException("Supported WebResource Folders", "The Supported_WebResource_Folders Application Setting has not be configured correctly");
                 }
 
-                if (_resource == null)
+                if(_resource == null)
                 {
                     throw new ArgumentNullException("Resource");
                 }
 
-                if (_resource.Environment == null)
+                if(_resource.Environment == null)
                 {
                     throw new ArgumentNullException("Resource.Environment");
                 }
-                if (WebServer.IsServerUp(_resource))
+                if(WebServer.IsServerUp(_resource))
                 {
                     StringResources.Supported_WebResource_Folders
                         .Split(new char[] { ',' })
@@ -76,7 +76,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         .ForEach(c =>
                         {
 
-                            string uri = string.Format("{0}list/themes/{1}/{2}/", _resource.Environment.WebServerAddress.AbsoluteUri, _resource.ResourceName, c);
+                            string uri = string.Format("{0}list/themes/{1}/{2}/", _resource.Environment.Connection.WebServerUri.AbsoluteUri, _resource.ResourceName, c);
                             string folderUri = string.Format("themes/{0}/{1}", _resource.ResourceName, c);
 
                             var folderRoot = new WebResourceViewModel(null) { Name = c, IsFolder = true, Uri = folderUri };
@@ -85,22 +85,22 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                                 string output = ResourceHelper.Get(uri);
 
                                 UnlimitedObject resourceList = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(output);
-                                if (!resourceList.HasError)
+                                if(!resourceList.HasError)
                                 {
                                     var files = resourceList.GetAllElements("File");
-                                    foreach (dynamic file in files)
+                                    foreach(dynamic file in files)
                                     {
                                         string fileName = file.Inner();
                                         //Brendon.Page, 2012-10-26, This if statement is unacceptable. It is a hardcoded mechanism to deal with
                                         //                          websites under SVN source control!
-                                        if (!fileName.Contains(".svn"))
+                                        if(!fileName.Contains(".svn"))
                                         {
                                             folderRoot.AddChild(new WebResourceViewModel(folderRoot) { Name = file.Inner(), Uri = folderRoot.Uri });
                                         }
                                     }
                                 }
                             }
-                            catch (WebException)
+                            catch(WebException)
                             {
 
                             }
@@ -118,7 +118,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Remove(IWebResourceViewModel instanceObj)
         {
-            string uri = string.Format("{0}services/{1}", _resource.Environment.WebServerAddress.AbsoluteUri, StringResources.Services_Delete_Resource);
+            string uri = string.Format("{0}services/{1}", _resource.Environment.Connection.WebServerUri.AbsoluteUri, StringResources.Services_Delete_Resource);
 
             dynamic filePathData = new UnlimitedObject();
             filePathData.FilePath = instanceObj.Name;
@@ -127,12 +127,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var validate = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
-            if (validate.HasError)
+            if(validate.HasError)
             {
                 throw new WebResourceUploadFailedException(instanceObj, validate.Error);
             }
 
-            if (instanceObj.Parent != null)
+            if(instanceObj.Parent != null)
             {
                 instanceObj.Parent.Children.Remove(instanceObj);
             }
@@ -155,18 +155,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             // Travis.Frisinger - Required to facilitate the upload module
             xml.Dev2WebsiteResourceUpload = "Content-Type:BASE64" + instanceObj.Base64Data;
 
-            string uri = string.Format("{0}services/{1}", _resource.Environment.WebServerAddress.AbsoluteUri, StringResources.Services_Add_Resource);
+            string uri = string.Format("{0}services/{1}", _resource.Environment.Connection.WebServerUri.AbsoluteUri, StringResources.Services_Add_Resource);
             string result = ResourceHelper.Post(uri, xml.XmlString);
             var validate = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
 
-            if (validate.HasError)
+            if(validate.HasError)
             {
                 throw new WebResourceUploadFailedException(instanceObj, validate.Error);
             }
 
             instanceObj.Name = string.Format("/{0}/{1}", instanceObj.Uri, instanceObj.Name);
 
-            if (instanceObj.Parent != null)
+            if(instanceObj.Parent != null)
             {
                 instanceObj.Parent.Children.Add(instanceObj);
             }

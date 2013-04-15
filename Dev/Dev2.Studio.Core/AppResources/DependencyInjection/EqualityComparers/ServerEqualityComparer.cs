@@ -30,7 +30,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         public bool Equals(IServer x, IEnvironmentModel y)
         {
-            return x.AppAddress == y.DsfAddress.AbsoluteUri;
+            return x.AppAddress == y.Connection.AppServerUri.AbsoluteUri;
         }
 
         public int GetHashCode(IServer obj)

@@ -55,8 +55,8 @@ namespace Dev2.Core.Tests
             //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
             //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
 
-            _moqEnvironment.Setup(env => env.WebServerAddress).Returns(new Uri("http://localhost:77/dsf"));
-            _moqEnvironment.Setup(env => env.WebServerPort).Returns(1234);
+            _moqEnvironment.Setup(env => env.Connection.WebServerUri).Returns(new Uri("http://localhost:1234"));
+            _moqEnvironment.Setup(env => env.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             _moqEnvironment.Setup(env => env.Name).Returns("Test");
             _moqEnvironment.Setup(env => env.Connect()).Verifiable();
             _moqEnvironment.Setup(env => env.IsConnected).Returns(true);

@@ -263,7 +263,7 @@ namespace Dev2.Studio.Core.ViewModels
 
                 if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
                 {
-                    if(!Uri.TryCreate(_webActivity.ResourceModel.Environment.WebServerAddress, "/services/" + ResourceModel.ResourceName, out url))
+                    if(!Uri.TryCreate(_webActivity.ResourceModel.Environment.Connection.WebServerUri, "/services/" + ResourceModel.ResourceName, out url))
                     {
                         Uri.TryCreate(new Uri(StringResources.Uri_WebServer), "/services/" + ResourceModel.ResourceName, out url);
                     }
@@ -281,7 +281,7 @@ namespace Dev2.Studio.Core.ViewModels
 
                 if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
                 {
-                    if(!Uri.TryCreate(_webActivity.ResourceModel.Environment.WebServerAddress, "/services/Website_Wizard", out url))
+                    if(!Uri.TryCreate(_webActivity.ResourceModel.Environment.Connection.WebServerUri, "/services/Website_Wizard", out url))
                     {
                         Uri.TryCreate(new Uri(StringResources.Uri_WebServer), "/services/Website_Wizard", out url);
                     }
@@ -559,7 +559,7 @@ namespace Dev2.Studio.Core.ViewModels
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;
-                var workspaceID = ((IStudioClientContext)_webActivity.ResourceModel.Environment.DsfChannel).AccountID;
+                var workspaceID = ((IStudioClientContext)_webActivity.ResourceModel.Environment.DsfChannel).WorkspaceID;
                 string result = _webActivity.ResourceModel.Environment.DsfChannel.ExecuteCommand(package.XmlString, workspaceID, GlobalConstants.NullDataListID);
                 if(result == null)
                 {
@@ -586,7 +586,7 @@ namespace Dev2.Studio.Core.ViewModels
                 Deploy();
 
                 Uri url;
-                if(!Uri.TryCreate(_webActivity.ResourceModel.Environment.WebServerAddress, "/services/" + ResourceModel.ResourceName + "?DEV2WebsiteEditingMode=true", out url))
+                if(!Uri.TryCreate(_webActivity.ResourceModel.Environment.Connection.WebServerUri, "/services/" + ResourceModel.ResourceName + "?DEV2WebsiteEditingMode=true", out url))
                 {
                     Uri.TryCreate(new Uri(StringResources.Uri_WebServer), "/services/" + ResourceModel.ResourceName + "?DEV2WebsiteEditingMode=true", out url);
                 }

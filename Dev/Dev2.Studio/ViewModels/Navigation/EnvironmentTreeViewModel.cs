@@ -96,9 +96,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return EnvironmentModel == null
                            ? String.Empty
                            : string.Format("{0} ({1})", EnvironmentModel.Name,
-                                           (EnvironmentModel.DsfAddress == null)
+                                           (EnvironmentModel.Connection.AppServerUri == null)
                                                ? String.Empty
-                                               : EnvironmentModel.DsfAddress.AbsoluteUri);
+                                               : EnvironmentModel.Connection.AppServerUri.AbsoluteUri);
             }
         }
 
@@ -184,7 +184,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return EnvironmentModel != null &&
-                       EnvironmentModel.EnvironmentConnection != null &&
+                       EnvironmentModel.Connection != null &&
                        EnvironmentModel.IsConnected &&
                        EnvironmentModel.Name != StringResources.DefaultEnvironmentName;
             }
@@ -277,7 +277,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
                 Uri requestUri;
                 if (
-                    !Uri.TryCreate(EnvironmentModel.WebServerAddress,
+                    !Uri.TryCreate(EnvironmentModel.Connection.WebServerUri,
                         BuildUri(resourceModel, resName), out requestUri))
                 {
                     requestUri = new Uri(new Uri(StringResources.Uri_WebServer), BuildUri(resourceModel, resName));

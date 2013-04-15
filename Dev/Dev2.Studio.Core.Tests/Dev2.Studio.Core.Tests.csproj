@@ -172,6 +172,9 @@
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
+    <Compile Include="Network\TestTcpConnection.cs" />
+    <Compile Include="Network\TcpClientHostTests.cs" />
+    <Compile Include="Network\TcpConnectionTests.cs" />
     <Compile Include="ThreadExecuter.cs" />
     <Compile Include="TreeViewModelsTest.cs" />
     <Compile Include="NavigationViewModelTest.cs" />
@@ -268,6 +271,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
+      <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
+      <Name>Dev2.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>

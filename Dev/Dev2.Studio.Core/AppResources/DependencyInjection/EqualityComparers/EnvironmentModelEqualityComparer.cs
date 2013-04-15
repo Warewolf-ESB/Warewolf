@@ -12,7 +12,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
     {
         #region Class Members
 
-        private static readonly Lazy<EnvironmentModelEqualityComparer> _current
+        private static readonly Lazy<EnvironmentModelEqualityComparer> Instance
             = new Lazy<EnvironmentModelEqualityComparer>(() => new EnvironmentModelEqualityComparer());
 
         private EnvironmentModelEqualityComparer()
@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         public bool Equals(IEnvironmentModel x, IEnvironmentModel y)
         {
-            return x.DsfAddress.AbsoluteUri == y.DsfAddress.AbsoluteUri;
+            return x.Connection.AppServerUri.AbsoluteUri == y.Connection.AppServerUri.AbsoluteUri;
         }
 
         public int GetHashCode(IEnvironmentModel obj)
@@ -38,9 +38,9 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             var environment = y as IEnvironmentModel;
             if (environment == null) return false;
             if (x == null) return false;
-            if (environment.DsfAddress == null || x.DsfAddress == null) return false;
+            if(environment.Connection.AppServerUri == null || x.Connection.AppServerUri == null) return false;
 
-            return x.DsfAddress.AbsoluteUri == environment.DsfAddress.AbsoluteUri;
+            return x.Connection.AppServerUri.AbsoluteUri == environment.Connection.AppServerUri.AbsoluteUri;
         }
 
         #endregion Methods
@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         public static EnvironmentModelEqualityComparer Current
         {
-            get { return _current.Value; }
+            get { return Instance.Value; }
         }
 
         #endregion Properties

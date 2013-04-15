@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Security.Principal;
 using System.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
@@ -13,12 +14,14 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
 {
     [TestClass]
     public class ExecutionChannelTests
     {
+
         [TestMethod]
         public void WorkflowExecuted_Where_ExecutionStatusCallBackRegistered_Expected_OnCompletedCallbackRecieved()
         {
@@ -47,28 +50,22 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             //
             // Connect to the server
             //
-            IEnvironmentConnection conn = new EnvironmentConnection();
-            conn.Address = new Uri(ServerSettings.DsfAddress);
+            var conn = CreateConnection();
             conn.Connect();
 
-            IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            IFrameworkSecurityContext securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            IEnvironmentConnection environmentConnection = ImportService.GetExportValue<IEnvironmentConnection>();
-
-            IEnvironmentModel environment = new EnvironmentModel(eventAggregator, securityContext, environmentConnection);
-            environment.EnvironmentConnection = conn;
+            IEnvironmentModel environment = new EnvironmentModel(conn);
 
             //
             // Add an execution callback, the action of this call back will set the reset event allowing the test to continue
             //
-            conn.ExecutionChannel.AddExecutionStatusCallback(callBackID, new Action<ExecutionStatusCallbackMessage>(m =>
+            conn.ExecutionChannel.AddExecutionStatusCallback(callBackID, m =>
             {
                 if (m.MessageType == ExecutionStatusCallbackMessageType.CompletedCallback)
                 {
                     callbackRecieved = true;
                     resetEvent.Set();
                 }
-            }));
+            });
 
             //
             // Get endpoint to query and make request to server
@@ -93,5 +90,24 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
 
             Assert.IsTrue(callbackRecieved, "Error - No callback was received.");
         }
+
+
+        #region CreateConnection
+
+        static TcpConnection CreateConnection(bool isAuxiliary = false)
+        {
+            return CreateConnection(ServerSettings.DsfAddress, isAuxiliary);
+        }
+
+        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        {
+            var securityContetxt = new Mock<IFrameworkSecurityContext>();
+            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), eventAggregator.Object, isAuxiliary);
+        }
+
+        #endregion
     }
 }

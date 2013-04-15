@@ -22,8 +22,8 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             Environment = environment;
             ID = environment.ID.ToString();
             Alias = environment.Name;
-            AppAddress = environment.DsfAddress.AbsoluteUri;
-            WebAddress = environment.WebServerAddress.AbsoluteUri;
+            AppAddress = environment.Connection.AppServerUri.AbsoluteUri;
+            WebAddress = environment.Connection.WebServerUri.AbsoluteUri;
         }
 
         /// <summary>

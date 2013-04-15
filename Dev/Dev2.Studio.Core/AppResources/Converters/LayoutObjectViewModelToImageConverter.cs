@@ -19,7 +19,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             {
                 if (!Uri.TryCreate(layoutObjectViewModel.IconPath, UriKind.Absolute, out uri))
                 {
-                    if (!Uri.TryCreate(layoutObjectViewModel.LayoutObjectGrid.ResourceModel.Environment.WebServerAddress, "icons/" + layoutObjectViewModel.IconPath, out uri))
+                    if(!Uri.TryCreate(layoutObjectViewModel.LayoutObjectGrid.ResourceModel.Environment.Connection.AppServerUri, "icons/" + layoutObjectViewModel.IconPath, out uri))
                     {
                         uri = new Uri(new Uri(StringResources.Uri_WebServer), "icons/" + layoutObjectViewModel.IconPath);
                     }

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Network.Messages;
+using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.DataList.Contract.Network
 {
-    public class PersistChildChainMessage : INetworkMessage
+    public class PersistChildChainMessage : DataListMessage
     {
-        public long Handle { get; set; }
         public Guid ID { get; set; }
 
         public PersistChildChainMessage()
@@ -21,22 +17,20 @@ namespace Dev2.DataList.Contract.Network
             ID = id;
         }
 
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             ID = reader.ReadGuid();
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(ID);
         }
     }
 
-    public class PersistChildChainResultMessage : INetworkMessage
+    public class PersistChildChainResultMessage : DataListMessage
     {
-        public long Handle { get; set; }
         public bool Result { get; set; }
-        public ErrorResultTO Errors { get; set; }
 
         public PersistChildChainResultMessage()
         {
@@ -49,12 +43,12 @@ namespace Dev2.DataList.Contract.Network
             Errors = errors;
         }
 
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             Result = reader.ReadBoolean();
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(Result);
         }

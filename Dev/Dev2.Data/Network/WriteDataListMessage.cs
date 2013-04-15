@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.TO;
-using Dev2.Network.Messages;
-using Dev2.Server.DataList.Translators;
 using Dev2.DataList.Contract.Extensions;
-using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.TO;
+using Dev2.Network.Messaging.Messages;
+using Dev2.Server.DataList.Translators;
 
 namespace Dev2.DataList.Contract.Network
 {
-    public class WriteDataListMessage : INetworkMessage
+    public class WriteDataListMessage : DataListMessage
     {
-        public long Handle { get; set; }
         public Guid DatalistID { get; set; }
         public IBinaryDataList Datalist { get; set; }
-        public ErrorResultTO Errors { get; set; }
 
         public WriteDataListMessage()
         {
@@ -32,7 +24,7 @@ namespace Dev2.DataList.Contract.Network
             Errors = errors;
         }
 
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             IDataListTranslator translator = DataListTranslatorFactory.FetchBinaryTranslator();
             ErrorResultTO tmpErrors;
@@ -41,7 +33,7 @@ namespace Dev2.DataList.Contract.Network
 
             byte[] datalistData = reader.ReadByteArray();
             Datalist = null;
-            if (datalistData != null)
+            if(datalistData != null)
             {
                 Datalist = translator.ConvertTo(datalistData, "", out tmpErrors);
             }
@@ -49,7 +41,7 @@ namespace Dev2.DataList.Contract.Network
             Errors = ErrorResultTOExtensionMethods.FromByteArray(reader.ReadByteArray());
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             IDataListTranslator translator = DataListTranslatorFactory.FetchBinaryTranslator();
             ErrorResultTO tmpErrors;
@@ -57,7 +49,7 @@ namespace Dev2.DataList.Contract.Network
             writer.Write(DatalistID);
 
             byte[] datalistData = null;
-            if (Datalist != null)
+            if(Datalist != null)
             {
                 DataListTranslatedPayloadTO dataListTranslatedPayloadTO = translator.ConvertFrom(Datalist, out tmpErrors);
                 datalistData = dataListTranslatedPayloadTO.FetchAsByteArray();
@@ -68,11 +60,9 @@ namespace Dev2.DataList.Contract.Network
         }
     }
 
-    public class WriteDataListResultMessage : INetworkMessage
+    public class WriteDataListResultMessage : DataListMessage
     {
-        public long Handle { get; set; }
         public bool Result { get; set; }
-        public ErrorResultTO Errors { get; set; }
 
         public WriteDataListResultMessage()
         {
@@ -85,13 +75,13 @@ namespace Dev2.DataList.Contract.Network
             Errors = errors;
         }
 
-        public void Read(IByteReaderBase reader)
+        public override void Read(IByteReaderBase reader)
         {
             Result = reader.ReadBoolean();
             Errors = ErrorResultTOExtensionMethods.FromByteArray(reader.ReadByteArray());
         }
 
-        public void Write(IByteWriterBase writer)
+        public override void Write(IByteWriterBase writer)
         {
             writer.Write(Result);
             __IByteWriterBaseExtensions.Write(writer, Errors.ToByteArray());

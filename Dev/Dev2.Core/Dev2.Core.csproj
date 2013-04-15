@@ -219,6 +219,7 @@
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExtMethods\TaskExtensions.cs" />
     <Compile Include="Factories\SyntaxTreeFactory.cs" />
     <Compile Include="InterfaceImplementors\DataFormatter.cs" />
     <Compile Include="Cryptography\Encryption.cs" />

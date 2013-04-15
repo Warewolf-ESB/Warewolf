@@ -1,4 +1,10 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Xml;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -7,59 +13,29 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Xml;
-using System.Xml.Linq;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
     public class ResourceRepository : IResourceRepository
     {
-        #region Class Members
-
-        private readonly List<IResourceModel> _workflowDb;
-        private readonly List<string> _reservedServices;
+        readonly List<IResourceModel> _resourceModels;
+        readonly List<string> _reservedServices;
+        readonly IEnvironmentModel _environmentModel;
+        readonly IFrameworkSecurityContext _securityContext;
+        readonly IWizardEngine _wizardEngine;
 
         public event EventHandler ItemAdded;
 
-        #endregion Class Members
-
-        #region Properties
-
-        public IEnvironmentModel Environment { get; private set; }
-
-        public IFrameworkSecurityContext SecurityContext { get; set; }
-
-        public IWizardEngine WizardEngine { get; set; }
-
-        Guid WorkspaceID
-        {
-            get
-            {
-                if (Environment.DsfChannel != null)
-                {
-                    return ((IStudioClientContext)Environment.DsfChannel).AccountID;
-                }
-                return Guid.Empty;
-            }
-        }
-
-        #endregion Properties
-
         #region Constructor
 
-        public ResourceRepository(IEnvironmentModel environment)
+        public ResourceRepository(IEnvironmentModel environmentModel)
         {
             _reservedServices = new List<string>();
-            _workflowDb = new List<IResourceModel>();
-            Environment = environment;
-            SecurityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
+            _resourceModels = new List<IResourceModel>();
+            _environmentModel = environmentModel;
+            _securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            _wizardEngine = ImportService.GetExportValue<IWizardEngine>();
         }
 
         #endregion Constructor
@@ -77,32 +53,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
         {
             IList<IWorkspaceItem> applicableWorkspaceItems = workspaceItems
-                .Where(w => w.ServerID == ((IStudioClientContext)Environment.DsfChannel).ServerID &&
-                    w.WorkspaceID == ((IStudioClientContext)Environment.DsfChannel).AccountID)
+                .Where(w => w.ServerID == ((IStudioClientContext)_environmentModel.DsfChannel).ServerID &&
+                    w.WorkspaceID == ((IStudioClientContext)_environmentModel.DsfChannel).WorkspaceID)
                 .ToList();
 
-            XElement rootElement = new XElement("WorkspaceItems");
+            var rootElement = new XElement("WorkspaceItems");
             rootElement.Add(applicableWorkspaceItems.Select(w => w.ToXml()));
 
             dynamic package = new UnlimitedObject();
             package.Service = "GetLatestService";
             package.EditedItemsXml = rootElement.ToString();
-            package.Roles = string.Join(",", SecurityContext.Roles);
+            package.Roles = string.Join(",", _securityContext.Roles);
 
-            var updateResult = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            ExecuteCommand(_environmentModel, package);
 
-            if (updateResult == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
-            }
-
-            dynamic reloadResultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(updateResult);
-            if (reloadResultObj.HasError)
-            {
-                throw new Exception(reloadResultObj.Error);
-            }
-
-            _workflowDb.Clear();
+            _resourceModels.Clear();
             Load();
         }
 
@@ -113,54 +78,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             reloadPayload.ResourceName = resourceName;
             reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
 
-
-            var reloadResult = Environment.DsfChannel.ExecuteCommand(reloadPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
-
-            if (reloadResult == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, reloadPayload.Service));
-            }
-
-            // Debug statements do not belong in product code ;)
-            //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
-            //Debug.WriteLine(reloadResult);
-
-
-            dynamic reloadResultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(reloadResult);
-            if (reloadResultObj.HasError)
-            {
-                throw new Exception(reloadResultObj.Error);
-            }
+            ExecuteCommand(_environmentModel, reloadPayload);
 
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "GetResourceService";
             findPayload.ResourceName = resourceName;
             findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
-            findPayload.Roles = string.Join(",", SecurityContext.Roles);
+            findPayload.Roles = string.Join(",", _securityContext.Roles);
 
-            var findResult = Environment.DsfChannel.ExecuteCommand(findPayload.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
+            var findResultObj = ExecuteCommand(_environmentModel, findPayload);
 
-            if (findResult == null)
+            var effectedResources = new List<IResourceModel>();
+            var wfServices = (resourceType == ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
+            if(wfServices is List<UnlimitedObject>)
             {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, findPayload.Service));
-            }
-
-            dynamic findResultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(findResult);
-            if (findResultObj.HasError)
-            {
-                throw new Exception(findResultObj.Error);
-            }
-
-            List<IResourceModel> effectedResources = new List<IResourceModel>();
-            dynamic wfServices = (resourceType == ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
-            if (wfServices is List<UnlimitedObject>)
-            {
-                foreach (dynamic item in wfServices)
+                foreach(dynamic item in wfServices)
                 {
                     IResourceModel resource = HydrateResourceModel(resourceType, item);
-                    IResourceModel resourceToUpdate = _workflowDb.FirstOrDefault(r => equalityComparer.Equals(r, resource));
+                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                    if (resourceToUpdate != null)
+                    if(resourceToUpdate != null)
                     {
                         resourceToUpdate.Update(resource);
                         effectedResources.Add(resourceToUpdate);
@@ -168,8 +105,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     else
                     {
                         effectedResources.Add(resource);
-                        _workflowDb.Add(resource);
-                        if (ItemAdded != null)
+                        _resourceModels.Add(resource);
+                        if(ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
@@ -186,7 +123,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public bool IsWorkflow(string resourceName)
         {
             IResourceModel match = All().FirstOrDefault(c => c.ResourceName.ToUpper().Equals(resourceName.ToUpper()));
-            if (match != null)
+            if(match != null)
             {
                 return match.ResourceType == ResourceType.WorkflowService;
             }
@@ -201,13 +138,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ICollection<IResourceModel> All()
         {
-            return _workflowDb;
+            return _resourceModels;
         }
 
         public ICollection<IResourceModel> Find(System.Linq.Expressions.Expression<Func<IResourceModel, bool>> expression)
         {
             Func<IResourceModel, bool> func = expression.Compile();
-            return _workflowDb.FindAll(func.Invoke);
+            return _resourceModels.FindAll(func.Invoke);
         }
 
         public IResourceModel FindSingle(System.Linq.Expressions.Expression<Func<IResourceModel, bool>> expression)
@@ -215,35 +152,31 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Func<IResourceModel, bool> func = expression.Compile();
 
 
-            return _workflowDb.Find(func.Invoke);
+            return _resourceModels.Find(func.Invoke);
         }
 
         public void Save(IResourceModel instanceObj)
         {
-            IResourceModel workflow = this.FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (workflow == null)
+            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            if(workflow == null)
             {
-                _workflowDb.Add(instanceObj);
+                _resourceModels.Add(instanceObj);
             }
 
             dynamic package = new UnlimitedObject();
             package.Service = "AddResourceService";
             package.ResourceXml = instanceObj.ToServiceDefinition();
-            package.Roles = string.Join(",", SecurityContext.Roles);
+            package.Roles = string.Join(",", _securityContext.Roles);
 
-            string result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
-            if (result == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
-            }
+            ExecuteCommand(_environmentModel, package, false);
         }
 
         public void DeployResource(IResourceModel resource)
         {
-            IResourceModel workflow = this.FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (workflow == null)
+            IResourceModel workflow = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            if(workflow == null)
             {
-                _workflowDb.Add(resource);
+                _resourceModels.Add(resource);
             }
             else
             {
@@ -253,13 +186,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic package = new UnlimitedObject();
             package.Service = "DeployResourceService";
             package.ResourceXml = resource.ToServiceDefinition();
-            package.Roles = string.Join(",", SecurityContext.Roles ?? new string[0]);
+            package.Roles = string.Join(",", _securityContext.Roles ?? new string[0]);
 
-            var result = Environment.DsfChannel.ExecuteCommand(package.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
-            if (result == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, package.Service));
-            }
+            ExecuteCommand(_environmentModel, package, false);
         }
 
         public void Save(ICollection<IResourceModel> instanceObjs)
@@ -279,22 +208,22 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public UnlimitedObject DeleteResource(IResourceModel resource)
         {
-            int index = _workflowDb.IndexOf(resource);
-            if (index != -1)
-                _workflowDb.RemoveAt(index);
+            int index = _resourceModels.IndexOf(resource);
+            if(index != -1)
+                _resourceModels.RemoveAt(index);
             else throw new KeyNotFoundException();
 
             var contextualResource = resource as IContextualResourceModel;
-            if (contextualResource == null) return null;
+            if(contextualResource == null) return null;
 
-            if (!WizardEngine.IsWizard(contextualResource))
+            if(!_wizardEngine.IsWizard(contextualResource))
             {
-                IContextualResourceModel wizard = WizardEngine.GetWizard(contextualResource);
-                if (wizard != null)
+                IContextualResourceModel wizard = _wizardEngine.GetWizard(contextualResource);
+                if(wizard != null)
                 {
                     UnlimitedObject wizardData = ExecuteDeleteResource(wizard);
 
-                    if (wizardData.HasError)
+                    if(wizardData.HasError)
                     {
                         HandleDeleteResourceError(wizardData, contextualResource);
                         return null;
@@ -304,7 +233,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             UnlimitedObject data = ExecuteDeleteResource(contextualResource);
 
-            if (data.HasError)
+            if(data.HasError)
             {
                 HandleDeleteResourceError(data, contextualResource);
                 return null;
@@ -319,23 +248,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             request.Service = "DeleteResourceService";
             request.ResourceName = resource.ResourceName;
             request.ResourceType = resource.ResourceType.ToString();
-            request.Roles = String.Join(",", SecurityContext.Roles ?? new string[0]);
-            Guid workspaceID = ((IStudioClientContext)resource.Environment.DsfChannel).AccountID;
+            request.Roles = String.Join(",", _securityContext.Roles ?? new string[0]);
 
-            string result = resource.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID,
-                                                                           GlobalConstants.NullDataListID);
-            if (result == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, request.Service));
-            }
-
-            return UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+            return ExecuteCommand(resource.Environment, request);
         }
 
         //Juries TODO - Refactor to popupProvider
         private void HandleDeleteResourceError(dynamic data, IContextualResourceModel model)
         {
-            if (data.HasError)
+            if(data.HasError)
             {
                 MessageBox.Show(Application.Current.MainWindow, model.ResourceType.GetDescription() + " \"" + model.ResourceName +
                                                                 "\" could not be deleted, reason: " + data.Error,
@@ -345,7 +266,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Add(IResourceModel instanceObj)//Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
         {
-            _workflowDb.Insert(_workflowDb.Count, instanceObj);
+            _resourceModels.Insert(_resourceModels.Count, instanceObj);
         }
 
         #endregion Methods
@@ -358,37 +279,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "FindResourceService";
             dataObj.ResourceName = "*";
             dataObj.ResourceType = resourceType;
-            dataObj.Roles = string.Join(",", SecurityContext.Roles);
+            dataObj.Roles = string.Join(",", _securityContext.Roles);
 
-            var result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
-
-            if (result == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, dataObj.Service));
-            }
-
-            // Debug statements do not belong in product code ;)
-            //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
-            //Debug.WriteLine(result);
-
-
-            dynamic resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
-            if (resultObj.HasError)
-            {
-                throw new Exception(resultObj.Error);
-            }
+            var resultObj = ExecuteCommand(_environmentModel, dataObj);
 
             string xml = resultObj.XmlString;
-            int index = 0;
+            var index = 0;
 
-            while ((index = xml.IndexOf("<ReservedName>", index)) != -1)
+            while((index = xml.IndexOf("<ReservedName>", index, StringComparison.Ordinal)) != -1)
             {
-                int start = index + 14;
-                if ((index = xml.IndexOf("</ReservedName>", start)) == -1)
+                var start = index + 14;
+                if((index = xml.IndexOf("</ReservedName>", start, StringComparison.Ordinal)) == -1)
+                {
                     break;
+                }
 
-                int length = index - start;
-                string name = xml.Substring(start, length);
+                var length = index - start;
+                var name = xml.Substring(start, length);
                 _reservedServices.Add(name.ToUpper());
             }
         }
@@ -399,40 +306,27 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "FindResourceService";
             dataObj.ResourceName = "*";
             dataObj.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
-            dataObj.Roles = string.Join(",", SecurityContext.Roles);
+            dataObj.Roles = string.Join(",", _securityContext.Roles);
 
-            var result = Environment.DsfChannel.ExecuteCommand(dataObj.XmlString, WorkspaceID, GlobalConstants.NullDataListID);
-            if (result == null)
-            {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, dataObj.Service));
-            }
-
-            // Debug statements do not belong in product code ;)
-            //Debug.WriteLine(string.Format("Outputting service data for resource type '{0}'", resourceType.ToString()));
-            //Debug.WriteLine(result);
-
-
-            dynamic resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
-            if (resultObj.HasError)
-            {
-                throw new Exception(resultObj.Error);
-            }
+            var resultObj = ExecuteCommand(_environmentModel, dataObj);
 
             dynamic wfServices = (resourceType == ResourceType.Source) ? resultObj.Source : resultObj.Service;
-            if (wfServices is List<UnlimitedObject>)
+            if(wfServices is List<UnlimitedObject>)
             {
-                foreach (dynamic item in wfServices)
+                foreach(dynamic item in wfServices)
                 {
                     try
                     {
                         IResourceModel resource = HydrateResourceModel(resourceType, item);
-                        _workflowDb.Add(resource);
-                        if (ItemAdded != null)
+                        _resourceModels.Add(resource);
+                        if(ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
                     }
-                    catch(Exception)
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Ignore malformed resources
                         // TODO Log this
@@ -443,11 +337,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data)
         {
-            IContextualResourceModel resource = ResourceModelFactory.CreateResourceModel(Environment);
+            var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
             resource.ResourceType = resourceType;
-            if (data.XamlDefinition is string)
+            if(data.XamlDefinition is string)
             {
-                if (!string.IsNullOrEmpty(data.XamlDefinition))
+                if(!string.IsNullOrEmpty(data.XamlDefinition))
                 {
                     resource.WorkflowXaml = data.XamlDefinition;
                     resource.ServiceDefinition = data.XmlString;
@@ -456,17 +350,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             resource.DataList = data.GetValue("DataList");
             resource.ID = Guid.Parse(data.GetValue("ID"));
-            
+
             resource.ServerID = Guid.Parse(data.GetValue("ServerID"));
 
             resource.Version = Version.Parse(data.GetValue("Version"));
 
-            if (string.IsNullOrEmpty(resource.ServiceDefinition))
+            if(string.IsNullOrEmpty(resource.ServiceDefinition))
             {
                 resource.ServiceDefinition = data.XmlString;
             }
 
-            if (data.DisplayName is string)
+            if(data.DisplayName is string)
             {
                 resource.DisplayName = data.DisplayName;
             }
@@ -475,17 +369,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.DisplayName = resourceType.ToString();
             }
 
-            if (data.IconPath is string)
+            if(data.IconPath is string)
             {
                 resource.IconPath = data.IconPath;
             }
 
-            if (data.AuthorRoles is string)
+            if(data.AuthorRoles is string)
             {
                 resource.AuthorRoles = data.AuthorRoles;
             }
 
-            if (data.Category is string)
+            if(data.Category is string)
             {
                 resource.Category = data.Category;
             }
@@ -494,73 +388,68 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.Category = string.Empty;
             }
 
-            if (data.Tags is string)
+            if(data.Tags is string)
             {
                 resource.Tags = data.Tags;
             }
 
-            if (data.Comment is string)
+            if(data.Comment is string)
             {
                 resource.Comment = data.Comment;
             }
 
-            if (data.UnitTestTargetWorkflowService is string)
+            if(data.UnitTestTargetWorkflowService is string)
             {
                 resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
             }
 
-            if (data.HelpLink is string)
+            if(data.HelpLink is string)
             {
-                if (!string.IsNullOrEmpty(data.HelpLink))
+                if(!string.IsNullOrEmpty(data.HelpLink))
                 {
                     resource.HelpLink = data.HelpLink;
                 }
             }
 
             var service = resourceType == ResourceType.Source ? data.Source : data.Service;
-            if (service is List<UnlimitedObject>)
+            if(service is List<UnlimitedObject>)
             {
-                foreach (dynamic svc in service)
+                foreach(dynamic svc in service)
                 {
 
-                    if (svc.Name is string)
+                    if(svc.Name is string)
                     {
                         resource.ResourceName = svc.Name;
                     }
                     else
                     {
                         // Travis : if we here it means Name is an element in the datalist
-                        try
-                        {
-                            UnlimitedObject tmpObj = (svc as UnlimitedObject);
+                        var tmpObj = (svc as UnlimitedObject);
 
-                            XmlDocument xDoc = new XmlDocument();
-                            xDoc.LoadXml(tmpObj.XmlString);
-                            XmlNode n = xDoc.SelectSingleNode("Service");
-                            resource.ResourceName = n.Attributes["Name"].Value;
-                        }
-                        catch (Exception e1)
-                        {
-                            throw e1;
-                        }
+                        // ReSharper disable PossibleNullReferenceException
+                        var xDoc = new XmlDocument();
+                        xDoc.LoadXml(tmpObj.XmlString);
+                        var n = xDoc.SelectSingleNode("Service");
+                        resource.ResourceName = n.Attributes["Name"].Value;
+                        // ReSharper restore PossibleNullReferenceException
                     }
                 }
             }
 
             return resource;
         }
-
+        
         #endregion Private Methods
 
         #region Add/RemoveEnvironment
 
         public static void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 throw new ArgumentNullException("targetEnvironment");
             }
-            if (environment == null)
+            if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -568,18 +457,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "AddResourceService";
             dataObj.ResourceXml = environment.ToSourceDefinition();
-            dataObj.Roles = string.Join(",", environment.EnvironmentConnection.SecurityContext.Roles);
+            dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
 
-            ExecuteCommand(targetEnvironment, dataObj);
+            ExecuteCommand(targetEnvironment, dataObj, false);
         }
 
         public static void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 throw new ArgumentNullException("targetEnvironment");
             }
-            if (environment == null)
+            if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -588,9 +477,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "DeleteResourceService";
             dataObj.ResourceName = environment.Name;
             dataObj.ResourceType = ResourceType.Source.ToString();
-            dataObj.Roles = string.Join(",", environment.EnvironmentConnection.SecurityContext.Roles);
+            dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
 
-            ExecuteCommand(targetEnvironment, dataObj);
+            ExecuteCommand(targetEnvironment, dataObj, false);
         }
 
         #endregion
@@ -599,7 +488,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType)
         {
-            if (targetEnvironment == null || guids == null)
+            if(targetEnvironment == null || guids == null)
             {
                 return new List<UnlimitedObject>();
             }
@@ -623,7 +512,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static List<UnlimitedObject> FindSourcesByType(IEnvironmentModel targetEnvironment, enSourceType sourceType)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 return new List<UnlimitedObject>();
             }
@@ -641,44 +530,47 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         #endregion
-
-        #region ExecuteCommand
-
-        static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj)
-        {
-            var workspaceID = ((IStudioClientContext)targetEnvironment.DsfChannel).AccountID;
-            var result = targetEnvironment.DsfChannel.ExecuteCommand(dataObj.XmlString, workspaceID, GlobalConstants.NullDataListID);
-
-            if (result == null)
-            {
-                dynamic tmp = dataObj;
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
-            }
-
-            // PBI : 7913 -  Travis
-
-            var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
-            if (resultObj.HasError)
-            {
-                throw new Exception(resultObj.Error);
-            }
-            return resultObj;
-        }
-
-        #endregion
-
+        
         #region AddItems
 
         static void AddItems(ICollection<UnlimitedObject> result, dynamic items)
         {
-            if (items is IEnumerable<UnlimitedObject>)
+            if(items is IEnumerable<UnlimitedObject>)
             {
-                foreach (var item in items)
+                foreach(var item in items)
                 {
                     var itemObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(item.XmlString);
                     result.Add(itemObj);
                 }
             }
+        }
+
+        #endregion
+
+        #region ExecuteCommand
+
+        static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj, bool convertResultToUnlimitedObject = true)
+        {
+            var workspaceID = targetEnvironment.Connection.WorkspaceID;
+            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID, GlobalConstants.NullDataListID);
+
+            if(result == null)
+            {
+                dynamic tmp = dataObj;
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
+            }
+
+            if(convertResultToUnlimitedObject)
+            {
+                // PBI : 7913 -  Travis
+                var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+                if(resultObj.HasError)
+                {
+                    throw new Exception(resultObj.Error);
+                }
+                return resultObj;
+            }
+            return result;
         }
 
         #endregion

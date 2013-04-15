@@ -1,14 +1,14 @@
-﻿using Dev2.DynamicServices;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.DynamicServices;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core
 {
@@ -56,9 +56,6 @@ namespace Dev2.Studio.Core
 
         private readonly List<IEnvironmentModel> _environments;
 
-        [Import]
-        public IFrameworkSecurityContext SecurityContext { get; set; }
-
         public EnvironmentRepository()
             : this(new[] { DefaultEnvironment })
         {
@@ -97,7 +94,7 @@ namespace Dev2.Studio.Core
 
         protected void OnItemAdded()
         {
-            if (ItemAdded != null)
+            if(ItemAdded != null)
             {
                 ItemAdded(this, new System.EventArgs());
             }
@@ -240,6 +237,10 @@ namespace Dev2.Studio.Core
 
             var result = new List<IEnvironmentModel>();
             defaultEnvironment.Connect();
+            if(!defaultEnvironment.IsConnected)
+            {
+                return result;
+            }
 
             var hasEnvironmentGuids = environmentGuids != null;
             var servers = hasEnvironmentGuids
@@ -284,7 +285,11 @@ namespace Dev2.Studio.Core
 
                     #endregion
 
-                    var environment = EnvironmentModelFactory.CreateEnvironmentModel(id, appServerUri, displayName, webServerPort);
+                    var environment = EnvironmentModelFactory.CreateEnvironmentModel(
+                        id, appServerUri, displayName, webServerPort,
+                        defaultEnvironment.Connection.SecurityContext,
+                        defaultEnvironment.Connection.EventAggregator);
+
                     result.Add(environment);
                 }
             }

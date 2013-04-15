@@ -1,22 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Linq;
-using System.Network;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Network;
-using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Network.DataList;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network.Channels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -27,7 +17,7 @@ namespace Dev2.Core.Tests
     {
         #region MyTestInitialize
 
-        [TestInitialize()]
+        [TestInitialize]
         public void Initialize()
         {
         }
@@ -38,25 +28,32 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Instantiate_Where_ClientIsNull_Expected_Exception()
+        public void InstantiateWhereClientIsNullExpectedException()
         {
-            Mock<IStudioNetworkMessageAggregator> _studioNetworkMessageAggregator = Dev2MockFactory.SetupStudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, _studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(null);
+            //--------------------Setup Test-------------------------------------
+            //---------------------Execute Test---------------------------------
+// ReSharper disable ObjectCreationAsStatement
+            new DataListClientChannel(null);
+// ReSharper restore ObjectCreationAsStatement
+            //---------------------Assert Result---------------------------------
+            //An exception is thrown and verified by the attribute [ExpectedException(typeof(ArgumentNullException))]
         }
 
         [TestMethod]
-        public void Instantiate_Expected_Success()
+        public void InstantiateExpectedSuccess()
         {
-            Mock<IStudioNetworkMessageAggregator> _studioNetworkMessageAggregator = Dev2MockFactory.SetupStudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
+            //------------------------Setup Test-------------------------------------------------------
+            var environmentConnectionMock = CreateEnvironmentConnectionMock();
+            //-------------------------Execute Test --------------------------------------------------
+            DataListClientChannel channel = new DataListClientChannel(environmentConnectionMock.Object);
+            //--------------------------Assert Result-------------------------------------------------
+            Assert.IsNotNull(channel);
+        }
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, _studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
+        static Mock<IEnvironmentConnection> CreateEnvironmentConnectionMock()
+        {
+            var environmentConnectionMock = new Mock<IEnvironmentConnection>();
+            return environmentConnectionMock;
         }
 
         #endregion Initialization Tests
@@ -64,146 +61,93 @@ namespace Dev2.Core.Tests
         #region WriteDataList Tests
 
         [TestMethod]
-        public void WriteDataList_Where_ResultTrue_Expected_True()
+        public void WriteDataListWhereResultTrueExpectedTrue()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            _networkMessageBroker.Setup(e => e.Send<WriteDataListMessage>(It.IsAny<WriteDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-                {
-                    Task t = new Task(new Action(() =>
-                        {
-                            studioNetworkMessageAggregator.Publish(new WriteDataListResultMessage { Errors = new ErrorResultTO(), Handle = 1, Result = true }, _studioNetworkChannelContext.Object, true);
-                        }));
-
-                    t.Start();
-                });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
+            var writeDataListResultMessage = new WriteDataListResultMessage { Errors = new ErrorResultTO(), Handle = 1, Result = true };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<WriteDataListMessage>())).Returns(writeDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
-            bool expected = true;
-            bool actual = channel.WriteDataList(dataList.UID, dataList, errors);
-
-            Assert.AreEqual(expected, actual);
+            //------------------------Execute Test------------------------------------------------------------
+            var actual = channel.WriteDataList(testDataList.UID, testDataList, errors);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
+            Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void WriteDataList_Where_ResultFalse_Expected_False()
+        public void WriteDataListWhereResultFalseExpectedFalse()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            _networkMessageBroker.Setup(e => e.Send<WriteDataListMessage>(It.IsAny<WriteDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new WriteDataListResultMessage { Errors = new ErrorResultTO(), Handle = 1, Result = false }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
+            var writeDataListResultMessage = new WriteDataListResultMessage { Errors = new ErrorResultTO(), Handle = 1, Result = false };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<WriteDataListMessage>())).Returns(writeDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
-            bool expected = false;
-            bool actual = channel.WriteDataList(dataList.UID, dataList, errors);
-
-            Assert.AreEqual(expected, actual);
+            //------------------------Execute Test------------------------------------------------------------
+            var actual = channel.WriteDataList(testDataList.UID, testDataList, errors);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
+            Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void WriteDataList_Where_ResultIsErrorMessage_Expected_False()
+        public void WriteDataListWhereResultIsErrorMessageExpectedFalse()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            _networkMessageBroker.Setup(e => e.Send<WriteDataListMessage>(It.IsAny<WriteDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new ErrorMessage { Handle = 1 }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
+            var errorMessage = new ErrorMessage { Handle = 1 };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<WriteDataListMessage>())).Returns(errorMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
-            bool expected = false;
-            bool actual = channel.WriteDataList(dataList.UID, dataList, errors);
-
-            Assert.AreEqual(expected, actual);
+            //------------------------Execute Test------------------------------------------------------------
+            var actual = channel.WriteDataList(testDataList.UID, testDataList, errors);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
+            Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void WriteDataList_Where_ResultContainsErrors_Expected_Errors()
+        public void WriteDataListWhereResultContainsErrorsExpectedErrors()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            _networkMessageBroker.Setup(e => e.Send<WriteDataListMessage>(It.IsAny<WriteDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    ErrorResultTO testErrors = new ErrorResultTO();
-                    testErrors.AddError("Cake");
-                    studioNetworkMessageAggregator.Publish(new WriteDataListResultMessage { Errors = testErrors, Handle = 1, Result = false }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            ErrorResultTO testErrors = new ErrorResultTO();
+            testErrors.AddError("Cake");
+            IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
+            var writeDataListResultMessage = new WriteDataListResultMessage { Errors = testErrors, Handle = 1, Result = false };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<WriteDataListMessage>())).Returns(writeDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
+            //------------------------Execute Test------------------------------------------------------------
+            var actual = channel.WriteDataList(testDataList.UID, testDataList, errors);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
             string expected = "Cake";
-            channel.WriteDataList(dataList.UID, dataList, errors);
-
+            Assert.IsFalse(actual);
             Assert.AreEqual(expected, errors.FetchErrors().First());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WriteDataList_Where_DataListIsNull_Expected_ArgumentNullException()
+        public void WriteDataListWhereDataListIsNullExpectedArgumentNullException()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<WriteDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
+            var readDataListResultMessage = new ReadDataListResultMessage { Errors = new ErrorResultTO(), Datalist = testDataList, Handle = 1 };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<ReadDataListMessage>())).Returns(readDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
-            bool expected = true;
-            bool actual = channel.WriteDataList(dataList.UID, null, errors);
-
-            Assert.AreEqual(expected, actual);
+            //------------------------Execute Test------------------------------------------------------------
+            channel.WriteDataList(testDataList.UID,null, errors);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
+            //An exception is thrown and verified by the attribute [ExpectedException(typeof(ArgumentNullException))]
         }
 
         #endregion WriteDataList Tests
@@ -211,125 +155,76 @@ namespace Dev2.Core.Tests
         #region ReadDatalist Tests
 
         [TestMethod]
-        public void ReadDatalist_Where_ResultIsValid_Expected_ValidResult()
+        public void ReadDatalistWhereResultIsValidExpectedValidResult()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<ReadDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
             IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
-
-            _networkMessageBroker.Setup(e => e.Send<ReadDataListMessage>(It.IsAny<ReadDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new ReadDataListResultMessage { Errors = new ErrorResultTO(), Datalist = testDataList, Handle = 1 }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
+            var readDataListResultMessage = new ReadDataListResultMessage { Errors = new ErrorResultTO(), Datalist = testDataList, Handle = 1 };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<ReadDataListMessage>())).Returns(readDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
+            //------------------------Execute Test------------------------------------------------------------
             IBinaryDataList actual = channel.ReadDatalist(testDataList.UID, errors);
-
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
             Assert.IsNotNull(actual);
+            Assert.AreEqual(testDataList.UID,actual.UID);
         }
 
         [TestMethod]
-        public void ReadDatalist_Where_ResultIsNull_Expected_Null()
+        public void ReadDatalistWhereResultIsNullExpectedNull()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<ReadDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
 
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
             IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
-
-            _networkMessageBroker.Setup(e => e.Send<ReadDataListMessage>(It.IsAny<ReadDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new ReadDataListResultMessage { Errors = new ErrorResultTO(), Datalist = null, Handle = 1 }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
+            var readDataListResultMessage = new ReadDataListResultMessage { Errors = new ErrorResultTO(), Datalist = null, Handle = 1 };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<ReadDataListMessage>())).Returns(readDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
+            //------------------------Execute Test------------------------------------------------------------
             IBinaryDataList actual = channel.ReadDatalist(testDataList.UID, errors);
-
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
             Assert.IsNull(actual);
         }
 
         [TestMethod]
-        public void ReadDatalist_Where_ResultIsErrorMessage_Expected_Null()
+        public void ReadDatalistWhereResultIsErrorMessageExpectedNull()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<ReadDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
 
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
             IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
-
-            _networkMessageBroker.Setup(e => e.Send<ReadDataListMessage>(It.IsAny<ReadDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new ErrorMessage { Handle = 1 }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
+            var errorMessage = new ErrorMessage { Handle = 1 };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<ReadDataListMessage>())).Returns(errorMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
+            //------------------------Execute Test------------------------------------------------------------
             IBinaryDataList actual = channel.ReadDatalist(testDataList.UID, errors);
-
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
             Assert.IsNull(actual);
         }
 
         [TestMethod]
-        public void ReadDatalist_Where_ResultContainsErrors_Expected_Errors()
+        public void ReadDatalistWhereResultContainsErrorsExpectedErrors()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<ReadDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
             IBinaryDataList testDataList = Dev2BinaryDataListFactory.CreateDataList();
-
-            _networkMessageBroker.Setup(e => e.Send<ReadDataListMessage>(It.IsAny<ReadDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    ErrorResultTO testErrors = new ErrorResultTO();
-                    testErrors.AddError("Cake");
-                    studioNetworkMessageAggregator.Publish(new ReadDataListResultMessage { Errors = testErrors, Datalist = testDataList, Handle = 1 }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
+            ErrorResultTO testErrors = new ErrorResultTO();
+            testErrors.AddError("Cake");
+            var readDataListResultMessage = new ReadDataListResultMessage { Errors = testErrors, Datalist = testDataList, Handle = 1 };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<ReadDataListMessage>())).Returns(readDataListResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
             ErrorResultTO errors = new ErrorResultTO();
-
             string expected = "Cake";
-            IBinaryDataList actual = channel.ReadDatalist(testDataList.UID, errors);
-
+            //------------------------Execute Test------------------------------------------------------------
+            channel.ReadDatalist(testDataList.UID, errors);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
             Assert.AreEqual(expected, errors.FetchErrors().First());
         }
 
@@ -338,32 +233,19 @@ namespace Dev2.Core.Tests
         #region DeleteDatalist
 
         [TestMethod]
-        public void DeleteDatalist_Where_ResultIsValid_Expected_ValidResult()
+        public void DeleteDatalistWhereResultIsValidExpectedValidResult()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<DeleteDataListMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            //This send callback mock verifies that the delete has run correctly
-            _networkMessageBroker.Setup(e => e.Send<DeleteDataListMessage>(It.IsAny<DeleteDataListMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new DeleteDataListResultMessage { Handle = 1 }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            ErrorResultTO errors = new ErrorResultTO();
-
+            //--------------Setup Test ----------------------------------------------------
+            var deleteDataListResultMessage = new DeleteDataListResultMessage { Handle = 1 };
+            var environmentConnectionMock = CreateEnvironmentConnectionMock();
+            environmentConnectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>()))
+                                                                                        .Returns(() => deleteDataListResultMessage);
+            var channel = new DataListClientChannel(environmentConnectionMock.Object);
+            //---------------------Execute Test -----------------------------------------------
             channel.DeleteDataList(Guid.Empty, true);
-
-            //Look at the other comment in this test for pass criteria ;)
+            //------------------Assert Result-------------------------------------------------
+            environmentConnectionMock.Verify();
+            environmentConnectionMock.Verify(connection => connection.SendReceiveNetworkMessage(It.IsAny<DeleteDataListMessage>()),Times.Once());
         }
 
         #endregion DeleteDatalist
@@ -371,59 +253,33 @@ namespace Dev2.Core.Tests
         #region PersistChildChain
 
         [TestMethod]
-        public void PersistChildChain_Where_ResultTrue_Expected_True()
+        public void PersistChildChainWhereResultTrueExpectedTrue()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<PersistChildChainMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            _networkMessageBroker.Setup(e => e.Send<PersistChildChainMessage>(It.IsAny<PersistChildChainMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new PersistChildChainResultMessage { Handle = 1, Result = true }, _studioNetworkChannelContext.Object, true);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            ErrorResultTO errors = new ErrorResultTO();
-
-            bool expected = true;
-            bool actual = channel.PersistChildChain(Guid.Empty);
-
-            Assert.AreEqual(expected, actual);
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            var persistChildChainResultMessage = new PersistChildChainResultMessage { Handle = 1, Result = true };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<PersistChildChainMessage>())).Returns(persistChildChainResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
+            //------------------------Execute Test------------------------------------------------------------
+            var actual = channel.PersistChildChain(Guid.Empty);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
+            Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void PersistChildChain_Where_ResultFalse_Expected_False()
+        public void PersistChildChainWhereResultFalseExpectedFalse()
         {
-            StudioNetworkMessageAggregator studioNetworkMessageAggregator = new StudioNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker<PersistChildChainMessage>();
-            Mock<IStudioNetworkChannelContext> _studioNetworkChannelContext = Dev2MockFactory.SetupStudioNetworkChannelContext();
-
-            _networkMessageBroker.Setup(e => e.Send(It.IsAny<PersistChildChainMessage>(), It.IsAny<INetworkOperator>())).Callback(() =>
-            {
-                Task t = new Task(new Action(() =>
-                {
-                    studioNetworkMessageAggregator.Publish(new PersistChildChainResultMessage { Handle = 1, Result = false }, _studioNetworkChannelContext.Object);
-                }));
-
-                t.Start();
-            });
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForDataListChannelTests(_networkMessageBroker, studioNetworkMessageAggregator);
-
-            DataListClientChannel channel = new DataListClientChannel(new TCPDispatchedClient(""));
-
-            bool expected = false;
-            bool actual = channel.PersistChildChain(Guid.Empty);
-
-            Assert.AreEqual(expected, actual);
+            //-----------------------Setup Test ---------------------------------------------------------------
+            var connectionMock = CreateEnvironmentConnectionMock();
+            var persistChildChainResultMessage = new PersistChildChainResultMessage { Handle = 1, Result = false };
+            connectionMock.Setup(connection => connection.SendReceiveNetworkMessage(It.IsAny<PersistChildChainMessage>())).Returns(persistChildChainResultMessage);
+            DataListClientChannel channel = new DataListClientChannel(connectionMock.Object);
+            //------------------------Execute Test------------------------------------------------------------
+            var actual = channel.PersistChildChain(Guid.Empty);
+            //------------------------Assert Result-----------------------------------------------------------
+            connectionMock.Verify();
+            Assert.IsFalse(actual);
         }
 
         #endregion PersistChildChain
