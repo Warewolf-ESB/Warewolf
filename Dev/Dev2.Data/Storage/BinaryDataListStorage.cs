@@ -46,6 +46,7 @@ namespace Dev2.Data.Binary_Objects
 
         private static ReaderWriterLockSlim _level1Lock = new ReaderWriterLockSlim();
         private static ReaderWriterLockSlim _level2Lock = new ReaderWriterLockSlim();
+        private static ReaderWriterLockSlim _level3Lock = new ReaderWriterLockSlim();
 
         //private static object _lockLvl1Guard = new object();
         //private static object _lockLvl2Guard = new object();
@@ -144,7 +145,9 @@ namespace Dev2.Data.Binary_Objects
                 // only if there is data to clear....
                 if (ItemsAddedToLevelThreeCache)
                 {
+                    _level3Lock.EnterWriteLock();
                     LevelThreeCache.Remove(uniqueKey);
+                    _level3Lock.ExitWriteLock();
                 }
 
                 SetMaxValue(key);
@@ -198,7 +201,7 @@ namespace Dev2.Data.Binary_Objects
 
         static void RemovedCallback(CacheEntryRemovedArguments arguments)
         {
-            _level2Lock.EnterWriteLock();
+            _level3Lock.EnterWriteLock();
             CacheEntryRemovedReason cacheEntryRemovedReason = arguments.RemovedReason;
             bool addEntry = cacheEntryRemovedReason == CacheEntryRemovedReason.Evicted;
             if (addEntry)
@@ -209,7 +212,7 @@ namespace Dev2.Data.Binary_Objects
                 LevelThreeCache.Add(key, (IBinaryDataListRow)value);
                 ItemsAddedToLevelThreeCache = true;
             }
-            _level2Lock.ExitWriteLock();
+            _level3Lock.ExitWriteLock();
         }
 
         public bool TryGetValue(int key, int missSize, out IBinaryDataListRow value)
@@ -279,9 +282,9 @@ namespace Dev2.Data.Binary_Objects
 
         bool TryGetValueFromLevelThreeCache(string uniqueKey, out IBinaryDataListRow value)
         {
-
+            _level3Lock.EnterReadLock();
             value = LevelThreeCache[uniqueKey];
-
+            _level3Lock.ExitReadLock();
             return value != null;
         }
 
@@ -347,7 +350,9 @@ namespace Dev2.Data.Binary_Objects
 
             if (ItemsAddedToLevelThreeCache)
             {
+                _level3Lock.EnterWriteLock();
                 LevelThreeCache.Remove(uniqueKey);
+                _level3Lock.ExitWriteLock();
             }
 
             return true;
@@ -440,7 +445,9 @@ namespace Dev2.Data.Binary_Objects
             foreach (string key in keys)
             {
                 IBinaryDataListRow row;
+                _level1Lock.EnterWriteLock();
                 LevelOneCache.TryRemove(key, out row);
+                _level1Lock.ExitWriteLock();
             }
         }
 
@@ -454,7 +461,9 @@ namespace Dev2.Data.Binary_Objects
 
             foreach (var key in keys)
             {
+                _level2Lock.EnterWriteLock();
                 LevelTwoCache.Remove(key);
+                _level2Lock.ExitWriteLock();
             }
         }
 
@@ -468,7 +477,9 @@ namespace Dev2.Data.Binary_Objects
 
                 foreach (string key in keys)
                 {
+                    _level3Lock.EnterWriteLock();
                     LevelThreeCache.Remove(key);
+                    _level3Lock.ExitWriteLock();
                 }
             }
 
