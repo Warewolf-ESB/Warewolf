@@ -246,7 +246,7 @@ namespace Dev2
         #endregion
 
         #region Instance Fields
-        private DynamicServicesEndpoint _esbEndpoint;
+        private EsbServicesEndpoint _esbEndpoint;
         private string _endpointAddress;
         private HttpServer _server;
         private StudioNetworkServer _network;

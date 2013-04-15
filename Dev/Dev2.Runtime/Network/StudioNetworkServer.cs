@@ -16,7 +16,7 @@ namespace Dev2.DynamicServices {
         #region Instance Fields
         private StudioFileSystem _fileSystem;
         private StudioAccountProvider _accountProvider;
-        private DynamicServicesEndpoint _channel;
+        private EsbServicesEndpoint _channel;
         private Guid _serverID;
 
         private object _auxiliaryLock = new object();
@@ -28,15 +28,15 @@ namespace Dev2.DynamicServices {
         #region Public Properties
         public StudioFileSystem FileSystem { get { return _fileSystem; } }
         public StudioAccountProvider AccountProvider { get { return _accountProvider; } }
-        public DynamicServicesEndpoint Channel { get { return _channel; } }
+        public EsbServicesEndpoint Channel { get { return _channel; } }
         #endregion
 
         #region Constructor
-        public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, DynamicServicesEndpoint channel, Guid serverID)
+        public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID)
             : this(serverName, fileSystem, channel, serverID, true) {
         }
 
-        public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, DynamicServicesEndpoint channel, Guid serverID, bool autoAccountCreation)
+        public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID, bool autoAccountCreation)
             : base(serverName, new StudioAuthenticationBroker()) {
             _channel = channel;
             _serverID = serverID;

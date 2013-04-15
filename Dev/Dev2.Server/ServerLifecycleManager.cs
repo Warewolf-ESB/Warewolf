@@ -230,7 +230,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         private Dictionary<string, WorkflowEntry[]> _workflowGroups;
         private IPEndPoint[] _endpoints;
         private IFrameworkWebServer _webserver;
-        private DynamicServicesEndpoint _dynamicEndpoint;
+        private EsbServicesEndpoint _esbEndpoint;
 
         private StudioNetworkServer _networkServer;
         private ExecutionServerChannel _executionChannel;
@@ -1204,12 +1204,12 @@ namespace Unlimited.Applications.DynamicServicesHost
                 //                                 "Dynamic Service Host", null, null);
                 //}
 
-                _dynamicEndpoint = new DynamicServicesEndpoint();
+                _esbEndpoint = new EsbServicesEndpoint();
 
                 StudioFileSystem fileSystem = new StudioFileSystem(Path.Combine(Environment.CurrentDirectory, "Studio Server"), new List<string>());
 
 
-                _networkServer = new StudioNetworkServer("Studio Server", fileSystem, _dynamicEndpoint, ServerID);
+                _networkServer = new StudioNetworkServer("Studio Server", fileSystem, _esbEndpoint, ServerID);
                 _isWebServerEnabled = false;
 
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
@@ -1361,7 +1361,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         //            string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
         //            string result = null;
 
-        //            try { result = _dynamicEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID); }
+        //            try { result = _esbEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID); }
         //            catch(Exception e)
         //            {
         //                Fail("Workflow \"" + entry.Name + "\" execution failed", e);
@@ -1497,7 +1497,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 CleanupServer();
             }
             _webserver = null;
-            _dynamicEndpoint = null;
+            _esbEndpoint = null;
             _executionChannel = null;
             //_redisProcess = null;
         }

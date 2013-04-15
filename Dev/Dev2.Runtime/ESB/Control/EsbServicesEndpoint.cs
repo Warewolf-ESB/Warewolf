@@ -17,7 +17,7 @@ namespace Dev2.DynamicServices
     /// Amended as per PBI 7913
     /// </summary>
     /// IEsbActivityChannel
-    public class DynamicServicesEndpoint : IFrameworkDuplexDataChannel, IEsbWorkspaceChannel
+    public class EsbServicesEndpoint : IFrameworkDuplexDataChannel, IEsbWorkspaceChannel
     {
 
         #region IFrameworkDuplexDataChannel Members
@@ -182,7 +182,7 @@ namespace Dev2.DynamicServices
         ///This is a singleton service so this object
         ///will be visible in every call 
         /// </summary>
-        public DynamicServicesEndpoint()
+        public EsbServicesEndpoint()
         {
             try
             {
@@ -488,7 +488,7 @@ namespace Dev2.DynamicServices
 
         #endregion
 
-        public static string FindServiceShape(Guid workspaceID, string serviceName)
+        public string FindServiceShape(Guid workspaceID, string serviceName)
         {
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
 
@@ -506,7 +506,7 @@ namespace Dev2.DynamicServices
         //#region ParallelCommandExecutor
         //private sealed class ParallelCommandExecutor
         //{
-        //    private DynamicServicesEndpoint _owner;
+        //    private EsbServicesEndpoint _owner;
         //    private IEsbActivityInstruction[] _instructions;
         //    private ParameterizedThreadStart _threadStart;
         //    private ManualResetEvent _wait;
@@ -516,7 +516,7 @@ namespace Dev2.DynamicServices
         //    private int _length;
         //    private int _counter;
 
-        //    public ParallelCommandExecutor(DynamicServicesEndpoint owner)
+        //    public ParallelCommandExecutor(EsbServicesEndpoint owner)
         //    {
         //        _owner = owner;
         //        _performGuard = new object();
