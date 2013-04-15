@@ -9,6 +9,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.FindMissingStrategies
 {
+    /// <summary>
+    /// Responsible for the find missing logic that applys to all the activities that only have a collection property on them
+    /// </summary>
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
@@ -33,7 +36,7 @@ namespace Dev2.FindMissingStrategies
                 DsfBaseConvertActivity bcAct = activity as DsfBaseConvertActivity;
                 if (bcAct != null)
                 {
-                    results.AddRange(BaseConvertActivityPropertyExtraction(bcAct));
+                    results.AddRange(InternalFindMissing(bcAct.ConvertCollection));
                 }
             }
             else if (activityType == typeof(DsfCaseConvertActivity))
@@ -41,7 +44,7 @@ namespace Dev2.FindMissingStrategies
                 DsfCaseConvertActivity ccAct = activity as DsfCaseConvertActivity;
                 if (ccAct != null)
                 {
-                    results.AddRange(CaseConvertActivityPropertyExtraction(ccAct));
+                    results.AddRange(InternalFindMissing(ccAct.ConvertCollection));
                 }
             }
             else if (activityType == typeof(DsfMultiAssignActivity))
@@ -49,7 +52,7 @@ namespace Dev2.FindMissingStrategies
                 DsfMultiAssignActivity maAct = activity as DsfMultiAssignActivity;
                 if (maAct != null)
                 {
-                    results.AddRange(MultiAssignActivityPropertyExtraction(maAct));
+                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
                 }
             }
             return results;
@@ -59,51 +62,15 @@ namespace Dev2.FindMissingStrategies
 
         #region Private Methods
 
-        private IList<string> BaseConvertActivityPropertyExtraction(DsfBaseConvertActivity bcAct)
+        private IList<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
             IList<string> results = new List<string>();
-            foreach (BaseConvertTO baseConvertTO in bcAct.ConvertCollection)
+            foreach (T row in data)
             {
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(baseConvertTO);
+                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
                 foreach (PropertyInfo propertyInfo in properties)
                 {
-                    object property = propertyInfo.GetValue(baseConvertTO, null);
-                    if (property != null)
-                    {
-                        results.Add(property.ToString());
-                    }
-                }
-            }
-            return results;
-        }
-
-        private IList<string> CaseConvertActivityPropertyExtraction(DsfCaseConvertActivity ccAct)
-        {
-            IList<string> results = new List<string>();
-            foreach (CaseConvertTO caseConvertTO in ccAct.ConvertCollection)
-            {
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(caseConvertTO);
-                foreach (PropertyInfo propertyInfo in properties)
-                {
-                    object property = propertyInfo.GetValue(caseConvertTO, null);
-                    if (property != null)
-                    {
-                        results.Add(property.ToString());
-                    }
-                }
-            }
-            return results;
-        }
-
-        private IList<string> MultiAssignActivityPropertyExtraction(DsfMultiAssignActivity maAct)
-        {
-            IList<string> results = new List<string>();
-            foreach (ActivityDTO activityDto in maAct.FieldsCollection)
-            {
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activityDto);
-                foreach (PropertyInfo propertyInfo in properties)
-                {
-                    object property = propertyInfo.GetValue(activityDto, null);
+                    object property = propertyInfo.GetValue(row, null);
                     if (property != null)
                     {
                         results.Add(property.ToString());

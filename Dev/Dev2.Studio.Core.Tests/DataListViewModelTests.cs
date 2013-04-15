@@ -147,6 +147,10 @@ namespace Dev2.Core.Tests
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts, false);
             Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Province");
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == "Country");
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[2].DisplayName == string.Empty);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Car()");           
         }
 
         [TestMethod]
@@ -165,7 +169,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts, false);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 3);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 3);            
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == string.Empty);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Province()"); 
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[1].DisplayName == "Car()");
+            
         }
 
         [TestMethod]
@@ -184,7 +193,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             //Second add trying to add the same items to the data list again            
             _dataListViewModel.AddMissingDataListItems(parts, false);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[2].Children.Count == 1);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children.Count == 2);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].DisplayName == "Province().field1");
         }
 
         #endregion Add Missing Tests

@@ -9,6 +9,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.FindMissingStrategies
 {
+    /// <summary>
+    /// Responsible for the find missing logic that applys to all the activities that have a collection property and some static properties on them
+    /// </summary>
     class MixedActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
@@ -33,7 +36,11 @@ namespace Dev2.FindMissingStrategies
                 DsfDataSplitActivity dsAct = activity as DsfDataSplitActivity;
                 if (dsAct != null)
                 {
-                    results.AddRange(DataSplitActivityPropertyExtraction(dsAct));             
+                    results.AddRange(InternalFindMissing(dsAct.ResultsCollection));
+                    if (!string.IsNullOrEmpty(dsAct.SourceString))
+                    {
+                        results.Add(dsAct.SourceString);
+                    }
                 }
             }
             else if (activityType == typeof(DsfDataMergeActivity))
@@ -41,7 +48,11 @@ namespace Dev2.FindMissingStrategies
                 DsfDataMergeActivity dmAct = activity as DsfDataMergeActivity;
                 if (dmAct != null)
                 {
-                    results.AddRange(DataMergeActivityPropertyExtraction(dmAct));
+                    results.AddRange(InternalFindMissing(dmAct.MergeCollection));
+                    if (!string.IsNullOrEmpty(dmAct.Result))
+                    {
+                        results.Add(dmAct.Result);
+                    }
                 }
             }
             return results;
@@ -51,50 +62,23 @@ namespace Dev2.FindMissingStrategies
 
         #region Private Methods
 
-        private IList<string> DataSplitActivityPropertyExtraction(DsfDataSplitActivity dsAct)
+        private IList<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
             IList<string> results = new List<string>();
-            foreach (DataSplitDTO dataSplitDto in dsAct.ResultsCollection)
+            foreach (T row in data)
             {
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(dataSplitDto);
+                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
                 foreach (PropertyInfo propertyInfo in properties)
                 {
-                    object property = propertyInfo.GetValue(dataSplitDto, null);
-                    if(property != null)
-                    {
-                        results.Add(property.ToString());    
-                    }
-                }
-            }
-            if (!string.IsNullOrEmpty(dsAct.SourceString))
-            {
-                results.Add(dsAct.SourceString);
-            }
-            return results;
-        }
-
-        private IList<string> DataMergeActivityPropertyExtraction(DsfDataMergeActivity dmAct)
-        {
-            IList<string> results = new List<string>();
-            foreach (DataMergeDTO dataMergeDto in dmAct.MergeCollection)
-            {
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(dataMergeDto);
-                foreach (PropertyInfo propertyInfo in properties)
-                {
-                    object property = propertyInfo.GetValue(dataMergeDto, null);
+                    object property = propertyInfo.GetValue(row, null);
                     if (property != null)
                     {
                         results.Add(property.ToString());
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(dmAct.Result))
-            {
-                results.Add(dmAct.Result);
-            }
             return results;
-        }
-
+        }        
         #endregion
     }
 }

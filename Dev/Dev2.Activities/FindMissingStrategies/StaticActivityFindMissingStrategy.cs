@@ -8,6 +8,9 @@ using Dev2.Utilities;
 
 namespace Dev2.FindMissingStrategies
 {
+    /// <summary>
+    /// Responsible for the find missing logic that applys to all the activities that only have a static properties on them
+    /// </summary>
     public class StaticActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
