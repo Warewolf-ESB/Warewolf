@@ -306,12 +306,6 @@ namespace Dev2.DynamicServices
             EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName);
             Guid result = dataObject.DataListID;
 
-            if (!dataObject.IsDataListScoped)
-            {
-                compiler.DeleteDataListByID(oldID);
-                compiler.DeleteDataListByID(innerDatalistID);
-            }
-
             if (executionContainer != null)
             {
                 result = executionContainer.Execute(out errors);
@@ -321,6 +315,11 @@ namespace Dev2.DynamicServices
                 errors.AddError("Null container returned");
             }
 
+            if (!dataObject.IsDataListScoped)
+            {
+                compiler.DeleteDataListByID(oldID);
+                compiler.DeleteDataListByID(innerDatalistID);
+            }
 
             return result;
 
