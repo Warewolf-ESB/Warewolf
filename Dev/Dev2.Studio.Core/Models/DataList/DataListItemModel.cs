@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isSelected;
         private string _lastIndexedName;
         private bool _isUsed;
-        private enDev2ColumnArgumentDirection _columnIODir;
+        private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
 
         #endregion Fields
 
@@ -186,7 +186,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
             set
             {
-                SetColumnIODirection(value, enDev2ColumnArgumentDirection.Input);
+                SetColumnIODirectionFromInput(value);
                 SetChildInputValues(value);
             }
         }
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
             set
             {
-                SetColumnIODirection(value, enDev2ColumnArgumentDirection.Output);
+                SetColumnIODirectionFromOutput(value);
                 SetChildOutputValues(value);
             }
         }
@@ -329,17 +329,64 @@ namespace Dev2.Studio.Core.Models.DataList
             UpdatingChildren = false;
         }
 
-        private void SetColumnIODirection(bool value, enDev2ColumnArgumentDirection direction)
+        private void SetColumnIODirectionFromInput(bool value)
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
             if (!value)
             {
-                _columnIODir = (enDev2ColumnArgumentDirection)(_columnIODir - direction);
+                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.Output;
+                }
+                else if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.None;
+                }
             }
             else
             {
-                _columnIODir = _columnIODir + (int)direction;
+                if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.Both;
+                }
+                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.Input;
+                }
+            }
+
+            if (original != _columnIODir)
+            {
+                NotifyIOPropertyChanged();
+            }
+        }
+
+        private void SetColumnIODirectionFromOutput(bool value)
+        {
+            enDev2ColumnArgumentDirection original = _columnIODir;
+
+            if (!value)
+            {
+                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.Input;
+                }
+                else if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.None;
+                }
+            }
+            else
+            {
+                if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.Both;
+                }
+                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                {
+                    _columnIODir = enDev2ColumnArgumentDirection.Output;
+                }
             }
 
             if (original != _columnIODir)

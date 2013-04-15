@@ -27,12 +27,20 @@ namespace Dev2.DynamicServices.Test
         const string ServiceName = "TestForEachOutput";
 
         const string ServiceShape = @"<DataList>
+  <inputScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   <outputScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
   <bothScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" />
+  <noneScalar Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
   <recset Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+    <f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
     <f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
     <f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" />
+    <f4 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
   </recset>
+  <newrecset Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+    <field1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+    <field2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+  </newrecset>
 </DataList>";
 
         static string _workspacesDir;
@@ -111,10 +119,10 @@ namespace Dev2.DynamicServices.Test
             Assert.IsTrue(result.IndexOf("<field1", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset><f1/></newrecset>");
             Assert.IsTrue(result.IndexOf("<field2", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset><f1/></newrecset>");
             
-        }
+        }       
 
         [TestMethod]
-        public void CheckOutputFormatOfDataListForViewInBrowserForAllOutputRegions()
+        public void CheckOutputFormatOfDataListForViewInBrowserForOneRecordsetOutputRegion()
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
@@ -131,7 +139,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsTrue(result.IndexOf("<recset", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset></recset>");
             Assert.IsTrue(result.IndexOf("<f2", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset><f2/></recset>");
             Assert.IsTrue(result.IndexOf("<f3", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset><f3/></recset>");
-            
+
         }
 
         #endregion 

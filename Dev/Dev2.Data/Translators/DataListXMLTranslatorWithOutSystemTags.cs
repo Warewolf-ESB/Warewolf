@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -384,7 +385,8 @@ namespace Dev2.Server.DataList.Translators
             foreach (string key in itemKeys)
             {
                 IBinaryDataListEntry entry = null;
-                if (payload.TryGetEntry(key, out entry, out error))
+                IBinaryDataListEntry tmpEntry = null;
+                if (payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
                 {
 
                     if (entry.IsRecordset)
@@ -400,19 +402,23 @@ namespace Dev2.Server.DataList.Translators
                             result.Append("<");
                             result.Append(entry.Namespace);
                             result.Append(">");
+                                                           
+                                foreach (IBinaryDataListItem col in rowData)
+                                {
+                                    if(tmpEntry.Columns.Any((c=>c.ColumnName == col.FieldName)))
+                                    {
+                                        string fName = col.FieldName;
 
-                            foreach (IBinaryDataListItem col in rowData)
-                            {
-                                string fName = col.FieldName;
-
-                                result.Append("<");
-                                result.Append(fName);
-                                result.Append(">");
-                                result.Append(col.TheValue);
-                                result.Append("</");
-                                result.Append(fName);
-                                result.Append(">");
-                            }
+                                        result.Append("<");
+                                        result.Append(fName);
+                                        result.Append(">");
+                                        result.Append(col.TheValue);
+                                        result.Append("</");
+                                        result.Append(fName);
+                                        result.Append(">");
+                                    }                                                                     
+                                }
+                                                       
 
                             result.Append("</");
                             result.Append(entry.Namespace);
