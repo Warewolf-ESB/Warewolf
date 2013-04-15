@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Dev2.Integration.Tests.Interfaces;
 
@@ -34,6 +35,13 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         public string GetResponseData()
         {
             return dataToCompareTo;
+        }
+
+        public HttpWebResponse GetResponse()
+        {
+            AsynchronousRequest async = new AsynchronousRequest();
+            async.ScanResponse(_url);
+            return async.GetResponse();
         }
     }
 }

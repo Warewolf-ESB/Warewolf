@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,6 +92,45 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             Assert.IsFalse(string.IsNullOrEmpty(ResponseData));
+        }
+
+        [TestMethod]
+        public void WebserverRequestWhenLargeDataShouldAddDownloadHeaders()
+        {
+            string path = WebserverURI.Replace("services/", "list/icons/*");
+
+            HttpWebResponse result = TestHelper.GetResponseFromServer(path);
+
+            var allKeys = result.Headers.AllKeys;
+            const string ContentType = "Content-Type";
+            const string ContentDisposition = "Content-Disposition";
+            CollectionAssert.Contains(allKeys, ContentType);
+            CollectionAssert.DoesNotContain(allKeys, ContentDisposition);
+
+            var contentTypeValue = result.Headers.Get(ContentType);
+
+            Assert.AreNotEqual("application/force-download",contentTypeValue);
+        }
+
+        [TestMethod]
+        public void WebserverRequestWhenNotLargeDataShouldNotAddDownloadHeaders()
+        {
+
+            string path = ServerSettings.WebserverURI + "LargeDataTest";
+
+            HttpWebResponse result = TestHelper.GetResponseFromServer(path);
+
+            var allKeys = result.Headers.AllKeys;
+            const string ContentType = "Content-Type";
+            const string ContentDisposition = "Content-Disposition";
+            CollectionAssert.Contains(allKeys, ContentType);
+            CollectionAssert.Contains(allKeys, ContentDisposition);
+
+            var contentTypeValue = result.Headers.Get(ContentType);
+            var contentDispositionValue = result.Headers.Get(ContentDisposition);
+
+            Assert.AreEqual("application/force-download",contentTypeValue);
+            Assert.AreEqual("attachment; filename=Output.xml", contentDispositionValue);
         }
 
         #endregion List Service Tests

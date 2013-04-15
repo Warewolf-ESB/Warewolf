@@ -22,11 +22,18 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         private WebRequest request;
         public long totaltime = 0;
         private string responseData;
+        HttpWebResponse _response;
 
         public void ScanSite(string url)
         {
             request = HttpWebRequest.Create(url);
             MethodGet(url);
+        }
+        
+        public void ScanResponse(string url)
+        {
+            request = HttpWebRequest.Create(url);
+            MethodGetResponse();
         }
 
         public void ScanSite(string url, string postData)
@@ -63,6 +70,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         private void MethodGet(string url)
         {
             request.Method = "GET";
+
             using (var response = request.GetResponse() as HttpWebResponse)
             {
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
@@ -72,10 +80,23 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             }
 
         }
+        
+        private void MethodGetResponse()
+        {
+            request.Method = "GET";
+            _response = request.GetResponse() as HttpWebResponse;
+
+
+        }
 
         public string GetResponseData()
         {
             return responseData;
+        }
+        
+        public HttpWebResponse GetResponse()
+        {
+            return _response;
         }
 
         #region LoadTesterScaffolding

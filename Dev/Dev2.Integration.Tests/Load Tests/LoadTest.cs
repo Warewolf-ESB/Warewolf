@@ -109,6 +109,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             }
             else
             {
+                Console.Write(result);
                 Assert.Fail("The process took too long to run! " + duration);
             }
         }

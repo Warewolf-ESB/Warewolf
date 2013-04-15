@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Integration.Tests.MEF.WebTester;
@@ -118,6 +119,13 @@ namespace Dev2.Integration.Tests.Helpers
 
             payload = regex.Replace(payload, "><");
             return payload;
+        }
+
+        public static HttpWebResponse GetResponseFromServer(string path)
+        {
+            GetWorker target = new GetWorker(path);
+            target.DoWork();
+            return target.GetResponse();
         }
     }
 }
