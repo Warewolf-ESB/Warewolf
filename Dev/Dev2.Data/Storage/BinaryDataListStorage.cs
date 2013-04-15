@@ -48,8 +48,6 @@ namespace Dev2.Data.Binary_Objects
         private static ReaderWriterLockSlim _level2Lock = new ReaderWriterLockSlim();
         private static ReaderWriterLockSlim _level3Lock = new ReaderWriterLockSlim();
 
-        //private static object _lockLvl1Guard = new object();
-        //private static object _lockLvl2Guard = new object();
         private static bool _backgroundWorkerInited = false;
 
         readonly String _uniqueIdentifierGuid;

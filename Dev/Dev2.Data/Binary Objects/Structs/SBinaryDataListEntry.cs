@@ -125,7 +125,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                             if (!itm.IsDeferredRead && idx >= 0)
                             {
                                 row.UpdateValue(itm.TheValue, idx);
-                                _items[key] = row;
                             }
                             else if (itm.IsDeferredRead && idx >= 0)
                             {
@@ -137,6 +136,8 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
 
                         }
+
+                        _items[key] = row;
                     }
                     else
                     {
