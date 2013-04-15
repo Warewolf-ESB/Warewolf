@@ -1283,46 +1283,166 @@ namespace Dev2.Studio.ViewModels
         public void ConfigureDecisionExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
         {
             IEnvironmentModel environment = wrapper.Item2;
+            ModelItem decisionActivity = wrapper.Item1;
 
-            ModelItem activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.ConditionPropertyText);
-            if (activity == null) return;
+            ModelProperty conditionProperty = decisionActivity.Properties[GlobalConstants.ConditionPropertyText];
 
-            ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+            if (conditionProperty == null) return;
 
-            string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
-
-            if (activityExpression != null && activityExpression.Value != null)
+            var activity = conditionProperty.Value;
+            if (activity != null)
             {
-                val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
-            }
+                string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
 
-            // Now invoke the Wizard ;)
-            Uri requestUri;
-            if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation)
-                               , UriKind.Absolute, out requestUri)) return;
+                ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
+                ErrorResultTO errors = new ErrorResultTO();
 
-            // Wizard finished...
-            // Now Fetch from DL and push the model into the activityExpression.SetValue();
-            try
-            {
-                string tmp = WebHelper.CleanModelData(_callBackHandler);
-                var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
-
-                if (dds != null)
+                if (errors.HasErrors()) //BUG 8796, Added this if to handle errors
                 {
-                    ActivityHelper.SetArmTextDefaults(dds);
-                    ActivityHelper.InjectExpression(dds, activityExpression);
-                    ActivityHelper.SetArmText(activity, dds);
+                    // Bad things happened... Tell the user
+                    PopupProvider.Show(errors.MakeDisplayReady(), GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK, MessageBoxImage.Error);
+                    // Stop configuring!!!
+                    return;
+                }
+
+                // Push the correct data to the server ;)
+                if (activityExpression != null && activityExpression.Value == null)
+                {
+                    // Its all new, push the empty model
+                    //compiler.PushSystemModelToDataList(dataListID, DataListConstants.DefaultStack, out errors);
+                }
+                else if (activityExpression != null && activityExpression.Value != null)
+                {
+                    //we got a model, push it in to the Model region ;)
+                    // but first, strip and extract the model data ;)
+
+                    val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
+
+                    if (string.IsNullOrEmpty(val))
+                    {
+
+                        val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                    }
+                }
+
+                // Now invoke the Wizard ;)
+                Uri requestUri;
+                if (Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation), UriKind.Absolute, out requestUri))
+                {
+                    //string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, GlobalConstants.NullDataListID);
+
+                    _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
+
+                    // Wizard finished...
+                    try
+                    {
+                        // Remove naughty chars...
+                        string tmp = WebHelper.CleanModelData(_callBackHandler);
+                        // remove the silly Choose... from the string
+                        tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp);
+                        // remove [[]], &, !
+                        tmp = Dev2DecisionStack.RemoveNaughtyCharsFromModel(tmp);
+
+                        Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
+
+                        if (dds != null)
+                        {
+                            // Empty check the arms ;)
+                            if (string.IsNullOrEmpty(dds.TrueArmText.Trim()))
+                            {
+                                dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
+                            }
+
+                            if (string.IsNullOrEmpty(dds.FalseArmText.Trim()))
+                            {
+                                dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
+                            }
+
+                            // Update the decision node on the workflow ;)
+                            string modelData = dds.ToVBPersistableModel();
+
+                            // build up our injected expression handler ;)
+                            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
+                            if (activityExpression != null)
+                            {
+                                activityExpression.SetValue(expressionToInject);
+                            }
+
+                            // now set arms ;)
+                            ModelProperty tArm = decisionActivity.Properties[GlobalConstants.TrueArmPropertyText];
+
+                            if (tArm != null)
+                            {
+                                tArm.SetValue(dds.TrueArmText);
+                            }
+
+                            ModelProperty fArm = decisionActivity.Properties[GlobalConstants.FalseArmPropertyText];
+
+                            if (fArm != null)
+                            {
+                                fArm.SetValue(dds.FalseArmText);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Bad things happened... Tell the user
+                        //PopupProvider.Show("", "")
+                        PopupProvider.Buttons = MessageBoxButton.OK;
+                        PopupProvider.Description = GlobalConstants.DecisionWizardErrorString;
+                        PopupProvider.Header = GlobalConstants.DecisionWizardErrorHeading;
+                        PopupProvider.ImageType = MessageBoxImage.Error;
+                        PopupProvider.Show();
+                    }
                 }
             }
-            catch
-            {
-                PopupProvider.Show(GlobalConstants.DecisionWizardErrorString,
-                                   GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
-            }
+
+            #region Non-working Refactor
+            //IEnvironmentModel environment = wrapper.Item2;
+
+            //ModelItem activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.ConditionPropertyText);
+            //if (activity == null) return;
+
+            //ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+
+            //string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+
+            //if (activityExpression != null && activityExpression.Value != null)
+            //{
+            //    val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
+            //}
+
+            //// Now invoke the Wizard ;)
+            //Uri requestUri;
+            //if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.DecisionWizardLocation)
+            //                   , UriKind.Absolute, out requestUri)) return;
+
+            //_callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
+
+            //// Wizard finished...
+            //// Now Fetch from DL and push the model into the activityExpression.SetValue();
+            //try
+            //{
+            //    string tmp = WebHelper.CleanModelData(_callBackHandler);
+            //    var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
+
+            //    if (dds != null)
+            //    {
+            //        ActivityHelper.SetArmTextDefaults(dds);
+            //        ActivityHelper.InjectExpression(dds, activityExpression);
+            //        ActivityHelper.SetArmText(activity, dds);
+            //    }
+            //}
+            //catch
+            //{
+            //    PopupProvider.Show(GlobalConstants.DecisionWizardErrorString,
+            //                       GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK,
+            //                       MessageBoxImage.Error);
+            //}
+
+            #endregion
         }
 
         public void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
@@ -1353,7 +1473,7 @@ namespace Dev2.Studio.ViewModels
             if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDropWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, webModel, 470, 285);
+            _callBackHandler = WebHelper.ShowWebpage(requestUri, webModel, 770, 175);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
@@ -1381,7 +1501,7 @@ namespace Dev2.Studio.ViewModels
             if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 470, 285);
+            _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
@@ -1419,7 +1539,7 @@ namespace Dev2.Studio.ViewModels
             if (!Uri.TryCreate((environment.WebServerAddress + GlobalConstants.SwitchDragWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 470, 285);
+            _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
@@ -1429,7 +1549,10 @@ namespace Dev2.Studio.ViewModels
 
                 if (ds != null)
                 {
-                    if (switchCaseValue != null) switchCaseValue.SetValue(ds.SwitchVariable);
+                    if (switchCaseValue != null)
+                    {
+                        switchCaseValue.SetValue(ds.SwitchVariable);
+                    }
                 }
             }
             catch
