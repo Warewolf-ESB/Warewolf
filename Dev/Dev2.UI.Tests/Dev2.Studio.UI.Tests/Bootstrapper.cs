@@ -6,7 +6,7 @@ using System.Threading;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Integration.Tests
+namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
     /// Used to bootstrap the server for integration test runs ;)
@@ -15,7 +15,9 @@ namespace Dev2.Integration.Tests
     public class Bootstrap
     {
         private static Process _serverProc;
+        private static Process _studioProc;
         private const string _serverName = "Dev2.Server.exe";
+        private const string _studioName = "Dev2.Studio.exe";
 
         /// <summary>
         /// Inits the specified text CTX.
@@ -28,14 +30,18 @@ namespace Dev2.Integration.Tests
             var assembly = Assembly.GetExecutingAssembly();
             var loc = assembly.Location;
 
-            var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+            var baseLoc = Path.GetDirectoryName(loc);
 
-            //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
+            var serverLoc = Path.Combine(baseLoc, _serverName);
+            var studioLoc = Path.Combine(baseLoc, _studioName);
 
             DateTime now = DateTime.Now;
 
             ServerLogger.LogMessage("Server Loc -> " + serverLoc);
+            ServerLogger.LogMessage("Server Loc -> " + studioLoc);
             ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+
+            #region Server Start
 
             var args = "-t";
 
@@ -60,7 +66,7 @@ namespace Dev2.Integration.Tests
                     // Wait for server to start
                     Thread.Sleep(10000);
 
-                    ServerLogger.LogMessage("Server Started for Integration Test Run");
+                    ServerLogger.LogMessage("Server Started for UI Test Run");
 
                 }
                 catch (Exception e)
@@ -78,6 +84,52 @@ namespace Dev2.Integration.Tests
                     }
                 }
             }
+
+            #endregion
+
+            #region Studio Start
+
+            ProcessStartInfo startInfo2 = new ProcessStartInfo();
+            startInfo2.CreateNoWindow = false;
+            startInfo2.UseShellExecute = true;
+            startInfo2.FileName = studioLoc;
+            //startInfo.RedirectStandardOutput = true;
+            startInfo2.WindowStyle = ProcessWindowStyle.Maximized;
+            startInfo2.Arguments = args;
+
+            started = false;
+            startCnt = 0;
+
+            while (!started && startCnt < 5)
+            {
+                try
+                {
+                    _serverProc = Process.Start(startInfo);
+                    started = true;
+
+                    // Wait for server to start
+                    Thread.Sleep(10000);
+
+                    ServerLogger.LogMessage("Studio Started for UI Test Run");
+
+                }
+                catch (Exception e)
+                {
+                    ServerLogger.LogMessage("Exception : " + e.Message);
+
+                    // most likely a server is already running, kill it and try again ;)
+                    startCnt++;
+
+                    // term any existing server processes ;)
+                    Process[] procs = Process.GetProcessesByName(_studioName);
+                    foreach (var proc in procs)
+                    {
+                        proc.Kill();
+                    }
+                }
+            }
+
+            #endregion
         }
 
         /// <summary>
@@ -89,7 +141,13 @@ namespace Dev2.Integration.Tests
             if (_serverProc != null)
             {
                 _serverProc.Kill();
-                ServerLogger.LogMessage("Server Terminated");
+                ServerLogger.LogMessage("UI Testing Server Terminated");
+            }
+
+            if (_studioProc != null)
+            {
+                _studioProc.Kill();
+                ServerLogger.LogMessage("UI Testing Studio Terminated");
             }
         }
     }

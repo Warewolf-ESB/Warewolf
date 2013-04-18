@@ -1,34 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using Dev2.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests
 {
-    /// <summary>
-    /// Used to bootstrap the server for integration test runs ;)
-    /// </summary>
-    [TestClass()]
-    public class Bootstrap
+    public static class Dev2Bootloader
     {
+
         private static Process _serverProc;
         private const string _serverName = "Dev2.Server.exe";
 
-        /// <summary>
-        /// Inits the specified text CTX.
-        /// </summary>
-        /// <param name="textCtx">The text CTX.</param>
-        [AssemblyInitialize()]
-        public static void Init(TestContext textCtx)
+        public static void StartServer(string rootLocation)
         {
-
-            var assembly = Assembly.GetExecutingAssembly();
-            var loc = assembly.Location;
-
-            var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+            var serverLoc = Path.Combine(Path.GetDirectoryName(rootLocation), _serverName);
 
             //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
 
@@ -80,11 +66,7 @@ namespace Dev2.Integration.Tests
             }
         }
 
-        /// <summary>
-        /// Teardowns this instance.
-        /// </summary>
-        [AssemblyCleanup()]
-        public static void Teardown()
+        public static void StopServer()
         {
             if (_serverProc != null)
             {
