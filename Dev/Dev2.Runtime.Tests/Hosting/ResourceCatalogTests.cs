@@ -304,6 +304,37 @@ namespace Dev2.Tests.Runtime.Hosting
             // TestCleanup will fail if file is locked! 
         }
 
+        [TestMethod]
+        public void LoadWorkspaceAsyncWithReadonlyServiceExpecteReadonlyAttributeRemoved()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+
+            var path = Path.Combine(workspacePath, "Services");
+
+            Directory.CreateDirectory(path);
+
+            // set the readonly attribute
+            var readonlyPath = Path.Combine(path, "Bug8867.xml");
+
+            File.WriteAllText(readonlyPath, "<xml></xml>");
+
+            File.SetAttributes(readonlyPath, FileAttributes.ReadOnly);
+
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+
+
+            FileAttributes fa = File.GetAttributes(readonlyPath);
+
+            if (fa.HasFlag(FileAttributes.ReadOnly))
+            {
+                Assert.Fail("Readonly flag was not removed from services");
+            }
+
+            // TestCleanup will fail if file is locked! 
+        }
+
         #endregion
 
         #region ParallelExecution

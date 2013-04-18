@@ -50,7 +50,7 @@ namespace Dev2.Simulation
 
         // Prevent instantiation
         private SimulationRepository()
-            : base(Path.Combine(GlobalConstants.WorkspacePath, "Simulations"), "usi")
+            : base(Path.Combine(EnvironmentVariables.WorkspacePath, "Simulations"), "usi")
         {
         }
 
