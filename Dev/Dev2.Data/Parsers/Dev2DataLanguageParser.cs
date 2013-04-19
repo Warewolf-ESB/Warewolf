@@ -148,7 +148,8 @@ namespace Dev2.DataList.Contract
                     payload = payload.Substring(0, idx);
                 }
 
-                if (payload.Contains("[["))
+                //2013.04.16: Ashley Lewis - Bug 6103 ']' is an invalid character for a variable or recset name
+                if (payload.Contains("[[") && !payload.Contains("]"))
                 {
 
                     IList<ParseTO> rootItems = MakeParts(payload);
