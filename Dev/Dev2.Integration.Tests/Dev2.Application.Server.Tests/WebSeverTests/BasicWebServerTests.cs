@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Integration.Tests.Helpers;
 
@@ -12,6 +9,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
     /// Summary description for BasicWebServerTests
     /// </summary>
     [TestClass]
+    [Ignore]
     public class BasicWebServerTests
     {
         public BasicWebServerTests()

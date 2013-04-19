@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Security.Principal;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Integration.Tests.MEF;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,6 +10,7 @@ using Moq;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
 {
     [TestClass]
+    [Ignore]
     public class DataListChannel
     {
 

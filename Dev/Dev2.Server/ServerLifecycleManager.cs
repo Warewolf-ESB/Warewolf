@@ -179,42 +179,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         #endregion
 
-        //private sealed class __DatalistCompiledNetworkTransparentProxy : __BaseNetworkTransparentProxy
-        //{
-        //    public __DatalistCompiledNetworkTransparentProxy()
-        //    {
-
-        //    }
-
-        //    public override IByteReaderBase SendDuplexPacket(Packet packet)
-        //    {
-        //        return base.SendDuplexPacket(packet);
-        //    }
-
-        //    public override void SendSimplexPacket(Packet packet)
-        //    {
-        //        base.SendSimplexPacket(packet);
-        //    }
-
-        //    public override object ConstructUnhandled(Type type)
-        //    {
-
-        //        return base.ConstructUnhandled(type);
-        //    }
-
-        //    public override object ReadUnhandled(IByteReaderBase reader, Type type)
-        //    {
-
-        //        return base.ReadUnhandled(reader, type);
-        //    }
-
-        //    public override void WriteUnhandled(IByteWriterBase writer, object unhandled)
-        //    {
-
-        //        base.WriteUnhandled(writer, unhandled);
-        //    }
-        //}
-
         #region Instance Fields
         private bool _isDisposed;
         private bool _isWebServerEnabled;

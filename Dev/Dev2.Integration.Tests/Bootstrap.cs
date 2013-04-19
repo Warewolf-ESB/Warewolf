@@ -16,6 +16,7 @@ namespace Dev2.Integration.Tests
     {
         private static Process _serverProc;
         private const string _serverName = "Dev2.Server.exe";
+        private const string _serverProcName = "Dev2.Server";
 
         /// <summary>
         /// Inits the specified text CTX.
@@ -31,8 +32,6 @@ namespace Dev2.Integration.Tests
             var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
 
             //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
-
-            DateTime now = DateTime.Now;
 
             ServerLogger.LogMessage("Server Loc -> " + serverLoc);
             ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
@@ -71,9 +70,10 @@ namespace Dev2.Integration.Tests
                     startCnt++;
 
                     // term any existing server processes ;)
-                    Process[] procs = Process.GetProcessesByName(_serverName);
+                    Process[] procs = Process.GetProcessesByName(_serverProcName);
                     foreach (var proc in procs)
                     {
+                        ServerLogger.LogMessage("Killing Process { " + proc.ProcessName + " }");
                         proc.Kill();
                     }
                 }

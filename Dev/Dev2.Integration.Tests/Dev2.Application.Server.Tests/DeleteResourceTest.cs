@@ -8,6 +8,7 @@ using System.IO;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
     [TestClass]
+    [Ignore]
     public class DeleteResourceTest
     {
         private readonly string _webserverURI = ServerSettings.WebserverURI;

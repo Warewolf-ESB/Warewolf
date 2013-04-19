@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                                       typeof(RemoteObjectHandler).ToString());
             string result = remoteHandler.InterrogatePlugin(assemblyLocation, assemblyName, method, args);
             result = string.Concat("<InterrogationResult>", result, "</InterrogationResult>");
-            AppDomain.Unload(tmpDomain);
+            //AppDomain.Unload(tmpDomain);
 
             return result;
         }

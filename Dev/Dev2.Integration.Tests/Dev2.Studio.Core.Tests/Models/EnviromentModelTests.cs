@@ -9,6 +9,7 @@ using Moq;
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 {
     [TestClass]
+    [Ignore]
     public class EnviromentModelTests
     {
         #region Connect Tests

@@ -12,8 +12,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
 
         #region Properties
-        //public Guid UID { get { return _internalObj.UID; } set { _internalObj.UID = value; } }
-        //public Guid ParentUID { get { return _internalObj.ParentUID; } set { _internalObj.ParentUID = value; } }
 
         public Guid UID { get; set; }
         public Guid ParentUID { get; set; }
@@ -780,8 +778,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             if (_templateDict != null)
             {
-                List<IBinaryDataListEntry> binaryDataListEntries = FetchAllEntries().ToList();
-                binaryDataListEntries.ForEach(entry => entry.Dispose());
+
+                var entryItr = FetchAllEntries().GetEnumerator();
+
+                while (entryItr.MoveNext())
+                {
+                    entryItr.Current.Dispose();
+                }
             }
             // Return item to the cache ;)
             //GCWriter.WriteData("Disposed Object ;)");

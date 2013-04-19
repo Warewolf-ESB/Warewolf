@@ -19,6 +19,7 @@ namespace Dev2.Studio.Core.Tests
     ///to contain all EnvironmentModelTest Unit Tests
     ///</summary>
     [TestClass()]
+    [Ignore]
     public class EnvironmentModelTest
     {
         #region Test Variables
