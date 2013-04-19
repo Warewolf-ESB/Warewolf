@@ -58,7 +58,7 @@ namespace Dev2.Data.Tests.Persistence
         #endregion
 
         [TestMethod]
-        public void CanStorageDispose()
+        public void CanStorageDisposeInAResonableAmountOfTime()
         {
             BinaryDataListStorage bdls = new BinaryDataListStorage("MySweetNamespace", Guid.NewGuid());
 

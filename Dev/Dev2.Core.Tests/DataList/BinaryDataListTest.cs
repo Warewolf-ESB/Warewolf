@@ -40,34 +40,6 @@ namespace Unlimited.UnitTest.Framework.DataList
         }
 
         #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-
-        [ClassInitialize()]
-        public static void BaseActivityUnitTestInitialize(TestContext testContext)
-        {
-            //var pathToRedis = Path.Combine(testContext.DeploymentDirectory, "redis-server.exe");
-            //if (_redisProcess == null) _redisProcess = Process.Start(pathToRedis);
-        }
-
-        //Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup()]
-        public static void BaseActivityUnitTestCleanup()
-        {
-            //if (_redisProcess != null)
-            //{
-            //    _redisProcess.Kill();
-            //}
-        }
-
 
         //Use TestInitialize to run code before running each test 
          [TestInitialize()]
@@ -396,6 +368,44 @@ namespace Unlimited.UnitTest.Framework.DataList
                 Assert.IsTrue(errors.HasErrors());
                 Assert.AreEqual("Missing DataList item [ recset ] ", errors.FetchErrors()[0]);
             
+        }
+
+        [TestMethod]
+        public void CanInsert100KRowsInAResonableAmountOfTime()
+        {
+
+
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+            string error;
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f4"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f5"));
+
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+
+            DateTime start = DateTime.Now;
+
+            for (int i = 1; i <= 100000; i++)
+            {
+                dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", i, out error);
+                dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", i, out error);
+                dl1.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", i, out error);
+                dl1.TryCreateRecordsetValue("r1.f4.value", "f4", "recset", i, out error);
+                dl1.TryCreateRecordsetValue("r1.f5.value", "f5", "recset", i, out error);
+            }
+
+            DateTime end = DateTime.Now;
+
+            double dur = (end.Ticks - start.Ticks)/(double) TimeSpan.TicksPerSecond;
+
+            Console.WriteLine("Duration : " + dur);
+
+            Assert.IsTrue(dur <= 2.0, "Binary DataList insert operations took too long for 100k rows");
+
         }
 
         #endregion

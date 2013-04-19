@@ -267,19 +267,22 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 if (tmp.IsRecordset)
                 {
                     //var found = tmp.Columns.FirstOrDefault(column => String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal));
-                    IList<Dev2Column> columns = tmp.Columns;
-                    Dev2Column found = null;
 
-                    foreach (Dev2Column column in columns)
-                    {
-                        if (String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal))
-                        {
-                            found = column;
-                            break;
-                        }
-                    }
+                    // Travis.Frisinger 19.04.2013
+                    //IList<Dev2Column> columns = tmp.Columns;
+                    //Dev2Column found = null;
 
-                    if (found != null)
+                    //foreach (Dev2Column column in columns)
+                    //{
+                    //    tmp.InternalFetchColumnIndex(fieldName)
+                    //    if (String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal))
+                    //    {
+                    //        found = column;
+                    //        break;
+                    //    }
+                    //}
+
+                    if (tmp.HasField(fieldName))
                     {
                         tmp.TryPutRecordItemAtIndex(new BinaryDataListItem(value, theNameSpace, fieldName, idx), idx, out error);
                         _templateDict[key] = tmp; // update dic
