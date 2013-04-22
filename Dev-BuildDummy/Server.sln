@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Tests", "..\Release 0.2.11.1\Dev2.Data.Tests\Dev2.Data.Tests.csproj", "{86E580CD-C480-435A-8978-A9C27377C900}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Tests", "Dev2.Data.Tests\Dev2.Data.Tests.csproj", "{86E580CD-C480-435A-8978-A9C27377C900}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -86,9 +86,9 @@ Global
 		SccProjectUniqueName14 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
 		SccProjectName14 = Dev2.Runtime.Configuration
 		SccLocalPath14 = Dev2.Runtime.Configuration
-		SccProjectUniqueName15 = ..\\Release\u00200.2.11.1\\Dev2.Data.Tests\\Dev2.Data.Tests.csproj
-		SccProjectName15 = ../Branches/Release\u00200.2.11.1/Dev2.Data.Tests
-		SccLocalPath15 = ..\\Release\u00200.2.11.1\\Dev2.Data.Tests
+		SccProjectUniqueName15 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
+		SccProjectName15 = Dev2.Data.Tests
+		SccLocalPath15 = Dev2.Data.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
