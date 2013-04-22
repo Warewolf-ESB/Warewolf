@@ -13,11 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core", "Dev2.Studio.Core\Dev2.Studio.Core.csproj", "{A58B157B-960B-4E84-8957-24E4884C5C77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj", "{1FD73E36-FC73-4BDF-BCBA-278A44F06550}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework", "Dev2.UndoFramework\Dev2.UndoFramework.csproj", "{632E4898-1B1B-474C-A028-D13A5C914F11}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework.Tests", "Dev2.UndoFramework.Tests\Dev2.UndoFramework.Tests.csproj", "{E580C1E3-01E4-424F-A6B2-279C3079C3BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities", "Dev2.Activities\Dev2.Activities.csproj", "{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}"
 EndProject
@@ -46,6 +42,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework.Tests", "Dev2.UndoFramework.Tests\Dev2.UndoFramework.Tests.csproj", "{E580C1E3-01E4-424F-A6B2-279C3079C3BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj", "{1FD73E36-FC73-4BDF-BCBA-278A44F06550}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 20
@@ -73,42 +73,42 @@ Global
 		SccProjectUniqueName7 = Dev2.UndoFramework\\Dev2.UndoFramework.csproj
 		SccProjectName7 = Dev2.UndoFramework
 		SccLocalPath7 = Dev2.UndoFramework
-		SccProjectUniqueName8 = Dev2.UndoFramework.Tests\\Dev2.UndoFramework.Tests.csproj
-		SccProjectName8 = Dev2.UndoFramework.Tests
-		SccLocalPath8 = Dev2.UndoFramework.Tests
-		SccProjectUniqueName9 = Dev2.Activities\\Dev2.Activities.csproj
-		SccProjectName9 = Dev2.Activities
-		SccLocalPath9 = Dev2.Activities
-		SccProjectUniqueName10 = Dev2.Core\\Dev2.Core.csproj
-		SccProjectName10 = Dev2.Core
-		SccLocalPath10 = Dev2.Core
-		SccProjectUniqueName11 = Dev2.Data\\Dev2.Data.csproj
-		SccProjectName11 = Dev2.Data
-		SccLocalPath11 = Dev2.Data
-		SccProjectUniqueName12 = Dev2.Studio.Core.Tests\\Dev2.Studio.Core.Tests.csproj
-		SccProjectName12 = Dev2.Studio.Core.Tests
-		SccLocalPath12 = Dev2.Studio.Core.Tests
-		SccProjectUniqueName13 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
-		SccProjectName13 = Dev2.Activities.Tests
-		SccLocalPath13 = Dev2.Activities.Tests
-		SccProjectUniqueName14 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
-		SccProjectName14 = Dev2.Data.Tests
-		SccLocalPath14 = Dev2.Data.Tests
-		SccProjectUniqueName15 = Dev2.OutputLibraries\\Dev2.OutputLibraries.csproj
-		SccProjectName15 = Dev2.OutputLibraries
-		SccLocalPath15 = Dev2.OutputLibraries
-		SccProjectUniqueName16 = Dev2.Runtime\\Dev2.Runtime.csproj
-		SccProjectName16 = Dev2.Runtime
-		SccLocalPath16 = Dev2.Runtime
-		SccProjectUniqueName17 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
-		SccProjectName17 = Dev2.Runtime.Services
-		SccLocalPath17 = Dev2.Runtime.Services
-		SccProjectUniqueName18 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
-		SccProjectName18 = Dev2.Runtime.Configuration
-		SccLocalPath18 = Dev2.Runtime.Configuration
-		SccProjectUniqueName19 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
-		SccProjectName19 = ConsoleAppToTestExecuteCommandLineActivity
-		SccLocalPath19 = ConsoleAppToTestExecuteCommandLineActivity
+		SccProjectUniqueName8 = Dev2.Activities\\Dev2.Activities.csproj
+		SccProjectName8 = Dev2.Activities
+		SccLocalPath8 = Dev2.Activities
+		SccProjectUniqueName9 = Dev2.Core\\Dev2.Core.csproj
+		SccProjectName9 = Dev2.Core
+		SccLocalPath9 = Dev2.Core
+		SccProjectUniqueName10 = Dev2.Data\\Dev2.Data.csproj
+		SccProjectName10 = Dev2.Data
+		SccLocalPath10 = Dev2.Data
+		SccProjectUniqueName11 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
+		SccProjectName11 = Dev2.Activities.Tests
+		SccLocalPath11 = Dev2.Activities.Tests
+		SccProjectUniqueName12 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
+		SccProjectName12 = Dev2.Data.Tests
+		SccLocalPath12 = Dev2.Data.Tests
+		SccProjectUniqueName13 = Dev2.OutputLibraries\\Dev2.OutputLibraries.csproj
+		SccProjectName13 = Dev2.OutputLibraries
+		SccLocalPath13 = Dev2.OutputLibraries
+		SccProjectUniqueName14 = Dev2.Runtime\\Dev2.Runtime.csproj
+		SccProjectName14 = Dev2.Runtime
+		SccLocalPath14 = Dev2.Runtime
+		SccProjectUniqueName15 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
+		SccProjectName15 = Dev2.Runtime.Services
+		SccLocalPath15 = Dev2.Runtime.Services
+		SccProjectUniqueName16 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
+		SccProjectName16 = Dev2.Runtime.Configuration
+		SccLocalPath16 = Dev2.Runtime.Configuration
+		SccProjectUniqueName17 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
+		SccProjectName17 = ConsoleAppToTestExecuteCommandLineActivity
+		SccLocalPath17 = ConsoleAppToTestExecuteCommandLineActivity
+		SccProjectUniqueName18 = Dev2.UndoFramework.Tests\\Dev2.UndoFramework.Tests.csproj
+		SccProjectName18 = Dev2.UndoFramework.Tests
+		SccLocalPath18 = Dev2.UndoFramework.Tests
+		SccProjectUniqueName19 = Dev2.Studio.Core.Tests\\Dev2.Studio.Core.Tests.csproj
+		SccProjectName19 = Dev2.Studio.Core.Tests
+		SccLocalPath19 = Dev2.Studio.Core.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -200,20 +200,6 @@ Global
 		{A58B157B-960B-4E84-8957-24E4884C5C77}.Release|x64.ActiveCfg = Release|x64
 		{A58B157B-960B-4E84-8957-24E4884C5C77}.Release|x64.Build.0 = Release|x64
 		{A58B157B-960B-4E84-8957-24E4884C5C77}.Release|x86.ActiveCfg = Release|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x64.ActiveCfg = Debug|x64
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x64.Build.0 = Debug|x64
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.ActiveCfg = Release|x64
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.Build.0 = Release|x64
-		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x86.ActiveCfg = Release|Any CPU
 		{632E4898-1B1B-474C-A028-D13A5C914F11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{632E4898-1B1B-474C-A028-D13A5C914F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{632E4898-1B1B-474C-A028-D13A5C914F11}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -226,18 +212,6 @@ Global
 		{632E4898-1B1B-474C-A028-D13A5C914F11}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{632E4898-1B1B-474C-A028-D13A5C914F11}.Release|x64.ActiveCfg = Release|Any CPU
 		{632E4898-1B1B-474C-A028-D13A5C914F11}.Release|x86.ActiveCfg = Release|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|x64.ActiveCfg = Release|Any CPU
-		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|x86.ActiveCfg = Release|Any CPU
 		{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -372,6 +346,32 @@ Global
 		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|x64.ActiveCfg = Release|Any CPU
 		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|x86.ActiveCfg = Release|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|x64.ActiveCfg = Release|Any CPU
+		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|x86.ActiveCfg = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x64.ActiveCfg = Debug|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x64.Build.0 = Debug|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.ActiveCfg = Release|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.Build.0 = Release|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
