@@ -61,7 +61,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var args = svc.ToString();
 
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             try
             {
                 var services = new Dev2.Runtime.ServiceModel.Services();
@@ -84,7 +84,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var svc = CreateCountriesDbService();
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             try
             {
                 var services = new Dev2.Runtime.ServiceModel.Services();
@@ -107,7 +107,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var svc = CreateCountriesDbService();
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var path = Path.Combine(workspacePath, Dev2.Runtime.ServiceModel.Resources.RootFolders[ResourceType.DbService]);
             var fileName = String.Format("{0}\\{1}.xml", path, svc.ResourceName);
             try
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var getArgs = string.Format("{{\"resourceID\":\"{0}\",\"resourceType\":\"{1}\"}}", svc.ResourceID, ResourceType.DbService);
 
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             try
             {
                 var services = new Dev2.Runtime.ServiceModel.Services();
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var args = service.ToString();
             var workspaceID = Guid.NewGuid();
 
-            GlobalConstants.GetWorkspacePath(workspaceID);
+            EnvironmentVariables.GetWorkspacePath(workspaceID);
 
             var services = new ServicesMock();
             var result = services.DbMethods(args, workspaceID, Guid.Empty);
