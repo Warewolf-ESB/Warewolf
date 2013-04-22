@@ -1,0 +1,60 @@
+﻿<div id="container">
+    <div class="float-left">
+        <div id="header">
+            <h1>&nbsp; Switch Flow</h1>
+        </div>
+        <div id="body">
+            <form id="mainForm" 
+                <div class="mainFormError" style="display: none; text-align: right;">
+                    <img src="images/warning.gif" alt="Warning!" width="24" height="24" class="icon" />
+                    <span id="Dev2Msg">You missed some fields.The have been highlighted below.</span>
+                </div>
+                <div class="switch-form">
+                    <div>
+
+						<div class="field">
+							<label class="wideLabel"> &nbsp; &nbsp;Checks a variable and then switches the execution if it finds a matching case.</label>
+						</div>
+						
+						<!--  KO Template -->
+						<div style="width:100%;">							
+							<div>
+								<label style="float:left; width:200px; margin-left:-33px;">Variable to Switch on : </label>
+								<input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'afterkeydown'" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on This Variable"/>	
+							</div>
+						</div>
+
+						<div class="button-bar" style="margin: 20px 2px 10px 0;">
+							<span>
+								<button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+								<button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
+							</span>
+						</div>
+						
+						
+					</div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="saveDialogContainer">
+</div>
+
+<!-- Import Model  -->
+<script type="text/javascript" src="/wwwroot/Scripts/Switch/DropModel.js"></script>
+
+<script type="text/javascript">
+
+	 // Build the model
+	 var vm = new AppViewModel();
+
+     // Load the model
+	 vm.Load();
+
+     // Apply the model
+	 ko.applyBindings(vm);	
+	 
+	 $("input[type=submit], a, button").button();
+		
+</script>
+

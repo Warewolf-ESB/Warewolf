@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Unlimited.Applications.BusinessDesignStudio.Views.ToolboxUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:sadt="clr-namespace:System.Activities.Presentation.Toolbox;assembly=System.Activities.Presentation"
+             >
+    <Grid>
+        <sadt:ToolboxControl x:Name="tools">            
+            <sadt:ToolboxControl.ToolTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=BitmapName}" Height="20" Width="20" >
+                        </Image>
+                        <Label Content="{Binding Path=DisplayName}" AutomationProperties.AutomationId="{Binding Path=DisplayName}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </sadt:ToolboxControl.ToolTemplate>
+            <sadt:ToolboxCategory CategoryName="Control Flow"></sadt:ToolboxCategory>            
+            <sadt:ToolboxCategory CategoryName="Loop Constructs"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Recordset"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Utility"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="File and Folder"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Scripting"></sadt:ToolboxCategory>
+        </sadt:ToolboxControl> 
+    </Grid>
+</UserControl>
