@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.DynamicServices.Test
 {
     [TestClass]
+    [Ignore]
     public class DynamicServicesHostTests
     {
         const int VersionNo = 9999;

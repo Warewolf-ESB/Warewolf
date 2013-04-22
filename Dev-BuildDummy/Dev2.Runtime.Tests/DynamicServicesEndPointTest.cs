@@ -18,6 +18,7 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for DynamicServicesInvokerTest
     /// </summary>
     [TestClass]
+    [Ignore]
     public class DynamicServicesEndPointTest
     {
         //public static IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler(); 

@@ -8,13 +8,12 @@ using Dev2.Diagnostics;
 namespace Unlimited.UnitTest.Framework.Diagnostics
 {
     [TestClass]
-    [Ignore]
     public class DebugDispatcherTest
     {
         
         static object l = new object();
 
-        object _testGuard = new object();
+        static object _testGuard = new object();
         [TestInitialize]
         public void TestInit()
         {
