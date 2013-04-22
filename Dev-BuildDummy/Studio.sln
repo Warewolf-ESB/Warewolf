@@ -44,9 +44,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteComm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework.Tests", "Dev2.UndoFramework.Tests\Dev2.UndoFramework.Tests.csproj", "{E580C1E3-01E4-424F-A6B2-279C3079C3BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj", "{1FD73E36-FC73-4BDF-BCBA-278A44F06550}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 19
+		SccNumberOfProjects = 20
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -104,6 +106,9 @@ Global
 		SccProjectUniqueName18 = Dev2.UndoFramework.Tests\\Dev2.UndoFramework.Tests.csproj
 		SccProjectName18 = Dev2.UndoFramework.Tests
 		SccLocalPath18 = Dev2.UndoFramework.Tests
+		SccProjectUniqueName19 = Dev2.Studio.Core.Tests\\Dev2.Studio.Core.Tests.csproj
+		SccProjectName19 = Dev2.Studio.Core.Tests
+		SccLocalPath19 = Dev2.Studio.Core.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -353,6 +358,20 @@ Global
 		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|x64.ActiveCfg = Release|Any CPU
 		{E580C1E3-01E4-424F-A6B2-279C3079C3BF}.Release|x86.ActiveCfg = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x64.ActiveCfg = Debug|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x64.Build.0 = Debug|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.ActiveCfg = Release|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.Build.0 = Release|x64
+		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
