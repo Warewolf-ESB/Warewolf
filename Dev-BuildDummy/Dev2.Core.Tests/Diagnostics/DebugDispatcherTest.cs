@@ -8,6 +8,7 @@ using Dev2.Diagnostics;
 namespace Unlimited.UnitTest.Framework.Diagnostics
 {
     [TestClass]
+    [Ignore]
     public class DebugDispatcherTest
     {
         
