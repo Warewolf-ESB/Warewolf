@@ -326,7 +326,7 @@ namespace Dev2.Runtime.Hosting
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var folders = ServiceModel.Resources.RootFolders.Values.Distinct();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var workspaceTask = LoadWorkspaceAsync(workspacePath, folders.ToArray());
             workspaceTask.Wait();
 
@@ -875,7 +875,7 @@ namespace Dev2.Runtime.Hosting
             //    };
             //}
 
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var directoryName = Path.Combine(workspacePath, ServiceModel.Resources.RootFolders[resource.ResourceType]);
             resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
 

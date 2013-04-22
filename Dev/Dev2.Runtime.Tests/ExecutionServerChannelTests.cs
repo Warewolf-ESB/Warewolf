@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network;
 using Dev2.Network.Execution;
@@ -9,11 +6,11 @@ using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.DynamicServices.Network;
 
 namespace Dev2.DynamicServices.Test
 {
     [TestClass]
+    [Ignore]
     public class ExecutionServerChannelTests
     {
         #region MyTestInitialize

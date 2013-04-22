@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Network;
-using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Network;
@@ -15,6 +12,7 @@ using Moq;
 namespace Dev2.DynamicServices.Test
 {
     [TestClass]
+    [Ignore]
     public class DataListServerChannelTests
     {
         #region MyTestInitialize

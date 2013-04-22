@@ -13,7 +13,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         
         static object l = new object();
 
-        object _testGuard = new object();
+        static object _testGuard = new object();
         [TestInitialize]
         public void TestInit()
         {

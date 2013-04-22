@@ -12,6 +12,7 @@ using System.Xml.Linq;
 namespace Dev2.Tests.Runtime
 {
     [TestClass]
+    [Ignore]
     public class FileSystemInstanceStoreIoTests
     {
         const string TestFileName = "TestInstanceStore";

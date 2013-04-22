@@ -11,6 +11,7 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for NetworkTest
     /// </summary>
     [TestClass]
+    [Ignore]
     public class NetworkTest
     {
         public NetworkTest()
