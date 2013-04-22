@@ -32,8 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (serverResult.Status != ExecStatus.Success)
                 {
                     // If delete from server workspace failed, then sync server workspace back to client workspace and return server result
-                    var workspacePath = EnvironmentVariables.GetWorkspacePath(theWorkspace.ID);
-                    var serverworkspacePath = EnvironmentVariables.GetWorkspacePath(theWorkspace.ID);
+                    var workspacePath = GlobalConstants.GetWorkspacePath(theWorkspace.ID);
+                    var serverworkspacePath = GlobalConstants.GetWorkspacePath(theWorkspace.ID);
                     ResourceCatalog.Instance.SyncTo(serverworkspacePath, workspacePath, false, false);
 
                     result = serverResult;

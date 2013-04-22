@@ -72,7 +72,7 @@ namespace Dev2.Runtime.Hosting
                 return;
             }
 
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
             {
                 var files = Directory.GetFiles(path, "*.xml");

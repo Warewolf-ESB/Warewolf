@@ -1,14 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 
 namespace Dev2.Common
 {
     public static class GlobalConstants
     {
-        // Force Webserver Contants
-        public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
-
         //Runtime Configuration
         public const string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
 
@@ -141,6 +137,30 @@ namespace Dev2.Common
         // Namespace cleanup - Set to false to avoid namespace clean-up ;)
         public const bool runtimeNamespaceClean = true;
 
+        public static string ApplicationPath
+        {
+            get
+            {
+                return Directory.GetCurrentDirectory();
+            }
+        }
+
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
+
+        public static string WorkspacePath
+        {
+            get
+            {
+                return Path.Combine(ApplicationPath, "Workspaces");
+            }
+        }
+
+        public static string GetWorkspacePath(Guid workspaceID)
+        {
+            return workspaceID == ServerWorkspaceID
+                   ? ApplicationPath
+                   : Path.Combine(WorkspacePath, workspaceID.ToString());
+        }
+
     }
 }
