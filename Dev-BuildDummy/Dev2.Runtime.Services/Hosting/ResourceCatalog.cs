@@ -372,6 +372,15 @@ namespace Dev2.Runtime.Hosting
                     var files = Directory.GetFiles(path, "*.xml");
                     foreach(var file in files)
                     {
+
+                        FileAttributes fa = File.GetAttributes(file);
+
+                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        {
+                            ServerLogger.LogMessage("Removed READONLY Flag from [ " + file + " ]");
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+
                         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                         // In many cases, this will avoid blocking a ThreadPool thread.  
                         var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
