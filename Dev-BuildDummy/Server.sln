@@ -44,7 +44,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql.Tests", "Dev2.Sql.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Tests", "..\Release 0.2.11.1\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj", "{85617545-2121-4683-9828-DAEDB5878CE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Tests", "Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj", "{85617545-2121-4683-9828-DAEDB5878CE9}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -106,9 +106,9 @@ Global
 		SccProjectUniqueName18 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
 		SccProjectName18 = Dev2.Activities.Tests
 		SccLocalPath18 = Dev2.Activities.Tests
-		SccProjectUniqueName19 = ..\\Release\u00200.2.11.1\\Dev2.Runtime.Tests\\Dev2.Runtime.Tests.csproj
-		SccProjectName19 = ../Branches/Release\u00200.2.11.1/Dev2.Runtime.Tests
-		SccLocalPath19 = ..\\Release\u00200.2.11.1\\Dev2.Runtime.Tests
+		SccProjectUniqueName19 = Dev2.Runtime.Tests\\Dev2.Runtime.Tests.csproj
+		SccProjectName19 = Dev2.Runtime.Tests
+		SccLocalPath19 = Dev2.Runtime.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
