@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void Paths_Expected_JSONSources()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var servicesPath = Path.Combine(workspacePath, "Services");
             var sourcesPath = Path.Combine(workspacePath, "Sources");
             var pluginsPath = Path.Combine(workspacePath, "Plugins");
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void SourcesWithValidArgsExpectedReturnsList()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             try
             {
                 const int Modulo = 2;
