@@ -15,12 +15,12 @@ using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [Ignore]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resouces saved by SaveResources()
