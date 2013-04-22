@@ -13,6 +13,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
     /// PBI 5278 ServerLifecycleManagerTest
     /// </summary>
     [TestClass]
+    [Ignore]
     public class ServerLifecycleManagerTest
     {
         #region Constants
