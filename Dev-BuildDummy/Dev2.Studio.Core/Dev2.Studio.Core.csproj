@@ -334,7 +334,6 @@
     <Compile Include="Messages\UpdateResourceDesignerMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWebpagePreviewMessage.cs" />
-    <None Include="Models\EnvironmentModel_Old.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
