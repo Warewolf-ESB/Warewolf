@@ -202,7 +202,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var sourcesPath = Path.Combine(workspacePath, "Sources");
             Directory.CreateDirectory(sourcesPath);
@@ -243,7 +243,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Sources");
             Directory.CreateDirectory(path);
@@ -287,7 +287,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadWorkspaceAsyncWithUpgradableXmlExpectedUpgradesXmlWithoutLocking()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
@@ -300,37 +300,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var actual = task.Result[0];
             Assert.IsTrue(actual.IsUpgraded);
-
-            // TestCleanup will fail if file is locked! 
-        }
-
-        [TestMethod]
-        public void LoadWorkspaceAsyncWithReadonlyServiceExpecteReadonlyAttributeRemoved()
-        {
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-
-            var path = Path.Combine(workspacePath, "Services");
-
-            Directory.CreateDirectory(path);
-
-            // set the readonly attribute
-            var readonlyPath = Path.Combine(path, "Bug8867.xml");
-
-            File.WriteAllText(readonlyPath, "<xml></xml>");
-
-            File.SetAttributes(readonlyPath, FileAttributes.ReadOnly);
-
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
-
-
-            FileAttributes fa = File.GetAttributes(readonlyPath);
-
-            if (fa.HasFlag(FileAttributes.ReadOnly))
-            {
-                Assert.Fail("Readonly flag was not removed from services");
-            }
 
             // TestCleanup will fail if file is locked! 
         }
@@ -423,7 +392,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void SaveResourceWithUnsignedServiceExpectedSignsFile()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Services");
 
@@ -443,7 +412,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void SaveResourceWithSourceWithoutIDExpectedSourceSavedWithID()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Sources");
 
@@ -484,7 +453,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void SaveResourceWithExistingResourceAndReadonlyExpectedResourceOverwritten()
         {
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var resource1 = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestOldDb", Server = "TestOldServer", ServerType = enSourceType.SqlDatabase, Version = new Version(1, 0) };
 
@@ -812,7 +781,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
 
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(targetWorkspaceID);
+            var targetWorkspacePath = GlobalConstants.GetWorkspacePath(targetWorkspaceID);
 
             var targetDir = new DirectoryInfo(targetWorkspacePath);
 
@@ -1039,7 +1008,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var toVersion = new Version(9999, 0);
 
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Services");
             var versionControlPath = Path.Combine(path, "VersionControl");
@@ -1067,7 +1036,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var toVersion = new Version(9999, 0);
 
             var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
 
             var path = Path.Combine(workspacePath, "Services");
             var versionControlPath = Path.Combine(path, "VersionControl");
@@ -1340,13 +1309,13 @@ namespace Dev2.Tests.Runtime.Hosting
         public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
             var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources, services, out resources);
-            var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(copyToWorkspaceID);
+            var targetWorkspacePath = GlobalConstants.GetWorkspacePath(copyToWorkspaceID);
             DirectoryHelper.Copy(sourceWorkspacePath, targetWorkspacePath, true);
         }
 
         public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             var sourcesPath = Path.Combine(workspacePath, "Sources");
             var servicesPath = Path.Combine(workspacePath, "Services");
 

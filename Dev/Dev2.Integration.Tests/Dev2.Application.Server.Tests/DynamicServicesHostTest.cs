@@ -9,7 +9,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
     /// Summary description for DynamicServicesHostTest
     /// </summary>
     [TestClass]
-    [Ignore]
     public class DynamicServicesHostTest
     {
         /// <summary>

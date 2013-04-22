@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Text;
+using System.Net;
+using System.IO;
 using HttpFramework;
 using HttpFramework.Sessions;
-using Dev2.Common;
 
 namespace Unlimited.Applications.WebServer
 {
@@ -17,6 +22,7 @@ namespace Unlimited.Applications.WebServer
     {
         #region Constants
         private const string DefaultContentType = "text/html; charset=";
+        const double SizeCapForDownload = 10000000;
         #endregion
 
         #region Instance Fields
@@ -34,14 +40,12 @@ namespace Unlimited.Applications.WebServer
         #endregion
 
         #region Constructor
-        
         internal CommunicationContext(IHttpRequest request, IHttpResponse response, IHttpSession session, UriTemplateMatch match)
         {
             _request = new CommunicationRequest(_rawRequest = request, match);
             _response = new CommunicationResponse(_rawResponse = response);
             _rawSession = session;
         }
-
         #endregion
 
         #region Send Handling
@@ -52,7 +56,7 @@ namespace Unlimited.Applications.WebServer
             if (String.IsNullOrEmpty(_rawResponse.ContentType))
                 _rawResponse.ContentType = DefaultContentType + _rawResponse.Encoding.WebName;
 
-            if (_rawResponse.ContentLength >= GlobalConstants.ViewInBrowserForceDownloadSize)
+            if (_rawResponse.ContentLength > SizeCapForDownload)
             {
                 _rawResponse.AddHeader("Content-Type", "application/force-download");
                 _rawResponse.AddHeader("Content-Disposition", "attachment; filename=Output.xml");

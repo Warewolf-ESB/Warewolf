@@ -2,7 +2,9 @@
 using System.Security.Principal;
 using System.Xml;
 using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Integration.Tests;
+using Dev2.Integration.Tests.MEF;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
@@ -17,7 +19,6 @@ namespace Dev2.Studio.Core.Tests
     ///to contain all EnvironmentModelTest Unit Tests
     ///</summary>
     [TestClass()]
-    [Ignore]
     public class EnvironmentModelTest
     {
         #region Test Variables

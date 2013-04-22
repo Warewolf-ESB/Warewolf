@@ -326,7 +326,7 @@ namespace Dev2.Runtime.Hosting
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var folders = ServiceModel.Resources.RootFolders.Values.Distinct();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             var workspaceTask = LoadWorkspaceAsync(workspacePath, folders.ToArray());
             workspaceTask.Wait();
 
@@ -366,22 +366,12 @@ namespace Dev2.Runtime.Hosting
                 {
                     if(!Directory.Exists(path))
                     {
-                        ServerLogger.LogMessage("Path : " + path + " does not exist");
-                        continue; 
+                        continue;
                     }
 
                     var files = Directory.GetFiles(path, "*.xml");
                     foreach(var file in files)
                     {
-
-                        // Travis - 8867 Fix for Integration Test - Remove the Readonly Flag
-                        FileAttributes fa = File.GetAttributes(file);
-
-                        if(fa.HasFlag(FileAttributes.ReadOnly))
-                        {
-                            File.SetAttributes(file, FileAttributes.Normal);
-                        }
-
                         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                         // In many cases, this will avoid blocking a ThreadPool thread.  
                         var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
@@ -885,7 +875,7 @@ namespace Dev2.Runtime.Hosting
             //    };
             //}
 
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
             var directoryName = Path.Combine(workspacePath, ServiceModel.Resources.RootFolders[resource.ResourceType]);
             resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
 

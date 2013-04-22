@@ -9,7 +9,6 @@ using System.Threading;
 namespace Dev2.Integration.Tests
 {
     [TestClass]
-    [Ignore]
     public class AppTests
     {
         // Fixed by Michael RE Broken Integration Tests (12th Feb 2013)

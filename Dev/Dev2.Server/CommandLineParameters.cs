@@ -3,7 +3,6 @@ using CommandLine.Text;
 
 namespace Dev2
 {
-
     class CommandLineParameters : CommandLineOptionsBase
     {
         [Option("s", "startservice", HelpText = "Starts the windows service.", DefaultValue = false)]
@@ -17,10 +16,6 @@ namespace Dev2
 
         [Option("u", "uninstall", HelpText = "Uninstalls the windows service for this app.", DefaultValue = false)]
         public bool Uninstall { get; set; }
-
-        // TODO : Make removable on non-internal build process
-        [Option("t", "test", HelpText = "Place the application into interactive mode for testing", DefaultValue = false)]
-        public bool IntegrationTestMode { get; set; }
 
         [HelpOption]
         public string GetUsage()

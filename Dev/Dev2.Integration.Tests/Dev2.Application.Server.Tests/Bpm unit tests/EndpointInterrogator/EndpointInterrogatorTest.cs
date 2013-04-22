@@ -11,7 +11,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.En
     /// Summary description for EndpointInterrogatorTest
     /// </summary>
     [TestClass]
-    [Ignore]
     public class EndpointInterrogatorTest
     {
         public EndpointInterrogatorTest()

@@ -565,7 +565,7 @@ namespace Dev2
 
                     if (entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
                     {
-                        ServerLogger.LogMessage(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
+                        ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
                         return null;
                     }
 
@@ -590,7 +590,7 @@ namespace Dev2
                     {
                         if (_network.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
                         {
-                            ServerLogger.LogMessage(string.Format("{0} listening on {1}", _network, current + ":" + entry.Item2.ToString()));
+                            ServerLifecycleManager.WriteLine(string.Format("{0} listening on {1}", _network, current + ":" + entry.Item2.ToString()));
                             startedIPAddresses.Add(current);
                         }
                     }
@@ -599,7 +599,7 @@ namespace Dev2
 
             if (startedIPAddresses.Count == 0)
             {
-                ServerLogger.LogMessage(string.Format("{0} failed to start on {1}", _network, _endpointAddress));
+                ServerLifecycleManager.WriteLine(string.Format("{0} failed to start on {1}", _network, _endpointAddress));
             }
 
         }

@@ -937,36 +937,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(0, getResults.Count);
         }
 
-        //2013.04.16: Ashley Lewis - for Bug 6103
-        [TestMethod]
-        public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithClosingSquareBraceExpectedNoResults()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 13,
-                InputText = "[[City([[sca]).Name]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user closed a variable region");
-        }
-        [TestMethod]
-        public void GetIntellisenseResultsWithClosingSquareBraceExpectedNoResults()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 9,
-                InputText = "[[scalar]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user closed a variable region");
-        }
-
         #endregion
 
         #region PerformResultInsertion

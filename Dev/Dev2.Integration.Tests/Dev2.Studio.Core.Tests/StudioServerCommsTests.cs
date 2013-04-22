@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Network;
 using System.Security.Principal;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.DynamicServices;
+using Dev2.Runtime.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Studio.Core;
+using Dev2.Integration.Tests.MEF;
+using Dev2.Composition;
 using Moq;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
@@ -18,7 +24,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     //                              & that the Studio always performs it's connection actions in a 
     //                              synchronous fashion.
     [TestClass]
-    [Ignore]
     public class StudioServerCommsTests
     {                      
         #region Environment Connection Tests

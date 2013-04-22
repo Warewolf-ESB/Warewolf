@@ -17,7 +17,6 @@ using Unlimited.Framework;
 namespace Dev2.Integration.Tests.Build.Tests
 {
     [TestClass]
-    [Ignore]
     public class ApplicationServerBuildTests
     {
         public ApplicationServerBuildTests()

@@ -200,7 +200,6 @@
       <SubType>
       </SubType>
     </Compile>
-    <Compile Include="Bootstrap.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />
@@ -251,7 +250,7 @@
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
     <Compile Include="Helpers\AssemblyResolver.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\DependcyViewerTest.cs" />
+    <Compile Include="Internal Services\SystemServicesTest.cs" />
     <Compile Include="Load Tests\LoadTest.cs" />
     <Compile Include="MEF\CompositionInitializer.cs" />
     <Compile Include="Helpers\MefImportHelper.cs" />
@@ -281,8 +280,10 @@
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
     <Compile Include="Sql\WorkflowsTests.cs" />
+    <Compile Include="Test Requiring Implementation\TestsRequireImplementation.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Test utils\MediatorRecieverDeregistration.cs" />
+    <Compile Include="Test utils\Process\ProcessInvoker.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerFabricator.cs" />
     <Compile Include="TestResource.Designer.cs">
@@ -333,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dev2.Studio.Core.Tests\Views\" />
+    <Folder Include="locale\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
@@ -346,6 +348,18 @@
     <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\TestDecisionUnsigned.xml" />
     <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\WorkspaceItem.xml" />
     <None Include="App.config" />
+    <None Include="DeploymentScripts\Deploy.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DeploymentScripts\DeployCleanup.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DeploymentScripts\Startup.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="LoadTest1.loadtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\DeleteWorkflowTest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +419,12 @@
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DeploymentScripts\AutomatedStart.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DeploymentScripts\AutomatedStart.pdb" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

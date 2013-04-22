@@ -5,7 +5,6 @@ using Warewolf.Sql;
 namespace Dev2.Integration.Tests.Sql
 {
     [TestClass]
-    [Ignore]
     public class WorkflowsTests
     {
         [ClassInitialize]

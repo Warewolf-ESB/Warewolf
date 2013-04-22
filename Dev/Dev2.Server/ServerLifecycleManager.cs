@@ -16,6 +16,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Reflection;
 using Dev2.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
@@ -128,19 +129,26 @@ namespace Unlimited.Applications.DynamicServicesHost
                 return result;
             }
 
-            if(Environment.UserInteractive || options.IntegrationTestMode)
+            //Type type = null;
+
+            //using (System.Emission.NetworkProxyGenerator generator = new System.Emission.NetworkProxyGenerator(false)) {
+            //    type = generator.CreateNetworkProxy(typeof(Dev2.DataList.Contract.IDataListCompiler));
+            //    generator.SaveAssembly();
+            //}
+
+            //IDataListCompiler compiler = (Dev2.DataList.Contract.IDataListCompiler)Activator.CreateInstance(type, new object[] { new __DatalistCompiledNetworkTransparentProxy(), InternalTemplates.Server_OnExecuteStringCommandReceived });
+
+            if(Environment.UserInteractive)
             {
-                ServerLogger.LogMessage("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
                 using(_singleton = new ServerLifecycleManager(arguments))
                 {
-                    result = _singleton.Run(true);
+                    result = _singleton.Run();
                 }
 
                 _singleton = null;
             }
             else
             {
-                ServerLogger.LogMessage("** Starting In Service Mode **");
                 // running as service
                 using(var service = new ServerLifecycleManagerService())
                 {
@@ -164,20 +172,54 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             protected override void OnStart(string[] args)
             {
-                ServerLogger.LogMessage("** Service Started **");
                 _singleton = new ServerLifecycleManager(null);
-                _singleton.Run(false);
+                _singleton.Run();
             }
 
             protected override void OnStop()
             {
-                ServerLogger.LogMessage("** Service Stopped **");
                 _singleton.Stop(false, 0);
                 _singleton = null;
             }
         }
 
         #endregion
+
+        //private sealed class __DatalistCompiledNetworkTransparentProxy : __BaseNetworkTransparentProxy
+        //{
+        //    public __DatalistCompiledNetworkTransparentProxy()
+        //    {
+
+        //    }
+
+        //    public override IByteReaderBase SendDuplexPacket(Packet packet)
+        //    {
+        //        return base.SendDuplexPacket(packet);
+        //    }
+
+        //    public override void SendSimplexPacket(Packet packet)
+        //    {
+        //        base.SendSimplexPacket(packet);
+        //    }
+
+        //    public override object ConstructUnhandled(Type type)
+        //    {
+
+        //        return base.ConstructUnhandled(type);
+        //    }
+
+        //    public override object ReadUnhandled(IByteReaderBase reader, Type type)
+        //    {
+
+        //        return base.ReadUnhandled(reader, type);
+        //    }
+
+        //    public override void WriteUnhandled(IByteWriterBase writer, object unhandled)
+        //    {
+
+        //        base.WriteUnhandled(writer, unhandled);
+        //    }
+        //}
 
         #region Instance Fields
         private bool _isDisposed;
@@ -249,7 +291,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// Runs the application server, and handles all initialization, execution and cleanup logic required.
         /// </summary>
         /// <returns></returns>
-        private int Run(bool interactiveMode)
+        private int Run()
         {
             int result = 0;
             bool didBreak = false;
@@ -346,7 +388,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if(!didBreak)
             {
-                result = ServerLoop(interactiveMode);
+                result = ServerLoop();
             }
             else
             {
@@ -374,20 +416,18 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
             else
             {
-                TerminateGCManager(); 
+                TerminateGCManager();
             }
 
             Write(string.Format("Existing with exitcode {0}", result));
-
             return result;
         }
 
-        private int ServerLoop(bool interactiveMode)
+        private int ServerLoop()
         {
-
-            if (interactiveMode)
+            if(Environment.UserInteractive)
             {
-                Write("Press <ENTER> to terminate service and/or web server if started");
+                Console.WriteLine("Press <ENTER> to terminate service and/or web server if started");
                 Console.ReadLine();
                 return Stop(false, 0);
             }
@@ -395,7 +435,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             return 0;
         }
 
-        private bool SetWorkingDirectory()  
+        private bool SetWorkingDirectory()
         {
             bool result = true;
 
@@ -1203,7 +1243,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                     _endpoints = endpoints.ToArray();
                     _uriAddress = uriAddress;
                 }
-                
             }
             catch(Exception ex)
             {
@@ -1565,7 +1604,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         // PBI 5389 - Resources Assigned and Allocated to Server
         bool LoadServerWorkspace()
         {
-
             Write("Loading server workspace...  ");
             // First call to instance loads the server workspace.
             // ReSharper disable UnusedVariable
@@ -1677,8 +1715,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 TraceWriter.WriteTrace(message);
             }
-
-            ServerLogger.LogMessage(message);
         }
 
         internal static void Write(string message)
@@ -1691,12 +1727,9 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 TraceWriter.WriteTrace(message);
             }
-
-            ServerLogger.LogMessage(message);
         }
 
         #endregion Output Handling
     }
-
 }
 

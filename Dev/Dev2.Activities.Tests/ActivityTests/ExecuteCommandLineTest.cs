@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using Dev2.Activities;
+using Dev2.Diagnostics;
+using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTest
@@ -13,7 +18,7 @@ namespace ActivityUnitTests.ActivityTest
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
-    [Ignore] 
+    //[Ignore] //Does not work on server
     public class ExecuteCommandLineTest : BaseActivityUnitTest
     {
         private TestContext _testContextInstance;
@@ -30,7 +35,7 @@ namespace ActivityUnitTests.ActivityTest
             }
             set
             {
-                _testContextInstance = value; 
+                _testContextInstance = value;
             }
         }
 
