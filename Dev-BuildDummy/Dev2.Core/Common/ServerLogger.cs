@@ -17,8 +17,8 @@ namespace Dev2.Common
             try
             {
                 // REMOVE
-                File.AppendAllText(@"f:\foo\log.txt",
-                                   string.Format("{0} :: {1}{2}", DateTime.Now, message, Environment.NewLine));
+                //File.AppendAllText(@"f:\foo\log.txt",
+                //                   string.Format("{0} :: {1}{2}", DateTime.Now, message, Environment.NewLine));
 
                 File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
                                    string.Format("{0} :: {1}{2}", DateTime.Now, message, Environment.NewLine));
