@@ -19,7 +19,7 @@ namespace Dev2.Workspaces
         /// The server workspace ID.
         /// </summary>
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
-        public static readonly string ServerWorkspacePath = GlobalConstants.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
+        public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
 
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
 
@@ -66,7 +66,7 @@ namespace Dev2.Workspaces
         // Prevent instantiation
         private WorkspaceRepository()
         {
-            Directory.CreateDirectory(GlobalConstants.WorkspacePath);
+            Directory.CreateDirectory(EnvironmentVariables.WorkspacePath);
             Get(ServerWorkspaceID, true);
         }
 
@@ -125,7 +125,7 @@ namespace Dev2.Workspaces
 
                 if(workspaceID != ServerWorkspaceID)
                 {
-                    var workspacePath = GlobalConstants.GetWorkspacePath(workspaceID);
+                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
                     ResourceCatalog.Instance.SyncTo(ServerWorkspacePath, workspacePath, false, false);
                 }
 
@@ -167,7 +167,7 @@ namespace Dev2.Workspaces
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
             var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
-            var targetPath = GlobalConstants.GetWorkspacePath(workspace.ID);
+            var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
             ResourceCatalog.Instance.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
         }
 
@@ -292,7 +292,7 @@ namespace Dev2.Workspaces
 
         string GetFileName(Guid workspaceID)
         {
-            return Path.Combine(GlobalConstants.WorkspacePath, workspaceID + ".uws");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".uws");
         }
 
         #endregion
