@@ -57,7 +57,7 @@ namespace Dev2.Integration.Tests
                     started = true;
 
                     // Wait for server to start
-                    Thread.Sleep(10000);
+                    Thread.Sleep(15000); // wait up to 15 seconds for server to start ;)
 
                     ServerLogger.LogMessage("Server Started for Integration Test Run");
 
