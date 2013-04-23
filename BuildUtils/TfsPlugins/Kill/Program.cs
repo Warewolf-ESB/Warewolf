@@ -21,20 +21,20 @@ namespace Kill
         {
             if (args.Length == 1)
             {
-                File.WriteAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
+                File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
 
                 try
                 {
                     Process[] procs = Process.GetProcessesByName(args[0]);
                     foreach (var p in procs)
                     {
-                        File.WriteAllText(LogFile(), DateTime.Now + " :: Killed PID { " + p.Id + " }");
+                        File.AppendAllText(LogFile(), DateTime.Now + " :: Killed PID { " + p.Id + " }");
                         p.Kill();
                     }
                 }
                 catch (Exception ex)
                 {
-                    File.WriteAllText(LogFile(), DateTime.Now + " :: Error { " + ex.Message + " }");
+                    File.AppendAllText(LogFile(), DateTime.Now + " :: Error { " + ex.Message + " }");
                 }
             }
         }
