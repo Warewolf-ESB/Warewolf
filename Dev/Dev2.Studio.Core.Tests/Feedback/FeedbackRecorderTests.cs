@@ -9,6 +9,7 @@ using System.Threading;
 namespace Dev2.Core.Tests.Feedback
 {
     [TestClass]
+    [Ignore]
     public class FeedbackRecorderTests
     {
         #region Class Members
