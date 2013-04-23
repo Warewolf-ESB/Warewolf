@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.AppResources;
+﻿using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Interfaces;
-using System.Xml.Linq;
-using Unlimited.Framework;
-
-using Dev2.Studio.Core;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
+
     public static class StudioToWizardBridge {
 
         /// <summary>
