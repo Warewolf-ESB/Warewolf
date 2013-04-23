@@ -2,16 +2,28 @@
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 using System;
+using System.Reflection;
 
 namespace QueueBuild
 {
     class Program
     {
-        private static string Logfile = @"BuildQueueLog.txt";
+        
+        private static string LogfileName = @"BuildQueueLog.txt";
+
+        private static string LogFile()
+        {
+            var loc = Assembly.GetExecutingAssembly().Location;
+            var dir = Path.GetDirectoryName(loc);
+
+            return Path.Combine(dir, LogfileName);
+        }
 
         static void Main(string[] args)
         {
             DateTime buildTS = DateTime.Now;
+
+            
 
             if (args != null && args.Length == 3)
             {
@@ -21,10 +33,17 @@ namespace QueueBuild
 
                 BuildQueuer qb = new BuildQueuer();
 
-                File.WriteAllText(Logfile, buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
+                File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
                                   "', Definition : '" + def + "' }");
 
-                qb.Run(server, project, def);
+                try
+                {
+                    qb.Run(server, project, def);
+                }
+                catch(Exception e)
+                {
+                    File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }" );
+                }
 
             }
             else
@@ -34,7 +53,7 @@ namespace QueueBuild
                 {
                     argsPayload += str + ", ";
                 }
-                File.WriteAllText(Logfile, buildTS + " :: *** Arguments Error With {  " + argsPayload + " }");
+                File.WriteAllText(LogFile(), buildTS + " :: *** Arguments Error With {  " + argsPayload + " }");
             }
         }
     }
