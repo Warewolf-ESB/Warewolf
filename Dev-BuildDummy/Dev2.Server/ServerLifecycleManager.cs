@@ -492,9 +492,9 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine("<configuration>");
-                builder.AppendLine("\t<GCManager Enabled=\"false\">");
+                builder.AppendLine("\t<GCManager Enabled=\"true\">");
                 builder.AppendLine("\t\t<MinWorkingSet>60</MinWorkingSet>");
-                builder.AppendLine("\t\t<MaxWorkingSet>1536</MaxWorkingSet>");
+                builder.AppendLine("\t\t<MaxWorkingSet>6144</MaxWorkingSet>");
                 builder.AppendLine("\t</GCManager>");
                 builder.AppendLine("\t<PreloadAssemblies>true</PreloadAssemblies>");
                 builder.AppendLine("\t<AssemblyReferenceGroup>");
@@ -974,7 +974,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             if (_enableGCManager)
             {
-                TraceWriter.WriteTrace("SLM garbage collection manager enabled.");
+                WriteLine("SLM garbage collection manager enabled.");
                 _gcmThreadStart = GCM_EntryPoint;
                 _lastKnownWorkingSet = -1L;
                 _nextForcedCollection = DateTime.Now.AddSeconds(5.0);
@@ -985,7 +985,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
             else
             {
-                TraceWriter.WriteTrace("SLM garbage collection manager disabled.");
+                WriteLine("SLM garbage collection manager disabled.");
             }
 
             return true;
@@ -1014,7 +1014,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                         if (shouldCollect)
                         {
-                            TraceWriter.WriteTrace("Collecting...");
+                            WriteLine("Collecting...");
                             _lastKnownWorkingSet = GC.GetTotalMemory(true);
                             now = DateTime.Now;
                         }
