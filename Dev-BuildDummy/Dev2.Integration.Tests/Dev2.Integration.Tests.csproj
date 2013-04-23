@@ -284,7 +284,6 @@
     <Compile Include="Test Requiring Implementation\TestsRequireImplementation.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Test utils\MediatorRecieverDeregistration.cs" />
-    <Compile Include="Test utils\Process\ProcessInvoker.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerFabricator.cs" />
     <Compile Include="TestResource.Designer.cs">

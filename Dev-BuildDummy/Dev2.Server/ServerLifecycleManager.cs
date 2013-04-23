@@ -1450,17 +1450,11 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (disposing)
             {
-                //if(_redisProcess != null)
-                //{
-                //    _redisProcess.Kill();
-                //    _redisProcess.Dispose();
-                //}
                 CleanupServer();
             }
             _webserver = null;
             _esbEndpoint = null;
             _executionChannel = null;
-            //_redisProcess = null;
         }
         #endregion
 

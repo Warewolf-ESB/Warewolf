@@ -12,6 +12,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
 // ReSharper restore CheckNamespace
 {
     [TestClass]
+    [Ignore]
     public class NetworkMessageProviderTests
     {
         #region Start
