@@ -332,6 +332,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
+
             if (!didBreak && !StartWebServer())
             {
                 result = 4;
@@ -388,7 +389,15 @@ namespace Unlimited.Applications.DynamicServicesHost
             if (interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
-                Console.ReadLine();
+                if (EnvironmentVariables.IsServerOnline)
+                {
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Write("Failed to start Server");
+                }
+
                 return Stop(false, 0);
             }
 
@@ -1644,12 +1653,14 @@ namespace Unlimited.Applications.DynamicServicesHost
                 {
                     _webserver = new Dev2.WebServer(_endpoints, _networkServer);
                     _webserver.Start(_uriAddress);
+                    EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
                     new List<string>(_prefixes).ForEach(c => WriteLine(string.Format("Web server listening at {0}", c)));
                 }
                 catch (Exception e)
                 {
                     result = false;
+                    EnvironmentVariables.IsServerOnline = false; // flag server as inactive
                     Fail("Webserver failed to start", e);
                 }
             }
