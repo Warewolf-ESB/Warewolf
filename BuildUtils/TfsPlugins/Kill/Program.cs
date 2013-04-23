@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Management;
 
 namespace Kill
 {
@@ -22,21 +23,59 @@ namespace Kill
             if (args.Length == 1)
             {
                 File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
-
-                try
+                var processName = args[0];
+                var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+                //initialize the searcher with the query it is
+                //supposed to execute
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
                 {
-                    Process[] procs = Process.GetProcessesByName(args[0]);
-                    foreach (var p in procs)
+                    //execute the query
+                    ManagementObjectCollection processes = searcher.Get();
+                    if (processes.Count <= 0)
                     {
-                        File.AppendAllText(LogFile(), DateTime.Now + " :: Killed PID { " + p.Id + " }");
-                        p.Kill();
+                        File.AppendAllText(LogFile(), "No processes");
+                    }
+                    else
+                    {
+                        File.AppendAllText(LogFile(),"Found processes");
+                        foreach (ManagementObject process in processes)
+                        {
+                            //print process properties
+                            
+                            process.Get();
+                            PropertyDataCollection processProperties = process.Properties;
+
+                            var pid = processProperties["ProcessID"].Value.ToString();
+
+                            File.AppendAllText(LogFile(), "Killed Process { " + pid + " }");
+
+                            var proc = Process.GetProcessById(Int32.Parse(pid));
+
+                            proc.Kill();
+                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    File.AppendAllText(LogFile(), DateTime.Now + " :: Error { " + ex.Message + " }");
-                }
             }
+
+
+            //if (args.Length == 1)
+            //{
+            //    File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
+
+            //    try
+            //    {
+            //        Process[] procs = Process.GetProcessesByName(args[0]);
+            //        foreach (var p in procs)
+            //        {
+            //            File.AppendAllText(LogFile(), DateTime.Now + " :: Killed PID { " + p.Id + " }");
+            //            p.Kill();
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        File.AppendAllText(LogFile(), DateTime.Now + " :: Error { " + ex.Message + " }");
+            //    }
+            //}
         }
     }
 }
