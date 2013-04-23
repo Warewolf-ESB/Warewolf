@@ -21,7 +21,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
         {
             UITestControlCollection variableList = getVariableList();
             UITestControl theBox = variableList[position].GetChildren()[1];
-           
+
             string helpText = theBox.GetProperty("HelpText").ToString();
 
             if (helpText == "You have entered invalid characters")
@@ -94,13 +94,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             bool result = false;
 
             UITestControlCollection variableList = getVariableList();
-            var children =variableList[position].GetChildren(); 
-            var button = children.Last(c => c.ClassName == "Uia.Button");
-            if(button.Height == -1)
+            var item = variableList[position];
+            if (item != null)
             {
-                result = true;
+                var children = item.GetChildren();
+                var button = children.Last(c => c.ClassName == "Uia.Button");
+                if (button != null && button.Height == -1)
+                {
+                    result = true;
+                }                
             }
-            UITestControlCollection theBox = variableList[position].GetChildren();
 
             return result;
         }
