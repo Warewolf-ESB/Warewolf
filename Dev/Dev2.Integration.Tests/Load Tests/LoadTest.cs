@@ -77,7 +77,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             // Travis.Frisinger - Bug 8579
             // Was 10.0 Moved to 2.5
             Console.WriteLine("Took " + duration);
-            Assert.IsTrue(duration <= 2.5);
+            Assert.IsTrue(duration <= 2.5, " It Took { " + duration + " }");
             
             
         }
