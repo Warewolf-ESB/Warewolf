@@ -19,5 +19,6 @@ namespace Dev2.Studio.Core.ViewModels {
         bool NotifyItemSelected(object primarySelection);
         ActivityBuilder GetBaseUnlimitedFlowchartActivity();
         void BindToModel();
+        void AddMissingWithNoPopUpAndFindUnusedDataListItems();
     }
 }

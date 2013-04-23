@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Windows.Forms;
@@ -20,7 +21,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
         {
             UITestControlCollection variableList = getVariableList();
             UITestControl theBox = variableList[position].GetChildren()[1];
-           
+
             string helpText = theBox.GetProperty("HelpText").ToString();
 
             if (helpText == "You have entered invalid characters")
@@ -86,6 +87,25 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             WpfEdit theEdit = (WpfEdit)subsetCollection[valIndex].GetChildren()[1];
             string helpText = theEdit.HelpText;
             return helpText;
+        }
+
+        public bool CheckIfVariableIsUsed(int position)
+        {
+            bool result = false;
+
+            UITestControlCollection variableList = getVariableList();
+            var item = variableList[position];
+            if (item != null)
+            {
+                var children = item.GetChildren();
+                var button = children.Last(c => c.ClassName == "Uia.Button");
+                if (button != null && button.Height == -1)
+                {
+                    result = true;
+                }                
+            }
+
+            return result;
         }
     }
 }

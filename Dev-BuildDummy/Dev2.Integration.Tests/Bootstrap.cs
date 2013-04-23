@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Management;
 using System.Reflection;
 using System.Threading;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace Dev2.Integration.Tests
 {
@@ -18,6 +20,8 @@ namespace Dev2.Integration.Tests
         private const string _serverName = "Dev2.Server.exe";
         private const string _serverProcName = "Dev2.Server";
 
+        private static object _tumbler = new object();
+
         /// <summary>
         /// Inits the specified text CTX.
         /// </summary>
@@ -25,56 +29,62 @@ namespace Dev2.Integration.Tests
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
-
-            var assembly = Assembly.GetExecutingAssembly();
-            var loc = assembly.Location;
-
-            var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
-
-            //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
-
-            ServerLogger.LogMessage("Server Loc -> " + serverLoc);
-            ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
-
-            var args = "-t";
-
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = false;
-            startInfo.UseShellExecute = true;
-            startInfo.FileName = serverLoc;
-            //startInfo.RedirectStandardOutput = true;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.Arguments = args;
-
-            var started = false;
-            var startCnt = 0;
-
-            while (!started && startCnt < 5)
+            lock (_tumbler)
             {
-                try
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+
+                var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+
+                //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
+
+                ServerLogger.LogMessage("Server Loc -> " + serverLoc);
+                ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+
+                var args = "-t";
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = false;
+                startInfo.UseShellExecute = true;
+                startInfo.FileName = serverLoc;
+                //startInfo.RedirectStandardOutput = true;
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.Arguments = args;
+
+                var started = false;
+                var startCnt = 0;
+
+                while (!started && startCnt < 5)
                 {
-                    _serverProc = Process.Start(startInfo);
-                    started = true;
-
-                    // Wait for server to start
-                    Thread.Sleep(15000); // wait up to 15 seconds for server to start ;)
-
-                    ServerLogger.LogMessage("Server Started for Integration Test Run");
-
-                }
-                catch (Exception e)
-                {
-                    ServerLogger.LogMessage("Exception : " + e.Message);
-
-                    // most likely a server is already running, kill it and try again ;)
-                    startCnt++;
-
-                    // term any existing server processes ;)
-                    Process[] procs = Process.GetProcessesByName(_serverProcName);
-                    foreach (var proc in procs)
+                    try
                     {
-                        ServerLogger.LogMessage("Killing Process { " + proc.ProcessName + " }");
-                        proc.Kill();
+                        _serverProc = Process.Start(startInfo);
+                        
+                        // Wait for server to start
+                        Thread.Sleep(10000); // wait up to 15 seconds for server to start ;)
+                        if (!_serverProc.HasExited)
+                        {
+                            started = true;
+                            ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                        }
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        ServerLogger.LogMessage("Exception : " + e.Message);
+
+                        // most likely a server is already running, kill it and try again ;)
+                        startCnt++;
+
+                        // term any existing server processes ;)
+                        TerminateProcess(_serverProcName);
+                    }
+                    finally
+                    {
+                        if (!started){
+                            ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
+                        }
                     }
                 }
             }
@@ -90,6 +100,44 @@ namespace Dev2.Integration.Tests
             {
                 _serverProc.Kill();
                 ServerLogger.LogMessage("Server Terminated");
+            }
+        }
+        
+
+        private static void TerminateProcess(string procName)
+        {
+            ServerLogger.LogMessage( "** Kill Process LIKE { "  + procName + " }");
+            var processName = procName;
+            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+            //initialize the searcher with the query it is
+            //supposed to execute
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            {
+                //execute the query
+                ManagementObjectCollection processes = searcher.Get();
+                if (processes.Count <= 0)
+                {
+                    ServerLogger.LogMessage("No processes");
+                }
+                else
+                {
+                    
+                    foreach (ManagementObject process in processes)
+                    {
+                        //print process properties
+
+                        process.Get();
+                        PropertyDataCollection processProperties = process.Properties;
+
+                        var pid = processProperties["ProcessID"].Value.ToString();
+
+                        ServerLogger.LogMessage("Killed Process { " + pid + " }");
+
+                        var proc = Process.GetProcessById(Int32.Parse(pid));
+
+                        proc.Kill();
+                    }
+                }
             }
         }
     }

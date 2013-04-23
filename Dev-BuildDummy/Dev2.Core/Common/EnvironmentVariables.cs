@@ -73,5 +73,7 @@ namespace Dev2.Common
                        ? ApplicationPath
                        : Path.Combine(WorkspacePath, workspaceID.ToString());
         }
+
+        public static bool IsServerOnline { get; set; }
     }
 }

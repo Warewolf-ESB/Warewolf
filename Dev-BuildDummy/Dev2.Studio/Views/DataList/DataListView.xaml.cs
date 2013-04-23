@@ -45,8 +45,7 @@ namespace Dev2.Studio.Views.DataList
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
             if (vm != null)
-            {
-
+            {                
                 TextBox txtbox = sender as TextBox;
                 if (txtbox != null)
                 {
@@ -55,12 +54,12 @@ namespace Dev2.Studio.Views.DataList
                     vm.AddRecordsetNamesIfMissing();
                     vm.ValidateNames(itemThatChanged);
                 }
-            }
+            }           
         }
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            WriteToResourceModel();
+            WriteToResourceModel();            
         }
 
         private void Inputcbx_OnChecked(object sender, RoutedEventArgs e)

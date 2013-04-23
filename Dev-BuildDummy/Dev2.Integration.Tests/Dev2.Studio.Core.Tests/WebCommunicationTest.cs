@@ -9,7 +9,9 @@ using Dev2.Integration.Tests;
 using System.Xml.Linq;
 
 namespace Dev2.Studio.Core.Tests {
+
     [TestClass]
+    [Ignore]
     public class WebCommunicationTest {
 
         private string webserverURI = ServerSettings.WebserverURI;

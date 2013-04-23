@@ -2886,6 +2886,29 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
+        #region DataList View Tests
+
+        [TestMethod]
+        public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //Open the correct workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");            
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            VariablesUIMap.ClickVariableName(0);            
+            SendKeys.SendWait("codedUITestVar");
+            VariablesUIMap.ClickVariableName(1);
+            
+            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
+            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
+        }
+
+        #endregion
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

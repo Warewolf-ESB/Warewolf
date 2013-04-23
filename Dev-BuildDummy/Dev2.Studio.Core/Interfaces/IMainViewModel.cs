@@ -45,6 +45,8 @@ namespace Dev2.Studio.Core.Interfaces
         void Save(IContextualResourceModel resource, bool showWindow = true);
         void Build(IContextualResourceModel resource, bool showWindow = true, bool deploy = true);
         void AddNewResource(string resourceType);
+        //Massimo.Guerrera:16-04-2013 - BUG 9222
+        void AddMissingAndFindUnusedVariableForActiveWorkflow();
 
     }
 }
