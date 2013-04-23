@@ -656,8 +656,9 @@
 								<bdsviews:ToolboxUserControl/>
 							</igDock:ContentPane>
 							<igDock:ContentPane x:Name="Variables" 
+                                                LostKeyboardFocus="Variables_OnKeyboardLostFocus"
 								Header="Variables" AllowClose="False"
-								AllowInDocumentHost="False" IsPinned="False" >
+								AllowInDocumentHost="False" IsPinned="False" x:FieldModifier="public">
 								<dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
 							</igDock:ContentPane>
 						</igDock:TabGroupPane>

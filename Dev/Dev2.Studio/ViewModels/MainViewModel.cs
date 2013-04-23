@@ -52,6 +52,7 @@ using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Web;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Administration;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Views.UserInterfaceBuilder;
@@ -739,6 +740,16 @@ namespace Dev2.Studio.ViewModels
 
         #region Public Methods
 
+        //Massimo.Guerrera:16-04-2013 - Added for the findmissing to fire when anything on the variables pane losses focus - BUG 9222
+        public void AddMissingAndFindUnusedVariableForActiveWorkflow()
+        {
+            var vm = ActiveItem.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+            if(vm != null)
+            {
+                vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            }
+        }
+
         public void AddNewResource(string resourceType)
         {
             ShowNewResourceWizard(new Tuple<IEnvironmentModel, string>(ActiveEnvironment, resourceType));
@@ -750,6 +761,7 @@ namespace Dev2.Studio.ViewModels
             if (vm != null)
             {
                 vm.BindToModel();
+                vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             }
             if (resource == null) return;
 
@@ -2010,6 +2022,12 @@ namespace Dev2.Studio.ViewModels
 
         protected override void OnActivationProcessed(WorkSurfaceContextViewModel item, bool success)
         {
+
+            if(item != null && item.WorkSurfaceViewModel is WorkflowDesignerViewModel)
+            {
+                (item.WorkSurfaceViewModel as WorkflowDesignerViewModel).AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            }
+
             base.OnActivationProcessed(item, success);
 
             if (success)

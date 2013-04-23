@@ -89,7 +89,12 @@
                         <CheckBox IsTabStop="False" Grid.Column="2" HorizontalAlignment="Center"
                                   IsChecked="{Binding Output}" VerticalAlignment="Center" Checked="Outputcbx_OnChecked" Unchecked="Outputcbx_OnChecked" Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>                    
 
-                        <Button Grid.Column="1" Grid.ColumnSpan="2" Click="ButtonBase_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Center" Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                        <Button Grid.Column="1" Grid.ColumnSpan="2"
+                                Click="ButtonBase_OnClick"
+                                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                HorizontalAlignment="Center"
+                                Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                Focusable="False">
                             <Image Source="/Images/erase.png" Width="12" Height="12"/>
                             <Button.ToolTip>
                                 <ToolTip ContentStringFormat="Remove [[{0}]] from the variable list">

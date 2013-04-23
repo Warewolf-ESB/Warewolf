@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Windows.Forms;
@@ -86,6 +87,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             WpfEdit theEdit = (WpfEdit)subsetCollection[valIndex].GetChildren()[1];
             string helpText = theEdit.HelpText;
             return helpText;
+        }
+
+        public bool CheckIfVariableIsUsed(int position)
+        {
+            bool result = false;
+
+            UITestControlCollection variableList = getVariableList();
+            var children =variableList[position].GetChildren(); 
+            var button = children.Last(c => c.ClassName == "Uia.Button");
+            if(button.Height == -1)
+            {
+                result = true;
+            }
+            UITestControlCollection theBox = variableList[position].GetChildren();
+
+            return result;
         }
     }
 }
