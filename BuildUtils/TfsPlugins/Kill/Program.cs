@@ -21,6 +21,8 @@ namespace Kill
         {
             if (args.Length == 1)
             {
+                File.WriteAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
+
                 try
                 {
                     Process[] procs = Process.GetProcessesByName(args[0]);
