@@ -135,8 +135,6 @@ namespace Unlimited.UnitTest.Framework
                 cols.Add(Dev2BinaryDataListFactory.CreateColumn("f4"));
                 cols.Add(Dev2BinaryDataListFactory.CreateColumn("f5"));
 
-
-
                 dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
 
                 for (int i = 0; i < r; i++)
