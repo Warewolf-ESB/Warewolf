@@ -170,7 +170,7 @@ namespace Unlimited.UnitTest.Framework
             }
             Console.WriteLine(result1 + " seconds for " + runs + " to clone ");
 
-            Assert.IsTrue(result1 <= 10); // Given .1 buffer ;) WAS " 0.65
+            Assert.IsTrue(result1 <= 10, " It Took " + result1); // Given .1 buffer ;) WAS " 0.65
 
         }
         #endregion
@@ -259,7 +259,7 @@ namespace Unlimited.UnitTest.Framework
             
             Console.WriteLine(result1 + " seconds for " + runs + " with 5 cols");
 
-            Assert.IsTrue(result1 <= 7); // Given 0.75 WAS : 0.75
+            Assert.IsTrue(result1 <= 7, " It Took " + result1); // Given 0.75 WAS : 0.75
             // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!
            
         }
