@@ -81,13 +81,13 @@ namespace Dev2.Integration.Tests.Load_Tests
             {
                 Assert.IsTrue(duration <= 2.5, " It Took { " + duration + " }");
             }
-            else if (duration <= 7)
+            else if (duration <= 18)
             {
-                Assert.Inconclusive("It took too long to run this test!");
+                Assert.Inconclusive("It took too long to run this test! { " + duration + " }");
             }
             else
             {
-                Assert.Fail("Get new hardware buddy!");
+                Assert.Fail("Get new hardware buddy! { " + duration + " }");
             }
             
             
