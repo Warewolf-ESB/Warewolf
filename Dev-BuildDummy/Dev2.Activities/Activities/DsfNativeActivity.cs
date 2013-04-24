@@ -692,6 +692,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IList<IDebugItemResult> results = new List<IDebugItemResult>();
             ErrorResultTO errors = new ErrorResultTO();
+
             IList<IDebugItemResult> resultsToPush = new List<IDebugItemResult>();
             if (DataListUtil.IsValueRecordset(expression))
             {
