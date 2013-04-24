@@ -1,4 +1,5 @@
 ﻿using System.Windows.Automation;
+using System.Windows.Input;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -14,11 +15,13 @@ using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
@@ -441,6 +444,126 @@ namespace Dev2.CodedUI.Tests
 
             // All good - Clean up!
             //DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "PBI8601");
+        }
+
+        //PBI_8853
+        [TestMethod]
+        public void ClickNewWorkflow_Expected_WorkflowOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+            Thread.Sleep(2500);
+            if (WorkflowWizardUIMap.UIWorkflowServiceDetaiWindow==null)
+            {
+                Assert.Fail("Error - Clicking the new Workflow button does not create the new Workflow Window");
+            }
+            WorkflowWizardUIMap.CloseWizard();
+        }     
+        
+        [TestMethod]
+        public void NewWorkflowShortcutKey_Expected_WorkflowOpens()
+        {
+//            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+            Keyboard.SendKeys("W",ModifierKeys.Control);
+            //Thread.Sleep(2500);
+            if (WorkflowWizardUIMap.UIWorkflowServiceDetaiWindow==null)
+            {
+                Assert.Fail("Error - Clicking the new Workflow button does not create the new Workflow Window");
+            }
+            WorkflowWizardUIMap.CloseWizard();
+        }        
+        
+        [TestMethod]
+        public void ClickNewDatabaseService_Expected_DatabaseServiceOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
+            Thread.Sleep(1500);
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if (uIItemImage == null)
+            {
+                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
+            }
+            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
+        }
+        
+        [TestMethod]
+        public void NewDatabaseServiceShortcutKey_Expected_DatabaseServiceOpens()
+        {
+            //RibbonUIMap.ClickRibbonMenuItem("Home", "Database Service");
+            SendKeys.SendWait("^+(D)");
+            Thread.Sleep(1500);
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if (uIItemImage == null)
+            {
+                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
+            }
+            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
+        }
+
+
+        [TestMethod]
+        public void ClickNewPluginService_Expected_PluginServiceOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Plugin Service");
+            Thread.Sleep(1500);
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIPluginServiceDetailsWindow;
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            PluginServiceWizardUIMap.CloseWizard();
+        }  
+    
+        [TestMethod]
+        public void ClickNewPluginServiceShortcutKey_Expected_PluginServiceOpens()
+        {
+           // RibbonUIMap.ClickRibbonMenuItem("Home", "Plugin Service");
+            SendKeys.SendWait("^+(P)");
+            Thread.Sleep(1500);
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIPluginServiceDetailsWindow;
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            PluginServiceWizardUIMap.CloseWizard();
+        }      
+        
+        [TestMethod]
+        public void ClickNewRemoteWarewolfServer_Expected_RemoteWarewolfServerOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Remote Warewolf");
+            Thread.Sleep(2500);
+            UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
+            }
+            NewServerUIMap.CloseWindow();
+        } 
+        
+        [TestMethod]
+        public void ClickNewDatabaseSource_Expected_DatabaseSourceOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Database");
+            Thread.Sleep(1500);
+            UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the Database source button does not create the new Database source window");
+            }
+            DatabaseSourceWizardUIMap.ClickCancel();
+        } 
+        
+        [TestMethod]
+        public void ClickNewPluginSource_Expected_PluginSourceOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Plugin");
+            Thread.Sleep(2500);
+            UITestControl uiTestControl = PluginSourceMap.UIPluginSourceManagmenWindow;
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the plugin source button does not create the new plugin source window");
+            }
+            PluginSourceMap.ClickCancel();
         }
 
         #endregion New PBI Tests
@@ -3238,7 +3361,39 @@ namespace Dev2.CodedUI.Tests
         private DatabaseServiceWizardUIMap _databaseServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
+        #region Database Source Wizard UI Map
 
+        public DatabaseSourceUIMap DatabaseSourceWizardUIMap
+        {
+            get
+            {
+                if (_databaseSourceWizardUIMap == null)
+                {
+                    _databaseSourceWizardUIMap = new DatabaseSourceUIMap();
+                }
+
+                return _databaseSourceWizardUIMap;
+            }
+        }
+
+        private DatabaseSourceUIMap _databaseSourceWizardUIMap;
+
+        public PluginSourceMap PluginSourceMap
+        {
+            get
+            {
+                if (_pluginSourceWizardUIMap == null)
+                {
+                    _pluginSourceWizardUIMap = new PluginSourceMap();
+                }
+
+                return _pluginSourceWizardUIMap;
+            }
+        }
+
+        private PluginSourceMap _pluginSourceWizardUIMap;
+
+        #endregion Database Wizard UI Map
         #region Feedback UI Map
 
         public FeedbackUIMap FeedbackUIMap
