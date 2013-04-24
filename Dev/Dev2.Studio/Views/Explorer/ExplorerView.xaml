@@ -67,12 +67,12 @@
                                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}" Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" Visibility="{Binding CanDisconnect, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID" />
                                 <MenuItem Header="File" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" >
-                                    <MenuItem Header="New Workflow" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
+                                    <MenuItem Header="New Workflow (Ctrl + W)" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
                                     <MenuItem Header="New Service" >
                                         <!--                                <MenuItem Header="Remote Workflow" />-->
-                                        <MenuItem Header="Database Procedure"  Command="{Binding Path=NewResourceCommand}"
+                                        <MenuItem Header="Database Procedure (Ctrl + Shift +  D)"  Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="DatabaseService"/>
-                                        <MenuItem Header="Plugin"  Command="{Binding Path=NewResourceCommand}"
+                                        <MenuItem Header="Plugin (Ctrl + Shift +  P)"  Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="ResourceService"/>
                                     </MenuItem>
                                     <MenuItem Header="Add Source"  Command="{Binding Path=NewResourceCommand}"
