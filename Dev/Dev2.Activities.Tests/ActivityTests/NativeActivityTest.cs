@@ -6,6 +6,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Simulation;
+using Dev2.Tests.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -14,6 +15,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -481,6 +483,35 @@ namespace ActivityUnitTests.ActivityTests
             };
         }
 
+        #endregion
+
+        #region DebugItems
+        [TestMethod]
+        public void CanRecordsetsWithNoEntriesRenderNoInputs()
+        {
+            // CreateDebugItemsFromEntry
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            string dataList = "<root><recset><f1/></recset></root>";
+            ErrorResultTO errors = new ErrorResultTO();
+
+            Guid id = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dataList, out errors);
+            IBinaryDataListEntry entry;
+            var dl = compiler.FetchBinaryDataList(id, out errors);
+
+            string error;
+            dl.TryGetEntry("recset", out entry, out error);
+
+            DsfFakeActivity ta = new DsfFakeActivity();
+
+            var result = ta.CreateDebugItemsFromEntry("[[recset()]]", entry, id, enDev2ArgumentType.Input);
+
+            compiler.ForceDeleteDataListByID(id);
+
+
+            Assert.AreEqual(0, result.Count, "Empty recordset returned items for debug ;(");
+
+
+        }
         #endregion
     }
 }

@@ -105,22 +105,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
 
                     bdl.TryGetEntry(rs, out recset, out err);
+                    allErrors.AddError(err); 
 
                     if(dataObject.IsDebug)
                     {
                         AddDebugInputItem(RecordsetName,"Recordset",recset,executionId);
                     }
 
-                    allErrors.AddError(err);                    
-                    
                     if (recset != null)
                     {
-
-                        allErrors.MergeErrors(errors);
-
                         if (recset.Columns != null && CountNumber != string.Empty)
                         {
-                            string error;
                             // Travis.Frisinger - Re-did work for bug 7853 
                             if (recset.IsEmpty())
                             {
@@ -130,12 +125,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     AddDebugOutputItem(CountNumber, "0", executionId);
                                 }
                             }
-                            else if (recset.FetchRecordAt(1, out error).Count > 0)
+                            else
                             {
-                                compiler.Upsert(executionId, CountNumber, recset.FetchLastRecordsetIndex().ToString(CultureInfo.InvariantCulture), out errors);
+                                int cnt = recset.ItemCollectionSize();
+                                compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
                                 if (dataObject.IsDebug)
                                 {
-                                    AddDebugOutputItem(CountNumber, recset.FetchLastRecordsetIndex().ToString(CultureInfo.InvariantCulture), executionId);
+                                    AddDebugOutputItem(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId);
                                 }
                             }
 

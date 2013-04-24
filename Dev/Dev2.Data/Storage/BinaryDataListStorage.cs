@@ -108,14 +108,23 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
+        int ExtractIndexFromKey(string key)
+        {
+            int pos = key.IndexOf("|", StringComparison.Ordinal);
+            if (pos > 0)
+            {
+                string tmp = key.Substring(0, pos);
+                int result;
+                Int32.TryParse(tmp, out result);
+                return result;
+            }
+
+            return -1;
+        }
+
         string GetUniqueKey(int key)
         {
-            if (_key != key)
-            {
-                _key = key;
-                _uniqueKey = _key.ToString(CultureInfo.InvariantCulture) + _uniqueIndentifier;
-            }
-            return _uniqueKey;
+            return _uniqueKey = key + "|" + _uniqueIndentifier;
         }
 
         public IBinaryDataListRow this[int key]
@@ -133,12 +142,12 @@ namespace Dev2.Data.Binary_Objects
                 AddToLevelOneCache(uniqueKey, value);
                 // remove from level 2 and 3 if present
 
+                _level2Lock.EnterWriteLock();
                 if (LevelTwoCache.Contains(uniqueKey))
                 {
-                    _level2Lock.EnterWriteLock();
                     LevelTwoCache.Remove(uniqueKey);
-                    _level2Lock.ExitWriteLock();
                 }
+                _level2Lock.ExitWriteLock();
 
                 // only if there is data to clear....
                 if (ItemsAddedToLevelThreeCache)
@@ -178,6 +187,16 @@ namespace Dev2.Data.Binary_Objects
                     }
                 }
                 _populatedKeys.MaxValue = idx;
+            }
+        }
+
+        public void RemoveValueFromIndex(string key)
+        {
+
+            int idx = ExtractIndexFromKey(key);
+            if (idx > -1 && idx <= _populatedKeys.MaxValue)
+            {
+                _populatedKeys.AddGap(idx); // Remove from indexes too :)    
             }
         }
 
@@ -438,15 +457,18 @@ namespace Dev2.Data.Binary_Objects
         {
             IEnumerable<string> keys = LevelOneCache.Keys
                                                     .Where(key =>
-                                                           key.Contains(_uniqueIndentifier));
+                                                           key.IndexOf(_uniqueIndentifier, StringComparison.Ordinal) > 0);
+
+            _level1Lock.EnterWriteLock();
 
             foreach (string key in keys)
             {
                 IBinaryDataListRow row;
-                _level1Lock.EnterWriteLock();
                 LevelOneCache.TryRemove(key, out row);
-                _level1Lock.ExitWriteLock();
+                RemoveValueFromIndex(key); // Remove from indexes too :)   
             }
+
+            _level1Lock.ExitWriteLock();
         }
 
         void RemoveFromLevelTwoCache()
@@ -455,14 +477,17 @@ namespace Dev2.Data.Binary_Objects
                 LevelTwoCache.Select(pair => pair.Key)
                                 .Where(
                                     key =>
-                                    (key.Contains(_uniqueIdentifierGuid)) && !string.IsNullOrEmpty(key));
+                                    (key.IndexOf(_uniqueIdentifierGuid, StringComparison.Ordinal)) >= 0 && !string.IsNullOrEmpty(key));
+
+            _level2Lock.EnterWriteLock();
 
             foreach (var key in keys)
             {
-                _level2Lock.EnterWriteLock();
                 LevelTwoCache.Remove(key);
-                _level2Lock.ExitWriteLock();
+                RemoveValueFromIndex(key); // Remove from indexes too :) 
             }
+
+            _level2Lock.ExitWriteLock();
         }
 
         void RemoveFromLevelThreeCache()
@@ -471,14 +496,17 @@ namespace Dev2.Data.Binary_Objects
             {
                 IEnumerable<string> keys =
                     LevelThreeCache.Keys.Where(
-                        pair => (pair.Contains(_uniqueIndentifier)) && !string.IsNullOrEmpty(pair));
+                        pair => (pair.IndexOf(_uniqueIndentifier, StringComparison.Ordinal)) >= 0 && !string.IsNullOrEmpty(pair));
+
+                _level3Lock.EnterWriteLock();
 
                 foreach (string key in keys)
                 {
-                    _level3Lock.EnterWriteLock();
                     LevelThreeCache.Remove(key);
-                    _level3Lock.ExitWriteLock();
+                    RemoveValueFromIndex(key); // Remove from indexes too :)   
                 }
+
+                _level3Lock.ExitWriteLock();
             }
 
             //LevelThreeCache.Dispose();

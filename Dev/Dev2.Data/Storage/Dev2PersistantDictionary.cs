@@ -279,8 +279,8 @@ namespace Dev2.Data.Binary_Objects
 
         public void Add(string key, T objToAdd)
         {
-            lock (_opsLock)
-            {
+            //lock (_opsLock)
+            //{
                 if (_file.Length - _lastCompactSize > _compactThresholdSize)
                 {
                     Compact();
@@ -306,19 +306,19 @@ namespace Dev2.Data.Binary_Objects
                 }
 
                 _file.Write(data, 0, data.Length);
-            }
+            //}
         }
 
         public void Remove(string key)
         {
-            lock (_opsLock)
-            {
+            //lock (_opsLock)
+            //{
                 string tmp;
                 if (_lstIndexes.TryRemove(key, out tmp))
                 {
                     _hasBeenRemoveSinceLastCompact = true;
                 }
-            }
+            //}
         }
 
         #endregion

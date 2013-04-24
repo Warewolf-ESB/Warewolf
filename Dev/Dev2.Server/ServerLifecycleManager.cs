@@ -501,9 +501,19 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine("<configuration>");
+
+                // logging info
+                builder.AppendLine("\t<Logging>");
+                builder.AppendLine("\t\t<Debug Enabled=\"true\" />");
+                builder.AppendLine("\t\t<Error Enabled=\"true\" />");
+                builder.AppendLine("\t\t<Info Enabled=\"true\" />");
+                builder.AppendLine("\t\t<Trace Enabled=\"false\" />");
+                builder.AppendLine("\t</Logging>");
+                // end logging info
+
                 builder.AppendLine("\t<GCManager Enabled=\"false\">");
                 builder.AppendLine("\t\t<MinWorkingSet>60</MinWorkingSet>");
-                builder.AppendLine("\t\t<MaxWorkingSet>1536</MaxWorkingSet>");
+                builder.AppendLine("\t\t<MaxWorkingSet>6144</MaxWorkingSet>");
                 builder.AppendLine("\t</GCManager>");
                 builder.AppendLine("\t<PreloadAssemblies>true</PreloadAssemblies>");
                 builder.AppendLine("\t<AssemblyReferenceGroup>");
@@ -540,6 +550,15 @@ namespace Unlimited.Applications.DynamicServicesHost
                     if (result)
                     {
                         ReadBooleanSection(section, "PreloadAssemblies", ref result, ref _preloadAssemblies);
+
+
+                        if (String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (!ProcessLoggingConfiguration(section))
+                            {
+                                result = false;
+                            }
+                        }
 
                         if (String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
                         {
@@ -665,6 +684,100 @@ namespace Unlimited.Applications.DynamicServicesHost
                         else
                         {
                             Fail("Configuration error, MaxWorkingSet must be given a value.");
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool ProcessLoggingConfiguration(XmlNode section)
+        {
+
+            XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
+
+            if (allReferences != null)
+            {
+                foreach (XmlNode current in allReferences)
+                {
+                    if (String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!String.IsNullOrEmpty(current.InnerText))
+                        {
+                            bool result;
+
+                            if (Boolean.TryParse(current.InnerText, out result))
+                            {
+                                ServerLogger.EnableDebugOutput = result;
+                            }
+                            else
+                            {
+                                Fail("Configuration error, Debug must be an boolean value.");
+                            }
+                        }
+                        else
+                        {
+                            Fail("Configuration error, Debug must be given a value.");
+                        }
+                    } else if (String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!String.IsNullOrEmpty(current.InnerText))
+                        {
+                            bool result;
+
+                            if (Boolean.TryParse(current.InnerText, out result))
+                            {
+                                ServerLogger.EnableTraceOutput = result;
+                            }
+                            else
+                            {
+                                Fail("Configuration error, Trace must be an boolean value.");
+                            }
+                        }
+                        else
+                        {
+                            Fail("Configuration error, Trace must be given a value.");
+                        }
+                    }
+                    else if (String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!String.IsNullOrEmpty(current.InnerText))
+                        {
+                            bool result;
+
+                            if (Boolean.TryParse(current.InnerText, out result))
+                            {
+                                ServerLogger.EnableErrorOutput = result;
+                            }
+                            else
+                            {
+                                Fail("Configuration error, Error must be an boolean value.");
+                            }
+                        }
+                        else
+                        {
+                            Fail("Configuration error, Error must be given a value.");
+                        }
+                    }
+                    else if (String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!String.IsNullOrEmpty(current.InnerText))
+                        {
+                            bool result;
+
+                            if (Boolean.TryParse(current.InnerText, out result))
+                            {
+                                ServerLogger.EnableInfoOutput = result;
+                            }
+                            else
+                            {
+                                Fail("Configuration error, Info must be an boolean value.");
+                            }
+                        }
+                        else
+                        {
+                            Fail("Configuration error, Info must be given a value.");
                         }
                     }
                 }
@@ -983,7 +1096,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             if (_enableGCManager)
             {
-                TraceWriter.WriteTrace("SLM garbage collection manager enabled.");
+                WriteLine("SLM garbage collection manager enabled.");
                 _gcmThreadStart = GCM_EntryPoint;
                 _lastKnownWorkingSet = -1L;
                 _nextForcedCollection = DateTime.Now.AddSeconds(5.0);
@@ -994,7 +1107,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
             else
             {
-                TraceWriter.WriteTrace("SLM garbage collection manager disabled.");
+                WriteLine("SLM garbage collection manager disabled.");
             }
 
             return true;
@@ -1023,7 +1136,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                         if (shouldCollect)
                         {
-                            TraceWriter.WriteTrace("Collecting...");
+                            WriteLine("Collecting...");
                             _lastKnownWorkingSet = GC.GetTotalMemory(true);
                             now = DateTime.Now;
                         }

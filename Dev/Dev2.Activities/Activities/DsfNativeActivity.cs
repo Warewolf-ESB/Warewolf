@@ -8,7 +8,6 @@ using Dev2.Enums;
 using Dev2.Simulation;
 using System;
 using System.Activities;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -623,7 +622,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (!string.IsNullOrEmpty(expression))
             {
 
-                if (!(expression.Contains("!~calculation~!") && expression.Contains("!~~calculation~!")))
+                if (!(expression.Contains(GlobalConstants.CalculateTextConvertPrefix) && expression.Contains(GlobalConstants.CalculateTextConvertSuffix)))
                 {
                     if (!expression.ContainsSafe("[["))
                     {
@@ -637,14 +636,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    expression = expression.Replace("!~calculation~!", string.Empty).Replace("!~~calculation~!", string.Empty);
+                    expression = expression.Replace(GlobalConstants.CalculateTextConvertPrefix, string.Empty).Replace(GlobalConstants.CalculateTextConvertSuffix, string.Empty);
                 }
 
-                if (dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star || (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
+                
+                var rsType = DataListUtil.GetRecordsetIndexType(expression);
+                if (dlEntry.IsRecordset
+                    && (DataListUtil.IsValueRecordset(expression) 
+                    && (rsType == enRecordsetIndexType.Star 
+                            || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
-                    foreach (var debugItem in CreateRecordsetDebugItems(expression, dlEntry))
+                    // Added IsEmpty check for Bug 9263 ;)
+                    if (!dlEntry.IsEmpty())
                     {
-                        results.Add(debugItem);
+                        foreach (var debugItem in CreateRecordsetDebugItems(expression, dlEntry))
+                        {
+                            results.Add(debugItem);
+                        }
                     }
                 }
                 else
@@ -668,11 +676,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             expression = expression.Replace("().", string.Concat("(", indexToUse, ")."));
                         }
                     }
+
                     IBinaryDataListItem item = dlEntry.FetchScalar();
                     foreach (var debugItem in CreateScalarDebugItems(expression, item.TheValue, dlId))
                     {
                         results.Add(debugItem);
                     }
+
                 }
             }
             return results;
