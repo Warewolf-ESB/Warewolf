@@ -61,19 +61,16 @@ namespace Dev2.Integration.Tests.Load_Tests
         [TestMethod]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
         {
-            
             string path = ServerSettings.WebserverURI + "LargeDataTest";
 
             DateTime start = DateTime.Now;
             string result = TestHelper.PostDataToWebserver(path);
             DateTime end = DateTime.Now;
-
             double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
-
 
             string exp = "<myPrimes><value> 104729</value></myPrimes>"; // Last value in the file
 
-            Assert.IsTrue(result.IndexOf(exp) > 0);
+            Assert.IsTrue(result.IndexOf(exp, StringComparison.Ordinal) > 0);
             // Travis.Frisinger - Bug 8579
             // Was 10.0 Moved to 2.5
             Console.WriteLine("Took " + duration);
@@ -89,8 +86,6 @@ namespace Dev2.Integration.Tests.Load_Tests
             {
                 Assert.Fail("Get new hardware buddy! { " + duration + " }");
             }
-            
-            
         }
 
         // Travis.Frisinger - Bug 8579

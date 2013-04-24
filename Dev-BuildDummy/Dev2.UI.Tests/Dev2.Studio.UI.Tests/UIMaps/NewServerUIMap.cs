@@ -55,12 +55,21 @@
             }
         }
 
+       
+
         public void CloseWindow()
         {
-            WpfWindow theWindow = GetNewServerWindow();
-            Point p = new Point(theWindow.BoundingRectangle.Left + theWindow.BoundingRectangle.Width - 25, theWindow.BoundingRectangle.Top + 5);
-            Mouse.Move(p);
-            Mouse.Click();
+//            WpfWindow theWindow = GetNewServerWindow();
+//            Point p = new Point(theWindow.BoundingRectangle.Left + theWindow.BoundingRectangle.Width - 25, theWindow.BoundingRectangle.Top + 5);
+//            Mouse.Move(p);
+//            Mouse.Click();
+
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(654, 455));
         }
 
         public void ClickSaveConnection()

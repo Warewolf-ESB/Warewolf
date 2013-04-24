@@ -10,7 +10,7 @@
 
 using Dev2.CodedUI.Tests;
 
-namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -28,32 +28,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
     
     
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
-    public partial class NewServerUIMap
+    public partial class DatabaseSourceUIMap
     {
         
         /// <summary>
-        /// AssertMethod1
+        /// ClickCancel
         /// </summary>
-        public WpfWindow GetNewServerWindow()
+        public void ClickCancel()
         {
-            WpfWindow uINewServerWindow = this.UINewServerWindow;
-            uINewServerWindow.Find();
-            return uINewServerWindow;
-        }
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
 
+            // Click image
+            Mouse.Click(uIItemImage, new Point(633, 406));
+        }
+        
         #region Properties
-        public UINewServerWindow UINewServerWindow
-        {
-            get
-            {
-                if ((this.mUINewServerWindow == null))
-                {
-                    this.mUINewServerWindow = new UINewServerWindow();
-                }
-                return this.mUINewServerWindow;
-            }
-        }
-
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
@@ -65,42 +56,45 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
                 return this.mUIBusinessDesignStudioWindow;
             }
         }
-
         #endregion
         
         #region Fields
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
-        private UINewServerWindow mUINewServerWindow;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
-    public class UINewServerWindow : WpfWindow
-    {
-        
-        public UINewServerWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "New Server";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("New Server");
-            #endregion
-        }
-    }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
-
+        
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName(); 
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
-
             #endregion
         }
+        
+        #region Properties
+        public WpfImage UIItemImage
+        {
+            get
+            {
+                if ((this.mUIItemImage == null))
+                {
+                    this.mUIItemImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    #endregion
+                }
+                return this.mUIItemImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mUIItemImage;
+        #endregion
     }
 }
