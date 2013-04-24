@@ -438,7 +438,7 @@ namespace Dev2.Data.Binary_Objects
         {
             IEnumerable<string> keys = LevelOneCache.Keys
                                                     .Where(key =>
-                                                           key.Contains(_uniqueIndentifier));
+                                                           key.IndexOf(_uniqueIndentifier, StringComparison.Ordinal) >= 0);
 
             foreach (string key in keys)
             {
@@ -455,7 +455,7 @@ namespace Dev2.Data.Binary_Objects
                 LevelTwoCache.Select(pair => pair.Key)
                                 .Where(
                                     key =>
-                                    (key.Contains(_uniqueIdentifierGuid)) && !string.IsNullOrEmpty(key));
+                                    (key.IndexOf(_uniqueIdentifierGuid, StringComparison.Ordinal)) >= 0 && !string.IsNullOrEmpty(key));
 
             foreach (var key in keys)
             {
@@ -471,7 +471,7 @@ namespace Dev2.Data.Binary_Objects
             {
                 IEnumerable<string> keys =
                     LevelThreeCache.Keys.Where(
-                        pair => (pair.Contains(_uniqueIndentifier)) && !string.IsNullOrEmpty(pair));
+                        pair => (pair.IndexOf(_uniqueIndentifier, StringComparison.Ordinal)) >= 0 && !string.IsNullOrEmpty(pair));
 
                 foreach (string key in keys)
                 {
