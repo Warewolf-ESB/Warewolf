@@ -1,5 +1,6 @@
 ﻿using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Core.Tests.Utils
 {
@@ -7,12 +8,7 @@ namespace Dev2.Core.Tests.Utils
     {
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-
-            mtm.Load(objectToMakeModelItem);
-
-            return mtm.Root;
+            return ModelItemUtils.CreateModelItem(objectToMakeModelItem);
         }
     }
 }

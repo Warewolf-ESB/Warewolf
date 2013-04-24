@@ -1,4 +1,5 @@
 ﻿using System.Activities;
+using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 
 namespace Dev2.Studio.Core.Activities.Utils
@@ -21,6 +22,16 @@ namespace Dev2.Studio.Core.Activities.Utils
 
 
             }
+        }
+
+        public static ModelItem CreateModelItem(object objectToMakeModelItem)
+        {
+            EditingContext ec = new EditingContext();
+            ModelTreeManager mtm = new ModelTreeManager(ec);
+
+            mtm.Load(objectToMakeModelItem);
+
+            return mtm.Root;
         }
 
         public static object GetProperty(string propertyName, ModelItem modelItem)

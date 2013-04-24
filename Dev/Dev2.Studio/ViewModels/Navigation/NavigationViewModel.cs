@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Workspaces;
 using System;
@@ -44,6 +45,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _refreshMenuCommand;
         private string _searchFilter = string.Empty;
         private readonly SynchronizationContext _synchronizationContext;
+        private bool _fromActivityDrop;
+        enDsfActivityType _activityType;
 
         #endregion private fields
 
@@ -53,10 +56,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// Initializes a new instance of the <see cref="NavigationViewModel" /> class.
         /// </summary>
         /// <param name="useAuxiliryConnections">if set to <c>true</c> [use auxiliry connections].</param>
+        /// <param name="fromActivityDrop">if set to <c>true</c> [set up for the activity drop window].</param>
+        /// <param name="activityType">Sets what regions to show in the tree view </param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public NavigationViewModel(bool useAuxiliryConnections)
+        public NavigationViewModel(bool useAuxiliryConnections, bool fromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
+            _activityType = activityType;
+            _fromActivityDrop = fromActivityDrop;
             _synchronizationContext = SynchronizationContext.Current;
             EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
@@ -70,6 +77,31 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion ctor + intit
 
         #region public properties
+
+        public enDsfActivityType DsfActivityType
+        {
+            get
+            {
+                return _activityType;
+            }
+            set
+            {
+                _activityType = value;
+            }
+        }
+
+        public bool IsFromActivityDrop
+        {
+            get
+            {
+                return _fromActivityDrop;
+            }
+            set
+            {
+                _fromActivityDrop = value;
+
+            }
+        }
 
         public bool IsRefreshing
         {
@@ -260,11 +292,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void RefreshEnvironments()
         {
-                foreach (var environment in _environments)
-                {
-                    RefreshEnvironment(environment);
-                }
+            foreach (var environment in _environments)
+            {
+                RefreshEnvironment(environment);
             }
+        }
 
         /// <summary>
         ///     Updates the worksapces for all environments
@@ -283,7 +315,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 foreach (var environment in _environments)
                 {
-                UpdateWorkspace(environment, mainVM.WorkspaceItems);
+                    UpdateWorkspace(environment, mainVM.WorkspaceItems);
                 }
             }
             finally
@@ -413,7 +445,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //add to category
             if (!ReferenceEquals(newCategoryNode, resourceNode.TreeParent)) newCategoryNode.Add(resourceNode);
 
-            if(forceRefresh)
+            if (forceRefresh)
             {
                 UpdateSearchFilter(_searchFilter);
             }
@@ -431,16 +463,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             Root.FilterText = _searchFilter;
             Root.UpdateFilteredNodeExpansionStates(searhFilter);
             Root.NotifyOfFilterPropertyChanged(false);
-                     //BackgroundWorker worker = new BackgroundWorker();
-            
-                     //   worker.DoWork += (s, e) => 
-                     //   {
-                     //       Root.FilterText = _searchFilter;
-                     //       Root.UpdateFilteredNodeExpansionStates(searhFilter);
-                     //       Root.NotifyOfFilterPropertyChanged(false);
-                     //   };
-            
-                     //   worker.RunWorkerAsync();
+            //BackgroundWorker worker = new BackgroundWorker();
+
+            //   worker.DoWork += (s, e) => 
+            //   {
+            //       Root.FilterText = _searchFilter;
+            //       Root.UpdateFilteredNodeExpansionStates(searhFilter);
+            //       Root.NotifyOfFilterPropertyChanged(false);
+            //   };
+
+            //   worker.RunWorkerAsync();
         }
 
         ///// <summary>
@@ -532,12 +564,30 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             ClearChildren(environmentVM);
 
-            BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
+            switch (_activityType)
+            {
+                case enDsfActivityType.Workflow:
+                    BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
                                 resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
-            BuildCategoryTree(ResourceType.Source, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
-            BuildCategoryTree(ResourceType.Service, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                    break;
+                case enDsfActivityType.Service:
+                    BuildCategoryTree(ResourceType.Service, environmentVM,
+                                        resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                    break;
+                case enDsfActivityType.Source:
+                    BuildCategoryTree(ResourceType.Source, environmentVM,
+                              resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                    break;
+                default:
+                    BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
+                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                    BuildCategoryTree(ResourceType.Source, environmentVM,
+                               resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                    BuildCategoryTree(ResourceType.Service, environmentVM,
+                                        resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                    break;
+
+            }
             UpdateSearchFilter(_searchFilter);
         }
 
@@ -614,16 +664,19 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             var res = TreeViewModelFactory.Create(resource, parent, isWizard);
 
-            //
-            // Add wizard
-            //
-            if (WizardEngine.IsResourceWizard(resource))
-                return;
-
-            var wizardResource = WizardEngine.GetWizard(resource);
-            if (wizardResource != null)
+            if (!_fromActivityDrop)
             {
-                AddChild(wizardResource, res, true);
+                //
+                // Add wizard
+                //
+                if (WizardEngine.IsResourceWizard(resource))
+                    return;
+
+                var wizardResource = WizardEngine.GetWizard(resource);
+                if (wizardResource != null)
+                {
+                    AddChild(wizardResource, res, true);
+                }
             }
         }
 

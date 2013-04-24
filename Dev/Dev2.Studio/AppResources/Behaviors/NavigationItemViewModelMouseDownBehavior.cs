@@ -77,6 +77,29 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion SelectOnClick
 
+        #region DontAllowDoubleClick
+
+        public bool DontAllowDoubleClick
+        {
+            get
+            {
+                return (bool)GetValue(DontAllowDoubleClickProperty);
+            }
+            set
+            {
+                SetValue(DontAllowDoubleClickProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for DontAllowDoubleClick.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DontAllowDoubleClickProperty =
+            DependencyProperty.Register("DontAllowDoubleClick", typeof(bool), typeof(NavigationItemViewModelMouseDownBehavior), new PropertyMetadata(true));
+
+        #endregion
+
+
+
+
         #endregion Dependency Properties
 
         #region Private Methods
@@ -141,22 +164,41 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                 if (treenode is ResourceTreeViewModel)
                 {
-                    var resourceTreeViewModel = (ResourceTreeViewModel) treenode;
-                    //
-                    // Double click logic
-                    //
-                    if (OpenOnDoubleClick && e.ClickCount == 2 && resourceTreeViewModel.DataContext != null)
+                    var resourceTreeViewModel = (ResourceTreeViewModel)treenode;
+                    if (resourceTreeViewModel.DataContext != null)
                     {
-                        if (resourceTreeViewModel.EditCommand.CanExecute(null))
-                        {
-                            resourceTreeViewModel.EditCommand.Execute(null);
-                        }
+
+
 
                         //
-                        // Event is set as handled to stop expansion of the treeview item if the behaviour is attached to an item in the treeview
+                        // Double click logic
                         //
-                        e.Handled = true;
+                        if (OpenOnDoubleClick && e.ClickCount == 2)
+                        {
+                            EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
+                            if (!DontAllowDoubleClick)
+                            {                                
+                                if (resourceTreeViewModel.EditCommand.CanExecute(null))
+                                {
+                                    resourceTreeViewModel.EditCommand.Execute(null);
+                                }
+
+                                //
+                                // Event is set as handled to stop expansion of the treeview item if the behaviour is attached to an item in the treeview
+                                //
+                                e.Handled = true;
+                            }
+                        }
+                        else if(OpenOnDoubleClick && e.ClickCount == 1)
+                        {
+                            EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
+                        }
+
                     }
+                }
+                else
+                {
+                    EventAggregator.Publish(new SetSelectedIContextualResourceModel(null,false));
                 }
             }
         }

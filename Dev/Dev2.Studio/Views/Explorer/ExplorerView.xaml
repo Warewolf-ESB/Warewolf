@@ -101,10 +101,10 @@
                                 <MenuItem Header="Properties" Command="{Binding ShowPropertiesCommand}" Visibility="{Binding CanShowProperties, Converter={StaticResource BoolToVisConverter}}" />
                             </ContextMenu>
                         </Border.ContextMenu>
-                        <StackPanel Orientation="Horizontal" AllowDrop="True">                       
+                        <StackPanel Orientation="Horizontal" AllowDrop="False">                       
                             <i:Interaction.Behaviors>
-                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True" SelectOnClick="True" />
-                                <local:NavigationItemViewModelDragDropBehavior />
+                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True" SelectOnClick="True" DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
+                                <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                             </i:Interaction.Behaviors>
                             <TextBlock Width="3"/>
                             <Image Width="24" Height="24" Margin="0,0,0,0">

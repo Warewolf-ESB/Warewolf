@@ -1,4 +1,6 @@
-﻿using Dev2.Activities;
+﻿using System.Windows;
+using System.Windows.Input;
+using Dev2.Activities;
 using System;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Statements;
@@ -93,6 +95,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfExecuteCommandLineActivity), "/Images/CmdToolIcon.png", "CMD Line"));
             }
+
+            //Massimo.Guerrera:17-04-17 - Added for PBI 9000
+            category = GetToolboxCategoryByName("Resources");
+            if (category != null)
+            {
+                category.Add(new ToolboxItemWrapper(typeof(DsfWorkflowActivity), "/Images/workflowservice2.png", "Workflow"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfServiceActivity), "/Images/workerservice.png", "Service"));                
+            }
         }
 
         public void AddActivity(DsfActivity activity)
@@ -118,6 +128,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             {
                 tools.Categories.Add(new ToolboxCategory(categoryName));
             }
-        }
+        }                    
     }
 }

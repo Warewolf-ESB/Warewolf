@@ -18,7 +18,7 @@
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=OKCommand}"/>
         <!--<KeyBinding Key="F10" Command="{Binding Path=StepThrough}"/>-->
-        <KeyBinding Key="Esc" Command="{Binding Path=CancelCommand}"/>
+        <KeyBinding Key="Escape" Command="{Binding Path=CancelCommand}"/>
     </Window.InputBindings>
 
     <i:Interaction.Behaviors>

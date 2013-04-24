@@ -3,6 +3,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
@@ -15,22 +16,18 @@ namespace Dev2.Studio.ViewModels.Explorer
         
         private RelayCommand _connectCommand;
         private RelayCommand _environmentChangedCommand;
+        private bool _fromActivityDrop;
+        private enDsfActivityType _activityType;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel()
+        public ExplorerViewModel(bool fromActivityDrop = false,enDsfActivityType activityType = enDsfActivityType.All)
         {
-//            _mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateExplorer,
-//                                                             o => RefreshEnvironments((o is bool) && (bool) o));
-
-//            Mediator.RegisterToReceiveMessage(MediatorMessages.RemoveServerFromExplorer,
-//                                              o => RemoveEnvironment((IEnvironmentModel) o));
-//            Mediator.RegisterToReceiveMessage(MediatorMessages.AddServerToExplorer,
-//                                              o => AddEnvironment((IEnvironmentModel) o));
-
-            NavigationViewModel = new NavigationViewModel(false);
+            _activityType = activityType;
+            _fromActivityDrop = fromActivityDrop;
+            NavigationViewModel = new NavigationViewModel(false, _fromActivityDrop, _activityType);
             LoadEnvironments();
         }
 
