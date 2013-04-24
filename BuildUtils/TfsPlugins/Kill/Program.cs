@@ -22,7 +22,7 @@ namespace Kill
         {
             if (args.Length == 1)
             {
-                File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
+                File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }" + Environment.NewLine);
                 var processName = args[0];
                 var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
                 //initialize the searcher with the query it is
@@ -33,11 +33,10 @@ namespace Kill
                     ManagementObjectCollection processes = searcher.Get();
                     if (processes.Count <= 0)
                     {
-                        File.AppendAllText(LogFile(), "No processes");
+                        File.AppendAllText(LogFile(), "No processes " + Environment.NewLine);
                     }
                     else
                     {
-                        File.AppendAllText(LogFile(),"Found processes");
                         foreach (ManagementObject process in processes)
                         {
                             //print process properties
@@ -47,7 +46,7 @@ namespace Kill
 
                             var pid = processProperties["ProcessID"].Value.ToString();
 
-                            File.AppendAllText(LogFile(), "Killed Process { " + pid + " }");
+                            File.AppendAllText(LogFile(), "Killed Process { " + pid + " } " + Environment.NewLine);
 
                             var proc = Process.GetProcessById(Int32.Parse(pid));
 
@@ -56,26 +55,6 @@ namespace Kill
                     }
                 }
             }
-
-
-            //if (args.Length == 1)
-            //{
-            //    File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }");
-
-            //    try
-            //    {
-            //        Process[] procs = Process.GetProcessesByName(args[0]);
-            //        foreach (var p in procs)
-            //        {
-            //            File.AppendAllText(LogFile(), DateTime.Now + " :: Killed PID { " + p.Id + " }");
-            //            p.Kill();
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        File.AppendAllText(LogFile(), DateTime.Now + " :: Error { " + ex.Message + " }");
-            //    }
-            //}
         }
     }
 }
