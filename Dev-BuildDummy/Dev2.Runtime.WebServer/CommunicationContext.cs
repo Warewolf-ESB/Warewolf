@@ -22,7 +22,7 @@ namespace Unlimited.Applications.WebServer
     {
         #region Constants
         private const string DefaultContentType = "text/html; charset=";
-        const double SizeCapForDownload = 10000000;
+        const double SizeCapForDownload = 512000; // 500 KB size limit
         #endregion
 
         #region Instance Fields
@@ -58,8 +58,30 @@ namespace Unlimited.Applications.WebServer
 
             if (_rawResponse.ContentLength > SizeCapForDownload)
             {
-                _rawResponse.AddHeader("Content-Type", "application/force-download");
-                _rawResponse.AddHeader("Content-Disposition", "attachment; filename=Output.xml");
+                
+                var typeOf = _rawResponse.ContentType;
+
+                bool canForce = false;
+
+                if (typeOf.Equals("text/xml"))
+                {
+                    _rawResponse.AddHeader("Content-Disposition", "attachment; filename=Output.xml");
+                    canForce = true;
+                }
+                else if (typeOf.Equals("application/json"))
+                {
+                    _rawResponse.AddHeader("Content-Disposition", "attachment; filename=Output.json");
+                    canForce = true;
+                }
+
+                if (canForce)
+                {
+                    _rawResponse.AddHeader("Content-Type", "application/force-download");
+                }
+                else
+                {
+                    _rawResponse.AddHeader("Content-Type", _rawResponse.ContentType);
+                }
             }
             else
             {

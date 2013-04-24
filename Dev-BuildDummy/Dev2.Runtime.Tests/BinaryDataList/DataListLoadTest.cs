@@ -168,7 +168,17 @@ namespace Unlimited.UnitTest.Framework
             }
             Console.WriteLine(result1 + " seconds for " + runs + " to clone ");
 
-            Assert.IsTrue(result1 <= 10, " It Took " + result1); // Given .1 buffer ;) WAS " 0.65
+            if (result1 <= 5)
+            {
+                Assert.IsTrue(result1 <= 5, " It Took " + result1); // Given .1 buffer ;) WAS " 0.65
+            }else if (result1 <= 18)
+            {
+                Assert.Inconclusive(" It Took " + result1); // Given .1 buffer ;) WAS " 0.65
+            }
+            else
+            {
+                Assert.Fail("Time for new hardward buddy!");
+            }
 
         }
         #endregion

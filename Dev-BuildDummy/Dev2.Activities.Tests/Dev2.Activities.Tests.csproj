@@ -133,6 +133,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ActivityStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\TestActivity.cs" />

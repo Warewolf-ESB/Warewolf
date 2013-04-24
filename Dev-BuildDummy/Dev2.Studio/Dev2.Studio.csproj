@@ -340,7 +340,9 @@
     <Compile Include="Factory\RuntimeConfigurationViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
-    <Compile Include="Utils\DsfActivityDropUtils.cs" />
+    <Compile Include="Utils\DsfActivityDropUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\DataList\Actions\AutoMappingInputAction.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="ViewModels\DataList\DataListViewModel.cs" />
@@ -350,7 +352,9 @@
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\Web\LayoutGridViewModel.cs" />
     <Compile Include="ViewModels\Web\WebsiteEditorViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
     <Compile Include="InterfaceImplementors\PopUp.cs" />
