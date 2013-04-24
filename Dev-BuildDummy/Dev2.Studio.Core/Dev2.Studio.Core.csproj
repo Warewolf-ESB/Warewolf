@@ -160,6 +160,7 @@
     <Compile Include="AppResources\Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\LayoutObjectViewModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\NullableBoolToBoolConverter.cs" />
+    <Compile Include="AppResources\Converters\NullToBoolConvert.cs" />
     <Compile Include="AppResources\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\StringToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="Messages\SelectItemInDeployMessage.cs" />
     <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\SetActivePageMessage.cs" />
+    <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\ShowActivitySettingsWizardMessage.cs" />
     <Compile Include="Messages\ShowActivityWizardMessage.cs" />
     <Compile Include="Messages\SettingsSaveCancelMessage.cs" />

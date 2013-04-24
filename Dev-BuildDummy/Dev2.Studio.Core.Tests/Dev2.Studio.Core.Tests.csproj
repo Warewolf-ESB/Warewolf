@@ -147,6 +147,7 @@
     <Compile Include="DeployStatsCalculatorTests.cs" />
     <Compile Include="DeployViewModelTest.cs" />
     <Compile Include="Dev2DialogueTest.cs" />
+    <Compile Include="DsfActivityDropUtilsTests.cs" />
     <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
     <Compile Include="EnviromentRepositoryTest.cs">
       <SubType>Code</SubType>

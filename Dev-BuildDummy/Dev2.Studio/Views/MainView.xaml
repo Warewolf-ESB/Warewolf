@@ -45,7 +45,7 @@
         <KeyBinding Command="{Binding Path=SaveCommand}" Key="F6" />        
         <KeyBinding Command="{Binding Path=EditCommand}" Key="E" Modifiers="Control" />-->
         <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
-        
+        <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
         <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Alt" />
@@ -462,17 +462,20 @@
 
 				<ribbon:Ribbon.ApplicationMenu>
 					<ribbon:RibbonApplicationMenu AutomationProperties.AutomationId="UI_RibbonApplicationMenu" IsMainMenu="True" HorizontalAlignment="Left">
-						<ribbon:RibbonApplicationMenuItem Header="File" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" >
-							<ribbon:RibbonApplicationMenuItem Header="New Workflow" Command="{Binding NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
-							<ribbon:RibbonApplicationMenuItem Header="New Service" >
+						<ribbon:RibbonApplicationMenuItem Header="File" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" Height="30">
+                            <ribbon:RibbonApplicationMenuItem Header="New Workflow (Ctrl + W)" Command="{Binding NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" Height="26" />
+                            <ribbon:RibbonApplicationMenuItem Header="New Service"  Height="26">
 								<!--                                <ribbon:RibbonApplicationMenuItem Header="Remote Workflow" />-->
-								<ribbon:RibbonApplicationMenuItem Header="Database Procedure" x:Name="NewDatabaseProcedure"  Command="{Binding NewResourceCommand}"
+                                <ribbon:RibbonApplicationMenuItem Header="Database Procedure (Ctrl + Shift +  D)" x:Name="NewDatabaseProcedure"  Command="{Binding NewResourceCommand}"
 									CommandParameter="DatabaseService" x:FieldModifier="public" />
-								<ribbon:RibbonApplicationMenuItem Header="Plugin"  Command="{Binding NewResourceCommand}"
+                                <ribbon:RibbonApplicationMenuItem Header="Plugin (Ctrl + Shift +  P)"  Command="{Binding NewResourceCommand}"
 									CommandParameter="ResourceService"/>
-							</ribbon:RibbonApplicationMenuItem>
-							<ribbon:RibbonApplicationMenuItem Header="Add Source"  Command="{Binding NewResourceCommand}"
-								CommandParameter="Source">
+                            </ribbon:RibbonApplicationMenuItem>
+							<ribbon:RibbonApplicationMenuItem 
+                                Header="Add Source"  
+                                Command="{Binding NewResourceCommand}" 
+                                CommandParameter="Source"                               
+                                Height="26">
 								<ribbon:RibbonApplicationMenuItem Header="Remote Warewolf" Command="{Binding NewResourceCommand}"
 									CommandParameter="Server"/>
 								<ribbon:RibbonApplicationMenuItem Header="Database" Command="{Binding NewResourceCommand}"
@@ -481,8 +484,8 @@
 									CommandParameter="ResourceSource"/>
 							</ribbon:RibbonApplicationMenuItem>
 						</ribbon:RibbonApplicationMenuItem>
-						<ribbon:RibbonApplicationMenuItem Header="Reset Layout" Command="{Binding ResetLayoutCommand}" CommandParameter="{Binding ElementName=dockManager}"/>
-						<ribbon:RibbonApplicationMenuItem Header="Exit" Command="{Binding ExitCommand}" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" />
+						<ribbon:RibbonApplicationMenuItem Header="Reset Layout" Command="{Binding ResetLayoutCommand}" CommandParameter="{Binding ElementName=dockManager}" Height="30"/>
+                        <ribbon:RibbonApplicationMenuItem Header="Exit (Alt + F4)" Command="{Binding ExitCommand}" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" Height="30" />
 					</ribbon:RibbonApplicationMenu>
 				</ribbon:Ribbon.ApplicationMenu>
 

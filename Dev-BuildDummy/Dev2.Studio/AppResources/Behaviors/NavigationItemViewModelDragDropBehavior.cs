@@ -9,6 +9,28 @@ namespace Dev2.Studio.AppResources.Behaviors
 {
     public class NavigationItemViewModelDragDropBehavior : Behavior<FrameworkElement>
     {
+      
+
+        #region Dependency Properties
+
+        #region DontAllowDraging
+
+        public bool DontAllowDraging
+        {
+            get { return (bool)GetValue(DontAllowDragingProperty); }
+            set { SetValue(DontAllowDragingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SetActiveEnvironment.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DontAllowDragingProperty =
+            DependencyProperty.Register("DontAllowDraging", typeof(bool), typeof(NavigationItemViewModelDragDropBehavior), new PropertyMetadata(true));
+
+        #endregion DontAllowDraging
+
+
+
+        #endregion
+
         #region Class Members
 
         private FrameworkElement _dragSource;
@@ -97,29 +119,32 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_MouseMove(object sender, MouseEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
-            DependencyObject dependencyObject = sender as DependencyObject;
-
-            if (e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
+            if (!DontAllowDraging)
             {
-                Point currentPosition = e.GetPosition(inputElement);
+                IInputElement inputElement = sender as IInputElement;
+                DependencyObject dependencyObject = sender as DependencyObject;
 
-                if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) ||
-                    (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
+                if (e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
                 {
-                    DataObject dragData = new DataObject();
-                    ResourceTreeViewModel dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
-                    if (dragSourceDataContext != null)
+                    Point currentPosition = e.GetPosition(inputElement);
+
+                    if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) ||
+                        (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
                     {
-                        if (!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
+                        DataObject dragData = new DataObject();
+                        ResourceTreeViewModel dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
+                        if (dragSourceDataContext != null)
                         {
-                            dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityFullName);
+                            if (!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
+                            {
+                                dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityFullName);
+                                dragData.SetData(dragSourceDataContext);
+                            }
+
                             dragData.SetData(dragSourceDataContext);
                         }
-
-                        dragData.SetData(dragSourceDataContext);
+                        DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);
                     }
-                    DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);
                 }
             }
         }

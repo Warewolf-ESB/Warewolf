@@ -12,6 +12,7 @@ using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
@@ -2608,6 +2609,145 @@ namespace Dev2.CodedUI.Tests
 
         // x. Can I connect to another server?
 
+        // vi - Can I drop a tool onto the designer?
+        [TestMethod]
+        public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
+        {
+            // Create the Workflow
+            CreateCustomWorkflow("WorkflowServiceDropWorkflow", "CodedUITestCategory");
+            //DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
+
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("WorkflowServiceDropWorkflow");
+
+            // And click it to make sure it's focused
+            TabManagerUIMap.Click(theTab);
+
+            // Wait a bit for user noticability
+            Thread.Sleep(500);
+
+            // Get the location of the Start button
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // And click it for UI responsiveness :P
+            WorkflowDesignerUIMap.ClickControl(theStartButton);
+
+            // Get a point underneath the start button
+            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            // Get the comment box
+            UITestControl workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
+
+            // And drag it onto the point
+            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+
+            #region Checking Ok Button enabled property
+
+            //Single click a folder in the tree
+            ActivityDropUIMap.SingleClickAFolder();
+
+            //Get the Ok button from the window
+            UITestControl buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
+
+            //Assert that the buttton is disabled
+            Assert.IsFalse(buttonControl.Enabled);
+
+            //Open the folder in the tree
+            ActivityDropUIMap.DoubleClickAFolder();
+
+            //Single click a resource in the tree
+            ActivityDropUIMap.SingleClickAResource();
+
+            //get the ok button from the window
+            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
+
+            //Assert that the button is enabled
+            Assert.IsTrue(buttonControl.Enabled);
+
+            //Single click on a folder again
+            ActivityDropUIMap.SingleClickAFolder();
+
+            //Get the ok button from the window
+            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
+
+            //Assert that the button is disabled
+            Assert.IsFalse(buttonControl.Enabled);
+
+            #endregion
+
+            #region Checking the double click of a resource puts it on the design surface
+
+            //Select a resource in the explorer view
+            ActivityDropUIMap.DoubleClickAResource();
+
+            // Check if it exists on the designer
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+            SendKeys.SendWait("{DELETE}");
+
+            #endregion
+
+            #region Checking the click of the OK button Adds the resource to the design surface
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            // Get the comment box
+            workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
+
+            // And drag it onto the point
+            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+
+            //Wait for the window to show up
+            Thread.Sleep(2000);
+
+            //Single click a folder in the tree
+            ActivityDropUIMap.SingleClickAResource();
+
+            //Click the Ok button on the window
+            ActivityDropUIMap.ClickOkButton();
+
+            // Check if it exists on the designer
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+
+            //Delete the resource that was dropped on
+            SendKeys.SendWait("{DELETE}");
+
+            #endregion
+
+            #region Checking the click of the Cacnel button doesnt Adds the resource to the design surface
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            // Get the comment box
+            workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
+
+            // And drag it onto the point
+            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+
+            //Wait for the window to show up
+            Thread.Sleep(2000);
+
+            //Single click a folder in the tree
+            ActivityDropUIMap.SingleClickAResource();
+
+            //Click the Ok button on the window
+            ActivityDropUIMap.ClickCancelButton();           
+
+            // Check if it exists on the designer
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+
+            #endregion
+
+            // Delete the workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
+        }     
+
 
         #endregion Tests Requiring Designer access
 
@@ -3021,7 +3161,25 @@ namespace Dev2.CodedUI.Tests
 
         private DebugUIMap _debugUIMap;
 
-        #endregion External UI Map
+        #endregion 
+
+        #region ActivityDrop Window UI Map
+
+        public ActivityDropWindowUIMap ActivityDropUIMap
+        {
+            get
+            {
+                if (_activityDropUIMap == null)
+                {
+                    _activityDropUIMap = new ActivityDropWindowUIMap();
+                }
+                return _activityDropUIMap;
+            }
+        }
+
+        private ActivityDropWindowUIMap _activityDropUIMap;
+
+        #endregion 
 
         #region DependencyGraph UI Map
 

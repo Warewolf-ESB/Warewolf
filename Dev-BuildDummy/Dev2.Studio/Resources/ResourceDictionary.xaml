@@ -59,6 +59,7 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters:Dev2ErrorTypeToImageConverter x:Key="Dev2ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
+    <converters:NullToBoolConvert x:Key="NullToBoolConvert"></converters:NullToBoolConvert>
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
 

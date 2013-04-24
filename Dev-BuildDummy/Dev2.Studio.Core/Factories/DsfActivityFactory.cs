@@ -22,22 +22,25 @@ namespace Dev2.Studio.Core.Factories
                 }
             }
 
-            if (resource.ResourceType == ResourceType.WorkflowService)
+            if(resource != null)
             {
-                activity.IsWorkflow = true;
+                if (resource.ResourceType == ResourceType.WorkflowService)
+                {
+                    activity.IsWorkflow = true;
+                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+                    activity.FriendlySourceName = resource.Environment.Name;
+                    activity = WorkflowPropertyInterigator.SetActivityProperties(resource.ServiceDefinition, activity);
+                }
                 //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                activity.FriendlySourceName = resource.Environment.Name;
-                activity = WorkflowPropertyInterigator.SetActivityProperties(resource.ServiceDefinition, activity);
-            }
-            //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-            else if (resource.ResourceType == ResourceType.Service)
-            {
-                //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                activity.IsWorkflow = false;
+                else if (resource.ResourceType == ResourceType.Service)
+                {
+                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+                    activity.IsWorkflow = false;
 
-                activity = WorkerServicePropertyInterigator.SetActivityProperties(resource.ServiceDefinition, activity);
+                    activity = WorkerServicePropertyInterigator.SetActivityProperties(resource.ServiceDefinition, activity);
+                }    
             }
-
+            
             activity.ExplicitDataList = null;
             return activity;
         }

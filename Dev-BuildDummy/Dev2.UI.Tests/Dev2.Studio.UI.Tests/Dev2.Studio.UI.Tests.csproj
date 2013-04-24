@@ -77,6 +77,12 @@
     <Compile Include="UIMap.Designer.cs" />
     <Compile Include="UIMapBase.cs" />
     <Compile Include="DatabaseServiceWizard.cs" />
+    <Compile Include="UIMaps\ActivityDropWindowUIMap.cs">
+      <DependentUpon>ActivityDropWindowUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\ActivityDropWindowUIMap.Designer.cs">
+      <DependentUpon>ActivityDropWindowUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\DatabaseServiceWizardUIMap.cs">
       <DependentUpon>DatabaseServiceWizardUIMap.uitest</DependentUpon>
     </Compile>
@@ -176,6 +182,7 @@
     <Compile Include="UITestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UIMaps\ActivityDropWindowUIMap.uitest" />
     <None Include="UIMaps\DatabaseSourceUIMap.uitest" />
     <None Include="UIMaps\DecisionWizardUIMap.uitest" />
     <None Include="UIMaps\FeedbackUIMap.uitest" />

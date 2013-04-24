@@ -185,8 +185,7 @@ namespace Dev2.Studio.ViewModels
 
         private void Exit()
         {
-            if (OnApplicationExitRequest != null)
-                OnApplicationExitRequest(null);
+            TryClose(true);
         }
 
         private void Deploy()
