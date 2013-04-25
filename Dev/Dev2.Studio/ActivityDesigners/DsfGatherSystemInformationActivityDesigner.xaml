@@ -22,7 +22,7 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Margin="305,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
+                        <Border Grid.Row="0" Margin="312,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
                         <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button Click="ButtonBase_OnClick" ToolTip="Quick Variable Input" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                                 <Image Source="/Images/Split.png" Width="15" Height="15"/>
@@ -33,7 +33,7 @@
                                 </AutomationProperties.AutomationId>
                             </Button>
                         </StackPanel>
-                        <ContentControl x:Name="resizeContent" MinHeight="100" MinWidth="250" Grid.Row="1" Padding="5" Visibility="{Binding Path=ShowQuickVariableInput, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                        <ContentControl x:Name="resizeContent" MinHeight="100" MinWidth="300" Grid.Row="1" Padding="5" Visibility="{Binding Path=ShowQuickVariableInput, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                             <userInterfaceBuilder:DataGridQuickVariableInputView DataContext="{Binding ViewModel}" Loaded="QuickVariableInputControl_OnLoaded" x:Name="quickVariableInputControl" />
                         </ContentControl>
                     </Grid>
@@ -71,21 +71,29 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
-    <dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" x:Name="Resultsdg" MaxWidth="400" HeadersVisibility="None" ItemsSource="{Binding Path=ModelItem.SystemInformationCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
+    <dev2:Dev2DataGrid VerticalScrollBarVisibility="Visible" Style="{StaticResource ActivityDataGridStyle}" x:Name="Resultsdg" MaxWidth="400" HeadersVisibility="None" ItemsSource="{Binding Path=ModelItem.SystemInformationCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
                            attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
         <i:Interaction.Behaviors>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <sys:String>[[Variable]]</sys:String>
+                    <sys:String>[[Variable1]]</sys:String>
+                    <sys:String>[[Variable2]]</sys:String>
                 </behaviors:DataGridWatermarkModifier.WatermarkText>
                 <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                     <sys:Int32>0</sys:Int32>
+                    <sys:Int32>1</sys:Int32>
                 </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
             </behaviors:DataGridWatermarkModifier>
         </i:Interaction.Behaviors>
+        <DataGrid.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel />
+            </ItemsPanelTemplate>
+        </DataGrid.ItemsPanel>
+
         <DataGrid.Columns>
             
-            <DataGridTemplateColumn Header="" Width="25"  IsReadOnly="False">                
+            <DataGridTemplateColumn Header="" Width="25"  IsReadOnly="True">                
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         
@@ -112,7 +120,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Header="" Width="25"  IsReadOnly="False">
+            <DataGridTemplateColumn Header="" Width="20"  IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
 
@@ -123,11 +131,11 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Header="Results" Width="150" IsReadOnly="True" >
+            <DataGridTemplateColumn Header="Results" Width="135" IsReadOnly="False" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
 
-                        <ComboBox Style ="{StaticResource Dev2ComboBoxInDataGridStyle}"  Width="Auto" SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Style ="{StaticResource Dev2ComboBoxInDataGridStyle}"  Width="Auto" Text="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=dev2:Dev2DataGrid}" />

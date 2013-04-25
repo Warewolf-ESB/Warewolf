@@ -83,6 +83,12 @@
                 </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
             </behaviors:DataGridWatermarkModifier>
         </i:Interaction.Behaviors>
+        <DataGrid.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel />
+            </ItemsPanelTemplate>
+        </DataGrid.ItemsPanel>
+
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="" Width="25"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>

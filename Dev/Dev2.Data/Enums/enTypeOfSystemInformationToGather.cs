@@ -11,17 +11,17 @@ namespace Dev2.Data.Enums
         ServicePack,
         [Description("32/64 Bit")]
         OSBitValue,
-        [Description("Date and Time")]
+        [Description("Date & Time")]
         FullDateTime,
-        [Description("Date and Time Format")]
+        [Description("Date & Time Format")]
         DateTimeFormat,
         [Description("Disk Available (GB)")]
         DiskAvailable,
         [Description("Disk Total (GB)")]
         DiskTotal,
-        [Description("Memory Available (MB)")]
+        [Description("RAM Available (MB)")]
         PhysicalMemoryAvailable,
-        [Description("Memory Total (MB)")]
+        [Description("RAM Total (MB)")]
         PhysicalMemoryTotal,
         [Description("CPU Available")]
         CPUAvailable,

@@ -92,6 +92,12 @@
                 <!--2013.02.11: Ashley Lewis - Bug 8565
                 <behaviors:DataGridMouseScrollBehavior/>-->
             </i:Interaction.Behaviors>
+            <DataGrid.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </DataGrid.ItemsPanel>
+
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25"  IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>

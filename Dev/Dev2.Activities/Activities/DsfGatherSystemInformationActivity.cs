@@ -306,7 +306,7 @@ namespace Dev2.Activities
             {
                 mic.RemoveAt(startIndex);
             }
-            mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystem, string.Empty, startIndex + 1));
+            mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, startIndex + 1));
             modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
         }
 

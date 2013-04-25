@@ -34,7 +34,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public GatherSystemInformationTO CreateNewDTO(GatherSystemInformationTO dto)
         {
-            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystem, string.Empty,0);
+            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty,0);
         }
     }
 }

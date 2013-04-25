@@ -85,14 +85,14 @@ namespace Dev2.Data.Tests.EnumTests
         public void DateAndTimeEnumExpectedDiscriptionOfDateAndTime()
         {
             string disc = enTypeOfSystemInformationToGather.FullDateTime.GetDescription();
-            Assert.AreEqual("Date and Time", disc);
+            Assert.AreEqual("Date & Time", disc);
         }
 
         [TestMethod]
         public void DateTimeFormatEnumExpectedDiscriptionOfDateAndTimeFormat()
         {
             string disc = enTypeOfSystemInformationToGather.DateTimeFormat.GetDescription();
-            Assert.AreEqual("Date and Time Format", disc);
+            Assert.AreEqual("Date & Time Format", disc);
         }
 
         [TestMethod]
@@ -113,14 +113,14 @@ namespace Dev2.Data.Tests.EnumTests
         public void MemoryAvailableEnumExpectedDiscriptionOfMemoryAvailable()
         {
             string disc = enTypeOfSystemInformationToGather.PhysicalMemoryAvailable.GetDescription();
-            Assert.AreEqual("Memory Available (MB)", disc);
+            Assert.AreEqual("RAM Available (MB)", disc);
         }
 
         [TestMethod]
         public void MemoryTotalEnumExpectedDiscriptionOfMemoryTotal()
         {
             string disc = enTypeOfSystemInformationToGather.PhysicalMemoryTotal.GetDescription();
-            Assert.AreEqual("Memory Total (MB)", disc);
+            Assert.AreEqual("RAM Total (MB)", disc);
         } 
 
         [TestMethod]
