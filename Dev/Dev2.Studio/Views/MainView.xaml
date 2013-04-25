@@ -464,18 +464,18 @@
 				<ribbon:Ribbon.ApplicationMenu>
                     <dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu ShowAuxilaryPanel="False">                        
                         <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Workflow (Ctrl + W)" 
+                        <ribbon:RibbonApplicationMenuItem Header="New Workflow" ToolTip="(Ctrl+W)" 
                                                           Command="{Binding NewResourceCommand}" 
                                                           CommandParameter="Workflow" 
                                                           ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workflowservice2.png"
                                                           AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />                        
                         <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Database Procedure Service (Ctrl + Shift +  D)" x:Name="NewDatabaseProcedure"  
+                        <ribbon:RibbonApplicationMenuItem Header="New Database Procedure Service" ToolTip="(Ctrl+Shift+D)" x:Name="NewDatabaseProcedure"  
                                                               Command="{Binding NewResourceCommand}" 
                                                               CommandParameter="DatabaseService" 
                                                               ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"
                                                               x:FieldModifier="public"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Service (Ctrl + Shift +  P)"  
+                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Service" ToolTip="(Ctrl+Shift+P)"  
                                                               Command="{Binding NewResourceCommand}"
                                                               ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"
 									CommandParameter="ResourceService"/>
@@ -496,7 +496,7 @@
                         <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
                                                           Command="{Binding ResetLayoutCommand}" 
                                                           CommandParameter="{Binding ElementName=dockManager}"/>
-                        <ribbon:RibbonApplicationMenuItem Header="Exit (Alt + F4)" 
+                        <ribbon:RibbonApplicationMenuItem Header="Exit" ToolTip="(Alt+F4)" 
                                                           Command="{Binding ExitCommand}" 
                                                           ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png"/>
                         
