@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +23,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Infragistics.Windows.Controls;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     public partial class DsfForEachActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
@@ -29,7 +32,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             InitializeComponent();
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             EventAggregator.Subscribe(this);
+            this.DropPoint.PreviewDrop+=DropPointOnDragEnter;
+            this.DropPoint.PreviewDragOver+=DropPointOnDragEnter;
         }
+
+        void DropPointOnDragEnter(object sender, DragEventArgs e)
+        {
+            bool dropEnabled = true;
+            var formats = e.Data.GetFormats();
+            if(!formats.Any()) return;
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat")>=0);
+            if(String.IsNullOrEmpty(modelItemString)) return;
+            var data = e.Data.GetData(modelItemString) as ModelItem;
+            if(data != null && (data.ItemType == typeof(FlowDecision) || data.ItemType == typeof(FlowSwitch<string>)))
+            {
+                 dropEnabled = false;
+                
+             }
+            if(!dropEnabled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
         protected IEventAggregator EventAggregator { get; set; }
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
@@ -48,6 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             }
         }
 
+     
         private void Highlight(IDataListItemModel dataListItemViewModel) {
             List<string> containingFields = new List<string>();
 

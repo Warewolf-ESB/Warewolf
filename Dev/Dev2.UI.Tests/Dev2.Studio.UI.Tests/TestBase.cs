@@ -17,6 +17,7 @@ using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
@@ -24,6 +25,7 @@ using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -1940,6 +1942,106 @@ namespace Dev2.CodedUI.Tests
             }
 
 
+        }
+
+        [TestMethod]
+        public void DragADecisionIntoForEachExpectNotAddedToForEach()
+        {
+            CreateCustomWorkflow("8805Point1", "CodedUITestCategory");
+
+            System.Threading.Thread.Sleep(1000);
+            UITestControl theTab = TabManagerUIMap.FindTabByName("8805Point1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(200, 50);
+            // Get a point underneath the start button for each workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+            Thread.Sleep(500);
+            // Cancel Decision Wizard
+            var decisionWizardUiMap = new DecisionWizardUIMap();
+            decisionWizardUiMap.ClickCancel();
+            UITestControl decisionControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "Decision");
+            // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
+
+            ExplorerUIMap.DragControlToWorkflowDesigner(decisionControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+
+            // Wait for the ForEach thing to do its init-y thing
+            Thread.Sleep(1500);
+
+            // And click below the tab to get us back to the normal screen
+            Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
+            Mouse.Click();
+
+            // Now get its position
+            UITestControl decision = workflowDesignerUIMap.FindControlByAutomationId(theTab, "Decision");
+            try
+            {
+                decision.GetClickablePoint();
+            }
+            catch
+            {
+                Assert.Fail("No clickable point is acheivable, so it was dragged in :(");
+            }
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8805Point1");
+        }
+        
+        [TestMethod]
+        public void DragASwitchIntoForEachExpectNotAddedToForEach()
+        {
+            CreateCustomWorkflow("8805Point2", "CodedUITestCategory");
+
+            System.Threading.Thread.Sleep(1000);
+            UITestControl theTab = TabManagerUIMap.FindTabByName("8805Point2");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(200, 50);
+            // Get a point underneath the start button for each workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
+            Thread.Sleep(500);
+            // Cancel Decision Wizard
+            var switchWizardUiMap = new SwitchWizardUIMap();
+            switchWizardUiMap.ClickCancel();
+            UITestControl theControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "Switch");
+            // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
+
+            ExplorerUIMap.DragControlToWorkflowDesigner(theControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+
+            // Wait for the ForEach thing to do its init-y thing
+            Thread.Sleep(1500);
+
+            // And click below the tab to get us back to the normal screen
+            Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
+            Mouse.Click();
+
+            // Now get its position
+            UITestControl decision = workflowDesignerUIMap.FindControlByAutomationId(theTab, "Switch");
+            try
+            {
+                decision.GetClickablePoint();
+            }
+            catch
+            {
+                Assert.Fail("No clickable point is acheivable, so it was dragged in :(");
+            }
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8805Point2");
         }
 
         // Backlog 6664.1
