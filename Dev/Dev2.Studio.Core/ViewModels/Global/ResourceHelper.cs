@@ -3,6 +3,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;

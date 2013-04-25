@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;

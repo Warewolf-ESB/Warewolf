@@ -1,35 +1,40 @@
-﻿using Dev2;
-using Dev2.Common;
-using Dev2.Converters;
-using Dev2.Interfaces;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Converters;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.Studio.ViewModels.QuickVariableInput;
-using Dev2.UI;
-using System;
+﻿using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Dev2;
+using Dev2.Common;
+using Dev2.Converters;
+using Dev2.Data.Enums;
+using Dev2.Interfaces;
+using Dev2.Studio.Core.AppResources.Converters;
+using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.ViewModels.QuickVariableInput;
+using Dev2.UI;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public partial class DsfBaseConvertActivityDesigner : IDisposable
+    /// <summary>
+    /// Interaction logic for DsfGatherSystemInformationActivityDesinger.xaml
+    /// </summary>
+    public partial class DsfGatherSystemInformationActivityDesigner : IDisposable
     {
-
         #region Fields
 
-        bool _isRegistered = false;
-        string mediatorKey = string.Empty;
+        bool _isRegistered = false;        
         ModelItem activity;
-        dynamic _convertCollection;
+        dynamic _dataCollection;
         Point _mousedownPoint = new Point(0, 0);
         bool _startManualDrag;
         Selection _workflowDesignerSelection;
@@ -38,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Ctor
 
-        public DsfBaseConvertActivityDesigner()
+        public DsfGatherSystemInformationActivityDesigner()
         {
             InitializeComponent();
         }
@@ -61,7 +66,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // Using a DependencyProperty as the backing store for ShowAdorners.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowAdornersProperty =
-            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfBaseConvertActivityDesigner), new PropertyMetadata(false));
+            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfGatherSystemInformationActivityDesigner), new PropertyMetadata(false));
 
 
 
@@ -73,7 +78,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // Using a DependencyProperty as the backing store for ShowQuickVariableInput.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowQuickVariableInputProperty =
-            DependencyProperty.Register("ShowQuickVariableInput", typeof(bool), typeof(DsfBaseConvertActivityDesigner), new PropertyMetadata(false));
+            DependencyProperty.Register("ShowQuickVariableInput", typeof(bool), typeof(DsfGatherSystemInformationActivityDesigner), new PropertyMetadata(false));
 
         public bool ShowRightClickOptions
         {
@@ -83,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // Using a DependencyProperty as the backing store for ShowRightClickOptions.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowRightClickOptionsProperty =
-            DependencyProperty.Register("ShowRightClickOptions", typeof(bool), typeof(DsfBaseConvertActivityDesigner), new UIPropertyMetadata(false));
+            DependencyProperty.Register("ShowRightClickOptions", typeof(bool), typeof(DsfGatherSystemInformationActivityDesigner), new UIPropertyMetadata(false));
 
         #endregion Dependancy Properties
 
@@ -97,13 +102,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
             }
-            _convertCollection = newItem;
+            _dataCollection = newItem;
             activity = newItem as ModelItem;
 
-            if (_convertCollection.ConvertCollection == null || _convertCollection.ConvertCollection.Count <= 0)
+            if (_dataCollection.SystemInformationCollection == null || _dataCollection.SystemInformationCollection.Count <= 0)
             {
-                _convertCollection.ConvertCollection.Add(new BaseConvertTO("", "Text", "Base 64", "", 1));
-                _convertCollection.ConvertCollection.Add(new BaseConvertTO("", "Text", "Base 64", "", 2));
+                _dataCollection.SystemInformationCollection.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, 1));
+                _dataCollection.SystemInformationCollection.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, 2));
             }
             activity.Properties["DisplayName"].SetValue(createDisplayName());
 
@@ -126,36 +131,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ViewModel = new QuickVariableInputViewModel(model);
 
 
-        }
-
-        private void Highlight(IDataListItemModel dataListItemViewModel)
-        {
-
-            //ObservableCollection<string> containingFields = new ObservableCollection<string>();
-            //border.Visibility = Visibility.Hidden;
-
-            //SetValuetxt.BorderBrush = Brushes.LightGray;
-            //SetValuetxt.BorderThickness = new Thickness(1.0);
-            //ToValuetxt.BorderBrush = Brushes.LightGray;
-            //ToValuetxt.BorderThickness = new Thickness(1.0);
-
-            //containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
-
-            //if (containingFields.Count > 0) {
-            //    foreach (string item in containingFields) {
-            //        if (item.Equals("FieldName")) {
-            //            SetValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            //            SetValuetxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //        else if (item.Equals("FieldValue")) {
-            //            ToValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            //            ToValuetxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //        var bob = this.BorderBrush;
-
-
-            //    }
-            //}
         }
 
         #region Dispose
@@ -184,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     currentName = currentName.Remove(currentName.IndexOf("("));
                 }
             }
-            currentName = currentName + " (" + (_convertCollection.ConvertCollection.Count - 1) + ")";
+            currentName = currentName + " (" + (_dataCollection.SystemInformationCollection.Count - 1) + ")";
             return currentName;
         }
 
@@ -194,11 +169,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
-            List<BaseConvertTO> collection = ModelItem.Properties["ConvertCollection"].ComputedValue as List<BaseConvertTO>;
+            List<GatherSystemInformationTO> collection = ModelItem.Properties["SystemInformationCollection"].ComputedValue as List<GatherSystemInformationTO>;
             if (collection != null)
             {
                 int result = -1;
-                BaseConvertTO lastItem = collection.LastOrDefault(c => c.FromExpression != string.Empty);
+                GatherSystemInformationTO lastItem = collection.LastOrDefault(c => c.Result != string.Empty);
                 if (lastItem != null)
                 {
                     result = collection.IndexOf(lastItem) + 2;
@@ -219,14 +194,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void CbxLoad(object sender, RoutedEventArgs e)
         {
-            ComboBox cbx = sender as ComboBox;
-            dynamic temp = cbx.DataContext;
-            string selectedVal = temp.ConvertType;
+            ComboBox cbx = sender as ComboBox;            
             if (cbx != null)
             {
                 if (cbx.Items.Count == 0)
                 {
-                    cbx.ItemsSource = Dev2EnumConverter.ConvertEnumsToStringList<enDev2BaseConvertType>();
+                    cbx.ItemsSource = Dev2EnumConverter.ConvertEnumsTypeToStringList<enTypeOfSystemInformationToGather>();
                 }
             }
         }
@@ -348,12 +321,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ShowAdorners = false;
         }
 
-        void DsfBaseConvertActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        void GatherSystemInformationActivityDesinger_OnMouseEnter(object sender, MouseEventArgs e)
         {
             ShowAllAdorners();
         }
 
-        void DsfBaseConvertActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        void GatherSystemInformationActivityDesinger_OnMouseLeave(object sender, MouseEventArgs e)
         {
             if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
             {
@@ -395,10 +368,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion
-
+        #endregion             
     }
 }
-
-
-

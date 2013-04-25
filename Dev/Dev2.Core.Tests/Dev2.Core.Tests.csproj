@@ -92,6 +92,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -164,6 +165,9 @@
     <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="Diagnostics\DebugItemTests.cs" />
     <Compile Include="DirectoryHelperTests.cs" />
+    <Compile Include="GatherSystemInformationTOTests.cs" />
+    <Compile Include="TestModelItemFactory.cs" />
+    <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />

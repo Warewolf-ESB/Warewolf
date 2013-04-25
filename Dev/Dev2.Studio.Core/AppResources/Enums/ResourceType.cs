@@ -1,6 +1,7 @@
 ﻿using Dev2.Studio.Core.AppResources.Attributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.Core.AppResources.Enums
 {
@@ -35,9 +36,9 @@ namespace Dev2.Studio.Core.AppResources.Enums
     }
 
     public static class ResourceTypeExtensions
-    {
+    {        
         public static WorkSurfaceContext ToWorkSurfaceContext(this ResourceType resourceType)
-        {
+        {            
             switch (resourceType)
             {
                  case ResourceType.WorkflowService:

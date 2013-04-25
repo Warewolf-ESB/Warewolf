@@ -5,6 +5,7 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;

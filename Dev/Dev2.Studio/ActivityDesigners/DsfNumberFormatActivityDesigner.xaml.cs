@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Dev2.Studio.Core.AppResources.Converters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

@@ -45,6 +45,7 @@
     <converters3:NavigationViewModelToImageConverter x:Key="NavigationViewModelToImageConverter" />
     <converters:LayoutObjectViewModelToImageConverter x:Key="LayoutObjectViewModelToImageConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
+    <converters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" Format="hh\:mm\:ss\.fff" />
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />

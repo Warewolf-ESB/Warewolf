@@ -1,4 +1,5 @@
 ﻿using Dev2;
+using Dev2.Data.Enums;
 using Dev2.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -29,6 +30,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public BaseConvertTO CreateNewDTO(BaseConvertTO dto)
         {
             return new BaseConvertTO("", "Text", "Base 64", "", 0);
+        }
+
+        public GatherSystemInformationTO CreateNewDTO(GatherSystemInformationTO dto)
+        {
+            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystem, string.Empty,0);
         }
     }
 }

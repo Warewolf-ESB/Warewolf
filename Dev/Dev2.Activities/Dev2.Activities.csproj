@@ -53,6 +53,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.JScript" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -63,6 +64,7 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.DurableInstancing" />
@@ -90,6 +92,7 @@
     <Compile Include="Activities\DsfFlowNodeActivity.cs" />
     <Compile Include="Activities\DsfFlowSwitchActivity.cs" />
     <Compile Include="Activities\DsfForEachItem.cs" />
+    <Compile Include="Activities\DsfGatherSystemInformationActivity.cs" />
     <Compile Include="Activities\DsfIndexActivity.cs" />
     <Compile Include="Activities\DsfNativeActivity.cs" />
     <Compile Include="Activities\DsfNumberFormatActivity.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Activities\DsfAssertActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
+    <Compile Include="Activities\GetSystemInformationHelper.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\TransformActivity.cs" />
     <Compile Include="Activities\DsfWebSiteActivity.cs" />

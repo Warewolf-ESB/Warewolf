@@ -15,6 +15,7 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
@@ -65,6 +66,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 using Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder;
 using Unlimited.Framework;
+using Dev2.Common.ExtMethods;
 using Action = System.Action;
 
 namespace Dev2.Studio.ViewModels

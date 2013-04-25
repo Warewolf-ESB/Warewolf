@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Common
 {
@@ -43,6 +44,20 @@ namespace Dev2.Common
             else
             {
                 result = new List<string>(Enum.GetNames(type));
+            }
+
+            return result;
+        }
+
+        public static IList<string> ConvertEnumsTypeToStringList<tEnum>() where tEnum : struct
+        {
+           Type enumType = typeof(tEnum);
+
+            IList<string> result = new List<string>();
+
+            foreach (var value in Enum.GetValues(enumType))
+            {
+               result.Add((value as Enum).GetDescription());
             }
 
             return result;
@@ -165,6 +180,20 @@ namespace Dev2.Common
             }
 
             throw new ArgumentException("name is not a valid enum member name.");
+        }
+
+        public static object GetEnumFromStringDiscription(string discription, Type type)
+        {
+            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+
+            foreach (var value in Enum.GetValues(type))
+            {
+                if ((value as Enum).GetDescription() == discription)
+                {
+                    return value;
+                }
+            }
+            return null;
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -53,6 +54,14 @@ namespace Dev2.FindMissingStrategies
                 if (maAct != null)
                 {
                     results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+                }
+            }
+            else if (activityType == typeof(DsfGatherSystemInformationActivity))
+            {
+                DsfGatherSystemInformationActivity maAct = activity as DsfGatherSystemInformationActivity;
+                if (maAct != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
                 }
             }
             return results;

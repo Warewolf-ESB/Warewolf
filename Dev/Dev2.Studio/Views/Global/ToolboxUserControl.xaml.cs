@@ -70,6 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 //category.Add(new ToolboxItemWrapper(typeof(DsfWebPageActivity), "/images/User.png", "Human Interface"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/IndexToolIcon.png", "Find Index"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ReplaceIcon.png", "Replace"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/Info.png", "System Information"));
             }
 
 
