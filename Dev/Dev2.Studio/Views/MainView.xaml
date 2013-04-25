@@ -2,6 +2,7 @@
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+                     xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
                      xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
                      xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
                      xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
@@ -461,32 +462,45 @@
 				</ribbon:Ribbon.Resources>
 
 				<ribbon:Ribbon.ApplicationMenu>
-					<ribbon:RibbonApplicationMenu AutomationProperties.AutomationId="UI_RibbonApplicationMenu" IsMainMenu="True" HorizontalAlignment="Left">
-						<ribbon:RibbonApplicationMenuItem Header="File" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" Height="30">
-                            <ribbon:RibbonApplicationMenuItem Header="New Workflow (Ctrl + W)" Command="{Binding NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" Height="26" />
-                            <ribbon:RibbonApplicationMenuItem Header="New Service"  Height="26">
-								<!--                                <ribbon:RibbonApplicationMenuItem Header="Remote Workflow" />-->
-                                <ribbon:RibbonApplicationMenuItem Header="Database Procedure (Ctrl + Shift +  D)" x:Name="NewDatabaseProcedure"  Command="{Binding NewResourceCommand}"
-									CommandParameter="DatabaseService" x:FieldModifier="public" />
-                                <ribbon:RibbonApplicationMenuItem Header="Plugin (Ctrl + Shift +  P)"  Command="{Binding NewResourceCommand}"
+                    <dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu ShowAuxilaryPanel="False">                        
+                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
+                        <ribbon:RibbonApplicationMenuItem Header="New Workflow (Ctrl + W)" 
+                                                          Command="{Binding NewResourceCommand}" 
+                                                          CommandParameter="Workflow" 
+                                                          ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workflowservice2.png"
+                                                          AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />                        
+                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
+                        <ribbon:RibbonApplicationMenuItem Header="New Database Procedure Service (Ctrl + Shift +  D)" x:Name="NewDatabaseProcedure"  
+                                                              Command="{Binding NewResourceCommand}" 
+                                                              CommandParameter="DatabaseService" 
+                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"
+                                                              x:FieldModifier="public"/>
+                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Service (Ctrl + Shift +  P)"  
+                                                              Command="{Binding NewResourceCommand}"
+                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"
 									CommandParameter="ResourceService"/>
-                            </ribbon:RibbonApplicationMenuItem>
-							<ribbon:RibbonApplicationMenuItem 
-                                Header="Add Source"  
+                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
+                        <ribbon:RibbonApplicationMenuItem Header="New Remote Warewolf Source" 
                                 Command="{Binding NewResourceCommand}" 
-                                CommandParameter="Source"                               
-                                Height="26">
-								<ribbon:RibbonApplicationMenuItem Header="Remote Warewolf" Command="{Binding NewResourceCommand}"
+                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
 									CommandParameter="Server"/>
-								<ribbon:RibbonApplicationMenuItem Header="Database" Command="{Binding NewResourceCommand}"
+                        <ribbon:RibbonApplicationMenuItem Header="New Database Source" 
+                                                              Command="{Binding NewResourceCommand}"
+                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
 									CommandParameter="DbSource"/>
-								<ribbon:RibbonApplicationMenuItem Header="Plugin" Command="{Binding NewResourceCommand}"
+                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Source" 
+                                                              Command="{Binding NewResourceCommand}"
+                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
 									CommandParameter="ResourceSource"/>
-							</ribbon:RibbonApplicationMenuItem>
-						</ribbon:RibbonApplicationMenuItem>
-						<ribbon:RibbonApplicationMenuItem Header="Reset Layout" Command="{Binding ResetLayoutCommand}" CommandParameter="{Binding ElementName=dockManager}" Height="30"/>
-                        <ribbon:RibbonApplicationMenuItem Header="Exit (Alt + F4)" Command="{Binding ExitCommand}" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" Height="30" />
-					</ribbon:RibbonApplicationMenu>
+                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>                       
+                        <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
+                                                          Command="{Binding ResetLayoutCommand}" 
+                                                          CommandParameter="{Binding ElementName=dockManager}"/>
+                        <ribbon:RibbonApplicationMenuItem Header="Exit (Alt + F4)" 
+                                                          Command="{Binding ExitCommand}" 
+                                                          ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png"/>
+                        
+                    </dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu>
 				</ribbon:Ribbon.ApplicationMenu>
 
 				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">
@@ -547,19 +561,19 @@
 							CommandParameter="ResourceSource" 
                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
 
-                        <!--
+						<!--
                         TODO PBI 8291
                         <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
                         <ribbon:RibbonButton Label="Website" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/webpagebuilder.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Website" />-->
-                        <!--
+						<!--
                         TODO PBI 8142
                         <ribbon:RibbonButton Label="?Webpart?" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-                        <!--
+						<!--
                         TODO PBI 8142
                         <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-                    </ribbon:RibbonGroup>
+					</ribbon:RibbonGroup>
 
-                    <ribbon:RibbonGroup Header="Actions">
+					<ribbon:RibbonGroup Header="Actions">
 						<ribbon:RibbonButton Label="Deploy"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png"
 							Command="{Binding DeployCommand}" />

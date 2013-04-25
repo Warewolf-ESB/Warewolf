@@ -187,8 +187,8 @@ namespace Dev2.Studio.ViewModels
 
         private void Exit()
         {
-            TryClose(true);
-        }
+            Application.Current.Shutdown();            
+        }       
 
         private void Deploy()
         {

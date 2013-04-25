@@ -66,25 +66,25 @@
                     
                                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}" Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" Visibility="{Binding CanDisconnect, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID" />
-                                <MenuItem Header="File" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" >
-                                    <MenuItem Header="New Workflow (Ctrl + W)" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
-                                    <MenuItem Header="New Service" >
-                                        <!--                                <MenuItem Header="Remote Workflow" />-->
-                                        <MenuItem Header="Database Procedure (Ctrl + Shift +  D)"  Command="{Binding Path=NewResourceCommand}"
+                                <MenuItem Header="New Workflow (Ctrl + W)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
+                                <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="New Database Procedure Service (Ctrl + Shift +  D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                          Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="DatabaseService"/>
-                                        <MenuItem Header="Plugin (Ctrl + Shift +  P)"  Command="{Binding Path=NewResourceCommand}"
+                                <MenuItem Header="New Plugin Service (Ctrl + Shift +  P)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                          Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="ResourceService"/>
-                                    </MenuItem>
-                                    <MenuItem Header="Add Source"  Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="Source">
-                                        <MenuItem Header="Remote Warewolf" Command="{Binding Path=NewResourceCommand}"
+                                <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="New Remote Warewolf Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="Server"/>
-                                        <MenuItem Header="Database" Command="{Binding Path=NewResourceCommand}"
+                                <MenuItem Header="New Database Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="DbSource"/>
-                                        <MenuItem Header="Plugin" Command="{Binding Path=NewResourceCommand}"
+                                <MenuItem Header="New Plugin Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="ResourceSource"/>
-                                    </MenuItem>
-                                </MenuItem>
+                                <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Build" Command="{Binding BuildCommand}" Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Deploy" Command="{Binding DeployCommand}" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />
