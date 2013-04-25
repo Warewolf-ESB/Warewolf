@@ -701,13 +701,16 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 foreach (XmlNode current in allReferences)
                 {
+                    var attr = current.Attributes;
+
                     if (String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+
+                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(current.InnerText, out result))
+                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableDebugOutput = result;
                             }
@@ -722,11 +725,11 @@ namespace Unlimited.Applications.DynamicServicesHost
                         }
                     } else if (String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(current.InnerText, out result))
+                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableTraceOutput = result;
                             }
@@ -742,11 +745,11 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
                     else if (String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(current.InnerText, out result))
+                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableErrorOutput = result;
                             }
@@ -762,11 +765,11 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
                     else if (String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(current.InnerText, out result))
+                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableInfoOutput = result;
                             }
