@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 
 namespace System.Network
 {
@@ -20,7 +16,7 @@ namespace System.Network
 
         internal PacketFlags _flags;
         internal byte[] _header;
-        
+
         internal byte _headerLength;
         internal int _dataLength;
         #endregion
@@ -37,7 +33,7 @@ namespace System.Network
         {
             _template = template;
 
-            if (_template._dataComponent)
+            if(_template._dataComponent)
             {
                 _kernal = new ByteKernal();
                 _kernal.Capacity = _template._variableDataLength ? 32 : _template._dataLength;
@@ -48,17 +44,17 @@ namespace System.Network
         #endregion
 
         #region Compilation Handling
-        internal void Compile()
+        public void Compile()
         {
-            if ((_flags & PacketFlags.Compiled) != PacketFlags.None) return;
+            if((_flags & PacketFlags.Compiled) != PacketFlags.None) return;
             _flags |= PacketFlags.Compiled;
             PacketHeaderFlags flags = 0;
             _dataLength = _kernal == null ? 0 : _kernal.Length;
 
 #if DEBUG
-            if (!_template._variableDataLength && _dataLength != _template._dataLength) throw new ArgumentOutOfRangeException("Compiled length not equal to data length in a fixed length packet.");
+            if(!_template._variableDataLength && _dataLength != _template._dataLength) throw new ArgumentOutOfRangeException("Compiled length not equal to data length in a fixed length packet.");
 #endif
-            if (_template._extendedID)
+            if(_template._extendedID)
             {
                 flags = InstantiateHeader(3) | PacketHeaderFlags.Identifier16;
                 TwoOctetUnion id = _template._ushortID;
@@ -79,11 +75,11 @@ namespace System.Network
             _headerLength = length;
             PacketHeaderFlags flags = 0;
 
-            if (_template._dataComponent && _template._variableDataLength)
+            if(_template._dataComponent && _template._variableDataLength)
             {
-                if (_dataLength > Byte.MaxValue)
+                if(_dataLength > Byte.MaxValue)
                 {
-                    if (_dataLength > UInt16.MaxValue)
+                    if(_dataLength > UInt16.MaxValue)
                     {
                         flags |= PacketHeaderFlags.Length32;
                         _header = new byte[_headerLength += 4];
@@ -279,10 +275,10 @@ namespace System.Network
         {
             _channel = (byte)channel;
 
-            if (_extendedID = id > Byte.MaxValue) _ushortID = new TwoOctetUnion((ushort)id);
+            if(_extendedID = id > Byte.MaxValue) _ushortID = new TwoOctetUnion((ushort)id);
             else _byteID = (byte)id;
 
-            if (_dataComponent = dataLength >= 0) _variableDataLength = (_dataLength = dataLength) == 0;
+            if(_dataComponent = dataLength >= 0) _variableDataLength = (_dataLength = dataLength) == 0;
         }
     }
 
@@ -293,11 +289,9 @@ namespace System.Network
         public static readonly PacketTemplate Server_OnExecuteBinaryCommandReceived = new PacketTemplate(15, 2, true);
         public static readonly PacketTemplate Server_SendClientDetails = new PacketTemplate(15, 3, true);
 
-
         public static readonly PacketTemplate Client_LogoutReceived = new PacketTemplate(15, 0, 1);
         public static readonly PacketTemplate Client_OnExecuteStringCommandReceived = new PacketTemplate(15, 1, true);
         public static readonly PacketTemplate Client_OnExecuteBinaryCommandReceived = new PacketTemplate(15, 2, true);
         public static readonly PacketTemplate Client_OnClientDetailsReceived = new PacketTemplate(15, 3, true);
-        
     }
 }

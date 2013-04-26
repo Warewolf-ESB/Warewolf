@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -35,11 +32,11 @@ namespace System.Network
         #endregion
 
         #region Events
-        public event SocketEventHandler SocketConnected { add { if (!_disposing) _onSocketConnected += value; } remove { if (!_disposing) _onSocketConnected -= value; } }
-        public event ConnectionEventHandler ConnectionCreated { add { if (!_disposing) _onConnectionCreated += value; } remove { if (!_disposing) _onConnectionCreated -= value; } }
-        public event ConnectionEventHandler ConnectionDisposed { add { if (!_disposing) _onConnectionDisposed += value; } remove { if (!_disposing) _onConnectionDisposed -= value; } }
-        public event NetworkContextEventHandler<T> ContextAttached { add { if (!_disposing) _onContextAttached += value; } remove { if (!_disposing) _onContextAttached -= value; } }
-        public event NetworkContextEventHandler<T> ContextDetached { add { if (!_disposing) _onContextDetached += value; } remove { if (!_disposing) _onContextDetached -= value; } }
+        public event SocketEventHandler SocketConnected { add { if(!_disposing) _onSocketConnected += value; } remove { if(!_disposing) _onSocketConnected -= value; } }
+        public event ConnectionEventHandler ConnectionCreated { add { if(!_disposing) _onConnectionCreated += value; } remove { if(!_disposing) _onConnectionCreated -= value; } }
+        public event ConnectionEventHandler ConnectionDisposed { add { if(!_disposing) _onConnectionDisposed += value; } remove { if(!_disposing) _onConnectionDisposed -= value; } }
+        public event NetworkContextEventHandler<T> ContextAttached { add { if(!_disposing) _onContextAttached += value; } remove { if(!_disposing) _onContextAttached -= value; } }
+        public event NetworkContextEventHandler<T> ContextDetached { add { if(!_disposing) _onContextDetached += value; } remove { if(!_disposing) _onContextDetached -= value; } }
         #endregion
 
         #region Constructor
@@ -54,9 +51,10 @@ namespace System.Network
             _attachedContexts = new IndexedList<T>();
 
             _channels[15] = new IOCPPacketHandlerCollection<T>(15, null);
-            _channels[15].Register(1, InternalTemplates.Server_OnExecuteStringCommandReceived, new PacketEventHandler<T>(OnExecuteStringCommandReceived));
-            _channels[15].Register(2, InternalTemplates.Server_OnExecuteBinaryCommandReceived, new PacketEventHandler<T>(OnExecuteBinaryCommandReceived));
+            _channels[15].Register(1, InternalTemplates.Server_OnExecuteStringCommandReceived, OnExecuteStringCommandReceived);
+            _channels[15].Register(2, InternalTemplates.Server_OnExecuteBinaryCommandReceived, OnExecuteBinaryCommandReceived);
         }
+
         #endregion
 
         #region [Start/Stop] Handling
@@ -64,23 +62,23 @@ namespace System.Network
         {
             List<Listener> nListeners = new List<Listener>();
 
-            if (_listeners != null && _listeners.Length != 0)
+            if(_listeners != null && _listeners.Length != 0)
             {
-                if (!_running)
+                if(!_running)
                 {
-                    for (int i = 0; i < _listeners.Length; i++)
-                        if (_listeners[i].Start())
+                    for(int i = 0; i < _listeners.Length; i++)
+                        if(_listeners[i].Start())
                             nListeners.Add(_listeners[i]);
                 }
                 else nListeners.AddRange(_listeners);
             }
 
-            if (listeners != null && listeners.Length != 0)
+            if(listeners != null && listeners.Length != 0)
             {
-                for (int i = 0; i < listeners.Length; i++)
+                for(int i = 0; i < listeners.Length; i++)
                 {
                     Listener listener = new Listener(this, listeners[i]);
-                    if (listener.Start()) nListeners.Add(listener);
+                    if(listener.Start()) nListeners.Add(listener);
                 }
             }
 
@@ -91,10 +89,10 @@ namespace System.Network
 
         public void Stop()
         {
-            if (!_running) return;
+            if(!_running) return;
             _running = false;
             OnStopped();
-            for (int i = 0; i < _listeners.Length; i++) _listeners[i].Stop();
+            for(int i = 0; i < _listeners.Length; i++) _listeners[i].Stop();
         }
 
         protected virtual void OnStarted(ListenerConfig[] configs)
@@ -137,7 +135,7 @@ namespace System.Network
         #region Incoming Connection Handling
         protected override bool ValidateSocketConnection(Listener source, Socket socket, IPAddress address, string addressString, int port)
         {
-            if (_firewall == null) return true;
+            if(_firewall == null) return true;
             return !_firewall.IsBlocked(address);
         }
 
@@ -153,27 +151,27 @@ namespace System.Network
                 IOCPConnection connection = new IOCPConnection(this, socket, NetworkDirection.Inbound);
                 connection.AuthBroker = _authenticationBroker.Instantiate(_firewall, connection);
                 connection.Start();
-                if (!connection.Alive) connection.Dispose();
+                if(!connection.Alive) connection.Dispose();
             }
             catch { NetworkHelper.ReleaseSocket(ref socket); }
         }
 
         protected override void OnConnectionCreated(Connection connection)
         {
-            if (_onConnectionCreated != null) _onConnectionCreated(this, connection);
+            if(_onConnectionCreated != null) _onConnectionCreated(this, connection);
         }
         #endregion
 
         #region Context Handling
         protected override void OnConnectionDisposed(Connection connection)
         {
-            if (connection.WasAlive)
+            if(connection.WasAlive)
             {
-                if (connection.Context != null)
+                if(connection.Context != null)
                 {
                     T context = connection.Context as T;
-                    
-                    if (context != null)
+
+                    if(context != null)
                     {
                         try
                         {
@@ -184,18 +182,18 @@ namespace System.Network
 
                         try
                         {
-                            if (context.Attached && _onContextDetached != null) _onContextDetached(this, context);
+                            if(context.Attached && _onContextDetached != null) _onContextDetached(this, context);
                         }
                         finally
                         {
                             context.NotifyConnectionDisposed();
                         }
 
-                        if (_onConnectionDisposed != null) _onConnectionDisposed(this, connection);
+                        if(_onConnectionDisposed != null) _onConnectionDisposed(this, connection);
                     }
-                    else if (_onConnectionDisposed != null) _onConnectionDisposed(this, connection);
+                    else if(_onConnectionDisposed != null) _onConnectionDisposed(this, connection);
                 }
-                else if (_onConnectionDisposed != null) _onConnectionDisposed(this, connection);
+                else if(_onConnectionDisposed != null) _onConnectionDisposed(this, connection);
             }
         }
         #endregion
@@ -203,7 +201,7 @@ namespace System.Network
         #region [Login/Logout] Handling
         protected override void OnLoginSuccess(Connection connection, NetworkAccount account, AuthenticationBroker broker)
         {
-            if (_disposing) return;
+            if(_disposing) return;
             T context = new T();
 
             try
@@ -215,7 +213,7 @@ namespace System.Network
             catch { }
             finally { _contextLock.ExitWriteLock(); }
 
-            if (_onContextAttached != null) _onContextAttached(this, context);
+            if(_onContextAttached != null) _onContextAttached(this, context);
         }
 
         protected override void OnLoginFailed(Connection connection, OutboundAuthenticationBroker broker, AuthenticationResponse reason, bool expectDisconnect)
@@ -228,7 +226,7 @@ namespace System.Network
             p.Write((byte)reason);
             connection.Send(p);
 
-            if (connection.Context != null)
+            if(connection.Context != null)
             {
                 T context = connection.Context as T;
 
@@ -242,7 +240,7 @@ namespace System.Network
 
                 try
                 {
-                    if (context.Attached && _onContextDetached != null) _onContextDetached(this, context);
+                    if(context.Attached && _onContextDetached != null) _onContextDetached(this, context);
                 }
                 finally
                 {
@@ -254,7 +252,7 @@ namespace System.Network
                 connection.Assembler = null;
             }
         }
-        
+
         private void OnLogoutReceived(INetworkOperator op, T context, ByteBuffer reader)
         {
             string name = context.ToString();
@@ -277,7 +275,7 @@ namespace System.Network
 
             try
             {
-                if (context.Attached && _onContextDetached != null) _onContextDetached(this, context);
+                if(context.Attached && _onContextDetached != null) _onContextDetached(this, context);
             }
             finally
             {
@@ -317,7 +315,7 @@ namespace System.Network
 
         protected internal override void Dispatch(Connection connection, PacketData extension, PacketData packet, bool isResponse)
         {
-            if (isResponse) _extensions[extension.Channel].Response(_channels[packet.Channel], connection.Context as T, extension, packet);
+            if(isResponse) _extensions[extension.Channel].Response(_channels[packet.Channel], connection.Context as T, extension, packet);
             else _extensions[extension.Channel].Dispatch(_channels[packet.Channel], connection.Context as T, extension, packet);
         }
         #endregion

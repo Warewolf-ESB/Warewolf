@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Network;
 using System.Text;
+using System.Threading;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.Network;
@@ -96,7 +97,7 @@ namespace Dev2.Core.Tests.Network
             {
                 task.Wait();
             }
-            catch (AggregateException aex)
+            catch(AggregateException aex)
             {
                 var errors = new StringBuilder("Unhandled ConnectAsync Errors : ");
                 aex.Handle(ex =>
@@ -253,7 +254,7 @@ namespace Dev2.Core.Tests.Network
                 .ConnectAsync("127.0.0.1", 77)
                 .ContinueWith(connectTask =>
                 {
-                    if (connectTask.Result)
+                    if(connectTask.Result)
                     {
                         var loginTask = host.LoginAsync(userName, password);
                         return loginTask.Result;
@@ -263,13 +264,13 @@ namespace Dev2.Core.Tests.Network
                 try
                 {
                     task.Wait();
-                    if (retry)
+                    if(retry)
                     {
                         task = host.LoginAsync(userName, password);
                         task.Wait();
                     }
                 }
-                catch (AggregateException aex)
+                catch(AggregateException aex)
                 {
                     var errors = new StringBuilder("Unhandled LoginAsync Errors : ");
                     aex.Handle(ex =>
@@ -414,7 +415,7 @@ namespace Dev2.Core.Tests.Network
             host.Disconnect();
 
             //Execute
-            host.Send(new Packet(new PacketTemplate(0,0,0)));
+            host.Send(new Packet(new PacketTemplate(0, 0, 0)));
         }
 
         [TestMethod]
@@ -431,5 +432,108 @@ namespace Dev2.Core.Tests.Network
         #endregion
 
         #endregion
+
+        #region ConnectionDisposed
+
+        [TestMethod]
+        public void TcpClientHostConnectionDisposedEventExpectedRaisesServerOfflineStateChanged()
+        {
+            var serverStateChangedCount = 0;
+            var serverState = ServerState.Offline;
+
+            var reset = new ManualResetEventSlim();
+            var host = new TestTcpClientHost();
+            var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
+            task.Wait();
+            host.ServerStateChanged += (sender, args) =>
+            {
+                serverStateChangedCount++;
+                serverState = args.State;
+                reset.Set();
+            };
+
+            host.Disconnect(); // disposes the connection and starts heart beat timer
+            reset.Wait();
+
+            Assert.AreEqual(1, serverStateChangedCount);
+            Assert.AreEqual(ServerState.Offline, serverState);
+        }
+
+        [TestMethod]
+        public void TcpClientHostConnectionDisposedEventExpectedStartsReconnectHeartbeat()
+        {
+            var host = new TestTcpClientHost();
+            var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
+            task.Wait();
+
+            host.Disconnect(); // disposes the connection and starts heart beat timer
+
+            Assert.AreEqual(1, host.StartReconnectHeartbeatHitCount);
+            Assert.IsTrue(host.StartReconnectHeartbeatResult);
+        }
+
+        [TestMethod]
+        public void TcpClientHostReconnectHeartbeatWithLiveServerExpectedRaisesServerOnlineStateChanged()
+        {
+            var serverStateChangedCount = 0;
+            var serverState = ServerState.Offline;
+
+            var host = new TestTcpClientHost(true) { ConnectionRetryInterval = 1 };
+
+            var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
+            task.Wait();
+
+            var reset = new ManualResetEventSlim();
+            host.ServerStateChanged += (sender, args) =>
+            {
+                // This will get hit twice:
+                // - 1st when the host disconnects
+                // - 2nd when heartbeat timer elapses
+                if(serverStateChangedCount++ > 0)
+                {
+                    serverState = args.State;
+                    reset.Set();
+                }
+            };
+
+            host.Disconnect(); // disposes the connection and starts heart beat timer
+            reset.Wait();
+
+            Assert.AreEqual(2, serverStateChangedCount);
+            Assert.AreEqual(ServerState.Online, serverState);
+        }
+
+        #endregion
+
+        #region Disconnect
+
+        [TestMethod]
+        public void TcpClientHostDisconnectExpectedDoesNotInvokeStartsReconnectHeartbeat()
+        {
+            var serverStateChangedCount = 0;
+            var serverState = ServerState.Offline;
+
+            var host = new TestTcpClientHost(false, false);
+            var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
+            task.Wait();
+
+            var reset = new ManualResetEventSlim();
+            host.ServerStateChanged += (sender, args) =>
+            {
+                serverStateChangedCount++;
+                serverState = args.State;
+                reset.Set();
+            };
+
+            host.Disconnect(); // disposes the connection
+            reset.Wait();
+
+            Assert.AreEqual(0, host.StartReconnectHeartbeatHitCount);
+            Assert.AreEqual(1, serverStateChangedCount);
+            Assert.AreEqual(ServerState.Offline, serverState);
+        }
+
+        #endregion
+
     }
 }

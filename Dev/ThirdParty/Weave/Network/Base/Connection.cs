@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Net.NetworkInformation;
-using System.Net.Configuration;
-using System.Threading;
 
 namespace System.Network
 {
@@ -57,6 +50,9 @@ namespace System.Network
         public NetworkDirection Direction { get { return _direction; } }
         public NetworkContext Context { get { return _context; } set { _context = value; } }
         public IPAddress Address { get { return _address; } }
+        public int Port { get { return _port; } }
+        public Socket Socket { get { return _socket; } }
+
         #endregion
 
         #region Constructor
@@ -66,7 +62,7 @@ namespace System.Network
             _host = host;
             _socket = socket;
             _direction = direction;
-            
+
             try
             {
                 IPEndPoint ipEP = (IPEndPoint)_socket.RemoteEndPoint;

@@ -24,6 +24,10 @@ namespace Dev2.Core.Tests.Network
         {
             _isConnected = isConnected;
             TCPHost = tcpClientHost;
+            if(isConnected)
+            {
+                InitializeHost();
+            }
         }
 
         public ITcpClientHost Host { get { return TCPHost; } }

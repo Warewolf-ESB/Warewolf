@@ -242,7 +242,6 @@
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="Interfaces\IResourceDependencyService.cs" />
-    <None Include="InterfaceImplementors\EnvironmentConnection.cs" />
     <Compile Include="InterfaceImplementors\MockSecurityProvider.cs" />
     <Compile Include="Factories\WebResourceRepositoryFactory.cs" />
     <Compile Include="InterfaceImplementors\FrameworkSecurityProvider.cs" />
@@ -371,13 +370,14 @@
     <Compile Include="Network\IServiceLocator.cs" />
     <Compile Include="Network\ITcpClientHost.cs" />
     <Compile Include="Network\ServerMessaging.cs" />
+    <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServiceLocator.cs" />
     <Compile Include="Network\StudioNetworkChannelContext.cs" />
     <Compile Include="Network\TcpAsyncExtenstions.cs" />
     <Compile Include="Network\TcpClientAdapter.cs" />
     <Compile Include="Network\TcpClientHost.cs" />
+    <Compile Include="Network\TcpClientHostBase.cs" />
     <Compile Include="Network\TcpConnection.cs" />
-    <Compile Include="Network\TCPDispatchedClient.cs" />
     <Compile Include="Network\TcpConnectionBase.cs" />
     <Compile Include="Network\TcpLoginBroker.cs" />
     <Compile Include="Network\WebServer.cs" />

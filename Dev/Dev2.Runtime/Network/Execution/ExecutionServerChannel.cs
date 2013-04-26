@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Network;
-using System.Text;
 using System.Threading;
 using Dev2.Network;
 using Dev2.Network.Execution;
@@ -17,7 +14,7 @@ namespace Dev2.DynamicServices.Network.Execution
 
         private object _disposeGuard = new object();
         private bool _isDisposed = false;
-        
+
         ThreadLocal<object> _threadSpecificContext = new ThreadLocal<object>();
         private object _contextGuard = new object();
         private ConcurrentDictionary<Guid, List<Guid>> _registeredCallbackIDsIndexedByAccountID = new ConcurrentDictionary<Guid, List<Guid>>();
@@ -36,17 +33,17 @@ namespace Dev2.DynamicServices.Network.Execution
 
         public ExecutionServerChannel(INetworkMessageBroker messageBroker, IServerNetworkMessageAggregator<StudioNetworkSession> messageAggregator, IExecutionStatusCallbackDispatcher executionStatusCallbackDispatcher)
         {
-            if (messageBroker == null)
+            if(messageBroker == null)
             {
                 throw new ArgumentNullException("messageBroker");
             }
 
-            if (messageAggregator == null)
+            if(messageAggregator == null)
             {
                 throw new ArgumentNullException("messageAggregator");
             }
 
-            if (executionStatusCallbackDispatcher == null)
+            if(executionStatusCallbackDispatcher == null)
             {
                 throw new ArgumentNullException("executionStatusCallbackDispatcher");
             }
@@ -133,19 +130,19 @@ namespace Dev2.DynamicServices.Network.Execution
         /// <param name="callback">The callback.</param>
         public bool AddExecutionStatusCallback(Guid callbackID, Action<ExecutionStatusCallbackMessage> callback)
         {
-            if (callback == null)
+            if(callback == null)
             {
                 throw new ArgumentNullException("callback");
             }
 
-            if (ServerContext == null)
+            if(ServerContext == null)
             {
                 throw new NullReferenceException("No Context attached to channel");
             }
 
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
@@ -153,12 +150,12 @@ namespace Dev2.DynamicServices.Network.Execution
 
             bool result = false;
 
-            if (_executionStatusCallbackDispatcher.Add(callbackID, callback))
+            if(_executionStatusCallbackDispatcher.Add(callbackID, callback))
             {
-                lock (_contextGuard)
+                lock(_contextGuard)
                 {
                     List<Guid> callBackIDs;
-                    if (!_registeredCallbackIDsIndexedByAccountID.TryGetValue(ServerContext.NetworkContext.AccountID, out callBackIDs))
+                    if(!_registeredCallbackIDsIndexedByAccountID.TryGetValue(ServerContext.NetworkContext.AccountID, out callBackIDs))
                     {
                         callBackIDs = new List<Guid>();
                         _registeredCallbackIDsIndexedByAccountID.TryAdd(ServerContext.NetworkContext.AccountID, callBackIDs);
@@ -180,14 +177,14 @@ namespace Dev2.DynamicServices.Network.Execution
         /// <param name="callbackID">The callback ID.</param>
         public bool RemoveExecutionStatusCallback(Guid callbackID)
         {
-            if (ServerContext == null)
+            if(ServerContext == null)
             {
                 throw new NullReferenceException("No Context attached to channel");
             }
 
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
@@ -195,12 +192,12 @@ namespace Dev2.DynamicServices.Network.Execution
 
             bool result = false;
 
-            if (_executionStatusCallbackDispatcher.Remove(callbackID))
+            if(_executionStatusCallbackDispatcher.Remove(callbackID))
             {
-                lock (_contextGuard)
+                lock(_contextGuard)
                 {
                     List<Guid> callBackIDs;
-                    if (_registeredCallbackIDsIndexedByAccountID.TryRemove(ServerContext.NetworkContext.AccountID, out callBackIDs))
+                    if(_registeredCallbackIDsIndexedByAccountID.TryRemove(ServerContext.NetworkContext.AccountID, out callBackIDs))
                     {
                         callBackIDs.Remove(callbackID);
                     }
@@ -236,28 +233,28 @@ namespace Dev2.DynamicServices.Network.Execution
         /// <param name="context">The context.</param>
         private void ExecutionStatusCallbackMessageRecieved(ExecutionStatusCallbackMessage message, IServerNetworkChannelContext<StudioNetworkSession> context)
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     return;
                 }
             }
-            
+
             Context = context;
 
-            if (message.MessageType == ExecutionStatusCallbackMessageType.Add)
+            if(message.MessageType == ExecutionStatusCallbackMessageType.Add)
             {
                 AddExecutionStatusCallback(message.CallbackID, new Action<ExecutionStatusCallbackMessage>(m =>
                 {
                     StudioNetworkSession studioNetworkSession;
-                    if (_networkContextsIndexedByCallbackID.TryGetValue(m.CallbackID, out studioNetworkSession))
+                    if(_networkContextsIndexedByCallbackID.TryGetValue(m.CallbackID, out studioNetworkSession))
                     {
                         _messageBroker.Send(m, studioNetworkSession);
                     }
                 }));
             }
-            else if (message.MessageType == ExecutionStatusCallbackMessageType.Remove)
+            else if(message.MessageType == ExecutionStatusCallbackMessageType.Remove)
             {
                 RemoveExecutionStatusCallback(message.CallbackID);
             }
@@ -271,9 +268,9 @@ namespace Dev2.DynamicServices.Network.Execution
         /// <param name="context">The context.</param>
         private void NetworkContextDetachedMessageRecieved(NetworkContextDetachedMessage message, IServerNetworkChannelContext<StudioNetworkSession> context)
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     return;
                 }
@@ -282,16 +279,17 @@ namespace Dev2.DynamicServices.Network.Execution
             Context = context;
 
             List<Guid> safeCallBackIDs = new List<Guid>();
-            lock (_contextGuard)
+            lock(_contextGuard)
             {
                 List<Guid> callBackIDs;
-                if (_registeredCallbackIDsIndexedByAccountID.TryGetValue(ServerContext.NetworkContext.AccountID, out callBackIDs))
+
+                if(ServerContext != null && _registeredCallbackIDsIndexedByAccountID.TryGetValue(ServerContext.NetworkContext.AccountID, out callBackIDs))
                 {
                     safeCallBackIDs.AddRange(callBackIDs);
                 }
             }
 
-            foreach (Guid item in safeCallBackIDs)
+            foreach(Guid item in safeCallBackIDs)
             {
                 RemoveExecutionStatusCallback(item);
             }
@@ -306,9 +304,9 @@ namespace Dev2.DynamicServices.Network.Execution
         /// </summary>
         public void Dispose()
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     return;
                 }

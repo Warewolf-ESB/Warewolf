@@ -4,9 +4,9 @@ namespace Dev2.Network.Messaging.Messages
 {
 
     /// <summary>
-    /// System message which is published when a network context is detached
+    /// System message which is published when a network server is online
     /// </summary>
-    public class NetworkContextDetachedMessage : NetworkMessage
+    public class ServerOnlineMessage : NetworkMessage
     {
         #region Overrides of NetworkMessage
 

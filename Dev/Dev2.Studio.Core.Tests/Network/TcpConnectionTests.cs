@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Diagnostics;
@@ -53,7 +51,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void SendNetworkMessageWithMessageExpectedInvokesHost()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -68,7 +66,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void SendReceiveNetworkMessageWithMessageExpectedInvokesHost()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -83,7 +81,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void RecieveNetworkMessageWithByteReaderExpectedInvokesHost()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.RecieveNetworkMessage(It.IsAny<IByteReaderBase>())).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -98,7 +96,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void ExecuteCommandWithRequestExpectedInvokesHost()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -112,7 +110,7 @@ namespace Dev2.Core.Tests.Network
             const string RootTag = "Root";
             const string TestContent = "xxxxx";
 
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(
                 string.Format("<{0}><{1}>{2}</{1}></{0}>", RootTag, GlobalConstants.ManagementServicePayload, TestContent));
 
@@ -129,7 +127,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void AddDebugWriterWithWriterExpectedInvokesHost()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.AddDebugWriter(It.IsAny<IDebugWriter>())).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -144,7 +142,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void RemoveDebugWriterWithIDExpectedInvokesHost()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.RemoveDebugWriter(It.IsAny<Guid>())).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -159,7 +157,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void DisconnectExpectedInvokesHostAndNulls()
         {
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             host.Setup(h => h.Disconnect()).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
@@ -180,7 +178,7 @@ namespace Dev2.Core.Tests.Network
 
             var securityContetxt = new Mock<IFrameworkSecurityContext>();
             var eventAggregator = new Mock<IEventAggregator>();
-            var host = new Mock<ITcpClientHost>();
+            var host = CreateTcpClientHost();
             //host.Setup(h => h.ConnectAsync(It.IsAny<string>(), It.IsAny<int>())).Returns(
             //    () =>
             //    {
@@ -204,5 +202,40 @@ namespace Dev2.Core.Tests.Network
         }
 
         #endregion
+
+        #region ServerStateChanged
+
+        // PBI 9228: TWR - 2013.04.17
+
+        [TestMethod]
+        public void ServerStateChangedWhenRaisedByHostExpectedRaisedOnConnection()
+        {
+            var eventCount = 0;
+
+            var host = CreateTcpClientHost();
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            connection.ServerStateChanged += (sender, args) =>
+            {
+                eventCount++;
+            };
+            host.Raise(h => h.ServerStateChanged += null, new ServerStateEventArgs(ServerState.Offline));
+            host.Raise(h => h.ServerStateChanged += null, new ServerStateEventArgs(ServerState.Offline));
+            Assert.AreEqual(2, eventCount);
+        }
+
+        #endregion
+
+        #region CreateTcpClientHost
+
+        static Mock<ITcpClientHost> CreateTcpClientHost()
+        {
+            var host = new Mock<ITcpClientHost>();
+            host.Setup(h => h.MessageAggregator).Returns(new Mock<IStudioNetworkMessageAggregator>().Object);
+            host.Setup(h => h.MessageBroker).Returns(new Mock<INetworkMessageBroker>().Object);
+            return host;
+        }
+
+        #endregion
+
     }
 }

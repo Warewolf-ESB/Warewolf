@@ -6,6 +6,7 @@ using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
+using Dev2.Studio.Core.Network;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -23,6 +24,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         event EventHandler<LoginStateEventArgs> LoginStateChanged;
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
+        event EventHandler<ServerStateEventArgs> ServerStateChanged;
 
         void SendNetworkMessage(INetworkMessage message);
         INetworkMessage RecieveNetworkMessage(IByteReaderBase reader);

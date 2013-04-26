@@ -27,7 +27,7 @@ namespace Dev2.Network.Messaging
             //
             // Create packet and write data to it
             //
-            Packet p = new Packet(PacketTemplates.Both_OnNetworkMessageRevieved);
+            Packet p = new Packet(PacketTemplates.Both_OnNetworkMessageReceived);
             p.Write(message.GetType().AssemblyQualifiedName);
             p.Write(message.Handle);
             message.Write(p);
@@ -41,7 +41,7 @@ namespace Dev2.Network.Messaging
         /// <summary>
         /// Processes a recieved message.
         /// </summary>
-        public INetworkMessage Recieve(IByteReaderBase reader)
+        public INetworkMessage Receive(IByteReaderBase reader)
         {
             if(reader == null)
             {

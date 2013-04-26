@@ -58,6 +58,8 @@
     <Compile Include="Messaging\INetworkMessageBroker.cs" />
     <Compile Include="Messaging\IServerNetworkMessageAggregator.cs" />
     <Compile Include="Messaging\IStudioNetworkMessageAggregator.cs" />
+    <Compile Include="Messaging\Messages\ServerOfflineMessage.cs" />
+    <Compile Include="Messaging\Messages\ServerAttachedMessage.cs" />
     <Compile Include="Messaging\Messages\ErrorMessage.cs" />
     <Compile Include="Messaging\Messages\ExecuteCommandMessage.cs" />
     <Compile Include="Messaging\Messages\NetworkMessageAction.cs" />

@@ -30,7 +30,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
             networkMessageBroker.Send(sendMessage, no.Object);
             ByteBuffer byteBuffer = new ByteBuffer(packet.Buffer);
             
-            TestMessage recievedMessage = networkMessageBroker.Recieve(byteBuffer) as TestMessage;
+            TestMessage recievedMessage = networkMessageBroker.Receive(byteBuffer) as TestMessage;
             
             string actual = recievedMessage.StringVal + recievedMessage.IntVal.ToString();
             string expected = sendMessage.StringVal + sendMessage.IntVal.ToString();
@@ -68,7 +68,7 @@ namespace Unlimited.UnitTest.Framework.Dev2.Network
         public void Recieve_Where_ReaderNull_Expected_InvalidOperationException()
         {
             NetworkMessageBroker networkMessageBroker = new NetworkMessageBroker();
-            networkMessageBroker.Recieve(null);
+            networkMessageBroker.Receive(null);
         }
     }
 }

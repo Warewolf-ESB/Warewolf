@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System;
+using System.Collections.Generic;
+using System.Network;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -7,12 +9,11 @@ using Dev2.DynamicServices.Network.Auxiliary;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using System;
-using System.Network;
-using System.Collections.Generic;
 
-namespace Dev2.DynamicServices {
-    public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession> {
+namespace Dev2.DynamicServices
+{
+    public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession>
+    {
         #region Instance Fields
         private StudioFileSystem _fileSystem;
         private StudioAccountProvider _accountProvider;
@@ -33,14 +34,16 @@ namespace Dev2.DynamicServices {
 
         #region Constructor
         public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID)
-            : this(serverName, fileSystem, channel, serverID, true) {
+            : this(serverName, fileSystem, channel, serverID, true)
+        {
         }
 
         public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID, bool autoAccountCreation)
-            : base(serverName, new StudioAuthenticationBroker()) {
+            : base(serverName, new StudioAuthenticationBroker())
+        {
             _channel = channel;
             _serverID = serverID;
-            if ((_fileSystem = fileSystem) == null)
+            if((_fileSystem = fileSystem) == null)
                 throw new ArgumentNullException("fileSystem");
             _accountProvider = new StudioAccountProvider(null, autoAccountCreation, this);
             _accountProvider.Load();
@@ -49,11 +52,11 @@ namespace Dev2.DynamicServices {
             _channels[0] = new IOCPPacketHandlerCollection<StudioNetworkSession>(0, null);
             _channels[1] = new IOCPPacketHandlerCollection<StudioNetworkSession>(1, null);
 
-            _channels[0].Register(0, PacketTemplates.Server_OnAuxiliaryConnectionRequested, new PacketEventHandler<StudioNetworkSession>(OnAuxiliaryConnectionRequested));
-            _channels[0].Register(1, PacketTemplates.Server_OnDebugWriterAddition, new PacketEventHandler<StudioNetworkSession>(OnDebugWriterAddition));
-            _channels[0].Register(2, PacketTemplates.Server_OnDebugWriterSubtraction, new PacketEventHandler<StudioNetworkSession>(OnDebugWriterSubtraction));
+            _channels[0].Register(0, PacketTemplates.Server_OnAuxiliaryConnectionRequested, OnAuxiliaryConnectionRequested);
+            _channels[0].Register(1, PacketTemplates.Server_OnDebugWriterAddition, OnDebugWriterAddition);
+            _channels[0].Register(2, PacketTemplates.Server_OnDebugWriterSubtraction, OnDebugWriterSubtraction);
 
-            _channels[1].Register(0, PacketTemplates.Both_OnNetworkMessageRevieved, new PacketEventHandler<StudioNetworkSession>(OnNetworkMessageRevieved));
+            _channels[1].Register(0, PacketTemplates.Both_OnNetworkMessageReceived, OnNetworkMessageReceived);
 
             ContextAttached += StudioNetworkServer_ContextAttached;
             ContextDetached += StudioNetworkServer_ContextDetached;
@@ -62,13 +65,15 @@ namespace Dev2.DynamicServices {
         #endregion
 
         #region DebugWriter Support
-        private void OnDebugWriterAddition(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader) {
+        private void OnDebugWriterAddition(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
+        {
             Guid accountID = context.AccountID;
             TransparentDebugWriter writer = new TransparentDebugWriter(this, accountID);
             DebugDispatcher.Instance.Add(accountID, writer);
         }
 
-        private void OnDebugWriterSubtraction(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader) {
+        private void OnDebugWriterSubtraction(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
+        {
             Guid accountID = context.AccountID;
             DebugDispatcher.Instance.Remove(accountID);
         }
@@ -76,13 +81,14 @@ namespace Dev2.DynamicServices {
 
         #region Network Message Support
 
-        private void OnNetworkMessageRevieved(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader) {
+        private void OnNetworkMessageReceived(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
+        {
             try
             {
-                INetworkMessage message = StudioMessaging.MessageBroker.Recieve(reader);
+                INetworkMessage message = StudioMessaging.MessageBroker.Receive(reader);
                 StudioMessaging.MessageAggregator.Publish(message, new ServerNetworkChannelContext(context, this));
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 TraceWriter.WriteTrace("An error occured while trying to interpret network message from the studio. " + e.Message);
 
@@ -91,7 +97,7 @@ namespace Dev2.DynamicServices {
                     ErrorMessage errorMessage = new ErrorMessage(0, e.Message);
                     StudioMessaging.MessageBroker.Send(errorMessage, op);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     TraceWriter.WriteTrace("An error occured while trying to send an error message to the studio. " + ex.Message);
                 }
@@ -109,7 +115,7 @@ namespace Dev2.DynamicServices {
 
             dataObject = new DsfDataObject(payload, datalistID);
 
-            if (!dataObject.Errors.HasErrors())
+            if(!dataObject.Errors.HasErrors())
             {
                 string dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -120,26 +126,28 @@ namespace Dev2.DynamicServices {
             else return dataObject.Errors.MakeUserReady();
         }
 
-        protected override void OnExecuteCommand(StudioNetworkSession context, ByteBuffer payload, Packet writer) {
+        protected override void OnExecuteCommand(StudioNetworkSession context, ByteBuffer payload, Packet writer)
+        {
 
         }
         #endregion
 
         #region Auxiliary Conection Handling
-        protected override void OnStarted(ListenerConfig[] configs) {
-            lock (_auxiliaryLock)
+        protected override void OnStarted(ListenerConfig[] configs)
+        {
+            lock(_auxiliaryLock)
             {
-                if (_auxiliaryConfigurations == null)
+                if(_auxiliaryConfigurations == null)
                 {
                     _auxiliaryConfigurations = new List<ListenerConfig>();
                 }
 
-                if (configs == null)
+                if(configs == null)
                 {
                     return;
                 }
 
-                foreach (ListenerConfig listenerConfig in configs)
+                foreach(ListenerConfig listenerConfig in configs)
                 {
                     _auxiliaryConfigurations.Add(new ListenerConfig(listenerConfig.Address, listenerConfig.Port + 20000, listenerConfig.Backlog));
                 }
@@ -149,21 +157,26 @@ namespace Dev2.DynamicServices {
             }
         }
 
-        protected override void OnStopped() {
-            lock (_auxiliaryLock) {
-                if (_auxiliaryServer != null)
+        protected override void OnStopped()
+        {
+            lock(_auxiliaryLock)
+            {
+                if(_auxiliaryServer != null)
                     _auxiliaryServer.Dispose();
                 _auxiliaryServer = null;
                 _auxiliaryConfigurations = null;
             }
         }
 
-        private void OnAuxiliaryConnectionRequested(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader) {
+        private void OnAuxiliaryConnectionRequested(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
+        {
             int request = reader.ReadInt32();
             Guid guid = Guid.NewGuid();// context.NotifyAuxiliaryConnectionRequested();
 
-            lock (_auxiliaryLock) {
-                if (_auxiliaryServer == null) {
+            lock(_auxiliaryLock)
+            {
+                if(_auxiliaryServer == null)
+                {
                     _auxiliaryServer = new StudioAuxiliaryServer(this);
                     _auxiliaryServer.Start(_auxiliaryConfigurations.ToArray());
                 }
@@ -179,28 +192,34 @@ namespace Dev2.DynamicServices {
         #endregion
 
         #region Context Handling
+
         private void StudioNetworkServer_ContextDetached(TCPServer<StudioNetworkSession> server, StudioNetworkSession context)
         {
             StudioMessaging.MessageAggregator.Publish(new NetworkContextDetachedMessage(), new ServerNetworkChannelContext(context, server));
         }
 
-        private void StudioNetworkServer_ContextAttached(TCPServer<StudioNetworkSession> server, StudioNetworkSession context) {
-            Packet p = new Packet(InternalTemplates.Server_SendClientDetails);
+        private void StudioNetworkServer_ContextAttached(TCPServer<StudioNetworkSession> server, StudioNetworkSession context)
+        {
+            var p = new Packet(InternalTemplates.Server_SendClientDetails);
             p.Write(_serverID);
             p.Write(context.AccountID);
             context.Send(p);
         }
+
         #endregion
 
         #region Disposal Handling
-        protected override void OnDisposing(bool disposing) {
+        protected override void OnDisposing(bool disposing)
+        {
             base.OnDisposing(disposing);
 
-            if (disposing) {
+            if(disposing)
+            {
                 //_accountProvider.Save();
 
-                lock (_auxiliaryLock) {
-                    if (_auxiliaryServer != null)
+                lock(_auxiliaryLock)
+                {
+                    if(_auxiliaryServer != null)
                         _auxiliaryServer.Dispose();
                     _auxiliaryServer = null;
                     _auxiliaryConfigurations = null;
@@ -210,52 +229,61 @@ namespace Dev2.DynamicServices {
         #endregion
 
         #region StudioAuthenticationBroker
-        private sealed class StudioAuthenticationBroker : InboundSRPAuthenticationBroker {
+        private sealed class StudioAuthenticationBroker : InboundSRPAuthenticationBroker
+        {
             private StudioNetworkServer _server;
 
             public StudioNetworkServer Server { get { return _server; } set { _server = value; } }
 
-            public StudioAuthenticationBroker() {
+            public StudioAuthenticationBroker()
+            {
                 _localIdentifier = new FourOctetUnion('D', 'E', 'V', '2').Int32;
                 _localVersion = new Version(1, 0, 0, 0);
             }
 
-            protected override InboundAuthenticationBroker OnInstantiate() {
+            protected override InboundAuthenticationBroker OnInstantiate()
+            {
                 return new StudioAuthenticationBroker() { Server = _server };
             }
 
-            protected override NetworkAccount ResolveAccount(string account) {
+            protected override NetworkAccount ResolveAccount(string account)
+            {
                 return _server._accountProvider.GetAccount(account);
             }
         }
         #endregion
 
         #region TransparentDebugWriter
-        private sealed class TransparentDebugWriter : IDebugWriter {
+        private sealed class TransparentDebugWriter : IDebugWriter
+        {
             readonly StudioNetworkServer _server;
             readonly Guid _accountID;
             readonly StudioAccount _account;
 
             public Guid ID { get { return _accountID; } }
 
-            public TransparentDebugWriter(StudioNetworkServer server, Guid accountID) {
+            public TransparentDebugWriter(StudioNetworkServer server, Guid accountID)
+            {
                 _server = server;
                 _accountID = accountID;
                 _account = server.AccountProvider.GetAccount(accountID);
             }
 
-            public void Write(IDebugState debugState) {
-                if (_account.InUse && _account.Owner != null) {
+            public void Write(IDebugState debugState)
+            {
+                if(_account.InUse && _account.Owner != null)
+                {
                     debugState.ServerID = _server._serverID;
                     var p = new Packet(PacketTemplates.Client_OnDebugWriterWrite);
                     debugState.Write(p);
                     _account.Owner.Send(p);
-                } else {
+                }
+                else
+                {
                     DebugDispatcher.Instance.Remove(_accountID);
                 }
             }
         }
         #endregion
-
     }
 }

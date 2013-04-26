@@ -173,6 +173,7 @@
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
+    <Compile Include="Network\TestTcpClientHost.cs" />
     <Compile Include="Network\TestTcpConnection.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />
     <Compile Include="Network\TcpConnectionTests.cs" />

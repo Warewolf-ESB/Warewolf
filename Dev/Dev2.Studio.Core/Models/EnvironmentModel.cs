@@ -7,6 +7,7 @@ using Dev2.Network.Execution;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
 using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
@@ -14,18 +15,24 @@ namespace Dev2.Studio.Core.Models
     public class EnvironmentModel : IEnvironmentModel
     {
         private IResourceRepository _resources;
+        bool _publishEventsOnDispatcherThread;
 
         #region Constructor
 
-        public EnvironmentModel(IEnvironmentConnection environmentConnection)
+        public EnvironmentModel(IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
         {
             if(environmentConnection == null)
             {
                 throw new ArgumentNullException("environmentConnection");
             }
             Connection = environmentConnection;
+            _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
+
+            // This is also triggered by a network state change
             Connection.LoginStateChanged += OnConnectionLoginStateChanged;
-            Connection.NetworkStateChanged += OnConnectionNetworkStateChanged;
+
+            // PBI 9228: TWR - 2013.04.17
+            Connection.ServerStateChanged += OnServerStateChanged;
         }
 
         #endregion Constructor
@@ -154,15 +161,6 @@ namespace Dev2.Studio.Core.Models
             Connect();
         }
 
-        //// Not visible from the interface view
-        //public void Connect(string alias, Uri address)
-        //{
-        //    Name = alias;
-        //    DsfAddress = address;
-        //    Connection.Connect();
-        //    EventAggregator.Publish(new EnvironmentConnectedMessage(this));
-        //}
-
         public void LoadResources()
         {
             if(Connection.IsConnected)
@@ -192,44 +190,54 @@ namespace Dev2.Studio.Core.Models
 
         #endregion Methods
 
-        #region Event Handlers
+        #region Connection Event Handlers
 
-        void OnConnectionNetworkStateChanged(object sender, NetworkStateEventArgs args)
+        // PBI 9228: TWR - 2013.04.17
+
+        void OnServerStateChanged(object sender, ServerStateEventArgs e)
         {
-            //
-            // If application in shutdown do nothing
-            //
-            if(Application.Current == null)
-            {
-                return;
-            }
-
+            RaiseNetworkStateChanged(e.State == ServerState.Online);
         }
 
         private void OnConnectionLoginStateChanged(object sender, LoginStateEventArgs e)
         {
-            //
-            // If application in shutdown do nothing
-            //
-            if(Application.Current == null)
-            {
-                return;
-            }
+            RaiseNetworkStateChanged(e.LoggedIn);
+        }
 
-            //
+        void RaiseNetworkStateChanged(bool isOnline)
+        {
             // If auxilliry connection then do nothing
-            //
             if(Connection.IsAuxiliary)
             {
                 return;
             }
 
-            Application.Current.Dispatcher.BeginInvoke(e.LoggedIn
-                ? new Action(() => Connection.EventAggregator.Publish(new EnvironmentConnectedMessage(this)))
-                : new Action(() => Connection.EventAggregator.Publish(new EnvironmentDisconnectedMessage(this))), null);
+            AbstractEnvironmentMessage message;
+            if(isOnline)
+            {
+                message = new EnvironmentConnectedMessage(this);
+            }
+            else
+            {
+                message = new EnvironmentDisconnectedMessage(this);
+            }
+
+            if(_publishEventsOnDispatcherThread)
+            {
+                if(Application.Current != null)
+                {
+                    // application is not shutting down!!
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => Connection.EventAggregator.Publish(message)), null);
+                }
+            }
+            else
+            {
+                Connection.EventAggregator.Publish(message);
+            }
         }
 
         #endregion Event Handlers
+
 
         #region IEquatable
 

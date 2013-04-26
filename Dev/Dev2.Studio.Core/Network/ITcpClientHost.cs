@@ -14,6 +14,8 @@ namespace Dev2.Studio.Core.Network
 
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
 
+        event EventHandler<ServerStateEventArgs> ServerStateChanged;
+
         bool IsAuxiliary { get; }
 
         Guid ServerID { get; }

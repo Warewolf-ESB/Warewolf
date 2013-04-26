@@ -7,6 +7,6 @@ namespace Dev2.Network
     public interface INetworkMessageBroker
     {
         void Send<T>(T message, INetworkOperator networkOperator) where T : INetworkMessage;
-        INetworkMessage Recieve(IByteReaderBase reader);
+        INetworkMessage Receive(IByteReaderBase reader);
     }
 }

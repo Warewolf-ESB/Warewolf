@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Network;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Network;
 
 namespace Dev2.Network
 {
@@ -20,6 +15,6 @@ namespace Dev2.Network
         // These should eventually be replaced buy the generic two way coms
 
         //Packet temmplate used for generic two way communication
-        public static readonly PacketTemplate Both_OnNetworkMessageRevieved = new PacketTemplate(1, 0, true);
+        public static readonly PacketTemplate Both_OnNetworkMessageReceived = new PacketTemplate(1, 0, true);
     }
 }
