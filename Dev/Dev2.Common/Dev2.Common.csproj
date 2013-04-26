@@ -55,6 +55,7 @@
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
+    <Compile Include="Patterns\AvlTree.cs" />
     <Compile Include="ProtocolBuffers\AProtocolBuffer.cs" />
     <Compile Include="ProtocolBuffers\BufferObject\BinaryStorageKey.cs" />
     <Compile Include="ProtocolBuffers\BufferObject\IStringifyable.cs" />
