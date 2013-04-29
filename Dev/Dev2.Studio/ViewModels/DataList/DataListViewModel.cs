@@ -161,39 +161,46 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (part.IsScalar)
                 {
-                    IDataListItemModel scalarToRemove = ScalarCollection.FirstOrDefault
-                        (c => c.Name == part.Field);
-
-                    if (scalarToRemove != null)
+                    var scalarsToRemove = ScalarCollection.Where(c => c.Name == part.Field);
+                    scalarsToRemove.ToList().ForEach(scalarToRemove =>
                     {
-                        scalarToRemove.IsUsed = false;
-                    }
+                        if (scalarToRemove != null)
+                        {
+                            scalarToRemove.IsUsed = false;
+                        }
+                    });
+                    
                 }
                 else
                 {
-                    IDataListItemModel recsetToRemove = RecsetCollection.FirstOrDefault
-                        (c => c.Name == part.Recordset && c.IsRecordset);
-
-                    if (string.IsNullOrEmpty(part.Field))
+                    var recsetsToRemove = RecsetCollection.Where(c => c.Name == part.Recordset && c.IsRecordset);
+                    recsetsToRemove.ToList().ForEach(recsetToRemove =>
                     {
-                        if (recsetToRemove != null)
-                        {
-                            recsetToRemove.IsUsed = false;
-                        }
-                    }
-                    else
-                    {
-                        if (recsetToRemove != null)
-                        {
-                            IDataListItemModel childToRemove = recsetToRemove.Children.FirstOrDefault
-                                (c => c.Name == part.Field && c.IsField);
 
-                            if (childToRemove != null)
+                        if (string.IsNullOrEmpty(part.Field))
+                        {
+                            if (recsetToRemove != null)
                             {
-                                childToRemove.IsUsed = false;
+                                recsetToRemove.IsUsed = false;
                             }
                         }
-                    }
+                        else
+                        {
+                            if (recsetToRemove != null)
+                            {
+                                var childrenToRemove = recsetToRemove.Children.Where(c => c.Name == part.Field && c.IsField);
+                                childrenToRemove.ToList().ForEach(childToRemove =>
+                                {
+                                    if (childToRemove != null)
+                                    {
+                                        childToRemove.IsUsed = false;
+                                    }
+                                });
+                                
+                            }
+                        }
+                    });
+                    
                 }
             }
 
@@ -351,7 +358,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     item = DataListItemModelFactory.CreateDataListItemViewModel
                         (this, part.Recordset, part.Description, null, true);
-
                     results.Add(item);
                 }
                 else

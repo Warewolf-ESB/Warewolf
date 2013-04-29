@@ -1,7 +1,9 @@
-﻿using Dev2.Composition;
+﻿using System.Linq;
+using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
@@ -223,6 +225,63 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RemoveUnusedDataListItems();
             int afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
+        }       
+        
+        [TestMethod]
+        public void SetUnusedDataListItemsWhenTwoScalarsSameNameExpectedBothMarkedAsUnused()
+        {
+            //---------------------------Setup----------------------------------------------------------
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part1 = new Mock<IDataListVerifyPart>();
+            part1.Setup(c => c.Field).Returns("testing");
+            part1.Setup(c => c.Description).Returns("A state in a republic");
+            part1.Setup(c => c.IsScalar).Returns(true);
+            var part2 = new Mock<IDataListVerifyPart>();
+            part2.Setup(c => c.Field).Returns("testing");
+            part2.Setup(c => c.Description).Returns("Duplicate testing");
+            part2.Setup(c => c.IsScalar).Returns(true);
+            parts.Add(part1.Object);
+            parts.Add(part2.Object);
+            var dataListItemModels = _dataListViewModel.CreateDataListItems(parts, true);
+            _dataListViewModel.ScalarCollection.AddRange(dataListItemModels);
+            //-------------------------Execute Test ------------------------------------------
+            _dataListViewModel.SetUnusedDataListItems(parts);
+            //-------------------------Assert Resule------------------------------------------
+            int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && !model.IsRecordset && !string.IsNullOrEmpty(model.Name));
+            Assert.AreEqual(2,actual);
+        } 
+        
+        [TestMethod]
+        public void SetUnusedDataListItemsWhenTwoRecsetsSameNameExpectedBothMarkedAsUnused()
+        {
+            //---------------------------Setup----------------------------------------------------------
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part1 = new Mock<IDataListVerifyPart>();
+            part1.Setup(c => c.Recordset).Returns("testing");
+            part1.Setup(c => c.DisplayValue).Returns("[[testing]]");
+            part1.Setup(c => c.Description).Returns("A state in a republic");
+            part1.Setup(c => c.IsScalar).Returns(false);
+            var part2 = new Mock<IDataListVerifyPart>();
+            part2.Setup(c => c.Recordset).Returns("testing");
+            part2.Setup(c => c.DisplayValue).Returns("[[testing]]");
+            part2.Setup(c => c.Description).Returns("Duplicate testing");
+            part2.Setup(c => c.IsScalar).Returns(false);
+            parts.Add(part1.Object);
+            parts.Add(part2.Object);
+
+            IDataListItemModel mod = new DataListItemModel("testing");
+            mod.Children.Add(new DataListItemModel("f1",parent:mod));
+            IDataListItemModel mod2 = new DataListItemModel("testing");
+            mod2.Children.Add(new DataListItemModel("f2",parent:mod2));
+            
+            _dataListViewModel.RecsetCollection.Add(mod);
+            _dataListViewModel.RecsetCollection.Add(mod2);
+           
+            //-------------------------Execute Test ------------------------------------------
+            _dataListViewModel.SetUnusedDataListItems(parts);
+            //-------------------------Assert Resule------------------------------------------
+            int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && model.IsRecordset);
+            Assert.AreEqual(2,actual);
         }
 
 
