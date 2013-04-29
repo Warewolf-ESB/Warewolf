@@ -1,4 +1,6 @@
-﻿/* Model for Decision Wizard */
+﻿// Make this available to chrome debugger
+//@ sourceURL=DecisionViewModel.js  
+
 function DecisionViewModel() {
     var self = this;
     var $mainForm = $("#mainForm");
@@ -13,7 +15,7 @@ function DecisionViewModel() {
         FalseArmText: ko.observable("False"),
         IsAnd: ko.observable(true),
         TheStack: ko.observableArray([]),
-        rows: ko.observable(3),
+        
         /* End Injected	Data */
 
         /* The data here must match the server's decision functions */
@@ -56,7 +58,7 @@ function DecisionViewModel() {
             { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 },
         ])
     };
-    
+
     self.intellisenseOptions = [];
 
     self.ShowDelete = function (idx) {
@@ -95,7 +97,10 @@ function DecisionViewModel() {
 
     };
 
-    self.rowChanged = function (elm) {
+    self.rowChanged = function (elm, event) {
+
+        self.autoResize(event.target.previousElementSibling);
+        self.autoResize(event.target.nextElementSibling);
 
         var idx = self.data.TheStack().indexOf(elm);
         var val = elm.EvaluationFn;
@@ -200,6 +205,19 @@ function DecisionViewModel() {
 
         if (event.ctrlKey && key == 13) {
             self.addRow();
-        } else return true;
+        } else {
+            self.autoResize(event.target);           
+            return true;
+        }
     };
+    
+
+    self.autoResize = function (textarea) {
+        //var oldHeight = parseInt(textarea.style.height.replace("px", ""));
+        textarea.style.height = '12px';
+        var newHeight = textarea.scrollHeight - 5;
+        textarea.style.height = newHeight + 'px';
+        //textarea.style.height = (oldHeight > newHeight ? oldHeight : newHeight) + 'px';
+    };
+
 }
