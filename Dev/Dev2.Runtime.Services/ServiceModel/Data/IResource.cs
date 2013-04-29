@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
+using Dev2.Common.Patterns;
 using Dev2.Common.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -79,5 +81,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <param name="xml">The XML to be upgraded.</param>
         /// <returns>The XML with the additional attributes set.</returns>
         XElement UpgradeXml(XElement xml);
+
+        List<ResourceForTree> Dependencies { get; set; }
     }
 }

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -1061,5 +1064,23 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        public List<string> GetDependants(Guid workspaceID, string resourceName)
+        {
+            if(string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName","No resource name given.");
+            var resources = GetResources(workspaceID);
+            var dependants = new List<string>();
+            resources.ForEach(resource =>
+            {
+                if(resource.Dependencies == null) return;
+                resource.Dependencies.ForEach(tree =>
+                {
+                    if(tree.ResourceName == resourceName)
+                    {
+                        dependants.Add(tree.ResourceName);
+                    }
+                });
+            });
+            return dependants.ToList();
+        }
     }
 }

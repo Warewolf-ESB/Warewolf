@@ -20,7 +20,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    [Ignore]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resouces saved by SaveResources()
@@ -1382,6 +1381,103 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
+
+        [TestMethod]
+        public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            var resources = SaveResources(path, null, false, false, new []{"Bug6619",resourceName}).ToList();
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, task.Result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,dependants.Count);
+        }      
+        
+        [TestMethod]
+        public void GetDependantsWhereNoResourcesExpectEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var task = ResourceCatalog.LoadWorkspaceAsync("xx", new string[0]);
+            task.Wait();
+            var resourceName = "resource";
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(0, task.Result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0,dependants.Count);
+        }   
+        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDependantsWhereResourceNameEmptyStringExpectException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            var resources = SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, task.Result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, "");
+            //------------Assert Results-------------------------
+            //Exception thrown see attribute
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDependantsWhereResourceNameNullStringExpectException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            var resources = SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, task.Result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, "");
+            //------------Assert Results-------------------------
+            //Exception thrown see attribute
+        }
+
+
+        [TestMethod]
+        public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            var resources = SaveResources(path, null, false, false, new[] { resourceName }).ToList();
+            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
+            task.Wait();
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(1, task.Result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dependants.Count);
+        }      
 
         #region VerifyPayload
 

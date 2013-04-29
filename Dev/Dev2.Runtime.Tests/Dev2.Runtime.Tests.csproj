@@ -206,6 +206,11 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\TestForEachOutput.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug6619.xml" />
+    <EmbeddedResource Include="XML\Bug6619Dep.xml" />
+    <EmbeddedResource Include="XML\Bug6619Dep2.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
