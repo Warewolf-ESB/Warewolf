@@ -13,7 +13,7 @@ function DecisionViewModel() {
         FalseArmText: ko.observable("False"),
         IsAnd: ko.observable(true),
         TheStack: ko.observableArray([]),
-
+        rows: ko.observable(3),
         /* End Injected	Data */
 
         /* The data here must match the server's decision functions */
@@ -72,17 +72,17 @@ function DecisionViewModel() {
     self.addRow = function () {
         // Default Row ;)
 		// { displayValue: "Choose...", optionValue: "Choose...", columnCount: 0 },
-        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
+        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...'});
 
         // Find the element and select it. -- decisionRow
         var $span = $("#decisionRow:last-child");
-
         //var $li = $span.parent();
         //self.selectResourcePathElement($span);
         $decisionView.scrollTo($span, 280); // height of container
 
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
+        
 
     };
 
@@ -106,10 +106,10 @@ function DecisionViewModel() {
         });
 
         self.data.TheStack.splice(idx, 1, { Col1: elm.Col1, Col2: elm.Col2, Col3: elm.Col3, PopulatedColumnCnt: cnt.columnCount, EvaluationFn: val });
-
+    
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
-
+        
     };
 
     self.toggleMode = function () {
@@ -195,8 +195,11 @@ function DecisionViewModel() {
         }
     };
 
-    self.onKeyPress = function (event) {
-        if (event.which == 13)
-            event.preventDefault();
+    self.onKeyDown = function(model, event) {
+        var key = event.keyCode;
+
+        if (event.ctrlKey && key == 13) {
+            self.addRow();
+        } else return true;
     };
 }

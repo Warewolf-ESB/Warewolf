@@ -196,6 +196,10 @@ h5, h6 {
 	width:210px;
 }
 
+.wideField{
+	width:285px;
+}
+
 .veryShortField{
 	width:120px;
 }
@@ -528,3 +532,43 @@ button.clear-filter {
     left: -4px;
     border-color: #ACACAC !important;
 }
+
+textarea.noResizeTextArea {
+    margin-top: 2px;
+    overflow: scroll;
+    overflow-x: hidden;
+    resize: none;
+    height: 18px;
+    max-height: 51px;
+}
+
+.fixedHeight {
+    height: 18px; 
+}
+
+.topAlign {
+    vertical-align: top
+}
+
+.topAlign {
+    vertical-align: central
+}
+
+button.deleteButton {
+    margin-top: 2px;
+    height: 29px;
+    width: 29px;
+    text-align: left;
+    padding: -10px;
+}
+
+img.noMarging {
+    left: -7px;
+    position: relative;
+    float: none;
+    fit-position: left;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+}
+

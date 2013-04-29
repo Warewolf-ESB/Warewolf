@@ -1,4 +1,5 @@
-﻿<div id="container">
+﻿
+<div id="container">
     <div class="float-left">
 
         <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;">
@@ -19,33 +20,38 @@
 
                         <div class="button-bar">
                             <!--<span style="font-size:18px; float:left; margin-left:20px;">
-								If: 
-							</span>-->
+                                    If: 
+                                </span>-->
                             <button name="addRow" id="addRow" data-bind="click: addRow" title="Add a new statement">Add Statement </button>
                         </div>
 
                         <!-- KO Template -->
                         <div class="decision-wrapper" id="decisionView">
                             <div data-bind="template: { foreach: data.TheStack, afterAdd: afterRowAdd, afterRender: afterRowRender }" id="decisionList" style="width: 100%;">
-                                <div id="decisionRow" style="height: 37px;">
+                                <div id="decisionRow" style="min-height: 37px; position: relative;">
                                     &nbsp; If :
-									<input type="text" name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt > 0" class="veryShortField required" /><!--, event:{ keydown: $parent.onKeyPress}"-->
-
-                                    <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required">
+                                    <input type="text" name="Col1" id="Col1" data-bind="hasfocus: ko.observable(true), value: Col1, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }, visible: PopulatedColumnCnt > 0" class="veryShortField required" /><!--, event:{ keydown: $parent.onKeyPress}"-->
+                                 <!--   hasfocus: $parent.data.focusFirst,-->
+                                    <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign">
                                     </select>
-
-                                    <input type="text" name="Col2" id="Col2" data-bind="value : Col2, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt == 2" class="veryShortField required" />
-
-                                    <span data-bind="visible: PopulatedColumnCnt == 3">
-                                        <input type="text" name="Col2a" id="Col2a" data-bind="value: Col2, valueUpdate: 'afterkeydown'" class="veryShortField required" />
-                                        And
-										<input type="text" name="Col3" id="Col3" data-bind="value: Col3, valueUpdate: 'afterkeydown'" class="veryShortField required" />
+                                    
+                                    <textarea name="Col2" id="Col2" draggable="false"                                         
+                                              onkeyup="autoresize(this)"
+                                              data-bind="hasfocus: PopulatedColumnCnt == 2, visible: PopulatedColumnCnt == 2, value: Col2, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
+                                              class="wideField noResizeTextArea required topAlign" />
+                                  <!--  hasfocus: PopulatedColumnCnt == 2, -->
+                                    <span data-bind="visible: PopulatedColumnCnt == 3" class="topAlign fixedHeight">
+                                        <input type="text" name="Col2a" id="Col2a" data-bind="hasfocus: PopulatedColumnCnt == 3, value: Col2, valueUpdate: 'afterkeydown'" class="veryShortField required" />
+                                 <!--   hasfocus: PopulatedColumnCnt == 3, -->
+                                        <input type="text" name="Col3" id="Col3" data-bind="value: Col3, valueUpdate: 'afterkeydown'" class="veryShortField required" />
                                     </span>
 
-                                    <span class="floatRight">
+                                    <span class="floatRight topAlign">
                                         <!-- data-bind="click: $parent.removeRow, visible: $index() >= 1" -->
-                                        <button name="removeRow" id="removeRow" data-bind="click: $parent.removeRow, visible: $parent.ShowDelete($index())" title="Remove this statement">
-                                            <img src="Images/cross.png" height="14" width="14" />
+                                        <button name="removeRow" class="deleteButton" id="removeRow" data-bind="click: $parent.removeRow, visible: $parent.ShowDelete($index())" title="Remove this statement">
+                                           <span class="noMarging">
+                                             <img class="noMarging" src="Images/cross.png" height="14" width="14"/>
+                                            </span>
                                         </button>
                                     </span>
                                 </div>
@@ -55,12 +61,12 @@
 
                         <div style="margin-top: 20px; width: 100%; float: left;">
                             <div style="margin-left: -89px;">
-                                <label for="trueArmText" name="trueArm" id="trueArm">True arm text </label>
+                                <label for="trueArmText" id="trueArm">True arm text </label>
                                 <input type="text" name="trueArmText" id="trueArmText" class="veryShortField" data-bind="value: data.TrueArmText" />
                             </div>
 
                             <div style="margin-left: -85px;">
-                                <label for="falseArmText" name="falseArm" id="falseArm">False arm text</label>
+                                <label for="falseArmText" id="falseArm">False arm text</label>
                                 <input style="margin-left: -4px"type="text" name="falseArmText" id="falseArmText" class="veryShortField" data-bind="value: data.FalseArmText" />
                             </div>
 
@@ -77,8 +83,8 @@
                             </span>
                         </div>
 
-
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -90,6 +96,12 @@
 <script type="text/javascript" src="../Scripts/Decisions/DecisionModel.js"></script>
 
 <script type="text/javascript">
+
+    function autoresize(textarea) {
+        textarea.style.height = '12px';
+        var newHeight = textarea.scrollHeight - 5;
+        textarea.style.height = newHeight + 'px';
+    }
 
     // build model
     var vm = new DecisionViewModel();
