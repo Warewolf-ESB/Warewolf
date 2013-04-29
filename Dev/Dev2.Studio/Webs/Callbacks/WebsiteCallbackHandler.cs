@@ -16,8 +16,13 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public abstract class WebsiteCallbackHandler : IPropertyEditorWizard
     {
-        protected WebsiteCallbackHandler()
+        protected WebsiteCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
         {
+            if(currentEnvironmentRepository == null)
+            {
+                throw new ArgumentNullException("currentEnvironmentRepository");
+            }
+            CurrentEnvironmentRepository = currentEnvironmentRepository;
             ImportService.SatisfyImports(this);
         }
 
@@ -25,8 +30,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public Window Owner { get; set; }
 
-        [Import]
-        public IFrameworkRepository<IEnvironmentModel> CurrentEnvironmentRepository { get; set; }
+        public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }
 
         [Import]
         public IEventAggregator EventAggregator { get; set; }
@@ -72,7 +76,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public virtual void Save(string value, bool closeBrowserWindow = true)
         {
-            Save(value, EnvironmentRepository.DefaultEnvironment, closeBrowserWindow);
+            Save(value, EnvironmentRepository.Instance.Source, closeBrowserWindow);
         }
 
         public virtual void Save(string value, IEnvironmentModel environmentModel, bool closeBrowserWindow = true)
@@ -93,7 +97,7 @@ namespace Dev2.Studio.Webs.Callbacks
         public virtual void NavigateTo(string uri, string args, string returnUri)
         {
             dynamic jsonArgs = JObject.Parse(args);
-            Navigate(EnvironmentRepository.DefaultEnvironment, uri, jsonArgs, returnUri);
+            Navigate(EnvironmentRepository.Instance.Source, uri, jsonArgs, returnUri);
         }
 
         public virtual void OpenPropertyEditor()

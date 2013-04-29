@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using Caliburn.Micro;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,11 +33,13 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 
         static void TestAuxilliaryConnections(string appServerUri)
         {
+            var repo = new Mock<IResourceRepository>();
             var connection = CreateConnection(appServerUri, true);
-            var environment = new EnvironmentModel(connection) { Name = "conn" };
+            var environment = new EnvironmentModel(Guid.NewGuid(), connection, repo.Object, false) { Name = "conn" };
 
+            var auxRepo = new Mock<IResourceRepository>();
             var auxConnection = CreateConnection(appServerUri, true);
-            var auxEnvironment = new EnvironmentModel(auxConnection) { Name = "auxconn" };
+            var auxEnvironment = new EnvironmentModel(Guid.NewGuid(), auxConnection, auxRepo.Object, false) { Name = "auxconn" };
 
             environment.Connect();
             Assert.IsTrue(environment.IsConnected);

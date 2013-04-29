@@ -1,33 +1,41 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
-using System.ComponentModel.Composition;
-using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
-    public class ExplorerViewModel : BaseViewModel,IHandle<UpdateExplorerMessage>,IHandle<RemoveEnvironmentMessage>,IHandle<AddServerToExplorerMessage>
+    public class ExplorerViewModel : BaseViewModel, IHandle<UpdateExplorerMessage>, IHandle<RemoveEnvironmentMessage>, IHandle<AddServerToExplorerMessage>
     {
         #region Class Members
-        
+
         private RelayCommand _connectCommand;
         private RelayCommand _environmentChangedCommand;
-        private bool _fromActivityDrop;
-        private enDsfActivityType _activityType;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel(bool fromActivityDrop = false,enDsfActivityType activityType = enDsfActivityType.All)
+        public ExplorerViewModel(bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+            : this(Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
         {
-            _activityType = activityType;
-            _fromActivityDrop = fromActivityDrop;
-            NavigationViewModel = new NavigationViewModel(false, _fromActivityDrop, _activityType);
+        }
+
+        public ExplorerViewModel(IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+        {
+            if(environmentRepository == null)
+            {
+                throw new ArgumentNullException("environmentRepository");
+            }
+            EnvironmentRepository = environmentRepository;
+            NavigationViewModel = new NavigationViewModel(false, isFromActivityDrop, activityType);
             LoadEnvironments();
         }
 
@@ -42,8 +50,8 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public ICommand EnvironmentChangedCommand
         {
-            get 
-            { 
+            get
+            {
                 ICommand command = _environmentChangedCommand ?? (_environmentChangedCommand = new RelayCommand(param => AddEnvironment((IEnvironmentModel)param), param => true));
                 return command;
             }
@@ -58,8 +66,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         [Import]
         public IDev2WindowManager WindowNavigationBehavior { get; set; }
 
-        [Import]
-        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
+        public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
         public NavigationViewModel NavigationViewModel { get; set; }
 
@@ -71,12 +78,14 @@ namespace Dev2.Studio.ViewModels.Explorer
         {
             EnvironmentRepository.Save(environmentModel);
             NavigationViewModel.AddEnvironment(environmentModel);
+            EnvironmentRepository.WriteSession(NavigationViewModel.Environments.Select(e => e.ID));
         }
 
         private void RemoveEnvironment(IEnvironmentModel environment)
         {
             EnvironmentRepository.Remove(environment);
             NavigationViewModel.RemoveEnvironment(environment);
+            EnvironmentRepository.WriteSession(NavigationViewModel.Environments.Select(e => e.ID));
         }
 
         /// <summary>
@@ -89,9 +98,9 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             // Ensure all environments are added to the navigation view model
             //
-            if (!addMissingEnvironments) return;
+            if(!addMissingEnvironments) return;
 
-            foreach (IEnvironmentModel environment in EnvironmentRepository.All())
+            foreach(IEnvironmentModel environment in EnvironmentRepository.All())
             {
                 NavigationViewModel.AddEnvironment(environment);
             }
@@ -107,15 +116,18 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             EnvironmentRepository.Load();
 
+            // Load the default environment
+            NavigationViewModel.AddEnvironment(Core.EnvironmentRepository.Instance.Source);
+            EventAggregator.Publish(new SetActiveEnvironmentMessage(Core.EnvironmentRepository.Instance.Source));
+
             //
-            // Add all environments to the navigation view model
+            // Add last session's environments to the navigation view model
             //
-            foreach (var environment in EnvironmentRepository.All())
+            var sessionGuids = EnvironmentRepository.ReadSession();
+            foreach(var environment in EnvironmentRepository.All().Where(e => sessionGuids.Contains(e.ID)))
             {
                 NavigationViewModel.AddEnvironment(environment);
             }
-            EventAggregator.Publish(new SetActiveEnvironmentMessage(Dev2.Studio.Core.EnvironmentRepository.DefaultEnvironment));
-            //Mediator.SendMessage(MediatorMessages.SetActiveEnvironment, Dev2.Studio.Core.EnvironmentRepository.DefaultEnvironment);
         }
 
         /// <summary>
@@ -132,7 +144,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             // If connect view closed with okay then create an environment, save it and load it into the navigation view model
             //
-            if (connectViewModel.DialogResult == ViewModelDialogResults.Okay)
+            if(connectViewModel.DialogResult == ViewModelDialogResults.Okay)
             {
                 //
                 // Add the environment to the navigation view model

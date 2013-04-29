@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
@@ -114,8 +115,8 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             targetEnv.Setup(e => e.Connection).Returns(connection.Object);
 
-
-            var handler = new ConnectCallbackHandler();
+            var repo = new TestEnvironmentRespository();
+            var handler = new ConnectCallbackHandler(repo);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
 
             connection.Verify(c => c.ExecuteCommand(
@@ -131,10 +132,11 @@ namespace Dev2.Core.Tests
         public void Save_WithValidConnection_Expected_InvokesSaveEnvironment()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
-            var currentRepository = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(new Mock<IEnvironmentModel>().Object);
 
-            var handler = new ConnectCallbackHandler { CurrentEnvironmentRepository = currentRepository.Object };
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
@@ -149,10 +151,15 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             // BUG: 8786 - TWR - 2013.02.20
-            var currentRepository = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
 
-            var handler = new ConnectCallbackHandler { CurrentEnvironmentRepository = currentRepository.Object };
+            var env = new Mock<IEnvironmentModel>();
+            env.SetupProperty(e => e.Category); // start tracking sets/gets to this property
+
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(env.Object);
+
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
@@ -180,10 +187,11 @@ namespace Dev2.Core.Tests
         public void Save_WithValidJson_Expected_InvokesSave()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
-            var currentRepository = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(new Mock<IEnvironmentModel>().Object);
 
-            var handler = new ConnectCallbackHandler { CurrentEnvironmentRepository = currentRepository.Object };
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
             handler.Save(ConnectionJson, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance

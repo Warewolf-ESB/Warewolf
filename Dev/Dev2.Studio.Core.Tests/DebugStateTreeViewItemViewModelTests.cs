@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests
             var env2 = new Mock<IEnvironmentModel>();
             env2.Setup(e => e.ID).Returns(Guid.NewGuid());
 
-            var envRep = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var envRep = new Mock<IEnvironmentRepository>();
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
             var content = new DebugState { ServerID = serverID };

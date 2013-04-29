@@ -2,7 +2,6 @@
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -16,6 +15,12 @@ namespace Dev2.Studio.Webs.Callbacks
         #region CTOR
 
         public ConnectCallbackHandler()
+            : this(EnvironmentRepository.Instance)
+        {
+        }
+
+        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
+            : base(currentEnvironmentRepository)
         {
             Server = new ServerDTO();
             Uri defaultWebServerUri;
@@ -41,7 +46,7 @@ namespace Dev2.Studio.Webs.Callbacks
         /// <param name="connectionUri">The connection URI.</param>
         /// <param name="connectionName">The name of the connection.</param>
         /// <param name="webServerPort">The web server port.</param>
-        /// <param name="defaultEnvironment">The environment where the connection will be saved - must ALWAYS be <see cref="EnvironmentRepository.DefaultEnvironment" />.</param>
+        /// <param name="defaultEnvironment">The environment where the connection will be saved - must ALWAYS be <see cref="EnvironmentRepository.Instance.Source" />.</param>
         /// <exception cref="System.ArgumentNullException">connectionID</exception>
         public void Save(string connectionID, string category, string connectionUri, string connectionName, int webServerPort, IEnvironmentModel defaultEnvironment)
         {
@@ -63,7 +68,7 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             Server.ID = Guid.Parse(connectionID).ToString();
-            Server.AppAddress = new Uri(connectionUri).ToString();  // validate uri format before assigning
+            Server.AppAddress = new Uri(connectionUri).ToString(); // validate uri format before assigning
             Server.Alias = connectionName;
 
             #region Server.WebAddress
@@ -81,7 +86,8 @@ namespace Dev2.Studio.Webs.Callbacks
 
             #endregion
 
-            Server.Environment = EnvironmentModelFactory.CreateEnvironmentModel(Server);
+            // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+            Server.Environment = CurrentEnvironmentRepository.Fetch(Server);
             Server.Environment.Category = category;
 
             if(defaultEnvironment != null)
@@ -94,10 +100,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 ReloadResource(defaultEnvironment, connectionName, ResourceType.Source);
             }
 
-            if(CurrentEnvironmentRepository != null)
-            {
-                CurrentEnvironmentRepository.Save(Server.Environment);
-            }
+            CurrentEnvironmentRepository.Save(Server.Environment);
             EventAggregator.Publish(new AddServerToExplorerMessage(Server.Environment));
             //Mediator.SendMessage(MediatorMessages.AddServerToExplorer, Server.Environment);
         }

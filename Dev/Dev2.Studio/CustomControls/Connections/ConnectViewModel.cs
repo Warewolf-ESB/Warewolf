@@ -1,22 +1,25 @@
-﻿// TWR: Moved here as ConnectView/Model are related to the ConnectControl and will become a user control later
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
+using System.Windows.Input;
+// TWR: Moved here as ConnectView/Model are related to the ConnectControl and will become a user control later
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
+    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+
     public class ConnectViewModel : ValidationController, IDataErrorInfo
     {
+        readonly IEnvironmentModel _defaultEnvironment;
+
         #region Class Members
 
         private RelayCommand _okayCommand;
@@ -29,7 +32,23 @@ namespace Dev2.Studio.ViewModels.Explorer
         #region Constructor
 
         public ConnectViewModel()
+            : this(EnvironmentRepository.Instance, EnvironmentRepository.Instance.Source)
         {
+        }
+
+        public ConnectViewModel(EnvironmentRepository environmentRepository, IEnvironmentModel defaultEnvironment)
+        {
+            if(environmentRepository == null)
+            {
+                throw new ArgumentNullException("environmentRepository");
+            }
+            if(defaultEnvironment == null)
+            {
+                throw new ArgumentNullException("defaultEnvironment");
+            }
+            EnvironmentRepository = environmentRepository;
+            _defaultEnvironment = defaultEnvironment;
+
             Server = new ServerDTO();
 
             Uri defaultWebServerUri;
@@ -102,8 +121,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region Properties
 
-        [Import]
-        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
+        public EnvironmentRepository EnvironmentRepository { get; private set; }
 
         public IServer Server { get; private set; }
 
@@ -304,18 +322,16 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         void SaveConnection()
         {
-            if(EnvironmentRepository != null)
-            {
-                Server.Environment = EnvironmentModelFactory.CreateEnvironmentModel(Server);
-                //
-                // NOTE: This must ALWAYS save the environment to the server
-                //
-                ResourceRepository.AddEnvironment(Core.EnvironmentRepository.DefaultEnvironment, Server.Environment);
-                //
-                // Now add it to the repository
-                //
-                EnvironmentRepository.Save(Server.Environment);
-            }
+            Server.Environment = EnvironmentRepository.Fetch(Server);
+            //
+            // NOTE: This must ALWAYS save the environment to the server
+            //
+            ResourceRepository.AddEnvironment(_defaultEnvironment, Server.Environment);
+            //
+            // Now add it to the repository
+            //
+            EnvironmentRepository.Save(Server.Environment);
+
         }
 
         #endregion

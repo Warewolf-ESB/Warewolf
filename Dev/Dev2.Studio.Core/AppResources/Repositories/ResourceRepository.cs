@@ -9,7 +9,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Wizards.Interfaces;
@@ -31,24 +30,49 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         #region Constructor
 
         public ResourceRepository(IEnvironmentModel environmentModel)
+            : this(environmentModel, ImportService.GetExportValue<IWizardEngine>())
         {
+        }
+
+        public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
+        {
+            if(wizardEngine == null)
+            {
+                throw new ArgumentNullException("wizardEngine");
+            }
             _reservedServices = new List<string>();
             _resourceModels = new List<IResourceModel>();
             _environmentModel = environmentModel;
-            _securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            _wizardEngine = ImportService.GetExportValue<IWizardEngine>();
+            _securityContext = environmentModel.Connection.SecurityContext;
+            _wizardEngine = wizardEngine;
         }
 
         #endregion Constructor
+
+        public bool IsLoaded { get; set; }
+        public IWizardEngine WizardEngine { get { return _wizardEngine; } }
 
         #region Methods
 
         public void Load()
         {
-            AddResources(ResourceType.WorkflowService);
-            AddResources(ResourceType.Service);
-            AddResources(ResourceType.Source);
-            AddResources("ReservedService");
+            // BUG 9276 : TWR : 2013.04.19 - added IsLoaded check to prevent unnecessary loading of resources
+            if(!IsLoaded)
+            {
+                IsLoaded = true;
+                try
+                {
+                    _resourceModels.Clear();
+                    AddResources(ResourceType.WorkflowService);
+                    AddResources(ResourceType.Service);
+                    AddResources(ResourceType.Source);
+                    AddResources("ReservedService");
+                }
+                catch
+                {
+                    IsLoaded = false;
+                }
+            }
         }
 
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
@@ -68,7 +92,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             ExecuteCommand(_environmentModel, package);
 
-            _resourceModels.Clear();
+            IsLoaded = false;
             Load();
         }
 
@@ -439,7 +463,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             return resource;
         }
-        
+
         #endregion Private Methods
 
         #region Add/RemoveEnvironment
@@ -496,7 +520,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindResourcesByID";
-            //dataObj.GuidCsv = string.Join(",", guids);
+            dataObj.GuidCsv = string.Join(",", guids); // BUG 9276 : TWR : 2013.04.19 - reintroduced to all filtering
             dataObj.Type = Enum.GetName(typeof(ResourceType), resourceType);
 
             var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
@@ -531,7 +555,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         #endregion
-        
+
         #region AddItems
 
         static void AddItems(ICollection<UnlimitedObject> result, dynamic items)

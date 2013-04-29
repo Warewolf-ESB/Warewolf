@@ -84,7 +84,7 @@ namespace Dev2.Studio.ViewModels
                                  IHandle<ConfigureSwitchExpressionMessage>, IHandle<ConfigureCaseExpressionMessage>,
                                  IHandle<EditCaseExpressionMessage>, IHandle<ShowWebpartWizardMessage>,
                                  IHandle<AddWebpageDesignerMessage>, IHandle<AddWebsiteDesignerMessage>,
-                                 IHandle<SettingsSaveCancelMessage>
+                                 IHandle<SettingsSaveCancelMessage>, IHandle<DeployResourcesMessage>
     {
         #region Fields
 
@@ -129,8 +129,7 @@ namespace Dev2.Studio.ViewModels
         [Import]
         public IPopUp PopupProvider { get; set; }
 
-        [Import]
-        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
+        public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
         public DebugOutputViewModel DebugOutputViewModel
         {
@@ -169,7 +168,18 @@ namespace Dev2.Studio.ViewModels
         #region Ctor
 
         public MainViewModel()
+            : this(Core.EnvironmentRepository.Instance)
         {
+        }
+
+        public MainViewModel(IEnvironmentRepository environmentRepository)        
+        {
+            if(environmentRepository == null)
+            {
+                throw new ArgumentNullException("environmentRepository");
+            }
+            EnvironmentRepository = environmentRepository;
+
             LoadWorkspaceItems();
 
             _debugWriter = new DebugWriter
@@ -1839,6 +1849,11 @@ namespace Dev2.Studio.ViewModels
         #endregion
 
         #region IHandle
+
+        public void Handle(DeployResourcesMessage message)
+        {
+            AddDeployResources(message.ViewModel);
+        }
 
         public void Handle(AddDeployResourcesMessage message)
         {

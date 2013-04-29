@@ -1,7 +1,7 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core.InterfaceImplementors
 {
@@ -10,7 +10,6 @@ namespace Dev2.Studio.Core.InterfaceImplementors
     /// </summary>
     public class ServerProvider : IServerProvider
     {
-
         #region Singleton Instance
 
         static volatile ServerProvider _instance;
@@ -42,44 +41,30 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         #region CTOR
 
         // Singleton instance only
-        ServerProvider()
+        protected ServerProvider()
         {
         }
 
         #endregion
 
-
         #region Load
 
-        /// <summary>
-        /// Loads the a list of currently available servers from the <see cref="EnvironmentRepository.DefaultEnvironment"/>.
-        /// </summary>
         public List<IServer> Load()
         {
-            return Load(EnvironmentRepository.DefaultEnvironment);
+            return Load(EnvironmentRepository.Instance);
         }
 
-        /// <summary>
-        /// Loads the a list of servers from the given environment.
-        /// </summary>
-        /// <param name="targetEnvironment">The target environment to be queried</param>
-        /// <param name="addTargetEnvironment">if set to <c>true</c> adds the <paramref name="targetEnvironment"/> to the list returned.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">targetEnvironment</exception>
-        public static List<IServer> Load(IEnvironmentModel targetEnvironment, bool addTargetEnvironment = true)
+        public List<IServer> Load(IEnvironmentRepository environmentRepository)
         {
-            if(targetEnvironment == null)
+            // PBI 6597 : TWR
+            // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+
+            if(environmentRepository == null)
             {
-                throw new ArgumentNullException("targetEnvironment");
+                throw new ArgumentNullException("environmentRepository");
             }
 
-            // PBI 6597: TWR
-            var environments = EnvironmentRepository.LookupEnvironments(targetEnvironment);
-
-            if(addTargetEnvironment)
-            {
-                environments.Insert(0, targetEnvironment);
-            }
+            var environments = environmentRepository.All();
 
             return new List<IServer>(environments.Select(e => new ServerDTO(e)));
         }

@@ -1,215 +1,331 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.Wizards.Interfaces;
 
 namespace Dev2.Studio.Core
 {
-    [Export(typeof(IFrameworkRepository<IEnvironmentModel>))]
-    public class EnvironmentRepository : IFrameworkRepository<IEnvironmentModel>
+    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+
+    public class EnvironmentRepository : IEnvironmentRepository
     {
+        static readonly List<IEnvironmentModel> EmptyList = new List<IEnvironmentModel>();
         static readonly int DefaultWebServerPort = Int32.Parse(StringResources.Default_WebServer_Port);
 
-        #region DefaultEnvironment
+        readonly object _fileLock = new Object();
+        readonly object _restoreLock = new Object();
+        readonly List<IEnvironmentModel> _environments;
+
+        #region Singleton Instance
 
         //
         // Multi-threaded implementation - see http://msdn.microsoft.com/en-us/library/ff650316.aspx
         //
         // This approach ensures that only one instance is created and only when the instance is needed. 
         // Also, the variable is declared to be volatile to ensure that assignment to the instance variable
-        // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
+        // completes before the instance variable can be accessed. Lastly, this approach uses a SyncInstance 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile IEnvironmentModel _defaultEnvironment;
-        static readonly object SyncRoot = new Object();
+        static volatile EnvironmentRepository _instance;
 
-        public static IEnvironmentModel DefaultEnvironment
+        static readonly object SyncInstance = new Object();
+
+        /// <summary>
+        /// Gets the repository instance.
+        /// </summary>
+        public static EnvironmentRepository Instance
         {
             get
             {
-                if(_defaultEnvironment == null)
+                if(_instance == null)
                 {
-                    lock(SyncRoot)
+                    lock(SyncInstance)
                     {
-                        if(_defaultEnvironment == null)
+                        if(_instance == null)
                         {
-                            _defaultEnvironment = EnvironmentModelFactory.CreateEnvironmentModel(
-                                Guid.Empty,
-                                new Uri(StringResources.Uri_Live_Environment),
-                                StringResources.DefaultEnvironmentName,
-                                DefaultWebServerPort);
+                            _instance = new EnvironmentRepository();
                         }
                     }
                 }
-                return _defaultEnvironment;
+                return _instance;
             }
         }
 
         #endregion
 
-        private readonly List<IEnvironmentModel> _environments;
+        #region CTOR
 
-        public EnvironmentRepository()
-            : this(new[] { DefaultEnvironment })
+        // Singleton instance only
+        protected EnvironmentRepository()
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(StringResources.Uri_Live_Environment), StringResources.DefaultEnvironmentName, DefaultWebServerPort))
         {
         }
 
-        public EnvironmentRepository(IEnumerable<IEnvironmentModel> environments)
+        // Testing only!!!
+        protected EnvironmentRepository(IEnvironmentModel source)
         {
-            _environments = environments == null
-                ? new List<IEnvironmentModel>()
-                : new List<IEnvironmentModel>(environments);
+            if(source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            Source = source;
+            _environments = new List<IEnvironmentModel> { Source };
         }
 
-        private void RestoreEnvironments()
-        {
-            var environmentGuids = ReadFile();
-            var environments = LookupEnvironments(DefaultEnvironment, environmentGuids);
-            _environments.AddRange(environments);
-        }
-
-        public ICollection<IEnvironmentModel> All()
-        {
-            return _environments;
-        }
-
-        public ICollection<IEnvironmentModel> Find(System.Linq.Expressions.Expression<Func<IEnvironmentModel, bool>> expression)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnvironmentModel FindSingle(System.Linq.Expressions.Expression<Func<IEnvironmentModel, bool>> expression)
-        {
-            return _environments.AsQueryable().FirstOrDefault(expression);
-        }
+        #endregion
 
         public event EventHandler ItemAdded;
 
-        protected void OnItemAdded()
+        public IEnvironmentModel Source { get; private set; }
+
+        public bool IsLoaded { get; set; }
+
+        #region Clear
+
+        public void Clear()
         {
-            if(ItemAdded != null)
+            foreach(var environment in _environments)
             {
-                ItemAdded(this, new System.EventArgs());
+                environment.Disconnect();
             }
+            _environments.Clear();
+        }
+
+        #endregion
+
+        #region All/Find/FindSingle/Load
+
+        public ICollection<IEnvironmentModel> All()
+        {
+            LoadInternal();
+            return _environments;
+        }
+
+        public ICollection<IEnvironmentModel> Find(Expression<Func<IEnvironmentModel, bool>> expression)
+        {
+            LoadInternal();
+            return expression == null ? EmptyList : _environments.AsQueryable().Where(expression).ToList();
+        }
+
+        public IEnvironmentModel FindSingle(Expression<Func<IEnvironmentModel, bool>> expression)
+        {
+            LoadInternal();
+            return expression == null ? null : _environments.AsQueryable().FirstOrDefault(expression);
         }
 
         public void Load()
         {
-            RestoreEnvironments();
+            IsLoaded = false;
+            LoadInternal();
         }
+
+        #endregion
 
         #region Save
 
-        public void Save(ICollection<IEnvironmentModel> instanceObjs)
+        public void Save(ICollection<IEnvironmentModel> environments)
         {
-            throw new NotImplementedException();
+            if(environments == null || environments.Count == 0)
+            {
+                return;
+            }
+            foreach(var environmentModel in environments)
+            {
+                AddInternal(environmentModel);
+            }
         }
 
-        public void Save(IEnvironmentModel instanceObj)
+        public void Save(IEnvironmentModel environment)
         {
-            var index = _environments.IndexOf(instanceObj);
-            if(index == -1)
+            if(environment == null)
             {
-                _environments.Add(instanceObj);
+                return;
             }
-            else
-            {
-                _environments.RemoveAt(index);
-                _environments.Insert(index, instanceObj);
-            }
-            WriteFile();
+            AddInternal(environment);
         }
 
         #endregion
 
         #region Remove
 
-        public void Remove(ICollection<IEnvironmentModel> instanceObjs)
+        public void Remove(ICollection<IEnvironmentModel> environments)
         {
-            foreach(var environmentModel in instanceObjs)
+            if(environments == null || environments.Count == 0)
             {
-                Remove(environmentModel);
+                return;
             }
+            foreach(var environmentModel in environments)
+            {
+                RemoveInternal(environmentModel);
+            }
+            //
+            // NOTE: This should NEVER remove the environment source from the server 
+            //       as this is done by the user via the explorer
+            //
         }
 
-        public void Remove(IEnvironmentModel instanceObj)
+        public void Remove(IEnvironmentModel environment)
         {
-            var index = _environments.IndexOf(instanceObj);
-            if(index != -1)
+            if(environment == null)
             {
-                _environments.RemoveAt(index);
-                WriteFile();
-                //
-                // NOTE: This should NEVER remove the environment source from the server 
-                //       as this is done by the user via the explorer
-                //
+                return;
             }
-        }
-
-        #endregion
-
-        #region GetEnvironmentsDirectory
-
-        public static string GetEnvironmentsDirectory()
-        {
-            var path = Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                StringResources.Environments_Directory
-            });
-
-            if(!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            return path;
-        }
-
-        #endregion
-
-        #region GetEnvironmentsFilePath
-
-        public static string GetEnvironmentsFilePath()
-        {
-            return Path.Combine(GetEnvironmentsDirectory(), "Environments.xml");
+            RemoveInternal(environment);
+            //
+            // NOTE: This should NEVER remove the environment source from the server 
+            //       as this is done by the user via the explorer
+            //
         }
 
         #endregion
 
         #region Read/WriteFile
 
-        public IList<string> ReadFile()
+        public virtual IList<Guid> ReadSession()
         {
-            lock(SyncRoot)
+            lock(_fileLock)
             {
                 var path = GetEnvironmentsFilePath();
 
                 var xml = File.Exists(path) ? XElement.Load(path) : new XElement("Environments");
-                return xml.Descendants("Environment").Select(id => id.Value).ToList();
+                var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
+                var result = new List<Guid>();
+                foreach(var guidStr in guids)
+                {
+                    Guid guid;
+                    if(Guid.TryParse(guidStr, out guid))
+                    {
+                        result.Add(guid);
+                    }
+                }
+                return result;
             }
         }
 
-        public void WriteFile()
+        public virtual void WriteSession(IEnumerable<Guid> environmentGuids)
         {
-            lock(SyncRoot)
+            lock(_fileLock)
             {
                 var xml = new XElement("Environments");
-                foreach(var environment in _environments.Where(e => e.ID != Guid.Empty))
+                if(environmentGuids != null)
                 {
-                    xml.Add(new XElement("Environment", environment.ID));
+                    foreach(var environmentID in environmentGuids.Where(id => id != Guid.Empty))
+                    {
+                        xml.Add(new XElement("Environment", environmentID));
+                    }
                 }
-
                 var path = GetEnvironmentsFilePath();
                 xml.Save(path);
             }
+        }
+
+        #endregion
+
+        #region Fetch
+
+        public IEnvironmentModel Fetch(IServer server)
+        {
+            LoadInternal();
+
+            IEnvironmentModel environment = null;
+            if(server != null)
+            {
+                Guid id;
+                if(!Guid.TryParse(server.ID, out id))
+                {
+                    id = Guid.NewGuid();
+                }
+                environment = _environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.AppUri, server.Alias, server.WebUri.Port);
+                server.Environment = environment;
+            }
+
+            return environment;
+        }
+
+        #endregion
+
+        #region RaiseItemAdded
+
+        void RaiseItemAdded()
+        {
+            if(ItemAdded != null)
+            {
+                ItemAdded(this, new EventArgs());
+            }
+        }
+
+        #endregion
+
+        #region LoadInternal
+
+        protected virtual void LoadInternal()
+        {
+            lock(_restoreLock)
+            {
+                if(IsLoaded)
+                {
+                    return;
+                }
+
+                var environments = LookupEnvironments(Source);
+
+                // Don't just clear and add, environments may be connected!!!
+                foreach(var newEnv in environments.Where(newEnv => !_environments.Contains(newEnv)))
+                {
+                    _environments.Add(newEnv);
+                }
+
+                var toBeRemoved = _environments.Where(e => !e.Equals(Source) && !environments.Contains(e)).ToList();
+                foreach(var environment in toBeRemoved)
+                {
+                    environment.Disconnect();
+                    _environments.Remove(environment);
+                }
+
+                IsLoaded = true;
+            }
+        }
+
+        #endregion
+
+        #region Add/RemoveInternal
+
+        protected virtual void AddInternal(IEnvironmentModel environment)
+        {
+            var index = _environments.IndexOf(environment);
+            if(index == -1)
+            {
+                _environments.Add(environment);
+            }
+            else
+            {
+                _environments.RemoveAt(index);
+                _environments.Insert(index, environment);
+            }
+            RaiseItemAdded();
+        }
+
+        protected virtual bool RemoveInternal(IEnvironmentModel environment)
+        {
+            var index = _environments.IndexOf(environment);
+            if(index != -1)
+            {
+                environment.Disconnect();
+                _environments.RemoveAt(index);
+                return true;
+            }
+            return false;
         }
 
         #endregion
@@ -285,10 +401,11 @@ namespace Dev2.Studio.Core
 
                     #endregion
 
-                    var environment = EnvironmentModelFactory.CreateEnvironmentModel(
+                    var environment = CreateEnvironmentModel(
                         id, appServerUri, displayName, webServerPort,
                         defaultEnvironment.Connection.SecurityContext,
-                        defaultEnvironment.Connection.EventAggregator);
+                        defaultEnvironment.Connection.EventAggregator,
+                        defaultEnvironment.WizardEngine);
 
                     result.Add(environment);
                 }
@@ -310,6 +427,55 @@ namespace Dev2.Studio.Core
 
         #endregion
 
+        #region GetEnvironmentsDirectory
+
+        public static string GetEnvironmentsDirectory()
+        {
+            var path = Path.Combine(new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                StringResources.App_Data_Directory,
+                StringResources.Environments_Directory
+            });
+
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
+        }
+
+        #endregion
+
+        #region GetEnvironmentsFilePath
+
+        public static string GetEnvironmentsFilePath()
+        {
+            return Path.Combine(GetEnvironmentsDirectory(), "Environments.xml");
+        }
+
+        #endregion
+
+        #region CreateEnvironmentModel
+
+        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
+        {
+            // MEF!!!!
+            var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
+            var wizardEngine = ImportService.GetExportValue<IWizardEngine>();
+
+            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext, eventAggregator, wizardEngine);
+        }
+
+        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort,
+                                                        IFrameworkSecurityContext securityContext, IEventAggregator eventAggregator, IWizardEngine wizardEngine)
+        {
+            var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort, eventAggregator);
+            return new EnvironmentModel(id, environmentConnection, wizardEngine) { Name = alias };
+        }
+
+        #endregion
 
         #endregion
 

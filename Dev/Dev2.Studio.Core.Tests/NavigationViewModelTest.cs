@@ -69,6 +69,61 @@ namespace Dev2.Core.Tests
 
         #region Updating Resources
 
+        private void Init()
+        {
+            //if (Application.Current == null)
+            //{
+            //    App app = new App();
+            //}
+
+            mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
+
+            // setup env repo
+            var repo = new Mock<IEnvironmentRepository>();
+            repo.Setup(l => l.Load()).Verifiable();
+
+            IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
+            repo.Setup(l => l.All()).Returns(models);
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(repo);
+
+            mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(r => r.Category).Returns("Testing");
+            mockResourceModel.Setup(r => r.ResourceName).Returns("Mock");
+            mockResourceModel.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
+
+            mockResourceModel1 = new Mock<IContextualResourceModel>();
+            mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
+            mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
+            mockResourceModel1.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
+
+            mockResourceModel2 = new Mock<IContextualResourceModel>();
+            mockResourceModel2.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            mockResourceModel2.Setup(r => r.Category).Returns("Testing2");
+            mockResourceModel2.Setup(r => r.ResourceName).Returns("Mock2");
+            mockResourceModel2.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(r => r.All()).Returns(
+                new Collection<IResourceModel>
+                    {
+                        mockResourceModel.Object,
+                        mockResourceModel1.Object,
+                        mockResourceModel2.Object
+                    });
+
+            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockEnvironmentModel.Setup(x => x.LoadResources());
+
+            vm = new NavigationViewModel(false);
+            vm.AddEnvironment(mockEnvironmentModel.Object);
+        }
+
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceExistsOldCategory_Expects_ResourceChanged()
         {
@@ -652,11 +707,11 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedOnlyWorkflowsToBeInTree()
-        {          
+        {
             Init(false);
-            vm = new NavigationViewModel(false,true,enDsfActivityType.Workflow);
+            vm = new NavigationViewModel(false, true, enDsfActivityType.Workflow);
             vm.AddEnvironment(mockEnvironmentModel.Object);
-            Assert.AreEqual(1,vm.Root.Children[0].Children.Count);
+            Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", vm.Root.Children[0].Children[0].DisplayName);
         }
 
@@ -699,7 +754,7 @@ namespace Dev2.Core.Tests
             vm = new NavigationViewModel(false, true, enDsfActivityType.Workflow);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
-            Assert.AreEqual(0, vm.Root.Children[0].Children[0].Children[1].Children[0].Children.Count);                      
+            Assert.AreEqual(0, vm.Root.Children[0].Children[0].Children[1].Children[0].Children.Count);
         }
 
         #endregion
@@ -716,7 +771,7 @@ namespace Dev2.Core.Tests
             SetupMockEnvironment();
 
             Mock<IResourceRepository> mockResourceRepository;
-            SetUpResources(addWizardChildToResource,out mockResourceRepository);
+            SetUpResources(addWizardChildToResource, out mockResourceRepository);
 
             vm = new NavigationViewModel(false);
             vm.AddEnvironment(mockEnvironmentModel.Object);
@@ -733,7 +788,7 @@ namespace Dev2.Core.Tests
         void SetUpResources(bool addWizardChildToResource, out Mock<IResourceRepository> mockResourceRepository)
         {
             // setup env repo
-            var repo = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
 
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
@@ -747,19 +802,19 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel.Setup(r => r.Category).Returns("Testing");
             mockResourceModel.Setup(r => r.ResourceName).Returns("Mock");
-            mockResourceModel.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);            
+            mockResourceModel.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
 
             mockResourceModel1 = new Mock<IContextualResourceModel>();
             mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
             mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
             mockResourceModel1.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
-            if (addWizardChildToResource)
+            if(addWizardChildToResource)
             {
                 mockResourceModel11 = new Mock<IContextualResourceModel>();
                 mockResourceModel11.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
                 mockResourceModel11.Setup(r => r.Category).Returns("Testing");
-                mockResourceModel11.Setup(r => r.ResourceName).Returns("Mock1.wiz");                
+                mockResourceModel11.Setup(r => r.ResourceName).Returns("Mock1.wiz");
                 mockResourceModel11.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
             }
 

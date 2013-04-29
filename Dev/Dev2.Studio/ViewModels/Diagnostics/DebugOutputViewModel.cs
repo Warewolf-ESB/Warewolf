@@ -1,13 +1,4 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Diagnostics;
-using Dev2.Enums;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -15,6 +6,14 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Caliburn.Micro;
+using Dev2.Diagnostics;
+using Dev2.Enums;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
@@ -23,7 +22,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// for the TreeView (the RootItems property), a bindable
     /// SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>,IHandle<DebugWriterWriteMessage>,IHandle<DebugWriterAppendMessage>
+    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>, IHandle<DebugWriterWriteMessage>, IHandle<DebugWriterAppendMessage>
     {
         #region Fields
 
@@ -65,15 +64,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Ctor
 
         public DebugOutputViewModel()
+            : this(Core.EnvironmentRepository.Instance)
         {
-            EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
+        }
+
+        public DebugOutputViewModel(IEnvironmentRepository environmentRepository)
+        {
+            if(environmentRepository == null)
+            {
+                throw new ArgumentNullException("environmentRepository");
+            }
+            EnvironmentRepository = environmentRepository;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
 
             _rootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
             _contentItems = new List<object>();
-            
-//            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
-//            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
+
+            //            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
+            //            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
         }
 
         #endregion
@@ -129,7 +137,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         /// The environment repository.
         /// </value>
-        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; set; }
+        public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
         /// <summary>
         /// Gets or sets the depth limit.
@@ -145,7 +153,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_depthLimit != value)
+                if(_depthLimit != value)
                 {
                     _depthLimit = value;
                     OnPropertyChanged("DepthLimit");
@@ -417,7 +425,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (value == _searchText)
+                if(value == _searchText)
                 {
                     return;
                 }
@@ -434,7 +442,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region public methods
         public void OpenMoreLink(DebugLineItem item)
         {
-            if (!string.IsNullOrEmpty(item.MoreLink))
+            if(!string.IsNullOrEmpty(item.MoreLink))
             {
                 Process.Start(new ProcessStartInfo(item.MoreLink));
             }
@@ -452,7 +460,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if (_openItemCommand == null)
+                if(_openItemCommand == null)
                 {
                     _openItemCommand = new RelayCommand(OpenItem, c => true);
                 }
@@ -464,7 +472,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if (_expandAllCommand == null)
+                if(_expandAllCommand == null)
                 {
                     _expandAllCommand = new RelayCommand(ExpandAll, c => true);
                 }
@@ -476,11 +484,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if (_showOptionsCommand == null)
+                if(_showOptionsCommand == null)
                 {
                     _showOptionsCommand = new RelayCommand(o =>
                         {
-                            if (SkipOptionsCommandExecute)
+                            if(SkipOptionsCommandExecute)
                             {
                                 SkipOptionsCommandExecute = false;
                             }
@@ -519,9 +527,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //
             // If no node is passed in then call for all root nodes
             //
-            if (node == null)
+            if(node == null)
             {
-                foreach (DebugTreeViewItemViewModel rootNode in RootItems)
+                foreach(DebugTreeViewItemViewModel rootNode in RootItems)
                 {
                     ExpandAll(rootNode);
                 }
@@ -538,7 +546,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // Expand node and call for all children
             //
             node.IsExpanded = ExpandAllMode;
-            foreach (DebugTreeViewItemViewModel childNode in node.Children)
+            foreach(DebugTreeViewItemViewModel childNode in node.Children)
             {
                 ExpandAll(childNode);
             }
@@ -552,18 +560,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             IDebugState debugState = payload as IDebugState;
 
-            if (debugState == null)
+            if(debugState == null)
             {
                 return;
             }
 
-            if (debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
+            if(debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
             {
                 IEnvironmentModel environment = EnvironmentRepository.All().FirstOrDefault(e =>
                 {
                     IStudioClientContext studioClientContext = e.DsfChannel as IStudioClientContext;
 
-                    if (studioClientContext == null)
+                    if(studioClientContext == null)
                     {
                         return false;
                     }
@@ -571,14 +579,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     return studioClientContext.ServerID == debugState.ServerID;
                 });
 
-                if (environment == null || !environment.IsConnected)
+                if(environment == null || !environment.IsConnected)
                 {
                     return;
                 }
 
                 IResourceModel resource = environment.ResourceRepository.FindSingle(r => r.ResourceName == debugState.DisplayName);
 
-                if (resource == null)
+                if(resource == null)
                 {
                     return;
                 }
@@ -593,8 +601,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         private void Write(object content)
         {
-            if (Application.Current != null)
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(WriteUI), content);
+            if(Application.Current != null)
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(WriteUI), content);
         }
 
         /// <summary>
@@ -613,8 +621,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         private void Append(object content)
         {
-            if (Application.Current != null)
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(AppendUI), content);
+            if(Application.Current != null)
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(AppendUI), content);
         }
 
         /// <summary>
@@ -627,10 +635,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //Juries - This is a dirty hack, naughty naughty.
             //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
             //
-            if (content is IDebugState)
+            if(content is IDebugState)
             {
                 var state = (IDebugState)content;
-                if (state.StateType == StateType.Append)
+                if(state.StateType == StateType.Append)
                 {
                     _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, state);
                     return;
@@ -639,9 +647,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             _contentItems.Add(content);
 
-            lock (_syncContext)
+            lock(_syncContext)
             {
-                if (_isRebuildingTree)
+                if(_isRebuildingTree)
                 {
                     return;
                 }
@@ -655,19 +663,19 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </summary>
         private void RebuildTree()
         {
-            lock (_syncContext)
+            lock(_syncContext)
             {
                 _isRebuildingTree = true;
             }
 
             RootItems.Clear();
 
-            foreach (object content in _contentItems)
+            foreach(object content in _contentItems)
             {
                 _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText, false, DepthLimit);
             }
 
-            lock (_syncContext)
+            lock(_syncContext)
             {
                 _isRebuildingTree = false;
             }
@@ -679,10 +687,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void Handle(DebugStatusMessage message)
         {
-            if (message != null)
+            if(message != null)
             {
                 ShowProcessingIcon = message.DebugStatus;
-                if (message.DebugStatus)
+                if(message.DebugStatus)
                 {
                     ProcessingText = "Executing...";
                 }
@@ -714,5 +722,5 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion
     }
 
-    
+
 }

@@ -9,5 +9,6 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IServerProvider
     {
         List<IServer> Load();
+        List<IServer> Load(IEnvironmentRepository environmentRepository);
     }
 }

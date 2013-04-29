@@ -218,7 +218,7 @@ namespace Dev2.Core.Tests
 
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             // setup env repo
-            var repo = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
             var model = new Mock<IEnvironmentModel>();
             repo.Setup(l => l.Save(model.Object)).Verifiable();
@@ -251,7 +251,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
-            var repo = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
 
             var model = new Mock<IEnvironmentModel>();
@@ -286,7 +286,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
-            var repo = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
 
             var model = new Mock<IEnvironmentModel>();
@@ -531,7 +531,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeNavigationViewModelTests(Mock<IFrameworkRepository<IEnvironmentModel>> repo)
+        internal static ImportServiceContext InitializeNavigationViewModelTests(Mock<IEnvironmentRepository> repo)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -564,7 +564,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
-            var repo = new Mock<IFrameworkRepository<IEnvironmentModel>>();
+            var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
 
             var model = new Mock<IEnvironmentModel>();

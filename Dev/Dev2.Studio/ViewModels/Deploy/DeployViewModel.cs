@@ -1,9 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -13,13 +17,7 @@ using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Studio.ViewModels.Workflow;
 
 namespace Dev2.Studio.ViewModels.Deploy
 {
@@ -28,7 +26,7 @@ namespace Dev2.Studio.ViewModels.Deploy
     {
         #region Class Members
 
-        private DeployStatsCalculator _deployStatsCalculator;
+        private IDeployStatsCalculator _deployStatsCalculator;
 
         private IDeployService _deployService;
         private IServerProvider _serverProvider;
@@ -65,31 +63,31 @@ namespace Dev2.Studio.ViewModels.Deploy
         #region Constructor
 
         public DeployViewModel()
-            : this(ServerProvider.Instance)
+            : this(ServerProvider.Instance, Core.EnvironmentRepository.Instance)
         {
         }
 
-        public DeployViewModel(IServerProvider serverProvider)
+        public DeployViewModel(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
         {
-            Initialize(serverProvider);
+            Initialize(serverProvider, environmentRepository, deployStatsCalculator);
         }
 
         public DeployViewModel(AbstractTreeViewModel navigationItemViewModel)
         {
             _initialNavigationItemViewModel = navigationItemViewModel;
-            Initialize(ServerProvider.Instance);
+            Initialize(ServerProvider.Instance, Core.EnvironmentRepository.Instance);
         }
 
         public DeployViewModel(IContextualResourceModel resourceModel)
         {
             _initialResource = resourceModel;
-            Initialize(ServerProvider.Instance);
+            Initialize(ServerProvider.Instance, Core.EnvironmentRepository.Instance);
         }
 
         public DeployViewModel(IEnvironmentModel environment)
         {
             _initialEnvironment = environment;
-            Initialize(ServerProvider.Instance);
+            Initialize(ServerProvider.Instance, Core.EnvironmentRepository.Instance);
         }
 
         #endregion
@@ -126,7 +124,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public IDev2WindowManager WindowNavigationBehavior { get; private set; }
 
-        public IFrameworkRepository<IEnvironmentModel> EnvironmentRepository { get; private set; }
+        public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
         public bool CanDeploy
         {
@@ -189,7 +187,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Used to indicate if a deploy is in progress
         /// </summary>
-        public bool IsDeploying 
+        public bool IsDeploying
         {
             get
             {
@@ -235,7 +233,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if (value == _source) return;
+                if(value == _source) return;
 
                 _source = value;
                 NotifyOfPropertyChange(() => Source);
@@ -250,7 +248,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if (value == _target) return;
+                if(value == _target) return;
                 _target = value;
                 NotifyOfPropertyChange(() => Target);
             }
@@ -280,7 +278,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if (value != _selectedDestinationServer)
+                if(value != _selectedDestinationServer)
                 {
                     _selectedDestinationServer = value;
                     LoadDestinationEnvironment(_selectedDestinationServer);
@@ -295,15 +293,12 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Private Methods
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        private void Initialize(IServerProvider serverProvider)
+        private void Initialize(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
         {
             WindowNavigationBehavior = ImportService.GetExportValue<IDev2WindowManager>();
-            EnvironmentRepository = ImportService.GetExportValue<IFrameworkRepository<IEnvironmentModel>>();
+            EnvironmentRepository = environmentRepository;
 
-            _deployStatsCalculator = new DeployStatsCalculator();
+            _deployStatsCalculator = deployStatsCalculator ?? new DeployStatsCalculator();
             _deployService = new DeployService();
             _serverProvider = serverProvider;
             _servers = new ObservableCollection<IServer>();
@@ -316,16 +311,16 @@ namespace Dev2.Studio.ViewModels.Deploy
             SetupPredicates();
             SetupCommands();
             LoadServers();
-            
-//            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
-//            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
-//            {
-//                _initialResource = o as IContextualResourceModel;
-//                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
-//                _initialEnvironment = o as IEnvironmentModel;
-//
-//                SelectServerFromInitialValue();
-//            });
+
+            //            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
+            //            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
+            //            {
+            //                _initialResource = o as IContextualResourceModel;
+            //                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
+            //                _initialEnvironment = o as IEnvironmentModel;
+            //
+            //                SelectServerFromInitialValue();
+            //            });
 
 
         }
@@ -423,25 +418,25 @@ namespace Dev2.Studio.ViewModels.Deploy
             List<IServer> servers = _serverProvider.Load();
             Servers.Clear();
 
-            foreach (var server in servers)
+            foreach(var server in servers)
             {
                 Servers.Add(server);
             }
 
-            if (servers.Count > 0)
+            if(servers.Count > 0)
             {
                 //
                 // Find a source server to select
                 //
                 SelectedSourceServer = servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, SelectedSourceServer));
 
-                if (SelectedSourceServer == null && _initialLoad)
+                if(SelectedSourceServer == null && _initialLoad)
                 {
                     SelectServerFromInitialValue();
                     _initialLoad = false;
                 }
 
-                if (SelectedSourceServer == null)
+                if(SelectedSourceServer == null)
                 {
                     SelectedSourceServer = servers[0];
                 }
@@ -465,12 +460,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             Servers.Add(server);
 
-            if (connectSource)
+            if(connectSource)
             {
                 SelectedSourceServer = server;
             }
 
-            if (connectTarget)
+            if(connectTarget)
             {
                 SelectedDestinationServer = server;
             }
@@ -489,7 +484,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                                           .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
                                           .Select(n => n.DataContext as IResourceModel).ToList();
 
-            if (resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
+            if(resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
 
             //
             // Deploy the resources
@@ -520,15 +515,16 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void LoadSourceEnvironment(IServer server)
         {
-            SourceEnvironment = EnvironmentModelFactory.CreateEnvironmentModel(server);
+            // BUG 9276 : TWR : 2013.04.19
+            SourceEnvironment = EnvironmentRepository.Fetch(server);
 
             Source.RemoveAllEnvironments();
 
-            if (SourceEnvironment != null)
+            if(SourceEnvironment != null)
             {
                 Source.AddEnvironment(SourceEnvironment);
 
-                if (_selectingAndExpandingFromNavigationItem)
+                if(_selectingAndExpandingFromNavigationItem)
                 {
                     SelectAndExpandFromInitialValue();
                 }
@@ -542,11 +538,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void LoadDestinationEnvironment(IServer server)
         {
-            TargetEnvironment = EnvironmentModelFactory.CreateEnvironmentModel(server);
+            // BUG 9276 : TWR : 2013.04.19
+            TargetEnvironment = EnvironmentRepository.Fetch(server);
 
             Target.RemoveAllEnvironments();
 
-            if (TargetEnvironment != null)
+            if(TargetEnvironment != null)
             {
                 Target.AddEnvironment(TargetEnvironment);
             }
@@ -565,7 +562,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             var connectViewModel = new ConnectViewModel();
             WindowNavigationBehavior.ShowDialog(connectViewModel);
 
-            if (connectViewModel.DialogResult != ViewModelDialogResults.Okay) return;
+            if(connectViewModel.DialogResult != ViewModelDialogResults.Okay) return;
 
             //
             // If connect view closed with okay then create an environment, load it into the navigation view model
@@ -595,20 +592,20 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             IEnvironmentModel environment = null;
 
-            if (_initialNavigationItemViewModel != null && _initialNavigationItemViewModel.EnvironmentModel != null)
+            if(_initialNavigationItemViewModel != null && _initialNavigationItemViewModel.EnvironmentModel != null)
             {
                 environment = _initialNavigationItemViewModel.EnvironmentModel;
             }
-            else if (_initialEnvironment != null)
+            else if(_initialEnvironment != null)
             {
                 environment = _initialEnvironment;
             }
-            else if (_initialResource != null && _initialResource.Environment != null)
+            else if(_initialResource != null && _initialResource.Environment != null)
             {
                 environment = _initialResource.Environment;
             }
 
-            if (environment != null)
+            if(environment != null)
             {
                 var server = Servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, environment));
                 //if (server != SelectedSourceServer)
@@ -634,12 +631,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             ITreeNode navigationItemViewModel = null;
 
-            if (_initialNavigationItemViewModel != null)
+            if(_initialNavigationItemViewModel != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialNavigationItemViewModel.DisplayName)
                     .FirstOrDefault();
             }
-            else if (_initialEnvironment != null)
+            else if(_initialEnvironment != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n =>
                     {
@@ -648,13 +645,13 @@ namespace Dev2.Studio.ViewModels.Deploy
                             && EnvironmentModelEqualityComparer.Current.Equals(item.EnvironmentModel, _initialEnvironment);
                     }).FirstOrDefault();
             }
-            else if (_initialResource != null && _initialResource.Environment != null)
+            else if(_initialResource != null && _initialResource.Environment != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialResource.ResourceName)
                     .FirstOrDefault();
             }
 
-            if (navigationItemViewModel == null) return;
+            if(navigationItemViewModel == null) return;
 
             //
             // Select and expand the initial node
@@ -662,7 +659,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             navigationItemViewModel.IsChecked = true;
 
             var parent = navigationItemViewModel.TreeParent;
-            if (parent != null)
+            if(parent != null)
             {
                 parent.IsExpanded = true;
             }
@@ -674,8 +671,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         protected override void OnDispose()
         {
-//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
-//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
+            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
+            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
             EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
@@ -710,5 +707,5 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
     }
 
-    
+
 }

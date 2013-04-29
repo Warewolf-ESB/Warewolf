@@ -321,6 +321,7 @@
     </Compile>
     <Compile Include="CustomControls\Dev2FilterTextBox.cs" />
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
+    <Compile Include="Deploy\IDeployStatsCalculator.cs" />
     <Compile Include="Diagnostics\DebugLineGroup.cs" />
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />

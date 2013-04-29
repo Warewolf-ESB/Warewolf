@@ -145,14 +145,17 @@
     <Compile Include="DecisionTypeTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
     <Compile Include="DeployStatsCalculatorTests.cs" />
-    <Compile Include="DeployViewModelTest.cs" />
+    <Compile Include="Deploy\DeployViewModelTest.cs" />
     <Compile Include="Dev2DialogueTest.cs" />
     <Compile Include="DsfActivityDropUtilsTests.cs" />
     <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
-    <Compile Include="EnviromentRepositoryTest.cs">
+    <Compile Include="Environments\EnviromentRepositoryTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EnvironmentModelTest.cs" />
+    <Compile Include="Environments\EnvironmentModelTest.cs" />
+    <Compile Include="Environments\TestEnvironmentRespository.cs" />
+    <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
+    <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="ExecutionClientChannelTests.cs" />
     <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
     <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
@@ -193,7 +196,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ResourceWizardViewModelTests.cs" />
-    <Compile Include="ServerProviderTest.cs" />
+    <Compile Include="Environments\ServerProviderTest.cs" />
     <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SplashScreenTest.cs" />
     <Compile Include="StringResourcesTest1.Designer.cs">

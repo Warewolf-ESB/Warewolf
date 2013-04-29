@@ -15,12 +15,22 @@ namespace Dev2.Studio.Webs.Callbacks
         bool _isEditingSource;
         string _returnUri;
 
+        public DbServiceCallbackHandler()
+            : this(EnvironmentRepository.Instance)
+        {
+        }
+
+        public DbServiceCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
+            : base(currentEnvironmentRepository)
+        {
+        }
+
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             var getDynamicResourceType = jsonObj.ResourceType.Value;
-            if (getDynamicResourceType != null)
+            if(getDynamicResourceType != null)
             {
-                if (getDynamicResourceType == Common.ServiceModel.ResourceType.DbSource.ToString())
+                if(getDynamicResourceType == Common.ServiceModel.ResourceType.DbSource.ToString())
                 {
                     //2013.03.12: Ashley Lewis - BUG 9208
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
@@ -30,15 +40,15 @@ namespace Dev2.Studio.Webs.Callbacks
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
                 }
             }
-                else
-                {
+            else
+            {
                 ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
             }
 
         }
-            
 
-        
+
+
 
         protected override void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
         {
@@ -134,7 +144,7 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             Navigate(uri);
-            ReloadResource(EnvironmentRepository.DefaultEnvironment, sourceName, ResourceType.Source);
+            ReloadResource(EnvironmentRepository.Instance.Source, sourceName, ResourceType.Source);
         }
 
         #endregion

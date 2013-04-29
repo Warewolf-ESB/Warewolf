@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace Dev2.Studio.Deploy
 {
-    public class DeployStatsCalculator
+    public class DeployStatsCalculator : IDeployStatsCalculator
     {
         /// <summary>
         ///     Calculates the stastics from navigation item view models

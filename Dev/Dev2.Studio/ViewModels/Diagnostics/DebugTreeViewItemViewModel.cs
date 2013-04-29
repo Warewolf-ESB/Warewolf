@@ -1,13 +1,13 @@
-﻿using Dev2.Diagnostics;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Dev2.Diagnostics;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
@@ -55,7 +55,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region Constructor
 
-        public DebugStateTreeViewItemViewModel(IFrameworkRepository<IEnvironmentModel> environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = true, bool isSelected = false, bool addedAsParent = false)
+        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = true, bool isSelected = false, bool addedAsParent = false)
             : base(parent)
         {
             _content = content;
@@ -65,13 +65,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             Inputs = new List<object>();
             Outputs = new List<object>();
 
-            if (environmentRepository != null && content != null)
+            if(environmentRepository != null && content != null)
             {
-                var env = environmentRepository.All().FirstOrDefault(e => e.ID == content.ServerID) ?? EnvironmentRepository.DefaultEnvironment;
+                var env = environmentRepository.All().FirstOrDefault(e => e.ID == content.ServerID) ?? EnvironmentRepository.Instance.Source;
                 content.Server = env.Name;
             }
 
-            if (content != null)
+            if(content != null)
             {
                 BuildBindableListFromDebugItems(content.Inputs, Inputs);
                 BuildBindableListFromDebugItems(content.Outputs, Outputs);
@@ -99,7 +99,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void AppendError(string errorMessage)
         {
-            if (Content.HasError)
+            if(Content.HasError)
             {
                 var currentError = new StringBuilder(Content.ErrorMessage);
                 currentError.Append(errorMessage);
@@ -128,25 +128,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // Build destinationList
             //
             destinationList.Clear();
-            if (debugItems == null)
+            if(debugItems == null)
             {
                 return;
             }
 
-            foreach (var item in debugItems)
+            foreach(var item in debugItems)
             {
                 var list = new DebugLine();
                 var groups = new Dictionary<string, DebugLineGroup>();
-                foreach (var result in item.FetchResultsList())
+                foreach(var result in item.FetchResultsList())
                 {
-                    if (string.IsNullOrEmpty(result.GroupName))
+                    if(string.IsNullOrEmpty(result.GroupName))
                     {
                         list.LineItems.Add(new DebugLineItem(result));
                     }
                     else
                     {
                         DebugLineGroup group;
-                        if (!groups.TryGetValue(result.GroupName, out group))
+                        if(!groups.TryGetValue(result.GroupName, out group))
                         {
                             group = new DebugLineGroup(result.GroupName)
                             {
@@ -158,7 +158,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         }
 
                         DebugLineGroupRow row;
-                        if (!group.Rows.TryGetValue(result.GroupIndex, out row))
+                        if(!group.Rows.TryGetValue(result.GroupIndex, out row))
                         {
                             row = new DebugLineGroupRow();
                             group.Rows.Add(result.GroupIndex, row);
@@ -217,7 +217,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _hasError = value;
-                if (Parent != null)
+                if(Parent != null)
                 {
                     Parent.VerifyErrorState();
                 }
@@ -227,11 +227,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void VerifyErrorState()
         {
-            if (HasError == true)
+            if(HasError == true)
             {
                 return;
             }
-            if (Children.Any(c => c.HasError == true || c.HasError == null))
+            if(Children.Any(c => c.HasError == true || c.HasError == null))
             {
                 HasError = null;
             }
@@ -257,14 +257,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (value != _isExpanded)
+                if(value != _isExpanded)
                 {
                     _isExpanded = value;
                     OnPropertyChanged("IsExpanded");
                 }
 
                 // Expand all the way up to the root.
-                if (_isExpanded && _parent != null)
+                if(_isExpanded && _parent != null)
                 {
                     _parent.IsExpanded = true;
                 }
@@ -283,7 +283,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (value != _isSelected)
+                if(value != _isSelected)
                 {
                     _isSelected = value;
                     OnPropertyChanged("IsSelected");
@@ -328,7 +328,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="predicate">The predicate.</param>
         public DebugTreeViewItemViewModel FindSelfOrChild(Func<DebugTreeViewItemViewModel, bool> predicate)
         {
-            if (predicate == null)
+            if(predicate == null)
             {
                 return null;
             }
@@ -336,7 +336,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //
             // Check the current node agains the predicate
             //
-            if (predicate(this))
+            if(predicate(this))
             {
                 return this;
             }
@@ -344,10 +344,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //
             // Recursively check all children against the predicate
             //
-            foreach (DebugTreeViewItemViewModel child in Children)
+            foreach(DebugTreeViewItemViewModel child in Children)
             {
                 DebugTreeViewItemViewModel recursiveMatch = child.FindSelfOrChild(predicate);
-                if (recursiveMatch != null)
+                if(recursiveMatch != null)
                 {
                     return recursiveMatch;
                 }
@@ -365,7 +365,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             DebugTreeViewItemViewModel currentViewModel = this;
 
             int depth = 0;
-            while (currentViewModel.Parent != null)
+            while(currentViewModel.Parent != null)
             {
                 currentViewModel = currentViewModel.Parent;
                 depth++;
@@ -382,7 +382,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }

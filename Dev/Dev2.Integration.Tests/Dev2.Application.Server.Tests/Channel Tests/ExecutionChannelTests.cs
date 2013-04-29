@@ -53,7 +53,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             var conn = CreateConnection();
             conn.Connect();
 
-            IEnvironmentModel environment = new EnvironmentModel(conn);
+            var repo = new Mock<IResourceRepository>();
+            IEnvironmentModel environment = new EnvironmentModel(Guid.NewGuid(), conn, repo.Object, false);
 
             //
             // Add an execution callback, the action of this call back will set the reset event allowing the test to continue

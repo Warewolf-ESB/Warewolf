@@ -1,8 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Studio.Core.Interfaces;
-using Moq;
-using Dev2.Studio.ViewModels.Explorer;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests.Environments;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.Studio.ViewModels.Explorer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests
 {
@@ -12,86 +18,81 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class ConnectViewModelTest
     {
-        private Mock<IEnvironmentModel> _mockEnvironmentModel;
-        private Mock<IMainViewModel> _mockMainViewModel; 
-        private Mock<IFilePersistenceProvider> _mockFilePersistance;
-        private Mock<IResourceRepository> _mockResourceModel;
-        private Mock<IContextualResourceModel> _mockResource;        
-        private ConnectViewModel connectViewmodel;
+        static ImportServiceContext _importServiceContext;
+        ConnectViewModel _connectViewmodel;
 
-        private TestContext testContextInstance;
+        #region MyTestInitialize
 
-        /// <summary>
-        ///Gets or sets the result context which provides
-        ///information about and functionality for the current result run.
-        ///</summary>
-        public TestContext TestContext
+        [ClassInitialize]
+        public static void MyClassInitialize(TestContext context)
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            _importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = _importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
+
+            var mockSecurityContext = new Mock<IFrameworkSecurityContext>();
+            ImportService.AddExportedValueToContainer(mockSecurityContext.Object);
+
+            var wizardEngine = new Mock<IWizardEngine>();
+            ImportService.AddExportedValueToContainer(wizardEngine.Object);
         }
 
-        #region Additional result attributes
-        // Use TestInitialize to run code before running each result 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-            _mockResourceModel = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
-            _mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
-            _mockFilePersistance = new Mock<IFilePersistenceProvider>();
-            _mockResource = Dev2MockFactory.SetupResourceModelMock();
-            connectViewmodel = new ConnectViewModel();
+            ImportService.CurrentContext = _importServiceContext;
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("xxxx");
+
+            var targetEnvironment = new Mock<IEnvironmentModel>();
+            targetEnvironment.Setup(e => e.Connection).Returns(connection.Object);
+
+            _connectViewmodel = new ConnectViewModel(new TestEnvironmentRespository(targetEnvironment.Object, new[] { targetEnvironment.Object }), targetEnvironment.Object);
         }
 
         #endregion
 
         [TestMethod]
-        public void ConnectCommand_ExpectSuccess()
+        public void ConnectOkayCommandWithValidIPAddressExpectedSuccess()
         {
+            _connectViewmodel.WebServerPort = "1234";
+            _connectViewmodel.Name = "TestServer";
+            _connectViewmodel.DsfAddress = "http://127.0.0.1:77/dsf";
 
-            connectViewmodel.WebServerPort = "1234";
-            connectViewmodel.Name = "TestServer";
-            connectViewmodel.DsfAddress = "http://127.0.0.1:77/dsf";
+            _connectViewmodel.OkayCommand.Execute("abc");
 
-            connectViewmodel.OkayCommand.Execute("abc");
-
-            Assert.AreEqual("http://127.0.0.1:77/dsf", connectViewmodel.Server.AppAddress);
-            
-        }
-
-        [TestMethod()]
-        public void ConnectCommand_ExpectFailure()
-        {
-                connectViewmodel.OkayCommand.Execute("abc");
-                Assert.AreEqual(null, connectViewmodel.Server.AppAddress);
-        }
-
-        [TestMethod()]
-        public void CancelCommand()
-        {
-            connectViewmodel.CancelCommand.Execute("abc");
-
-            Assert.AreEqual(0, connectViewmodel.Server.Servers.Count);
+            Assert.AreEqual("http://127.0.0.1:77/dsf", _connectViewmodel.Server.AppAddress);
         }
 
         [TestMethod]
-        public void ConnectCommandExpectLocalhostResolveToSpecificLocalIP()
+        public void ConnectOkayCommandWithValidDnsAddressExpectedResolvesSuccessfully()
         {
-            connectViewmodel.WebServerPort = "1234";
-            connectViewmodel.Name = "TestServer";
-            connectViewmodel.DsfAddress = "http://LoCaLhoSt:77/dsf";
+            _connectViewmodel.WebServerPort = "1234";
+            _connectViewmodel.Name = "TestServer";
+            _connectViewmodel.DsfAddress = "http://LoCaLhoSt:77/dsf";
 
-            connectViewmodel.OkayCommand.Execute("abc");
+            _connectViewmodel.OkayCommand.Execute("abc");
 
-            Assert.AreEqual("http://127.0.0.1:77/dsf", connectViewmodel.Server.AppAddress);
+            Assert.AreEqual("http://127.0.0.1:77/dsf", _connectViewmodel.Server.AppAddress);
+        }
+
+        [TestMethod]
+        public void ConnectOkayCommandWithInValidAddressExpectedFailure()
+        {
+            _connectViewmodel.OkayCommand.Execute("abc");
+            Assert.AreEqual(null, _connectViewmodel.Server.AppAddress);
+        }
+
+        [TestMethod]
+        public void ConnectCancelCommandWithInValidAddressExpectedDoesNotAdd()
+        {
+            _connectViewmodel.CancelCommand.Execute("abc");
+
+            Assert.AreEqual(0, _connectViewmodel.Server.Servers.Count);
         }
     }
 }

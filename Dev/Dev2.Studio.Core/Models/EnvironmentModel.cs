@@ -4,27 +4,50 @@ using System.Windows;
 using System.Xml.Linq;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
-using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
-using Action = System.Action;
+using Dev2.Studio.Core.Wizards.Interfaces;
 
 namespace Dev2.Studio.Core.Models
 {
+    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+
     public class EnvironmentModel : IEnvironmentModel
     {
-        private IResourceRepository _resources;
         bool _publishEventsOnDispatcherThread;
 
-        #region Constructor
+        #region CTOR
 
-        public EnvironmentModel(IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread = true)
+        {
+            if(wizardEngine == null)
+            {
+                throw new ArgumentNullException("wizardEngine");
+            }
+            Initialize(id, environmentConnection, publishEventsOnDispatcherThread);
+            ResourceRepository = new ResourceRepository(this, wizardEngine);
+        }
+
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
+        {
+            if(resourceRepository == null)
+            {
+                throw new ArgumentNullException("resourceRepository");
+            }
+            Initialize(id, environmentConnection, publishEventsOnDispatcherThread);
+            ResourceRepository = resourceRepository;
+        }
+
+        void Initialize(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread)
         {
             if(environmentConnection == null)
             {
                 throw new ArgumentNullException("environmentConnection");
             }
+
+            ID = id; // The resource ID
             Connection = environmentConnection;
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
@@ -35,100 +58,34 @@ namespace Dev2.Studio.Core.Models
             Connection.ServerStateChanged += OnServerStateChanged;
         }
 
-        #endregion Constructor
+        #endregion
 
         #region Properties
 
-        public Guid ID { get; set; }
+        public Guid ID { get; private set; }
 
         // BUG: 8786 - TWR - 2013.02.20 - Added category
         public string Category { get; set; }
 
         public IEnvironmentConnection Connection { get; private set; }
 
-        public string Name
-        {
-            get
-            {
-                if(Connection != null)
-                {
-                    return Connection.DisplayName;
-                }
-                return null;
-            }
-            set
-            {
-                if(Connection != null)
-                {
-                    Connection.DisplayName = value;
-                }
-            }
+        public string Name { get { return Connection.DisplayName; } set { Connection.DisplayName = value; } }
 
-        }
+        public bool IsConnected { get { return Connection.IsConnected; } }
 
-        public bool IsConnected
-        {
-            get
-            {
-                if(Connection != null)
-                {
-                    return Connection.IsConnected;
-                }
-                return false;
-            }
-        }
+        public IResourceRepository ResourceRepository { get; private set; }
 
-        public IResourceRepository ResourceRepository
-        {
-            get
-            {
-                return _resources;
-            }
-            set
-            {
-                _resources = value;
-            }
-        }
+        public IStudioEsbChannel DsfChannel { get { return Connection.DataChannel; } }
 
-        public IStudioEsbChannel DsfChannel
-        {
-            get
-            {
-                if(Connection != null)
-                {
-                    return Connection.DataChannel;
-                }
-                return null;
-            }
-        }
+        public INetworkExecutionChannel ExecutionChannel { get { return Connection.ExecutionChannel; } }
 
-        public INetworkExecutionChannel ExecutionChannel
-        {
-            get
-            {
-                if(Connection != null)
-                {
-                    return Connection.ExecutionChannel;
-                }
-                return null;
-            }
-        }
+        public INetworkDataListChannel DataListChannel { get { return Connection.DataListChannel; } }
 
-        public INetworkDataListChannel DataListChannel
-        {
-            get
-            {
-                if(Connection != null)
-                {
-                    return Connection.DataListChannel;
-                }
-                return null;
-            }
-        }
+        public IWizardEngine WizardEngine { get { return ResourceRepository.WizardEngine; } }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Connect
 
         public void Connect()
         {
@@ -140,35 +97,51 @@ namespace Dev2.Studio.Core.Models
             Connection.Connect();
         }
 
+        public void Connect(IEnvironmentModel other)
+        {
+            if(other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            if(!other.IsConnected)
+            {
+                other.Connection.Connect();
+
+                if(!other.IsConnected)
+                {
+                    throw new InvalidOperationException("Environment failed to connect.");
+                }
+            }
+            Connect();
+        }
+
+        #endregion
+
+        #region Disconnect
+
         public void Disconnect()
         {
-            if(Connection != null && Connection.IsConnected)
+            if(Connection.IsConnected)
             {
                 Connection.Disconnect();
             }
         }
 
-        public void Connect(IEnvironmentModel model)
-        {
-            // Connect using auxilliary connections
+        #endregion
 
-            if(!model.IsConnected)
-            {
-                model.Connection.Connect(true);
-
-                if(!model.IsConnected) throw new InvalidOperationException("Model failed to connect.");
-            }
-            Connect();
-        }
+        #region LoadResources
 
         public void LoadResources()
         {
             if(Connection.IsConnected)
             {
-                _resources = ResourceRepositoryFactory.CreateResourceRepository(this);
-                _resources.Load();
+                ResourceRepository.Load();
             }
         }
+
+        #endregion
+
+        #region ToSourceDefinition
 
         public string ToSourceDefinition()
         {
@@ -188,7 +161,7 @@ namespace Dev2.Studio.Core.Models
             return xml.ToString();
         }
 
-        #endregion Methods
+        #endregion
 
         #region Connection Event Handlers
 
@@ -199,7 +172,7 @@ namespace Dev2.Studio.Core.Models
             RaiseNetworkStateChanged(e.State == ServerState.Online);
         }
 
-        private void OnConnectionLoginStateChanged(object sender, LoginStateEventArgs e)
+        void OnConnectionLoginStateChanged(object sender, LoginStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.LoggedIn);
         }
@@ -236,10 +209,9 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        #endregion Event Handlers
+        #endregion
 
-
-        #region IEquatable
+        #region Implementation of IEquatable
 
         public bool Equals(IEnvironmentModel other)
         {
@@ -247,23 +219,21 @@ namespace Dev2.Studio.Core.Models
             {
                 return false;
             }
-            return ID == other.ID;
+
+            // BUG 9276 : TWR : 2013.04.19 - refactored to use deleted EnvironmentModelEqualityComparer logic instead!           
+            return ID == other.ID
+                   && Connection.ServerID == other.Connection.ServerID
+                   && Connection.AppServerUri.AbsoluteUri.Equals(other.Connection.AppServerUri.AbsoluteUri, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
-            {
-                return false;
-            }
-
-            var item = obj as IEnvironmentModel;
-            return item != null && Equals(item);
+            return Equals(obj as IEnvironmentModel);
         }
 
         public override int GetHashCode()
         {
-            return ID.GetHashCode();
+            return ID.GetHashCode() ^ Connection.ServerID.GetHashCode() ^ Connection.AppServerUri.AbsoluteUri.GetHashCode();
         }
 
         #endregion

@@ -65,6 +65,7 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
+        [Ignore]
         public void ConnectAsyncWithValidIpAddressReturnsTrue()
         {
             ConnectAsyncTest("127.0.0.1", 80, true, NetworkState.Connecting, NetworkState.Online, false);

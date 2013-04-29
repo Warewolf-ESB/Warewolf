@@ -13,13 +13,13 @@ namespace Dev2.Studio.Diagnostics
         #region Class Members
 
         readonly DebugOutputFilterStrategy _debugOutputFilterStrategy;
-        readonly IFrameworkRepository<IEnvironmentModel> _environmentRepository;
+        readonly IEnvironmentRepository _environmentRepository;
 
         #endregion Class Members
 
         #region Constructor
 
-        public DebugOutputTreeGenerationStrategy(IFrameworkRepository<IEnvironmentModel> environmentRepository = null)
+        public DebugOutputTreeGenerationStrategy(IEnvironmentRepository environmentRepository = null)
         {
             _environmentRepository = environmentRepository;
             _debugOutputFilterStrategy = new DebugOutputFilterStrategy();

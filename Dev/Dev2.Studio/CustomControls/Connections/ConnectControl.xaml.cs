@@ -1,15 +1,14 @@
-﻿using Dev2.Common.ServiceModel;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Webs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Common.ServiceModel;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.InterfaceImplementors;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Webs;
 
 namespace Dev2.UI
 {
@@ -100,9 +99,9 @@ namespace Dev2.UI
         public string LabelText
         {
             get { return (string)GetValue(LabelTextProperty); }
-            set 
-            { 
-                SetValue(LabelTextProperty, value); 
+            set
+            {
+                SetValue(LabelTextProperty, value);
             }
         }
 
@@ -160,25 +159,17 @@ namespace Dev2.UI
                 var server = e.AddedItems[0] as IServer;
                 if(server != null)
                 {
-                    if(server.Environment == null)
+                    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+                    var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
+
+                    if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
                     {
-                        EnvironmentModelFactory.CreateEnvironmentModel(server);
-                    }
-                    
-                    if (ServerChangedCommand != null && ServerChangedCommand.CanExecute(server.Environment))
-                    {
-                        Dispatcher.BeginInvoke(new Action(() => 
-                        {
-                            ServerChangedCommand.Execute(server);
-                        }));
+                        Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
                     }
 
-                    if (EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(server.Environment))
+                    if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
                     {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            EnvironmentChangedCommand.Execute(server.Environment);
-                        }));
+                        Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));
                     }
                 }
 
@@ -193,7 +184,7 @@ namespace Dev2.UI
 
         void OnConnectClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.DefaultEnvironment, ResourceType.Server);
+            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server);
         }
 
         #endregion
