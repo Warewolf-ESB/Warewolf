@@ -582,6 +582,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
+        [Ignore]
         public void EnvironmentRepositoryWriteSessionWithExistingFileExpectedOverwritesFile()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();
