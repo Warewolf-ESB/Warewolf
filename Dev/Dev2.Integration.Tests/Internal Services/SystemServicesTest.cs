@@ -68,7 +68,20 @@ namespace Dev2.Integration.Tests.Internal_Services
             string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceName=Bug6619");
 
             // The expected graph to be returned 
-            const string expected = @"<graph title=""Dependency Graph Of Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node></graph>";
+            const string expected = @"<graph title=""Dependency Graph Of Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Bug6619"" x="""" y="""" broken=""false""></node></graph>";
+
+            string actual = TestHelper.PostDataToWebserver(postData);
+
+            StringAssert.Contains(actual, expected);
+        }
+        
+        [TestMethod]
+        public void DepenendcyViewerReturnsOnlyValidDependenciesExpectTwoDependenciesWithTravsCrazyWorkflow()
+        {
+            string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceName=Bug9245");
+
+            // The expected graph to be returned 
+            const string expected = @"<graph title=""Dependency Graph Of Bug9245""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Bug9245a"" /><dependency id=""Bug9245b"" /></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node><node id=""Bug9245b"" x="""" y="""" broken=""false""><dependency id=""Bug9245c"" /></node><node id=""Bug9245c"" x="""" y="""" broken=""false""><dependency id=""Bug6619"" /><dependency id=""Bug8372"" /></node><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Bug6619"" x="""" y="""" broken=""false""></node><node id=""Bug8372"" x="""" y="""" broken=""false""><dependency id=""Bug8372Sub"" /></node><node id=""Bug8372Sub"" x="""" y="""" broken=""false""><dependency id=""Bug8372SubSub"" /></node><node id=""Bug8372SubSub"" x="""" y="""" broken=""false""></node><node id=""Bug8372Sub"" x="""" y="""" broken=""false""></node><node id=""Bug8372"" x="""" y="""" broken=""false""></node><node id=""Bug9245c"" x="""" y="""" broken=""false""></node><node id=""Bug9245b"" x="""" y="""" broken=""false""></node><node id=""Bug9245"" x="""" y="""" broken=""false""></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
