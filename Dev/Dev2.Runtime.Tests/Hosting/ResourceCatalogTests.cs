@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [Ignore]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resouces saved by SaveResources()
