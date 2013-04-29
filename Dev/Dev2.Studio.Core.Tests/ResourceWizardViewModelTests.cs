@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.Factories;
@@ -166,7 +168,7 @@ namespace Dev2.Core.Tests
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
             
             bool messageShown = false;
-            Mock<IPopUp> _mockPopup = new Mock<IPopUp>();
+            Mock<IPopupController> _mockPopup = new Mock<IPopupController>();
             _mockPopup.Setup(p => p.Show()).Callback(() => messageShown = true);
 
             resourceWizardViewModel.PopupProvider = _mockPopup.Object;
@@ -189,7 +191,7 @@ namespace Dev2.Core.Tests
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
 
             bool messageShown = false;
-            Mock<IPopUp> _mockPopup = new Mock<IPopUp>();
+            Mock<IPopupController> _mockPopup = new Mock<IPopupController>();
             _mockPopup.Setup(p => p.Show()).Callback(() => messageShown = true);
 
             resourceWizardViewModel.PopupProvider = _mockPopup.Object;
@@ -202,6 +204,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Set_Where_ValidResponse_Expected_NoException()
         {
+            //Juries TODO
             Mock<IWebCommunication> _mockedWebCommunication = new Mock<IWebCommunication>();
             _mockedWebCommunication.Setup(w => w.Post(It.IsAny<string>(), It.IsAny<string>())).Returns<object>(null);
 
@@ -212,9 +215,10 @@ namespace Dev2.Core.Tests
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
 
             Mock<IMainViewModel> mainVM = Dev2MockFactory.SetupMainViewModel();
-            mainVM.Setup(m => m.WebCommunication).Returns(_mockedWebCommunication.Object);
+            //Juries TODO
+            //mainVM.Setup(m => m.WebCommunication).Returns(_mockedWebCommunication.Object);
 
-            Mock<IPopUp> _mockPopup = new Mock<IPopUp>();
+            Mock<IPopupController> _mockPopup = new Mock<IPopupController>();
 
             resourceWizardViewModel.PopupProvider = _mockPopup.Object;
 

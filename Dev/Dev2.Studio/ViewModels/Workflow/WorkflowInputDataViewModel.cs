@@ -1,7 +1,14 @@
-﻿using Dev2.Common;
+﻿using System.Net;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Session;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -9,8 +16,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Xml.Linq;
 
-
-namespace Dev2.Studio.Core.ViewModels
+namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
@@ -22,15 +28,35 @@ namespace Dev2.Studio.Core.ViewModels
         private DebugTO _debugTO;
         private string _xmlData;
         private bool _rememberInputs;
+        private IDebugWriter _debugWriter;
+        private IContextualResourceModel _resourceModel;
         #endregion Fields
 
         #region Ctor
-        public WorkflowInputDataViewModel(DebugTO debugTO)
+        public WorkflowInputDataViewModel(IServiceDebugInfoModel input, IDebugWriter debugWriter)
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781           
-            _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
-            DebugTO = debugTO;
+            _workflowInputs = new OptomizedObservableCollection<IDataListItem>(); 
 
+            var debugTO = new DebugTO
+            {
+                DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList)
+                               ? input.ResourceModel.DataList
+                               : "<DataList></DataList>",
+                ServiceName = input.ResourceModel.ResourceName,
+                WorkflowID = input.ResourceModel.ResourceName,
+                WorkflowXaml = input.ResourceModel.WorkflowXaml,
+                RememberInputs = true
+            };
+
+            if (input.DebugModeSetting == DebugMode.DebugInteractive)
+            {
+                debugTO.IsDebugMode = true;
+            }
+
+            DebugTO = debugTO;
+            _resourceModel = input.ResourceModel;
+            _debugWriter = debugWriter;
         }
         #endregion Ctor
 
@@ -149,8 +175,32 @@ namespace Dev2.Studio.Core.ViewModels
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
             if (DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO);
+            ExecuteWorkflow();
+            RequestClose();
+        }
 
-            RequestClose(ViewModelDialogResults.Okay);
+        public void ExecuteWorkflow()
+        {
+            EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
+
+            var clientContext = _resourceModel.Environment.DsfChannel as IStudioClientContext;
+            if (clientContext != null)
+            {
+                clientContext.AddDebugWriter(_debugWriter);
+
+                XElement dataList = XElement.Parse(DebugTO.XmlData);
+                dataList.Add(new XElement("BDSDebugMode", DebugTO.IsDebugMode));
+
+                if (EventAggregator != null)
+                {
+                    EventAggregator.Publish(new DebugStatusMessage(true));
+                }
+
+                Action<UploadStringCompletedEventArgs> webserverCallback =
+                    asyncCallback => clientContext.RemoveDebugWriter(_debugWriter);
+
+                WebServer.SendAsync(WebServerMethod.POST, _resourceModel, dataList.ToString(), webserverCallback);
+            }
         }
 
         /// <summary>
@@ -482,6 +532,12 @@ namespace Dev2.Studio.Core.ViewModels
                 }
             }
             return itemsAdded;
+        }
+
+        protected override void OnViewAttached(object view, object context)
+        {
+            LoadWorkflowInputs();
+            base.OnViewAttached(view, context);
         }
         #endregion Private Methods
     }

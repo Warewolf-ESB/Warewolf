@@ -18,6 +18,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Workspaces;
 
@@ -42,6 +43,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private readonly bool _useAuxiliryConnections;
         private RelayCommand _refreshMenuCommand;
         private string _searchFilter = string.Empty;
+        private IWorkspaceItemRepository _workspaceItemRepository;
         private readonly SynchronizationContext _synchronizationContext;
         private bool _fromActivityDrop;
         enDsfActivityType _activityType;
@@ -74,6 +76,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
             _synchronizationContext = SynchronizationContext.Current;
+            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
+            _workspaceItemRepository = ImportService.GetExportValue<IWorkspaceItemRepository>();
+
             _useAuxiliryConnections = useAuxiliryConnections;
 
             Environments = new List<IEnvironmentModel>();
@@ -312,7 +317,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 foreach(var environment in Environments)
                 {
-                    UpdateWorkspace(environment, mainVM.WorkspaceItems);
+                    UpdateWorkspace(environment, _workspaceItemRepository.WorkspaceItems);
                 }
             }
             finally
@@ -554,7 +559,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             // Load the environemnts resources
             //
-            var resources = environment.ResourceRepository.All().Cast<IContextualResourceModel>().ToList();
+            var resources = environment.ResourceRepository.All();
+            var contextualResources = resources.Cast<IContextualResourceModel>().ToList();
 
             //
             // Clear any resources currently being displayed for the environment
@@ -565,23 +571,23 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 case enDsfActivityType.Workflow:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                                contextualResources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
                     break;
                 case enDsfActivityType.Service:
                     BuildCategoryTree(ResourceType.Service, environmentVM,
-                                        resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                        contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
                     break;
                 case enDsfActivityType.Source:
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                              resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                              contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
                     break;
                 default:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                        resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                                contextualResources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                                        resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
                     BuildCategoryTree(ResourceType.Service, environmentVM,
-                                        resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                        contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
                     break;
 
             }
@@ -733,10 +739,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             //    }
             //}
             //else
-            //{
+                    //{
             environment.Connect();
-            //}
-        }
+                    //}
+                }
 
         #endregion private methods
 

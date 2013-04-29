@@ -12,7 +12,7 @@
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
     mc:Ignorable="d"
              Name="DebugOutput">
-    <Grid cal:Bind.Model="{Binding .}">
+    <Grid>
         <Grid.Resources>
             <Style x:Key="SimulationModeVisibility">
                 <Style.Setters>
@@ -341,7 +341,7 @@
                     </DataTemplate>
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type localDiagnostics:DebugStringTreeViewItemViewModel}">
-                        <TextBlock Grid.Row="0" Text="{Binding Content}"  HorizontalAlignment="Stretch"/>
+                        <TextBlock Grid.Row="0" Text="sdfsdfsdf"  HorizontalAlignment="Stretch"/>
                     </HierarchicalDataTemplate>                    
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type localDiagnostics:DebugStateTreeViewItemViewModel}">

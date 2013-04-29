@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -22,20 +23,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// for the TreeView (the RootItems property), a bindable
     /// SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>, IHandle<DebugWriterWriteMessage>, IHandle<DebugWriterAppendMessage>
+    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>,IHandle<DebugWriterWriteMessage>
     {
         #region Fields
 
         private object _syncContext = new object();
         private readonly List<object> _contentItems;
-        private readonly ObservableCollection<DebugTreeViewItemViewModel> _rootItems;
+        private ObservableCollection<DebugTreeViewItemViewModel> _rootItems;
         //private ICommand _searchCommand;
         private ICommand _openItemCommand;
         private ICommand _expandAllCommand;
         private ICommand _showOptionsCommand;
-
         string _searchText = string.Empty;
-
         private bool _showVersion = false;
         private bool _showServer = true;
         private bool _showType = true;
@@ -45,19 +44,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _showOutputs = true;
         private bool _highlightSimulation = true;
         private bool _highlightError = true;
-
         private bool _showProcessingIcon = false;
         private string _processingText = "Ready";
-
         private bool _showOptions = false;
         private bool _skipOptionsCommandExecute = false;
-
         private bool _expandAllMode = false;
         private bool _isRebuildingTree = false;
-
         private int _depthLimit = 0;
-
-        private DebugOutputTreeGenerationStrategy _debugOutputTreeGenerationStrategy;
+        private WorkSurfaceKey _workSurfaceKey;
+        private readonly DebugOutputTreeGenerationStrategy _debugOutputTreeGenerationStrategy;
 
         #endregion
 
@@ -67,8 +62,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             : this(Core.EnvironmentRepository.Instance)
         {
         }
+        public DebugOutputViewModel(WorkSurfaceKey workSurfaceKey = null) : this(Core.EnvironmentRepository.Instance, workSurfaceKey)
+        {
+        }
 
-        public DebugOutputViewModel(IEnvironmentRepository environmentRepository)
+        public DebugOutputViewModel(IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
         {
             if(environmentRepository == null)
             {
@@ -77,11 +75,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             EnvironmentRepository = environmentRepository;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
 
-            _rootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
             _contentItems = new List<object>();
-
-            //            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
-            //            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
+            _workSurfaceKey = workSurfaceKey;
         }
 
         #endregion
@@ -105,7 +100,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showProcessingIcon = value;
-                OnPropertyChanged("ShowProcessingIcon");
+                NotifyOfPropertyChange(() => ShowProcessingIcon);
             }
         }
 
@@ -127,7 +122,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _processingText = value;
-                OnPropertyChanged("ProcessingText");
+                NotifyOfPropertyChange(() => ProcessingText);
             }
         }
 
@@ -156,7 +151,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 if(_depthLimit != value)
                 {
                     _depthLimit = value;
-                    OnPropertyChanged("DepthLimit");
+                    NotifyOfPropertyChange(() => DepthLimit);
                     RebuildTree();
                 }
             }
@@ -177,7 +172,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _expandAllMode = value;
-                OnPropertyChanged("ExpandAllMode");
+                NotifyOfPropertyChange(() => ExpandAllMode);
             }
         }
 
@@ -196,7 +191,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _skipOptionsCommandExecute = value;
-                OnPropertyChanged("SkipOptionsCommandExecute");
+                NotifyOfPropertyChange(() => SkipOptionsCommandExecute);
             }
         }
 
@@ -215,7 +210,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showOptions = value;
-                OnPropertyChanged("ShowOptions");
+                NotifyOfPropertyChange(() => ShowOptions);
             }
         }
 
@@ -234,7 +229,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showVersion = value;
-                OnPropertyChanged("ShowVersion");
+                NotifyOfPropertyChange(() => ShowVersion);
             }
         }
 
@@ -253,7 +248,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showServer = value;
-                OnPropertyChanged("ShowServer");
+                NotifyOfPropertyChange(() => ShowServer);
             }
         }
 
@@ -272,7 +267,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showType = value;
-                OnPropertyChanged("ShowType");
+                NotifyOfPropertyChange(() => ShowType);
             }
         }
 
@@ -291,7 +286,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showTime = value;
-                OnPropertyChanged("ShowTime");
+                NotifyOfPropertyChange(() => ShowTime);
             }
         }
 
@@ -310,7 +305,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showDuratrion = value;
-                OnPropertyChanged("ShowDuratrion");
+                NotifyOfPropertyChange(() => ShowDuratrion);
             }
         }
 
@@ -329,7 +324,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showInputs = value;
-                OnPropertyChanged("ShowInputs");
+                NotifyOfPropertyChange(() => ShowInputs);
             }
         }
 
@@ -348,7 +343,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _showOutputs = value;
-                OnPropertyChanged("ShowOutputs");
+                NotifyOfPropertyChange(() => ShowOutputs);
             }
         }
 
@@ -367,7 +362,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _highlightSimulation = value;
-                OnPropertyChanged("HighlightSimulation");
+                NotifyOfPropertyChange(() => HighlightSimulation);
             }
         }
 
@@ -386,7 +381,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _highlightError = value;
-                OnPropertyChanged("HighlightError");
+                NotifyOfPropertyChange(() => HighlightError);
             }
         }
 
@@ -410,8 +405,19 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
+                if (_rootItems == null)
+                {
+                    _rootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
+                    _rootItems.CollectionChanged += _rootItems_CollectionChanged;
+                }
                 return _rootItems;
             }
+        }
+
+        void _rootItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            var newitems = e.NewItems;
+            var removeditems = e.OldItems;
         }
 
         /// <summary>
@@ -431,7 +437,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
 
                 _searchText = value;
-                OnPropertyChanged("SearchText");
+                NotifyOfPropertyChange(() => SearchText);
 
                 RebuildTree();
             }
@@ -590,7 +596,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     return;
                 }
-                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
                 //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
             }
         }
@@ -602,7 +608,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private void Write(object content)
         {
             if(Application.Current != null)
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(WriteUI), content);
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(WriteUI), content);
         }
 
         /// <summary>
@@ -619,10 +625,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// Appends the specified content.
         /// </summary>
         /// <param name="content">The content.</param>
-        private void Append(object content)
+        public void Append(object content)
         {
             if(Application.Current != null)
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(AppendUI), content);
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(AppendUI), content);
         }
 
         /// <summary>
@@ -711,16 +717,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion
-
-        #region Implementation of IHandle<DebugWriterAppendMessage>
-
-        public void Handle(DebugWriterAppendMessage message)
-        {
-            Append(message.Content);
-        }
-
-        #endregion
     }
 
-
+    
 }

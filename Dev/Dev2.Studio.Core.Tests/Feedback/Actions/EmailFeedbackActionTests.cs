@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -30,17 +31,17 @@ namespace Dev2.Core.Tests.Feedback.Actions
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            var mockWindowManager = new Mock<IDev2WindowManager>();
-            mockWindowManager.Setup(w => w.Show(It.IsAny<Window>(), It.IsAny<BaseViewModel>())).Verifiable();
+            var mockWindowManager = new Mock<IWindowManager>();
+            mockWindowManager.Setup(w => w.ShowWindow(It.IsAny<BaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext =
                 CompositionInitializer.InitializeWithWindowManagerTest(mockSysInfo, mockWindowManager);
 
-            var emailAction = new EmailFeedbackAction { WindowNavigation = mockWindowManager.Object };
+            var emailAction = new EmailFeedbackAction { WindowManager = mockWindowManager.Object };
             ImportService.SatisfyImports(emailAction);
 
             emailAction.StartFeedback();
-            mockWindowManager.Verify(c => c.Show(It.IsAny<SimpleBaseViewModel>()), Times.Once());
+            mockWindowManager.Verify(c => c.ShowWindow(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once());
         }
     }
 }

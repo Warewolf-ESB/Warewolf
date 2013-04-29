@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using IWindowManager = Dev2.Studio.Core.Interfaces.IDev2WindowManager;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {

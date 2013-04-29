@@ -3,13 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
 using Dev2.Composition;
-using Dev2.Studio;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;

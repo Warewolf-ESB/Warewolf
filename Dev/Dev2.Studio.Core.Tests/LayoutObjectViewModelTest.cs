@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Web;
 using Unlimited.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -55,7 +56,6 @@ namespace Dev2.Core.Tests {
            
 //            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
 //            EventAggregator.Subscribe(this);
-            _mockMainViewModel.Setup(mainVM => mainVM.OpenWebsiteCommand.Execute(null)).Verifiable();
 
             _moqEnvironment.Setup(env => env.Connection.WebServerUri).Returns(new Uri("http://localhost:1234"));
             _moqEnvironment.Setup(env => env.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));

@@ -356,6 +356,5 @@ namespace Dev2.Studio.Core {
 
             return resource.ResourceName + ".wiz";
         }
-
     }
 }

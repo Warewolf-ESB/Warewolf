@@ -50,10 +50,12 @@ namespace Dev2.Studio.Dock
 		{
 			ContentPane pane = container as ContentPane;
 			pane.Closed -= new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
+		    pane.Closing -= new EventHandler<PaneClosingEventArgs>(OnPaneClosing);
 
 			base.ClearContainerForItem(container, item);
-		} 
-		#endregion //ClearContainerForItem
+		}
+
+	    #endregion //ClearContainerForItem
 
 		#region OnItemInserted
 		/// <summary>
@@ -114,6 +116,7 @@ namespace Dev2.Studio.Dock
 
 			// always hook the closed
             pane.Closed += new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
+            pane.Closing += new EventHandler<PaneClosingEventArgs>(OnPaneClosing);
 
             //Juries attach to events when viewmodel is closed/deactivated to close view.
             if (item is WorkSurfaceContextViewModel)
@@ -463,8 +466,23 @@ namespace Dev2.Studio.Dock
 		}
 		#endregion //GetSiblingDocument
 
-		#region OnPaneClosed
-		private void OnPaneClosed(object sender, PaneClosedEventArgs e)
+        #region OnPaneClosing
+        private void OnPaneClosing(object sender, PaneClosingEventArgs e)
+        {
+            if (sender is ContentPane)
+            {
+                var pane = (ContentPane) sender;
+                if (pane.DataContext is WorkSurfaceContextViewModel)
+                {
+                    var vm = ((WorkSurfaceContextViewModel)pane.DataContext);
+                    vm.TryClose();
+                }
+            }
+        }
+        #endregion
+
+        #region OnPaneClosed
+        private void OnPaneClosed(object sender, PaneClosedEventArgs e)
 		{
 			var pane = sender as ContentPane;
 
@@ -505,6 +523,11 @@ namespace Dev2.Studio.Dock
 		{
 			// we need to temporarily change the close action while we close it
 			DependencyProperty closeProp = ContentPane.CloseActionProperty;
+            if (cp == null)
+            {
+                return;
+            }
+
 			object oldValue = cp.ReadLocalValue(closeProp);
 			BindingExpressionBase oldExpression = cp.GetBindingExpression(closeProp);
 

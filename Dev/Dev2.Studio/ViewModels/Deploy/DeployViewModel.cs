@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel.Composition;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,7 +23,8 @@ using Dev2.Studio.ViewModels.WorkSurface;
 namespace Dev2.Studio.ViewModels.Deploy
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
-        IHandle<ResourceCheckedMessage>, IHandle<UpdateDeployMessage>, IHandle<SelectItemInDeployMessage>
+        IHandle<ResourceCheckedMessage>, IHandle<UpdateDeployMessage>,
+        IHandle<SelectItemInDeployMessage>, IHandle<AddServerToDeployMessage>
     {
         #region Class Members
 
@@ -121,8 +123,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
-
-        public IDev2WindowManager WindowNavigationBehavior { get; private set; }
+        [Import(typeof(IWindowManager))]
+        public IWindowManager WindowManager { get; set; }
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
@@ -187,7 +189,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Used to indicate if a deploy is in progress
         /// </summary>
-        public bool IsDeploying
+        public bool IsDeploying 
         {
             get
             {
@@ -295,7 +297,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private void Initialize(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
         {
-            WindowNavigationBehavior = ImportService.GetExportValue<IDev2WindowManager>();
             EnvironmentRepository = environmentRepository;
 
             _deployStatsCalculator = deployStatsCalculator ?? new DeployStatsCalculator();
@@ -311,16 +312,16 @@ namespace Dev2.Studio.ViewModels.Deploy
             SetupPredicates();
             SetupCommands();
             LoadServers();
-
-            //            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
-            //            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
-            //            {
-            //                _initialResource = o as IContextualResourceModel;
-            //                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
-            //                _initialEnvironment = o as IEnvironmentModel;
-            //
-            //                SelectServerFromInitialValue();
-            //            });
+            
+//            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
+//            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
+//            {
+//                _initialResource = o as IContextualResourceModel;
+//                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
+//                _initialEnvironment = o as IEnvironmentModel;
+//
+//                SelectServerFromInitialValue();
+//            });
 
 
         }
@@ -560,26 +561,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             // Create and show the connect view
             //
             var connectViewModel = new ConnectViewModel();
-            WindowNavigationBehavior.ShowDialog(connectViewModel);
-
-            if(connectViewModel.DialogResult != ViewModelDialogResults.Okay) return;
-
-            //
-            // If connect view closed with okay then create an environment, load it into the navigation view model
-            //
-
-            //
-            // Add the new server
-            //
-            var connectSource = o == Source;
-            var connectTarget = o == Target;
-            AddServer(connectViewModel.Server, connectSource, connectTarget);
-
-            //
-            // Signal the explorer to update loading any new servers
-            //
-            EventAggregator.Publish(new UpdateExplorerMessage(false));
-            //Mediator.SendMessage(MediatorMessages.UpdateExplorer, true);
+            connectViewModel.IsSource = o == Source;
+            connectViewModel.IsDestination = o == Target;
+            WindowManager.ShowDialog(connectViewModel);
         }
 
 
@@ -671,8 +655,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         protected override void OnDispose()
         {
-            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
-            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
+//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
+//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
             EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
@@ -705,7 +689,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         }
 
         #endregion
+
+        public void Handle(AddServerToDeployMessage message)
+        {
+            AddServer(message.Server, message.IsSource, message.IsDestination);
+        }
     }
 
-
+    
 }

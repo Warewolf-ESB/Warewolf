@@ -806,7 +806,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             switch (resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
-                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(resourceModel));
                     break;
 

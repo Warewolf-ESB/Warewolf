@@ -5,6 +5,7 @@ using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Indentation;
 using System;

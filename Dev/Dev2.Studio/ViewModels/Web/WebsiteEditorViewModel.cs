@@ -551,11 +551,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
             {
-                //Flush the workflow designer so changes are written back into the Resource Model
-                //so that we can save the workflow at its latest state
-                //Mediator.SendMessage(MediatorMessages.SaveResourceModel, _resource);
-                EventAggregator.Publish(new SaveResourceModelMessage(_resource));
-                //Create the necessary folder structure on the web server if it does not already exist.
+                EventAggregator.Publish(new SaveResourceMessage(_resource));
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;
@@ -571,7 +567,6 @@ namespace Dev2.Studio.Core.ViewModels
         public void Close()
         {
             EventAggregator.Publish(new CloseWizardMessage(this));
-            //Mediator.SendMessage(MediatorMessages.CloseWizard, this);
         }
 
         public void Cancel()

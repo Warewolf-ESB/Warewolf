@@ -50,6 +50,12 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="CefSharp, Version=1.25.0.25466, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Wpf, Version=1.25.0.25471, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
@@ -125,8 +131,6 @@
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
-    <Compile Include="AutoMappingInputActionTest.cs" />
-    <Compile Include="AutoMappingOutputActionTest.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />

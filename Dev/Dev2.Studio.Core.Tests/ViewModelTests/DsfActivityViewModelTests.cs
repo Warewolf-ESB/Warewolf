@@ -12,6 +12,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
+using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

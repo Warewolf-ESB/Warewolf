@@ -16,7 +16,7 @@
                      xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
                      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Class="Dev2.Studio.Views.MainView"
                      WindowState="Maximized"
-                     Title="{Binding Title}"
+                     Title="{Binding DisplayName}"
                      Icon="pack://application:,,,/Dev2.Studio;component/Images/Network.png"
                      x:Name="MainViewWindow" Opacity="1">
 	<ribbon:RibbonWindow.Resources>
@@ -685,7 +685,7 @@
 						<igDock:TabGroupPane>
 							<igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
 								IsPinned="False" AllowClose="False">
-								<diagnostics:DebugOutputView DataContext="{Binding DebugOutputViewModel}"/>
+                                <diagnostics:DebugOutputView DataContext="{Binding DebugOutputViewModel}"/>
 							</igDock:ContentPane>
 							<!-- TODO PBI 8291 
                             <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
@@ -756,7 +756,6 @@
 											<Setter Property="AllowDockingTop" Value="False"/>
 											<Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}"/>
 											<Setter Property="SaveInLayout" Value="false"/>
-											<Setter Property="cal:Message.Attach" Value="[Event Closing] = [Action CloseWorkSurfaceContext($dataContext, $eventArgs)]"/>                                             
 										</Style>
 									</igExtensions:ContentPaneFactory.ContainerStyle>
 								</igExtensions:ContentPaneFactory>
