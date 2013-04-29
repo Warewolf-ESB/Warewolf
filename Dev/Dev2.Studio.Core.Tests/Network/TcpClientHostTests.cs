@@ -49,6 +49,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void ConnectAsyncWithValidDnsAddressReturnsTrue()
         {
+
             ConnectAsyncTest("RSAKLFSVRGENDEV", 80, true, NetworkState.Connecting, NetworkState.Online, false);
         }
 
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests.Network
         [Ignore]
         public void ConnectAsyncWithValidIpAddressReturnsTrue()
         {
-            ConnectAsyncTest("127.0.0.1", 80, true, NetworkState.Connecting, NetworkState.Online, false);
+           ConnectAsyncTest("192.168.104.11", 80, true, NetworkState.Connecting, NetworkState.Online, false);
         }
 
         [TestMethod]

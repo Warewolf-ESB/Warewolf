@@ -1047,6 +1047,20 @@ namespace Unlimited.Framework
             return xmlData.ToString();
         }
 
+        public bool IsSuccessResponse()
+        {
+            string result;
+            try
+            {
+                result = GetValue("DataList");
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return result == "Success";
+        }
+
         #endregion
 
         #region Overridden methods from the DynamicObject Class

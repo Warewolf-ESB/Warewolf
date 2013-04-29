@@ -1187,7 +1187,6 @@ namespace Dev2.Studio.ViewModels
             if (exist)
             {
                 EventAggregator.Publish(new SelectItemInDeployMessage(input));
-                //Mediator.SendMessage(MediatorMessages.SelectItemInDeploy, input);
             }
             else
             {
@@ -1228,17 +1227,25 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void DeleteContext(IContextualResourceModel model)
+        public void TryRemoveContext(IContextualResourceModel model)
         {
             WorkSurfaceContextViewModel context = FindWorkSurfaceContextViewModel(model);
-            context.DeleteRequested = true;
-            DeactivateItem(context, true);
+            if (context != null)
+            {
+                context.DeleteRequested = true;
+                DeactivateItem(context, true);
+            }
         }
 
         public static bool QueryDeleteExplorerResource(IContextualResourceModel model, bool hasDependencies,
                                                        out bool openDependencyGraph)
         {
             openDependencyGraph = false;
+
+            if (Application.Current == null)
+            {
+                return true;
+            }
 
             bool shouldRemove = MessageBox.Show
                                     (Application.Current.MainWindow, "Are you sure you wish to delete the \""
@@ -1914,10 +1921,10 @@ namespace Dev2.Studio.ViewModels
 
             if (shouldRemove)
             {
-                UnlimitedObject success = model.Environment.ResourceRepository.DeleteResource(model);
-                if (success != null)
+                UnlimitedObject successObject = model.Environment.ResourceRepository.DeleteResource(model);
+                if (successObject != null && successObject.IsSuccessResponse())
                 {
-                    DeleteContext(model);
+                    TryRemoveContext(model);
                     EventAggregator.Publish(new RemoveNavigationResourceMessage(model));
                 }
             }

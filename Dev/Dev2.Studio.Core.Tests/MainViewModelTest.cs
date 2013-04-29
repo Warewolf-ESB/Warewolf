@@ -2,13 +2,17 @@
 
 using System;
 using System.Collections.Generic;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Framework;
+
 //using System.Windows.Media.Imaging;
 
 namespace Dev2.Core.Tests
@@ -194,10 +198,6 @@ namespace Dev2.Core.Tests
 
         #endregion Additional result attributes
 
-        #region Initialize Tests
-
-
-        #endregion Initialize Test
 
         #region Adding all the different resource types
 
@@ -285,43 +285,6 @@ namespace Dev2.Core.Tests
         #endregion Adding all the different resource types
 
         #region Build Tests
-
-        /// <summary>
-        /// Tests that a service is sucessfully built using the Build Command
-        /// </summary>
-        [TestMethod]
-        public void Build_DeployFalse_Expected_SucessfullyBuiltService()
-        {
-
-        }
-
-        /// <summary>
-        /// Tests that a service is sucessfully built and deployed using the Build Command
-        /// </summary>
-        [TestMethod]
-        public void Build_DeployTrue_Expected_SucessfullyBuiltServiceAndDeployedToServer()
-        {
-
-        }
-
-        /// <summary>
-        /// Tests that an invalid service cannot be built
-        /// </summary>
-        [TestMethod]
-        public void Build_InvalidService_Expected_SucessfullyBuiltServiceAndDeployedToServer()
-        {
-
-        }
-
-        /// <summary>
-        /// Tests that an invalid service cannot be built and deployed
-        /// </summary>
-        [TestMethod]
-        public void Build_InvalidServiceDeployTrue_Expected_SucessfullyBuiltServiceAndDeployedToServer()
-        {
-
-        }
-
         [TestMethod]
         public void CanOnlySaveWithValidResourceModelEnvironmentNotNull()
         {
@@ -355,79 +318,8 @@ namespace Dev2.Core.Tests
 
         #endregion Build Tests
 
-        #region Run Tests
 
-        ///// <summary>
-        ///// Test that the run method functions as expected when passed a valid ResourceModel
-        ///// </summary>
-        //[TestMethod]
-        //public void Run_ValidResourceModel_Expected_NoMediatorMessageSentToInterfaceProvider() {
-        //    IContextualResourceModel resModel = new ResourceModel(_environmentModel.Object);
-        //    Mock<IUserInterfaceLayoutProvider> uILP = SetupUserInterfaceForDebug();
-
-        //    _mainViewModel.UserInterfaceLayoutProvider = uILP.Object;
-        //    Mock<IEnvironmentModel> environmentModel = Dev2MockFactory.SetupEnvironmentModel();
-        //    environmentModel.Setup(c => c.IsConnected).Returns(true);
-        //    _mainViewModel.ActiveEnvironment = environmentModel.Object;
-        //    _mainViewModel.Run(resModel);
-
-        //    uILP.Verify(c => c.StartDebuggingSession(It.IsAny<Framework.Session.DebugTO>(), It.IsAny<IEnvironmentModel>()), Times.Once());
-
-        //}
-
-        /// <summary>
-        /// Test that the run method does nothing when passed a null ResourceModel
-        /// </summary>
-        //5559 Check test
-        //[TestMethod]
-        //public void Run_NullResourceModel_Expected_NoMediatorMessageSentToInterfaceProvider() {
-        //    Mock<IUserInterfaceLayoutProvider> uILP = SetupUserInterfaceForDebug();
-        //    _mainViewModel.ActiveEnvironment = _environmentModel.Object;
-        //    _mainViewModel.Run(null);
-        //    DebugTO tO = new DebugTO();
-        //    uILP.Verify(c => c.GetServiceInputDataFromUser(It.IsAny<IServiceDebugInfoModel>(), out tO), Times.Never());
-        //    uILP.Verify(c => c.StartDebuggingSession(It.IsAny<DebugTO>(), It.IsAny<IEnvironmentModel>()), Times.Never());
-        //}
-
-        #endregion Run Tests
-
-        #region PerformDebug Task
-
-        #endregion PerformDebug Task
-
-        #region ViewInBrowser Tests
-
-        #endregion ViewInBrowser Tests
-
-        #region AddNewResource Tests
-
-
-        #endregion AddNewResource Tests
-
-        #region Edit Tests
-
-
-        #endregion Edit Tests
-
-        #region Debug Tests
-
-
-        #endregion Debug Tests
-
-        #region SetActivePage Tests
-
-
-        #endregion SetActivePage Tests
-
-        #region IsResourceWorkflow Tests
-
-        #endregion IsResourceWorkflow Tests
-
-        #region Deploy Tests
-
-
-        #endregion Deploy Tests
-
+      
         #region Methods used by tests
 
         public IResourceModel CreateResource(ResourceType resourceType)
@@ -442,23 +334,59 @@ namespace Dev2.Core.Tests
 
             return result.Object;
         }
-
-
-
-        //private Mock<IUserInterfaceLayoutProvider> SetupUserInterfaceForDebug() {
-        //    Mock<IUserInterfaceLayoutProvider> uILP = CreateUserInterfaceProvider();
-        //    Framework.Session.DebugTO debugTO = new Framework.Session.DebugTO();
-        //    uILP.Setup(c => c.GetServiceInputDataFromUser(It.IsAny<IServiceDebugInfoModel>(), out debugTO)).Returns(Dev2.Studio.Core.ViewModels.Base.ViewModelDialogResults.Okay);
-        //    uILP.Setup(c => c.StartDebuggingSession(It.IsAny<Framework.Session.DebugTO>(), It.IsAny<IEnvironmentModel>())).Verifiable();
-
-        //    return uILP;
-        //}
-
-        private void RecieveMediatorMessage(object input)
+        
+        public IContextualResourceModel CreateResource(ResourceType resourceType, IEnvironmentModel environment)
         {
-            _count += 1;
+            var result = new Mock<IContextualResourceModel>();
+
+            result.Setup(c => c.ResourceName).Returns(_resourceName);
+            result.Setup(c => c.ResourceType).Returns(resourceType);
+            result.Setup(c => c.DisplayName).Returns(_displayName);
+            result.Setup(c => c.ServiceDefinition).Returns(_serviceDefinition);
+            result.Setup(c => c.Category).Returns("Testing");
+            result.Setup(c => c.Environment).Returns(environment);
+
+            return result.Object;
         }
 
+
         #endregion Methods used by tests
+
+        #region Eventaggregator
+        [TestMethod]
+        public void DeleteResourceMessageExpectRemoveNavigationResourceMessageIfSuccess()
+        {
+            //Setup resources and environment
+            Mock<IEnvironmentModel> environmentModel = Dev2MockFactory.SetupEnvironmentModel();
+            var resource = CreateResource(ResourceType.WorkflowService, environmentModel.Object);
+            List<IResourceModel> list = new List<IResourceModel>() { resource };
+             _resourceRepo.Setup(c => c.All()).Returns(list);
+            _resourceRepo.Setup(r => r.DeleteResource(resource))
+                         .Returns(new UnlimitedObject("<DataList>Success</DataList>"));
+            environmentModel.Setup(c => c.IsConnected).Returns(true);
+            environmentModel.SetupGet(c => c.ResourceRepository).Returns(_resourceRepo.Object);
+
+            //setup event aggregator
+            var mockEvtAggregator =
+                new Mock<IEventAggregator>();
+            mockEvtAggregator.Setup(c => c.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
+                                            .Verifiable();
+            var ctx = CompositionInitializer.InializeWithEventAggregator(mockEvtAggregator.Object);
+            _mainViewModel.EventAggregator = mockEvtAggregator.Object;
+
+            //setup dependency service
+            Mock<IResourceDependencyService> mockdependencies = new Mock<IResourceDependencyService>();
+            mockdependencies.Setup(c => c.GetUniqueDependencies(resource)).Returns(list);
+            _mainViewModel.ResourceDependencyService = mockdependencies.Object;
+
+            //execute
+            _mainViewModel.Handle(new DeleteResourceMessage(resource));
+
+            mockEvtAggregator.Verify(c => c.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
+        }
+
+        #endregion 
+
+
     }
 }

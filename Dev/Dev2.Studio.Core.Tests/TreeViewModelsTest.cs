@@ -442,8 +442,7 @@ namespace Dev2.Core.Tests
             var model = resourceVM.EnvironmentModel;
             var model2 = environmentVM.EnvironmentModel;
             Assert.IsTrue(ReferenceEquals(model, model2));
-        }
-
+        } 
 
         [TestMethod]
         public void ResourceNodeDebugCommand_Expected_MediatorDebugResourceMessage()

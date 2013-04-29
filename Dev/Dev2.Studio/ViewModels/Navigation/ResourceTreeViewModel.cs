@@ -619,7 +619,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             EditCommand.Execute(null);
             EventAggregator.Publish(new DebugResourceMessage(DataContext));
-            //Mediator.SendMessage(MediatorMessages.DebugResource, DataContext);
             RaisePropertyChangedForCommands();
         }
 
@@ -631,7 +630,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Delete()
         {
             if (DataContext == null) return;
-            SendDeleteMessage(DataContext);
+            EventAggregator.Publish(new DeleteResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -710,7 +709,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowProperties()
         {
-            //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, DataContext);
             EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
@@ -794,35 +792,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void SendManualEditMessage(IResourceModel resourceModel)
         {
-//            switch (resourceModel.ResourceType)
-//            {
-//                case ResourceType.WorkflowService:
-//                    //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
-//                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
-//                    break;
-//
-//                case ResourceType.Source:
-//                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
-//                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
-//                    break;
-//                case ResourceType.Service:
-//                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
-//                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
-//                    break;
-//            }
             SendEditMessage(resourceModel);
-        }
-
-        /// <summary>
-        /// Sends the delete message.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        /// <exception cref="System.ArgumentException"></exception>
-        private void SendDeleteMessage(IContextualResourceModel model)
-        {
-            EventAggregator.Publish(new DeleteResourceMessage(model));
         }
 
         /// <summary>
@@ -836,17 +806,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             switch (resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
-                    //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resourceModel);
                     EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
                     EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(resourceModel));
                     break;
 
                 case ResourceType.Source:
-                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
                     EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
                 case ResourceType.Service:
-                    //Mediator.SendMessage(MediatorMessages.ShowEditResourceWizard, resourceModel);
                     EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
             }
