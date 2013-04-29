@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsFalse(eventRaised, "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
         }
 
-        //08.04.2013: Ashley Lewis - Bug 9238
+        //08.04.2013: Ashley Lewis - Bug 6731
         [TestMethod]
         public void UpdateTextboxLayoutWithInvalidTextExpectedHasError()
         {

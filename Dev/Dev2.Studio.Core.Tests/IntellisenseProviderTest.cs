@@ -937,6 +937,78 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(0, getResults.Count);
         }
 
+        //2013.04.16: Ashley Lewis - for Bug 6103
+        [TestMethod]
+        public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithClosingSquareBraceExpectedNoResults()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 13,
+                InputText = "[[City([[sca]).Name]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user started closing a variable region");
+        }
+        [TestMethod]
+        public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithBothClosingSquareBracesExpectedErrorResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 14,
+                InputText = "[[City([[sca]]).Name]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.IsTrue(getResults[0].IsError, "Intellisense did not recognize variable as an error");
+            Assert.AreEqual("Missing Scalar", getResults[0].ToString(), "Intellisense did not throw unrecognized variable error");
+        }
+        [TestMethod]
+        public void GetIntellisenseResultsWithClosingSquareBraceExpectedNoResults()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 9,
+                InputText = "[[scalar]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user closed a variable region");
+        }
+
+        //2013.04.22: Ashley Lewis - for Bug 6103 QA Feedback
+        [TestMethod]
+        public void GetIntellisenseResultsWithOpenRegionAndInRecSetIndexAndWithFieldExpectedAllResults()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 9,
+                InputText = "[[City([[).Name]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(6, getResults.Count);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+
+            foreach (var result in getResults)
+            {
+                Assert.IsFalse(result.IsError, "An error occurent in one of the results");
+            }
+        }
+
         #endregion
 
         #region PerformResultInsertion

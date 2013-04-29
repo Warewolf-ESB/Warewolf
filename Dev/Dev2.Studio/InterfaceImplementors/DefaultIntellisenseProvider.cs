@@ -533,7 +533,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
-            IList<IIntellisenseResult> results;
+            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
             CreateDataList();
 
             IntellisenseFilterOpsTO filterTO = new IntellisenseFilterOpsTO();
@@ -542,7 +542,19 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+            //2013.04.26: Ashley Lewis - Bug 6103 the user just closed the datalist region, leave results clear
+            if(!input.EndsWith("]"))
+            {
+                results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+            }
+            else
+            {
+                if (input.Contains(' ') && input.EndsWith("]]"))
+                {
+                    //06.03.2013: Ashley Lewis - BUG 6731
+                    results.Add(IntellisenseFactory.CreateErrorResult(0, 0, IntellisenseFactory.CreateDataListValidationScalarPart(input), input + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
+                }
+            }
 
             if (results != null)
             {
