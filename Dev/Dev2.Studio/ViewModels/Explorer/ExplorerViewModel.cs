@@ -20,6 +20,8 @@ namespace Dev2.Studio.ViewModels.Explorer
         
         private RelayCommand _connectCommand;
         private RelayCommand _environmentChangedCommand;
+        private enDsfActivityType _activityType;
+        private bool _fromActivityDrop;
 
         #endregion Class Members
 
@@ -38,6 +40,9 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
             EnvironmentRepository = environmentRepository;
             NavigationViewModel = new NavigationViewModel(false, isFromActivityDrop, activityType);
+            _activityType = activityType;
+            _fromActivityDrop = isFromActivityDrop;
+            NavigationViewModel = new NavigationViewModel(false, _fromActivityDrop, _activityType);
             LoadEnvironments();
         }
 

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
+using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics;
 using Infragistics.Windows.DockManager;
@@ -476,6 +477,9 @@ namespace Dev2.Studio.Dock
                 {
                     var vm = ((WorkSurfaceContextViewModel)pane.DataContext);
                     vm.TryClose();
+                    var mainVM = vm.Parent as MainViewModel;
+                    if (mainVM != null && !mainVM.CloseCurrent)
+                        e.Cancel = true;
                 }
             }
         }

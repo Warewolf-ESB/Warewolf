@@ -9,6 +9,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;

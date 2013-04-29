@@ -244,6 +244,7 @@
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="Interfaces\IResourceDependencyService.cs" />
+    <None Include="InterfaceImplementors\EnvironmentConnection.cs" />
     <Compile Include="InterfaceImplementors\MockSecurityProvider.cs" />
     <Compile Include="Factories\WebResourceRepositoryFactory.cs" />
     <Compile Include="InterfaceImplementors\FrameworkSecurityProvider.cs" />
@@ -301,7 +302,6 @@
     <Compile Include="Messages\FindMissingDataListItemsMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
-    <Compile Include="Messages\DebugStatusMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />

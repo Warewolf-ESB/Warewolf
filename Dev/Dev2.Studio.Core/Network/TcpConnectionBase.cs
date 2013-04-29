@@ -9,7 +9,9 @@ using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network.Channels;
 
 namespace Dev2.Studio.Core.Network
@@ -59,6 +61,7 @@ namespace Dev2.Studio.Core.Network
 
         public INetworkMessageBroker MessageBroker { get { return TCPHost == null ? null : TCPHost.MessageBroker; } }
 
+
         #region Implementation of IEnvironmentConnection
 
         public event EventHandler<LoginStateEventArgs> LoginStateChanged;
@@ -93,6 +96,20 @@ namespace Dev2.Studio.Core.Network
         {
             Connect();
             TCPHost.SendNetworkMessage(message);
+        }
+
+        #endregion
+
+        #region Add/RemoveDebugWriter
+
+        public void AddDebugWriter(IDebugWriter writer)
+        {
+            TCPHost.AddDebugWriter(writer);
+        }
+
+        public void RemoveDebugWriter(Guid writerID)
+        {
+            TCPHost.RemoveDebugWriter(writerID);
         }
 
         #endregion
@@ -142,20 +159,6 @@ namespace Dev2.Studio.Core.Network
                 }
             }
             return payload;
-        }
-
-        #endregion
-
-        #region Add/RemoveDebugWriter
-
-        public void AddDebugWriter(IDebugWriter writer)
-        {
-            TCPHost.AddDebugWriter(writer);
-        }
-
-        public void RemoveDebugWriter(Guid writerID)
-        {
-            TCPHost.RemoveDebugWriter(writerID);
         }
 
         #endregion
@@ -229,13 +232,14 @@ namespace Dev2.Studio.Core.Network
                 DataListChannel = new DataListClientChannel(this);
                 ExecutionChannel = new ExecutionClientChannel(this);
                 TCPHost.LoginStateChanged += OnClientHostLoginStateChanged;
-                TCPHost.NetworkStateChanged += OnClientHostNetworkStateChanged;
+                TCPHost.NetworkStateChanged += OnClientHostOnNetworkStateChanged;
                 TCPHost.ServerStateChanged += OnClientHostServerStateChanged;
-                _networkContextDetachedSubscription = TCPHost.MessageAggregator.Subscribe(new Action<NetworkContextDetachedMessage, IStudioNetworkChannelContext>(OnNetworkContextDetachedMessageReceived));
+                _networkContextDetachedSubscription = TCPHost.MessageAggregator
+                    .Subscribe(new Action<NetworkContextDetachedMessage, IStudioNetworkChannelContext>(OnNetworkContextDetachedMessageReceived));
             }
         }
 
-        protected void FinalizeHost()
+        void FinalizeHost()
         {
             if(TCPHost != null)
             {
@@ -250,7 +254,7 @@ namespace Dev2.Studio.Core.Network
 
                 TCPHost.Disconnect();
                 TCPHost.LoginStateChanged -= OnClientHostLoginStateChanged;
-                TCPHost.NetworkStateChanged -= OnClientHostNetworkStateChanged;
+                TCPHost.NetworkStateChanged -= OnClientHostOnNetworkStateChanged;
                 TCPHost.ServerStateChanged -= OnClientHostServerStateChanged;
                 TCPHost.Dispose();
                 TCPHost = null;
@@ -259,11 +263,11 @@ namespace Dev2.Studio.Core.Network
 
         #endregion
 
-        #region StateChanged Event Handlers
+        #region OnClientHostLogin/NetworkStateChanged
 
         void OnClientHostServerStateChanged(object sender, ServerStateEventArgs args)
         {
-            if(ServerStateChanged != null)
+            if (ServerStateChanged != null)
             {
                 ServerStateChanged(this, args);
             }
@@ -277,7 +281,7 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        void OnClientHostNetworkStateChanged(object sender, NetworkStateEventArgs args)
+        void OnClientHostOnNetworkStateChanged(object sender, NetworkStateEventArgs args)
         {
             if(NetworkStateChanged != null)
             {

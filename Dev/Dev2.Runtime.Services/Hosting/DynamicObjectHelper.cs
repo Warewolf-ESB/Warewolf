@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Xml.Linq;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using System;
 using System.Collections.Generic;
@@ -737,39 +738,33 @@ namespace Dev2.Runtime.Hosting
 
         static void SetID(IDynamicServiceObject dso, dynamic resource)
         {
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            //
-            // Don't need to do this as catalog auto-upgrades items on load
-            //
+            Guid id;
+            if (resource.ID is string && !string.IsNullOrEmpty(resource.ID))
+            {
+                id = Guid.Parse(resource.ID);
+            }
+            else
+            {
+                id = Guid.NewGuid();
+                var xml = XElement.Parse(dso.ResourceDefinition);
+                xml.Add(new XAttribute("ID", id.ToString()));
+                dso.ResourceDefinition = xml.ToString(SaveOptions.DisableFormatting);
+            }
 
-
-            //Guid id;
-            //if (resource.ID is string && !string.IsNullOrEmpty(resource.ID))
-            //{
-            //    id = Guid.Parse(resource.ID);
-            //}
-            //else
-            //{
-            //    id = Guid.NewGuid();
-            //    var xml = XElement.Parse(dso.ResourceDefinition);
-            //    xml.Add(new XAttribute("ID", id.ToString()));
-            //    dso.ResourceDefinition = xml.ToString(SaveOptions.DisableFormatting);
-            //}
-
-            ////// TODO: Add ID property to IDynamicServiceObject
-            //var source = dso as Source;
-            //if (source != null)
-            //{
-            //    source.ID = id;
-            //}
-            //else
-            //{
-            //    var ds = dso as DynamicService;
-            //    if (ds != null)
-            //    {
-            //        ds.ID = id;
-            //    }
-            //}
+            //// TODO: Add ID property to IDynamicServiceObject
+            var source = dso as Source;
+            if (source != null)
+            {
+                source.ID = id;
+            }
+            else
+            {
+                var ds = dso as DynamicService;
+                if (ds != null)
+                {
+                    ds.ID = id;
+                }
+            }
         }
 
         #endregion

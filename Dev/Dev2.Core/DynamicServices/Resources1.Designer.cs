@@ -286,6 +286,15 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message: Termination of workflow failed.
+        /// </summary>
+        public static string CompilerError_TerminationFailed {
+            get {
+                return ResourceManager.GetString("CompilerError_TerminationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Message: Build Failed.
         /// </summary>
         public static string CompilerMessage_BuildFailed {
@@ -300,6 +309,15 @@ namespace Dev2.DynamicServices {
         public static string CompilerMessage_BuildSucceeded {
             get {
                 return ResourceManager.GetString("CompilerMessage_BuildSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message: Workflow succesfully terminated.
+        /// </summary>
+        public static string CompilerMessage_TerminationSuccess {
+            get {
+                return ResourceManager.GetString("CompilerMessage_TerminationSuccess", resourceCulture);
             }
         }
         

@@ -14,6 +14,9 @@ using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.DataList.Contract.Network;
+using Dev2.Diagnostics;
+using Dev2.Enums;
+using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -99,11 +102,11 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                var actual = _mainViewModel.IsActiveEnvironmentConnected();
-                Assert.IsTrue(actual);
-            }
+            CreateFullExportsAndVm();
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+            var actual = _mainViewModel.IsActiveEnvironmentConnected();
+            Assert.IsTrue(actual);
+        }
         }
 
         [TestMethod]
@@ -111,10 +114,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var actual = _mainViewModel.IsActiveEnvironmentConnected();
-                Assert.IsTrue(actual == false);
-            }
+            CreateFullExportsAndVm();
+            var actual = _mainViewModel.IsActiveEnvironmentConnected();
+            Assert.IsTrue(actual == false);
+        }
         }
 
         [TestMethod]
@@ -122,13 +125,13 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var msg = new ShowDependenciesMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                var ctx = _mainViewModel.ActiveItem;
-                var vm = ctx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
-                Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
-            }
+            CreateFullExportsAndVm();
+            var msg = new ShowDependenciesMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            var ctx = _mainViewModel.ActiveItem;
+            var vm = ctx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
+            Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
+        }
         }
 
         [TestMethod]
@@ -136,13 +139,13 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var msg = new ShowDependenciesMessage(null);
-                _mainViewModel.Handle(msg);
+            CreateFullExportsAndVm();
+            var msg = new ShowDependenciesMessage(null);
+            _mainViewModel.Handle(msg);
                 Assert.IsTrue(
                     _mainViewModel.Items.All(
                         i => i.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.DependencyVisualiser));
-            }
+        }
         }
 
         [TestMethod]
@@ -150,40 +153,40 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var msg = new ShowHelpTabMessage("testuri");
-                _mainViewModel.Handle(msg);
-                var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-                Assert.IsTrue(helpctx.Uri == "testuri");
-            }
+            CreateFullExportsAndVm();
+            var msg = new ShowHelpTabMessage("testuri");
+            _mainViewModel.Handle(msg);
+            var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
+            Assert.IsTrue(helpctx.Uri == "testuri");
+        }
         }
 
         [TestMethod]
         public void DeactivateWithCloseExpectBuildWithEmptyDebugWriterWriteMessage()
         {
             lock (syncroot)
-            {
-                CreateFullExportsAndVm();
+                            {
+            CreateFullExportsAndVm();
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
                                .Verifiable();
 
-                _mainViewModel.Dispose();
+            _mainViewModel.Dispose();
 
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(1));
-            }
+        }
         }
 
         [TestMethod]
         public void DeactivateWithCloseAndTwoTabsExpectBuildTwiceWithEmptyDebugWriterWriteMessage()
         {
             lock (syncroot)
-            {
-                CreateFullExportsAndVm();
+                            {
+            CreateFullExportsAndVm();
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
                                .Verifiable();
-                AddAdditionalContext();
+            AddAdditionalContext();
 
-                _mainViewModel.Dispose();
+            _mainViewModel.Dispose();
 
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(2));
             }
@@ -195,11 +198,11 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
                 _windowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
-                _mainViewModel.DisplayAboutDialogueCommand.Execute(null);
-                _windowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
-            }
+            _mainViewModel.DisplayAboutDialogueCommand.Execute(null);
+            _windowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -207,12 +210,12 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                _mainViewModel.AddStudioShortcutsPageCommand.Execute(null);
-                var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
-                var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-                Assert.IsTrue(helpctx.Uri == shortkeyUri);
-            }
+            CreateFullExportsAndVm();
+            _mainViewModel.AddStudioShortcutsPageCommand.Execute(null);
+            var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
+            var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
+            Assert.IsTrue(helpctx.Uri == shortkeyUri);
+        }
         }
 
         [TestMethod]
@@ -220,22 +223,22 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var datalistchannelmock = new Mock<INetworkDataListChannel>();
-                datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-                _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                _mainViewModel.SettingsCommand.Execute(null);
+            CreateFullExportsAndVm();
+            var datalistchannelmock = new Mock<INetworkDataListChannel>();
+            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
+            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+            _mainViewModel.SettingsCommand.Execute(null);
 
-                var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-                _mainViewModel.ActivateItem(notActiveCtx);
+            var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            _mainViewModel.ActivateItem(notActiveCtx);
 
-                var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
-                _mainViewModel.Handle(msg);
+            var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
+            _mainViewModel.Handle(msg);
 
-                var activeCtx = _mainViewModel.ActiveItem;
-                Assert.IsTrue(activeCtx.Equals(notActiveCtx));
-            }
+            var activeCtx = _mainViewModel.ActiveItem;
+            Assert.IsTrue(activeCtx.Equals(notActiveCtx));
+        }
         }
 
         [TestMethod]
@@ -243,16 +246,16 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var datalistchannelmock = new Mock<INetworkDataListChannel>();
-                datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-                _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                _mainViewModel.SettingsCommand.Execute(null);
-                var ctx = _mainViewModel.ActiveItem;
-                var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, _serverID);
-                Assert.IsTrue(ctx.WorkSurfaceKey.Equals(key));
-            }
+            CreateFullExportsAndVm();
+            var datalistchannelmock = new Mock<INetworkDataListChannel>();
+            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
+            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+            _mainViewModel.SettingsCommand.Execute(null);
+            var ctx = _mainViewModel.ActiveItem;
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, _serverID);
+            Assert.IsTrue(ctx.WorkSurfaceKey.Equals(key));
+        }
         }
 
         [TestMethod]
@@ -260,49 +263,21 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var datalistchannelmock = new Mock<INetworkDataListChannel>();
-                datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-                _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                _mainViewModel.SettingsCommand.Execute(null);
+            CreateFullExportsAndVm();
+            var datalistchannelmock = new Mock<INetworkDataListChannel>();
+            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
+            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+            _mainViewModel.SettingsCommand.Execute(null);
 
-                var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-                _mainViewModel.ActivateItem(notActiveCtx);
+            var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            _mainViewModel.ActivateItem(notActiveCtx);
 
-                _mainViewModel.SettingsCommand.Execute(null);
-                var ctx = _mainViewModel.ActiveItem;
-                var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, _serverID);
-                Assert.IsTrue(ctx.WorkSurfaceKey.Equals(key));
-            }
+            _mainViewModel.SettingsCommand.Execute(null);
+            var ctx = _mainViewModel.ActiveItem;
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, _serverID);
+            Assert.IsTrue(ctx.WorkSurfaceKey.Equals(key));
         }
-
-        [TestMethod]
-        public void EditResourceCommandWithNoActiveResourceExpectsWebControllerDisplayDialogueNotCalled()
-        {
-            lock (syncroot)
-            {
-                CreateFullExportsAndVm();
-                _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), true)).Verifiable();
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                _mainViewModel.EditCommand.Execute(null);
-                _webController.Verify(w => w.DisplayDialogue(_firstResource.Object, true), Times.Never());
-            }
-        }
-
-        [TestMethod]
-        public void EditResourceCommandExpectsWebControllerDisplayDialogue()
-        {
-            lock (syncroot)
-            {
-                CreateFullExportsAndVm();
-                _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), true)).Verifiable();
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                var ctx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-                _mainViewModel.ActivateItem(ctx);
-                _mainViewModel.EditCommand.Execute(null);
-                _webController.Verify(w => w.DisplayDialogue(_firstResource.Object, true), Times.Once());
-            }
         }
 
         [TestMethod]
@@ -310,24 +285,24 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                _mainViewModel.NewResourceCommand.Execute("Service");
-                _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());
-            }
+            CreateFullExportsAndVm();
+            _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+            _mainViewModel.NewResourceCommand.Execute("Service");
+            _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());          
         }
-
+        }
+        
         [TestMethod]
         public void StartFeedbackCommandCommandExpectsFeedbackInvoked()
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
                 _feedbackInvoker.Setup(
                     i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()))
                                 .Verifiable();
-                _mainViewModel.StartFeedbackCommand.Execute(null);
+            _mainViewModel.StartFeedbackCommand.Execute(null);
                 _feedbackInvoker.Verify(
                     i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()),
                     Times.Once());
@@ -339,11 +314,11 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                _feedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
-                _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-                _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Once());
-            }
+            CreateFullExportsAndVm();
+            _feedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
+            _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
+            _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -351,14 +326,14 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var mockAction = new Mock<IAsyncFeedbackAction>();
-                mockAction.Setup(a => a.StartFeedback()).Verifiable();
-                _feedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
-                _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-                _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
-                mockAction.Verify(a => a.FinishFeedBack(), Times.Once());
-            }
+            CreateFullExportsAndVm();
+            var mockAction = new Mock<IAsyncFeedbackAction>();
+            mockAction.Setup(a => a.StartFeedback()).Verifiable();
+            _feedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
+            _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
+            _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
+            mockAction.Verify(a => a.FinishFeedBack(), Times.Once());
+        }
         }
 
 
@@ -367,27 +342,27 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo();
 
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
-                                .Callback<object>((o =>
-                                    {
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
+                            .Callback<object>((o =>
+                            {
                                         var m = (SelectItemInDeployMessage) o;
-                                        var r = (IEnvironmentModel) m.Value;
-                                        Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
-                                    })).Verifiable();
+                                var r = (IEnvironmentModel) m.Value;
+                                Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
+                            })).Verifiable();
 
-                _mainViewModel.DeployAllCommand.Execute(null);
-                AddAdditionalContext();
-                var ctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-                _mainViewModel.ActivateItem(ctx);
-                _mainViewModel.DeployAllCommand.Execute(null);
-                var activectx = _mainViewModel.ActiveItem;
-                Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
-                    WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
+            _mainViewModel.DeployAllCommand.Execute(null);
+            AddAdditionalContext();
+            var ctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+            _mainViewModel.ActivateItem(ctx);
+            _mainViewModel.DeployAllCommand.Execute(null);
+            var activectx = _mainViewModel.ActiveItem;
+            Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
+                WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
 
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()), Times.Once());
-            }
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -395,50 +370,48 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVmWithEmptyRepo();
-                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-                _mainViewModel.DeployAllCommand.Execute(null);
-                var activectx = _mainViewModel.ActiveItem;
-                Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
-                    WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
-            }
+            CreateFullExportsAndVmWithEmptyRepo();
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+            _mainViewModel.DeployAllCommand.Execute(null);
+            var activectx = _mainViewModel.ActiveItem;
+            Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
+                WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
+        }
         }
 
-
         #endregion
-
-
+        
         [TestMethod]
         public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
-                _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => null);
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => null);
 
-                var msg = new DeleteResourceMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-            }
+            var msg = new DeleteResourceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
         }
-
+        }
+          
         [TestMethod]
         public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
-                var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
-                _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
+            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
 
 
-                var msg = new DeleteResourceMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+            var msg = new DeleteResourceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
             }
-
+     
         }
 
         [TestMethod]
@@ -446,20 +419,20 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
+            CreateFullExportsAndVm();
+            SetupForDelete();
 
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
-                                .Callback<object>((o =>
-                                    {
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
+                            .Callback<object>((o =>
+                            {
                                         var m = (RemoveNavigationResourceMessage) o;
-                                        Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
-                                    }));
+                                Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
+                            }));
 
-                var msg = new DeleteResourceMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
-            }
+            var msg = new DeleteResourceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -467,12 +440,12 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
-                var msg = new DeleteResourceMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
-            }
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var msg = new DeleteResourceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -480,13 +453,13 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
-                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-                var msg = new DeleteResourceMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
-            }
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+            var msg = new DeleteResourceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -494,13 +467,13 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
-                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
-                var msg = new DeleteResourceMessage(_firstResource.Object);
-                _mainViewModel.Handle(msg);
-                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
-            }
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+            var msg = new DeleteResourceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
+        }
         }
 
         [TestMethod]
@@ -508,12 +481,12 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                SetupForDelete();
-                var msg = new DeleteResourceMessage(null);
-                _mainViewModel.Handle(msg);
-                _popupController.Verify(s => s.Show(), Times.Never());
-            }
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var msg = new DeleteResourceMessage(null);
+            _mainViewModel.Handle(msg);
+            _popupController.Verify(s => s.Show(), Times.Never());
+        }
         }
 
 
@@ -522,26 +495,26 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                Assert.IsTrue(_mainViewModel.Items.Count == 2);
+            CreateFullExportsAndVm();
+            Assert.IsTrue(_mainViewModel.Items.Count == 2);
 
-                _firstResource.Setup(r => r.IsWorkflowSaved(It.IsAny<string>())).Returns(true);
+            _firstResource.Setup(r => r.IsWorkflowSaved(It.IsAny<string>())).Returns(true);
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
-                                .Callback<object>((o =>
-                                    {
-                                        var msg = (TabClosedMessage) o;
-                                        Assert.IsTrue(msg.Context.Equals(activetx));
-                                    }));
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
+                            .Callback<object>((o =>
+                                {
+                                    var msg = (TabClosedMessage) o;
+                                    Assert.IsTrue(msg.Context.Equals(activetx));
+                                }));
 
-                _mainViewModel.DeactivateItem(activetx, true);
-                _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
-                Assert.IsTrue(_mainViewModel.Items.Count == 1);
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
-            }
+            _mainViewModel.DeactivateItem(activetx, true);
+            _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
+            Assert.IsTrue(_mainViewModel.Items.Count == 1);
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
+        }
         }
 
         [TestMethod]
@@ -549,36 +522,36 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                Assert.IsTrue(_mainViewModel.Items.Count == 2);
-                _firstResource.Setup(r => r.IsWorkflowSaved(It.IsAny<string>())).Returns(false);
-                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+            CreateFullExportsAndVm();
+            Assert.IsTrue(_mainViewModel.Items.Count == 2);
+            _firstResource.Setup(r => r.IsWorkflowSaved(string.Empty)).Returns(false);
+            _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
 
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
-                                .Callback<object>((o =>
-                                    {
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
+                            .Callback<object>((o =>
+                            {
                                         var msg = (TabClosedMessage) o;
-                                        Assert.IsTrue(msg.Context.Equals(activetx));
-                                    }));
+                                Assert.IsTrue(msg.Context.Equals(activetx));
+                            }));
 
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>()))
-                                .Callback<object>((o =>
-                                    {
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>()))
+                            .Callback<object>((o =>
+                            {
                                         var msg = (SaveResourceMessage) o;
-                                        Assert.IsTrue(msg.Resource.Equals(_firstResource.Object));
-                                    }));
+                                Assert.IsTrue(msg.Resource.Equals(_firstResource.Object));
+                            }));
 
-                _mainViewModel.DeactivateItem(activetx, true);
-                _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
-                Assert.IsTrue(_mainViewModel.Items.Count == 1);
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
+            _mainViewModel.DeactivateItem(activetx, true);
+            _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
+            Assert.IsTrue(_mainViewModel.Items.Count == 1);
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
             }
-
+           
         }
 
         [TestMethod]
@@ -586,16 +559,16 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                Assert.IsTrue(_mainViewModel.Items.Count == 2);
-                _firstResource.Setup(r => r.IsWorkflowSaved(It.IsAny<string>())).Returns(false);
-                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+            CreateFullExportsAndVm();
+            Assert.IsTrue(_mainViewModel.Items.Count == 2);
+            _firstResource.Setup(r => r.IsWorkflowSaved(string.Empty)).Returns(false);
+            _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
-                _mainViewModel.DeactivateItem(activetx, false);
-                _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
-            }
+            _mainViewModel.DeactivateItem(activetx, false);
+            _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
+        }
         }
         
         [TestMethod]
@@ -603,14 +576,14 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                AddAdditionalContext();
-                Assert.IsTrue(_mainViewModel.Items.Count == 3);
-                var activeItem = _mainViewModel.ActiveItem;
-                var secondKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _secondResource.Object.ID,
-                                                                _secondResource.Object.ServerID);
-                Assert.IsTrue(activeItem.WorkSurfaceKey.Equals(secondKey));
-            }
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            Assert.IsTrue(_mainViewModel.Items.Count == 3);
+            var activeItem = _mainViewModel.ActiveItem;
+            var secondKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _secondResource.Object.ID,
+                                                      _secondResource.Object.ServerID);
+            Assert.IsTrue(activeItem.WorkSurfaceKey.Equals(secondKey));
+        }
         }
 
 
@@ -619,19 +592,19 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                AddAdditionalContext();
-                Assert.IsTrue(_mainViewModel.Items.Count == 3);
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            Assert.IsTrue(_mainViewModel.Items.Count == 3);
 
-                var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-                var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
 
-                _mainViewModel.ActivateItem(firstCtx);
-                _mainViewModel.DeactivateItem(secondCtx, false);
+            _mainViewModel.ActivateItem(firstCtx);
+            _mainViewModel.DeactivateItem(secondCtx, false);
 
-                Assert.IsTrue(_mainViewModel.Items.Count == 3);
-                Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
-            }
+            Assert.IsTrue(_mainViewModel.Items.Count == 3);
+            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
+        }
         }
 
         [TestMethod]
@@ -639,19 +612,19 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                AddAdditionalContext();
-                Assert.IsTrue(_mainViewModel.Items.Count == 3);
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            Assert.IsTrue(_mainViewModel.Items.Count == 3);
 
-                var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-                var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
 
-                _mainViewModel.ActivateItem(firstCtx);
-                _mainViewModel.DeactivateItem(firstCtx, true);
+            _mainViewModel.ActivateItem(firstCtx);
+            _mainViewModel.DeactivateItem(firstCtx, true);
 
-                Assert.IsTrue(_mainViewModel.Items.Count == 2);
-                Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
-            }
+            Assert.IsTrue(_mainViewModel.Items.Count == 2);
+            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
+        }
         }
 
         [TestMethod]
@@ -659,13 +632,13 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
-                _mainViewModel.DeactivateItem(activetx, false);
-                _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
-            }
+            _mainViewModel.DeactivateItem(activetx, false);
+            _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
+        }
         }
 
         #region Workspaces and init
@@ -675,12 +648,12 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                _environmentModel.SetupGet(m => m.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
-                _mainViewModel = new MainViewModel();
+            CreateFullExportsAndVm();
+            _environmentModel.SetupGet(m => m.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
+            _mainViewModel = new MainViewModel();
 
-                Assert.IsTrue(_mainViewModel.Items.Count == 1);
-            }
+            Assert.IsTrue(_mainViewModel.Items.Count == 1);
+        }
         }
 
         [TestMethod]
@@ -688,10 +661,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                //One saved workspaceitem, one startpage
-                Assert.IsTrue(_mainViewModel.Items.Count == 2);
-            }
+            CreateFullExportsAndVm();
+            //One saved workspaceitem, one startpage
+            Assert.IsTrue(_mainViewModel.Items.Count == 2);
+        }
         }
 
         [TestMethod]
@@ -699,14 +672,14 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
                 var expectedKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _firstResourceID,
                                                                   _serverID);
-                Assert.IsTrue(expectedKey.Equals(activetx.WorkSurfaceKey));
-            }
+            Assert.IsTrue(expectedKey.Equals(activetx.WorkSurfaceKey));     
+        }
         }
 
         [TestMethod]
@@ -714,12 +687,12 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var activetx = _mainViewModel.ActiveItem;
-                Assert.IsTrue(activetx.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Help);
-                var helpvm = activetx.WorkSurfaceViewModel as HelpViewModel;
-                Assert.IsTrue(helpvm.Uri == FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage));
-            }
+            CreateFullExportsAndVm();
+            var activetx = _mainViewModel.ActiveItem;
+            Assert.IsTrue(activetx.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Help);
+            var helpvm = activetx.WorkSurfaceViewModel as HelpViewModel;
+            Assert.IsTrue(helpvm.Uri == FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage));
+        }
         }
 
         [TestMethod]
@@ -727,10 +700,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                const string expected = "Business Design Studio (Test User)";
-                Assert.AreEqual(expected, _mainViewModel.DisplayName);
-            }
+            CreateFullExportsAndVm();
+            const string expected = "Business Design Studio (Test User)";
+            Assert.AreEqual(expected, _mainViewModel.DisplayName);
+        }
         }
 
         #endregion workspaces
@@ -793,7 +766,7 @@ namespace Dev2.Core.Tests
             var result = new Mock<IContextualResourceModel>();
 
             result.Setup(c => c.ResourceName).Returns(_resourceName);
-            result.Setup(c => c.ResourceType).Returns(resourceType);
+            result.Setup(c => c.ResourceType).Returns(resourceType); 
             result.Setup(c => c.DisplayName).Returns(_displayName);
             result.Setup(c => c.ServiceDefinition).Returns(_serviceDefinition);
             result.Setup(c => c.Category).Returns("Testing");

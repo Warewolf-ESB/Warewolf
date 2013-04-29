@@ -2,7 +2,6 @@
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
-                     xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
                      xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
                      xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
                      xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
@@ -42,11 +41,11 @@
 	</ribbon:RibbonWindow.Triggers>                   
     <ribbon:RibbonWindow.InputBindings>
         <!--<KeyBinding Command="{Binding Path=NewResourceCommand}" Key="N" Modifiers="Control" />
-        
+        <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=SaveCommand}" Key="F6" />        
         <KeyBinding Command="{Binding Path=EditCommand}" Key="E" Modifiers="Control" />-->
-        <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
-        <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
+        <KeyBinding Command="{Binding ActiveItem.DebugCommand}" Key="F5" />
+        
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
         <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Alt" />
@@ -62,12 +61,12 @@
         <KeyBinding Command="{Binding StartFeedbackCommand}" Key="F" Modifiers="Alt" />
         <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
-        <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.SaveCommand}" Key="S" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding RunCommand}" Key="R" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding EditCommand}" Key="I" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.DebugCommand}" Key="T" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.EditCommand}" Key="I" Modifiers="Ctrl" />
         <!--<KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="X" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="C" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="V" Modifiers="Ctrl" />
@@ -98,78 +97,78 @@
 			<ItemsControl x:Name="WorkflowActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" ToolTip="CRTL + S"/>
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
-				<ribbon:RibbonButton Label="Debug"
-					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png"
-					Command="{Binding DebugCommand}" ToolTip="F5"/>
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
+                <ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
+                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
+					                 Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="ServiceActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" ToolTip="CRTL + S"/>
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Debug"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png"
-					Command="{Binding DebugCommand}" ToolTip="F5"/>
+					Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebpageActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebsiteActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WorkpartActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" ToolTip="CRTL + S"/>
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}"
+					Command="{Binding ActiveItem.ViewInBrowserCommand}"
 					AutomationProperties.AutomationId="BrowserCommand" />
 				<ribbon:RibbonButton Label="Debug"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png"
-					Command="{Binding DebugCommand}" ToolTip="F5"/>
+					Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WizardActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" />
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" />
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="SourceManagerActions" Visibility="Collapsed">
@@ -286,17 +285,12 @@
 					</Style>
 					<Style TargetType="{x:Type ribbon:RibbonGroup}">
 						<Setter Property="ContextMenu" Value="{x:Null}"/>
-						<!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"></Setter> -->
 					</Style>
 					<Style TargetType="{x:Type ribbon:RibbonTab}">
 						<Setter Property="ContextMenu" Value="{x:Null}"/>
-
-						<!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"> -->
 					</Style>
-
 					<Style TargetType="{x:Type ribbon:Ribbon}">
 						<Setter Property="ContextMenu" Value="{x:Null}"/>
-						<!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"></Setter> -->
 					</Style>
 					<Style x:Key="RibbonGroupActions">
 						<Style.Triggers>
@@ -462,45 +456,29 @@
 				</ribbon:Ribbon.Resources>
 
 				<ribbon:Ribbon.ApplicationMenu>
-                    <dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu ShowAuxilaryPanel="False">                        
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Workflow" ToolTip="(Ctrl+W)" 
-                                                          Command="{Binding NewResourceCommand}" 
-                                                          CommandParameter="Workflow" 
-                                                          ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workflowservice2.png"
-                                                          AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />                        
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Database Procedure Service" ToolTip="(Ctrl+Shift+D)" x:Name="NewDatabaseProcedure"  
-                                                              Command="{Binding NewResourceCommand}" 
-                                                              CommandParameter="DatabaseService" 
-                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"
-                                                              x:FieldModifier="public"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Service" ToolTip="(Ctrl+Shift+P)"  
-                                                              Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"
+					<ribbon:RibbonApplicationMenu AutomationProperties.AutomationId="UI_RibbonApplicationMenu" IsMainMenu="True" HorizontalAlignment="Left">
+						<ribbon:RibbonApplicationMenuItem Header="File" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_File" >
+							<ribbon:RibbonApplicationMenuItem Header="New Workflow" Command="{Binding NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
+							<ribbon:RibbonApplicationMenuItem Header="New Service" >
+								<!--                                <ribbon:RibbonApplicationMenuItem Header="Remote Workflow" />-->
+								<ribbon:RibbonApplicationMenuItem Header="Database Procedure" x:Name="NewDatabaseProcedure"  Command="{Binding NewResourceCommand}"
+									CommandParameter="DatabaseService" x:FieldModifier="public" />
+								<ribbon:RibbonApplicationMenuItem Header="Plugin"  Command="{Binding NewResourceCommand}"
 									CommandParameter="ResourceService"/>
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Remote Warewolf Source" 
-                                Command="{Binding NewResourceCommand}" 
-                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
+							</ribbon:RibbonApplicationMenuItem>
+							<ribbon:RibbonApplicationMenuItem Header="Add Source"  Command="{Binding NewResourceCommand}"
+								CommandParameter="Source">
+								<ribbon:RibbonApplicationMenuItem Header="Remote Warewolf" Command="{Binding NewResourceCommand}"
 									CommandParameter="Server"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Database Source" 
-                                                              Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
+								<ribbon:RibbonApplicationMenuItem Header="Database" Command="{Binding NewResourceCommand}"
 									CommandParameter="DbSource"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Source" 
-                                                              Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
+								<ribbon:RibbonApplicationMenuItem Header="Plugin" Command="{Binding NewResourceCommand}"
 									CommandParameter="ResourceSource"/>
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>                       
-                        <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
-                                                          Command="{Binding ResetLayoutCommand}" 
-                                                          CommandParameter="{Binding ElementName=dockManager}"/>
-                        <ribbon:RibbonApplicationMenuItem Header="Exit" ToolTip="(Alt+F4)" 
-                                                          Command="{Binding ExitCommand}" 
-                                                          ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png"/>
-                        
-                    </dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu>
+							</ribbon:RibbonApplicationMenuItem>
+						</ribbon:RibbonApplicationMenuItem>
+						<ribbon:RibbonApplicationMenuItem Header="Reset Layout" Command="{Binding ResetLayoutCommand}" CommandParameter="{Binding ElementName=dockManager}"/>
+						<ribbon:RibbonApplicationMenuItem Header="Exit" Command="{Binding ExitCommand}" ImageSource="pack://application:,,,/Dev2.Studio;component/Images/Close_Box_Red.png" />
+					</ribbon:RibbonApplicationMenu>
 				</ribbon:Ribbon.ApplicationMenu>
 
 				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">
@@ -514,53 +492,19 @@
 						</ribbon:RibbonGroup.ItemTemplate>
 					</ribbon:RibbonGroup>
 
-                    <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="Create New Workflow Service">
+					<ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="Create New Resource">
 						<ribbon:RibbonButton Label="Workflow"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_NewEntityModelService.png"
 							Command="{Binding NewResourceCommand}" CommandParameter="Workflow"
-							AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID" ToolTip="CRTL + W" />
-                        <ribbon:RibbonButton Label="Remote Workflow"
-							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-							ToolTip="CRTL + SHIFT + R" />
+							AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID" />
 						<ribbon:RibbonButton Label="Database Service"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_OtherModelService.png"
 							Command="{Binding NewResourceCommand}"
-							CommandParameter="DatabaseService" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID" ToolTip="CRTL + SHIFT + D" />
+							CommandParameter="DatabaseService" />
 						<ribbon:RibbonButton Label="Plugin Service"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_OtherModelService.png"
 							Command="{Binding NewResourceCommand}"
-							CommandParameter="ResourceService" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID" ToolTip="CRTL + SHIFT + P" />
-                        
-						<!--
-                        TODO PBI 8291
-                        <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
-                        <ribbon:RibbonButton Label="Website" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/webpagebuilder.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Website" />-->
-						<!--
-                        TODO PBI 8142
-                        <ribbon:RibbonButton Label="?Webpart?" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-						<!--
-                        TODO PBI 8142
-                        <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-					</ribbon:RibbonGroup>
-                    
-                    <ribbon:RibbonGroup x:Name="HomeCreateNewSource" Header="Add Source">
-                        <ribbon:RibbonButton Label="Remote Warewolf"
-							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-							Command="{Binding NewResourceCommand}" CommandParameter="Server"
-							AutomationProperties.AutomationId="UI_RibbonHomeTabRemoteWorkflowBtn_AutoID" />
-                        <ribbon:RibbonButton Label="Database"
-							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="DbSource" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBSourceBtn_AutoID" />
-                        <ribbon:RibbonButton Label="Plugin"
-							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="ResourceSource" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
-
+							CommandParameter="ResourceService" />
 						<!--
                         TODO PBI 8291
                         <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
@@ -685,7 +629,7 @@
 						<igDock:TabGroupPane>
 							<igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
 								IsPinned="False" AllowClose="False">
-                                <diagnostics:DebugOutputView DataContext="{Binding DebugOutputViewModel}"/>
+                                <diagnostics:DebugOutputView DataContext="{Binding ActiveItem.DebugOutputViewModel}"/>
 							</igDock:ContentPane>
 							<!-- TODO PBI 8291 
                             <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
@@ -707,9 +651,8 @@
 								<bdsviews:ToolboxUserControl/>
 							</igDock:ContentPane>
 							<igDock:ContentPane x:Name="Variables" 
-                                                LostKeyboardFocus="Variables_OnKeyboardLostFocus"
 								Header="Variables" AllowClose="False"
-								AllowInDocumentHost="False" IsPinned="False" x:FieldModifier="public">
+								AllowInDocumentHost="False" IsPinned="False" >
 								<dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
 							</igDock:ContentPane>
 						</igDock:TabGroupPane>

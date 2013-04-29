@@ -631,6 +631,42 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png.
+        /// </summary>
+        public static string Pack_Uri_Debug_Image {
+            get {
+                return ResourceManager.GetString("Pack_Uri_Debug_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/Images/Stop.png.
+        /// </summary>
+        public static string Pack_Uri_Stop_Image {
+            get {
+                return ResourceManager.GetString("Pack_Uri_Stop_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string Ribbon_Debug {
+            get {
+                return ResourceManager.GetString("Ribbon_Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Ribbon_StopExecution {
+            get {
+                return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RuntimeConfigurationAssemblies.
         /// </summary>
         public static string RuntimeConfigurationAssemblyDirectory {

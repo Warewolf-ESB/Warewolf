@@ -153,7 +153,6 @@
     <Compile Include="DeployStatsCalculatorTests.cs" />
     <Compile Include="Deploy\DeployViewModelTest.cs" />
     <Compile Include="Dev2DialogueTest.cs" />
-    <Compile Include="DsfActivityDropUtilsTests.cs" />
     <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
     <Compile Include="Environments\EnviromentRepositoryTest.cs">
       <SubType>Code</SubType>
@@ -182,7 +181,6 @@
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
-    <Compile Include="Network\TestTcpClientHost.cs" />
     <Compile Include="Network\TestTcpConnection.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />
     <Compile Include="Network\TcpConnectionTests.cs" />
@@ -221,6 +219,7 @@
     <Compile Include="IntellisenseProviderTest.cs" />
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
+    <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />

@@ -122,36 +122,6 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
-        #region AddDebugWriter
-
-        [TestMethod]
-        public void AddDebugWriterWithWriterExpectedInvokesHost()
-        {
-            var host = CreateTcpClientHost();
-            host.Setup(h => h.AddDebugWriter(It.IsAny<IDebugWriter>())).Verifiable();
-
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
-            connection.AddDebugWriter(It.IsAny<IDebugWriter>());
-            host.Verify(h => h.AddDebugWriter(It.IsAny<IDebugWriter>()));
-        }
-
-        #endregion
-
-        #region AddDebugWriter
-
-        [TestMethod]
-        public void RemoveDebugWriterWithIDExpectedInvokesHost()
-        {
-            var host = CreateTcpClientHost();
-            host.Setup(h => h.RemoveDebugWriter(It.IsAny<Guid>())).Verifiable();
-
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
-            connection.RemoveDebugWriter(It.IsAny<Guid>());
-            host.Verify(h => h.RemoveDebugWriter(It.IsAny<Guid>()));
-        }
-
-        #endregion
-
         #region Disconnect
 
         [TestMethod]

@@ -18,7 +18,6 @@
     <WarningLevel>4</WarningLevel>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -35,6 +34,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccAuxPath>SAK</SccAuxPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -312,6 +312,7 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
+    <Compile Include="AppResources\Messages\SetDebugStatusMessage.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
@@ -338,6 +339,7 @@
     <Compile Include="Enums\enDsfActivityType.cs" />
     <Compile Include="Factory\DataListViewModelFactory.cs" />
     <Compile Include="Factory\DataMappingListFactory.cs" />
+    <Compile Include="Factory\DebugStateFactory.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
     <Compile Include="Factory\DialogViewModelFactory.cs" />
     <Compile Include="Factory\InputOutputViewModelFactory.cs" />
@@ -357,6 +359,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
@@ -983,6 +986,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Stop.png" />
     <Resource Include="Images\ClearFilterIcon.png" />
     <Resource Include="Images\GreyCrossIcon.png" />
     <Resource Include="Images\clearLeftIcon.png" />
@@ -1181,9 +1185,7 @@
       <Name>Dev2.UndoFramework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\DataList\Actions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>

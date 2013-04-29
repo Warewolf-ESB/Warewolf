@@ -574,6 +574,18 @@ Developed By:</value>
   <data name="DialogTitle_MissingWizard" xml:space="preserve">
     <value>Missing Wizard</value>
   </data>
+  <data name="Pack_Uri_Debug_Image" xml:space="preserve">
+    <value>pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png</value>
+  </data>
+  <data name="Pack_Uri_Stop_Image" xml:space="preserve">
+    <value>pack://application:,,,/Dev2.Studio;component/Images/Stop.png</value>
+  </data>
+  <data name="Ribbon_Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Ribbon_StopExecution" xml:space="preserve">
+    <value>Stop</value>
+  </data>
   <data name="NewWorkflowBaseName" xml:space="preserve">
     <value>Unsaved</value>
   </data>

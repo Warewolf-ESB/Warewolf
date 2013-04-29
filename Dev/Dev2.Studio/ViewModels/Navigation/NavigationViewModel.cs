@@ -17,8 +17,8 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
-using Dev2.Studio.Enums;
 using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Workspaces;
 
@@ -44,9 +44,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _refreshMenuCommand;
         private string _searchFilter = string.Empty;
         private IWorkspaceItemRepository _workspaceItemRepository;
-        private readonly SynchronizationContext _synchronizationContext;
+        private enDsfActivityType _activityType;
         private bool _fromActivityDrop;
-        enDsfActivityType _activityType;
 
         #endregion private fields
 
@@ -72,10 +71,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 throw new ArgumentNullException("environmentRepository");
             }
             EnvironmentRepository = environmentRepository;
-            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
+
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            _synchronizationContext = SynchronizationContext.Current;
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
             _workspaceItemRepository = ImportService.GetExportValue<IWorkspaceItemRepository>();
 
@@ -295,10 +293,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void RefreshEnvironments()
         {
             foreach(var environment in Environments)
-            {
-                RefreshEnvironment(environment);
+                {
+                    RefreshEnvironment(environment);
+                }
             }
-        }
 
         /// <summary>
         ///     Updates the worksapces for all environments
@@ -465,16 +463,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             Root.FilterText = _searchFilter;
             Root.UpdateFilteredNodeExpansionStates(searhFilter);
             Root.NotifyOfFilterPropertyChanged(false);
-            //BackgroundWorker worker = new BackgroundWorker();
-
-            //   worker.DoWork += (s, e) => 
-            //   {
-            //       Root.FilterText = _searchFilter;
-            //       Root.UpdateFilteredNodeExpansionStates(searhFilter);
-            //       Root.NotifyOfFilterPropertyChanged(false);
-            //   };
-
-            //   worker.RunWorkerAsync();
+                     //BackgroundWorker worker = new BackgroundWorker();
+            
+                     //   worker.DoWork += (s, e) => 
+                     //   {
+                     //       Root.FilterText = _searchFilter;
+                     //       Root.UpdateFilteredNodeExpansionStates(searhFilter);
+                     //       Root.NotifyOfFilterPropertyChanged(false);
+                     //   };
+            
+                     //   worker.RunWorkerAsync();
         }
 
         ///// <summary>
@@ -554,7 +552,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             var environmentVM =
                 Find(environment, true);
 
-            if(environment == null || !environment.IsConnected || environment.ResourceRepository == null) return;
+            if (environment == null || !environment.IsConnected || environment.ResourceRepository == null) return;
 
             //
             // Load the environemnts resources
@@ -567,31 +565,34 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             ClearChildren(environmentVM);
 
-            switch(_activityType)
+            switch (_activityType)
             {
                 case enDsfActivityType.Workflow:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                contextualResources.Where(r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow).ToList());
+                                      contextualResources.Where(
+                                          r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow)
+                                                         .ToList());
                     break;
                 case enDsfActivityType.Service:
                     BuildCategoryTree(ResourceType.Service, environmentVM,
-                                        contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
                     break;
                 case enDsfActivityType.Source:
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                              contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
                     break;
                 default:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                contextualResources.Where(r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow).ToList());
+                                      contextualResources.Where(
+                                          r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow)
+                                                         .ToList());
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                                contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
                     BuildCategoryTree(ResourceType.Service, environmentVM,
-                                        contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                    UpdateSearchFilter(_searchFilter);
                     break;
-
             }
-            UpdateSearchFilter(_searchFilter);
         }
 
         /// <summary>
@@ -671,18 +672,18 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(!_fromActivityDrop)
             {
-                //
-                // Add wizard
-                //
+            //
+            // Add wizard
+            //
                 if(WizardEngine.IsResourceWizard(resource))
-                    return;
+                return;
 
-                var wizardResource = WizardEngine.GetWizard(resource);
+            var wizardResource = WizardEngine.GetWizard(resource);
                 if(wizardResource != null)
-                {
-                    AddChild(wizardResource, res, true);
-                }
+            {
+                AddChild(wizardResource, res, true);
             }
+        }
         }
         }
 
@@ -742,10 +743,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             //    }
             //}
             //else
-            //{
+                    //{
             environment.Connect();
-            //}
-        }
+                    //}
+                }
 
         #endregion private methods
 

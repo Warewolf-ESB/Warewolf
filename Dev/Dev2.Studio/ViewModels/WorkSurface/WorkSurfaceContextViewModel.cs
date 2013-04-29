@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Security;
 using System.Text;
-using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
-using Dev2.Session;
+using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -21,13 +22,12 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.Factory;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Webs;
 using Unlimited.Framework;
-using Action = System.Action;
-using DispatcherPriority = System.Windows.Threading.DispatcherPriority;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -38,29 +38,47 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>
+                                 IHandle<ExecuteResourceMessage>, IHandle<SetDebugStatusMessage>
     {
         #region private fields
 
         private IDataListViewModel _dataListViewModel;
         private IWorkSurfaceViewModel _workSurfaceViewModel;
         private DebugOutputViewModel _debugOutputViewModel;
-        private IWindowManager _windowManager;
         private IContextualResourceModel _contextualResourceModel;
-        private IFrameworkSecurityContext _securityContext;
-        private IEventAggregator _eventAggregator;
-        private IWorkspaceItemRepository _workspaceItemRepository;
+
+        private readonly IWindowManager _windowManager;
+        private readonly IFrameworkSecurityContext _securityContext;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IWorkspaceItemRepository _workspaceItemRepository;
+
+        private ICommand _viewInBrowserCommand;
+        private ICommand _debugCommand;
+        private ICommand _runCommand;
+        private ICommand _saveCommand;
+        private ICommand _editResourceCommand;
         #endregion private fields
 
         #region public properties
         public WorkSurfaceKey WorkSurfaceKey { get; private set; }
-        public DebugWriter DebugWriter { get; set; }
+
+        public IEnvironmentModel Environment
+        {
+            get
+            {
+                if (_contextualResourceModel == null)
+                {
+                    return null;
+                }
+                return _contextualResourceModel.Environment;
+            }
+        }
 
         public DebugOutputViewModel DebugOutputViewModel
         {
             get
             {
-                return _debugOutputViewModel;
+                return _debugOutputViewModel ?? (_debugOutputViewModel = new DebugOutputViewModel());
             }
             set
             {
@@ -113,6 +131,32 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
+        public DebugWriter DebugWriter { get; set; }
+
+        public bool CanExecute
+        {
+            get { return _contextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing; }
+        }
+
+        public ICommand EditCommand
+        {
+            get
+            {
+                return _editResourceCommand ??
+                       (_editResourceCommand =
+                        new RelayCommand(param => EventAggregator.Publish(new ShowEditResourceWizardMessage(_contextualResourceModel))
+                            , param => CanExecute));
+            }
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand ??
+                       (_saveCommand = new RelayCommand(param => Save(), param => CanExecute));
+            }
+        }
         #endregion public properties
 
         public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
@@ -126,10 +170,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
              ImportService.TryGetExportValue(out _workspaceItemRepository);
 
             if (_eventAggregator != null)
+            {
                 _eventAggregator.Subscribe(this);
+            }
 
-            if (workSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow)
-                DebugOutputViewModel = new DebugOutputViewModel(workSurfaceKey);
+            if (WorkSurfaceViewModel is IWorkflowDesignerViewModel)
+            {
+                _debugOutputViewModel = new DebugOutputViewModel();
+            }
         }
 
         protected override void OnActivate()
@@ -142,15 +190,16 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
-        public void DisplayDebugOutput(object message)
+        public void DisplayDebugOutput(IDebugState debugState)
         {
-            DebugOutputViewModel.Append(message);
+            DebugOutputViewModel.Append(debugState);
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public void GetServiceInputDataFromUser(IServiceDebugInfoModel input)
         {
             EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(_contextualResourceModel));
-            var inputDataViewModel = new WorkflowInputDataViewModel(input, DebugWriter);
+            var inputDataViewModel = new WorkflowInputDataViewModel(input);
             _windowManager.ShowDialog(inputDataViewModel);
         }
 
@@ -161,12 +210,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
+            SetDebugStatus(DebugStatus.Configure);
+
+            DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
+            Environment.Connection.AddDebugWriter(DebugWriter);
             Save(resourceModel,true);
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
-
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, 0, mode);
-
             GetServiceInputDataFromUser(debugInfoModel);
         }
 
@@ -175,15 +226,35 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             Build(_contextualResourceModel, false);
         }
 
-        private void Build(IContextualResourceModel model, bool deploy = true)
+        public void StopExecution()
         {
-            if (model == null || model.Environment == null || !model.Environment.IsConnected)
+            SetDebugStatus(DebugStatus.Stopping);
+
+            dynamic buildRequest = new UnlimitedObject();
+
+            buildRequest.Service = "TerminateExecutionService";
+            buildRequest.Roles = String.Join(",", _securityContext.Roles);
+
+            buildRequest.ResourceXml = _contextualResourceModel.ToServiceDefinition();
+
+            Guid workspaceID = ((IStudioClientContext)_contextualResourceModel.Environment.DsfChannel).WorkspaceID;
+
+            string result =
+                _contextualResourceModel.Environment.DsfChannel.
+                      ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
+                string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
+
+            DispatchServerDebugMessage(result, _contextualResourceModel);
+
+            SetDebugStatus(DebugStatus.Finished);
+        }
+
+        private void Build(IContextualResourceModel resource, bool deploy = true)
+        {
+            if (resource == null || resource.Environment == null || !resource.Environment.IsConnected)
             {
                 return;
             }
-
-            // Clear output
-            EventAggregator.Publish(new DebugWriterWriteMessage(string.Empty));
 
             var sb = new StringBuilder();
             dynamic buildRequest = new UnlimitedObject();
@@ -200,31 +271,32 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             sb.AppendLine(String.Format("<Build StartDate=\"{0}\">", DateTime.Now.ToString(CultureInfo.InvariantCulture)));
 
-            if (model.ResourceType == ResourceType.WorkflowService)
+            if (resource.ResourceType == ResourceType.WorkflowService)
             {
-                sb.AppendLine(String.Format("<Build WorkflowName=\"{0}\" />", model.ResourceName));
+                sb.AppendLine(String.Format("<Build WorkflowName=\"{0}\" />", resource.ResourceName));
             }
-            else if (model.ResourceType == ResourceType.Service)
+            else if (resource.ResourceType == ResourceType.Service)
             {
-                sb.AppendLine(String.Format("<Build Service=\"{0}\" />", model.ResourceName));
+                sb.AppendLine(String.Format("<Build Service=\"{0}\" />", resource.ResourceName));
             }
-            else if (model.ResourceType == ResourceType.Source)
+            else if (resource.ResourceType == ResourceType.Source)
             {
-                sb.AppendLine(String.Format("<Build Source=\"{0}\" />", model.ResourceName));
+                sb.AppendLine(String.Format("<Build Source=\"{0}\" />", resource.ResourceName));
             }
 
-            buildRequest.ResourceXml = model.ToServiceDefinition();
+            buildRequest.ResourceXml = resource.ToServiceDefinition();
 
-            Guid workspaceID = ((IStudioClientContext)model.Environment.DsfChannel).WorkspaceID;
+            Guid workspaceID = ((IStudioClientContext)resource.Environment.DsfChannel).WorkspaceID;
 
             string result =
-                model.Environment.DsfChannel.
+                resource.Environment.DsfChannel.
                       ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
                 string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
 
             sb.AppendLine(result);
             sb.AppendLine(String.Format("</Build>"));
-            DisplayDebugOutput(sb.ToString());
+
+            DispatchServerDebugMessage(sb.ToString(), resource);
         }
 
         public void ViewInBrowser()
@@ -238,7 +310,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             Process.Start(StudioToWizardBridge.GetWorkflowUrl(_contextualResourceModel).AbsoluteUri);
         }
-
+        
         public void ShowSaveDialog(IContextualResourceModel resourceModel)
         {
             RootWebSite.ShowNewWorkflowSaveDialog(resourceModel);
@@ -271,7 +343,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if (!isLocalSave)
             {
-                Build(resource);
+            Build(resource);
             }
 
             var resourceToUpdate = resource.Environment.ResourceRepository.FindSingle(
@@ -285,14 +357,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(!isLocalSave)
             {
-                DisplaySaveResult(result);
+            DisplaySaveResult(result, resource);
             }
 
             resource.Environment.ResourceRepository.Save(resource);
             EventAggregator.Publish(new UpdateDeployMessage());
         }
 
-        private void DisplaySaveResult(string result)
+        private void DisplaySaveResult(string result, IContextualResourceModel resource)
         {
             var sb = new StringBuilder();
             sb.AppendLine(String.Format("<Save StartDate=\"{0}\">",
@@ -300,7 +372,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             sb.AppendLine(result);
             sb.AppendLine(String.Format("</Save>"));
 
-            DisplayDebugOutput(sb.ToString());
+            DispatchServerDebugMessage(sb.ToString(), resource);
+        }
+
+        private void DispatchServerDebugMessage(string message, IContextualResourceModel resource)
+        {
+            var debugstate = DebugStateFactory.Create(message, resource);
+            EventAggregator.Publish(new DebugWriterWriteMessage(debugstate));
         }
 
         public void Handle(DebugResourceMessage message)
@@ -319,5 +397,76 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 Save(message.Resource, message.IsLocalSave);
         }
 
+        public void Handle(SetDebugStatusMessage message)
+        {
+            if (message.WorkSurfaceKey.Equals(WorkSurfaceKey))
+                SetDebugStatus(message.DebugStatus);
+        }
+
+        public void SetDebugStatus(DebugStatus debugStatus)
+        {
+            if (debugStatus == DebugStatus.Finished)
+                _contextualResourceModel.Environment.Connection.RemoveDebugWriter(DebugWriter.ID);
+            if (debugStatus == DebugStatus.Configure)
+                DebugOutputViewModel.Clear();
+
+            DebugOutputViewModel.DebugStatus = debugStatus;
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        private void Debug()
+        {
+            if (DebugOutputViewModel.IsProcessing)
+            {
+                StopExecution();
+            }
+            else
+            {
+                Debug(_contextualResourceModel, true);
+            }
+        }
+
+        public ICommand DebugCommand
+        {
+            get
+            {
+                return _debugCommand ??
+                       (_debugCommand =
+                        new RelayCommand(param => Debug(), param => CanDebug()));
+            }
+        }
+
+        private bool CanDebug()
+        {
+            return IsEnvironmentConnected() 
+                && !DebugOutputViewModel.IsStopping
+                && !DebugOutputViewModel.IsConfiguring;
+        }
+
+        public bool IsEnvironmentConnected()
+        {
+            return Environment != null && Environment.IsConnected;
+
+        }
+
+        public ICommand RunCommand
+        {
+            get
+            {
+                return _runCommand ??
+                       (_runCommand = new RelayCommand(param => Debug(_contextualResourceModel, false),
+                                                       param => CanExecute));
+            }
+        }
+
+        public ICommand ViewInBrowserCommand
+        {
+            get
+            {
+                return _viewInBrowserCommand ??
+                       (_viewInBrowserCommand = new RelayCommand(param => ViewInBrowser(),
+                                                                 param => CanExecute));
+            }
+        }
     }
 }

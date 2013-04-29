@@ -204,7 +204,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Set_Where_ValidResponse_Expected_NoException()
         {
-            //Juries TODO
             Mock<IWebCommunication> _mockedWebCommunication = new Mock<IWebCommunication>();
             _mockedWebCommunication.Setup(w => w.Post(It.IsAny<string>(), It.IsAny<string>())).Returns<object>(null);
 
@@ -214,9 +213,7 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
 
-            Mock<IMainViewModel> mainVM = Dev2MockFactory.SetupMainViewModel();
-            //Juries TODO
-            //mainVM.Setup(m => m.WebCommunication).Returns(_mockedWebCommunication.Object);
+            Mock<IMainViewModel> mainVM = Dev2MockFactory.SetupMainViewModel();;
 
             Mock<IPopupController> _mockPopup = new Mock<IPopupController>();
 

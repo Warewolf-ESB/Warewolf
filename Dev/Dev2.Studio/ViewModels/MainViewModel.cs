@@ -8,16 +8,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Security;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Factories;
@@ -54,37 +59,38 @@ namespace Dev2.Studio.ViewModels
     [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public sealed class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
-                                 IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>,
-                                 IHandle<SetActiveEnvironmentMessage>,
-                                 IHandle<ShowEditResourceWizardMessage>,
-                                 IHandle<DeployResourcesMessage>,
-                                 IHandle<ShowHelpTabMessage>,
-                                 IHandle<SettingsSaveCancelMessage>, IHandle<RemoveResourceAndCloseTabMessage>,
+                                        IHandle<DeleteResourceMessage>, 
+                                        IHandle<ShowDependenciesMessage>, 
+                                        IHandle<AddWorkSurfaceMessage>,
+                                        IHandle<DebugWriterWriteMessage>,
+                                        IHandle<SetActiveEnvironmentMessage>,
+                                        IHandle<ShowEditResourceWizardMessage>,
+                                        IHandle<DeployResourcesMessage>,
+                                        IHandle<ShowHelpTabMessage>,
+                                        IHandle<SettingsSaveCancelMessage>, 
+                                        IHandle<RemoveResourceAndCloseTabMessage>,
                                         IPartImportsSatisfiedNotification
     {
         #region Fields
 
         private IEnvironmentModel _activeEnvironment;
+        private ExplorerViewModel _explorerViewModel;
+        private WorkSurfaceContextViewModel _previousActive;
+        private bool _disposed;
+
+        private RelayCommand<string> _newResourceCommand;
         private ICommand _addStudioShortcutsPageCommand;
-        private ICommand _debugCommand;
         private ICommand _deployAllCommand;
         private ICommand _deployCommand;
         private ICommand _displayAboutDialogueCommand;
-        private bool _disposed;
-        private ICommand _editResourceCommand;
         private ICommand _exitCommand;
-        private ExplorerViewModel _explorerViewModel;
-        private RelayCommand<string> _newResourceCommand;
-        private ICommand _notImplementedCommand;
-        private WorkSurfaceContextViewModel _previousActive;
         private ICommand _resetLayoutCommand;
-        private ICommand _runCommand;
-        private ICommand _saveCommand;
         private ICommand _settingsCommand;
         private ICommand _startFeedbackCommand;
         private ICommand _startStopRecordedFeedbackCommand;
         private ICommand _viewInBrowserCommand;
         private bool _createDesigners;
+        private ICommand _notImplementedCommand;
 
         #endregion
 
@@ -121,7 +127,6 @@ namespace Dev2.Studio.ViewModels
         public IFrameworkSecurityContext SecurityContext { get; set; }
 
         #endregion imports
-        private DebugOutputViewModel _debugOutputViewModel;
 
         public ExplorerViewModel ExplorerViewModel
         {
@@ -138,26 +143,6 @@ namespace Dev2.Studio.ViewModels
 
         #region Private Method
 
-        public DebugOutputViewModel DebugOutputViewModel
-        {
-            get
-            {
-                if (_debugOutputViewModel == null)
-                {
-                    if (EnvironmentRepository != null)
-                        _debugOutputViewModel = new DebugOutputViewModel();
-                }
-                return _debugOutputViewModel;
-            }
-            set
-            {
-                if (_debugOutputViewModel == value) return;
-
-                _debugOutputViewModel = value;
-                NotifyOfPropertyChange(() => DebugOutputViewModel);
-            }
-        }
-
         public IEnvironmentModel ActiveEnvironment
         {
             get { return _activeEnvironment; }
@@ -168,8 +153,7 @@ namespace Dev2.Studio.ViewModels
                     _activeEnvironment = value;
                 }
 
-                NotifyOfPropertyChange(() => CanSave);
-                NotifyOfPropertyChange(() => CanDebug);
+                NotifyOfPropertyChange(() => ActiveEnvironment);
             }
         }
 
@@ -185,49 +169,10 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool CanRun
-        {
-            get { return IsActiveEnvironmentConnected(); }
-        }
-
-        public bool CanEdit
-        {
-            get
-            {
-                return (SecurityContext.IsUserInRole(new[]
-                    {
-                        StringResources.BDSAdminRole,
-                        StringResources.BDSDeveloperRole,
-                        StringResources.BDSTestingRole
-                    }) && IsActiveEnvironmentConnected());
-            }
-        }
-
-        public bool CanViewInBrowser
-        {
-            get
-            {
-                if (ActiveItem == null || ActiveItem.WorkSurfaceViewModel == null)
-                    return false;
-                var activeWorkSurfaceVM = ActiveItem.WorkSurfaceViewModel;
-                return (activeWorkSurfaceVM is IWorkflowDesignerViewModel) &&
-                       IsActiveEnvironmentConnected();
-            }
-        }
-
-        public bool CanSave
-        {
-            get { return IsActiveEnvironmentConnected(); }
-        }
-
-        public bool CanDebug
-        {
-            get { return IsActiveEnvironmentConnected(); }
-        }
 
         #endregion
 
-        #region Commands
+          #region Commands
 
         public ICommand NotImplementedCommand
         {
@@ -296,16 +241,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand ViewInBrowserCommand
-        {
-            get
-            {
-                return _viewInBrowserCommand ??
-                       (_viewInBrowserCommand = new RelayCommand(param => ActiveItem.ViewInBrowser(),
-                                                                 param => CanViewInBrowser));
-            }
-        }
-
         public RelayCommand<string> NewResourceCommand
         {
             get
@@ -322,28 +257,10 @@ namespace Dev2.Studio.ViewModels
             {
                 return _exitCommand ??
                        (_exitCommand =
-                        new RelayCommand(param => Exit(), param => true));
+                        new RelayCommand(param =>
+                                         Application.Current.Shutdown(), param => true));
             }
-        }
-
-        public ICommand EditCommand
-        {
-            get
-            {
-                return _editResourceCommand ??
-                       (_editResourceCommand =
-                        new RelayCommand(param => ShowEditResourceWizard(CurrentResourceModel), param => CanEdit));
             }
-        }
-
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ??
-                       (_saveCommand = new RelayCommand(param => ActiveItem.Save(), param => CanSave));
-            }
-        }
 
         public ICommand DeployCommand
         {
@@ -354,51 +271,15 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand DebugCommand
-        {
-            get
-            {
-                return _debugCommand ??
-                       (_debugCommand =
-                        new RelayCommand(param => ActiveItem.Debug(CurrentResourceModel, true), param => CanDebug));
-            }
-        }
-
-        public ICommand RunCommand
-        {
-            get
-            {
-                return _runCommand ??
-                       (_runCommand = new RelayCommand(param => ActiveItem.Debug(CurrentResourceModel, false),
-                                                       param => CanRun));
-            }
-        }
+        public bool CloseCurrent { get; set; }
 
         #endregion
 
         #region IHandle
 
-        //Massimo.Guerrera:16-04-2013 - Added for the findmissing to fire when anything on the variables pane losses focus - BUG 9222
-
         public void Handle(AddWorkSurfaceMessage message)
         {
             AddWorkSurface(message.WorkSurfaceObject);
-        }
-
-
-
-        void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
-        {
-            string newWorflowName = NewWorkflowNames.Instance.GetNext();
-
-            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
-                                                                                              resourceType);
-            tempResource.Category = "Unassigned";
-            tempResource.ResourceName = newWorflowName;
-            tempResource.DisplayName = newWorflowName;
-            tempResource.IsNewWorkflow = true;
-
-            AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
         }
 
         public void Handle(DeleteResourceMessage message)
@@ -437,15 +318,10 @@ namespace Dev2.Studio.ViewModels
             AddHelpTabWorkSurface(message.HelpLink);
         }
 
-        public void AddMissingAndFindUnusedVariableForActiveWorkflow()
+        public void Handle(DebugWriterWriteMessage message)
         {
-            var vm = ActiveItem.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-            if (vm != null)
-            {
-                vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            }
+            DisplayDebugOutput(message.DebugState);
         }
-
         #endregion
 
         #region Private Methods
@@ -549,13 +425,8 @@ namespace Dev2.Studio.ViewModels
         {
             TypeSwitch.Do(obj, TypeSwitch.Case<IContextualResourceModel>(AddWorkSurfaceContext));
         }
-
+  
         #endregion
-
-        private void Exit()
-        {
-            Application.Current.Shutdown();
-        }
 
         public void AddDeployResourcesWorkSurface(object input)
         {
@@ -572,6 +443,31 @@ namespace Dev2.Studio.ViewModels
                 Items.Add(context);
                 ActivateItem(context);
             }
+        }
+
+        void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
+        {
+            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
+                                                                                              resourceType);
+            tempResource.Category = "Unassigned";
+            tempResource.ResourceName = newWorflowName;
+            tempResource.DisplayName = newWorflowName;
+            tempResource.IsNewWorkflow = true;
+
+            AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
+        }
+
+        private void DisplayDebugOutput(IDebugState debugState)
+        {
+            if (debugState == null)
+            {
+                return;
+            }
+            var key = WorkSurfaceKeyFactory.CreateKey(debugState);
+            var ctx = FindWorkSurfaceContextViewModel(key);
+            ctx.DisplayDebugOutput(debugState);
         }
 
         private void DeployAll()
@@ -614,9 +510,11 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel,false));
-                    return true;
+                return true;
                 case MessageBoxResult.No:
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
+                    return true;
+                case MessageBoxResult.None:
                     return true;
                 case MessageBoxResult.Cancel:
                     return false;
@@ -634,7 +532,7 @@ namespace Dev2.Studio.ViewModels
                 var recorderFeedbackAction = new RecorderFeedbackAction();
                 FeedbackInvoker.InvokeFeedback(recorderFeedbackAction);
             }
-            //stop feedback
+                //stop feedback
             else
             {
                 currentRecordFeedbackAction.FinishFeedBack();
@@ -665,9 +563,9 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-                DisplayResourceWizard(resourceModel, false);
-            }
+            var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+            DisplayResourceWizard(resourceModel, false);
+        }
         }
 
         private void ShowEditResourceWizard(object resourceModelToEdit)
@@ -741,32 +639,12 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEnvironmentRepository environmentRepository, bool createDesigners = true)
         {
+            _createDesigners = createDesigners;
+
             EnvironmentRepository = environmentRepository;
             WorkspaceItemRepository = ImportService.GetExportValue<IWorkspaceItemRepository>();
 
-            if (DebugOutputViewModel == null)
-            {
-                return;
-            }
-
-            DebugWriter = new DebugWriter
-                (s => Application.Current.Dispatcher.BeginInvoke
-                          (DispatcherPriority.Normal, new Action(() => DisplayDebugOutput(s))));
-            DebugOutputViewModel.DebugWriter = DebugWriter;
-
             AddStartTabs();
-
-            _createDesigners = createDesigners;
-        }
-
-        public DebugWriter DebugWriter { get; set; }
-
-        public void DisplayDebugOutput(object message)
-        {
-            if (DebugOutputViewModel != null)
-            {
-                DebugOutputViewModel.Append(message);
-            }
         }
 
         #endregion ctor
@@ -807,7 +685,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)
+        public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)
         {
             bool remove = true;
             if (!context.DeleteRequested)
@@ -816,12 +694,12 @@ namespace Dev2.Studio.ViewModels
                 if (vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
                     var workflowVM = vm as IWorkflowDesignerViewModel;
-                    if(workflowVM != null)
+                    if (workflowVM != null)
                     {
                         IContextualResourceModel resource = workflowVM.ResourceModel;
                         if (resource != null)
                         {
-                            remove = resource.IsWorkflowSaved(workflowVM.ServiceDefinition);                        
+                            remove = resource.IsWorkflowSaved(workflowVM.ServiceDefinition);
 
                             //Massimo.Guerrera:26-04-2013 - Added for PBI 8723
                             if (resource.IsNewWorkflow && remove)
@@ -829,24 +707,32 @@ namespace Dev2.Studio.ViewModels
                                 NewWorkflowNames.Instance.Remove(resource.ResourceName);
                             }
 
-                            if (!remove)
-                            {
-                                remove = ShowRemovePopup(workflowVM);
+                    if (!remove)
+                    {
+                        remove = ShowRemovePopup(workflowVM);
+                    }
+
+            if (remove)
+            {
+                                RemoveWorkspaceItem(workflowVM);
+                Items.Remove(context);
+                EventAggregator.Publish(new TabClosedMessage(context));
+                                if (e != null)
+                                {
+                                    e.Cancel = true;
+                                }
                             }
-                            if (remove) RemoveWorkspaceItem(workflowVM);
+                            else if (e != null)
+                            {
+                                e.Handled = true;
+                                e.Cancel = false;
+                            }
                         }
                     }
                 }
             }
 
-            if (remove)
-            {
-                Items.Remove(context);
-                EventAggregator.Publish(new TabClosedMessage(context));
-            }
-
-            if (e != null)
-                e.Cancel = !remove;
+            return remove;
         }
 
         #endregion tab management
@@ -939,16 +825,9 @@ namespace Dev2.Studio.ViewModels
         {
             FeedbackInvoker.InvokeFeedback(new EmailFeedbackAction(), new RecorderFeedbackAction());
         }
-
         #endregion
 
         #region Protected Methods
-
-        public void OnImportsSatisfied()
-        {
-            DisplayName = String.Format("Business Design Studio ({0})", SecurityContext.UserIdentity.Name);
-            ExplorerViewModel = new ExplorerViewModel();
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -967,6 +846,12 @@ namespace Dev2.Studio.ViewModels
 
         #region Implementation of IHandle<RemoveResourceAndCloseTabMessage>
 
+        public void OnImportsSatisfied()
+        {
+            DisplayName = String.Format("Business Design Studio ({0})", SecurityContext.UserIdentity.Name);
+            ExplorerViewModel = new ExplorerViewModel();
+        }
+
         public void Handle(RemoveResourceAndCloseTabMessage message)
         {
             if (message.ResourceToRemove != null)
@@ -983,15 +868,24 @@ namespace Dev2.Studio.ViewModels
 
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
+            bool deactivate = true;
             if (close)
             {
-                CloseWorkSurfaceContext(item, null);
+                deactivate = CloseWorkSurfaceContext(item, null);
             }
 
+            if (deactivate)
+            {
             if (_previousActive != item)
                 ActivateItem(_previousActive);
 
             base.DeactivateItem(item, close);
+                CloseCurrent = true;
+            }
+            else
+            {
+                CloseCurrent = false;
+            }
         }
 
         protected override void OnDeactivate(bool close)
@@ -1004,22 +898,16 @@ namespace Dev2.Studio.ViewModels
 
         protected override void OnActivationProcessed(WorkSurfaceContextViewModel item, bool success)
         {
-            if (item == null)
+            if (success)
             {
-                return;
-            }
-
             item.Parent = this;
+            }
             base.OnActivationProcessed(item, success);
         }
 
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
-            if (item != null)
-            {
-                item.DebugWriter = DebugWriter;
-            }
             base.ActivateItem(item);
         }
 
@@ -1064,7 +952,7 @@ namespace Dev2.Studio.ViewModels
 
                 if (environment == null || environment.ResourceRepository == null) continue;
 
-                var resource = environment.ResourceRepository.All().First(rm => rm.ResourceName == item.ServiceName)
+                var resource = environment.ResourceRepository.All().FirstOrDefault(rm => rm.ResourceName == item.ServiceName)
                                as IContextualResourceModel;
                 if (resource == null) continue;
 
@@ -1076,5 +964,6 @@ namespace Dev2.Studio.ViewModels
         }
 
         #endregion
+
     }
 }

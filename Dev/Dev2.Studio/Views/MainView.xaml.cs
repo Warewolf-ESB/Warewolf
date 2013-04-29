@@ -28,14 +28,5 @@ namespace Dev2.Studio.Views
         }
 
         #endregion Constructor
-
-        public void Variables_OnKeyboardLostFocus(object sender, RoutedEventArgs routedEventArgs)
-        {
-            var vm = this.DataContext as IMainViewModel;
-            if(vm != null)
-            {
-                vm.AddMissingAndFindUnusedVariableForActiveWorkflow();
-            }
-        }
     }
 }
