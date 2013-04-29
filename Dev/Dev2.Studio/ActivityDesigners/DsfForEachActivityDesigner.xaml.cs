@@ -42,13 +42,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             var formats = e.Data.GetFormats();
             if(!formats.Any()) return;
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat")>=0);
-            if(String.IsNullOrEmpty(modelItemString)) return;
-            var data = e.Data.GetData(modelItemString) as ModelItem;
+            if(String.IsNullOrEmpty(modelItemString))
+            {
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat") >= 0);
+                if(String.IsNullOrEmpty(modelItemString)) return;
+            }
+            var objectData = e.Data.GetData(modelItemString);
+            var data = objectData as ModelItem;
             if(data != null && (data.ItemType == typeof(FlowDecision) || data.ItemType == typeof(FlowSwitch<string>)))
             {
-                 dropEnabled = false;
-                
-             }
+                dropEnabled = false;
+
+            }
+            else
+            {
+                var stringValue = (string)objectData;
+                if(stringValue.Contains("Decision") || stringValue.Contains("Switch"))
+                {
+                    dropEnabled = false;
+                }
+            }
             if(!dropEnabled)
             {
                 e.Effects = DragDropEffects.None;

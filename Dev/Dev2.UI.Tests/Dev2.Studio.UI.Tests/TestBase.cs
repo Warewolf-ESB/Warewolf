@@ -2042,6 +2042,67 @@ namespace Dev2.CodedUI.Tests
                 Assert.Fail("No clickable point is acheivable, so it was dragged in :(");
             }
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8805Point2");
+        } 
+        
+        [TestMethod]
+        public void DragASwitchFromToolBoxIntoForEachExpectNotAddedToForEach()
+        {
+            CreateCustomWorkflow("8805Point3", "CodedUITestCategory");
+
+            System.Threading.Thread.Sleep(1000);
+            UITestControl theTab = TabManagerUIMap.FindTabByName("8805Point3");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(80, 30);
+            // Get a point underneath the start button for each workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
+            Thread.Sleep(500);
+            // Cancel Decision Wizard
+          
+            UITestControl theControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "Switch");
+            // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
+
+           Assert.IsNull(theControl);
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8805Point3");
+        }
+
+
+        [TestMethod]
+        public void DragADecisionFromToolboxIntoForEachExpectNotAddedToForEach()
+        {
+            CreateCustomWorkflow("8805Point4", "CodedUITestCategory");
+
+            System.Threading.Thread.Sleep(1000);
+            UITestControl theTab = TabManagerUIMap.FindTabByName("8805Point4");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(80, 30);
+            // Get a point underneath the start button for each workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+            Thread.Sleep(500);
+            // Cancel Decision Wizard
+            
+            UITestControl decision = workflowDesignerUIMap.FindControlByAutomationId(theTab, "Decision");
+            Assert.IsNull(decision);
+            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8805Point4");
         }
 
         // Backlog 6664.1
