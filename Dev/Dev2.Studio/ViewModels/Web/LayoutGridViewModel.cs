@@ -581,7 +581,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Deploy()
         {
-            EventAggregator.Publish(new SaveResourceMessage(_resourceModel));
+            EventAggregator.Publish(new SaveResourceMessage(_resourceModel,false));
         }
 
         public void RemoveRow(int rowToDelete)

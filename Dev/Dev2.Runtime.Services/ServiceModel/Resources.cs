@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ServiceModel
                 dynamic argsObj = JObject.Parse(args);
                 result = Read(workspaceID, ParseResourceType(argsObj.resourceType.Value));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -64,24 +64,25 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Resources/PathsAndNames
         public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
         {
-            if(!String.IsNullOrEmpty(args))
+            var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
+            var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
+
+            if (!String.IsNullOrEmpty(args))
             {
                 var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), args);
 
-                var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
-                var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
-                if(resourceType == ResourceType.Server)
+                if (resourceType == ResourceType.Server)
                 {
                     names.Add("localhost"); // auto-added to studio on startup
                 }
                 ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
                 {
                     string value;
-                    if(iteratorResult.Values.TryGetValue(1, out value))
+                    if (iteratorResult.Values.TryGetValue(1, out value))
                     {
                         names.Add(value);
                     }
-                    if(iteratorResult.Values.TryGetValue(2, out value))
+                    if (iteratorResult.Values.TryGetValue(2, out value))
                     {
                         paths.Add(value);
                     }
@@ -97,10 +98,8 @@ namespace Dev2.Runtime.ServiceModel
                     Start = "<Category>",
                     End = "</Category>"
                 });
-
-                return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
             }
-            return null;
+            return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
         }
 
         #endregion
@@ -115,7 +114,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceIterator.Instance.IterateAll(workspaceID, iteratorResult =>
             {
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value))
+                if (iteratorResult.Values.TryGetValue(1, out value))
                 {
                     result.Add(value);
                 }
@@ -252,7 +251,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceIterator.Instance.Iterate(new[] { directoryName }, workspaceID, iteratorResult =>
             {
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if (iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = iteratorResult.Content;
                     return false;
@@ -271,7 +270,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceDelimiter delimiter;
             string delimiterValue;
 
-            switch(resourceType)
+            switch (resourceType)
             {
                 case ResourceType.DbSource:
                     delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\"" };
@@ -296,7 +295,7 @@ namespace Dev2.Runtime.ServiceModel
         internal static ResourceType ParseResourceType(string resourceTypeStr)
         {
             ResourceType resourceType;
-            if(!Enum.TryParse(resourceTypeStr, out resourceType))
+            if (!Enum.TryParse(resourceTypeStr, out resourceType))
             {
                 resourceType = ResourceType.Unknown;
             }

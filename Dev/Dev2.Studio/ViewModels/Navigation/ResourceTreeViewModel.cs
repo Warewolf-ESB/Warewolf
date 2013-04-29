@@ -755,7 +755,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            EventAggregator.Publish(new SaveResourceMessage(DataContext));
+            EventAggregator.Publish(new SaveResourceMessage(DataContext,false));
             RaisePropertyChangedForCommands();
         }
 

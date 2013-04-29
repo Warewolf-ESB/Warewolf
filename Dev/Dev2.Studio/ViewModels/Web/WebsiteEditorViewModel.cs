@@ -551,7 +551,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
             {
-                EventAggregator.Publish(new SaveResourceMessage(_resource));
+                EventAggregator.Publish(new SaveResourceMessage(_resource,false));
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;

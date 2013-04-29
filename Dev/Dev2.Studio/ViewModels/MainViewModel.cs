@@ -1,6 +1,11 @@
 ﻿#region
 
 using System;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Statements;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
@@ -20,6 +25,8 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
@@ -33,6 +40,9 @@ using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
+using Dev2.Studio.Webs.Callbacks;
+using Dev2.Util;
+using Dev2.Utilities;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
 using Action = System.Action;
@@ -41,14 +51,15 @@ using Action = System.Action;
 
 namespace Dev2.Studio.ViewModels
 {
-    [Export(typeof (IMainViewModel))]
+    [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public sealed class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
-                                        IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>,
-                                        IHandle<SetActiveEnvironmentMessage>, IHandle<SettingsSaveCancelMessage>,
-                                        IHandle<ShowEditResourceWizardMessage>, IHandle<AddWorkSurfaceMessage>,
-                                        IHandle<ShowHelpTabMessage>,
-                                        IHandle<DeployResourcesMessage>,
+                                 IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>,
+                                 IHandle<SetActiveEnvironmentMessage>,
+                                 IHandle<ShowEditResourceWizardMessage>,
+                                 IHandle<DeployResourcesMessage>,
+                                 IHandle<ShowHelpTabMessage>,
+                                 IHandle<SettingsSaveCancelMessage>, IHandle<RemoveResourceAndCloseTabMessage>,
                                         IPartImportsSatisfiedNotification
     {
         #region Fields
@@ -81,7 +92,7 @@ namespace Dev2.Studio.ViewModels
 
         #region imports
 
-        [Import(typeof (IWebController))]
+        [Import(typeof(IWebController))]
         public IWebController WebController { get; set; }
 
         [Import]
@@ -98,10 +109,10 @@ namespace Dev2.Studio.ViewModels
         [Import]
         public IFeedBackRecorder FeedBackRecorder { get; set; }
 
-        [Import(typeof (IFrameworkRepository<UserInterfaceLayoutModel>))]
+        [Import(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
-        [Import(typeof (IResourceDependencyService))]
+        [Import(typeof(IResourceDependencyService))]
         public IResourceDependencyService ResourceDependencyService { get; set; }
 
         public IWorkspaceItemRepository WorkspaceItemRepository { get; set; }
@@ -374,6 +385,22 @@ namespace Dev2.Studio.ViewModels
             AddWorkSurface(message.WorkSurfaceObject);
         }
 
+
+
+        void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
+        {
+            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
+                                                                                              resourceType);
+            tempResource.Category = "Unassigned";
+            tempResource.ResourceName = newWorflowName;
+            tempResource.DisplayName = newWorflowName;
+            tempResource.IsNewWorkflow = true;
+
+            AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
+        }
+
         public void Handle(DeleteResourceMessage message)
         {
             DeleteResource(message.ResourceModel as IContextualResourceModel);
@@ -396,6 +423,12 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowEditResourceWizardMessage message)
         {
+            if (message.ResourceModel.ResourceType == ResourceType.WorkflowService)
+            {
+                AddWorkSurfaceContext(message.ResourceModel as IContextualResourceModel);
+                return;
+            }
+
             ShowEditResourceWizard(message.ResourceModel);
         }
 
@@ -507,6 +540,7 @@ namespace Dev2.Studio.ViewModels
 
         private void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context)
         {
+                        
             Items.Add(context);
             ActivateItem(context);
         }
@@ -576,13 +610,17 @@ namespace Dev2.Studio.ViewModels
             var result = PopupProvider.Show(StringResources.DialogBody_NotSaved, StringResources.DialogTitle_NotSaved,
                                             MessageBoxButton.YesNoCancel);
 
-            if (result == MessageBoxResult.Yes)
+            switch (result)
             {
-                workflowVM.BindToModel();
-                EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel));
-                return true;
+                case MessageBoxResult.Yes:
+                    EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel,false));
+                    return true;
+                case MessageBoxResult.No:
+                    NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
+                    return true;
+                case MessageBoxResult.Cancel:
+                    return false;
             }
-
             return false;
         }
 
@@ -596,7 +634,7 @@ namespace Dev2.Studio.ViewModels
                 var recorderFeedbackAction = new RecorderFeedbackAction();
                 FeedbackInvoker.InvokeFeedback(recorderFeedbackAction);
             }
-                //stop feedback
+            //stop feedback
             else
             {
                 currentRecordFeedbackAction.FinishFeedBack();
@@ -620,8 +658,16 @@ namespace Dev2.Studio.ViewModels
 
         private void ShowNewResourceWizard(string resourceType)
         {
-            var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-            DisplayResourceWizard(resourceModel, false);
+            if (resourceType == "Workflow")
+            {
+                //Massimo.Guerrera:23-04-2013 - Added for PBI 8723
+                TempSave(ActiveEnvironment, resourceType);
+            }
+            else
+            {
+                var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+                DisplayResourceWizard(resourceModel, false);
+            }
         }
 
         private void ShowEditResourceWizard(object resourceModelToEdit)
@@ -687,7 +733,8 @@ namespace Dev2.Studio.ViewModels
 
         #region ctor
 
-        public MainViewModel() : this(Core.EnvironmentRepository.Instance)
+        public MainViewModel()
+            : this(Core.EnvironmentRepository.Instance)
         {
         }
 
@@ -734,7 +781,7 @@ namespace Dev2.Studio.ViewModels
 
             string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
-                                                             , new[] {new Tuple<string, object>("Uri", path)});
+                                                             , new[] { new Tuple<string, object>("Uri", path) });
         }
 
         /// <summary>
@@ -745,7 +792,7 @@ namespace Dev2.Studio.ViewModels
             SaveWorkspaceItems();
             foreach (var ctx in Items)
             {
-                ctx.Build();
+                ctx.Save(true);
             }
         }
 
@@ -756,7 +803,7 @@ namespace Dev2.Studio.ViewModels
         {
             foreach (var ctx in Items)
             {
-                ctx.Save();
+                ctx.Save(true);
             }
         }
 
@@ -769,14 +816,26 @@ namespace Dev2.Studio.ViewModels
                 if (vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
                     var workflowVM = vm as IWorkflowDesignerViewModel;
-                    if (workflowVM == null) return;
-
-                    remove = workflowVM.ResourceModel.IsWorkflowSaved(workflowVM.ServiceDefinition);
-                    if (!remove)
+                    if(workflowVM != null)
                     {
-                        remove = ShowRemovePopup(workflowVM);
+                        IContextualResourceModel resource = workflowVM.ResourceModel;
+                        if (resource != null)
+                        {
+                            remove = resource.IsWorkflowSaved(workflowVM.ServiceDefinition);                        
+
+                            //Massimo.Guerrera:26-04-2013 - Added for PBI 8723
+                            if (resource.IsNewWorkflow && remove)
+                            {
+                                NewWorkflowNames.Instance.Remove(resource.ResourceName);
+                            }
+
+                            if (!remove)
+                            {
+                                remove = ShowRemovePopup(workflowVM);
+                            }
+                            if (remove) RemoveWorkspaceItem(workflowVM);
+                        }
                     }
-                    if (remove) RemoveWorkspaceItem(workflowVM);
                 }
             }
 
@@ -810,7 +869,7 @@ namespace Dev2.Studio.ViewModels
 
             ActivateOrCreateUniqueWorkSurface<DependencyVisualiserViewModel>
                 (WorkSurfaceContext.DependencyVisualiser,
-                 new[] {new Tuple<string, object>("ResourceModel", resource)});
+                 new[] { new Tuple<string, object>("ResourceModel", resource) });
         }
 
         #endregion
@@ -866,14 +925,14 @@ namespace Dev2.Studio.ViewModels
             if (!string.IsNullOrWhiteSpace(uriToDisplay))
                 ActivateOrCreateUniqueWorkSurface<HelpViewModel>
                     (WorkSurfaceContext.Help,
-                     new[] {new Tuple<string, object>("Uri", uriToDisplay)});
+                     new[] { new Tuple<string, object>("Uri", uriToDisplay) });
         }
 
         public void AddShortcutKeysWorkSurface()
         {
             var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.ShortcutKeys
-                                                             , new[] {new Tuple<string, object>("Uri", path)});
+                                                             , new[] { new Tuple<string, object>("Uri", path) });
         }
 
         public void StartFeedback()
@@ -902,6 +961,24 @@ namespace Dev2.Studio.ViewModels
                 _disposed = true;
             }
             base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<RemoveResourceAndCloseTabMessage>
+
+        public void Handle(RemoveResourceAndCloseTabMessage message)
+        {
+            if (message.ResourceToRemove != null)
+            {
+                WorkSurfaceContextViewModel wfscvm = FindWorkSurfaceContextViewModel(message.ResourceToRemove);
+                DeactivateItem(wfscvm, true);            
+                IResourceModel res = message.ResourceToRemove.Environment.ResourceRepository.FindSingle(c => c.DisplayName == message.ResourceToRemove.DisplayName);
+                if (res != null)
+                {
+                    message.ResourceToRemove.Environment.ResourceRepository.Remove(res);
+                }
+            }
         }
 
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
@@ -980,7 +1057,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     if (!env.IsConnected) break;
                     if (!(env.DsfChannel is IStudioClientContext)) break;
-                    var channel = (IStudioClientContext) env.DsfChannel;
+                    var channel = (IStudioClientContext)env.DsfChannel;
                     if (channel.ServerID == item.ServerID)
                         environment = env;
                 }

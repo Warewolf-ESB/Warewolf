@@ -24,6 +24,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.Webs;
 using Unlimited.Framework;
 using Action = System.Action;
 using DispatcherPriority = System.Windows.Threading.DispatcherPriority;
@@ -160,7 +161,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            Save(resourceModel);
+            Save(resourceModel,true);
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
 
             IServiceDebugInfoModel debugInfoModel =
@@ -230,23 +231,35 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(_contextualResourceModel));
 
-            Save(_contextualResourceModel);
+            Save(_contextualResourceModel,true);
 
             if (_contextualResourceModel == null || _contextualResourceModel.Environment == null ||
                 _contextualResourceModel.Environment.Connection == null) return;
 
             Process.Start(StudioToWizardBridge.GetWorkflowUrl(_contextualResourceModel).AbsoluteUri);
         }
-        
-        public void Save()
+
+        public void ShowSaveDialog(IContextualResourceModel resourceModel)
         {
-            Save(_contextualResourceModel);
+            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel);
         }
 
-        private void Save(IContextualResourceModel resource)
+        public void Save(bool isLocalSave = false)
+        {
+            Save(_contextualResourceModel, isLocalSave);
+        }
+
+        private void Save(IContextualResourceModel resource, bool isLocalSave)
         {
             if (resource == null)
             {
+                return;
+            }          
+
+
+            if (resource.IsNewWorkflow && !isLocalSave)
+            {
+                ShowSaveDialog(resource);
                 return;
             }
 
@@ -256,7 +269,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 vm.BindToModel();
             }
 
-            Build(resource);
+            if (!isLocalSave)
+            {
+                Build(resource);
+            }
 
             var resourceToUpdate = resource.Environment.ResourceRepository.FindSingle(
                 c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
@@ -267,7 +283,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource);
 
-            DisplaySaveResult(result);
+            if(!isLocalSave)
+            {
+                DisplaySaveResult(result);
+            }
 
             resource.Environment.ResourceRepository.Save(resource);
             EventAggregator.Publish(new UpdateDeployMessage());
@@ -296,7 +315,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(SaveResourceMessage message)
         {
-            Save(message.Resource);
+            if (_contextualResourceModel == message.Resource)
+                Save(message.Resource, message.IsLocalSave);
         }
 
     }

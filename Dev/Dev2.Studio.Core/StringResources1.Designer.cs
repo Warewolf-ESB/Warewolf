@@ -568,6 +568,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsaved.
+        /// </summary>
+        public static string NewWorkflowBaseName {
+            get {
+                return ResourceManager.GetString("NewWorkflowBaseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/.
         /// </summary>
         public static string Pack_Uri_Application_Image {

@@ -8,5 +8,6 @@ namespace Dev2.Studio.Core.Interfaces
         IEnvironmentModel Environment { get; }
         Guid ServerID { get; set; }
         void UpdateIconPath(string iconPath);
+        bool IsNewWorkflow { get; set; }
     }
 }

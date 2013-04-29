@@ -407,7 +407,7 @@ namespace Dev2.Studio.Core.Wizards
                 resource.Category = string.Empty;
                 resource.DataList = wizardDataListString;
                 EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                EventAggregator.Publish(new SaveResourceMessage(resource));
+                EventAggregator.Publish(new SaveResourceMessage(resource, false));
                 EventAggregator.Publish(new UpdateResourceMessage(resource));
             }
         }
@@ -461,7 +461,7 @@ namespace Dev2.Studio.Core.Wizards
                     resource.DataList = MergeWizardDataListsAndReturnDiffs(resource.DataList, parentDl, out addedList, out removedList);
 
                     EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                    EventAggregator.Publish(new SaveResourceMessage(resource));
+                    EventAggregator.Publish(new SaveResourceMessage(resource, false));
 
                     string differencesString = Dev2MessageFactory.CreateStringFromListWithLabel("Added", addedList);
                     differencesString += Dev2MessageFactory.CreateStringFromListWithLabel("Removed", removedList);

@@ -164,17 +164,12 @@ namespace Dev2.Core.Tests
             lock (syncroot)
             {
                 CreateFullExportsAndVm();
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<DebugWriterWriteMessage>()))
-                                .Callback<object>((o =>
-                                    {
-                                        var m = (DebugWriterWriteMessage) o;
-                                        var r = (string) m.Content;
-                                        Assert.IsTrue(r == string.Empty);
-                                    })).Verifiable();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
+                               .Verifiable();
 
                 _mainViewModel.Dispose();
 
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<DebugWriterWriteMessage>()), Times.Exactly(1));
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(1));
             }
         }
 
@@ -184,18 +179,13 @@ namespace Dev2.Core.Tests
             lock (syncroot)
             {
                 CreateFullExportsAndVm();
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<DebugWriterWriteMessage>()))
-                                .Callback<object>((o =>
-                                    {
-                                        var m = (DebugWriterWriteMessage) o;
-                                        var r = (string) m.Content;
-                                        Assert.IsTrue(r == string.Empty);
-                                    })).Verifiable();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
+                               .Verifiable();
                 AddAdditionalContext();
 
                 _mainViewModel.Dispose();
 
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<DebugWriterWriteMessage>()), Times.Exactly(2));
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(2));
             }
         }
 

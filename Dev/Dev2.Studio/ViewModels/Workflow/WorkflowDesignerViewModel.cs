@@ -70,8 +70,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
         IWorkflowDesignerViewModel, IDisposable,
-        IHandle<UpdateResourceMessage>, 
-        IHandle<AddStringListToDataListMessage>, 
+        IHandle<UpdateResourceMessage>,
+        IHandle<AddStringListToDataListMessage>,
         IHandle<AddMissingAndFindUnusedDataListItemsMessage>,
                                              IHandle<AddRemoveDataListItemsMessage>,
                                              IHandle<FindMissingDataListItemsMessage>,
@@ -617,51 +617,51 @@ namespace Dev2.Studio.ViewModels.Workflow
                     foreach (var field in workflowFields)
                     {
                         BuildDataPart(field);
-                        }
                     }
+                }
             }
             var flattenedList = _uniqueWorkflowParts.Keys.ToList();
             return flattenedList;
         }
 
         private List<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
-                    {
+        {
             var workflowFields = new List<string>();
 
             var modelProperty = flowNode.Properties["Action"];
             if (modelProperty != null)
-                        {
+            {
                 var activity = modelProperty.ComputedValue;
                 workflowFields = GetActivityElements(activity);
             }
             else
             {
-                            string propertyName = string.Empty;
+                string propertyName = string.Empty;
                 switch (flowNode.ItemType.Name)
-                            {
+                {
                     case "FlowDecision":
-                                propertyName = "Condition";
+                        propertyName = "Condition";
                         break;
                     case "FlowSwitch`1":
-                                propertyName = "Expression";
+                        propertyName = "Expression";
                         break;
-                            }
+                }
                 var property = flowNode.Properties[propertyName];
                 if (property != null)
                 {
                     var activity = property.ComputedValue;
-                            if (activity != null)
-                            {
-                                workflowFields = GetDecisionElements(activity);
-                            }
-                        }
+                    if (activity != null)
+                    {
+                        workflowFields = GetDecisionElements(activity);
+                    }
+                }
                 else
-                        {
+                {
                     return workflowFields;
-                        }
-                    }
+                }
+            }
             return workflowFields;
-                    }
+        }
 
         private List<String> GetDecisionElements(dynamic decision)
         {
@@ -781,15 +781,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             IFindMissingStrategy strategy = stratFac.CreateFindMissingStrategy(findMissingType);
 
             foreach (var activityField in strategy.GetActivityFields(activity))
-                    {
+            {
                 if (!string.IsNullOrEmpty(activityField))
-                        {
+                {
                     activityFields.AddRange(
                         (FormatDsfActivityField(activityField)).Where(item => !item.Contains("xpath(")));
-                        }
-                    }
+                }
+            }
             return activityFields;
-                        }
+        }
 
         private List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
         {
@@ -798,30 +798,30 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (DataListSingleton.ActiveDataList != null)
                 {
-                if (!(part.IsScalar))
-                {
+                    if (!(part.IsScalar))
+                    {
                         var recset =
                             DataListSingleton.ActiveDataList.DataList.Where(
                                 c => c.Name == part.Recordset && c.IsRecordset).ToList();
-                    if (!recset.Any())
-                    {
-                        MissingDataParts.Add(part);
-                    }
-                    else
-                    {
-                            if (!string.IsNullOrEmpty(part.Field) &&
-                                recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                        if (!recset.Any())
                         {
                             MissingDataParts.Add(part);
                         }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(part.Field) &&
+                                recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                            {
+                                MissingDataParts.Add(part);
+                            }
+                        }
                     }
-                }
                     else if (DataListSingleton.ActiveDataList.DataList
                         .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
-                {
-                    MissingDataParts.Add(part);
+                    {
+                        MissingDataParts.Add(part);
+                    }
                 }
-            }
             }
             return MissingDataParts;
         }
@@ -841,61 +841,61 @@ namespace Dev2.Studio.ViewModels.Workflow
             var MissingWorkflowParts = new List<IDataListVerifyPart>();
             if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
                 foreach (var dataListItem in DataListSingleton.ActiveDataList.DataList)
-            {
-                if (String.IsNullOrEmpty(dataListItem.Name))
                 {
-                    continue;
-                }
-                if ((dataListItem.Children.Count > 0))
-                {
-                    if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                    if (String.IsNullOrEmpty(dataListItem.Name))
                     {
-                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                        if (dataListItem.IsEditable)
+                        continue;
+                    }
+                    if ((dataListItem.Children.Count > 0))
+                    {
+                        if (PartsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
+                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                            if (dataListItem.IsEditable)
+                            {
                                 MissingWorkflowParts.Add(
                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name,
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
-                            foreach (var child in dataListItem.Children)
-                                if (!(String.IsNullOrEmpty(child.Name)))
-                                    //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if (dataListItem.IsEditable)
-                                    {
+                                foreach (var child in dataListItem.Children)
+                                    if (!(String.IsNullOrEmpty(child.Name)))
+                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                        if (dataListItem.IsEditable)
+                                        {
                                             MissingWorkflowParts.Add(
                                                 IntellisenseFactory.CreateDataListValidationRecordsetPart(
                                                     dataListItem.Name, child.Name, child.Description));
-                                    }
+                                        }
+                            }
                         }
-                    }
                         else
                             foreach (var child in dataListItem.Children)
                                 if (
                                     PartsToVerify.Count(
                                         part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
-                            {
-                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                if (child.IsEditable)
                                 {
+                                    //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                    if (child.IsEditable)
+                                    {
                                         MissingWorkflowParts.Add(
                                             IntellisenseFactory.CreateDataListValidationRecordsetPart(
                                                 dataListItem.Name, child.Name, child.Description));
+                                    }
                                 }
-                            }
-                }
-                else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
-                {
+                    }
+                    else if (PartsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
                     {
-                        if (dataListItem.IsEditable)
                         {
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                            if (dataListItem.IsEditable)
+                            {
+                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
                                 MissingWorkflowParts.Add(
                                     IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name,
                                                                                            dataListItem.Description));
+                            }
                         }
                     }
                 }
-            }
             return MissingWorkflowParts;
         }
 
@@ -1187,10 +1187,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             _wdMeta.Register();
 
             _wd.Context.Services.Subscribe<ModelService>(instance =>
-                {
-                    _modelService = instance;
+            {
+                _modelService = instance;
                     _modelService.ModelChanged += ModelServiceModelChanged;
-                });
+            });
 
             //_modelService = _wd.Context.Services.GetService<ModelService>();
             //_modelService.ModelChanged += new EventHandler<ModelChangedEventArgs>(ModelServiceModelChanged);
@@ -1225,6 +1225,57 @@ namespace Dev2.Studio.ViewModels.Workflow
             //This will auto save the workflow if anything changes on the design surface.Comment back in if we want the  workflows to auto save.
             //BindToModel();
         }
+
+        //public bool NotifyItemSelected(object primarySelection)
+        //{
+        //    var selectedItem = primarySelection as ModelItem;
+
+        //    bool isItemSelected = false;
+        //    if (selectedItem != null)
+        //    {
+        //        if (selectedItem.ItemType == typeof(DsfForEachActivity))
+        //        {
+        //            dynamic test = selectedItem;
+        //            ModelItem innerActivity = RecursiveForEachCheck(test);
+        //            if (innerActivity != null)
+        //            {
+        //                selectedItem = innerActivity;
+        //            }
+        //        }
+        //        if (selectedItem.Properties["DisplayName"] != null)
+        //        {
+        //            var modelProperty = selectedItem.Properties["DisplayName"];
+
+        //            if (modelProperty != null)
+        //            {
+        //                string displayName = modelProperty.ComputedValue.ToString();
+        //                var resourceModel = _resourceModel.Environment.ResourceRepository.All().FirstOrDefault(resource => resource.ResourceName.Equals(displayName, StringComparison.InvariantCultureIgnoreCase));
+
+        //                if (resourceModel != null || selectedItem.ItemType == typeof(DsfWebPageActivity))
+        //                {
+        //                    IWebActivity webActivity = WebActivityFactory
+        //                        .CreateWebActivity(selectedItem, resourceModel as IContextualResourceModel, displayName);
+        //                    isItemSelected = true;
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    return isItemSelected;
+        //}
+
+        //public void BindToModel()
+        //{
+        //    if (_wd != null)
+        //    {
+        //        _wd.Flush();
+        //        _resourceModel.WorkflowXaml = _wd.Text;
+        //        if (string.IsNullOrEmpty(_resourceModel.ServiceDefinition))
+        //        {
+        //            _resourceModel.ServiceDefinition = _resourceModel.ToServiceDefinition();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         ///     Clears all imports from an activity
@@ -1543,7 +1594,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             {
                                 IContextualResourceModel resource = _vm.SelectedResourceModel;
                                 if (resource != null)
-                                {
+                                {                                    
                                     DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true);
 
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;
