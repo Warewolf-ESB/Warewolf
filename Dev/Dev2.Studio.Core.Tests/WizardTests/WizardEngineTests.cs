@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -132,7 +132,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -163,7 +163,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -192,7 +192,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -221,7 +221,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -250,7 +250,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -279,7 +279,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -308,7 +308,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(o =>
             {
-                wizResource = ((AddWorkSurfaceMessage)o).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)o).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -374,7 +374,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
-                wizResource = ((AddWorkSurfaceMessage)cake).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)cake).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -442,7 +442,7 @@ namespace Dev2.Core.Tests
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(o =>
             {
-                wizResource = ((AddWorkSurfaceMessage)o).WorkSurfaceObject as IResourceModel;
+                wizResource = ((AddWorkflowDesignerMessage)o).Resource;
             });
 
             wizEng.CreateResourceWizard(mockResource2.Object);
@@ -455,7 +455,7 @@ namespace Dev2.Core.Tests
         void GetResourceModelFromAggregator(Action<object> action)
         {
             Mock<IEventAggregator> aggregator = new Mock<IEventAggregator>();
-            aggregator.Setup(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback(action).Verifiable();
+            aggregator.Setup(e => e.Publish(It.IsAny<AddWorkflowDesignerMessage>())).Callback(action).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel(aggregator);
 

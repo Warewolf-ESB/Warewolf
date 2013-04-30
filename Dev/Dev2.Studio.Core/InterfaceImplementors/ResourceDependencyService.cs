@@ -76,15 +76,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
                             join n in nodes on r.ResourceName equals n
                             select r;
 
-            var returnList = resources.ToList().Distinct().ToList();
-            return returnList;
-        }
-
-        public bool HasDependencies(IContextualResourceModel resourceModel)
-        {
-            var uniqueList = GetUniqueDependencies(resourceModel);
-            uniqueList.Remove(resourceModel);
-            return uniqueList.Count > 0;
+            return resources.Distinct().ToList();
         }
 
         #endregion

@@ -1,14 +1,12 @@
 ﻿using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -52,6 +50,7 @@ namespace Dev2.Core.Tests
             Mock<IWebActivity> _test = new Mock<IWebActivity>();
             //5559 Check this test when refactor is finished
             //_mockMainViewModel.Setup(mainVM => mainVM.ActiveEnvironment).Returns(_moqEnvironment.Object);
+            _mockMainViewModel.Setup(mainVM => mainVM.OpenWebsiteCommand.Execute(null)).Verifiable();
 
             //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
             //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
@@ -116,7 +115,7 @@ namespace Dev2.Core.Tests
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             dataListViewModel.ScalarCollection = DataListItems;
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
@@ -161,7 +160,7 @@ namespace Dev2.Core.Tests
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             dataListViewModel.ScalarCollection = DataListItems;
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
@@ -206,7 +205,7 @@ namespace Dev2.Core.Tests
             //Juries 8810 TODO
            // mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             dataListViewModel.ScalarCollection = DataListItems;
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
@@ -392,7 +391,7 @@ namespace Dev2.Core.Tests
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);

@@ -18,6 +18,7 @@
     <WarningLevel>4</WarningLevel>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -34,7 +35,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccAuxPath>SAK</SccAuxPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -312,10 +312,10 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
-    <Compile Include="AppResources\Messages\SetDebugStatusMessage.cs" />
+    <Compile Include="Controller\AbstractController.cs" />
+    <Compile Include="Controller\IController.cs" />
+    <Compile Include="Controller\MainController.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
-    <Compile Include="Controller\FlowController.cs" />
-    <Compile Include="Controller\PopupController.cs" />
     <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
@@ -339,38 +339,30 @@
     <Compile Include="Enums\enDsfActivityType.cs" />
     <Compile Include="Factory\DataListViewModelFactory.cs" />
     <Compile Include="Factory\DataMappingListFactory.cs" />
-    <Compile Include="Factory\DebugStateFactory.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
-    <Compile Include="Factory\DialogViewModelFactory.cs" />
     <Compile Include="Factory\InputOutputViewModelFactory.cs" />
     <Compile Include="Factory\RuntimeConfigurationViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
-    <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
     <Compile Include="Utils\DsfActivityDropUtils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingInputAction.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="ViewModels\DataList\DataListViewModel.cs" />
-    <Compile Include="ViewModels\DataList\DataMappingViewModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ViewModels\DataList\DataMappingViewModel.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
-    <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
-    <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\Web\LayoutGridViewModel.cs" />
     <Compile Include="ViewModels\Web\WebsiteEditorViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
+    <Compile Include="InterfaceImplementors\PopUp.cs" />
     <Compile Include="ViewModels\Configuration\RuntimeConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="InterfaceImplementors\FileSystemIntellisenseProvider.cs" />
@@ -395,15 +387,12 @@
       <DependentUpon>DsfActivityDropWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Webs\Callbacks\DbSourceCallbackHandler.cs" />
-    <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
-    <Compile Include="Webs\IWebController.cs" />
     <Compile Include="Webs\RootWebSite.cs" />
     <Compile Include="Webs\WebBrowserWindow.xaml.cs">
       <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Webs\WebController.cs" />
     <Compile Include="Webs\WebHelper.cs" />
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
@@ -463,6 +452,7 @@
     <Compile Include="InterfaceImplementors\DefaultIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\FileNameProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\UserMessageProviderImpl.cs" />
+    <Compile Include="InterfaceImplementors\WindowManager.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\StudioToWizardBridge.cs" />
     <Compile Include="Model\ExceptionUIModel.cs" />
@@ -502,8 +492,8 @@
     <Compile Include="Views\Wizards\ActivitySettingsView.xaml.cs">
       <DependentUpon>ActivitySettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Administration\DialogueView.xaml.cs">
-      <DependentUpon>DialogueView.xaml</DependentUpon>
+    <Compile Include="Views\Administration\Dev2Dialogue.xaml.cs">
+      <DependentUpon>Dev2Dialogue.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administration\DsfAdminWindow.xaml.cs">
       <DependentUpon>DsfAdminWindow.xaml</DependentUpon>
@@ -596,8 +586,8 @@
     <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
       <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Workflow\WorkflowInputDataView.xaml.cs">
-      <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
+    <Compile Include="Views\Workflow\WorkflowInputDataWindow.xaml.cs">
+      <DependentUpon>WorkflowInputDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -812,7 +802,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Administration\DialogueView.xaml">
+    <Page Include="Views\Administration\Dev2Dialogue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -944,7 +934,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Workflow\WorkflowInputDataView.xaml">
+    <Page Include="Views\Workflow\WorkflowInputDataWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -986,7 +976,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Stop.png" />
     <Resource Include="Images\ClearFilterIcon.png" />
     <Resource Include="Images\GreyCrossIcon.png" />
     <Resource Include="Images\clearLeftIcon.png" />

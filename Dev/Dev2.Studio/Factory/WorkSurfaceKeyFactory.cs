@@ -1,5 +1,4 @@
 ﻿using System;
-using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -82,16 +81,6 @@ namespace Dev2.Studio.Factory
                     WorkSurfaceContext = context,
                     ResourceID = resourceModel.ID,
                     ServerID = resourceModel.ServerID
-                };
-        }
-
-        public static WorkSurfaceKey CreateKey(IDebugState debugState)
-        {
-            return new WorkSurfaceKey
-                {
-                    WorkSurfaceContext = WorkSurfaceContext.Workflow,
-                    ResourceID = debugState.ResourceID,
-                    ServerID = debugState.ServerID
                 };
         }
     }

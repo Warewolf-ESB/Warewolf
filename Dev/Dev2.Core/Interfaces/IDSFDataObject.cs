@@ -16,7 +16,6 @@ namespace Dev2
         bool WorkflowResumeable { get; set; }
         bool IsDebug { get; set; }
         Guid WorkspaceID { get; set; }
-        Guid ResourceID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
         ErrorResultTO Errors { get; set; }

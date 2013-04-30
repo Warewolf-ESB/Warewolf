@@ -5,7 +5,6 @@ using System.Linq;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Studio.Diagnostics;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,10 +19,10 @@ namespace Dev2.Core.Tests
         private static ImportServiceContext _importContext;
 
         private ObservableCollection<DebugTreeViewItemViewModel> _emptyRootItems = null;
-        private List<IDebugState> _emptyExistingContent = null;
+        private List<object> _emptyExistingContent = null;
 
         private ObservableCollection<DebugTreeViewItemViewModel> _testRootItems = null;
-        private List<IDebugState> _testExistingContent = null;
+        private List<object> _testExistingContent = null;
 
         #endregion Class Members
 
@@ -40,11 +39,11 @@ namespace Dev2.Core.Tests
         public void TestInitialize()
         {
             _emptyRootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
-            _emptyExistingContent = new List<IDebugState>();
+            _emptyExistingContent = new List<object>();
 
 
             _testRootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
-            _testExistingContent = new List<IDebugState>();
+            _testExistingContent = new List<object>();
 
             DebugState DebugState1 = new DebugState { ID = "1", ParentID = "1" };
             DebugStateTreeViewItemViewModel _testTreeRoot1 = new DebugStateTreeViewItemViewModel(null, DebugState1, null);
@@ -95,9 +94,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void PlaceContentInTree_Where_ContentFailsFilter_Expected_Null()
         {
-            var state = DebugStateFactory.Create("cake", null);
-            DebugTreeViewItemViewModel actual = _debugOutputTreeGenerationStrategy
-                .PlaceContentInTree(_emptyRootItems, _emptyExistingContent, state, "moo", false, 0); ;
+            DebugTreeViewItemViewModel actual = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_emptyRootItems, _emptyExistingContent, "cake", "moo", false, 0); ;
 
             Assert.IsNull(actual);
         }
@@ -105,9 +102,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void PlaceContentInTree_Where_ContentIsString_Expected_ItemAtRoot()
         {
-            var state = DebugStateFactory.Create("cake", null);
-            DebugTreeViewItemViewModel actual = _debugOutputTreeGenerationStrategy
-                .PlaceContentInTree(_emptyRootItems, _emptyExistingContent, state, "", false, 0); ;
+            DebugTreeViewItemViewModel actual = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_emptyRootItems, _emptyExistingContent, "cake", "", false, 0); ;
 
             CollectionAssert.Contains(_emptyRootItems, actual);
         }

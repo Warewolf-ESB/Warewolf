@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Activities;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Runtime.DurableInstancing;
 using System.Threading;
-using System.Threading.Tasks;
 using Dev2.DataList.Contract;
 using Dev2.Network.Execution;
-using Dev2.Runtime.ESB.WF;
-using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using ServiceStack.Common.Extensions;
 
 namespace Dev2.DynamicServices
 {
@@ -25,6 +19,7 @@ namespace Dev2.DynamicServices
         public static long Balance = 0;
 
         private static readonly FileSystemInstanceStore InstanceStore = new FileSystemInstanceStore();
+
 
         /// <summary>
         /// Invokes the workflow.
@@ -147,7 +142,7 @@ namespace Dev2.DynamicServices
                     if(instanceId == Guid.Empty)
                     {
                         Interlocked.Increment(ref Balance);
-                        run.Run();
+                        run.Instance.Run();
                         waitHandle.Wait();
                     }
                     else
@@ -158,12 +153,16 @@ namespace Dev2.DynamicServices
                         {
                             if(!string.IsNullOrEmpty(bookmarkName))
                             {
-                                dataTransferObject.CurrentBookmarkName = bookmarkName;
-                                run.Resume(dataTransferObject);
+                                //IDSFDataObject resumptionDataObject = dataTransferObject.Clone();
+                                var existingDlid = dataTransferObject.DataListID;
+
+                                run.Instance.Load(instanceId);
+                                // Changed it so the "child data" can pass through ;) -- It is already present in the AbmientData var, hence the null ;)
+                                run.Instance.ResumeBookmark(bookmarkName, existingDlid);
                             }
                             else
                             {
-                                run.Run();
+                                run.Instance.Run();
                             }
 
                             waitHandle.Wait();
@@ -214,8 +213,7 @@ namespace Dev2.DynamicServices
             return dataTransferObject;
         }
 
-
-        private sealed class WorkflowApplicationRun : IExecutableService, IDisposable
+        private sealed class WorkflowApplicationRun : IDisposable
         {
             #region Instance Fields
             private bool _isDisposed;
@@ -232,9 +230,8 @@ namespace Dev2.DynamicServices
 
             #region Public Properties
             public IDSFDataObject DataTransferObject { get { return _result; } }
-           // public WorkflowApplication Instance { get { return _instance; } }
+            public WorkflowApplication Instance { get { return _instance; } }
             public ErrorResultTO AllErrors { get; private set; }
-            private IList<IExecutableService> _associatedServices; 
             #endregion
 
             #region Constructor
@@ -255,45 +252,16 @@ namespace Dev2.DynamicServices
                 _instance.OnUnhandledException = OnUnhandledException;
                 AllErrors = errors;
             }
-
             #endregion
 
-            public Guid ID { get; set; }
-            public Guid WorkspaceID { get; set; }
-            public IList<IExecutableService> AssociatedServices
+            #region Completion Handling
+            private void LockServices()
             {
-                get { return _associatedServices ?? (_associatedServices = new List<IExecutableService>()); }
             }
 
-            public void Run()
+            private void UnlockServices()
             {
-                ID = DataTransferObject.ResourceID;
-                WorkspaceID = DataTransferObject.WorkspaceID;
-                ExecutableServiceRepository.Instance.Add(this);
-                _instance.Run();
             }
-
-            public async Task Terminate()
-            {
-                AssociatedServices.ForEach(async s =>
-                {
-                    await s.Terminate();
-                });
-                await Task.Factory.FromAsync(_instance.BeginTerminate,
-                                                            _instance.EndTerminate, "User cancelled", null);
-                ExecutableServiceRepository.Instance.Remove(this);
-            }
-
-            public void Resume(IDSFDataObject dataObject)
-            {
-                var instanceID = Guid.Parse(dataObject.WorkflowInstanceId);
-                var bookmarkName = dataObject.CurrentBookmarkName;
-                var existingDlid = dataObject.DataListID;
-                _instance.Load(instanceID);
-                _instance.ResumeBookmark(bookmarkName, existingDlid);
-            }
-
-            #region Completion Handling       
 
             private void OnCompleted(WorkflowApplicationCompletedEventArgs args)
             {
@@ -385,11 +353,9 @@ namespace Dev2.DynamicServices
                 finally
                 {
                     _waitHandle.Set();
-                    ExecutableServiceRepository.Instance.Remove(this);
                 }
 
                 ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);
-
             }
 
             #endregion

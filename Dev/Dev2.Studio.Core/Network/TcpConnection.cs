@@ -1,7 +1,5 @@
 ﻿using System;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Diagnostics;
-using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -27,8 +25,7 @@ namespace Dev2.Studio.Core.Network
 
         protected override ITcpClientHost CreateHost(bool isAuxiliary)
         {
-            var host = new TcpClientHost(IsAuxiliary);
-            return host;
+            return new TcpClientHost(IsAuxiliary);
         }
     }
 }

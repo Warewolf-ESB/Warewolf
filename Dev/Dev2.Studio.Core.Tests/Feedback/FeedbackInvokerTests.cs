@@ -1,5 +1,4 @@
 ﻿using Dev2.Composition;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Feedback;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -79,7 +78,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
             feedbackAction.Setup(f => f.StartFeedback()).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
             
@@ -100,7 +99,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(false);
             feedbackAction.Setup(f => f.StartFeedback()).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -118,7 +117,7 @@ namespace Dev2.Core.Tests.Feedback
         [ExpectedException(typeof(ArgumentNullException))]
         public void InvokeFeedback_Where_ActionIsNull_Expected_ArgumentNullException()
         {
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -141,7 +140,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.Priority).Returns(1);
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -167,8 +166,8 @@ namespace Dev2.Core.Tests.Feedback
             FeedbackInvoker theInvoker = new FeedbackInvoker();
             theInvoker.CurrentAction = feedbackAction.Object;
 
-            Mock<IPopupController> yesPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            Mock<IPopupController> noPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<IPopUp> yesPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> noPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             
             // If it's already recording, display a box to confirm if the user wants to stop the recording, and click Yes
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(yesPopup);
@@ -210,7 +209,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.Priority).Returns(1);
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -238,7 +237,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.Priority).Returns(1);
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -262,7 +261,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.Priority).Returns(1);
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -281,7 +280,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction1.Setup(f => f.Priority).Returns(2);
             feedbackAction1.Setup(f => f.StartFeedback()).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -298,7 +297,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
             feedbackAction.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -324,7 +323,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction1.Setup(f => f.CanProvideFeedback).Returns(true);
             feedbackAction1.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
@@ -348,7 +347,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(false);
             feedbackAction.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
-            Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            Mock<IPopUp> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 

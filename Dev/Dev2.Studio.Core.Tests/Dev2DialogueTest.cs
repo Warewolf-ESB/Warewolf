@@ -2,9 +2,9 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Studio.ViewModels.Administration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Administration;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -82,7 +82,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2DialogueSetup_CorrectParameterSet_Test()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2DialogueSetup_CorrectParameterSet_Test.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue("Test Title", "Test Description", newFileName, "SomeTitleText");
@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         public void Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull() {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue(null, "Test Description", newFileName, "SomeTitleText");
@@ -114,7 +114,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullDescription_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_DescriptionSetToEmpty()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullDescription_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_DescriptionSetToEmpty.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue("Test Title", null, newFileName, "SomeTitleText");
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullTitleDescription_ValidgImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleandDescriptionSetToEmpty()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullTitleDescription_ValidgImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleandDescriptionSetToEmpty.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue(null, null, newFileName, "SomeTitleText");
@@ -142,7 +142,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullImageSource_ValidTitleDescriptionDescriptionTitle_Expected_NullImageReference()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             dev2Dialogue.SetupDialogue("Test Title", "Test Description", null, "SomeTitleText");
             Assert.IsTrue(dev2Dialogue.ImageSource == null);
             // cleanup - Dispose of the dev2Dialogue
@@ -152,7 +152,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullTitleDesciptionImageSource_ValidDescriptionTitle_Expected_CreatedWithOnlyDescriptionTitleText()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             dev2Dialogue.SetupDialogue(null, null, null, "SomeTitleText");
             Assert.IsFalse(string.IsNullOrEmpty(dev2Dialogue.DescriptionTitleText));
             // cleanup - Dispose of the dev2Dialogue
@@ -163,7 +163,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullDesciptionTitleText_ValidTitleDescriptionImageSource_Expected_NullImageReference()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             dev2Dialogue.SetupDialogue(null, null, null, "SomeTitleText");
             Assert.IsFalse(string.IsNullOrEmpty(dev2Dialogue.DescriptionTitleText));
 
@@ -174,7 +174,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullTitleDescriptionTitleText_ValidImageSourceDescription_Expected_EmptyTitleAndDescription()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullTitleDescriptionTitleText_ValidImageSourceDescription_Expected_EmptyTitleAndDescription.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue(null, "Test Description", newFileName, null);
@@ -188,7 +188,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullDescriptionDescriptionTitleText_ValidTitleImageSource_Expected_EmptyDescriptionTitleAndDescription()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullDescriptionDescriptionTitleText_ValidTitleImageSource_Expected_EmptyDescriptionTitleAndDescription.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue("Test Title", null, newFileName, null);
@@ -202,7 +202,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Dev2Dialogue_NullTitleDescriptionDescriptionTitleText_ValidImageSource_Expected_ValidImage()
         {
-            IDialogueViewModel dev2Dialogue = new DialogueViewModel();
+            IDev2DialogueViewModel dev2Dialogue = new Dev2DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullTitleDescriptionDescriptionTitleText_ValidImageSource_Expected_ValidImage.png");
             createFile(newFileName);
             dev2Dialogue.SetupDialogue("Test Title", null, newFileName, null);

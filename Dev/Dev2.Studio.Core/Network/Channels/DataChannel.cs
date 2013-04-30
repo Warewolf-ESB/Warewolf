@@ -41,6 +41,30 @@ namespace Dev2.Studio.Core.Network.Channels
 
         public Guid ServerID { get { return _connection.ServerID; } }
 
+        //public TCPDispatchedClient AcquireAuxiliaryConnection()
+        //{
+        //    Connect();
+        //    //return _tcpHost.CreateAuxiliaryClient();
+        //    return null;
+        //}
+
+        public void AddDebugWriter(IDebugWriter writer)
+        {
+            Connect();
+            _connection.AddDebugWriter(writer);
+        }
+
+        public void RemoveDebugWriter(IDebugWriter writer)
+        {
+            _connection.EventAggregator.Publish(new DebugStatusMessage(false));
+        }
+
+        public void RemoveDebugWriter(Guid writerID)
+        {
+            Connect();
+            _connection.RemoveDebugWriter(writerID);
+        }
+
         #endregion
 
         void Connect()

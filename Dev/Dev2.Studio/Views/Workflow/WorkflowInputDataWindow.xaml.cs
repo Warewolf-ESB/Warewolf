@@ -1,5 +1,6 @@
 ﻿using Dev2.DataList.Contract;
-using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.UI;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
@@ -12,17 +13,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace Dev2.Studio.Views.Workflow
+namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
     /// <summary>
     /// Interaction logic for WorkflowInputDataWindow.xaml
     /// </summary>
-    public partial class WorkflowInputDataView
+    public partial class WorkflowInputDataWindow : Window
     {
-        public WorkflowInputDataView()
+        public WorkflowInputDataWindow()
         {
             InitializeComponent();
             SetUpTextEditor();
+            Owner = App.Current.MainWindow;
         }
 
         private TextEditor _editor;

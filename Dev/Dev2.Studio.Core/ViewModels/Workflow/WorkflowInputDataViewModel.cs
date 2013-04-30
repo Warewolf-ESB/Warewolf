@@ -1,26 +1,16 @@
-﻿using System.Net;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Session;
-using Dev2.Studio.AppResources.Messages;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Linq;
-using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels.Diagnostics;
 
-namespace Dev2.Studio.ViewModels.Workflow
+
+namespace Dev2.Studio.Core.ViewModels
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
@@ -32,35 +22,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         private DebugTO _debugTO;
         private string _xmlData;
         private bool _rememberInputs;
-        private IContextualResourceModel _resourceModel;
         #endregion Fields
 
         #region Ctor
-        public WorkflowInputDataViewModel(IServiceDebugInfoModel input)
+        public WorkflowInputDataViewModel(DebugTO debugTO)
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781           
-            _workflowInputs = new OptomizedObservableCollection<IDataListItem>(); 
-
-            var debugTO = new DebugTO
-            {
-                DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList)
-                               ? input.ResourceModel.DataList
-                               : "<DataList></DataList>",
-                ServiceName = input.ResourceModel.ResourceName,
-                WorkflowID = input.ResourceModel.ResourceName,
-                WorkflowXaml = input.ResourceModel.WorkflowXaml,
-                ResourceID =  input.ResourceModel.ID,
-                ServerID = input.ResourceModel.ServerID,
-                RememberInputs = true
-            };
-
-            if (input.DebugModeSetting == DebugMode.DebugInteractive)
-            {
-                debugTO.IsDebugMode = true;
-            }
-
+            _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
             DebugTO = debugTO;
-            _resourceModel = input.ResourceModel;
+
         }
         #endregion Ctor
 
@@ -179,35 +149,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
             if (DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO);
-            ExecuteWorkflow();
-            RequestClose();
-        }
 
-        public void ExecuteWorkflow()
-        {
-
-            var clientContext = _resourceModel.Environment.DsfChannel as IStudioClientContext;
-            if (clientContext != null)
-            {
-                XElement dataList = XElement.Parse(DebugTO.XmlData);
-                dataList.Add(new XElement("BDSDebugMode", DebugTO.IsDebugMode));
-
-                EventAggregator.Publish
-                    (new SetDebugStatusMessage(DebugTO.ServerID, DebugTO.ResourceID, DebugStatus.Executing));
-
-                WebServer.SendAsync(WebServerMethod.POST, _resourceModel, dataList.ToString(), ExecutionCallback);
-            }
-        }
-
-        private void ExecutionCallback(UploadStringCompletedEventArgs args)
-        {
-            SendFinishedMessage();
-        }
-
-        private void SendFinishedMessage()
-        {
-            EventAggregator.Publish
-                (new SetDebugStatusMessage(DebugTO.ServerID, DebugTO.ResourceID, DebugStatus.Finished));
+            RequestClose(ViewModelDialogResults.Okay);
         }
 
         /// <summary>
@@ -221,7 +164,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugTO.RememberInputs = RememberInputs;
             if (DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO); //2013.01.22: Ashley Lewis - Bug 7837
 
-            SendFinishedMessage();
             RequestClose(ViewModelDialogResults.Cancel);
         }
 
@@ -541,18 +483,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return itemsAdded;
         }
-
-        protected override void OnViewAttached(object view, object context)
-        {
-            LoadWorkflowInputs();
-            base.OnViewAttached(view, context);
-        }
         #endregion Private Methods
-
-        public void ViewClosed()
-        {
-            if (!CloseRequested)
-                SendFinishedMessage();
-        }
     }
 }

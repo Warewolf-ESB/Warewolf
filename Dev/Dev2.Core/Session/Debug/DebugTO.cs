@@ -44,10 +44,6 @@ namespace Dev2.Session {
 
         public string WorkflowID { get; set; }
 
-        public Guid ResourceID { get; set; }
-
-        public Guid ServerID { get; set; }
-
         #endregion Properties
 
         #region Ctor

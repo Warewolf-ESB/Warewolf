@@ -108,11 +108,10 @@ namespace Dev2.Utilities
         public static ModelItem GetActivityFromWrapper<T>(Tuple<ModelItem, T> wrapper,
                                                 string expressionProperty)
         {
-
-            ModelItem activity = wrapper.Item1;
-            if (activity == null) return null;
-            ModelProperty property = activity.Properties[expressionProperty];
-            return property == null ? null : property.Value;
+            ModelItem switchActivity = wrapper.Item1;
+            if (switchActivity == null) return null;
+            ModelProperty switchProperty = switchActivity.Properties[expressionProperty];
+            return switchProperty == null ? null : switchProperty.Value;
         }
     }
 }

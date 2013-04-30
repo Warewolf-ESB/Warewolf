@@ -544,7 +544,6 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        [Ignore]
         public void EnvironmentRepositoryReadSessionWithOneEnvironmentExpectedReturnsOneEnvironment()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();

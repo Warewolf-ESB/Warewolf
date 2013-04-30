@@ -1,12 +1,10 @@
-﻿using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.ViewModels;
+﻿using Dev2.Studio.Core.ViewModels;
 using System.ComponentModel.Composition;
 using System.Windows;
 
 namespace Dev2.Core.Tests.ProperMoqs {
-    [Export(typeof(IPopupController))]
-    public class MoqPopup : IPopupController
-    {
+    [Export(typeof(IPopUp))]
+    public class MoqPopup : IPopUp {
         private string _header;
         private string _discripton;
         private string _question;

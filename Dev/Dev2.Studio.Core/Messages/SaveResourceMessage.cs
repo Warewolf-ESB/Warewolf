@@ -5,12 +5,10 @@ namespace Dev2.Studio.Core.Messages
     public class SaveResourceMessage:IMessage
     {
         public IContextualResourceModel Resource { get; set; }
-        public bool IsLocalSave { get; set; }
 
-        public SaveResourceMessage(IContextualResourceModel resource, bool isLocalSave)
+        public SaveResourceMessage(IContextualResourceModel resource)
         {
             Resource = resource;
-            IsLocalSave = isLocalSave;
         }
     }
 }

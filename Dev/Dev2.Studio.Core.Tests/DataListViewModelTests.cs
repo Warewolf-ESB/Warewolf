@@ -10,7 +10,6 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

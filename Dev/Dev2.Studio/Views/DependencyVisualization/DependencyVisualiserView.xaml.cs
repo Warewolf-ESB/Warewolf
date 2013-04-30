@@ -60,7 +60,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
                         if (resource != null)
                         {
                             //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                            EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                            EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
                         }
                     }
                 }                

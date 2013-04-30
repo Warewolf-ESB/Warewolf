@@ -237,10 +237,4 @@
   <data name="CompilerError_InvalidServiceActionName" xml:space="preserve">
     <value>Error: Service action name containing invalid characters was found '{0}.{1}'</value>
   </data>
-  <data name="CompilerError_TerminationFailed" xml:space="preserve">
-    <value>Message: Termination of workflow failed</value>
-  </data>
-  <data name="CompilerMessage_TerminationSuccess" xml:space="preserve">
-    <value>Message: Workflow succesfully terminated</value>
-  </data>
 </root>

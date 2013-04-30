@@ -1,7 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.UI;
 using System;
@@ -41,7 +40,7 @@ namespace Dev2.Studio
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                IPopupController popup = ImportService.GetExportValue<IPopupController>();
+                IPopUp popup = ImportService.GetExportValue<IPopUp>();
                 popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. " + Environment.NewLine + Environment.NewLine + "Please note that tabs are fully supported but the runtime, in variables and when reading from files.", "Tabs Pasted", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog);
             }), null);
         }

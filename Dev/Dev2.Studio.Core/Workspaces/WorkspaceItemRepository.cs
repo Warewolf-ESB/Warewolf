@@ -1,30 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Composition;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Workspaces
 {
-    [Export(typeof(IWorkspaceItemRepository))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
-    public class WorkspaceItemRepository : IWorkspaceItemRepository
+    public static class WorkspaceItemRepository
     {
-        private IList<IWorkspaceItem> _workspaceItems;
-
-        public IList<IWorkspaceItem> WorkspaceItems
-        {
-            get { return _workspaceItems ?? (_workspaceItems = Read()); } 
-        }
-
         #region RepositoryPath
 
         static string _repositoryPath;
@@ -50,7 +34,7 @@ namespace Dev2.Studio.Core.Workspaces
 
         #region Read
 
-        private IList<IWorkspaceItem> Read()
+        public static IList<IWorkspaceItem> Read()
         {
             var result = new List<IWorkspaceItem>();
             if (File.Exists(RepositoryPath))
@@ -74,10 +58,10 @@ namespace Dev2.Studio.Core.Workspaces
 
         #region Write
 
-        public void Write()
+        public static void Write(IList<IWorkspaceItem> items)
         {
             var root = new XElement("WorkspaceItems");
-            foreach (var workspaceItem in WorkspaceItems)
+            foreach (var workspaceItem in items)
             {
                 var itemXml = workspaceItem.ToXml();
                 root.Add(itemXml);
@@ -98,56 +82,5 @@ namespace Dev2.Studio.Core.Workspaces
 
         #endregion
 
-        public void AddWorkspaceItem(IContextualResourceModel model)
-        {
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == model.ResourceName);
-            if (workspaceItem != null) return;
-
-            var context = (IStudioClientContext)model.Environment.DsfChannel;
-            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID)
-                {
-                    ServiceName = model.ResourceName,
-                    ServiceType =
-                        model.ResourceType == ResourceType.Source
-                            ? WorkspaceItem.SourceServiceType
-                            : WorkspaceItem.ServiceServiceType,
-                });
-            Write();
-        }
-
-        public string UpdateWorkspaceItem(IContextualResourceModel resource)
-        {
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == resource.ResourceName);
-
-            if (workspaceItem == null)
-            {
-                return string.Empty;
-            }
-
-            var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-
-            workspaceItem.Action = WorkspaceItemAction.Commit;
-            dynamic publishRequest = new UnlimitedObject();
-            publishRequest.Service = "UpdateWorkspaceItemService";
-            publishRequest.Roles = String.Join(",", securityContext.Roles);
-            publishRequest.ItemXml = workspaceItem.ToXml();
-
-            string result = resource.Environment.DsfChannel
-                                    .ExecuteCommand(publishRequest.XmlString, workspaceItem.WorkspaceID,
-                                                    GlobalConstants.NullDataListID) ??
-                            string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, publishRequest.Service);
-            return result;
-
-        }
-
-        public void Remove(IContextualResourceModel resourceModel)
-        {
-            var itemToRemove =
-                WorkspaceItems.FirstOrDefault(c => c.ServiceName == resourceModel.ResourceName);
-            if (itemToRemove == null) return;
-
-            WorkspaceItems.Remove(itemToRemove);
-            Write();
-        }
     }
 }

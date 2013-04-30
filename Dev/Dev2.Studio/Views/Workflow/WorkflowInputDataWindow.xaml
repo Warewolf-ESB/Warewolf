@@ -1,4 +1,4 @@
-﻿<Window x:Class="Dev2.Studio.Views.Workflow.WorkflowInputDataView"
+﻿<Window x:Class="Unlimited.Applications.BusinessDesignStudio.Views.WorkflowInputDataWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Dev2="clr-namespace:Dev2.UI"
@@ -6,15 +6,12 @@
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
         xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
         xmlns:igDock="http://infragistics.com/DockManager"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         Title="Debug"         
         Width="450"        
         Height="400"       
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        FocusManager.FocusedElement="{Binding ElementName=DataListInputs}"
-        cal:Message.Attach="[Event Closing] = [Action ViewClosed]"
-        cal:Bind.Model="{Binding}">
+        FocusManager.FocusedElement="{Binding ElementName=DataListInputs}">
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/debugplay.png" ></BitmapImage>
     </Window.Icon>

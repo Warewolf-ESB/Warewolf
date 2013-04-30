@@ -6,7 +6,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -178,67 +177,6 @@ namespace Dev2.Core.Tests.Environments
             var category = sourceXml.ElementSafe("Category").ToUpper();
             Assert.AreNotEqual("SERVERS", category);
         }
-
-        #endregion
-
-
-        #region ServerStateChanged
-
-        // PBI 9228: TWR - 2013.04.17
-
-        [TestMethod]
-        public void ServerStateChangedEventWhenOfflineExpectedPublishesEnvironmentDisconnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Offline, false);
-        }
-
-        [TestMethod]
-        public void ServerStateChangedEventWhenOnlineExpectedPublishesEnvironmentConnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Online, false);
-        }
-
-        [TestMethod]
-        public void ServerStateChangedEventWhenAuxiliaryConnectionExpectedDoesNothing()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Online, true);
-        }
-
-        [TestMethod]
-        public void LoginStateChangedEventWhenOfflineExpectedPublishesEnvironmentDisconnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Offline, false);
-        }
-
-        [TestMethod]
-        public void LoginStateChangedEventWhenOnlineExpectedPublishesEnvironmentConnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Online, false);
-        }
-
-        [TestMethod]
-        public void LoginStateChangedEventWhenAuxiliaryConnectionExpectedDoesNothing()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Online, true);
-        }
-
-        [TestMethod]
-        public void NetworkStateChangedEventExpectedDoesNotPublishEnvironmentMessages()
-        {
-            var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>())).Verifiable();
-
-            var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
-            environmentConnection.Setup(c => c.IsAuxiliary).Returns(false);
-
-            var envModel = CreateEnvironmentModel(Guid.NewGuid(), environmentConnection.Object);
-
-            environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
-
-            eventAggregator.Verify(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>()), Times.Never());
-        }
-
 
         #endregion
 
@@ -449,7 +387,7 @@ namespace Dev2.Core.Tests.Environments
         {
             Online,
             Offline
-    }
+        }
 
         #endregion
 

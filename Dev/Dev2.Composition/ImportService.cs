@@ -88,15 +88,9 @@ namespace Dev2.Composition
                 //MainCatalogue.Catalogs.Add(new AssemblyCatalog(Assembly.GetEntryAssembly()));
                 foreach (ComposablePartCatalog catalogue in catalogues)
                 {
-                    SanitizeCatalogue(catalogue);
                     importService.MainCatalogue.Catalogs.Add(catalogue);
                 }
             }
-        }
-
-        private static void SanitizeCatalogue(ComposablePartCatalog catalogue)
-        {
-           
         }
 
         /// <summary>
@@ -288,12 +282,6 @@ namespace Dev2.Composition
         {
             ImportService importService = GetContextualImportService();
             var exports = importService.Container.GetExports<T>();
-            importService.Container.ReleaseExports(exports);
-        }
-
-        public static void ReleaseExports(IEnumerable<Export> exports)
-        {
-            ImportService importService = GetContextualImportService();
             importService.Container.ReleaseExports(exports);
         }
 

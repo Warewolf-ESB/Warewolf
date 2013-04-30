@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Dev2.Common.Patterns;
 using Dev2.Common.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data

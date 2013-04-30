@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.StartupResources;
-using Dev2.Studio.ViewModels;
 
 namespace Dev2.Studio.Views
 {
@@ -28,5 +27,14 @@ namespace Dev2.Studio.Views
         }
 
         #endregion Constructor
+
+        public void Variables_OnKeyboardLostFocus(object sender, RoutedEventArgs routedEventArgs)
+        {
+            IMainViewModel vm = this.DataContext as IMainViewModel;
+            if(vm != null)
+            {
+                vm.AddMissingAndFindUnusedVariableForActiveWorkflow();
+            }
+        }
     }
 }
