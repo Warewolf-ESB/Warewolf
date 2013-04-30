@@ -74,7 +74,7 @@ using Action = System.Action;
 
 namespace Dev2.Studio.ViewModels
 {
-    [Export(typeof(IMainViewModel))]
+    [Export(typeof (IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
                                  IHandle<DeleteResourceMessage>, IHandle<ShowDependenciesMessage>,
@@ -350,7 +350,7 @@ namespace Dev2.Studio.ViewModels
                 ModelProperty implementationProperty = modelService.Root.Properties["Implementation"];
                 if (modelService.Root.Content != null)
                 {
-                    var fc = (Flowchart)modelService.Root.Content.ComputedValue;
+                    var fc = (Flowchart) modelService.Root.Content.ComputedValue;
                     var fs = new FlowStep();
                     dynamic wsa = Activator.CreateInstance(userInterfaceType);
                     fs.Action = wsa;
@@ -478,7 +478,7 @@ namespace Dev2.Studio.ViewModels
         [Import]
         public IFeedBackRecorder FeedBackRecorder { get; set; }
 
-        [Import(typeof(IWizardEngine))]
+        [Import(typeof (IWizardEngine))]
         public IWizardEngine WizardEngine { get; set; }
 
         [Import]
@@ -873,7 +873,7 @@ namespace Dev2.Studio.ViewModels
             if (resourceModel != null && resourceModel.Environment != null)
             {
                 string relativeUrl = string.Format("/services/{0}?wid={1}", resourceModel.ResourceName,
-                                                   ((IStudioClientContext)resourceModel.Environment.DsfChannel)
+                                                   ((IStudioClientContext) resourceModel.Environment.DsfChannel)
                                                        .WorkspaceID);
                 Uri url;
                 if (!Uri.TryCreate(resourceModel.Environment.Connection.WebServerUri, relativeUrl, out url))
@@ -921,7 +921,7 @@ namespace Dev2.Studio.ViewModels
 
             ActivateOrCreateUniqueWorkSurface<DependencyVisualiserViewModel>
                 (WorkSurfaceContext.DependencyVisualiser,
-                 new[] { new Tuple<string, object>("ResourceModel", resource) });
+                 new[] {new Tuple<string, object>("ResourceModel", resource)});
         }
 
         public void Debug(IContextualResourceModel resourceModel)
@@ -1019,7 +1019,7 @@ namespace Dev2.Studio.ViewModels
 
             buildRequest.ResourceXml = model.ToServiceDefinition();
 
-            Guid workspaceID = ((IStudioClientContext)model.Environment.DsfChannel).WorkspaceID;
+            Guid workspaceID = ((IStudioClientContext) model.Environment.DsfChannel).WorkspaceID;
 
             string result =
                 model.Environment.DsfChannel.
@@ -1053,7 +1053,7 @@ namespace Dev2.Studio.ViewModels
 
             string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
-                                                             , new[] { new Tuple<string, object>("Uri", path) });
+                                                             , new[] {new Tuple<string, object>("Uri", path)});
         }
 
         /// <summary>
@@ -1197,7 +1197,7 @@ namespace Dev2.Studio.ViewModels
                 //09.04.2013: Ashley Lewis - For Bug 9198 Passed args in uri to avoid using UploadToDataList(args)
                 string uriString = Browser.FormatUrl(requestUri.AbsoluteUri, args);
 
-                _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
+                _win = new WebPropertyEditorWindow(resourceViewModel, uriString) {Width = 850, Height = 600};
                 _win.ShowDialog();
             }
             else
@@ -1236,20 +1236,51 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        //void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
+        //{
+        //    string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+        //    IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
+        //                                                                                      resourceType);
+        //    tempResource.Category = "Unassigned";
+        //    tempResource.ResourceName = newWorflowName;
+        //    tempResource.DisplayName = newWorflowName;
+        //    tempResource.IsNewWorkflow = true;
+
+        //    WorkspaceItemRepository.AddWorkspaceItem(tempResource);
+        //    AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
+        //}
+
         public void AddSettings(IEnvironmentModel environment)
         {
-            WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, environment.DataListChannel.ServerID);
+            //WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings,
+            //                                                     environment.DataListChannel.ServerID);
 
-            bool exist = ActivateWorkSurfaceIfPresent(key);
+            //bool exist = ActivateWorkSurfaceIfPresent(key);
 
-            if (!exist)
-            {
-                WorkSurfaceContextViewModel context =
-                    WorkSurfaceContextFactory.CreateRuntimeConfigurationViewModel(environment);
-                Items.Add(context);
-                ActivateItem(context);
-            }
+            //if (!exist)
+            //{
+            //    WorkSurfaceContextViewModel context =
+            //        WorkSurfaceContextFactory.CreateRuntimeConfigurationViewModel(environment);
+            //    Items.Add(context);
+            //    ActivateItem(context);
+            //}
+            //WorkspaceItemRepository.AddWorkspaceItem(tempResource);
+            //AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
         }
+
+
+    //private void DisplayDebugOutput(IDebugState debugState)
+        //{
+        //    if (debugState == null)
+        //    {
+        //        return;
+        //    }
+        //    var key = WorkSurfaceKeyFactory.CreateKey(debugState);
+        //    var ctx = FindWorkSurfaceContextViewModel(key);
+        //    ctx.DisplayDebugOutput(debugState);
+        //}
+    
 
         public void ShowHelpTab(string uriToDisplay)
         {
@@ -2129,9 +2160,11 @@ namespace Dev2.Studio.ViewModels
 
             if (item != null && item.WorkSurfaceViewModel is WorkflowDesignerViewModel)
             {
-                (item.WorkSurfaceViewModel as WorkflowDesignerViewModel).AddMissingWithNoPopUpAndFindUnusedDataListItems();
+                if (item != null)
+            {
+                    item.Parent = this;
             }
-
+            }
             base.OnActivationProcessed(item, success);
 
             if (success)
