@@ -12,11 +12,12 @@ using Dev2.Studio.Core.ErrorHandling;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
-    public class DsfActivityViewModel : BaseViewModel
+    public class DsfActivityViewModel : SimpleBaseViewModel
     {
         #region Fields
 
@@ -46,6 +47,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel contextualResourceModel)
         {
+            WizardEngine = new WizardEngine();
             _modelItem = modelItem;
             _contextualResourceModel = contextualResourceModel;
             SetViewModelProperties(modelItem);
@@ -55,7 +57,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Properties
 
-        [Import]
+        
         public IWizardEngine WizardEngine { get; set; }
 
         public string IconPath
@@ -214,14 +216,20 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public ICommand OpenMappingCommand
         {
-            get { return _openMappingCommand ?? 
-                (_openMappingCommand = new RelayCommand(param => OpenMapping())); }
+            get
+            {
+                return _openMappingCommand ??
+                    (_openMappingCommand = new RelayCommand(param => OpenMapping()));
+            }
         }
 
         public ICommand OpenParentCommand
         {
-            get { return _openParentCommand ?? 
-                (_openParentCommand = new RelayCommand(param => OpenParent())); }
+            get
+            {
+                return _openParentCommand ??
+                    (_openParentCommand = new RelayCommand(param => OpenParent()));
+            }
         }
 
         #endregion Commands
@@ -309,15 +317,15 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 }
             }
 
-            if(_contextualResourceModel != null)
+            if (_contextualResourceModel != null)
             {
-                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);    
+                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);
             }
             else
             {
                 HasWizard = false;
             }
-            
+
         }
 
         public void SetInputs()
@@ -336,7 +344,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Dispose
 
-        public override void Dispose()
+        protected override void OnDispose()
         {
             if (PropertyCollection != null)
             {
@@ -353,6 +361,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             DataMappingViewModel = null;
 
             EventAggregator.Unsubscribe(this);
+            base.OnDispose();
         }
 
         #endregion Dispose

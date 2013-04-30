@@ -13,6 +13,8 @@ namespace Dev2.Studio.Core.ViewModels.Base
         private bool _closeRequested = false;
         private ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
 
+        private bool _isDisposed;
+
         #endregion Class Members
 
         private ValidationController _validationController;
@@ -52,15 +54,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         #region IDisposable Members
 
-        /// <summary>
-        /// Invoked when this object is being removed from the application
-        /// and will be subject to garbage collection.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            OnDispose();
-            GC.SuppressFinalize(this);
-        }
+        
 
         /// <summary>
         /// Child classes can override this method to perform 
@@ -68,9 +62,59 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// </summary>
         protected virtual void OnDispose()
         {
+            
+        }
+        
+
+        ~SimpleBaseViewModel()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
         }
 
-        #endregion // IDisposable Members
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
+        public void Dispose()
+        {
+            Dispose(true);
+
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if(!_isDisposed)
+            {
+                // If disposing equals true, dispose all managed
+                // and unmanaged resources.
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                    OnDispose();                   
+                }
+
+                // Call the appropriate methods to clean up
+                // unmanaged resources here.
+                _isDisposed = true;
+            }
+        }
+
+        #endregion
 
         #region Methods
 

@@ -741,7 +741,27 @@ namespace Dev2.Studio.ViewModels.Navigation
                     //}
                 }
 
-        #endregion private methods
+        #endregion
+
+        #region Dispose Handling
+
+        protected override void OnDispose()
+        {
+            if (EnvironmentRepository != null)
+            {
+                foreach (IEnvironmentModel environment in EnvironmentRepository.All())
+                {
+                    environment.ResourceRepository.Dispose();
+                }
+                
+                EnvironmentRepository.Dispose();
+                EnvironmentRepository = null;
+            }
+            EventAggregator.Unsubscribe(this);
+            base.OnDispose();
+        }
+
+        #endregion Dispose Handling
 
         public void Handle(RemoveNavigationResourceMessage message)
         {

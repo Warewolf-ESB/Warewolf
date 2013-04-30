@@ -51,17 +51,10 @@ namespace Dev2.Studio.Core.Models
 
         #endregion Class Members
 
-        #region Constructors
-
-        //public ResourceModel()
-        //{
-        //    _tagList = new List<string>();
-        //}
+        #region Constructors   
 
         public ResourceModel(IEnvironmentModel environment)
-        {
-            ImportService.SatisfyImports(this);
-
+        {           
             _tagList = new List<string>();
             Environment = environment;
 
@@ -71,10 +64,7 @@ namespace Dev2.Studio.Core.Models
 
         #endregion Constructors
 
-        #region Properties
-
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
+        #region Properties       
 
         public IEnvironmentModel Environment
         {

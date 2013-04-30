@@ -25,6 +25,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         readonly IEnvironmentModel _environmentModel;
         readonly IFrameworkSecurityContext _securityContext;
         readonly IWizardEngine _wizardEngine;
+        readonly HashSet<Guid> _cachedServices;
+
+        private bool _isDisposed;
 
         public event EventHandler ItemAdded;
 
@@ -37,7 +40,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
         {
-            if(wizardEngine == null)
+            if (wizardEngine == null)
             {
                 throw new ArgumentNullException("wizardEngine");
             }
@@ -46,6 +49,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _environmentModel = environmentModel;
             _securityContext = environmentModel.Connection.SecurityContext;
             _wizardEngine = wizardEngine;
+            _cachedServices = new HashSet<Guid>();
         }
 
         #endregion Constructor
@@ -58,12 +62,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void Load()
         {
             // BUG 9276 : TWR : 2013.04.19 - added IsLoaded check to prevent unnecessary loading of resources
-            if(!IsLoaded)
+            if (!IsLoaded)
             {
                 IsLoaded = true;
                 try
                 {
-                    _resourceModels.Clear();
+                    //_resourceModels.Clear();
                     AddResources(ResourceType.WorkflowService);
                     AddResources(ResourceType.Service);
                     AddResources(ResourceType.Source);
@@ -344,11 +348,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     try
                     {
                         IResourceModel resource = HydrateResourceModel(resourceType, item);
+                        if (resource != null)
+                        {
                         _resourceModels.Add(resource);
                         if (ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
+                    }
+
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch
@@ -359,13 +367,30 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                 }
             }
+
+            // Force GC to clear things up a bit ;)
+            GC.Collect(2);
+        }
+
+        private bool IsInCache(Guid id)
+        {
+            return _cachedServices.Contains(id);
         }
 
         private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data)
         {
+            Guid id = Guid.Parse(data.GetValue("ID"));
+            if (!IsInCache(id))
+            {
+                // add to cache of services fetched ;)
+                _cachedServices.Add(id);
+
             var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
             resource.ResourceType = resourceType;
-            if (data.XamlDefinition is string)
+
+                // TODO : make this property use new fetch definition service ;)
+
+                if (data.XamlDefinition is string)
             {
                 if (!string.IsNullOrEmpty(data.XamlDefinition))
                 {
@@ -375,7 +400,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             resource.DataList = data.GetValue("DataList");
-            resource.ID = Guid.Parse(data.GetValue("ID"));
+                resource.ID = id;
 
             resource.ServerID = Guid.Parse(data.GetValue("ServerID"));
 
@@ -473,6 +498,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             return resource;
+        }
+
+            return null;
         }
 
         #endregion Private Methods
@@ -607,6 +635,57 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return resultObj;
             }
             return result;
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        ~ResourceRepository()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
+        }
+
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
+        public void Dispose()
+        {
+            Dispose(true);
+
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!_isDisposed)
+            {
+                // If disposing equals true, dispose all managed
+                // and unmanaged resources.
+                if (disposing)
+                {
+                    // TODO 
+                }
+
+                // Call the appropriate methods to clean up
+                // unmanaged resources here.
+                _isDisposed = true;
+            }
         }
 
         #endregion

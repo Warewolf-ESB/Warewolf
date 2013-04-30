@@ -159,7 +159,11 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         protected override void OnDispose()
         {
-            //Mediator.DeRegister(MediatorMessages.UpdateExplorer, _mediatorKey);
+            if(NavigationViewModel != null)
+            {
+                NavigationViewModel.Dispose();
+                NavigationViewModel = null;
+            }
             EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }

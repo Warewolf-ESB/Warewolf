@@ -173,6 +173,8 @@ namespace Dev2.Studio.Core.Wizards
             //
             // Create the appropriate callback handler for the given activity
             //
+
+
             IActivitySettingsWizardCallbackHandler callbackHandler = GetActivitySpecificSettingsWizardCallbackHandler(activity.ItemType);
 
             //Add DataListCompiler
@@ -267,7 +269,7 @@ namespace Dev2.Studio.Core.Wizards
             // Get the wizard endpoint
             //
             string wizardName = String.Empty;
-            bool isDsfActivity = activity.ItemType == typeof (DsfActivity);
+            bool isDsfActivity = (activity.ItemType == typeof(DsfActivity) || activity.ItemType.BaseType == typeof(DsfActivity));
             if (isDsfActivity)
             {
                 var serviceNameProperty = activity.Properties["ServiceName"];

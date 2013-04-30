@@ -111,8 +111,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Okay()
         {
             RequestClose(ViewModelDialogResults.Okay);
-            ExplorerViewModel.NavigationViewModel.Dispose();
-            ExplorerViewModel.Dispose();
+            //Dispose();
         }
 
         /// <summary>
@@ -121,8 +120,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Cancel()
         {
             RequestClose(ViewModelDialogResults.Cancel);
-            ExplorerViewModel.NavigationViewModel.Dispose();
-            ExplorerViewModel.Dispose();
+            //Dispose();
         }
 
         #endregion Methods
@@ -142,6 +140,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 Okay();
             }
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        protected override void OnDispose()
+        {
+            if (ExplorerViewModel != null)
+            {
+                ExplorerViewModel.Dispose();
+                ExplorerViewModel = null;
+            }
+            base.OnDispose();
         }
 
         #endregion

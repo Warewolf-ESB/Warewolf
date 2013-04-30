@@ -183,10 +183,6 @@
     <Compile Include="PathOperations\TO\Dev2UnZipOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2ZipOperationTO.cs" />
     <Compile Include="Storage\IBinaryDataListStorage.cs" />
-    <Compile Include="Storage\ProtocolBuffers\AProtocolBuffer.cs" />
-    <Compile Include="Storage\ProtocolBuffers\IDev2ProtocolBuffer.cs" />
-    <Compile Include="Storage\ProtocolBuffers\ProtocolBufferFactory.cs" />
-    <Compile Include="Storage\ProtocolBuffers\BufferObjects\SampleObject.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>

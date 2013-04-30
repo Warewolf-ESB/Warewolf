@@ -439,29 +439,32 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void EditActivity(ModelItem modelItem)
         {
-            var modelService = Designer.Context.Services.GetService<ModelService>();
-            if (modelService.Root == modelItem.Root && modelItem.ItemType == typeof(DsfActivity))
+            if(Designer != null)
             {
-
-                var modelProperty = modelItem.Properties["ServiceName"];
-                if (modelProperty != null)
+                var modelService = Designer.Context.Services.GetService<ModelService>();
+                if(modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
                 {
-                    var res = modelProperty.ComputedValue;
 
-                    var resource =
-                        _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
-
-                    if (resource != null)
+                    var modelProperty = modelItem.Properties["ServiceName"];
+                    if(modelProperty != null)
                     {
-                        switch (resource.ResourceType)
-                        {
-                            case ResourceType.WorkflowService:
-                                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
-                                break;
+                        var res = modelProperty.ComputedValue;
 
-                            case ResourceType.Service:
-                                EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                                break;
+                        var resource =
+                            _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
+
+                        if(resource != null)
+                        {
+                            switch(resource.ResourceType)
+                            {
+                                case ResourceType.WorkflowService:
+                                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+                                    break;
+
+                                case ResourceType.Service:
+                                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                                    break;
+                            }
                         }
                     }
                 }

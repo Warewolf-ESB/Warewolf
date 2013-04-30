@@ -191,6 +191,7 @@
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
+    <Compile Include="AppResources\Repositories\ResourceConverter.cs" />
     <Compile Include="AppResources\Repositories\UserInterfaceLayoutRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>

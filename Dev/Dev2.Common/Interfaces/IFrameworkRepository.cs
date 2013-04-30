@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Dev2 {
-    public interface IFrameworkRepository<T>  {
+    public interface IFrameworkRepository<T> : IDisposable {
         ICollection<T> All();
         ICollection<T> Find(Expression<Func<T, bool>> expression);
         T FindSingle(Expression<Func<T, bool>> expression);
