@@ -421,7 +421,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 i++;
             }
-        }       
+        }
 
         /// <summary>
         /// Updates the location of last dropped model item. 
@@ -1118,11 +1118,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void BindToModel()
         {
-            _wd.Flush();
-            _resourceModel.WorkflowXaml = _wd.Text;
-            if (string.IsNullOrEmpty(_resourceModel.ServiceDefinition))
+            if (_wd != null)
             {
-                _resourceModel.ServiceDefinition = _resourceModel.ToServiceDefinition();
+                _wd.Flush();
+                _resourceModel.WorkflowXaml = _wd.Text;
+                if (string.IsNullOrEmpty(_resourceModel.ServiceDefinition))
+                {
+                    _resourceModel.ServiceDefinition = _resourceModel.ToServiceDefinition();
+                }
             }
         }
 
@@ -1453,14 +1456,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (isWorkflow != null)
             {
                 _vm = DsfActivityDropUtils.DetermineDropActivityType(isWorkflow);
-                
+
                 if (_vm != null)
                 {
                     _vm.Init();
                     if (!DsfActivityDropUtils.DoDroppedActivity(_vm))
                     {
-                        e.Handled = true;    
-                    }                    
+                        e.Handled = true;
+                    }
                 }
             }
         }
@@ -1507,7 +1510,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             {
                                 IContextualResourceModel resource = _vm.SelectedResourceModel;
                                 if (resource != null)
-                                {                                    
+                                {
                                     DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true);
 
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;

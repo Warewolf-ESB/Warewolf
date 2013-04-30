@@ -10,6 +10,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.InterfaceImplementors;
+using Dev2.Studio.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Studio.Webs.Callbacks
@@ -90,6 +91,8 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 throw new ArgumentNullException("value");
             }
+            value = JSONUtils.ScrubJSON(value);
+
             dynamic jsonObj = JObject.Parse(value);
             Save(environmentModel, jsonObj);
         }

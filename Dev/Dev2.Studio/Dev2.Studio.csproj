@@ -348,6 +348,7 @@
     <Compile Include="Utils\DsfActivityDropUtils.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingInputAction.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="ViewModels\DataList\DataListViewModel.cs" />
@@ -387,6 +388,7 @@
       <DependentUpon>DsfActivityDropWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Webs\Callbacks\DbSourceCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
     <Compile Include="Webs\RootWebSite.cs" />

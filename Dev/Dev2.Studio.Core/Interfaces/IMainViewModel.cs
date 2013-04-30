@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Run(IContextualResourceModel resourceModel);
         void SetActivePage(ILayoutObjectViewModel cell);
         void ViewInBrowser();
-        void Save(IContextualResourceModel resource, bool showWindow = true);
+        void Save(IContextualResourceModel resource, bool isLocalSave, bool showWindow = true);
         void Build(IContextualResourceModel resource, bool showWindow = true, bool deploy = true);
         void AddNewResource(string resourceType);
         //Massimo.Guerrera:16-04-2013 - BUG 9222

@@ -214,6 +214,7 @@
     </Compile>
     <Compile Include="IntellisenseProviderTest.cs" />
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
+    <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />

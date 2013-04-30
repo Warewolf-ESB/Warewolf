@@ -550,4 +550,7 @@ Developed By:</value>
   <data name="RuntimeConfigurationAssemblyDirectory" xml:space="preserve">
     <value>RuntimeConfigurationAssemblies</value>
   </data>
+  <data name="NewWorkflowBaseName" xml:space="preserve">
+    <value>Unsaved</value>
+  </data>
 </root>

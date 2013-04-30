@@ -26,4 +26,17 @@
     </div>
 </div>
 
-<script src="Scripts/Dialogs/SaveViewModel.js"></script>
+<script type="text/javascript">
+    // Make this available to chrome debugger
+    //@ sourceURL=SaveDialog.js  
+
+    //
+    // Assume stand alone mode if SaveViewModel.js has NOT been loaded by parent view
+    //
+    if (typeof SaveViewModel == "undefined") {
+        $.getScript("Scripts/Dialogs/SaveViewModel.js", function(data, textStatus, jqxhr) {
+            SaveViewModel.IsStandAlone = true;
+            SaveViewModel.showStandAlone();
+        });
+    }
+</script>

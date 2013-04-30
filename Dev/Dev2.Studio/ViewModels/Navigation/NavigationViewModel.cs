@@ -565,7 +565,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 case enDsfActivityType.Workflow:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow).ToList());
                     break;
                 case enDsfActivityType.Service:
                     BuildCategoryTree(ResourceType.Service, environmentVM,
@@ -577,9 +577,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                     break;
                 default:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
-                                        resources.Where(r => r.ResourceType == ResourceType.WorkflowService).ToList());
+                                resources.Where(r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow).ToList());
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                                        resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                               resources.Where(r => r.ResourceType == ResourceType.Source).ToList());
                     BuildCategoryTree(ResourceType.Service, environmentVM,
                                         resources.Where(r => r.ResourceType == ResourceType.Service).ToList());
                     break;
@@ -659,6 +659,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private void AddChild(IContextualResourceModel resource,
                               ITreeNode parent, bool isWizard = false)
         {
+            if(!resource.IsNewWorkflow)
+            {
             var res = TreeViewModelFactory.Create(resource, parent, isWizard);
 
             if(!_fromActivityDrop)
@@ -675,6 +677,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     AddChild(wizardResource, res, true);
                 }
             }
+        }
         }
 
         /// <summary>
@@ -733,10 +736,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             //    }
             //}
             //else
-            //{
+                    //{
             environment.Connect();
-            //}
-        }
+                    //}
+                }
 
         #endregion private methods
 

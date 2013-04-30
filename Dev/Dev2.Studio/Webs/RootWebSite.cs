@@ -21,7 +21,7 @@ namespace Dev2.Studio.Webs
         //
         public static bool ShowDialog(IContextualResourceModel resourceModel)
         {
-            if(resourceModel == null)
+            if (resourceModel == null)
             {
                 return false;
             }
@@ -29,16 +29,16 @@ namespace Dev2.Studio.Webs
             string resourceID;
             var resourceType = ResourceType.Unknown;
 
-            if(string.IsNullOrEmpty(resourceModel.ServiceDefinition))
+            if (string.IsNullOrEmpty(resourceModel.ServiceDefinition))
             {
                 resourceID = Guid.Empty.ToString();
-                if(resourceModel.IsDatabaseService)
+                if (resourceModel.IsDatabaseService)
                 {
                     resourceType = ResourceType.DbService;
                 }
                 else
                 {
-                    Enum.TryParse(resourceModel.DisplayName,out resourceType);
+                    Enum.TryParse(resourceModel.DisplayName, out resourceType);
                 }
             }
             else
@@ -46,19 +46,19 @@ namespace Dev2.Studio.Webs
                 var resourceXml = XElement.Parse(resourceModel.ServiceDefinition);
 
                 resourceID = resourceXml.AttributeSafe("ID");
-                if(string.IsNullOrEmpty(resourceID))
+                if (string.IsNullOrEmpty(resourceID))
                 {
                     resourceID = resourceXml.AttributeSafe("Name");
                 }
                 Enum.TryParse(resourceXml.AttributeSafe("ResourceType"), out resourceType);
 
-                if(resourceType == ResourceType.Unknown)
+                if (resourceType == ResourceType.Unknown)
                 {
                     #region Try determine resourceType of 'old' resources
 
-                    if(resourceXml.Name.LocalName.Equals("Source", StringComparison.InvariantCultureIgnoreCase))
+                    if (resourceXml.Name.LocalName.Equals("Source", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if(resourceXml.AttributeSafe("Type").Equals(enSourceType.Dev2Server.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        if (resourceXml.AttributeSafe("Type").Equals(enSourceType.Dev2Server.ToString(), StringComparison.InvariantCultureIgnoreCase))
                         {
                             resourceType = ResourceType.Server;
                         }
@@ -69,9 +69,9 @@ namespace Dev2.Studio.Webs
                             resourceType = ResourceType.DbSource;
                         }
                     }
-                    else if(resourceXml.Name.LocalName.Equals("Service", StringComparison.InvariantCultureIgnoreCase))
+                    else if (resourceXml.Name.LocalName.Equals("Service", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if(resourceXml.ElementSafe("TypeOf").Equals(enActionType.InvokeStoredProc.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        if (resourceXml.ElementSafe("TypeOf").Equals(enActionType.InvokeStoredProc.ToString(), StringComparison.InvariantCultureIgnoreCase))
                         {
                             // DynamicServicesHost auto-adds an ID to each service if it doesn't exist in the persisted XML
                             // Since the resource is read from disk rather than DynamicServicesHost we use the name instead                            
@@ -94,7 +94,7 @@ namespace Dev2.Studio.Webs
 
         public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
         {
-            if(environment == null)
+            if (environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -105,7 +105,7 @@ namespace Dev2.Studio.Webs
             double height;
             var workspaceID = ((IStudioClientContext)environment.DsfChannel).WorkspaceID;
 
-            switch(resourceType)
+            switch (resourceType)
             {
                 case ResourceType.Server:
                     workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
@@ -138,5 +138,35 @@ namespace Dev2.Studio.Webs
         }
 
         #endregion
-    }
+
+        #region ShowSaveDialog
+
+        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null)
+        {
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(resourceModel), "WorkflowService", resourceID = null);            
+        }
+
+        private static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceID = null)
+        {
+            
+            if (resourceModel == null)
+            {
+                throw new ArgumentNullException("resourceModel");
+            }
+            IEnvironmentModel environment = resourceModel.Environment;
+
+            if (environment == null)
+            {
+                throw new ArgumentNullException("environment");
+            }        
+            string pageName = "dialogs/savedialog";        
+            double width = 612;          
+            double height = 457;
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+          
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}", pageName, workspaceID, resourceID, type), callbackHandler, width, height);            
+        }
+
+        #endregion
+    }   
 }
