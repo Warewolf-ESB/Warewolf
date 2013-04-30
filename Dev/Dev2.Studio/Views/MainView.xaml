@@ -514,7 +514,7 @@
 						</ribbon:RibbonGroup.ItemTemplate>
 					</ribbon:RibbonGroup>
 
-                    <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="Create New Workflow Service">
+                    <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="New Service">
 						<ribbon:RibbonButton Label="Workflow"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_NewEntityModelService.png"
 							Command="{Binding NewResourceCommand}" CommandParameter="Workflow"
