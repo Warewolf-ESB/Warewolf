@@ -134,7 +134,6 @@ namespace Dev2.DynamicServices
         public Guid WorkspaceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
-        public Guid ResourceID { get; set; }
 
         public ErrorResultTO Errors
         {
@@ -238,8 +237,6 @@ namespace Dev2.DynamicServices
             result.WorkflowResumeable = WorkflowResumeable;
             result.WorkspaceID = WorkspaceID;
             result.IsDataListScoped = IsDataListScoped;
-            result.ServerID = ServerID;
-            result.ResourceID = ResourceID;
 
             return result;
         }

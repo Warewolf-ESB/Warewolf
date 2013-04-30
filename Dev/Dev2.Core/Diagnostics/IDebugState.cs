@@ -75,11 +75,6 @@ namespace Dev2.Diagnostics
         Guid ServerID { get; set; }
 
         /// <summary>
-        /// Gets or sets the server ID.
-        /// </summary>
-        Guid ResourceID { get; set; }
-
-        /// <summary>
         /// Gets the inputs.
         /// </summary>
         IList<IDebugItem> Inputs { get; }
@@ -118,7 +113,5 @@ namespace Dev2.Diagnostics
         /// </summary>
         /// <param name="writer">The writer to which this instance is written.</param>
         void Write(IByteWriterBase writer);
-
-        string Message { get; set; }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Browsers;
+﻿using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.DataList.Contract;
@@ -51,14 +48,14 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
             {
                 result = "Plugin";
             }
-            else if (resourceType == "Service" && (serviceDef == null || serviceDef.IndexOf("Type=\"Plugin\"") > 0))
+            else if (resourceType == "Service" && serviceDef.IndexOf("Type=\"Plugin\"") > 0)
             {
                 result = "Plugin";
             }
             else if (resourceType == "Service" && serviceDef.IndexOf("Type=\"Plugin\"") < 0) {
                 result = "Database";
             }
-            else if (resourceType == "Source" && (serviceDef == null || serviceDef.IndexOf("AssemblyLocation=") > 0))
+            else if (resourceType == "Source" && serviceDef.IndexOf("AssemblyLocation=") > 0)
             {
                 result = "Plugin";
             }
@@ -84,18 +81,18 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
         /// <returns></returns>
         public static string BuildStudioEditPayload(string resourceType, IResourceModel rm) {
             StringBuilder result = new StringBuilder();
-            string resType = ConvertStudioToWizardType(resourceType, rm.ServiceDefinition, rm.Category);
-
-            // add service type
-            result.Append(ResourceKeys.Dev2ServiceType);
-            result.Append("=");
-            result.Append(resType);
+            string resType = StudioToWizardBridge.ConvertStudioToWizardType(resourceType, rm.ServiceDefinition, rm.Category);
 
             // add service name
-            result.Append("&");
             result.Append(ResourceKeys.Dev2ServiceName);
             result.Append("=");
             result.Append(rm.ResourceName);
+
+            // add service type
+            result.Append("&");
+            result.Append(ResourceKeys.Dev2ServiceType);
+            result.Append("=");
+            result.Append(resType);
 
             // add category
             result.Append("&");
@@ -188,44 +185,6 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
             }
 
             return result.ToString();
-        }
-
-        public static string BuildUri(IContextualResourceModel resourceModel, string resName)
-        {
-            string uriString = "/services/" + SelectWizard(resourceModel);
-            if (resourceModel.ResourceType == ResourceType.WorkflowService ||
-                resourceModel.ResourceType == ResourceType.Service)
-            {
-                uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
-            }
-            return uriString;
-        }
-
-        public static string GetUriString(IContextualResourceModel resourceModel, bool includeArgs)
-        {
-            string resName = ConvertStudioToWizardType(resourceModel.ResourceType.ToString(),
-                                                                            resourceModel.ServiceDefinition,
-                                                                            resourceModel.Category);
-
-            var requestUri = new Uri(resourceModel.Environment.Connection.WebServerUri,
-                                     BuildUri(resourceModel, resName));
-
-            string uriString = requestUri.AbsoluteUri;
-
-            if (includeArgs)
-            {
-                string args =
-                    BuildStudioEditPayload(resourceModel.ResourceType.ToString(), resourceModel);
-                uriString = Browser.FormatUrl(requestUri.AbsoluteUri, args);
-            }
-            return uriString;
-        }
-
-        public static Uri GetWorkflowUrl(IContextualResourceModel resourceModel)
-        {
-            var relativeUrl = String.Format("/services/{0}?wid={1}", resourceModel.ResourceName,
-                                            ((IStudioClientContext)resourceModel.Environment.DsfChannel).WorkspaceID);
-            return new Uri(resourceModel.Environment.Connection.WebServerUri, relativeUrl);
         }
     }
 }

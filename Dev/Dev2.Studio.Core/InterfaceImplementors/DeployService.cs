@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
                 environmentModel.Connect();
             }
 
-            if (environmentModel.IsConnected)
+            if (environmentModel != null && environmentModel.IsConnected)
             {
                 foreach (var resourceModel in deployDTO.ResourceModels)
                 {

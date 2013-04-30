@@ -23,6 +23,12 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
 
         protected override void ExecuteCore()
         {
+
+            if (_copyOfBeforeAutoMapping.MainViewModel == null)
+            {
+                _copyOfBeforeAutoMapping.MainViewModel = _beforeAutoMapping.MainViewModel;
+            }
+
             _copyOfBeforeAutoMapping.CopyFrom(_beforeAutoMapping);
             foreach (IInputOutputViewModel item in _beforeAutoMapping.Inputs)
             {

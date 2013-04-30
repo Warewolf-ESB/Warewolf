@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
-using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.ViewModels.Deploy;
-using Dev2.Studio.ViewModels.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -22,8 +19,6 @@ namespace Dev2.Core.Tests
 
         private static ImportServiceContext _okayContext;
         private static ImportServiceContext _cancelContext;
-        private static Mock<IEventAggregator> _eventAggregator;
-        private static Mock<IWindowManager> _windowManager;
 
         #endregion Class Members
 
@@ -32,9 +27,7 @@ namespace Dev2.Core.Tests
         [ClassInitialize()]
         public static void MyTestClassInitialize(TestContext testContext)
         {
-            _eventAggregator = new Mock<IEventAggregator>();
-            _windowManager = new Mock<IWindowManager>();
-            _okayContext = CompositionInitializer.DeployViewModelOkayTest(_eventAggregator, _windowManager);
+            _okayContext = CompositionInitializer.DeployViewModelOkayTest();
             _cancelContext = CompositionInitializer.DeployViewModelCancelTest();
         }
 
@@ -43,23 +36,23 @@ namespace Dev2.Core.Tests
         #region Connect
 
         [TestMethod]
-        public void DeployViewModelConnectWindowManagerShoConnectDialogAdded()
+        public void DeployViewModelConnectWithOkayDialogResultExpectedServerIsAdded()
         {
             ImportService.CurrentContext = _okayContext;
 
-            _windowManager.Setup(wm => wm.ShowDialog(It.IsAny<ConnectViewModel>(), null, null)).Verifiable();
             var servers = new List<IServer> { null, null };
 
             var serverProvider = new Mock<IServerProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);
 
-            var repo = CreateEnvironmentRepositoryMock();   
+            var repo = CreateEnvironmentRepositoryMock();
 
             var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object);
             deployViewModel.ConnectCommand.Execute(null);
 
+            var actual = deployViewModel.Servers.Count;
 
-            _windowManager.Verify(e => e.ShowDialog(It.IsAny<ConnectViewModel>(), null, null), Times.Once());
+            Assert.AreEqual(servers.Count + 1, actual);
         }
 
         [TestMethod]

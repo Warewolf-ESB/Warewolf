@@ -42,9 +42,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
@@ -95,12 +92,8 @@
     <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
     <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
-    <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
     <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
     <Compile Include="ESB\Management\Sources\ManagementServiceSource.cs" />
-    <Compile Include="Execution\ExecutableServiceRepository.cs" />
-    <Compile Include="Execution\IExecutableService.cs" />
-    <Compile Include="Execution\ExecutableServiceKey.cs" />
     <Compile Include="Hosting\DynamicObjectHelper.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceTypeConverter.cs" />

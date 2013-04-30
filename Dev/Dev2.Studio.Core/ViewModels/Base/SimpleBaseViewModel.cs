@@ -77,7 +77,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// <summary>
         /// Requests tha the view bound to this view model closes
         /// </summary>
-        public virtual void RequestClose()
+        public void RequestClose()
         {
             RequestClose(ViewModelDialogResults.Cancel);
         }

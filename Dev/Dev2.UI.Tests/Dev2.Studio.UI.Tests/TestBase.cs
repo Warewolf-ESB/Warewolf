@@ -23,7 +23,6 @@ using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
@@ -3336,57 +3335,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        #region New Workflow Creation Tests
-
-        [TestMethod]
-        public void CreateNewWorkflowAndSaveExpectedTheWorkflowToBeSavedWithNewNameTest()
-        {
-            #region Saving a new workflow
-
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-            Assert.AreEqual("Unsaved 1", TabManagerUIMap.GetActiveTabName());
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var multiAssign = ToolboxUIMap.FindControl("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            WorkflowDesignerUIMap.SetStartNode(theTab, "Assign");
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Thread.Sleep(2000);
-            SaveDialogUIMap.ClickAndTypeInFilterTextBox("Mo");
-            SaveDialogUIMap.ClickCategory();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
-            SaveDialogUIMap.ClickSave();
-            Thread.Sleep(2000);
-            Assert.AreEqual("MyNewTestFlow1", TabManagerUIMap.GetActiveTabName());
-
-            #endregion
-
-
-            #region Canceling a new workflow save
-
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-            Assert.AreEqual("Unsaved 1", TabManagerUIMap.GetActiveTabName());
-            theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            multiAssign = ToolboxUIMap.FindControl("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            WorkflowDesignerUIMap.SetStartNode(theTab, "Assign");
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Thread.Sleep(2000);
-            SaveDialogUIMap.ClickAndTypeInFilterTextBox("Mo");
-            SaveDialogUIMap.ClickCategory();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
-            SaveDialogUIMap.ClickCancel();
-            Thread.Sleep(2000);
-            Assert.AreEqual("Unsaved 1", TabManagerUIMap.GetActiveTabName());
-
-            #endregion
-
-            DoCleanup("localhost", "WORKFLOWS", "MO", "MyNewTestFlow1");
-        }
-
-        #endregion
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -3433,19 +3381,6 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
-        public SaveDialogUIMap SaveDialogUIMap
-        {
-            get
-            {
-                if ((_saveDialogUIMap == null))
-                {
-                    _saveDialogUIMap = new SaveDialogUIMap();
-                }
-
-                return _saveDialogUIMap;
-            }
-        }
-
         public ExplorerUIMap ExplorerUIMap
         {
             get
@@ -3474,7 +3409,6 @@ namespace Dev2.CodedUI.Tests
 
         private ExplorerUIMap _explorerUiMap;
         private ToolboxUIMap _toolboxUiMap;
-        private SaveDialogUIMap _saveDialogUIMap;
         private DocManagerUIMap _docManagerMap;
         private DeployViewUIMap _deployViewUiMap;
 

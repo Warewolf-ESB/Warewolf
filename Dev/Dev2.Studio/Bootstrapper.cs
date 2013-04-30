@@ -3,14 +3,10 @@ using Dev2.Composition;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.WindowManagers;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.StartupResources;
 using System;
 using System.Collections.Generic;
@@ -21,7 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Dialogs;
 
 namespace Dev2.Studio
 {
@@ -40,8 +36,9 @@ namespace Dev2.Studio
             assemblies.AddRange(new[]
                 {
                     Assembly.GetAssembly(typeof (Bootstrapper)),
-                    Assembly.GetAssembly(typeof (DebugWriter)),
-                    Assembly.GetAssembly(typeof (INetworkMessageBroker))
+                    Assembly.GetAssembly(typeof (IMainViewModel)),
+                    Assembly.GetAssembly(typeof (INetworkMessageBroker)),
+                    Assembly.GetAssembly(typeof (INetworkExecutionChannel))
                 });
             return assemblies.Distinct();
         }
@@ -89,8 +86,7 @@ namespace Dev2.Studio
         {
             _container = new CompositionContainer(
                 new AggregateCatalog(
-                    AssemblySource.Instance.Select(
-                    x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>()));
+                    AssemblySource.Instance.Select(x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>()));
 
             var batch = new CompositionBatch();
 
@@ -108,9 +104,9 @@ namespace Dev2.Studio
         protected override object GetInstance(Type serviceType, string key)
         {
             string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
-            var exports = _container.GetExportedValues<object>(contract).ToList(); 
+            var exports = _container.GetExportedValues<object>(contract);
 
-            if (exports.Any())
+            if (exports.Count() > 0)
                 return exports.First();  
 
             throw new Exception(string.Format("Could not locate any instances of contract {0}.", contract));
@@ -178,7 +174,7 @@ namespace Dev2.Studio
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = ImportService.GetExportValue<IWindowsServiceManager>();
-            IPopupController popup = ImportService.GetExportValue<IPopupController>();
+            IPopUp popup = ImportService.GetExportValue<IPopUp>();
 
             if (windowsServiceManager == null)
             {
@@ -226,7 +222,7 @@ namespace Dev2.Studio
 
             if (IsLocal(sysUri)) return;
 
-            var popup = new PopupController
+            var popup = new PopUp
                 {
                     Header = "Load Error",
                     Description = String.Format(@"The Design Studio could not be launched from a network location.

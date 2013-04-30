@@ -64,6 +64,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="DebugOutputUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />

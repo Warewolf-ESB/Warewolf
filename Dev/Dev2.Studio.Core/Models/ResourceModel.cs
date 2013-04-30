@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -46,7 +47,6 @@ namespace Dev2.Studio.Core.Models
         private string _unitTestTargetWorkflowService;
         private string _workflowXaml;
         private Version _version;
-        private bool _isNewWorkflow = false;
 
         #endregion Class Members
 
@@ -362,18 +362,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public bool IsNewWorkflow
-        {
-            get
-            {
-                return _isNewWorkflow;
-            }
-            set
-            {
-                _isNewWorkflow = value;
-            }
-        }
-
         #endregion Properties
 
         #region Methods
@@ -425,10 +413,9 @@ namespace Dev2.Studio.Core.Models
                     new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
                     new XAttribute("ServerID", ServerID.ToString()),
                     new XAttribute("Name", ResourceName ?? string.Empty),
-                    new XAttribute("ResourceType", ResourceType),                    
+                    new XAttribute("ResourceType", ResourceType),
                     new XElement("DisplayName", ResourceName ?? string.Empty),
                     new XElement("Category", Category ?? string.Empty),
-                    new XElement("IsNewWorkflow", IsNewWorkflow),
                     new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
                     new XElement("Comment", Comment ?? string.Empty),
                     new XElement("Tags", Tags ?? string.Empty),
@@ -436,7 +423,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("HelpLink", HelpLink ?? string.Empty),
                     new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                     dataList,
-                    new XElement("Action",
+                    new XElement("Action", 
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
                         new XElement("XamlDefinition", WorkflowXaml ?? string.Empty))
@@ -497,7 +484,7 @@ namespace Dev2.Studio.Core.Models
             {
                 PropertyInfo prop = GetType().GetProperty(columnName);
                 IEnumerable<ValidationAttribute> validationMap =
-                    prop.GetCustomAttributes(typeof(ValidationAttribute), true).Cast<ValidationAttribute>();
+                    prop.GetCustomAttributes(typeof (ValidationAttribute), true).Cast<ValidationAttribute>();
                 string errMsg = null;
 
 

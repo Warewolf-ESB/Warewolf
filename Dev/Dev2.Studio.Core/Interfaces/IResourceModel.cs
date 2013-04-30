@@ -2,11 +2,10 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using Dev2.Studio.Core.Models;
 
 namespace Dev2.Studio.Core.Interfaces 
 {
-    public interface IResourceModel : IWorkSurfaceObject
+    public interface IResourceModel
     {
         Guid ID { get; set; }
         bool AllowCategoryEditing { get; set; }

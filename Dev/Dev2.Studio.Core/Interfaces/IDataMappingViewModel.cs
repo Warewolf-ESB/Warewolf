@@ -7,11 +7,16 @@ namespace Dev2.Studio.Core.Interfaces
 {
     public interface IDataMappingViewModel
     {
+        IMainViewModel MainViewModel { get; set; }
         IWebActivity Activity { get; set; }
         bool IsInitialLoad { get; set; }
         ObservableCollection<IInputOutputViewModel> Outputs { get; set; }
         ObservableCollection<IInputOutputViewModel> Inputs { get; set; }
         string XmlOutput { get; set; }
+        void AutoMappingInput(IWebActivity resource);
+        void AutoMappingOutput(IWebActivity resource);
+        ICommand AutoMappingInputCommand { get; }
+        ICommand AutoMappingOutputCommand { get; }
         ICommand UndoCommand { get; }
         ICommand RedoCommand { get; }
         void CreateXmlOutput(IList<IInputOutputViewModel> outputData, IList<IInputOutputViewModel> inputData);

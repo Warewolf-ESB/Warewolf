@@ -8,5 +8,10 @@ namespace Dev2.Studio.Core.Interfaces
     {
         Guid WorkspaceID { get; }
         Guid ServerID { get; }
+
+        //TcpConnection AcquireAuxiliaryConnection();
+        void AddDebugWriter(IDebugWriter writer);
+        void RemoveDebugWriter(IDebugWriter writer);
+        void RemoveDebugWriter(Guid writerID);
     }
 }

@@ -9,11 +9,8 @@ using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Unlimited.Framework;
@@ -118,14 +115,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var effectedResources = new List<IResourceModel>();
             var wfServices = (resourceType == ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
-            if (wfServices is List<UnlimitedObject>)
+            if(wfServices is List<UnlimitedObject>)
             {
-                foreach (dynamic item in wfServices)
+                foreach(dynamic item in wfServices)
                 {
                     IResourceModel resource = HydrateResourceModel(resourceType, item);
                     var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                    if (resourceToUpdate != null)
+                    if(resourceToUpdate != null)
                     {
                         resourceToUpdate.Update(resource);
                         effectedResources.Add(resourceToUpdate);
@@ -134,7 +131,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         effectedResources.Add(resource);
                         _resourceModels.Add(resource);
-                        if (ItemAdded != null)
+                        if(ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
@@ -151,7 +148,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public bool IsWorkflow(string resourceName)
         {
             IResourceModel match = All().FirstOrDefault(c => c.ResourceName.ToUpper().Equals(resourceName.ToUpper()));
-            if (match != null)
+            if(match != null)
             {
                 return match.ResourceType == ResourceType.WorkflowService;
             }
@@ -186,7 +183,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void Save(IResourceModel instanceObj)
         {
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (workflow == null)
+            if(workflow == null)
             {
                 _resourceModels.Add(instanceObj);
             }
@@ -202,7 +199,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void DeployResource(IResourceModel resource)
         {
             IResourceModel workflow = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (workflow == null)
+            if(workflow == null)
             {
                 _resourceModels.Add(resource);
             }
@@ -237,21 +234,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public UnlimitedObject DeleteResource(IResourceModel resource)
         {
             int index = _resourceModels.IndexOf(resource);
-            if (index != -1)
+            if(index != -1)
                 _resourceModels.RemoveAt(index);
             else throw new KeyNotFoundException();
 
             var contextualResource = resource as IContextualResourceModel;
-            if (contextualResource == null) return null;
+            if(contextualResource == null) return null;
 
-            if (!_wizardEngine.IsWizard(contextualResource))
+            if(!_wizardEngine.IsWizard(contextualResource))
             {
                 IContextualResourceModel wizard = _wizardEngine.GetWizard(contextualResource);
-                if (wizard != null)
+                if(wizard != null)
                 {
                     UnlimitedObject wizardData = ExecuteDeleteResource(wizard);
 
-                    if (wizardData.HasError)
+                    if(wizardData.HasError)
                     {
                         HandleDeleteResourceError(wizardData, contextualResource);
                         return null;
@@ -261,7 +258,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             UnlimitedObject data = ExecuteDeleteResource(contextualResource);
 
-            if (data.HasError)
+            if(data.HasError)
             {
                 HandleDeleteResourceError(data, contextualResource);
                 return null;
@@ -284,7 +281,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         //Juries TODO - Refactor to popupProvider
         private void HandleDeleteResourceError(dynamic data, IContextualResourceModel model)
         {
-            if (data.HasError)
+            if(data.HasError)
             {
                 MessageBox.Show(Application.Current.MainWindow, model.ResourceType.GetDescription() + " \"" + model.ResourceName +
                                                                 "\" could not be deleted, reason: " + data.Error,
@@ -314,10 +311,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             string xml = resultObj.XmlString;
             var index = 0;
 
-            while ((index = xml.IndexOf("<ReservedName>", index, StringComparison.Ordinal)) != -1)
+            while((index = xml.IndexOf("<ReservedName>", index, StringComparison.Ordinal)) != -1)
             {
                 var start = index + 14;
-                if ((index = xml.IndexOf("</ReservedName>", start, StringComparison.Ordinal)) == -1)
+                if((index = xml.IndexOf("</ReservedName>", start, StringComparison.Ordinal)) == -1)
                 {
                     break;
                 }
@@ -339,15 +336,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var resultObj = ExecuteCommand(_environmentModel, dataObj);
 
             dynamic wfServices = (resourceType == ResourceType.Source) ? resultObj.Source : resultObj.Service;
-            if (wfServices is List<UnlimitedObject>)
+            if(wfServices is List<UnlimitedObject>)
             {
-                foreach (dynamic item in wfServices)
+                foreach(dynamic item in wfServices)
                 {
                     try
                     {
                         IResourceModel resource = HydrateResourceModel(resourceType, item);
                         _resourceModels.Add(resource);
-                        if (ItemAdded != null)
+                        if(ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
@@ -367,9 +364,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
             resource.ResourceType = resourceType;
-            if (data.XamlDefinition is string)
+            if(data.XamlDefinition is string)
             {
-                if (!string.IsNullOrEmpty(data.XamlDefinition))
+                if(!string.IsNullOrEmpty(data.XamlDefinition))
                 {
                     resource.WorkflowXaml = data.XamlDefinition;
                     resource.ServiceDefinition = data.XmlString;
@@ -383,12 +380,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             resource.Version = Version.Parse(data.GetValue("Version"));
 
-            if (string.IsNullOrEmpty(resource.ServiceDefinition))
+            if(string.IsNullOrEmpty(resource.ServiceDefinition))
             {
                 resource.ServiceDefinition = data.XmlString;
             }
 
-            if (data.DisplayName is string)
+            if(data.DisplayName is string)
             {
                 resource.DisplayName = data.DisplayName;
             }
@@ -397,17 +394,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.DisplayName = resourceType.ToString();
             }
 
-            if (data.IconPath is string)
+            if(data.IconPath is string)
             {
                 resource.IconPath = data.IconPath;
             }
 
-            if (data.AuthorRoles is string)
+            if(data.AuthorRoles is string)
             {
                 resource.AuthorRoles = data.AuthorRoles;
             }
 
-            if (data.Category is string)
+            if(data.Category is string)
             {
                 resource.Category = data.Category;
             }
@@ -416,46 +413,36 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.Category = string.Empty;
             }
 
-            if (data.Tags is string)
+            if(data.Tags is string)
             {
                 resource.Tags = data.Tags;
             }
 
-            if (data.Comment is string)
+            if(data.Comment is string)
             {
                 resource.Comment = data.Comment;
             }
 
-            if (data.UnitTestTargetWorkflowService is string)
+            if(data.UnitTestTargetWorkflowService is string)
             {
                 resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
             }
 
-            if (data.HelpLink is string)
+            if(data.HelpLink is string)
             {
-                if (!string.IsNullOrEmpty(data.HelpLink))
+                if(!string.IsNullOrEmpty(data.HelpLink))
                 {
                     resource.HelpLink = data.HelpLink;
                 }
             }
 
-            if (data.IsNewWorkflow is string)
-            {
-                resource.IsNewWorkflow = false;
-                if (data.IsNewWorkflow == "true")
-                {
-                    resource.IsNewWorkflow = true;
-                    NewWorkflowNames.Instance.Add(resource.DisplayName);
-                }
-            }
-
             var service = resourceType == ResourceType.Source ? data.Source : data.Service;
-            if (service is List<UnlimitedObject>)
+            if(service is List<UnlimitedObject>)
             {
-                foreach (dynamic svc in service)
+                foreach(dynamic svc in service)
                 {
 
-                    if (svc.Name is string)
+                    if(svc.Name is string)
                     {
                         resource.ResourceName = svc.Name;
                     }
@@ -483,11 +470,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 throw new ArgumentNullException("targetEnvironment");
             }
-            if (environment == null)
+            if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -502,11 +489,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 throw new ArgumentNullException("targetEnvironment");
             }
-            if (environment == null)
+            if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -526,7 +513,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType)
         {
-            if (targetEnvironment == null || guids == null)
+            if(targetEnvironment == null || guids == null)
             {
                 return new List<UnlimitedObject>();
             }
@@ -550,7 +537,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static List<UnlimitedObject> FindSourcesByType(IEnvironmentModel targetEnvironment, enSourceType sourceType)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 return new List<UnlimitedObject>();
             }
@@ -573,9 +560,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         static void AddItems(ICollection<UnlimitedObject> result, dynamic items)
         {
-            if (items is IEnumerable<UnlimitedObject>)
+            if(items is IEnumerable<UnlimitedObject>)
             {
-                foreach (var item in items)
+                foreach(var item in items)
                 {
                     var itemObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(item.XmlString);
                     result.Add(itemObj);
@@ -592,17 +579,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var workspaceID = targetEnvironment.Connection.WorkspaceID;
             var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
-            if (result == null)
+            if(result == null)
             {
                 dynamic tmp = dataObj;
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
             }
 
-            if (convertResultToUnlimitedObject)
+            if(convertResultToUnlimitedObject)
             {
                 // PBI : 7913 -  Travis
                 var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
-                if (resultObj.HasError)
+                if(resultObj.HasError)
                 {
                     throw new Exception(resultObj.Error);
                 }

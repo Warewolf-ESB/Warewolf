@@ -12,16 +12,12 @@ using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
-    [Export]
-    [PartCreationPolicy(CreationPolicy.Shared)]
-    public class ExplorerViewModel : BaseViewModel,IHandle<UpdateExplorerMessage>,IHandle<RemoveEnvironmentMessage>,IHandle<AddServerToExplorerMessage>
+    public class ExplorerViewModel : BaseViewModel, IHandle<UpdateExplorerMessage>, IHandle<RemoveEnvironmentMessage>, IHandle<AddServerToExplorerMessage>
     {
         #region Class Members
-        
+
         private RelayCommand _connectCommand;
         private RelayCommand _environmentChangedCommand;
-        private enDsfActivityType _activityType;
-        private bool _fromActivityDrop;
 
         #endregion Class Members
 
@@ -40,9 +36,6 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
             EnvironmentRepository = environmentRepository;
             NavigationViewModel = new NavigationViewModel(false, isFromActivityDrop, activityType);
-            _activityType = activityType;
-            _fromActivityDrop = isFromActivityDrop;
-            NavigationViewModel = new NavigationViewModel(false, _fromActivityDrop, _activityType);
             LoadEnvironments();
         }
 
@@ -57,8 +50,8 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public ICommand EnvironmentChangedCommand
         {
-            get 
-            { 
+            get
+            {
                 ICommand command = _environmentChangedCommand ?? (_environmentChangedCommand = new RelayCommand(param => AddEnvironment((IEnvironmentModel)param), param => true));
                 return command;
             }
@@ -71,7 +64,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         public IFilePersistenceProvider FilePersistenceProvider { get; set; }
 
         [Import]
-        public IWindowManager WindowManager { get; set; }
+        public IDev2WindowManager WindowNavigationBehavior { get; set; }
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
@@ -118,7 +111,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         /// </summary>
         private void LoadEnvironments()
         {
-            if (EnvironmentRepository == null) return;
             //
             // Load environments from repository
             //
@@ -136,7 +128,6 @@ namespace Dev2.Studio.ViewModels.Explorer
             {
                 NavigationViewModel.AddEnvironment(environment);
             }
-
         }
 
         /// <summary>
@@ -148,7 +139,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             // Create and show the connect view
             //
             var connectViewModel = new ConnectViewModel();
-            WindowManager.ShowDialog(connectViewModel);
+            WindowNavigationBehavior.ShowDialog(connectViewModel);
 
             //
             // If connect view closed with okay then create an environment, save it and load it into the navigation view model

@@ -85,8 +85,6 @@ namespace Dev2.Core.Tests.ProperMoqs {
             return;
         }
 
-        public bool IsNewWorkflow { get; set; }
-
         public void Update(IResourceModel resourceModel) {
             return;
         }

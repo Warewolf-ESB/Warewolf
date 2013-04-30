@@ -2,7 +2,6 @@
 using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 using System;
 using System.ComponentModel.Composition;
@@ -23,17 +22,10 @@ namespace Dev2.Studio.Feedback.Actions
 
         #endregion Class Members
 
-        #region ctor
-        public RecorderFeedbackAction()
-        {
-            ImportService.SatisfyImports(this);
-        }
-        #endregion
-
         #region Properties
-
+        
         [Import]
-        public IPopupController Popup { get; set; }
+        public IPopUp Popup { get; set; }
 
         [Import]
         public IFeedBackRecorder FeedBackRecorder { get; set; }

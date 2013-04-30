@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -132,13 +131,13 @@ namespace Dev2.Core.Tests.ViewModelTests
             string outputPath = GetUniqueOutputPath(".cake");
             var vm = new ExceptionViewModel();
 
-            Mock<IWindowManager> mockWinManager = new Mock<IWindowManager>();
-            mockWinManager.Setup(c => c.ShowDialog(It.IsAny<BaseViewModel>(), null, null)).Verifiable();
+            Mock<IDev2WindowManager> mockWinManager = new Mock<IDev2WindowManager>();
+            mockWinManager.Setup(c => c.ShowDialog(It.IsAny<BaseViewModel>())).Verifiable();
 
             vm.WindowNavigation = mockWinManager.Object;
             vm.Show();
 
-            mockWinManager.Verify(mgr => mgr.ShowDialog(It.IsAny<ExceptionViewModel>(), null, null), Times.Once());
+            mockWinManager.Verify(mgr => mgr.ShowDialog(It.IsAny<ExceptionViewModel>()), Times.Once());
         }
 
         [TestMethod]
