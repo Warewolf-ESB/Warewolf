@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
 
@@ -141,9 +142,9 @@ namespace Dev2.Studio.Webs
 
         #region ShowSaveDialog
 
-        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null)
+        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null,bool addToTabManager = true)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(resourceModel), "WorkflowService", resourceID = null);            
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EnvironmentRepository.Instance,resourceModel, addToTabManager), "WorkflowService", resourceID = null);            
         }
 
         private static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceID = null)

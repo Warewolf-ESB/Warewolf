@@ -17,17 +17,19 @@ namespace Dev2.Studio.Webs.Callbacks
         #region Fields
 
         private readonly IContextualResourceModel _resourceModel;
+        private readonly bool _addToTabManager;
 
         #endregion
 
         public SaveNewWorkflowCallbackHandler(IContextualResourceModel resourceModel)
-            : this(EnvironmentRepository.Instance,resourceModel)
+            : this(EnvironmentRepository.Instance,resourceModel,true)
         {
         }
 
-        public SaveNewWorkflowCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel)
+        public SaveNewWorkflowCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel, bool addToTabManager)
             : base(currentEnvironmentRepository)
         {
+            _addToTabManager = addToTabManager;
             _resourceModel = resourceModel;
         }
    
@@ -53,8 +55,11 @@ namespace Dev2.Studio.Webs.Callbacks
                 newResourceModel.IsNewWorkflow = false;
 
                 EventAggregator.Publish(new UpdateResourceMessage(newResourceModel));
-                EventAggregator.Publish(new AddWorkflowDesignerMessage(newResourceModel));
-                EventAggregator.Publish(new SaveResourceMessage(newResourceModel));
+                if (_addToTabManager)
+                {
+                    EventAggregator.Publish(new AddWorkflowDesignerMessage(newResourceModel));
+                }
+                EventAggregator.Publish(new SaveResourceModelMessage(newResourceModel));
                 EventAggregator.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                 NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);

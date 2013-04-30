@@ -12,6 +12,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
@@ -253,8 +254,28 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
+        {
+            string newWorflowName = NewWorkflowNames.Instance.GetNext();
+
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
+                                                                                              resourceType);
+            tempResource.Category = "Unassigned";
+            tempResource.ResourceName = newWorflowName;
+            tempResource.DisplayName = newWorflowName;
+            tempResource.IsNewWorkflow = true;
+
+            EventAggregator.Publish(new AddWorkflowDesignerMessage(tempResource));
+        }
+
         void NewResource(string resourceType)
         {
+            if(resourceType == "Workflow")
+            {
+                TempSave(EnvironmentModel,resourceType);
+                return;
+            }
+
             IContextualResourceModel resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, resourceType,
                                                                                              resourceType);
             var resourceViewModel = new ResourceWizardViewModel(resourceModel);

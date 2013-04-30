@@ -178,7 +178,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEnvironmentRepository environmentRepository)        
         {
-            if(environmentRepository == null)
+            if (environmentRepository == null)
             {
                 throw new ArgumentNullException("environmentRepository");
             }
@@ -202,7 +202,7 @@ namespace Dev2.Studio.ViewModels
         private void Exit()
         {
             Application.Current.Shutdown();            
-        }
+        }       
 
         private void Deploy()
         {
@@ -796,8 +796,8 @@ namespace Dev2.Studio.ViewModels
         public void Save(IContextualResourceModel resource, bool isLocalSave, bool showWindow = true)
         {
             if (resource.IsNewWorkflow && !isLocalSave)
-            {               
-                ShowSaveDialog(resource);
+            {
+                ShowSaveDialog(resource,showWindow);
                 return;
             }
 
@@ -1064,7 +1064,7 @@ namespace Dev2.Studio.ViewModels
             SaveWorkspaceItems();
             foreach (IContextualResourceModel resourceModel in GetOpenContextualResourceModels())
             {
-                Save(resourceModel,true);               
+                Save(resourceModel, true);
             }
         }
 
@@ -1080,9 +1080,9 @@ namespace Dev2.Studio.ViewModels
                         .ToList();
         }
 
-        public void ShowSaveDialog(IContextualResourceModel resourceModel)
-        {            
-            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel);
+        public void ShowSaveDialog(IContextualResourceModel resourceModel,bool addToTabManager)
+        {
+            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
         public void ShowNewResourceWizard(Tuple<IEnvironmentModel, string> newResourceInfo)
@@ -1272,9 +1272,9 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel context = FindWorkSurfaceContextViewModel(model);
             if (context != null)
             {
-            context.DeleteRequested = true;
-            DeactivateItem(context, true);
-        }
+                context.DeleteRequested = true;
+                DeactivateItem(context, true);
+            }
         }
 
         public static bool QueryDeleteExplorerResource(IContextualResourceModel model, bool hasDependencies,
@@ -1885,7 +1885,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     //workflowVM.BindToModel();
-                    EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel));
+                    EventAggregator.Publish(new SaveResourceModelMessage(workflowVM.ResourceModel));
                     //Mediator.SendMessage(MediatorMessages.SaveResource, workflowVM.ResourceModel);
                     return true;
                 case MessageBoxResult.No:
