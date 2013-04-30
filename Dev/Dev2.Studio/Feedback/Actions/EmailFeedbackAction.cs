@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Help;
 using System.ComponentModel.Composition;
 
@@ -17,10 +19,11 @@ namespace Dev2.Studio.Feedback.Actions
         public EmailFeedbackAction(string attachmentPath)
         {
             _attachmentPath = attachmentPath;
+            ImportService.SatisfyImports(this);
         }
 
-        [Import(typeof(IDev2WindowManager))]
-        public IDev2WindowManager WindowNavigation { get; set; }
+        [Import(typeof(IWindowManager))]
+        public IWindowManager WindowManager { get; set; }
 
         public bool CanProvideFeedback
         {
@@ -40,7 +43,7 @@ namespace Dev2.Studio.Feedback.Actions
 
         public void DisplayFeedbackWindow()
         {
-            WindowNavigation.Show(new FeedbackViewModel(_attachmentPath));
+            WindowManager.ShowWindow(new FeedbackViewModel(_attachmentPath));
         }
     }
 }

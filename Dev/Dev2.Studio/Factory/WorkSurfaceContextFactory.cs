@@ -14,12 +14,12 @@ namespace Dev2.Studio.Factory
     public static class WorkSurfaceContextFactory
     {
 
-        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel)
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner = true)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
             //TODO Juries move to factory
-            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel)
+            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel, createDesigner)
                 {
                     IconPath = ResourceHelper.GetIconPath(resourceModel),
                     DisplayName = resourceModel.ResourceName
@@ -92,6 +92,7 @@ namespace Dev2.Studio.Factory
             var context = new WorkSurfaceContextViewModel(key, vm);
             vm.DisplayName = workSurfaceContext.GetDescription();
             vm.IconPath = workSurfaceContext.GetIconLocation();
+            vm.WorkSurfaceContext = workSurfaceContext;
             return context;
         }
 

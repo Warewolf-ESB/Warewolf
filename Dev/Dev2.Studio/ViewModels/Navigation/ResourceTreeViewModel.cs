@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -755,7 +754,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            EventAggregator.Publish(new SaveResourceMessage(DataContext));
+            EventAggregator.Publish(new SaveResourceMessage(DataContext,false));
             RaisePropertyChangedForCommands();
         }
 
@@ -806,7 +805,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             switch (resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
-                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(resourceModel));
                     break;
 

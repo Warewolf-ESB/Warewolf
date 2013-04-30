@@ -9,7 +9,9 @@ namespace Dev2.Enums {
         Before = 1,
         After = 2,
         Append = 4,
-        All = 8
+        Message = 8,
+        Clear = 16,
+        All = 32
     }
 
     [EnumDisplayString("Workflow", "Step", "Service")]

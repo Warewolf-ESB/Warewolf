@@ -111,6 +111,11 @@ namespace Dev2.Diagnostics
         public Guid ServerID { get; set; }
 
         /// <summary>
+        /// Gets or sets the server ID.
+        /// </summary>
+        public Guid ResourceID { get; set; }
+
+        /// <summary>
         /// Gets the inputs.
         /// </summary>
         public IList<IDebugItem> Inputs { get; private set; }
@@ -125,6 +130,7 @@ namespace Dev2.Diagnostics
         /// </summary>
         public DateTime StartTime { get; set; }
 
+        public string Message { get; set; }
         /// <summary>
         /// Gets or sets the end time.
         /// </summary>
@@ -181,9 +187,10 @@ namespace Dev2.Diagnostics
             ErrorMessage = reader.ReadString();
             Server = reader.ReadString();
             ServerID = reader.ReadGuid();
+            ResourceID = reader.ReadGuid();
             StartTime = reader.ReadDateTime();
             EndTime = reader.ReadDateTime();
-
+         
             Deserialize(reader, Inputs);
             Deserialize(reader, Outputs);
         }
@@ -203,6 +210,7 @@ namespace Dev2.Diagnostics
             writer.Write(ErrorMessage);
             writer.Write(Server);
             writer.Write(ServerID);
+            writer.Write(ResourceID);
             writer.Write(StartTime);
             writer.Write(EndTime);
 

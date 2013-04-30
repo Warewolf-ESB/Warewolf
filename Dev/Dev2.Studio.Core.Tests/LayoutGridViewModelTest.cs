@@ -17,7 +17,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
     /// Summary description for LayoutGridViewModelTest
     /// </summary>
     [TestClass()]
-    public class LayoutGridViewModelTest : IHandle<AddWorkflowDesignerMessage>
+    public class LayoutGridViewModelTest : IHandle<AddWorkSurfaceMessage>
     {
 
         #region Local Test Variables
@@ -477,7 +477,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
             //Act
             //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             LayoutGrid.OpenWebsiteCommand.Execute(null);
-            _aggregator.Verify(e => e.Publish(It.IsAny<AddWorkflowDesignerMessage>
+            _aggregator.Verify(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>
                ()), Times.Once());
             //Assert
             //_mockMainViewModel.Verify(ver => ver.OpenWebsiteCommand.Execute(null));
@@ -675,7 +675,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
 
         #region Implementation of IHandle<AddWorkflowDesignerMessage>
 
-        public void Handle(AddWorkflowDesignerMessage message)
+        public void Handle(AddWorkSurfaceMessage message)
         {
             _addWorkflowDesignerMessageReceived = true;
         }

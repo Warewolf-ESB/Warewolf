@@ -200,6 +200,7 @@
     <Compile Include="Configuration\IRuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
+    <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="ErrorHandling\enErrorType.cs" />
@@ -223,7 +224,7 @@
     <Compile Include="InterfaceImplementors\ServerProvider.cs" />
     <Compile Include="Interfaces\IDeployService.cs" />
     <Compile Include="Interfaces\IDeployDTO.cs" />
-    <Compile Include="Interfaces\IDev2DialogueViewModel.cs" />
+    <Compile Include="Interfaces\IDialogueViewModel.cs" />
     <Compile Include="Interfaces\IContextualResourceModel.cs" />
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="Interfaces\IResourceDependencyService.cs" />
+    <None Include="InterfaceImplementors\EnvironmentConnection.cs" />
     <Compile Include="InterfaceImplementors\MockSecurityProvider.cs" />
     <Compile Include="Factories\WebResourceRepositoryFactory.cs" />
     <Compile Include="InterfaceImplementors\FrameworkSecurityProvider.cs" />
@@ -274,27 +276,23 @@
     <Compile Include="Interfaces\IWebCommunication.cs" />
     <Compile Include="Interfaces\IWebCommunicationResponse.cs" />
     <Compile Include="Interfaces\IPropertyEditorWizard.cs" />
-    <Compile Include="Interfaces\IWindowManager.cs" />
     <Compile Include="Interfaces\IWorkflowDesignerViewModel.cs" />
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AbstractTabMessage.cs" />
-    <Compile Include="Messages\AddDeployResourcesMessage.cs" />
     <Compile Include="Messages\AddMissingAndFindUnusedDataListItemsMessage.cs" />
     <Compile Include="Messages\AddMissingDataListItems.cs" />
     <Compile Include="Messages\AddRemoveDataListItemsMessage.cs" />
+    <Compile Include="Messages\AddServerToDeployMessage.cs" />
     <Compile Include="Messages\AddServerToExplorerMessage.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
-    <Compile Include="Messages\AddWebpageDesignerMessage.cs" />
-    <Compile Include="Messages\AddWebsiteDesignerMessage.cs" />
-    <Compile Include="Messages\AddWorkflowDesignerMessage.cs" />
+    <Compile Include="Messages\AddWorkSurfaceMessage.cs" />
     <Compile Include="Messages\CloseWizardMessage.cs" />
     <Compile Include="Messages\ConfigureCaseExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureSwitchExpressionMessage.cs" />
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />
     <Compile Include="Messages\DebugResourceMessage.cs" />
-    <Compile Include="Messages\DebugWriterAppendMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourceMessage.cs" />
     <Compile Include="Messages\DeployResourcesMessage.cs" />
@@ -304,9 +302,9 @@
     <Compile Include="Messages\FindMissingDataListItemsMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
-    <Compile Include="Messages\DebugStatusMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
+    <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\RemoveServerFromExplorerMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
     <Compile Include="Messages\ResourceCheckedMessage.cs" />
@@ -317,7 +315,6 @@
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
-    <Compile Include="Messages\SaveResourceModelMessage.cs" />
     <Compile Include="Messages\SelectItemInDeployMessage.cs" />
     <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\SetActivePageMessage.cs" />
@@ -355,6 +352,7 @@
     <Compile Include="Interfaces\ITagModel.cs" />
     <Compile Include="Models\DecisionModels\StringDecisionType.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
+    <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
@@ -409,20 +407,18 @@
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
+    <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
-    <Compile Include="ViewModels\Administration\Dev2DialogueViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />
     <Compile Include="ViewModels\Base\ValidationController.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
-    <Compile Include="ViewModels\DataListShowMissing\IPopUp.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
     <Compile Include="Interfaces\IAutoMappingInputAction.cs" />
     <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
-    <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="ViewModels\Navigation\ITreeNode.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceWizardViewModel.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
@@ -447,7 +443,6 @@
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="ViewModels\Workflow\ConfigureDecisionViewModel.cs" />
     <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfBaseConvertActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfBaseWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfCalculateActivityWizCallback.cs" />
@@ -481,6 +476,7 @@
     <Compile Include="Wizards\WizardEndpointGenerationStrategyProvider.cs" />
     <Compile Include="Wizards\WizardEngine.cs" />
     <Compile Include="Wizards\WizardInvocationTO.cs" />
+    <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -529,7 +525,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\UserInterfaceBuilder\" />
-    <Folder Include="Mediator\" />
+    <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />
   </ItemGroup>
   <ItemGroup />

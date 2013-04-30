@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
 using System.Windows.Input;
-using Unlimited.Framework;
 using System.ComponentModel.Composition;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Dev2.Studio.Core.ViewModels.Base;
 
-namespace Dev2.Studio.Core.ViewModels.Administration {
+namespace Dev2.Studio.ViewModels.Administration {
     
-    // Sashen Naidoo - 29-08-2012 - PBI 5037
-    [Export(typeof(IDev2DialogueViewModel))]
-    public class Dev2DialogueViewModel : IDev2DialogueViewModel {
+    [Export(typeof(IDialogueViewModel))]
+    public class DialogueViewModel : IDialogueViewModel {
 
         #region Members
 
@@ -128,7 +124,7 @@ namespace Dev2.Studio.Core.ViewModels.Administration {
 
         #region Events 
 
-        event ClosedOperationEventHandler IDev2DialogueViewModel.OnOkClick {
+        event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
             add { this.OnOkClick += value; }
             remove { this.OnOkClick -= value; }
         }

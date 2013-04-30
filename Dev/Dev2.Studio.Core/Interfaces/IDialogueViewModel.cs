@@ -8,7 +8,7 @@ using Dev2.Studio.Core.AppResources;
 
 namespace Dev2.Studio.Core.Interfaces {
     // Sashen Naidoo - 29-08-2012 - PBI 5037
-    public interface IDev2DialogueViewModel : IDisposable {
+    public interface IDialogueViewModel : IDisposable {
         
         String Title { get; }
         String DescriptionTitleText { get; }

@@ -1,4 +1,5 @@
 ﻿#define Debug
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -16,11 +17,11 @@ namespace Dev2.Studio.AppResources.Behaviors
         #region Ctor
         public AutomationIdCreationBehaviour()
         {
-            WindowNavigationBehavior = ImportService.GetExportValue<IDev2WindowManager>();
+            WindowNavigationBehavior = ImportService.GetExportValue<IWindowManager>();
         }
         #endregion Ctor
 
-        public IDev2WindowManager WindowNavigationBehavior { get; set; }
+        public IWindowManager WindowNavigationBehavior { get; set; }
 
         #region Override Methods
 

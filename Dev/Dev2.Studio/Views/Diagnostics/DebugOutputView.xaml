@@ -12,7 +12,7 @@
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
     mc:Ignorable="d"
              Name="DebugOutput">
-    <Grid cal:Bind.Model="{Binding .}">
+    <Grid>
         <Grid.Resources>
             <Style x:Key="SimulationModeVisibility">
                 <Style.Setters>
@@ -341,7 +341,7 @@
                     </DataTemplate>
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type localDiagnostics:DebugStringTreeViewItemViewModel}">
-                        <TextBlock Grid.Row="0" Text="{Binding Content}"  HorizontalAlignment="Stretch"/>
+                            <TextBlock Grid.Row="0" Text="{Binding Content}"  HorizontalAlignment="Stretch"/>
                     </HierarchicalDataTemplate>                    
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type localDiagnostics:DebugStateTreeViewItemViewModel}">
@@ -442,7 +442,9 @@
                     <diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}"></diagnostics:DebugStyleSelector>
                 </TreeView.ItemContainerStyleSelector>
             </TreeView>
-                <customControls:Dev2StatusBar AutomationProperties.AutomationId="Dev2StatusBarAutomationID" Height="Auto" Grid.Row="1" Width="Auto" StatusBarLabelText="{Binding ProcessingText,Mode=TwoWay}" ProgressBarVisiblity="{Binding ShowProcessingIcon,Mode=TwoWay,Converter={StaticResource BoolToVisConverter}}" />         
+                <customControls:Dev2StatusBar AutomationProperties.AutomationId="Dev2StatusBarAutomationID" 
+                                              Height="Auto" Grid.Row="1" Width="Auto" StatusBarLabelText="{Binding ProcessingText}" 
+                                              ProgressBarVisiblity="{Binding IsProcessing, Converter={StaticResource BoolToVisConverter}}" />         
             </Grid>
         </Border>        
     </Grid>

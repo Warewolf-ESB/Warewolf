@@ -6,6 +6,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -56,13 +57,10 @@ namespace Dev2.Studio.Core.Wizards
         public IEventAggregator EventAggregator { get; set; }
 
         [Import]
-        public IDev2WindowManager WindowNavigationBehavior { get; set; }
-
-        [Import]
         public IServiceLocator ServiceLocator { get; set; }
 
         [Import]
-        public IPopUp Popup { get; set; }
+        public IPopupController Popup { get; set; }
 
         #endregion Properties
 
@@ -408,8 +406,8 @@ namespace Dev2.Studio.Core.Wizards
             {
                 resource.Category = string.Empty;
                 resource.DataList = wizardDataListString;
-                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
-                EventAggregator.Publish(new SaveResourceMessage(resource));
+                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                EventAggregator.Publish(new SaveResourceMessage(resource, false));
                 EventAggregator.Publish(new UpdateResourceMessage(resource));
             }
         }
@@ -462,8 +460,8 @@ namespace Dev2.Studio.Core.Wizards
                     IList<string> removedList = new List<string>();
                     resource.DataList = MergeWizardDataListsAndReturnDiffs(resource.DataList, parentDl, out addedList, out removedList);
 
-                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
-                    EventAggregator.Publish(new SaveResourceMessage(resource));
+                    EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                    EventAggregator.Publish(new SaveResourceMessage(resource, false));
 
                     string differencesString = Dev2MessageFactory.CreateStringFromListWithLabel("Added", addedList);
                     differencesString += Dev2MessageFactory.CreateStringFromListWithLabel("Removed", removedList);
@@ -488,7 +486,7 @@ namespace Dev2.Studio.Core.Wizards
                 }
                 else if (IsSystemWizard(resource))
                 {
-                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
+                    EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
                 }
                 else
                 {

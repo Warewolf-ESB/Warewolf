@@ -174,7 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region OnExecute
 
         /// <summary>
-        /// When overridden runs the activity's execution logic
+        /// When overridden runs the activity's execution logic 
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected abstract void OnExecute(NativeActivityContext context);
@@ -332,6 +332,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayName = DisplayName,
                     IsSimulation = ShouldExecuteSimulation,
                     ServerID = dataObject.ServerID,
+                    ResourceID = dataObject.ResourceID,
                     Server = string.Empty,
                     Version = string.Empty,
                     Name = GetType().Name,
@@ -365,6 +366,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DisplayName = DisplayName,
                         IsSimulation = ShouldExecuteSimulation,
                         ServerID = dataObject.ServerID,
+                        ResourceID =  dataObject.ResourceID,
                         Server = string.Empty,
                         Version = string.Empty,
                         Name = GetType().Name,

@@ -506,7 +506,7 @@ Developed By:</value>
     <value>About Server and Studio</value>
   </data>
   <data name="Dev2_Logo" xml:space="preserve">
-    <value>pack://application:,,,/images/dev2logo.png</value>
+    <value>pack://application:,,,/Dev2.Studio;component/images/dev2logo.png</value>
   </data>
   <data name="SplashImage" xml:space="preserve">
     <value>Images\BDSSplash.png</value>
@@ -549,5 +549,44 @@ Developed By:</value>
   </data>
   <data name="RuntimeConfigurationAssemblyDirectory" xml:space="preserve">
     <value>RuntimeConfigurationAssemblies</value>
+  </data>
+  <data name="DialogBody_NotSaved" xml:space="preserve">
+    <value>The workflow that you are closing is not saved.\r\nWould you like to save the  workflow?\r\n-------------------------------------------------------------------\r\nClicking Yes will save the workflow\r\nClicking No will discard your changes\r\nClicking Cancel will return you to the workflow</value>
+  </data>
+  <data name="DialogTitle_NotSaved" xml:space="preserve">
+    <value>Workflow not saved...</value>
+  </data>
+  <data name="DialogBody_ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you wish to delete the {0} {1}?</value>
+  </data>
+  <data name="DialogBody_HasDependencies" xml:space="preserve">
+    <value>The {0} {1} has resources that depend on it to function, are you sure you want to delete this {1}?</value>
+  </data>
+  <data name="DialogBody_MissingWizard" xml:space="preserve">
+    <value>Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.</value>
+  </data>
+  <data name="DialogTitle_ConfirmDelete" xml:space="preserve">
+    <value>Confirm delete.</value>
+  </data>
+  <data name="DialogTitle_HasDependencies" xml:space="preserve">
+    <value>Confirm {0} deletion</value>
+  </data>
+  <data name="DialogTitle_MissingWizard" xml:space="preserve">
+    <value>Missing Wizard</value>
+  </data>
+  <data name="Pack_Uri_Debug_Image" xml:space="preserve">
+    <value>pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png</value>
+  </data>
+  <data name="Pack_Uri_Stop_Image" xml:space="preserve">
+    <value>pack://application:,,,/Dev2.Studio;component/Images/Stop.png</value>
+  </data>
+  <data name="Ribbon_Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Ribbon_StopExecution" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="NewWorkflowBaseName" xml:space="preserve">
+    <value>Unsaved</value>
   </data>
 </root>

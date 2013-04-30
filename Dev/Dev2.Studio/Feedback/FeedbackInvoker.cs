@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Dev2.Studio.Feedback
         #region Properties
 
         [Import]
-        public IPopUp Popup { get; set; }
+        public IPopupController Popup { get; set; }
 
         public IFeedbackAction CurrentAction
         {

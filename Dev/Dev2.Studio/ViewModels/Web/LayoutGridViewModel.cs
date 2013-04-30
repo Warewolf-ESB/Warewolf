@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.Factories;
@@ -72,6 +73,7 @@ namespace Dev2.Studio.ViewModels.Web
             }
 
             _websites = webActivity.ResourceModel.Environment.ResourceRepository.All().Where(c => c.Category.ToUpper().Equals("WEBSITE")).ToObservableCollection();
+            ImportService.SatisfyImports(this);
         }
 
         public LayoutGridViewModel()
@@ -200,7 +202,7 @@ namespace Dev2.Studio.ViewModels.Web
             {
                 if(_openWebsiteCommand == null)
                 {
-                    _openWebsiteCommand = new RelayCommand<string>(_ => EventAggregator.Publish(new AddWorkflowDesignerMessage(_resourceModel)));
+                    _openWebsiteCommand = new RelayCommand<string>(_ => EventAggregator.Publish(new AddWorkSurfaceMessage(_resourceModel)));
                 }
                 return _openWebsiteCommand;
             }
@@ -579,10 +581,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Deploy()
         {
-            //Flush the workflow designer so changes are written back into the Resource Model
-            //so that we can save the workflow at its latest state
-            EventAggregator.Publish(new SaveResourceModelMessage(_resourceModel));
-            //Mediator.SendMessage(MediatorMessages.SaveResourceModel, _resourceModel);
+            EventAggregator.Publish(new SaveResourceMessage(_resourceModel,false));
         }
 
         public void RemoveRow(int rowToDelete)

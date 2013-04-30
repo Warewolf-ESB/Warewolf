@@ -8,7 +8,7 @@
     WindowStartupLocation="CenterOwner"
     AutomationProperties.AutomationId="WebBrowserWindow"
     >
-    <Border BorderThickness="1" BorderBrush="#333333">
-        <cs:WebView x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    <Border BorderThickness="2" BorderBrush="#FF9900">
+        <cs:WebView x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-1" />
     </Border>
 </Window>

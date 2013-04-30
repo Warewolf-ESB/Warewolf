@@ -51,6 +51,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestDateTimeWithNoInputFormat()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "DefaultDateTimeInputFormatTest");

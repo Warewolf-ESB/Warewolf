@@ -3,6 +3,7 @@ using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Configuration;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
@@ -37,7 +38,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             CurrentEnvironment = environment;
 
             RuntimeConfigurationAssemblyRepository = ImportService.GetExportValue<IRuntimeConfigurationAssemblyRepository>();
-            Popup = ImportService.GetExportValue<IPopUp>();
+            Popup = ImportService.GetExportValue<IPopupController>();
         }
 
         #endregion
@@ -115,7 +116,7 @@ namespace Dev2.Studio.ViewModels.Configuration
         private IRuntimeConfigurationAssemblyRepository RuntimeConfigurationAssemblyRepository { get; set; }
         private string AssemblyHashCode { get; set; }
         private XElement ConfigurationXml { get; set; }
-        private IPopUp Popup { get; set; }
+        private IPopupController Popup { get; set; }
 
         #endregion Private Properties
 

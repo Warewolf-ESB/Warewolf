@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -26,7 +27,7 @@ namespace Dev2.Studio.Core.ViewModels
         public ResourceWizardViewModel(IContextualResourceModel model)
         {
             WebCommunication = ImportService.GetExportValue<IWebCommunication>();
-            PopupProvider = ImportService.GetExportValue<IPopUp>();
+            PopupProvider = ImportService.GetExportValue<IPopupController>();
             _resource = model;
         }
 
@@ -38,7 +39,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public IWebCommunication WebCommunication { get; set; }
 
-        public IPopUp PopupProvider { get; set; }
+        public IPopupController PopupProvider { get; set; }
 
         public string Title
         {
@@ -239,7 +240,7 @@ namespace Dev2.Studio.Core.ViewModels
 
                 if(newResource && _resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    EventAggregator.Publish(new AddWorkflowDesignerMessage(_resource));
+                    EventAggregator.Publish(new AddWorkSurfaceMessage(_resource));
                 }
 
                 //if (!savedByWizard && newResource)

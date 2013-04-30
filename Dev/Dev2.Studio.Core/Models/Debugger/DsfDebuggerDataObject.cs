@@ -19,6 +19,7 @@ namespace Dev2.Studio.Core.Models
         public Guid WorkspaceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
+        public Guid ResourceID { get; set; }
         public ErrorResultTO Errors { get; set; }
 
         public enTranslationDepth DatalistOutMergeDepth { get; set; }

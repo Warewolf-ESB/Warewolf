@@ -10,6 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Dev2.Common.ExtMethods;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Views.ResourceManagement
 {
@@ -22,21 +26,20 @@ namespace Dev2.Studio.Views.ResourceManagement
 
         public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
 
-        public DeleteResourceDialog()
+        public DeleteResourceDialog(IContextualResourceModel model)
         {
             InitializeComponent();
+            Owner = Application.Current.MainWindow;
+            Title = String.Format(StringResources.DialogTitle_HasDependencies, model.ResourceType.GetDescription());
+            tbDisplay.Text = String.Format(StringResources.DialogBody_HasDependencies, model.ResourceName,
+                                                    model.ResourceType.GetDescription());
         }
 
-        public DeleteResourceDialog(string title, string message, bool allowShowDependency)
+        public DeleteResourceDialog(string title, string message)
         {
             InitializeComponent();
             Title = title;
             tbDisplay.Text = message;
-
-            if (!allowShowDependency)
-            {
-                button3.Visibility = System.Windows.Visibility.Collapsed;
-            }
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
