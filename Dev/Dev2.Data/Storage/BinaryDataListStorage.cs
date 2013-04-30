@@ -52,7 +52,6 @@ namespace Dev2.Data.Binary_Objects
 
         readonly String _uniqueIdentifierGuid;
         bool _disposed = false;
-        int _key = Int32.MaxValue;
         string _uniqueKey;
 
         public int ColumnSize { get; set; }

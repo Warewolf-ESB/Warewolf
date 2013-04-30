@@ -4,7 +4,7 @@ namespace Dev2.Runtime.Configuration.Settings
 {
     public class SecuritySettings : SettingsBase
     {
-        public const string SettingName = "Security";
+        public new const string SettingName = "Security";
         
         #region CTOR
 

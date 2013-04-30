@@ -9,7 +9,7 @@ namespace Dev2.Runtime.Configuration.Settings
     {
         #region Fields
 
-        public const string SettingName = "Logging";
+        public new const string SettingName = "Logging";
 
         private bool _isLoggingEnabled;
         private bool _isVersionLogged;

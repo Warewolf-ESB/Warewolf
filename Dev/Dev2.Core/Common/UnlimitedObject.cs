@@ -1054,7 +1054,7 @@ namespace Unlimited.Framework
             {
                 result = GetValue("DataList");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

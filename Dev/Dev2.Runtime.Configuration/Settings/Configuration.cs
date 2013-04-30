@@ -19,7 +19,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        internal void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
             {

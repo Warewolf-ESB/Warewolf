@@ -19,25 +19,25 @@ namespace Dev2.Tests.Diagnostics
 
         #region Implementation of IDebugItem
 
-        public bool Contains(string filterText)
+        public new bool Contains(string filterText)
         {
             return false;
         }
 
-        public void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
+        public new void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
         {
         }
 
-        public void AddRange(IList<IDebugItemResult> itemsToAdd)
+        public new void AddRange(IList<IDebugItemResult> itemsToAdd)
         {
         }
 
-        public IList<IDebugItemResult> FetchResultsList()
+        public new IList<IDebugItemResult> FetchResultsList()
         {
             return null;
         }
 
-        public void FlushStringBuilder()
+        public new void FlushStringBuilder()
         {
         }        
 
