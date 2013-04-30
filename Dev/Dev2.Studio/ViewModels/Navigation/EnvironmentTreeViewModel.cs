@@ -269,7 +269,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         void NewResource(string resourceType)
-        {
+        {            
             if(resourceType == "Workflow")
             {
                 TempSave(EnvironmentModel,resourceType);

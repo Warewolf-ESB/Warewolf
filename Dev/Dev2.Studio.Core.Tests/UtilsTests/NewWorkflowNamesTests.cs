@@ -71,15 +71,6 @@ namespace Dev2.Core.Tests.UtilsTests
             Assert.IsTrue(workflowNames.Contains(name));
         }
 
-        [TestMethod]
-        public void NewWorkflowNamesAddSameNameToHashSetExpectedNameNotAdded()
-        {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
-            workflowNames.Add(name);
-            Assert.IsFalse(workflowNames.Add(name));
-        }
-
         #endregion
 
         #region Remove Tests

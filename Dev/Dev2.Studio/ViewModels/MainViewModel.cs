@@ -1235,22 +1235,6 @@ namespace Dev2.Studio.ViewModels
                 ActivateItem(context);
             }
         }
-
-        //void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
-        //{
-        //    string newWorflowName = NewWorkflowNames.Instance.GetNext();
-
-        //    IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
-        //                                                                                      resourceType);
-        //    tempResource.Category = "Unassigned";
-        //    tempResource.ResourceName = newWorflowName;
-        //    tempResource.DisplayName = newWorflowName;
-        //    tempResource.IsNewWorkflow = true;
-
-        //    WorkspaceItemRepository.AddWorkspaceItem(tempResource);
-        //    AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
-        //}
-
         public void AddSettings(IEnvironmentModel environment)
         {
             //WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings,

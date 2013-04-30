@@ -74,14 +74,10 @@ namespace Dev2.Studio.Core.Utils
         /// </summary>
         /// <param name="newWorkflowName"></param>
         public bool Add(string newWorkflowName)
-        {
-            bool result = false;
-            if (!Contains(newWorkflowName))
-            {
-                result = true;
-                _workflowNamesHashSet.Add(newWorkflowName);
-            }
-            return result;
+        {                           
+            _workflowNamesHashSet.Add(newWorkflowName);
+           
+            return true;
         }
 
         #endregion

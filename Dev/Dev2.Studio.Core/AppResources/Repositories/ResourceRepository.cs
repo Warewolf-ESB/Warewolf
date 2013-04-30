@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Xml;
@@ -465,7 +466,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (data.IsNewWorkflow is string)
             {
                 resource.IsNewWorkflow = false;
-                if (data.IsNewWorkflow == "true")
+                if (string.Compare(data.IsNewWorkflow,"true",StringComparison.InvariantCulture))
                 {
                     resource.IsNewWorkflow = true;
                     NewWorkflowNames.Instance.Add(resource.DisplayName);
