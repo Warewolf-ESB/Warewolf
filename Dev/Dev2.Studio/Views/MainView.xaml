@@ -2,7 +2,6 @@
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
-                     xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
                      xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
                      xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
                      xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
@@ -14,9 +13,11 @@
                      xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
                      xmlns:diagnostics="clr-namespace:Dev2.Studio.Views.Diagnostics"
                      xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
-                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Class="Dev2.Studio.Views.MainView"
+                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+                     xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
+                     x:Class="Dev2.Studio.Views.MainView"
                      WindowState="Maximized"
-                     Title="{Binding Title}"
+                     Title="{Binding DisplayName}"
                      Icon="pack://application:,,,/Dev2.Studio;component/Images/Network.png"
                      x:Name="MainViewWindow" Opacity="1">
 	<ribbon:RibbonWindow.Resources>
@@ -42,11 +43,11 @@
 	</ribbon:RibbonWindow.Triggers>                   
     <ribbon:RibbonWindow.InputBindings>
         <!--<KeyBinding Command="{Binding Path=NewResourceCommand}" Key="N" Modifiers="Control" />
-        
+        <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=SaveCommand}" Key="F6" />        
         <KeyBinding Command="{Binding Path=EditCommand}" Key="E" Modifiers="Control" />-->
-        <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
-        <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
+        <KeyBinding Command="{Binding ActiveItem.DebugCommand}" Key="F5" />
+        
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
         <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Alt" />
@@ -62,12 +63,12 @@
         <KeyBinding Command="{Binding StartFeedbackCommand}" Key="F" Modifiers="Alt" />
         <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
-        <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.SaveCommand}" Key="S" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding RunCommand}" Key="R" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding EditCommand}" Key="I" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.DebugCommand}" Key="T" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding ActiveItem.EditCommand}" Key="I" Modifiers="Ctrl" />
         <!--<KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="X" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="C" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="V" Modifiers="Ctrl" />
@@ -84,7 +85,7 @@
         <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
 
     </ribbon:RibbonWindow.InputBindings>
-	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5">
+	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">
 		<Grid.RenderTransform>
 			<TransformGroup>
 				<ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
@@ -98,78 +99,78 @@
 			<ItemsControl x:Name="WorkflowActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" ToolTip="CRTL + S"/>
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
-				<ribbon:RibbonButton Label="Debug"
-					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png"
-					Command="{Binding DebugCommand}" ToolTip="F5"/>
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
+                <ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
+                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
+					                 Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="ServiceActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" ToolTip="CRTL + S"/>
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Debug"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png"
-					Command="{Binding DebugCommand}" ToolTip="F5"/>
+					Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebpageActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebsiteActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WorkpartActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" ToolTip="CRTL + S"/>
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}"
+					Command="{Binding ActiveItem.ViewInBrowserCommand}"
 					AutomationProperties.AutomationId="BrowserCommand" />
 				<ribbon:RibbonButton Label="Debug"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png"
-					Command="{Binding DebugCommand}" ToolTip="F5"/>
+					Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" ToolTip="CRTL + I"/>
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WizardActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/build2.png"
-					Command="{Binding SaveCommand}" />
+					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/viewinbrowser.png"
-					Command="{Binding ViewInBrowserCommand}" />
+					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/126_Edit_32x32_72.png"
-					Command="{Binding EditCommand}" />
+					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="SourceManagerActions" Visibility="Collapsed">
@@ -286,17 +287,12 @@
 					</Style>
 					<Style TargetType="{x:Type ribbon:RibbonGroup}">
 						<Setter Property="ContextMenu" Value="{x:Null}"/>
-						<!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"></Setter> -->
 					</Style>
 					<Style TargetType="{x:Type ribbon:RibbonTab}">
 						<Setter Property="ContextMenu" Value="{x:Null}"/>
-
-						<!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"> -->
 					</Style>
-
 					<Style TargetType="{x:Type ribbon:Ribbon}">
 						<Setter Property="ContextMenu" Value="{x:Null}"/>
-						<!-- <Setter Property="AutomationProperties.AutomationId" Value="{Binding RelativeSource={RelativeSource Self}, Path=Label}"></Setter> -->
 					</Style>
 					<Style x:Key="RibbonGroupActions">
 						<Style.Triggers>
@@ -685,7 +681,7 @@
 						<igDock:TabGroupPane>
 							<igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
 								IsPinned="False" AllowClose="False">
-								<diagnostics:DebugOutputView DataContext="{Binding DebugOutputViewModel}"/>
+                                <diagnostics:DebugOutputView DataContext="{Binding ActiveItem.DebugOutputViewModel}"/>
 							</igDock:ContentPane>
 							<!-- TODO PBI 8291 
                             <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
@@ -707,9 +703,8 @@
 								<bdsviews:ToolboxUserControl/>
 							</igDock:ContentPane>
 							<igDock:ContentPane x:Name="Variables" 
-                                                LostKeyboardFocus="Variables_OnKeyboardLostFocus"
 								Header="Variables" AllowClose="False"
-								AllowInDocumentHost="False" IsPinned="False" x:FieldModifier="public">
+								AllowInDocumentHost="False" IsPinned="False">
 								<dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
 							</igDock:ContentPane>
 						</igDock:TabGroupPane>
@@ -756,7 +751,6 @@
 											<Setter Property="AllowDockingTop" Value="False"/>
 											<Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}"/>
 											<Setter Property="SaveInLayout" Value="false"/>
-											<Setter Property="cal:Message.Attach" Value="[Event Closing] = [Action CloseWorkSurfaceContext($dataContext, $eventArgs)]"/>                                             
 										</Style>
 									</igExtensions:ContentPaneFactory.ContainerStyle>
 								</igExtensions:ContentPaneFactory>

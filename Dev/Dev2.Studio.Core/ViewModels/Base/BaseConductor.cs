@@ -8,29 +8,39 @@ using Dev2.Composition;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
-    public class BaseConductor<T> : Conductor<T>.Collection.OneActive
+    public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
         where T : IScreen
     {
+        private bool _disposed;
+
         [Import]
         public IEventAggregator EventAggregator { get; set; }
         
         protected BaseConductor()
         {
-            SatisfyImports();
+            ImportService.TrySatisfyImports(this);
 
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             if (EventAggregator != null)
                 EventAggregator.Subscribe(this);
         }
 
-        #region Protected Virtual Methods
+        protected virtual void Dispose(bool disposing)
+        {        
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    // If we have any managed, IDisposable resources, Dispose of them here.
+                }
 
-        protected virtual void SatisfyImports()
-        {
-            //For testing scenarios - ability to fail silently when everythings not imported
-            ImportService.TrySatisfyImports(this);
+            }
+            // Mark us as disposed, to prevent multiple calls to dispose from having an effect, 
+            this._disposed = true;
         }
 
-        #endregion Protected Virtual Methods
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
     }
 }

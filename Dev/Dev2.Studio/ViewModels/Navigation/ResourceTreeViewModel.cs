@@ -755,7 +755,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            EventAggregator.Publish(new SaveResourceMessage(DataContext));
+            EventAggregator.Publish(new SaveResourceMessage(DataContext,false));
             RaisePropertyChangedForCommands();
         }
 
@@ -805,11 +805,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             switch (resourceModel.ResourceType)
             {
+                //Juries todo check vs old addworkflowdesignermessage
                 case ResourceType.WorkflowService:
-                    EventAggregator.Publish(new AddWorkflowDesignerMessage(resourceModel));
-                    EventAggregator.Publish(new AddMissingAndFindUnusedDataListItemsMessage(resourceModel));
+                    EventAggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
                     break;
-
                 case ResourceType.Source:
                     EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;

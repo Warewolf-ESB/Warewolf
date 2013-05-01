@@ -20,5 +20,7 @@ namespace Dev2.Studio.Core.Interfaces
         /// <param name="resourceModel">The resource model to be queried.</param>
         /// <returns>A list of <see cref="IResourceModel"/>'s.</returns>
         List<IResourceModel> GetUniqueDependencies(IContextualResourceModel resourceModel);
+
+        bool HasDependencies(IContextualResourceModel resourceModel);
     }
 }

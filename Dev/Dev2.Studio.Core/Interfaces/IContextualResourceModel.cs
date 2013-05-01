@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Studio.Core.Models;
 
 namespace Dev2.Studio.Core.Interfaces
 {

@@ -31,7 +31,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel,IHandle<CloseWizardMessage>
+    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel
     {
         #region private fields
 
@@ -250,92 +250,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _newResourceCommand ??
-                       (_newResourceCommand = new RelayCommand<string>(NewResource, o => HasFileMenu));
+                       (_newResourceCommand = new RelayCommand<string>((s) 
+                           => EventAggregator.Publish(new ShowNewResourceWizard(s)), o => HasFileMenu));
             }
-        }
-
-        void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
-        {
-            string newWorflowName = NewWorkflowNames.Instance.GetNext();
-
-            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
-                                                                                              resourceType);
-            tempResource.Category = "Unassigned";
-            tempResource.ResourceName = newWorflowName;
-            tempResource.DisplayName = newWorflowName;
-            tempResource.IsNewWorkflow = true;
-
-            EventAggregator.Publish(new AddWorkflowDesignerMessage(tempResource));
-        }
-
-        void NewResource(string resourceType)
-        {            
-            if(resourceType == "Workflow")
-            {
-                TempSave(EnvironmentModel,resourceType);
-                return;
-            }
-
-            IContextualResourceModel resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, resourceType,
-                                                                                             resourceType);
-            var resourceViewModel = new ResourceWizardViewModel(resourceModel);
-            if (RootWebSite.ShowDialog(resourceModel))
-            {
-                return;
-            }
-
-            bool doesServiceExist =
-                EnvironmentModel.ResourceRepository.Find(r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
-
-            if (doesServiceExist)
-            {
-                // Travis.Frisinger: 07.90.2012 - Amended to convert studio resources into server resources
-                string resName =
-                    StudioToWizardBridge.ConvertStudioToWizardType(resourceType.ToString(CultureInfo.InvariantCulture),
-                        resourceModel.ServiceDefinition,
-                        resourceModel.Category);
-                //string requestUri = string.Format("{0}/services/{1}?{2}={3}&Dev2NewService=1", MainViewModel.CurrentWebServer, StudioToWizardBridge.SelectWizard(resourceModel), ResourceKeys.Dev2ServiceType, resName);
-
-                Uri requestUri;
-                if (
-                    !Uri.TryCreate(EnvironmentModel.Connection.WebServerUri,
-                        BuildUri(resourceModel, resName), out requestUri))
-                {
-                    requestUri = new Uri(new Uri(StringResources.Uri_WebServer), BuildUri(resourceModel, resName));
-                }
-
-                try
-                {
-                    _win = new WebPropertyEditorWindow(resourceViewModel, requestUri.AbsoluteUri)
-                    {
-                        Width = 850,
-                        Height = 600
-                    };
-                    _win.ShowDialog();
-                }
-                catch
-                {
-                }
-            }
-        }
-
-        public void Handle(CloseWizardMessage message)
-        {
-            if (_win != null)
-            {
-                _win.Close();
-            }
-        }
-
-
-        static string BuildUri(IContextualResourceModel resourceModel, string resName)
-        {
-            var uriString = "/services/" + StudioToWizardBridge.SelectWizard(resourceModel);
-            if (resourceModel.ResourceType == ResourceType.WorkflowService || resourceModel.ResourceType == ResourceType.Service)
-            {
-                uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
-            }
-            return uriString;
         }
 
         /// <summary>
@@ -468,6 +385,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             RaisePropertyChangedForCommands();
         }
         #endregion
+
+        public void Handle(CloseWizardMessage message)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     

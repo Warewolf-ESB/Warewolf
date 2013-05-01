@@ -1,12 +1,14 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.DataList.Contract;
 using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
-    public interface IDataListViewModel : IScreen
+    public interface IDataListViewModel : IScreen, IChild
     {
         IResourceModel Resource { get; }
+        ICommand FindUnusedAndMissingCommand { get; }
 
         OptomizedObservableCollection<IDataListItemModel> ScalarCollection { get; set; }
 
@@ -40,6 +42,8 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// Filters the list.
         /// </summary>    
         void FilterItems();
+
+        void FindMissing();
 
         /// <summary>
         /// Adds the blank row.

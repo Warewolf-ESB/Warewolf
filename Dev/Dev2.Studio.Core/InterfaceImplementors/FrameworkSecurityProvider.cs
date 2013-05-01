@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Windows;
 using Dev2.DataList.Contract;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 
 namespace Dev2.Studio.Core
@@ -26,7 +27,7 @@ namespace Dev2.Studio.Core
 
         IIdentity _identity;
 
-        public IPopUp _popUp;
+        public IPopupController _popUp;
 
         string[] _roles;
 
@@ -35,7 +36,7 @@ namespace Dev2.Studio.Core
         PrincipalContext _context;
 
         [Import]
-        public IPopUp mb
+        public IPopupController mb
         {
             get
             {

@@ -4,6 +4,14 @@ using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Studio.ViewModels;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Explorer;
@@ -38,7 +46,7 @@ namespace Dev2.Core.Tests
 
             var wizardEngine = new Mock<IWizardEngine>();
             ImportService.AddExportedValueToContainer(wizardEngine.Object);
-        }
+            }
 
         [TestInitialize]
         public void MyTestInitialize()
@@ -64,7 +72,7 @@ namespace Dev2.Core.Tests
             _connectViewmodel.DsfAddress = "http://127.0.0.1:77/dsf";
 
             _connectViewmodel.OkayCommand.Execute("abc");
-
+            
             Assert.AreEqual("http://127.0.0.1:77/dsf", _connectViewmodel.Server.AppAddress);
         }
 

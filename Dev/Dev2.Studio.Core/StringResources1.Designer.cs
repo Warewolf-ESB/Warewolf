@@ -235,7 +235,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/images/dev2logo.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/dev2logo.png.
         /// </summary>
         public static string Dev2_Logo {
             get {
@@ -258,6 +258,83 @@ namespace Dev2.Studio.Core {
         public static string Dev2StudioSecurityMode {
             get {
                 return ResourceManager.GetString("Dev2StudioSecurityMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you wish to delete the {0} {1}?.
+        /// </summary>
+        public static string DialogBody_ConfirmDelete {
+            get {
+                return ResourceManager.GetString("DialogBody_ConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} {1} has resources that depend on it to function, are you sure you want to delete this {1}?.
+        /// </summary>
+        public static string DialogBody_HasDependencies {
+            get {
+                return ResourceManager.GetString("DialogBody_HasDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t find the resource needed to display the wizard. Please ensure that a resource with the name &apos;Dev2ServiceDetails&apos; exists..
+        /// </summary>
+        public static string DialogBody_MissingWizard {
+            get {
+                return ResourceManager.GetString("DialogBody_MissingWizard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The workflow that you are closing is not saved.
+        ///Would you like to save the  workflow?
+        ///-------------------------------------------------------------------
+        ///Yes - Save the workflow.
+        ///No - Discard your changes.
+        ///Cancel - Returns you to the workflow..
+        /// </summary>
+        public static string DialogBody_NotSaved {
+            get {
+                return ResourceManager.GetString("DialogBody_NotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm delete..
+        /// </summary>
+        public static string DialogTitle_ConfirmDelete {
+            get {
+                return ResourceManager.GetString("DialogTitle_ConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm {0} deletion.
+        /// </summary>
+        public static string DialogTitle_HasDependencies {
+            get {
+                return ResourceManager.GetString("DialogTitle_HasDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Wizard.
+        /// </summary>
+        public static string DialogTitle_MissingWizard {
+            get {
+                return ResourceManager.GetString("DialogTitle_MissingWizard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow not saved....
+        /// </summary>
+        public static string DialogTitle_NotSaved {
+            get {
+                return ResourceManager.GetString("DialogTitle_NotSaved", resourceCulture);
             }
         }
         
@@ -555,6 +632,42 @@ namespace Dev2.Studio.Core {
         public static string Pack_Uri_Application_Image_Website {
             get {
                 return ResourceManager.GetString("Pack_Uri_Application_Image_Website", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png.
+        /// </summary>
+        public static string Pack_Uri_Debug_Image {
+            get {
+                return ResourceManager.GetString("Pack_Uri_Debug_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/Images/Stop.png.
+        /// </summary>
+        public static string Pack_Uri_Stop_Image {
+            get {
+                return ResourceManager.GetString("Pack_Uri_Stop_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string Ribbon_Debug {
+            get {
+                return ResourceManager.GetString("Ribbon_Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Ribbon_StopExecution {
+            get {
+                return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
             }
         }
         

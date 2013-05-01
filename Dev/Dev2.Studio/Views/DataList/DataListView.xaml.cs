@@ -115,6 +115,15 @@ namespace Dev2.Studio.Views.DataList
                     WriteToResourceModel();
                 }
             }
-        }       
+        }
+
+        private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            if (vm != null)
+            {
+                vm.FindMissing();
+            }
+        }
     }
 }

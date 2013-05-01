@@ -5,10 +5,12 @@ using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels;
 using Moq;
 using System;
 using System.Collections;
@@ -688,7 +690,7 @@ namespace Dev2.Core.Tests
 
             _mockWebActivity.Setup(activity => activity.UnderlyingWebActivityObjectType).Returns(typeof(DsfWebPageActivity));
             _mockDataMappingViewModel.Setup(dmvm => dmvm.Activity).Returns(_mockWebActivity.Object);
-            _mockDataMappingViewModel.Setup(dmvm => dmvm.MainViewModel).Returns(_mockMainViewModel.Object);
+            //_mockDataMappingViewModel.Setup(dmvm => dmvm.MainViewModel).Returns(_mockMainViewModel.Object);
             //_mockDataMappingViewModel.Setup(dmvm => dmvm.DataListFactory).Returns(_mockDataListFactory.Object);
             //_mockDataMappingViewModel.Setup(dmvm => dmvm.DataMappingListfactory).Returns(_mockDataMappingListFactory.Object);
             //_mockDataMappingViewModel.Setup(dmvm => dmvm.DataListViewModelFactory).Returns(_mockDataListViewModelFactory.Object);
@@ -718,9 +720,9 @@ namespace Dev2.Core.Tests
             return result;
         }
 
-        public static Mock<IPopUp> CreateIPopup(MessageBoxResult returningResult)
+        public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)
         {
-            Mock<IPopUp> result = new Mock<IPopUp>();
+            Mock<IPopupController> result = new Mock<IPopupController>();
             result.Setup(moq => moq.Show()).Returns(returningResult).Verifiable();
 
             return result;

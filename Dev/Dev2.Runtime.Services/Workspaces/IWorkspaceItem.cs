@@ -8,7 +8,7 @@ namespace Dev2.Workspaces
     /// <summary>
     /// Defines the requirements for a <see cref="IWorkspace"/> item.
     /// </summary>
-    public partial interface IWorkspaceItem : ISerializable, IEquatable<IWorkspaceItem>
+    public interface IWorkspaceItem : ISerializable, IEquatable<IWorkspaceItem>
     {
         /// <summary>
         /// The unique ID of the item.

@@ -17,6 +17,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 #endregion
 
@@ -134,6 +135,18 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Commands
 
         #region Add/Remove Missing Methods
+        public void FindMissing()
+        {
+            var model = Parent as WorkSurfaceContextViewModel;
+
+            if (model == null)
+            {
+                return;
+            }
+
+            var vm = model;
+            vm.FindMissing();
+        }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts)
         {

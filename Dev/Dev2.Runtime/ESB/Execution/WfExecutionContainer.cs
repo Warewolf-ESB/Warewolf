@@ -3,6 +3,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using System;
+using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Dev2.Common;
 
@@ -45,6 +46,14 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
+
+            // Set server ID, only if not set yet - origininal server;
+            if (DataObject.ServerID == Guid.Empty)
+                DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
+
+            // Set server ID, only if not set yet - origininal resource;
+            if (DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
+                DataObject.ResourceID = ServiceAction.Service.ID;
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;

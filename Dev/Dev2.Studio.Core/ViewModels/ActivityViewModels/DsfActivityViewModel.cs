@@ -319,13 +319,13 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
             if (_contextualResourceModel != null)
             {
-                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);
+                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);    
             }
             else
             {
                 HasWizard = false;
             }
-
+            
         }
 
         public void SetInputs()

@@ -7,6 +7,7 @@ using Dev2.Network.Execution;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Action = System.Action;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
 
@@ -42,7 +43,7 @@ namespace Dev2.Studio.Core.Models
 
         void Initialize(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread)
         {
-            if(environmentConnection == null)
+            if (environmentConnection == null)
             {
                 throw new ArgumentNullException("environmentConnection");
             }
@@ -88,11 +89,11 @@ namespace Dev2.Studio.Core.Models
         #region Connect
 
         public void Connect()
-        {
-            if(string.IsNullOrEmpty(Name))
             {
+            if(string.IsNullOrEmpty(Name))
+                {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
-            }
+        }
 
             Connection.Connect();
         }
@@ -102,9 +103,9 @@ namespace Dev2.Studio.Core.Models
             if(other == null)
             {
                 throw new ArgumentNullException("other");
-            }
+                }
             if(!other.IsConnected)
-            {
+        {
                 other.Connection.Connect();
 
                 if(!other.IsConnected)
@@ -130,6 +131,15 @@ namespace Dev2.Studio.Core.Models
         #endregion
 
         #region LoadResources
+
+        //// Not visible from the interface view
+        //public void Connect(string alias, Uri address)
+        //{
+        //    Name = alias;
+        //    DsfAddress = address;
+        //    Connection.Connect();
+        //    EventAggregator.Publish(new EnvironmentConnectedMessage(this));
+        //}
 
         public void LoadResources()
         {
@@ -163,16 +173,15 @@ namespace Dev2.Studio.Core.Models
 
         #endregion
 
-        #region Connection Event Handlers
+        #region Event Handlers
 
-        // PBI 9228: TWR - 2013.04.17
 
         void OnServerStateChanged(object sender, ServerStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.State == ServerState.Online);
         }
 
-        void OnConnectionLoginStateChanged(object sender, LoginStateEventArgs e)
+        private void OnConnectionLoginStateChanged(object sender, LoginStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.LoggedIn);
         }
@@ -180,13 +189,13 @@ namespace Dev2.Studio.Core.Models
         void RaiseNetworkStateChanged(bool isOnline)
         {
             // If auxilliry connection then do nothing
-            if(Connection.IsAuxiliary)
+            if (Connection.IsAuxiliary)
             {
                 return;
             }
 
             AbstractEnvironmentMessage message;
-            if(isOnline)
+            if (isOnline)
             {
                 message = new EnvironmentConnectedMessage(this);
             }
@@ -195,9 +204,9 @@ namespace Dev2.Studio.Core.Models
                 message = new EnvironmentDisconnectedMessage(this);
             }
 
-            if(_publishEventsOnDispatcherThread)
+            if (_publishEventsOnDispatcherThread)
             {
-                if(Application.Current != null)
+                if (Application.Current != null)
                 {
                     // application is not shutting down!!
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => Connection.EventAggregator.Publish(message)), null);
@@ -208,10 +217,9 @@ namespace Dev2.Studio.Core.Models
                 Connection.EventAggregator.Publish(message);
             }
         }
-
         #endregion
 
-        #region Implementation of IEquatable
+        #region IEquatable
 
         public bool Equals(IEnvironmentModel other)
         {

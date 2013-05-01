@@ -7,12 +7,13 @@
              xmlns:dev2="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties" 
              xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"       
+    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              LostKeyboardFocus="UserControl_LostKeyboardFocus">
     <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour/>
     </i:Interaction.Behaviors>
-    <Grid>
+    <Grid LostKeyboardFocus="UIElement_OnLostKeyboardFocus">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>

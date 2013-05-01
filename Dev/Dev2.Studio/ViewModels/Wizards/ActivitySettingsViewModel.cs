@@ -6,6 +6,7 @@ using Dev2.Network.Execution;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
@@ -88,14 +89,14 @@ namespace Dev2.Studio.ViewModels.Wizards
             _wizardInvocationTO = wizardInvocationTO;
             _hostResource = hostResource;
 
-            Popup = ImportService.GetExportValue<IPopUp>();
+            Popup = ImportService.GetExportValue<IPopupController>();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IPopUp Popup { get; set; }
+        public IPopupController Popup { get; set; }
 
         public bool ShowConnectPrompt
         {

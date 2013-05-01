@@ -14,12 +14,12 @@ namespace Dev2.Studio.Factory
     public static class WorkSurfaceContextFactory
     {
 
-        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel)
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner = true)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
             //TODO Juries move to factory
-            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel)
+            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel, createDesigner)
                 {
                     IconPath = ResourceHelper.GetIconPath(resourceModel),
                     DisplayName = resourceModel.ResourceName
@@ -84,6 +84,7 @@ namespace Dev2.Studio.Factory
             var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext, serverID);
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
+
         private static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel<T>(T vm,
                                                                                         WorkSurfaceContext workSurfaceContext,
                                                                                         WorkSurfaceKey key)
@@ -92,6 +93,7 @@ namespace Dev2.Studio.Factory
             var context = new WorkSurfaceContextViewModel(key, vm);
             vm.DisplayName = workSurfaceContext.GetDescription();
             vm.IconPath = workSurfaceContext.GetIconLocation();
+            vm.WorkSurfaceContext = workSurfaceContext;
             return context;
         }
 
@@ -101,6 +103,15 @@ namespace Dev2.Studio.Factory
             var vm = Activator.CreateInstance<T>();
             PropertyHelper.SetValues(vm, initParms);
             var context = CreateUniqueWorkSurfaceContextViewModel(vm, workSurfaceContext);
+            return context;
+        }
+
+        public static WorkSurfaceContextViewModel Create<T>(WorkSurfaceKey key, Tuple<string, object>[] initParms)
+            where T : IWorkSurfaceViewModel
+        {
+            var vm = Activator.CreateInstance<T>();
+            PropertyHelper.SetValues(vm, initParms);
+            var context = CreateWorkSurfaceContextViewModel(vm, key.WorkSurfaceContext, key);
             return context;
         }
 

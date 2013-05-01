@@ -14,14 +14,5 @@ namespace Dev2.Studio.Views.Workflow
         {
             InitializeComponent();
         }
-
-        void Designer_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var vm = this.DataContext as WorkflowDesignerViewModel;
-            if (vm != null)
-            {
-                vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            }
-        }
     }
 }

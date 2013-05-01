@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -6,58 +8,54 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Caliburn.Micro;
+using Dev2.Common.ExtMethods;
+using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 
+#endregion
+
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     /// <summary>
-    /// This is the view-model of the UI.  It provides a data source
-    /// for the TreeView (the RootItems property), a bindable
-    /// SearchText property, and the SearchCommand to perform a search.
+    ///     This is the view-model of the UI.  It provides a data source
+    ///     for the TreeView (the RootItems property), a bindable
+    ///     SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : SimpleBaseViewModel, IHandle<DebugStatusMessage>, IHandle<DebugWriterWriteMessage>, IHandle<DebugWriterAppendMessage>
+    public class DebugOutputViewModel : SimpleBaseViewModel
     {
         #region Fields
 
-        private object _syncContext = new object();
-        private readonly List<object> _contentItems;
-        private readonly ObservableCollection<DebugTreeViewItemViewModel> _rootItems;
-        //private ICommand _searchCommand;
-        private ICommand _openItemCommand;
+        private readonly List<IDebugState> _contentItems;
+        private readonly DebugOutputTreeGenerationStrategy _debugOutputTreeGenerationStrategy;
+        private readonly object _syncContext = new object();
+        private int _depthLimit;
         private ICommand _expandAllCommand;
-        private ICommand _showOptionsCommand;
-
-        string _searchText = string.Empty;
-
-        private bool _showVersion = false;
-        private bool _showServer = true;
-        private bool _showType = true;
-        private bool _showTime = false;
-        private bool _showDuratrion = false;
-        private bool _showInputs = true;
-        private bool _showOutputs = true;
-        private bool _highlightSimulation = true;
+        private bool _expandAllMode;
         private bool _highlightError = true;
-
-        private bool _showProcessingIcon = false;
-        private string _processingText = "Ready";
-
-        private bool _showOptions = false;
-        private bool _skipOptionsCommandExecute = false;
-
-        private bool _expandAllMode = false;
-        private bool _isRebuildingTree = false;
-
-        private int _depthLimit = 0;
-
-        private DebugOutputTreeGenerationStrategy _debugOutputTreeGenerationStrategy;
+        private bool _highlightSimulation = true;
+        private bool _isRebuildingTree;
+        private ICommand _openItemCommand;
+        private ObservableCollection<DebugTreeViewItemViewModel> _rootItems;
+        private string _searchText = string.Empty;
+        private bool _showDuratrion;
+        private bool _showInputs = true;
+        private bool _showOptions;
+        private ICommand _showOptionsCommand;
+        private bool _showOutputs = true;
+        private bool _showServer = true;
+        private bool _showTime;
+        private bool _showType = true;
+        private bool _showVersion;
+        private bool _skipOptionsCommandExecute;
+        private DebugStatus _debugStatus;
 
         #endregion
 
@@ -68,370 +66,347 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
         }
 
-        public DebugOutputViewModel(IEnvironmentRepository environmentRepository)
+        public DebugOutputViewModel(WorkSurfaceKey workSurfaceKey = null)
+            : this(Core.EnvironmentRepository.Instance, workSurfaceKey)
         {
-            if(environmentRepository == null)
+        }
+
+        public DebugOutputViewModel(IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
+        {
+            if (environmentRepository == null)
             {
                 throw new ArgumentNullException("environmentRepository");
             }
             EnvironmentRepository = environmentRepository;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
 
-            _rootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
-            _contentItems = new List<object>();
-
-            //            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterWrite, Write);
-            //            Mediator.RegisterToReceiveMessage(MediatorMessages.DebugWriterAppend, Append);
+            _contentItems = new List<IDebugState>();
         }
 
         #endregion
 
         #region Properties
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [show processing icon].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [show processing icon]; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Massimo.Guerrera</author>
-        /// <date>2/28/2013</date>
-        public bool ShowProcessingIcon
+        public DebugStatus DebugStatus
         {
-            get
-            {
-                return _showProcessingIcon;
-            }
+            get { return _debugStatus; }
             set
             {
-                _showProcessingIcon = value;
-                OnPropertyChanged("ShowProcessingIcon");
+                _debugStatus = value;
+
+                NotifyOfPropertyChange(() => IsStopping);
+                NotifyOfPropertyChange(() => IsProcessing);
+                NotifyOfPropertyChange(() => IsConfiguring);
+                NotifyOfPropertyChange(() => DebugImage);
+                NotifyOfPropertyChange(() => DebugText);
+                NotifyOfPropertyChange(() => ProcessingText);
             }
         }
 
-
         /// <summary>
-        /// Gets or sets the processing text.
+        ///     Gets or sets the processing text.
         /// </summary>
         /// <value>
-        /// The processing text.
+        ///     The processing text.
         /// </value>
         /// <author>Massimo.Guerrera</author>
         /// <date>3/4/2013</date>
         public string ProcessingText
         {
+            get { return DebugStatus.GetDescription(); }
+        }
+
+        public bool IsProcessing
+        {
             get
             {
-                return _processingText;
+                return _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished;
             }
-            set
+        }
+
+        public bool IsStopping
+        {
+            get
             {
-                _processingText = value;
-                OnPropertyChanged("ProcessingText");
+                return _debugStatus == DebugStatus.Stopping;
+            }
+        }
+
+        public string DebugImage
+        {
+            get
+            {
+                return IsProcessing ? StringResources.Pack_Uri_Stop_Image : StringResources.Pack_Uri_Debug_Image;
+            }
+        }
+
+        public string DebugText
+        {
+            get
+            {
+                return IsProcessing ? StringResources.Ribbon_StopExecution : StringResources.Ribbon_Debug;
             }
         }
 
         /// <summary>
-        /// Gets or sets the environment repository, this property is imported via MEF.
+        ///     Gets or sets the environment repository, this property is imported via MEF.
         /// </summary>
         /// <value>
-        /// The environment repository.
+        ///     The environment repository.
         /// </value>
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
         /// <summary>
-        /// Gets or sets the depth limit.
+        ///     Gets or sets the depth limit.
         /// </summary>
         /// <value>
-        /// The depth limit.
+        ///     The depth limit.
         /// </value>
         public int DepthLimit
         {
-            get
-            {
-                return _depthLimit;
-            }
+            get { return _depthLimit; }
             set
             {
-                if(_depthLimit != value)
+                if (_depthLimit != value)
                 {
                     _depthLimit = value;
-                    OnPropertyChanged("DepthLimit");
+                    NotifyOfPropertyChange(() => DepthLimit);
                     RebuildTree();
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [expand all mode].
+        ///     Gets or sets a value indicating whether [expand all mode].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [expand all mode]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [expand all mode]; otherwise, <c>false</c>.
         /// </value>
         public bool ExpandAllMode
         {
-            get
-            {
-                return _expandAllMode;
-            }
+            get { return _expandAllMode; }
             set
             {
                 _expandAllMode = value;
-                OnPropertyChanged("ExpandAllMode");
+                NotifyOfPropertyChange(() => ExpandAllMode);
             }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the options command show skip executing it's next execution.
+        ///     Gets or sets a value indicating whether the options command show skip executing it's next execution.
         /// </summary>
         /// <value>
-        /// <c>true</c> if [skip options command execute]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [skip options command execute]; otherwise, <c>false</c>.
         /// </value>
         public bool SkipOptionsCommandExecute
         {
-            get
-            {
-                return _skipOptionsCommandExecute;
-            }
+            get { return _skipOptionsCommandExecute; }
             set
             {
                 _skipOptionsCommandExecute = value;
-                OnPropertyChanged("SkipOptionsCommandExecute");
+                NotifyOfPropertyChange(() => SkipOptionsCommandExecute);
             }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [show options].
+        ///     Gets or sets a value indicating whether [show options].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show options]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show options]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowOptions
         {
-            get
-            {
-                return _showOptions;
-            }
+            get { return _showOptions; }
             set
             {
                 _showOptions = value;
-                OnPropertyChanged("ShowOptions");
+                NotifyOfPropertyChange(() => ShowOptions);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show version].
+        ///     Gets a value indicating whether [show version].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show version]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show version]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowVersion
         {
-            get
-            {
-                return _showVersion;
-            }
+            get { return _showVersion; }
             set
             {
                 _showVersion = value;
-                OnPropertyChanged("ShowVersion");
+                NotifyOfPropertyChange(() => ShowVersion);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show server].
+        ///     Gets a value indicating whether [show server].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show server]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show server]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowServer
         {
-            get
-            {
-                return _showServer;
-            }
+            get { return _showServer; }
             set
             {
                 _showServer = value;
-                OnPropertyChanged("ShowServer");
+                NotifyOfPropertyChange(() => ShowServer);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show type].
+        ///     Gets a value indicating whether [show type].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show type]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show type]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowType
         {
-            get
-            {
-                return _showType;
-            }
+            get { return _showType; }
             set
             {
                 _showType = value;
-                OnPropertyChanged("ShowType");
+                NotifyOfPropertyChange(() => ShowType);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show time].
+        ///     Gets a value indicating whether [show time].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show time]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show time]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowTime
         {
-            get
-            {
-                return _showTime;
-            }
+            get { return _showTime; }
             set
             {
                 _showTime = value;
-                OnPropertyChanged("ShowTime");
+                NotifyOfPropertyChange(() => ShowTime);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show duratrion].
+        ///     Gets a value indicating whether [show duratrion].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show duratrion]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show duratrion]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowDuratrion
         {
-            get
-            {
-                return _showDuratrion;
-            }
+            get { return _showDuratrion; }
             set
             {
                 _showDuratrion = value;
-                OnPropertyChanged("ShowDuratrion");
+                NotifyOfPropertyChange(() => ShowDuratrion);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show inputs].
+        ///     Gets a value indicating whether [show inputs].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show inputs]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show inputs]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowInputs
         {
-            get
-            {
-                return _showInputs;
-            }
+            get { return _showInputs; }
             set
             {
                 _showInputs = value;
-                OnPropertyChanged("ShowInputs");
+                NotifyOfPropertyChange(() => ShowInputs);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [show outputs].
+        ///     Gets a value indicating whether [show outputs].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [show outputs]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [show outputs]; otherwise, <c>false</c>.
         /// </value>
         public bool ShowOutputs
         {
-            get
-            {
-                return _showOutputs;
-            }
+            get { return _showOutputs; }
             set
             {
                 _showOutputs = value;
-                OnPropertyChanged("ShowOutputs");
+                NotifyOfPropertyChange(() => ShowOutputs);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [highligh simulation].
+        ///     Gets a value indicating whether [highligh simulation].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [highligh simulation]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [highligh simulation]; otherwise, <c>false</c>.
         /// </value>
         public bool HighlightSimulation
         {
-            get
-            {
-                return _highlightSimulation;
-            }
+            get { return _highlightSimulation; }
             set
             {
                 _highlightSimulation = value;
-                OnPropertyChanged("HighlightSimulation");
+                NotifyOfPropertyChange(() => HighlightSimulation);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether [highligh error].
+        ///     Gets a value indicating whether [highligh error].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [highligh error]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [highligh error]; otherwise, <c>false</c>.
         /// </value>
         public bool HighlightError
         {
-            get
-            {
-                return _highlightError;
-            }
+            get { return _highlightError; }
             set
             {
                 _highlightError = value;
-                OnPropertyChanged("HighlightError");
+                NotifyOfPropertyChange(() => HighlightError);
             }
         }
 
         /// <summary>
-        /// Gets or sets the debug writer.
+        ///     Gets or sets the debug writer.
         /// </summary>
         /// <value>
-        /// The debug writer.
+        ///     The debug writer.
         /// </value>
-        public IDebugWriter DebugWriter
-        {
-            get;
-            set;
-        }
+        public IDebugWriter DebugWriter { get; set; }
 
         /// <summary>
-        /// Returns a observable collection containing the root level items
-        /// in the debug tree, to which the TreeView can bind.
+        ///     Returns a observable collection containing the root level items
+        ///     in the debug tree, to which the TreeView can bind.
         /// </summary>
         public ObservableCollection<DebugTreeViewItemViewModel> RootItems
         {
             get
             {
+                if (_rootItems == null)
+                {
+                    _rootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
+                }
                 return _rootItems;
             }
         }
 
         /// <summary>
-        /// Gets/sets a fragment of the name to search for.
+        ///     Gets/sets a fragment of the name to search for.
         /// </summary>
         public string SearchText
         {
-            get
-            {
-                return _searchText;
-            }
+            get { return _searchText; }
             set
             {
-                if(value == _searchText)
+                if (value == _searchText)
                 {
                     return;
                 }
 
                 _searchText = value;
-                OnPropertyChanged("SearchText");
+                NotifyOfPropertyChange(() => SearchText);
 
                 RebuildTree();
             }
@@ -440,9 +415,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion
 
         #region public methods
+
         public void OpenMoreLink(DebugLineItem item)
         {
-            if(!string.IsNullOrEmpty(item.MoreLink))
+            if (!string.IsNullOrEmpty(item.MoreLink))
             {
                 Process.Start(new ProcessStartInfo(item.MoreLink));
             }
@@ -452,6 +428,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             return !string.IsNullOrEmpty(item.MoreLink);
         }
+
         #endregion public methods
 
         #region Commands
@@ -460,7 +437,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_openItemCommand == null)
+                if (_openItemCommand == null)
                 {
                     _openItemCommand = new RelayCommand(OpenItem, c => true);
                 }
@@ -472,7 +449,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_expandAllCommand == null)
+                if (_expandAllCommand == null)
                 {
                     _expandAllCommand = new RelayCommand(ExpandAll, c => true);
                 }
@@ -484,11 +461,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_showOptionsCommand == null)
+                if (_showOptionsCommand == null)
                 {
                     _showOptionsCommand = new RelayCommand(o =>
                         {
-                            if(SkipOptionsCommandExecute)
+                            if (SkipOptionsCommandExecute)
                             {
                                 SkipOptionsCommandExecute = false;
                             }
@@ -502,34 +479,38 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
+        public bool IsConfiguring
+        {
+            get { return DebugStatus == DebugStatus.Configure; }
+        }
+
         #endregion
 
         #region Private Methods
 
         /// <summary>
-        /// Clears all content and the tree.
+        ///     Clears all content and the tree.
         /// </summary>
-        private void Clear(object payload)
+        public void Clear()
         {
             RootItems.Clear();
             _contentItems.Clear();
-            ProcessingText = "Ready";
         }
 
         /// <summary>
-        /// Expands all nodes.
+        ///     Expands all nodes.
         /// </summary>
         /// <param name="payload">The payload.</param>
         private void ExpandAll(object payload)
         {
-            DebugTreeViewItemViewModel node = payload as DebugTreeViewItemViewModel;
+            var node = payload as DebugTreeViewItemViewModel;
 
             //
             // If no node is passed in then call for all root nodes
             //
-            if(node == null)
+            if (node == null)
             {
-                foreach(DebugTreeViewItemViewModel rootNode in RootItems)
+                foreach (var rootNode in RootItems)
                 {
                     ExpandAll(rootNode);
                 }
@@ -546,120 +527,93 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // Expand node and call for all children
             //
             node.IsExpanded = ExpandAllMode;
-            foreach(DebugTreeViewItemViewModel childNode in node.Children)
+            foreach (var childNode in node.Children)
             {
                 ExpandAll(childNode);
             }
         }
 
         /// <summary>
-        /// Opens an item.
+        ///     Opens an item.
         /// </summary>
         /// <param name="payload">The payload.</param>
         private void OpenItem(object payload)
         {
-            IDebugState debugState = payload as IDebugState;
+            var debugState = payload as IDebugState;
 
-            if(debugState == null)
+            if (debugState == null)
             {
                 return;
             }
 
-            if(debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
+            if (debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
             {
                 IEnvironmentModel environment = EnvironmentRepository.All().FirstOrDefault(e =>
-                {
-                    IStudioClientContext studioClientContext = e.DsfChannel as IStudioClientContext;
-
-                    if(studioClientContext == null)
                     {
-                        return false;
-                    }
+                        var studioClientContext = e.DsfChannel as IStudioClientContext;
 
-                    return studioClientContext.ServerID == debugState.ServerID;
-                });
+                        if (studioClientContext == null)
+                        {
+                            return false;
+                        }
 
-                if(environment == null || !environment.IsConnected)
+                        return studioClientContext.ServerID == debugState.ServerID;
+                    });
+
+                if (environment == null || !environment.IsConnected)
                 {
                     return;
                 }
 
-                IResourceModel resource = environment.ResourceRepository.FindSingle(r => r.ResourceName == debugState.DisplayName);
+                IResourceModel resource =
+                    environment.ResourceRepository.FindSingle(r => r.ResourceName == debugState.DisplayName);
 
-                if(resource == null)
+                if (resource == null)
                 {
                     return;
                 }
-                EventAggregator.Publish(new AddWorkflowDesignerMessage(resource));
-                //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
+                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
             }
         }
 
         /// <summary>
-        /// Writes the specified content.
+        ///     Appends the specified content.
         /// </summary>
         /// <param name="content">The content.</param>
-        private void Write(object content)
-        {
-            if(Application.Current != null)
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(WriteUI), content);
-        }
-
-        /// <summary>
-        /// Writes the specified content.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        private void WriteUI(object content)
-        {
-            Clear(null);
-            AppendUI(content);
-        }
-
-        /// <summary>
-        /// Appends the specified content.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        private void Append(object content)
-        {
-            if(Application.Current != null)
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<object>(AppendUI), content);
-        }
-
-        /// <summary>
-        /// Appends the specified content.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        private void AppendUI(object content)
+        public void Append(IDebugState content)
         {
             //
             //Juries - This is a dirty hack, naughty naughty.
             //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
             //
-            if(content is IDebugState)
+            if (content is IDebugState)
             {
-                var state = (IDebugState)content;
-                if(state.StateType == StateType.Append)
-                {
-                    _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, state);
-                    return;
-                }
+                var state = (IDebugState) content;
+                if (state.StateType == StateType.Append)
+            if (content.StateType == StateType.Append)
+            {
+                _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, content);
+                return;
             }
 
             _contentItems.Add(content);
 
-            lock(_syncContext)
+            lock (_syncContext)
             {
-                if(_isRebuildingTree)
+                if (_isRebuildingTree)
                 {
                     return;
                 }
             }
 
-            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText, false, DepthLimit);
+                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText,
+                                                                      false,
+                                                                  DepthLimit);
+        }
         }
 
         /// <summary>
-        /// Rebuilds the tree.
+        ///     Rebuilds the tree.
         /// </summary>
         private void RebuildTree()
         {
@@ -670,9 +624,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             RootItems.Clear();
 
-            foreach(object content in _contentItems)
+            foreach (var content in _contentItems)
             {
-                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText, false, DepthLimit);
+                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText,
+                                                                      false, DepthLimit);
             }
 
             lock(_syncContext)
@@ -682,45 +637,5 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion Private Methods
-
-        #region Implementation of IHandle<DebugStatusMessage>
-
-        public void Handle(DebugStatusMessage message)
-        {
-            if(message != null)
-            {
-                ShowProcessingIcon = message.DebugStatus;
-                if(message.DebugStatus)
-                {
-                    ProcessingText = "Executing...";
-                }
-                else
-                {
-                    ProcessingText = "Complete";
-                }
-            }
-        }
-
-        #endregion
-
-        #region Implementation of IHandle<DebugWriterWriteMessage>
-
-        public void Handle(DebugWriterWriteMessage message)
-        {
-            Write(message.Content);
-        }
-
-        #endregion
-
-        #region Implementation of IHandle<DebugWriterAppendMessage>
-
-        public void Handle(DebugWriterAppendMessage message)
-        {
-            Append(message.Content);
-        }
-
-        #endregion
     }
-
-
 }

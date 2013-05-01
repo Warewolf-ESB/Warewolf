@@ -15,7 +15,6 @@ using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels.DataList.Actions;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -280,32 +279,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ICommand AutoMappingInputCommand
-        {
-            get
-            {
-                if (_autoMappingInput == null)
-                {
-                    _autoMappingInput = new RelayCommand(c => AutoMappingInput(Activity));
-                }
-
-                return _autoMappingInput;
-            }
-        }
-
-        public ICommand AutoMappingOutputCommand
-        {
-            get
-            {
-                if (_autoMappingOutput == null)
-                {
-                    _autoMappingOutput = new RelayCommand(c => AutoMappingOutput(Activity));
-                }
-
-                return _autoMappingOutput;
-            }
-        }
-
         public ICommand UndoCommand
         {
             get
@@ -338,20 +311,6 @@ namespace Dev2.Studio.ViewModels.DataList
         public void Redo()
         {
             UndoFramework.Redo();
-        }
-
-        public void AutoMappingInput(IWebActivity activity)
-        {
-            var autoMapInputs = new AutoMappingInputAction(this, activity);
-
-            UndoFramework.RecordAction(autoMapInputs);
-
-        }
-
-        public void AutoMappingOutput(IWebActivity activity)
-        {
-            var autoMapOutputs = new AutoMappingOutputAction(this, activity);
-            UndoFramework.RecordAction(autoMapOutputs);
         }
 
         public void CopyFrom(IDataMappingViewModel copyObj)

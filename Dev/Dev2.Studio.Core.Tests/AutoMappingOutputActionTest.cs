@@ -1,5 +1,4 @@
 ﻿using Dev2.Studio.Core.Actions;
-using Dev2.Studio.ViewModels.DataList.Actions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.Studio.Core.Interfaces;

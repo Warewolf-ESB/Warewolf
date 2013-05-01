@@ -10,6 +10,7 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Studio.ViewModels.Explorer
@@ -114,7 +115,19 @@ namespace Dev2.Studio.ViewModels.Explorer
             // PBI 6597: TWR - moved connection save here to promote reusability
             SaveConnection();
 
-            RequestClose(ViewModelDialogResults.Okay);
+            //
+            // If connect view closed with okay then create an environment, load it into the navigation view model
+            //
+
+            //
+            // Add the new server
+            //
+            EventAggregator.Publish(new AddServerToDeployMessage(Server, IsSource, IsDestination));
+            //
+            // Signal the explorer to update loading any new servers
+            //
+            EventAggregator.Publish(new UpdateExplorerMessage(false));
+
         }
 
         #endregion Private Methods
@@ -315,6 +328,9 @@ namespace Dev2.Studio.ViewModels.Explorer
                 return error;
             }
         }
+
+        public bool IsSource { get; set; }
+        public bool IsDestination { get; set; }
 
         #endregion Properties
 

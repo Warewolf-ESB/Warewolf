@@ -9,7 +9,7 @@ namespace Dev2.Studio.AppResources.Comparers
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2/27/2013</date>
-    public class WorkSurfaceKey
+    public class WorkSurfaceKey : IEquatable<WorkSurfaceKey>
     {
         public WorkSurfaceContext WorkSurfaceContext { get; set; }
 
@@ -27,6 +27,11 @@ namespace Dev2.Studio.AppResources.Comparers
                 sb.AppendFormat("ResourceID_{0}_", ResourceID);
             var returnString = sb.ToString().Replace('-', '_');
             return returnString;
+        }
+
+        public bool Equals(WorkSurfaceKey other)
+        {
+            return WorkSurfaceKeyEqualityComparer.Current.Equals(this, other);
         }
     }
 }

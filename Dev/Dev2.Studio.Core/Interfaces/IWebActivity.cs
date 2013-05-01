@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Studio.Core.Models;
 
 namespace Dev2.Studio.Core.Interfaces {
-    public interface IWebActivity {
+    public interface IWebActivity : IWorkSurfaceObject {
         object WebActivityObject { get; set; }
         IContextualResourceModel ResourceModel { get; set; }
         string WebsiteServiceName { get; set; }

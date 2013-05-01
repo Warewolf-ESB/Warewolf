@@ -277,12 +277,6 @@ namespace Dev2.Core.Tests
         #region Environment
 
         [TestMethod]
-        public void EnvironmentNodeExpectHandlesCloseWizardMessage()
-        {
-            Assert.IsInstanceOfType(environmentVM,typeof(IHandle<CloseWizardMessage>));
-        }
-        
-        [TestMethod]
         public void EnvironmentNodeExpectHasNewResourceCommand()
         {
             Assert.IsNotNull(environmentVM.NewResourceCommand);
@@ -442,7 +436,7 @@ namespace Dev2.Core.Tests
             var model = resourceVM.EnvironmentModel;
             var model2 = environmentVM.EnvironmentModel;
             Assert.IsTrue(ReferenceEquals(model, model2));
-        } 
+        }
 
         [TestMethod]
         public void ResourceNodeDebugCommand_Expected_MediatorDebugResourceMessage()
@@ -498,8 +492,8 @@ namespace Dev2.Core.Tests
             //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             resourceVM.ManualEditCommand.Execute(null);
-            _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkflowDesignerMessage>
-            (t => t.Resource == mockResourceModel.Object)), Times.Once());
+            _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkSurfaceMessage>
+            (t => t.WorkSurfaceObject == mockResourceModel.Object)), Times.Once());
         }
 
         [TestMethod]
@@ -550,8 +544,8 @@ namespace Dev2.Core.Tests
             //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             resourceVM.EditCommand.Execute(null);
-            _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkflowDesignerMessage>
-                  (t => t.Resource == mockResourceModel.Object)), Times.Once());
+            _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkSurfaceMessage>
+                  (t => t.WorkSurfaceObject == mockResourceModel.Object)), Times.Once());
         }
 
         [TestMethod]
@@ -607,8 +601,8 @@ namespace Dev2.Core.Tests
         {
             mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             resourceVM.EditCommand.Execute(mockResourceModel);
-            _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkflowDesignerMessage>
-                (t => t.Resource == mockResourceModel.Object)), Times.Once());
+            _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkSurfaceMessage>
+                (t => t.WorkSurfaceObject == mockResourceModel.Object)), Times.Once());
         }
 
 

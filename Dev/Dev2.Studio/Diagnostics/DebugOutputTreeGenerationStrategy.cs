@@ -1,4 +1,5 @@
 ﻿using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using System;
@@ -33,8 +34,8 @@ namespace Dev2.Studio.Diagnostics
         /// Places the content in tree.
         /// </summary>
         /// <param name="content">The content.</param>
-        public DebugTreeViewItemViewModel PlaceContentInTree(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
-            object newContent, string filterText, bool addedAsParent, int depthLimit)
+        public DebugTreeViewItemViewModel PlaceContentInTree(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<IDebugState> existingContent,
+            IDebugState newContent, string filterText, bool addedAsParent, int depthLimit)
         {
             int depthCount = 0;
             return PlaceContentInTree(rootItems, existingContent, newContent, filterText, addedAsParent, depthLimit, ref depthCount);
@@ -44,7 +45,7 @@ namespace Dev2.Studio.Diagnostics
         //Juries - This is a dirty hack, naughty naughty.
         //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
         //
-        public void AppendErrorToTreeParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
+        public void AppendErrorToTreeParent(ObservableCollection<DebugTreeViewItemViewModel> rootItems, List<IDebugState> existingContent,
             IDebugState debugState)
         {
             int operationDepth = 0;
@@ -59,12 +60,8 @@ namespace Dev2.Studio.Diagnostics
 
         #region Private Methods
 
-        /// <summary>
-        /// Places the content in tree.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        private DebugTreeViewItemViewModel PlaceContentInTree(IList<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
-            object newContent, string filterText, bool addedAsParent, int depthLimit, ref int operationDepth)
+        private DebugTreeViewItemViewModel PlaceContentInTree(IList<DebugTreeViewItemViewModel> rootItems, List<IDebugState> existingContent,
+            IDebugState newContent, string filterText, bool addedAsParent, int depthLimit, ref int operationDepth)
         {
             //
             // Check if content should be placed in the tree
@@ -72,9 +69,8 @@ namespace Dev2.Studio.Diagnostics
             if (!string.IsNullOrWhiteSpace(filterText) && !_debugOutputFilterStrategy.Filter(newContent, filterText)) return null;
 
             DebugTreeViewItemViewModel newItem = null;
-            IDebugState debugState = newContent as IDebugState;
 
-            if (debugState != null)
+            if (newContent != null && newContent.StateType != StateType.Message)
             {
                 //
                 // Find the node which to add the item to
@@ -82,12 +78,12 @@ namespace Dev2.Studio.Diagnostics
                 DebugTreeViewItemViewModel parentItem = null;
                 if (!addedAsParent)
                 {
-                    parentItem = FindParent(rootItems, debugState, ref operationDepth);
+                    parentItem = FindParent(rootItems, newContent, ref operationDepth);
                 }
 
                 if (parentItem == null)
                 {
-                    parentItem = AddMissingParent(rootItems, existingContent, debugState, depthLimit, ref operationDepth);
+                    parentItem = AddMissingParent(rootItems, existingContent, newContent, depthLimit, ref operationDepth);
                 }
 
                 if (depthLimit <= 0 || operationDepth < depthLimit)
@@ -97,21 +93,19 @@ namespace Dev2.Studio.Diagnostics
                         //
                         // Add as root node
                         //
-                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, debugState, null, true, false, addedAsParent);
-                        AddOrInsertItem(rootItems, existingContent, debugState, newItem, addedAsParent);
+                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, newContent, null, true, false, addedAsParent);
+                        AddOrInsertItem(rootItems, existingContent, newContent, newItem, addedAsParent);
                         return newItem;
                     }
-                    else
-                    {
-                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, debugState, parent: parentItem, isExpanded: true, isSelected: false, addedAsParent: addedAsParent);
-                        AddOrInsertItem(parentItem.Children, existingContent, debugState, newItem, addedAsParent);
-                        return newItem;
-                    }
+                    
+                    newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, newContent, parentItem, isExpanded: true, isSelected: false, addedAsParent: addedAsParent);
+                    AddOrInsertItem(parentItem.Children, existingContent, newContent, newItem, addedAsParent);
+                    return newItem;
                 }
             }
-            else if (newContent is string && !string.IsNullOrWhiteSpace(newContent.ToString()))
+            else if (newContent != null && newContent.StateType == StateType.Message)
             {
-                newItem = new DebugStringTreeViewItemViewModel(newContent as string, null, true, false, addedAsParent);
+                newItem = new DebugStringTreeViewItemViewModel(newContent.Message, null, true, false, addedAsParent);
                 AddOrInsertItem(rootItems, existingContent, newContent, newItem, addedAsParent);
                 return newItem;
             }
@@ -143,8 +137,8 @@ namespace Dev2.Studio.Diagnostics
         /// <param name="treeviewItem">The treeview item.</param>
         /// <param name="addedAsParent">if set to <c>true</c> [added as parent].</param>
         /// <exception cref="System.Exception">Content not found in original list.</exception>
-        private void AddOrInsertItem(IList<DebugTreeViewItemViewModel> destinationCollection, List<object> existingContent,
-            object content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
+        private void AddOrInsertItem(IList<DebugTreeViewItemViewModel> destinationCollection, List<IDebugState> existingContent,
+            IDebugState content, DebugTreeViewItemViewModel treeviewItem, bool addedAsParent)
         {
             if (!addedAsParent)
             {
@@ -162,7 +156,10 @@ namespace Dev2.Studio.Diagnostics
                 bool insterted = false;
                 for (int i = 0; i < destinationCollection.Count; i++)
                 {
-                    int itemIndex = existingContent.IndexOf(destinationCollection[i]);
+                    var item = destinationCollection[i] as DebugStateTreeViewItemViewModel;
+                    if (item == null) break;
+
+                    int itemIndex = existingContent.IndexOf(item.Content);
                     if (itemIndex > originalIndex)
                     {
                         insterted = true;
@@ -218,7 +215,7 @@ namespace Dev2.Studio.Diagnostics
         /// Finds the parent.
         /// </summary>
         /// <param name="parentID">The parent ID.</param>
-        private DebugTreeViewItemViewModel AddMissingParent(IList<DebugTreeViewItemViewModel> rootItems, List<object> existingContent,
+        private DebugTreeViewItemViewModel AddMissingParent(IList<DebugTreeViewItemViewModel> rootItems, List<IDebugState> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
             if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)

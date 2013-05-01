@@ -1,4 +1,4 @@
-﻿<Window x:Class="Unlimited.Applications.BusinessDesignStudio.Views.WorkflowInputDataWindow"
+﻿<Window x:Class="Dev2.Studio.Views.Workflow.WorkflowInputDataView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Dev2="clr-namespace:Dev2.UI"
