@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Dev2.Data.Enums;
+﻿using Dev2.Data.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common.ExtMethods;
 
