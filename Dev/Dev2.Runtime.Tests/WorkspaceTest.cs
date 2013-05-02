@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -27,7 +24,7 @@ namespace Dev2.DynamicServices.Test
 
         static string _testDir;
 
-        static Guid _workspaceID;
+        Guid _workspaceID;
         static int _currentTestNum;
         static string _currentTestDir;
 
@@ -49,28 +46,30 @@ namespace Dev2.DynamicServices.Test
             //    }
             //}
 
-            _testDir = testContext.TestDir;
-            _currentTestNum = 0;
+            //_testDir = testContext.TestDir;
+            //_currentTestNum = 0;
         }
 
         #endregion
 
         #region TestInitialize/Cleanup
 
-        static readonly object TestLock = new object();
+        //static readonly object TestLock = new object();
+
+        // TODO : Refactor this entire class ;(
 
         [TestInitialize]
         public void TestInitialize()
         {
-            Monitor.Enter(TestLock);
+            //Monitor.Enter(TestLock);
 
             // User int's to keep dir name short!
-            _currentTestNum++;
-            _currentTestDir = Path.Combine(_testDir, _currentTestNum.ToString(CultureInfo.InvariantCulture));
-            Directory.CreateDirectory(_currentTestDir);
+            //_currentTestNum++;
+            //_currentTestDir = Path.Combine(_testDir, _currentTestNum.ToString(CultureInfo.InvariantCulture));
+            //Directory.CreateDirectory(_currentTestDir);
 
             // Set current directory to new one each time so that tests do not clash
-            Directory.SetCurrentDirectory(_currentTestDir);
+            //Directory.SetCurrentDirectory(_currentTestDir);
 
             _workspaceID = Guid.NewGuid();
             List<IResource> resources;
@@ -86,7 +85,7 @@ namespace Dev2.DynamicServices.Test
             var repositoryInstance = WorkspaceRepository.Instance;
             repositoryInstance.RefreshWorkspaces();
 
-            Monitor.Exit(TestLock);
+            //Monitor.Exit(TestLock);
         }
 
         #endregion

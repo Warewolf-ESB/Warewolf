@@ -12,7 +12,6 @@ using Moq;
 namespace Dev2.DynamicServices.Test
 {
     [TestClass]
-    [Ignore]
     public class DataListServerChannelTests
     {
         #region MyTestInitialize
@@ -34,6 +33,8 @@ namespace Dev2.DynamicServices.Test
             Mock<IDataListServer> _dataListServer = Dev2MockFactory.SetupDataListServer();
 
             DataListServerChannel channel = new DataListServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, _dataListServer.Object);
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -44,6 +45,8 @@ namespace Dev2.DynamicServices.Test
             Mock<IDataListServer> _dataListServer = Dev2MockFactory.SetupDataListServer();
 
             DataListServerChannel channel = new DataListServerChannel(null, _serverNetworkMessageAggregator.Object, _dataListServer.Object);
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -54,6 +57,7 @@ namespace Dev2.DynamicServices.Test
             Mock<IDataListServer> _dataListServer = Dev2MockFactory.SetupDataListServer();
 
             DataListServerChannel channel = new DataListServerChannel(_networkMessageBroker.Object, null, _dataListServer.Object);
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -64,6 +68,7 @@ namespace Dev2.DynamicServices.Test
             Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker();
 
             DataListServerChannel channel = new DataListServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, null);
+            channel.Dispose();
         }
 
         #endregion Initialization Tests
@@ -88,6 +93,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out resultErrors), Times.Exactly(1));
 
+            channel.Dispose();
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -105,6 +112,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO errors = new ErrorResultTO();
 
             bool actual = channel.WriteDataList(Guid.NewGuid(), dataList, errors);
+
+            channel.Dispose();
         }
 
         #endregion WriteDataList Tests
@@ -127,6 +136,8 @@ namespace Dev2.DynamicServices.Test
 
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.ReadDatalist(It.IsAny<Guid>(), out resultErrors), Times.Exactly(1));
+            
+            channel.Dispose();
 
             Assert.AreEqual(expected, actual);
         }
@@ -148,6 +159,8 @@ namespace Dev2.DynamicServices.Test
 
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.DeleteDataList(It.IsAny<Guid>(), It.IsAny<bool>()), Times.Exactly(1));
+
+            channel.Dispose();
         }
 
         #endregion DeleteDataList Tests
@@ -168,6 +181,8 @@ namespace Dev2.DynamicServices.Test
 
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.PersistChildChain(It.IsAny<Guid>()), Times.Exactly(1));
+
+            channel.Dispose();
 
             Assert.AreEqual(expected, actual);
         }
@@ -193,6 +208,7 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.ReadDatalist(It.IsAny<Guid>(), out resultErrors), Times.Exactly(1));
             _networkMessageBroker.Verify(e => e.Send<ReadDataListResultMessage>(It.IsAny<ReadDataListResultMessage>(), It.IsAny<INetworkOperator>()), Times.Exactly(1));
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -218,6 +234,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.ReadDatalist(It.IsAny<Guid>(), out resultErrors), Times.Exactly(1));
 
+            channel.Dispose();
+
             Assert.IsTrue(resultMessage.Errors.FetchErrors().Count > 0);
         }
 
@@ -240,6 +258,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out resultErrors), Times.Exactly(1));
             _networkMessageBroker.Verify(e => e.Send<WriteDataListResultMessage>(It.IsAny<WriteDataListResultMessage>(), It.IsAny<INetworkOperator>()), Times.Exactly(1));
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -266,6 +286,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out resultErrors), Times.Exactly(1));
 
+            channel.Dispose();
+
             Assert.IsTrue(resultMessage.Errors.FetchErrors().Count > 0);
         }
 
@@ -287,6 +309,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.DeleteDataList(It.IsAny<Guid>(), It.IsAny<bool>()), Times.Exactly(1));
             _networkMessageBroker.Verify(e => e.Send<DeleteDataListResultMessage>(It.IsAny<DeleteDataListResultMessage>(), It.IsAny<INetworkOperator>()), Times.Exactly(1));
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -312,6 +336,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.DeleteDataList(It.IsAny<Guid>(), It.IsAny<bool>()), Times.Exactly(1));
 
+            channel.Dispose();
+
             Assert.IsTrue(resultMessage.Errors.FetchErrors().Count > 0);
         }
 
@@ -333,6 +359,8 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.PersistChildChain(It.IsAny<Guid>()), Times.Exactly(1));
             _networkMessageBroker.Verify(e => e.Send<PersistChildChainResultMessage>(It.IsAny<PersistChildChainResultMessage>(), It.IsAny<INetworkOperator>()), Times.Exactly(1));
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -357,6 +385,8 @@ namespace Dev2.DynamicServices.Test
 
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.PersistChildChain(It.IsAny<Guid>()), Times.Exactly(1));
+
+            channel.Dispose();
 
             Assert.IsTrue(resultMessage.Errors.FetchErrors().Count > 0);
         }
