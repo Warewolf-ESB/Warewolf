@@ -457,6 +457,9 @@
         // the dialog button bar adds about 50px, take 50px from the div height
         $("#pluginSourceContainer").height(400);
         
+        //pad search box
+        $("#gacSearchTerm").css("margin-left","116px");
+        
         //2013.04.16: Ashley Lewis PBI 8721 TODO find out what this is for:
         $dialogContainerID.dialog("open");
     };
