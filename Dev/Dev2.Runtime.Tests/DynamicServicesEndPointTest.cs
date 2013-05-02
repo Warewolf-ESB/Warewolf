@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using Dev2.Common.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -16,11 +13,8 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for DynamicServicesInvokerTest
     /// </summary>
     [TestClass]
-    [Ignore]
     public class DynamicServicesEndPointTest
     {
-        //public static IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler(); 
-
         const int VersionNo = 9999;
 
         const string ServiceName = "TestForEachOutput";
@@ -42,18 +36,13 @@ namespace Dev2.DynamicServices.Test
   </newrecset>
 </DataList>";
 
-        static string _workspacesDir;
+        Guid _workspaceID;
 
-        static Guid _workspaceID;
+        #region TestInitialize/Cleanup
 
-        #region ClassInitialize
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
+        [TestInitialize]
+        public void TestInitialize()
         {
-            _workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
-            Directory.SetCurrentDirectory(testContext.TestDir);
-
             _workspaceID = Guid.NewGuid();
 
             List<IResource> resources;
@@ -63,35 +52,8 @@ namespace Dev2.DynamicServices.Test
                out resources);
 
             ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
-        }
-
-        #endregion
-
-        #region TestInitialize/Cleanup
-
-        static readonly object TestLock = new object();
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            Monitor.Enter(TestLock);
-
             
         }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            Monitor.Exit(TestLock);
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            DirectoryHelper.CleanUp(_workspacesDir);
-            
-        }
-
         #endregion
 
 
