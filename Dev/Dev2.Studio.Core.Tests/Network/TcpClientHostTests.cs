@@ -66,7 +66,6 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
-        [Ignore]
         public void ConnectAsyncWithValidIpAddressReturnsTrue()
         {
            ConnectAsyncTest("192.168.104.11", 80, true, NetworkState.Connecting, NetworkState.Online, false);
@@ -114,10 +113,10 @@ namespace Dev2.Core.Tests.Network
         }
 
         #endregion
-
+         
         #region ConnectAsyncTest
 
-        static void ConnectAsyncTest(string hostAddress, int hostPort, bool expectedResult, NetworkState expectedFromState, NetworkState expectedToState, bool expectedIsError)
+        void ConnectAsyncTest(string hostAddress, int hostPort, bool expectedResult, NetworkState expectedFromState, NetworkState expectedToState, bool expectedIsError)
         {
             var stateChangedCount = 0;
             EventHandler<NetworkStateEventArgs> networkStateChangedHandler = (sender, args) =>
