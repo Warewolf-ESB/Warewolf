@@ -1,13 +1,11 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +16,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using System.Threading;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -330,135 +329,33 @@ namespace Dev2.Runtime.Hosting
         {
             var folders = ServiceModel.Resources.RootFolders.Values.Distinct();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var workspaceTask = LoadWorkspaceAsync(workspacePath, folders.ToArray());
-            workspaceTask.Wait();
+            var userServices = LoadWorkspaceViaBuilder(workspacePath, folders.ToArray());
 
-            workspaceTask.Result.AddRange(_managementServices.Values);
-            return workspaceTask.Result;
+            var result = userServices.Union(_managementServices.Values);
+
+            return result.ToList();
         }
 
         #endregion
 
         #region LoadWorkspaceAsync
 
-        public static async Task<List<IResource>> LoadWorkspaceAsync(string workspacePath, params string[] folders)
+        // Travis.Frisinger - 02.05.2013 : Removed the Async
+
+        /// <summary>
+        /// Loads the workspace via builder.
+        /// </summary>
+        /// <param name="workspacePath">The workspace path.</param>
+        /// <param name="folders">The folders.</param>
+        /// <returns></returns>
+        public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
         {
-            if(string.IsNullOrEmpty(workspacePath))
-            {
-                throw new ArgumentNullException("workspacePath");
-            }
-            if(folders == null)
-            {
-                throw new ArgumentNullException("folders");
-            }
+            ResourceCatalogBuilder builder = new ResourceCatalogBuilder();
 
-            var catalog = new ConcurrentBag<IResource>();
+            builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
-            if(folders.Length == 0 || !Directory.Exists(workspacePath))
-            {
-                return catalog.ToList();
-            }
-
-            var tasks = new List<Task>();
-            var streams = new List<FileStream>();
-            try
-            {
-                var resourceIndex = new ConcurrentDictionary<string, string>();
-
-                foreach(var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
-                {
-                    if(!Directory.Exists(path))
-                    {
-                        continue;
-                    }
-
-                    var files = Directory.GetFiles(path, "*.xml");
-                    foreach(var file in files)
-                    {
-
-                        FileAttributes fa = File.GetAttributes(file);
-
-                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                        {
-                            ServerLogger.LogMessage("Removed READONLY Flag from [ " + file + " ]");
-                            File.SetAttributes(file, FileAttributes.Normal);
-                        }
-
-                        // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
-                        // In many cases, this will avoid blocking a ThreadPool thread.  
-                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                        streams.Add(sourceStream);
-
-                        var buffer = new byte[sourceStream.Length];
-                        var filePath = file;
-                        var theTask = sourceStream
-                            .ReadAsync(buffer, 0, buffer.Length)
-                            .ContinueWith(task =>
-                            {
-                                XElement xml;
-                                using(var xmlStream = new MemoryStream(buffer))
-                                {
-                                    xml = XElement.Load(xmlStream);
-                                }
-                                var isValid = HostSecurityProvider.Instance.VerifyXml(xml.ToString(SaveOptions.None));
-                                if(isValid)
-                                {
-                                    var resource = new Resource(xml)
-                                    {
-                                        FilePath = filePath
-                                    };
-
-                                    // this logic was put in to ensure duplicate resources aren't loaded from different files.
-                                    string existingFileName;
-                                    if(resourceIndex.TryGetValue(resource.ResourceName, out existingFileName))
-                                    {
-                                        TraceWriter.WriteTrace(string.Format("Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.", resource.ResourceName, filePath, existingFileName));
-                                        return;
-                                    }
-
-                                    resourceIndex.TryAdd(resource.ResourceName, filePath);
-                                    catalog.Add(resource);
-
-                                    if(resource.IsUpgraded)
-                                    {
-                                        // Must close the source stream first and then add a new target stream 
-                                        // otherwise the file will be remain locked
-                                        sourceStream.Close();
-
-                                        xml = resource.UpgradeXml(xml);
-                                        var signedXml = HostSecurityProvider.Instance.SignXml(xml.ToString(SaveOptions.DisableFormatting));
-                                        var encodedText = Encoding.UTF8.GetBytes(signedXml);
-
-                                        var targetStream = new FileStream(filePath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite, 4096, true);
-                                        streams.Add(targetStream);
-
-                                        var writeTask = targetStream.WriteAsync(encodedText, 0, encodedText.Length);
-                                        tasks.Add(writeTask);
-                                    }
-                                }
-                                else
-                                {
-                                    TraceWriter.WriteTrace(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", filePath));
-                                }
-                            });
-                        tasks.Add(theTask);
-                    }
-                }
-
-                await TaskEx.WhenAll(tasks);
-            }
-            finally
-            {
-                // Close all FileStream instances in a finally block after the tasks are complete. 
-                // If each FileStream was instead created in a using statement, the FileStream 
-                // might be disposed of before the task was complete
-                foreach(var stream in streams)
-                {
-                    stream.Close();
-                }
-            }
-            return catalog.ToList();
-        }
+            return builder.ResourceList;
+        } 
 
         #endregion
 
@@ -1066,7 +963,10 @@ namespace Dev2.Runtime.Hosting
 
         public List<string> GetDependants(Guid workspaceID, string resourceName)
         {
+            // ReSharper disable LocalizableElement
             if(string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName","No resource name given.");
+            // ReSharper restore LocalizableElement
+
             var resources = GetResources(workspaceID);
             var dependants = new List<string>();
             resources.ForEach(resource =>

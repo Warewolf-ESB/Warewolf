@@ -25,15 +25,15 @@ namespace Dev2.Tests.Runtime.Hosting
         // Change this if you change the number of resouces saved by SaveResources()
         const int SaveResourceCount = 6;
 
-        //static string _workspacesDir;
+        static string _workspacesDir;
 
         #region ClassInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            //_workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
-            //Directory.SetCurrentDirectory(testContext.TestDir);
+            _workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
+            Directory.SetCurrentDirectory(testContext.TestDir);
         }
 
         #endregion
@@ -45,20 +45,20 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestInitialize]
         public void TestInitialize()
         {
-           // Monitor.Enter(TestLock);
+            Monitor.Enter(TestLock);
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
             //DirectoryHelper.CleanUp(_workspacesDir);
-            //Monitor.Exit(TestLock);
+            Monitor.Exit(TestLock);
         }
 
         [ClassCleanup]
         public static void ClassCleanup()
         {
-            //DirectoryHelper.CleanUp(_workspacesDir);
+            DirectoryHelper.CleanUp(_workspacesDir);
 
         }
         #endregion
@@ -157,46 +157,27 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
+        
         #region LoadWorkspaceAsync
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void LoadWorkspaceAsyncWithNullWorkspaceArgumentExpectedThrowsArgumentNullException()
         {
-            var task = ResourceCatalog.LoadWorkspaceAsync(null, new string[0]);
-            try
-            {
-                task.Wait();
-            }
-            catch (AggregateException ae)
-            {
-                throw ae.InnerException;
-            }
-        }
+            var rc = new ResourceCatalog();
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void LoadWorkspaceAsyncWithNullFoldersArgumentExpectedThrowsArgumentNullException()
-        {
-            var task = ResourceCatalog.LoadWorkspaceAsync("xx", null);
-            try
-            {
-                task.Wait();
-            }
-            catch (AggregateException ae)
-            {
-                throw ae.InnerException;
-            }
+            rc.LoadWorkspaceViaBuilder(null, new string[0]);
         }
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
-            var task = ResourceCatalog.LoadWorkspaceAsync("xx", new string[0]);
-            task.Wait();
-            Assert.AreEqual(0, task.Result.Count);
+            var rc = new ResourceCatalog();
+
+            Assert.AreEqual(0, rc.LoadWorkspaceViaBuilder("xx", new string[0]).Count);
         }
 
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
@@ -207,18 +188,19 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(sourcesPath);
             var resources = SaveResources(sourcesPath, null, false, false, "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer").ToList();
 
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Sources", "Services");
-            task.Wait();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
 
-            Assert.AreEqual(3, task.Result.Count);
+            Assert.AreEqual(3, result.Count);
 
-            foreach (var resource in task.Result)
+            foreach (var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
@@ -226,18 +208,19 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.NewGuid();
             var workspacePath = SaveResources(workspaceID, out resources);
 
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Sources", "Services");
-            task.Wait();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
 
-            Assert.AreEqual(SaveResourceCount, task.Result.Count);
+            Assert.AreEqual(SaveResourceCount,result.Count);
 
-            foreach (var resource in task.Result)
+            foreach (var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
         {
@@ -248,18 +231,19 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(path);
             var resources = SaveResources(path, null, false, false, "Calculate_RecordSet_Subtract", "TestDecisionUnsigned").ToList();
 
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
 
-            Assert.AreEqual(1, task.Result.Count);
+            Assert.AreEqual(1, result.Count);
 
-            foreach (var resource in task.Result)
+            foreach (var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
         {
@@ -270,18 +254,19 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(path);
             var resources = SaveResources(path, null, false, false, "CitiesDatabase").ToList();
 
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Sources");
-            task.Wait();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
 
-            Assert.AreEqual(1, task.Result.Count);
+            Assert.AreEqual(1, result.Count);
 
-            foreach (var resource in task.Result)
+            foreach (var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreNotEqual(expected.ResourceID, resource.ResourceID);
             }
         }
 
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithUpgradableXmlExpectedUpgradesXmlWithoutLocking()
         {
@@ -292,18 +277,20 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(path);
             var resources = SaveResources(path, null, false, false, "CatalogServiceAllTools").ToList();
 
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
 
-            Assert.AreEqual(1, task.Result.Count);
+            Assert.AreEqual(1, result.Count);
 
-            var actual = task.Result[0];
+            var actual = result[0];
             Assert.IsTrue(actual.IsUpgraded);
 
             // TestCleanup will fail if file is locked! 
         }
 
         #endregion
+
+        
 
         #region ParallelExecution
 
@@ -1371,10 +1358,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
                 File.WriteAllText(res.FilePath, contents, Encoding.UTF8);
 
-                //if (!string.IsNullOrEmpty(versionNo))
-                //{
-                //    File.WriteAllText(Path.Combine(resourcesPath, string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)), contents, Encoding.UTF8);
-                //}
+                if (!string.IsNullOrEmpty(versionNo))
+                {
+                    File.WriteAllText(Path.Combine(resourcesPath, string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)), contents, Encoding.UTF8);
+                }
                 result.Add(res);
             }
             return result;
@@ -1382,6 +1369,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
+        
         [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
@@ -1391,32 +1379,36 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            var resources = SaveResources(path, null, false, false, new []{"Bug6619",resourceName}).ToList();
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
+            SaveResources(path, null, false, false, new []{"Bug6619",resourceName}).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
             //------------Assert Precondition-----------------
-            Assert.AreEqual(2, task.Result.Count);
+            Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(1,dependants.Count);
         }      
         
+        
         [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
-            var task = ResourceCatalog.LoadWorkspaceAsync("xx", new string[0]);
-            task.Wait();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder("xx", new string[0]);
             var resourceName = "resource";
             //------------Assert Precondition-----------------
-            Assert.AreEqual(0, task.Result.Count);
+            Assert.AreEqual(0, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0,dependants.Count);
         }   
+        
         
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -1427,17 +1419,20 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            var resources = SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
             //------------Assert Precondition-----------------
-            Assert.AreEqual(2, task.Result.Count);
+            Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, "");
             //------------Assert Results-------------------------
             //Exception thrown see attribute
         }
 
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameNullStringExpectException()
@@ -1447,18 +1442,21 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            var resources = SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
+
             //------------Assert Precondition-----------------
-            Assert.AreEqual(2, task.Result.Count);
+            Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, "");
             //------------Assert Results-------------------------
             //Exception thrown see attribute
         }
 
-
+        
         [TestMethod]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
@@ -1468,17 +1466,20 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            var resources = SaveResources(path, null, false, false, new[] { resourceName }).ToList();
-            var task = ResourceCatalog.LoadWorkspaceAsync(workspacePath, "Services");
-            task.Wait();
+            SaveResources(path, null, false, false, new[] { resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
             //------------Assert Precondition-----------------
-            Assert.AreEqual(1, task.Result.Count);
+            Assert.AreEqual(1, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }      
 
+         
         #region VerifyPayload
 
         static void VerifyPayload(ICollection<IResource> expectedResources, string payloadXml)

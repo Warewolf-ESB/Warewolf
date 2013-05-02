@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return serviceMethodList;
         }
 
-        IEnumerable<string> GetDetail(string assemblyLocation, string assemblyName)
+        private IEnumerable<string> GetDetail(string assemblyLocation, string assemblyName)
         {
             Assembly loadedAssembly;
             IEnumerable<string> namespaces = new string[0];
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return namespaces;
         }
 
-        static bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)
+        private bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)
         {
             object loadedObject = null;
             loadedAssembly = null;
@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
 
-        object[] BuildParameterList(List<MethodParameter> parameters)
+        private object[] BuildParameterList(List<MethodParameter> parameters)
         {
             
             if(parameters.Count == 0) return new object[]{};
@@ -183,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return parameterValues;
         } 
         
-        Type[] BuildTypeList(List<MethodParameter> parameters)
+        private Type[] BuildTypeList(List<MethodParameter> parameters)
         {
             
             if(parameters.Count == 0) return new Type[]{};

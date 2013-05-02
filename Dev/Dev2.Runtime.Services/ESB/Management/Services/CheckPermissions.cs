@@ -23,11 +23,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             values.TryGetValue("Username", out username);
             values.TryGetValue("Password", out password);
-            values.TryGetValue("Path", out path);
+            values.TryGetValue("FilePath", out path);
 
             if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(path))
             {
-                throw new InvalidDataContractException("Path or Username or Password is missing");
+                throw new InvalidDataContractException("FilePath or Username or Password is missing");
             }
 
             if(username == string.Empty)
@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var checkPermissionsService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><Path/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><FilePath/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var checkPermissionsServiceAction = new ServiceAction

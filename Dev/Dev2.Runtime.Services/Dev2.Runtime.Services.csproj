@@ -103,14 +103,10 @@
     <Compile Include="Execution\ExecutableServiceKey.cs" />
     <Compile Include="Hosting\DynamicObjectHelper.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
+    <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceTypeConverter.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
-    <Compile Include="ServiceModel\Data\NamespaceList.cs" />
-    <Compile Include="ServiceModel\Data\PluginService.cs" />
-    <Compile Include="ServiceModel\Esb\Brokers\PluginBroker.cs" />
-    <Compile Include="ServiceModel\PluginSources.cs" />
-    <Compile Include="ServiceModel\Data\PluginSource.cs" />
     <Compile Include="ServiceModel\Data\IResource.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
@@ -121,6 +117,9 @@
     <Compile Include="Security\ISecureConfig.cs" />
     <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
+    <Compile Include="ServiceModel\Data\NamespaceList.cs" />
+    <Compile Include="ServiceModel\Data\PluginService.cs" />
+    <Compile Include="ServiceModel\Data\PluginSource.cs" />
     <Compile Include="ServiceModel\Data\Workflow.cs" />
     <Compile Include="ServiceModel\DbSources.cs" />
     <Compile Include="ServiceModel\Data\Recordset.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Data\DbService.cs" />
     <Compile Include="ServiceModel\Data\DbSource.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\PluginBroker.cs" />
     <Compile Include="ServiceModel\Esb\Controllers\EsbController.cs" />
     <Compile Include="ServiceModel\Esb\IDiscoverableEsbEnpoint.cs" />
     <Compile Include="ServiceModel\Esb\IEsbEndpoint.cs" />
@@ -147,6 +147,7 @@
     <Compile Include="Hosting\ResourceIterator.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
+    <Compile Include="ServiceModel\PluginSources.cs" />
     <Compile Include="ServiceModel\Resources.cs" />
     <Compile Include="ServiceModel\Data\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Help.cs" />
