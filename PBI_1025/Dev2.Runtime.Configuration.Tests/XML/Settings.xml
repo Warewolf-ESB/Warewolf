@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings Version="1.3">
+  <Logging DisplayName="Logging" />
+  <Security DisplayName="Security" />
+  <Backup DisplayName="Backup" />
+</Settings>
