@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.DynamicServices.Test.XML;
@@ -22,7 +20,6 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for DynamicServicesInvokerTest
     /// </summary>
     [TestClass]
-    [Ignore]
     public class DynamicServicesInvokerTest
     {
         static readonly Guid TestWorkspaceID = new Guid("B1890C86-95D8-4612-A7C3-953250ED237A");
@@ -50,30 +47,13 @@ namespace Dev2.DynamicServices.Test
 
         public const string ServerConnection2ID = "70238921-FDC7-4F7A-9651-3104EEDA1211";
 
-        static string _workspacesDir;
-
         Guid _workspaceID;
 
-        #region ClassInitialize
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            _workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
-            Directory.SetCurrentDirectory(testContext.TestDir);
-        }
-
-        #endregion
-
         #region TestInitialize/Cleanup
-
-        static readonly object TestLock = new object();
 
         [TestInitialize]
         public void TestInitialize()
         {
-            Monitor.Enter(TestLock);
-
             _workspaceID = Guid.NewGuid();
 
             List<IResource> resources;
@@ -83,13 +63,6 @@ namespace Dev2.DynamicServices.Test
                 out resources);
 
             ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            DirectoryHelper.CleanUp(_workspacesDir);
-            Monitor.Exit(TestLock);
         }
 
         #endregion

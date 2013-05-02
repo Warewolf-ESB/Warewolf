@@ -381,24 +381,6 @@ namespace Dev2.DynamicServices
             return result;
         }
 
-        //public Guid ServiceOutputFormatter(Guid workspaceID, Guid dataListID, string serviceName)
-        //{
-        //    Guid result = Guid.Empty;
-        //    string theShape = FindServiceShape(workspaceID, serviceName);
-
-        //    theShape = ManipulateDataListShapeForOutput(theShape);
-
-        //    ErrorResultTO invokeErrors;
-
-        //    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-        //    string dlString = compiler.ConvertFrom(dataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-
-        //    result = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dlString, theShape, out invokeErrors);
-
-        //    return result;
-        //}
-
         /// <summary>
         /// Manipulates the data list shape for output.
         /// </summary>
