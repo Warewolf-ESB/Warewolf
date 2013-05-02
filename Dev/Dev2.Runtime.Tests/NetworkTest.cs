@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Network;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.DynamicServices.Test
 {
@@ -12,7 +8,6 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for NetworkTest
     /// </summary>
     [TestClass]
-    [Ignore]
     public class NetworkTest
     {
         public NetworkTest()

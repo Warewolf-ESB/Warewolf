@@ -23,8 +23,8 @@ namespace Dev2.Studio.Core
         static readonly List<IEnvironmentModel> EmptyList = new List<IEnvironmentModel>();
         static readonly int DefaultWebServerPort = Int32.Parse(StringResources.Default_WebServer_Port);
 
-        readonly object _fileLock = new Object();
-        readonly object _restoreLock = new Object();
+        static readonly object _fileLock = new Object();
+        static readonly object _restoreLock = new Object();
         readonly List<IEnvironmentModel> _environments;
         private bool _isDisposed;
 
