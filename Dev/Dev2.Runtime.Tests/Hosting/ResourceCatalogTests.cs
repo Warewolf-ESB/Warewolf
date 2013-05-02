@@ -25,45 +25,6 @@ namespace Dev2.Tests.Runtime.Hosting
         // Change this if you change the number of resouces saved by SaveResources()
         const int SaveResourceCount = 6;
 
-        static string _workspacesDir;
-
-        #region ClassInitialize
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            _workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
-            Directory.SetCurrentDirectory(testContext.TestDir);
-        }
-
-        #endregion
-
-        #region TestInitialize/Cleanup
-
-        static readonly object TestLock = new object();
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            Monitor.Enter(TestLock);
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            //DirectoryHelper.CleanUp(_workspacesDir);
-            Monitor.Exit(TestLock);
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            DirectoryHelper.CleanUp(_workspacesDir);
-
-        }
-        #endregion
-
-
         #region Instance
 
         [TestMethod]
@@ -156,7 +117,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-
         
         #region LoadWorkspaceAsync
 

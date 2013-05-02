@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
+using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -107,8 +108,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     loadedAssembly = Assembly.LoadFile(assemblyLocation);
                     return true;
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
+                    ServerLogger.LogError(e.Message);
                 }
                 try
                 {
@@ -119,6 +121,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 }
                 catch(Exception e)
                 {
+                    ServerLogger.LogError(e.Message);
                 }
             }
             return false;

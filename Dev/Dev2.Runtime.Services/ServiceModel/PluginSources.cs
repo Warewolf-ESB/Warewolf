@@ -60,11 +60,11 @@ namespace Dev2.Runtime.ServiceModel
                     {
                         pluginSourceDetails.AssemblyName = AssemblyName.GetAssemblyName(pluginSourceDetails.AssemblyLocation).Name;
                     }
-                    catch(Exception e)
+                    catch(Exception)
                     {
                         if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
                         {
-                            pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\")+1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll") - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\")-1);
+                            pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal)+1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal)-1);
                         }
                     }
                 }
@@ -205,6 +205,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             catch(Exception e)
             {
+                ServerLogger.LogError(e.Message);
                 toJson = @"{""validationresult"":""failure""}";
             }
             return toJson;

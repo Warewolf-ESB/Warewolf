@@ -6,16 +6,10 @@ using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Explorer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests

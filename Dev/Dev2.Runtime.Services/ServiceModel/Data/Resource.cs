@@ -8,6 +8,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -191,6 +192,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
             } catch(Exception e)
             {
+                ServerLogger.LogError(e.Message);
             }
         }
 

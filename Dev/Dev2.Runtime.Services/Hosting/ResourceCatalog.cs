@@ -340,7 +340,12 @@ namespace Dev2.Runtime.Hosting
 
         #region LoadWorkspaceAsync
 
-        // Travis.Frisinger - 02.05.2013 : Removed the Async
+        // Travis.Frisinger - 02.05.2013 
+        // 
+        // Removed the Async operation with file stream as it would fail to use the correct stream from time to time
+        // causing the integration test suite to fail. By moving the operation into a Parallel.ForEach approach this 
+        // appears to have nearly the same impact with better stability.
+        // ResourceCatalogBuilder now contains the refactored async logic ;)
 
         /// <summary>
         /// Loads the workspace via builder.
