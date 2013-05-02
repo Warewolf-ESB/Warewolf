@@ -10,7 +10,6 @@ using Moq;
 namespace Dev2.DynamicServices.Test
 {
     [TestClass]
-    [Ignore]
     public class ExecutionServerChannelTests
     {
         #region MyTestInitialize
@@ -32,6 +31,8 @@ namespace Dev2.DynamicServices.Test
             Mock<IExecutionStatusCallbackDispatcher> _executionStatusCallbackDispatcher = Dev2MockFactory.SetupExecutionStatusCallbackDispatcher();
 
             ExecutionServerChannel channel = new ExecutionServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, _executionStatusCallbackDispatcher.Object);
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -43,6 +44,8 @@ namespace Dev2.DynamicServices.Test
             Mock<IExecutionStatusCallbackDispatcher> _executionStatusCallbackDispatcher = Dev2MockFactory.SetupExecutionStatusCallbackDispatcher();
 
             ExecutionServerChannel channel = new ExecutionServerChannel(null, _serverNetworkMessageAggregator.Object, _executionStatusCallbackDispatcher.Object);
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -54,6 +57,8 @@ namespace Dev2.DynamicServices.Test
             Mock<IExecutionStatusCallbackDispatcher> _executionStatusCallbackDispatcher = Dev2MockFactory.SetupExecutionStatusCallbackDispatcher();
 
             ExecutionServerChannel channel = new ExecutionServerChannel(_networkMessageBroker.Object, null, _executionStatusCallbackDispatcher.Object);
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -65,6 +70,8 @@ namespace Dev2.DynamicServices.Test
             Mock<IExecutionStatusCallbackDispatcher> _executionStatusCallbackDispatcher = Dev2MockFactory.SetupExecutionStatusCallbackDispatcher();
 
             ExecutionServerChannel channel = new ExecutionServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, null);
+
+            channel.Dispose();
         }
 
         #endregion Initialization Tests
@@ -84,6 +91,8 @@ namespace Dev2.DynamicServices.Test
             bool result = channel.AddExecutionStatusCallback(Guid.Empty, new Action<ExecutionStatusCallbackMessage>(m => {}));
 
             _executionStatusCallbackDispatcher.Verify(e => e.Add(It.IsAny<Guid>(), It.IsAny<Action<ExecutionStatusCallbackMessage>>()), Times.Exactly(1));
+
+            channel.Dispose();
             Assert.IsTrue(result);
         }
 
@@ -100,6 +109,7 @@ namespace Dev2.DynamicServices.Test
             bool result = channel.AddExecutionStatusCallback(Guid.Empty, new Action<ExecutionStatusCallbackMessage>(m => { }));
 
             _executionStatusCallbackDispatcher.Verify(e => e.Add(It.IsAny<Guid>(), It.IsAny<Action<ExecutionStatusCallbackMessage>>()), Times.Exactly(1));
+            channel.Dispose();
             Assert.IsFalse(result);
         }
 
@@ -115,6 +125,7 @@ namespace Dev2.DynamicServices.Test
             ExecutionServerChannel channel = new ExecutionServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, _executionStatusCallbackDispatcher.Object);
             channel.Context = _context.Object;
             channel.AddExecutionStatusCallback(Guid.Empty, null);
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -127,6 +138,7 @@ namespace Dev2.DynamicServices.Test
 
             ExecutionServerChannel channel = new ExecutionServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, _executionStatusCallbackDispatcher.Object);
             channel.AddExecutionStatusCallback(Guid.Empty, new Action<ExecutionStatusCallbackMessage>(m => { }));
+            channel.Dispose();
         }
 
 
@@ -143,6 +155,7 @@ namespace Dev2.DynamicServices.Test
             bool result = channel.RemoveExecutionStatusCallback(Guid.Empty);
 
             _executionStatusCallbackDispatcher.Verify(e => e.Remove(It.IsAny<Guid>()), Times.Exactly(1));
+            channel.Dispose();
             Assert.IsTrue(result);
         }
 
@@ -159,6 +172,7 @@ namespace Dev2.DynamicServices.Test
             bool result = channel.RemoveExecutionStatusCallback(Guid.Empty);
 
             _executionStatusCallbackDispatcher.Verify(e => e.Remove(It.IsAny<Guid>()), Times.Exactly(1));
+            channel.Dispose();
             Assert.IsFalse(result);
         }
 
@@ -172,6 +186,7 @@ namespace Dev2.DynamicServices.Test
 
             ExecutionServerChannel channel = new ExecutionServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, _executionStatusCallbackDispatcher.Object);
             channel.RemoveExecutionStatusCallback(Guid.Empty);
+            channel.Dispose();
         }
 
         #endregion Execution Status Callback
@@ -192,6 +207,7 @@ namespace Dev2.DynamicServices.Test
             tmpServerNetworkMessageAggregator.Publish(new ExecutionStatusCallbackMessage(Guid.Empty, ExecutionStatusCallbackMessageType.Add), _context.Object, false);
 
             _executionStatusCallbackDispatcher.Verify(e => e.Add(It.IsAny<Guid>(), It.IsAny<Action<ExecutionStatusCallbackMessage>>()), Times.Exactly(1));
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -208,6 +224,7 @@ namespace Dev2.DynamicServices.Test
             tmpServerNetworkMessageAggregator.Publish(new ExecutionStatusCallbackMessage(Guid.Empty, ExecutionStatusCallbackMessageType.Remove), _context.Object, false);
 
             _executionStatusCallbackDispatcher.Verify(e => e.Remove(It.IsAny<Guid>()), Times.Exactly(1));
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -228,6 +245,8 @@ namespace Dev2.DynamicServices.Test
 
             _executionStatusCallbackDispatcher.Verify(e => e.Add(It.IsAny<Guid>(), It.IsAny<Action<ExecutionStatusCallbackMessage>>()), Times.Exactly(0));
             _executionStatusCallbackDispatcher.Verify(e => e.Remove(It.IsAny<Guid>()), Times.Exactly(0));
+
+            channel.Dispose();
         }
 
         [TestMethod]
@@ -247,6 +266,8 @@ namespace Dev2.DynamicServices.Test
             tmpServerNetworkMessageAggregator.Publish(new NetworkContextDetachedMessage(), _context.Object, false);
 
             _executionStatusCallbackDispatcher.Verify(e => e.Remove(It.IsAny<Guid>()), Times.Exactly(2));
+
+            channel.Dispose();
         }
 
         #endregion Message Recieving
