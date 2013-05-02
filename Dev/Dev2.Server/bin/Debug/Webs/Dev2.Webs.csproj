@@ -65,12 +65,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Decisions\DecisionModelTests.js" />
+    <Content Include="Tests\Services\PluginServiceViewModelTests.js" />
+    <Content Include="Tests\Sources\PluginSourceViewModelTests.js" />
     <Content Include="Tests\Sources\DbSourceViewModelTests.js" />
     <Content Include="Tests\Sources\ServerViewModelTests.js" />
     <Content Include="Tests\SourceTests.htm" />
     <Content Include="Tests\Switch\DragModel_Test.js" />
     <Content Include="Tests\Switch\DropModelTests.js" />
     <Content Include="Tests\Services\ServiceViewModelTests.js" />
+    <Content Include="wwwroot\Content\icons.gif" />
+    <Content Include="wwwroot\Content\loading.gif" />
     <Content Include="wwwroot\Content\qunit-1.11.0.css" />
     <Content Include="wwwroot\Content\Site.css" />
     <Content Include="wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -162,11 +166,13 @@
     <Content Include="wwwroot\Content\themes\redmond\images\ui-icons_f9bd01_256x240.png" />
     <Content Include="wwwroot\Content\themes\redmond\jquery-ui-1.10.0.custom.css" />
     <Content Include="wwwroot\Content\themes\redmond\jquery-ui-1.10.0.custom.min.css" />
+    <Content Include="wwwroot\Content\ui.dynatree.css" />
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\Images\ajax-loader.gif" />
     <Content Include="wwwroot\Images\ajax-loader32.gif" />
     <Content Include="wwwroot\Images\clear-filter.png" />
     <Content Include="wwwroot\Images\cross.png" />
+    <Content Include="wwwroot\Images\DLL_icon_on_Windows_Vista.png" />
     <Content Include="wwwroot\Images\error.png" />
     <Content Include="wwwroot\Images\folder-open.png" />
     <Content Include="wwwroot\Images\search.png" />
@@ -181,6 +187,8 @@
     <Content Include="wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.0.custom.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.dataTables.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.dynatree-1.2.4.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.dynatree.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.mockjax.js" />
     <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.js" />
     <Content Include="wwwroot\Scripts\fx\knockout.mapping-latest.js" />
@@ -189,10 +197,14 @@
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Scripts\Services\DbServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\dev2-utils.js" />
+    <Content Include="wwwroot\Scripts\Services\PluginServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\DbSourceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\PluginSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServerViewModel.js" />
     <Content Include="wwwroot\Views\Services\DbService.htm" />
+    <Content Include="wwwroot\Views\Services\PluginService.htm" />
     <Content Include="wwwroot\Views\Sources\DbSource.htm" />
+    <Content Include="wwwroot\Views\Sources\PluginSource.htm" />
     <Content Include="wwwroot\Views\Switch\Drag.htm" />
     <Content Include="wwwroot\Scripts\Switch\DragModel.js" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />

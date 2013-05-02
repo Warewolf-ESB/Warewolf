@@ -6,7 +6,6 @@ using System.Xml.Linq;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Plugins
 {
     [TestClass]
-    [Ignore]
     public class PluginsReturningXMLFromJson
     {
         // Bug 8378
@@ -22,7 +21,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Pl
             ResponseData = TestHelper.CleanUp(ResponseData);
 
             StringAssert.Contains(ResponseData, expected);
-            //Assert.AreEqual(expected, ResponseData);
         }
     }
 }

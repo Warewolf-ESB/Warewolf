@@ -1,7 +1,12 @@
-<Service Name="PluginsReturningPathsFromComplexType" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="PluginsReturningPathsFromComplexType"
+﻿<Service ID="032b71c3-0485-40d9-a7ad-cceaa17d9e27" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PluginsReturningPathsFromComplexType" ResourceType="WorkflowService"><DisplayName>PluginsReturningPathsFromComplexType</DisplayName><Category>Integration Test Services</Category><AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles><Comment>Cake</Comment><Tags></Tags><IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath><HelpLink>http://a</HelpLink><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><DataList><AssemblyLocation Description="" IsEditable="True" ColumnIODirection="Output" /><AssemblyName Description="" IsEditable="True" ColumnIODirection="Output" /><Method Description="" IsEditable="True" ColumnIODirection="Output" /><Args Description="" IsEditable="True" ColumnIODirection="Output" /><SN Description="" IsEditable="True" ColumnIODirection="Output" /><Names Description="" IsEditable="True" ColumnIODirection="Output"><CompanyName Description="" IsEditable="True" ColumnIODirection="Output" /><DepartmentName Description="" IsEditable="True" ColumnIODirection="Output" /><EmployeeName Description="" IsEditable="True" ColumnIODirection="Output" /></Names></DataList><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="PluginsReturningPathsFromComplexType"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
- xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+ xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.Common"
+ xmlns:ddc="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
+ xmlns:ddcb="clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"
+ xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
+ xmlns:dddo="clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"
+ xmlns:ddsm="clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
  xmlns:s="clr-namespace:System;assembly=mscorlib"
@@ -27,6 +32,7 @@
       &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
       &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
       &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+      &lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&gt;
     &lt;/Flowchart.Variables&gt;
     &lt;sap:WorkflowViewStateService.ViewState&gt;
       &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
@@ -34,7 +40,7 @@
         &lt;av:Point x:Key="ShapeLocation"&gt;420,2.5&lt;/av:Point&gt;
         &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
         &lt;x:Double x:Key="Width"&gt;35054&lt;/x:Double&gt;
-        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;450,77.5 450,106 467,106&lt;/av:PointCollection&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;450,77.5 450,106 469.5,106&lt;/av:PointCollection&gt;
         &lt;x:Double x:Key="Height"&gt;1057.5&lt;/x:Double&gt;
       &lt;/scg:Dictionary&gt;
     &lt;/sap:WorkflowViewStateService.ViewState&gt;
@@ -43,11 +49,11 @@
         &lt;sap:WorkflowViewStateService.ViewState&gt;
           &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
             &lt;av:Point x:Key="ShapeLocation"&gt;330.5,106&lt;/av:Point&gt;
-            &lt;av:Size x:Key="ShapeSize"&gt;273,92&lt;/av:Size&gt;
-            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;467,198 467,228 460,228 460,277&lt;/av:PointCollection&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;278,88&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;469.5,194 469.5,224 485,224 485,277&lt;/av:PointCollection&gt;
           &lt;/scg:Dictionary&gt;
         &lt;/sap:WorkflowViewStateService.ViewState&gt;
-        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (5)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="8686111e-570e-4fcc-af0e-10add8257888" UpdateAllOccurrences="False"&gt;
+        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (5)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="278,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="8686111e-570e-4fcc-af0e-10add8257888" UpdateAllOccurrences="False"&gt;
           &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
             &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="8"&gt;
               &lt;uaba:ActivityDTO FieldName="[[SN]]" FieldValue="InterogatePluginService" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
@@ -82,16 +88,23 @@
               &lt;/uaba:ActivityDTO&gt;
             &lt;/scg:List&gt;
           &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;
+            &lt;InOutArgument x:TypeArguments="x:String" /&gt;
+          &lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;
         &lt;/uaba:DsfMultiAssignActivity&gt;
         &lt;FlowStep.Next&gt;
           &lt;FlowStep x:Name="__ReferenceID1"&gt;
             &lt;sap:WorkflowViewStateService.ViewState&gt;
               &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
                 &lt;av:Point x:Key="ShapeLocation"&gt;360,277&lt;/av:Point&gt;
-                &lt;av:Size x:Key="ShapeSize"&gt;200,56&lt;/av:Size&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;250,53&lt;/av:Size&gt;
               &lt;/scg:Dictionary&gt;
             &lt;/sap:WorkflowViewStateService.ViewState&gt;
-            &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" IconPath="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="Emit Xml Service" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,56" InputMapping="&amp;lt;Inputs&amp;gt;&amp;lt;Input Name=&amp;quot;StringData&amp;quot; Source=&amp;quot;StringData&amp;quot;&amp;gt;&amp;lt;Validator Type=&amp;quot;Required&amp;quot; /&amp;gt;&amp;lt;/Input&amp;gt;&amp;lt;/Inputs&amp;gt;" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputMapping="&amp;lt;Outputs&amp;gt;&amp;lt;Output Name=&amp;quot;CompanyName&amp;quot; MapsTo=&amp;quot;CompanyName&amp;quot; Value=&amp;quot;[[Names().CompanyName]]&amp;quot; Recordset=&amp;quot;Names&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;DepartmentName&amp;quot; MapsTo=&amp;quot;DepartmentName&amp;quot; Value=&amp;quot;[[Names().DepartmentName]]&amp;quot; Recordset=&amp;quot;Names&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;EmployeeName&amp;quot; MapsTo=&amp;quot;EmployeeName&amp;quot; Value=&amp;quot;[[Names().EmployeeName]]&amp;quot; Recordset=&amp;quot;Names&amp;quot; /&amp;gt;&amp;lt;/Outputs&amp;gt;" RemoveInputFromOutput="False" ServiceName="[[SN]]" SimulationMode="OnDemand" ToolboxFriendlyName="Emit Xml Service" UniqueID="3bc801f9-11b6-4c88-8466-c4270142f764" /&gt;
+            &lt;uaba:DsfActivity ActionName="{x:Null}" ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" FriendlySourceName="{x:Null}" HelpLink="{x:Null}" IconPath="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Type="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="Emit Xml Service" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,53" InputMapping="&amp;lt;Inputs&amp;gt;&amp;lt;Input Name=&amp;quot;StringData&amp;quot; Source=&amp;quot;StringData&amp;quot;&amp;gt;&amp;lt;Validator Type=&amp;quot;Required&amp;quot; /&amp;gt;&amp;lt;/Input&amp;gt;&amp;lt;/Inputs&amp;gt;" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputMapping="&amp;lt;Outputs&amp;gt;&amp;lt;Output Name=&amp;quot;CompanyName&amp;quot; MapsTo=&amp;quot;CompanyName&amp;quot; Value=&amp;quot;[[Names().CompanyName]]&amp;quot; Recordset=&amp;quot;Names&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;DepartmentName&amp;quot; MapsTo=&amp;quot;DepartmentName&amp;quot; Value=&amp;quot;[[Names().DepartmentName]]&amp;quot; Recordset=&amp;quot;Names&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;EmployeeName&amp;quot; MapsTo=&amp;quot;EmployeeName&amp;quot; Value=&amp;quot;[[Names().EmployeeName]]&amp;quot; Recordset=&amp;quot;Names&amp;quot; /&amp;gt;&amp;lt;/Outputs&amp;gt;" RemoveInputFromOutput="False" ServiceName="Emit Xml Service" SimulationMode="OnDemand" ToolboxFriendlyName="Emit Xml Service" UniqueID="3bc801f9-11b6-4c88-8466-c4270142f764"&gt;
+              &lt;uaba:DsfActivity.ParentInstanceID&gt;
+                &lt;InOutArgument x:TypeArguments="x:String" /&gt;
+              &lt;/uaba:DsfActivity.ParentInstanceID&gt;
+            &lt;/uaba:DsfActivity&gt;
           &lt;/FlowStep&gt;
         &lt;/FlowStep.Next&gt;
       &lt;/FlowStep&gt;
@@ -126,4 +139,4 @@
       &lt;uaba:DsfCommentActivity DisplayName="User Visible Paths" sap:VirtualizedContainerService.HintSize="217,170" Text="Name&amp;#xA;Departments.Capacity&amp;#xA;Departments.Count&amp;#xA;Departments().Name&amp;#xA;Departments().Employees.Capacity&amp;#xA;Departments().Employees.Count&amp;#xA;Departments.Employees().Name&amp;#xA;" /&gt;
     &lt;/FlowStep&gt;
   &lt;/Flowchart&gt;
-&lt;/Activity&gt;</XamlDefinition></Action><AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles><Comment>Cake</Comment><Category>Integration Test Services</Category><Tags></Tags><HelpLink>http://a</HelpLink><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><DisplayName>Workflow</DisplayName><DataList><AssemblyLocation Description="" IsEditable="True" /><AssemblyName Description="" IsEditable="True" /><Method Description="" IsEditable="True" /><Args Description="" IsEditable="True" /><SN Description="" IsEditable="True" /><Names Description="" IsEditable="True"><CompanyName Description="" IsEditable="True" /><DepartmentName Description="" IsEditable="True" /><EmployeeName Description="" IsEditable="True" /></Names></DataList><BizRule /><WorkflowActivityDef /><Source /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>5aKZ3JYbqUvCdaWs6HnE+AYfsHk=</DigestValue></Reference></SignedInfo><SignatureValue>tuD/XjBmWbW5ZBpdy6Uozxc9faTSFbGKPjnBkcT+DkFoYqlBmuD4heS3Yn/u8WM0e7yOYWw3EHh5TWHcJKGI+ORgXuY4jfo5EFHTJ4guetHynhN1Ubyh+3tIsoBEUSVa8XyD72Mzy6tjUWCSNzVmk/GtahWspiZtLghTSlvjK4w=</SignatureValue></Signature></Service>
+&lt;/Activity&gt;</XamlDefinition></Action><BizRule /><WorkflowActivityDef /><Source /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>2gZmNjnBPY6HFhclXjP1gnnDsUE=</DigestValue></Reference></SignedInfo><SignatureValue>DwcQxKv2j/TWFsarZ0LoKZs1pecE4DqNUajA8y8jdg4x1Vp5p03IXdLZAKE537HYHU1agidGa62GmhfV6zekZkpqAhXkZX7AGWAWSs7JAhMW0dKFVuWCb1EYjIqn4hGDugswA4XGgdLFu60iXTioCpNq6I6mVrdFCtFE9nsnmTs=</SignatureValue></Signature></Service>

@@ -398,11 +398,13 @@
       <SubType>Code</SubType>
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbSourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\SourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
-    <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
     <Compile Include="Webs\IWebController.cs" />
+    <Compile Include="Webs\Callbacks\ServiceCallbackHandler.cs" />
     <Compile Include="Webs\RootWebSite.cs" />
     <Compile Include="Webs\WebBrowserWindow.xaml.cs">
       <DependentUpon>WebBrowserWindow.xaml</DependentUpon>

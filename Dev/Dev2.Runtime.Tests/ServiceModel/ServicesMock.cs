@@ -16,6 +16,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
             return service.Recordset;
         }
 
+        public override RecordsetList FetchRecordset(PluginService service, bool addFields)
+        {
+            FetchRecordsetHitCount++;
+            FetchRecordsetAddFields = addFields;
+            service.Recordsets = new RecordsetList { service.Recordset };
+            return service.Recordsets;
+        }
+
         public override ServiceMethodList FetchMethods(DbSource source)
         {
             var result = new ServiceMethodList();

@@ -37,7 +37,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <returns>A new record instance.</returns>
         public RecordsetRecord NewRecord()
         {
-            return new RecordsetRecord { Label = Name + "(" + (Records.Count + 1) + ")" };
+            var name = Name;
+            if(!string.IsNullOrEmpty(Name) && Name.Contains("()"))
+            {
+                name = name.Replace("()", "");
+                name = name + "(" + (Records.Count + 1) + ")";
+        }
+            return new RecordsetRecord
+            {
+                Label = Name + "(" + (Records.Count + 1) + ")",
+                Name =  name
+            };
         }
 
         #endregion
@@ -81,6 +91,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var cell = new RecordsetCell
             {
                 Name = record.Label + "." + Fields[fieldIndex].Alias,
+                Label = Fields[fieldIndex].Alias,
                 Value = value
             };
             if(fieldIndex >= record.Count)

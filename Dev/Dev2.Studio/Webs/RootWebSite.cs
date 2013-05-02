@@ -37,10 +37,14 @@ namespace Dev2.Studio.Webs
                 {
                     resourceType = ResourceType.DbService;
                 }
-                else
+                else if(resourceModel.IsPluginService)
                 {
                     Enum.TryParse(resourceModel.DisplayName, out resourceType);
                 }
+                else if(resourceModel.IsResourceService)
+                {
+                    resourceType = ResourceType.PluginSource;
+            }
             }
             else
             {
@@ -118,16 +122,30 @@ namespace Dev2.Studio.Webs
 
                 case ResourceType.DbService:
                     pageName = "services/dbservice";
-                    pageHandler = new DbServiceCallbackHandler();
+                    pageHandler = new ServiceCallbackHandler();
                     width = 941;
                     height = 562;
                     break;
 
                 case ResourceType.DbSource:
                     pageName = "sources/dbsource";
-                    pageHandler = new DbSourceCallbackHandler();
+                    pageHandler = new SourceCallbackHandler();
                     width = 705;
-                    height = 455;
+                    height = 460;
+                    break;
+
+                case ResourceType.PluginService:
+                    pageName = "services/pluginservice";
+                    pageHandler = new ServiceCallbackHandler();
+                    width = 941;
+                    height = 562;
+                    break;
+
+                case ResourceType.PluginSource:
+                    pageName = "sources/pluginsource";
+                    pageHandler = new SourceCallbackHandler();
+                    width = 680;
+                    height = 472;
                     break;
 
                 default:
@@ -169,5 +187,5 @@ namespace Dev2.Studio.Webs
         }
 
         #endregion
-    }   
+    }
 }

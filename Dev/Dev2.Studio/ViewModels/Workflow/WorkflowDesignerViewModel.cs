@@ -60,9 +60,9 @@ using Unlimited.Framework;
 namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
-                                             IWorkflowDesignerViewModel, IDisposable,
-                                             IHandle<UpdateResourceMessage>,
-                                             IHandle<AddStringListToDataListMessage>,
+        IWorkflowDesignerViewModel, IDisposable,
+        IHandle<UpdateResourceMessage>,
+        IHandle<AddStringListToDataListMessage>,
                                              IHandle<AddRemoveDataListItemsMessage>,
                                              IHandle<ShowActivityWizardMessage>,
                                              IHandle<ShowActivitySettingsWizardMessage>,
@@ -158,7 +158,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public string WorkflowName
         {
             get { return _resourceModel.ResourceName; }
-        }
+            }
 
         public string ServiceDefinition
         {
@@ -187,23 +187,23 @@ namespace Dev2.Studio.ViewModels.Workflow
         public bool RequiredSignOff
         {
             get { return _resourceModel.RequiresSignOff; }
-        }
+            }
 
         public string AuthorRoles
         {
             get { return _resourceModel.AuthorRoles; }
             set { _resourceModel.AuthorRoles = value; }
-        }
+            }
 
         public WorkflowDesigner Designer
         {
             get { return _wd; }
-        }
+            }
 
         public UIElement DesignerView
         {
             get { return _wd.View; }
-        }
+            }
 
         #endregion
 
@@ -393,7 +393,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 i++;
             }
-        }
+        }       
 
         /// <summary>
         ///     Updates the location of last dropped model item.
@@ -1530,9 +1530,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         EventAggregator.Publish(new AddWorkSurfaceMessage(webpageActivity));
                         e.Handled = true;
                     }
-                    }
                 }
             }
+        }
 
         private void ViewPreviewDrop(object sender, DragEventArgs e)
         {
@@ -1542,14 +1542,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (isWorkflow != null)
             {
                 _vm = DsfActivityDropUtils.DetermineDropActivityType(isWorkflow);
-
+                
                 if (_vm != null)
                 {
                     _vm.Init();
                     if (!DsfActivityDropUtils.DoDroppedActivity(_vm))
                     {
-                        e.Handled = true;
-                    }
+                        e.Handled = true;    
+                    }                    
                 }
             }
 
@@ -1597,7 +1597,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             {
                                 IContextualResourceModel resource = _vm.SelectedResourceModel;
                                 if (resource != null)
-                                {
+                                {                                    
                                     DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true);
 
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;

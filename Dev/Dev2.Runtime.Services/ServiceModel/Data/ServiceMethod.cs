@@ -46,7 +46,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<MethodParameter> Parameters { get; set; }
 
         [DataMember]
-        public string SourceCode { get; set; }
+        public string SourceCode { get; set; } 
+        
+        [DataMember]
+        public string FullName { get; set; }
 
         public List<MethodOutput> Outputs { get; private set; }
 

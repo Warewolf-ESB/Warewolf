@@ -47,13 +47,14 @@ namespace Dev2.Studio.Core.Models
         private string _workflowXaml;
         private Version _version;
         private bool _isNewWorkflow = false;
+        bool _isPluginService;
 
         #endregion Class Members
 
-        #region Constructors   
+        #region Constructors
 
         public ResourceModel(IEnvironmentModel environment)
-        {           
+        {
             _tagList = new List<string>();
             Environment = environment;
 
@@ -63,7 +64,7 @@ namespace Dev2.Studio.Core.Models
 
         #endregion Constructors
 
-        #region Properties       
+        #region Properties
 
         public IEnvironmentModel Environment
         {
@@ -85,6 +86,16 @@ namespace Dev2.Studio.Core.Models
             {
                 _isDatabaseService = value;
                 NotifyOfPropertyChange("IsDatabaseService");
+            }
+        }
+
+        public bool IsPluginService
+        {
+            get { return _isPluginService; }
+            set
+            {
+                _isPluginService = value;
+                NotifyOfPropertyChange("IsPluginService");
             }
         }
 
@@ -415,7 +426,7 @@ namespace Dev2.Studio.Core.Models
                     new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
                     new XAttribute("ServerID", ServerID.ToString()),
                     new XAttribute("Name", ResourceName ?? string.Empty),
-                    new XAttribute("ResourceType", ResourceType),                    
+                    new XAttribute("ResourceType", ResourceType),
                     new XElement("DisplayName", ResourceName ?? string.Empty),
                     new XElement("Category", Category ?? string.Empty),
                     new XElement("IsNewWorkflow", IsNewWorkflow),
@@ -426,7 +437,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("HelpLink", HelpLink ?? string.Empty),
                     new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                     dataList,
-                    new XElement("Action",
+                    new XElement("Action", 
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
                         new XElement("XamlDefinition", WorkflowXaml ?? string.Empty))

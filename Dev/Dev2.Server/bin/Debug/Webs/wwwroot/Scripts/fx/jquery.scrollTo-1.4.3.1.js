@@ -54,9 +54,9 @@
 
 ;(function( $ ){
 	
-	var $scrollTo = $.scrollTo = function( target, duration, settings ){
-		$(window).scrollTo( target, duration, settings );
-	};
+    var $scrollTo = $.scrollTo = function (target, duration, settings) {
+        $(window).scrollTo(target, duration, settings);
+    };
 
 	$scrollTo.defaults = {
 		axis:'xy',

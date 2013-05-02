@@ -16,9 +16,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Pl
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            //StringAssert.Contains(ResponseData, expected);
-
-            Assert.Inconclusive("Test is failing because of plugins");
+            StringAssert.Contains(ResponseData, expected);
         }
     }
 }

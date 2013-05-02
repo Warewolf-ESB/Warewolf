@@ -214,7 +214,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
         $saveForm.dialog({
             resizable: false,
             autoOpen: false,
-            height: 453,
+            height: 456,
             width: 600,
             modal: true,            
             position: utils.getDialogPosition(),

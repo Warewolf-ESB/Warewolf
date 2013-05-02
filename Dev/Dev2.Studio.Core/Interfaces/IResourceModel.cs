@@ -33,6 +33,7 @@ namespace Dev2.Studio.Core.Interfaces
         string DataList { get; set; }
         Activity WorkflowActivity { get; }
         bool IsDatabaseService { get; set; }
+        bool IsPluginService { get; set; }
         bool IsResourceService { get; set; }
         bool IsWorkflowSaved(string viewModelServiceDef);
         Version Version { get; set; }

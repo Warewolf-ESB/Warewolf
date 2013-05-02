@@ -123,6 +123,15 @@ h5, h6 {
     vertical-align: baseline
 }
 
+.sources-plugin-form-label {
+    width: 70px;
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
 /* Travis : Adjusted for Decision Wizard */
 
 .decision-form{

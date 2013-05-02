@@ -66,6 +66,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         public bool IsDatabaseService { get; set; }
 
+        public bool IsPluginService { get; set; }
+
         public bool IsResourceService { get; set; }
 
         public IEnvironmentModel Environment { get; private set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -32,6 +33,16 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("dbSourceUserID", "Enter your <b>user name</b>.");
                         result.Add("dbSourcePassword", "Enter the <b>password</b> for the server.");
                         result.Add("dbSourceDatabase", "Select one of the <b>databases</b> hosted by the server");
+                        break;
+                    //16.04.2013: Ashley Lewis - PBI 8721:
+                    case "pluginSource":
+                        result.Add("default", "<h4>Plugin File</h4><p>Select a Dll file to connect to</p>");
+                        result.Add("pluginAssemblyFileLocation", "Enter the plugin <b>file address.</b> e.g. 'C:\\Warewolf\\Plugins\\email.plugin.dll'");
+                        result.Add("pluginAssemblyGACLocation", "Enter the plugin <b>assembly name</b> starting with 'GAC:' and followed by the verion number e.g. 'GAC:Microsoft.Email.Client.Library 2.0.0.0'");
+                        result.Add("tab 0", "<h4>Plugin File</h4><p>Select a Dll file to connect to</p>");
+                        result.Add("tab 1", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");
+                        result.Add("GACList", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");
+                        result.Add("gacSearchTerm", "<h4>Global Cache</h4><p>You are viewing all assemblies</p>");
                         break;
                 }
             }

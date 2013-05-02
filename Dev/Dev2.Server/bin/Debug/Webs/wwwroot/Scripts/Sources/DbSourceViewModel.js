@@ -57,6 +57,7 @@
     });
 
     $.post("Service/DbSources/Search" + window.location.search, "", function (result) {
+        console.log(result);
         $dbSourceServer.autocomplete("option", "source", result);
     });
 
@@ -204,7 +205,7 @@
         var $chkShowHelp = $("showHelp");
         if ($chkShowHelp) {
             $chkShowHelp.css("visibility", "visible");
-            $chkShowHelp.css("top-margin", "0px");
+            $chkShowHelp.css("margin-top", "0px");
         }
 
         // remove non-dialog buttons

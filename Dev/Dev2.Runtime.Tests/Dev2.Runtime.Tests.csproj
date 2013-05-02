@@ -83,6 +83,7 @@
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
+    <Compile Include="ServiceModel\Data\PluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="Hosting\ResourceCatalogTests.cs" />
     <Compile Include="ServiceModel\ConnectionsMock.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="ServiceModel\Data\DbSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
+    <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
     <Compile Include="ServiceModel\ServicesMock.cs" />
@@ -203,6 +205,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\InternallySigned.xml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="XML\CatalogServiceCalculateRecordSetSubtract.xml" />
   </ItemGroup>

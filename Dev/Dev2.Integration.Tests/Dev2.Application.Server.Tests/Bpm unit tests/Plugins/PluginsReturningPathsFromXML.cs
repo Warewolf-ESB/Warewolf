@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Plugins
 {
     [TestClass]
-    [Ignore]
     public class PluginsReturningPathsFromXML
     {
         // Bug 7820
@@ -16,9 +15,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Pl
             string expected = @"Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue";
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            //Assert.IsTrue(ResponseData.IndexOf(expected) >= 0);
-
-            Assert.Inconclusive("Test is failing because of plugins");
+            Assert.IsTrue(ResponseData.IndexOf(expected) >= 0);
         }
     }
 }

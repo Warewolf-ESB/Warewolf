@@ -55,8 +55,8 @@ namespace Dev2.Studio.Core.Factories{
                     break;
                 case "ResourceService":
                     resource.ResourceType = ResourceType.Service;
-                    resource.DisplayName = "Service";
-                    resource.IsResourceService = true;
+                    resource.DisplayName = "PluginService";
+                    resource.IsPluginService = true;
                     resource.ResourceName = resourceName;
                     break;
                 case "ResourceSource":

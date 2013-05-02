@@ -7,6 +7,7 @@ using Dev2.Common.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
+using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -178,7 +179,40 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #endregion
+        #region PluginMethods
 
+        [TestMethod]
+        public void PluginMethodsWithNullArgsExpectedReturnsEmptyList()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.PluginMethods(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void PluginMethodsWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var result = services.PluginMethods("xxxx", Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void PluginMethodsWithValidArgsExpectedReturnsList()
+        {
+            var service = GetSource();
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+
+            EnvironmentVariables.GetWorkspacePath(workspaceID);
+
+            var services = new ServicesMock();
+            var result = services.PluginMethods(args, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(7, result.Count);
+        }
+
+        #endregion
         #region DbMethods
 
         [TestMethod]
@@ -317,7 +351,121 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Records.Count);
         }
         #endregion
+        #region PluginTest
 
+        [TestMethod]
+        public void PluginTestWithNullArgsExpectedReturnsRecordsetWithError()
+        {
+            //------------Setup for test--------------------------
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            //------------Execute Test---------------------------
+            var result = services.PluginTest(null, Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result[0].HasErrors);
+        }
+
+        [TestMethod]
+        public void PluginTestWithInvalidArgsExpectedReturnsRecordsetWithError()
+        {
+            //------------Setup for test--------------------------
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            //------------Execute Test---------------------------
+            var result = services.PluginTest("xxx", Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result[0].HasErrors);
+        }
+
+        [TestMethod]
+        public void PluginTestWithValidArgsAndNoRecordsetNameExpectedUpdatesRecordsetNameToServiceMethodName()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyPluginService();
+            service.Recordset.Name = null;
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var services = new ServicesMock();
+            var result = services.PluginTest(args, workspaceID, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result[0].Name, service.Method.Name);
+        }
+
+        [TestMethod]
+        public void PluginTestWithValidArgsAndRecordsetNameExpectedDoesNotUpdateRecordsetNameToServiceMethodName()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyPluginService();
+            service.Recordset.Name = "Test";
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var services = new ServicesMock();
+            var result = services.PluginTest(args, workspaceID, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result[0].Name, service.Recordset.Name);
+        }
+
+        [TestMethod]
+        public void PluginTestWithValidArgsAndRecordsetFieldsExpectedDoesNotAddRecordsetFields()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreateDummyPluginService();
+            var args = svc.ToString();
+            var workspaceID = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var services = new ServicesMock();
+            var result = services.PluginTest(args, workspaceID, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(services.FetchRecordsetAddFields);
+            Assert.AreEqual(svc.Recordset.Fields.Count, result[0].Fields.Count);
+        }
+
+        [TestMethod]
+        public void PluginTestWithValidArgsAndNoRecordsetFieldsExpectedAddsRecordsetFields()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreateDummyPluginService();
+            svc.Recordset.Fields.Clear();
+            //------------Execute Test---------------------------
+            var args = svc.ToString();
+            var workspaceID = Guid.NewGuid();
+            //------------Assert Results-------------------------
+            var services = new ServicesMock();
+            services.PluginTest(args, workspaceID, Guid.Empty);
+            Assert.IsTrue(services.FetchRecordsetAddFields);
+        }
+
+        [TestMethod]
+        public void PluginTestWithValidArgsExpectedFetchesRecordset()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreateDummyPluginService();
+            var args = svc.ToString();
+            var workspaceID = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var services = new ServicesMock();
+            var result = services.PluginTest(args, workspaceID, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, services.FetchRecordsetHitCount);
+            Assert.AreEqual(result[0].Name, svc.Recordset.Name);
+            Assert.AreEqual(result[0].Fields.Count, svc.Recordset.Fields.Count);
+        }
+
+        [TestMethod]
+        public void PluginTestWithValidArgsExpectedClearsRecordsFirst()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyPluginService();
+            var args = service.ToString();
+            var workspaceID = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var services = new ServicesMock();
+            var result = services.PluginTest(args, workspaceID, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, services.FetchRecordsetHitCount);
+            Assert.AreEqual(0, result[0].Records.Count);
+        }
+        #endregion
         #region CreateCountriesDbService
 
         static Service CreateCountriesDbService()
@@ -361,6 +509,68 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #endregion
+        #region CreateDummyService
 
+        PluginService CreateDummyPluginService()
+        {
+
+            var source = GetSource();
+            var service = new PluginService
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "DummyPluginService",
+                ResourceType = ResourceType.PluginService,
+                ResourcePath = "Tests",
+                Method = new ServiceMethod
+                {
+                    Name = "DummyMethod"
+
+                },
+                Recordset = new Recordset
+                {
+                    Name = "Test",
+                },
+                Source = source
+            };
+            service.Recordset.Fields.AddRange(new[]
+            {
+                new RecordsetField { Name = "Description", Alias = "Name" }
+            });
+            return service;
+        }
+
+        PluginSource GetSource()
+        {
+            var type = typeof(DummyClassForPluginTest);
+            var assembly = type.Assembly;
+            var fullName = assembly.GetName().Name;
+            return new PluginSource
+            {
+                AssemblyLocation = assembly.Location,
+                FullName = type.FullName,
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "Dummy",
+                ResourceType = ResourceType.PluginSource,
+                ResourcePath = "Test",
+            };
+        }
+
+
+        #endregion
+    }
+}
+namespace DummyNamespaceForTest
+{
+
+    public class DummyClassForPluginTest
+    {
+        public string Name { get; set; }
+        public DummyClassForPluginTest DummyMethod()
+        {
+            return new DummyClassForPluginTest
+            {
+                Name = "test data"
+            };
+        }
     }
 }

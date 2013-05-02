@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.Server, "Sources" },
             { ResourceType.DbService, "Services" },
             { ResourceType.DbSource, "Sources" },
-            { ResourceType.PluginService, "Plugins" },
+            { ResourceType.PluginService, "Services" },
             { ResourceType.PluginSource, "Sources" },
             { ResourceType.WorkflowService, "Services" },
         };
@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.Server, "Source" },
             { ResourceType.DbService, "Service" },
             { ResourceType.DbSource, "Source" },
-            { ResourceType.PluginService, "Plugin" },
+            { ResourceType.PluginService, "Service" },
             { ResourceType.PluginSource, "Source" },
             { ResourceType.WorkflowService, "Service" },
         };
@@ -99,8 +99,8 @@ namespace Dev2.Runtime.ServiceModel
                     End = "</Category>"
                 });
             }
-            return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
-        }
+                return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
+            }
 
         #endregion
 
@@ -283,6 +283,14 @@ namespace Dev2.Runtime.ServiceModel
                         ResourcePath = resourcePath,
                         ConnectionString = delimiterValue
                     };
+                case ResourceType.PluginSource:
+                    string assemblyLocation;
+                    string assemblyName;
+                    delimiter = new ResourceDelimiter { ID = 1, Start = " AssemblyLocation=\"", End = "\" " };
+                    delimiter.TryGetValue(content, out assemblyLocation);
+                    delimiter = new ResourceDelimiter { ID = 1, Start = " AssemblyName=\"", End = "\" " };
+                    delimiter.TryGetValue(content, out assemblyName);
+                    return new PluginSource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath, AssemblyLocation = assemblyLocation, AssemblyName = assemblyName };
             }
 
             return new Resource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath };

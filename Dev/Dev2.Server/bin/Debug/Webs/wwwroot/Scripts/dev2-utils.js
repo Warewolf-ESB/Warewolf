@@ -1,6 +1,6 @@
 ﻿var utils = namespace('Dev2.Utils');
 
-utils.caseInsensitiveSort = function(left, right) {
+utils.caseInsensitiveSort = function (left, right) {
      return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1);
 };
 
@@ -8,11 +8,17 @@ utils.resourceNameCaseInsensitiveSort = function (left, right) {
     return left.ResourceName.toLowerCase() == right.ResourceName.toLowerCase() ? 0 : (left.ResourceName.toLowerCase() < right.ResourceName.toLowerCase() ? -1 : 1);
 };
 
+utils.fullNameCaseInsensitiveSort = function (left, right) {
+    return left.FullName.toLowerCase() == right.FullName.toLowerCase() ? 0 : (left.FullName.toLowerCase() < right.FullName.toLowerCase() ? -1 : 1);
+};
+
 utils.nameCaseInsensitiveSort = function (left, right) {
     return left.Name.toLowerCase() == right.Name.toLowerCase() ? 0 : (left.Name.toLowerCase() < right.Name.toLowerCase() ? -1 : 1);
 };
 
-
+utils.textCaseInsensitiveSort = function (left, right) {
+    return left.Text.toLowerCase() == right.Text.toLowerCase() ? 0 : (left.Text.toLowerCase() < right.Text.toLowerCase() ? -1 : 1);
+};
 
 utils.registerSelectHandler = function ($ol, selectHandler) {
     $ol.on("click", "li.selectable", function () {

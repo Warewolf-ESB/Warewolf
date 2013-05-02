@@ -12,7 +12,7 @@ namespace Dev2 {
     /// <summary>
     /// Private class used to convert string method data into an internal TO
     /// </summary>
-    internal class Dev2TypeConversion {
+    public class Dev2TypeConversion {
         // Travis.Frisinger : 31-08-2012
         private readonly Type _t;
         private readonly string _val;

@@ -86,8 +86,22 @@ namespace Dev2.Runtime.ESB.Execution
 
                     dataBuilder.Append("</Args></Args>");
 
-                    string exeValue = (remoteHandler.RunPlugin(ServiceAction.Source.AssemblyLocation, ServiceAction.Source.AssemblyName, 
-                                        ServiceAction.SourceMethod, dataBuilder.ToString(), ServiceAction.OutputDescription, true));
+                    //2013.04.29: Ashley Lewis - PBI 8721 AssemblyName moved from source to service in the new framework
+                    string exeValue = "";
+                    if (ServiceAction.Source != null && ServiceAction.Source.AssemblyLocation != null)
+                    {
+                        if(string.IsNullOrEmpty(ServiceAction.Source.FullName))
+                        {
+                            //Old framework compatability
+                            exeValue = (remoteHandler.RunPlugin(ServiceAction.Source.AssemblyLocation, ServiceAction.Source.AssemblyName,
+                                ServiceAction.SourceMethod, dataBuilder.ToString(), ServiceAction.OutputDescription, true));
+                        }
+                        else
+                        {
+                            exeValue = (remoteHandler.RunPlugin(ServiceAction.Source.AssemblyLocation, ServiceAction.Source.FullName,
+                                ServiceAction.SourceMethod, dataBuilder.ToString(), ServiceAction.OutputDescription, true));
+                        }
+                    }
 
                     // ReSharper disable RedundantAssignment
 

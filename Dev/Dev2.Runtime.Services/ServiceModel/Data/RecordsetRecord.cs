@@ -26,6 +26,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region Properties
 
         public string Label { get; set; }
+        public string Name { get; set; }
 
         public RecordsetCell this[int index]
         {
