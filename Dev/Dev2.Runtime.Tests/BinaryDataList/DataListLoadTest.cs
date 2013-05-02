@@ -250,7 +250,6 @@ namespace Unlimited.UnitTest.Framework
 
             double result1;
 
-
             DateTime start1 = DateTime.Now;
             for (int i = 0; i < runs; i++)
             {

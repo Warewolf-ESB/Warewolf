@@ -71,7 +71,7 @@ namespace Dev2.Integration.Tests.Internal_Services
             const string expected = @"<graph title=""Dependency Graph Of Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Bug6619"" x="""" y="""" broken=""false""></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
-            
+
             StringAssert.Contains(actual, expected);
         }
         
@@ -86,39 +86,6 @@ namespace Dev2.Integration.Tests.Internal_Services
             string actual = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(actual, expected);
-        }
-        
-        [TestMethod]
-        public void DepenendcyViewerReturnsValidDependentsWhenGetDependsOnMeTrueExpectOneDependantWithTravsCrazyWorkflow()
-        {
-            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug9245a","GetDependsOnMe=True");
-
-            // The expected graph to be returned 
-            const string expected = @"<graph title=""Dependants Graph Of Bug9245a""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Bug9245a"" /></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node></graph>";
-
-            string actual = TestHelper.PostDataToWebserver(postData);
-
-            StringAssert.Contains(actual, expected);
-        } 
-        
-        [TestMethod]
-        public void DepenendcyViewerReturnsValidMultipleFirstLevelDependantsWhenGetDependsOnMeTrueExpectTwoDependendant()
-        {
-            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug_9303","GetDependsOnMe=True");
-
-            // The expected graph to be returned 
-            const string expectedTitle = @"<graph title=""Dependants Graph Of Bug_9303"">";
-            const string expectedNode1 = @"<node id=""DepOn_9303_1"" x="""" y="""" broken=""false""><dependency id=""Bug_9303"" /></node>";
-            const string expectedNode2 = @"<node id=""DepOn_9303_2"" x="""" y="""" broken=""false""><dependency id=""Bug_9303"" /></node>";
-            const string baseNode = @"<node id=""Bug_9303"" x="""" y="""" broken=""false""></node>";
-            const string endNode = @"</graph>";
-            string actual = TestHelper.PostDataToWebserver(postData);
-
-            StringAssert.Contains(actual, expectedTitle);
-            StringAssert.Contains(actual, expectedNode1);
-            StringAssert.Contains(actual, expectedNode2);
-            StringAssert.Contains(actual, baseNode);
-            StringAssert.Contains(actual, endNode);
         }
     }
 }

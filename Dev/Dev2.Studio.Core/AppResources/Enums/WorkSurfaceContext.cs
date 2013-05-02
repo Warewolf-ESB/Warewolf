@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         CommunitySearch,
 
         [IconLocation("pack://application:,,,/images/dependency.png")]
-        [Description("Dependency Visualiser")]
+        [Description("Deploy")]
         DependencyVisualiser,
 
         [IconLocation("Pack_Uri_Application_Image_Information", typeof(StringResources))]
@@ -49,10 +49,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
 
         [IconLocation("Pack_Uri_Application_Image_Home", typeof(StringResources))]
         [Description("Start Page")]
-        StartPage,
-        [IconLocation("pack://application:,,,/images/dependency.png")]
-        [Description("Reverse Dependency Visualiser")]
-        ReverseDependencyVisualiser
+        StartPage
     }
 
 }

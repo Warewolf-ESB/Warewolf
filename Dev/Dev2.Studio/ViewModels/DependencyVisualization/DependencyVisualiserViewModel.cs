@@ -15,7 +15,6 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {
         private IContextualResourceModel _resourceModel;
-        bool _getDependsOnMe;
 
         public ObservableCollection<Graph> Graphs { get; set; }
 
@@ -37,27 +36,12 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
         }
 
-        public bool GetDependsOnMe { 
-            get
-        {
-            return _getDependsOnMe;
-        }
-        set
-        {
-            _getDependsOnMe = value;
-        }}
-
         public override string DisplayName
         {
             get
             {
-                if(GetDependsOnMe)
-                {
-                    return string.Format("{0}*Dependants",
-                        ResourceModel.ResourceName);
-                }
                 return string.Format("{0}*Dependencies",
-                        ResourceModel.ResourceName);
+                    ResourceModel.ResourceName);
             }
         }
 
@@ -67,7 +51,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             dynamic test = new UnlimitedObject();
             test.Service = "FindDependencyService";
             test.ResourceName = ResourceModel.ResourceName;
-            test.GetDependsOnMe = GetDependsOnMe;
+
             var workspaceID = ((IStudioClientContext)ResourceModel.Environment.DsfChannel).WorkspaceID;
             dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(ResourceModel.Environment.DsfChannel.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
 
