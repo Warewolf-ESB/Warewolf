@@ -43,6 +43,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         #region Plugin Sources
 
         [TestMethod]
+        [Ignore]
         public void LoadExpectedXmlReturnedProperly()
         {
             string webServerAddress = ServerSettings.WebserverURI.Replace("services/", "wwwroot/sources/pluginsource?rid=2f93aa19-d507-4ed0-9b7e-a8b1b07ce12f#");
@@ -61,6 +62,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void SaveExpectsResponse()
         {
             string webServerAddress = ServerSettings.WebserverURI.Replace("services/", "Service/PluginSources/Save?");
