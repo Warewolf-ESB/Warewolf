@@ -474,6 +474,14 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             //   worker.RunWorkerAsync();
         }
+        
+        /// <summary>
+        /// Sets the selected item to null
+        /// </summary>
+        public void SetSelectedItemNull()
+        {
+            EventAggregator.Publish(new SetSelectedIContextualResourceModel(null, false));
+        }
 
         ///// <summary>
         ///// Called after the specified delay after a key is pressed in the search box, to filter treeview and expand items acordingly.

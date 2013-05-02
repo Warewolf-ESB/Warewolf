@@ -1606,6 +1606,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     modelProperty.SetValue(droppedActivity);
                                 }
                                 _vm.Dispose();
+                                _vm = null;
                             }
                         }
                     }

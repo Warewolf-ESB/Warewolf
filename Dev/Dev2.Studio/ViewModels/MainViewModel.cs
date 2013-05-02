@@ -393,7 +393,10 @@ namespace Dev2.Studio.ViewModels
             }
             var key = WorkSurfaceKeyFactory.CreateKey(debugState);
             var ctx = FindWorkSurfaceContextViewModel(key);
-            ctx.DisplayDebugOutput(debugState);
+            if(ctx != null)
+            {
+                ctx.DisplayDebugOutput(debugState);
+            }
         }
 
         private void DeployAll()

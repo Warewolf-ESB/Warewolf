@@ -12,7 +12,7 @@
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              Name="NavigationViewUserControl">
-    <Grid>
+    <Grid cal:Bind.Model="{Binding .}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,8 +24,10 @@
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
 
-            <customControls:Dev2FilterTextBox x:Name="FilterTextBox"                                              
-                                              Grid.Column="0">
+            <customControls:Dev2FilterTextBox x:Name="FilterTextBox"     
+                                              Grid.Column="0"
+                cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]"
+                                              >
                 <i:Interaction.Triggers>
                     <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="100">
                         <cal:ActionMessage MethodName="UpdateSearchFilter">

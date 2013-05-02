@@ -201,7 +201,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(SaveResourceMessage message)
         {
-            if (_contextualResourceModel == message.Resource)
+            if(_contextualResourceModel != null)
+            {
+                if(_contextualResourceModel.ResourceName == message.Resource.ResourceName)
+                {
+                    Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
+                }
+            }
+            else
             {
                 Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
             }

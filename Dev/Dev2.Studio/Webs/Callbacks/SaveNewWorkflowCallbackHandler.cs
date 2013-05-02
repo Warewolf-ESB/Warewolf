@@ -44,7 +44,7 @@ namespace Dev2.Studio.Webs.Callbacks
             if (_resourceModel != null)
             {
                 _resourceModel.IsNewWorkflow = false;
-                EventAggregator.Publish(new SaveResourceMessage(_resourceModel, true));
+                EventAggregator.Publish(new SaveResourceMessage(_resourceModel, true,false));
                 IContextualResourceModel newResourceModel = ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
                                                                                              resName);                
                 newResourceModel.Category = resCat;
@@ -59,7 +59,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 {
                     EventAggregator.Publish(new AddWorkSurfaceMessage(newResourceModel));
                 }
-                EventAggregator.Publish(new SaveResourceMessage(_resourceModel, false));
+                EventAggregator.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
                 EventAggregator.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                 NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);
