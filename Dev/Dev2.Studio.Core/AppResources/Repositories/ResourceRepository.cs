@@ -466,7 +466,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (data.IsNewWorkflow is string)
             {
                 resource.IsNewWorkflow = false;
-                if (string.Compare(data.IsNewWorkflow,"true",StringComparison.InvariantCulture))
+                if (string.Equals(data.IsNewWorkflow,"true",StringComparison.InvariantCulture))
                 {
                     resource.IsNewWorkflow = true;
                     NewWorkflowNames.Instance.Add(resource.DisplayName);

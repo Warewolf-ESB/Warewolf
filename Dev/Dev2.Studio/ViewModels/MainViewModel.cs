@@ -620,7 +620,12 @@ namespace Dev2.Studio.ViewModels
                 if (item != null)
                 {
                     item.Parent = this;
-                }
+                    IWorkflowDesignerViewModel wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+                    if(wfItem != null)
+                    {
+                        AddWorkspaceItem(wfItem.ResourceModel);
+                    }
+                }                                                    
             }
             base.OnActivationProcessed(item, success);
         }

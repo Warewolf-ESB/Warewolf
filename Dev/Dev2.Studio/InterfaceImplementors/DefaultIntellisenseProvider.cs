@@ -622,7 +622,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 DatalistRecordSetNode refNode = allNodes[i] as DatalistRecordSetNode;
 
-                                if (refNode.NestedIdentifier == null)
+                                if (refNode.NestedIdentifier == null && filterType != enIntellisensePartType.RecorsetsOnly)
                                 {
                                     identifier = refNode.Identifier.Content;
                                     kind = 2;

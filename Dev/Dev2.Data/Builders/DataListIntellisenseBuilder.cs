@@ -67,7 +67,7 @@ namespace Dev2.DataList.Contract
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
                             }
                             if (FilterTO.FilterType == enIntellisensePartType.RecorsetsOnly) {
-                                result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()]]"), ExtractDescription(tmpNode)));
+                                result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()"), ExtractDescription(tmpNode)));
                             }
                             if (FilterTO.FilterType == enIntellisensePartType.RecordsetFields) {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));

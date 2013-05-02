@@ -29,7 +29,7 @@ namespace Dev2.DataList.Contract
         {
             return new Dev2DataLanguageParser();
         }
-
+        
         /// <summary>
         /// Creates the studio language parser.
         /// </summary>

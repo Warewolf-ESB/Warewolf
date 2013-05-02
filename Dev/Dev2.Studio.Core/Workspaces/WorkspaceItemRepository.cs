@@ -22,7 +22,7 @@ namespace Dev2.Studio.Core.Workspaces
 
         public IList<IWorkspaceItem> WorkspaceItems
         {
-            get { return _workspaceItems ?? (_workspaceItems = Read()); } 
+            get { return _workspaceItems ?? (_workspaceItems = Read()); }
         }
 
         #region RepositoryPath
@@ -87,7 +87,7 @@ namespace Dev2.Studio.Core.Workspaces
             {
                 FileInfo fileInfo = new FileInfo(RepositoryPath);
                 string finalDirectoryPath = fileInfo.Directory.FullName;
-                
+
                 if (!Directory.Exists(finalDirectoryPath))
                 {
                     Directory.CreateDirectory(finalDirectoryPath);
@@ -105,13 +105,13 @@ namespace Dev2.Studio.Core.Workspaces
 
             var context = (IStudioClientContext)model.Environment.DsfChannel;
             WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID)
-                {
-                    ServiceName = model.ResourceName,
-                    ServiceType =
-                        model.ResourceType == ResourceType.Source
-                            ? WorkspaceItem.SourceServiceType
-                            : WorkspaceItem.ServiceServiceType,
-                });
+            {
+                ServiceName = model.ResourceName,
+                ServiceType =
+                    model.ResourceType == ResourceType.Source
+                        ? WorkspaceItem.SourceServiceType
+                        : WorkspaceItem.ServiceServiceType,
+            });
             Write();
         }
 

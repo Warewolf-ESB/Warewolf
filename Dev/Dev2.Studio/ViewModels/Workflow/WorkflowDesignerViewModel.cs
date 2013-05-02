@@ -429,7 +429,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             switch(resource.ResourceType)
                         {
                             case ResourceType.WorkflowService:
-                                EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));                                
                                 break;
 
                             case ResourceType.Service:
