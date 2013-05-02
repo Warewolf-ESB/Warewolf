@@ -17,16 +17,44 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
             string resourceName;
+            string dependsOnMeString;
+            bool dependsOnMe = false;
             values.TryGetValue("ResourceName", out resourceName);
-
+            values.TryGetValue("GetDependsOnMe", out dependsOnMeString);
             if(string.IsNullOrEmpty(resourceName))
             {
                 throw new InvalidDataContractException("ResourceName is empty or null");
             }
-
+            if(!string.IsNullOrEmpty(dependsOnMeString))
+            {
+                dependsOnMe = bool.Parse(dependsOnMeString);
+            }
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var result = string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceName) + FindDependenciesRecursive(resourceName, theWorkspace.ID) + "</graph>";
-            return result;
+            return dependsOnMe ? string.Format("<graph title=\"Dependants Graph Of {0}\">{1}</graph>", resourceName, FindWhatDependsOnMe(resourceName, theWorkspace.ID)) : string.Format("<graph title=\"Dependency Graph Of {0}\">{1}</graph>", resourceName, FindDependenciesRecursive(resourceName, theWorkspace.ID));
+        }
+
+        string FindWhatDependsOnMe(string resourceName, Guid workspaceID)
+        {
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
+            var sb = new StringBuilder();
+            if (dependants != null)
+            {
+                dependants.ForEach(c =>
+                {
+                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", c));
+                    sb.Append(string.Format("<dependency id=\"{0}\" />", resourceName));
+                    sb.Append("</node>");
+                });
+               
+            }
+//            if (dependencies != null)
+//            {
+//                dependencies.ToList().ForEach(c => sb.Append(FindDependenciesRecursive(c.ResourceName, workspaceID)));
+//            }
+            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceName));
+            sb.Append("</node>");
+            var findDependenciesRecursive = sb.ToString();
+            return findDependenciesRecursive;
         }
 
         public string HandlesType()
@@ -39,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = @"<DataList><ResourceName/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = @"<DataList><ResourceName/><GetDependsOnMe/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var sa = new ServiceAction

@@ -516,7 +516,19 @@ namespace Dev2.Studio.ViewModels
 
             ActivateOrCreateWorkSurface<DependencyVisualiserViewModel>
                 (WorkSurfaceContext.DependencyVisualiser, resource,
-                 new[] { new Tuple<string, object>("ResourceModel", resource) });
+                 new[] { new Tuple<string, object>("GetDependsOnMe",false),new Tuple<string, object>("ResourceModel", resource)
+                                 });
+        } 
+        
+        public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)
+        {
+            if (resource == null)
+                return;
+
+            ActivateOrCreateWorkSurface<DependencyVisualiserViewModel>
+                (WorkSurfaceContext.ReverseDependencyVisualiser, resource,
+                 new[] { new Tuple<string, object>("GetDependsOnMe",true),new Tuple<string, object>("ResourceModel", resource)
+                                 });
         }
 
         public void AddSettingsWorkSurface(IEnvironmentModel environment)
@@ -670,8 +682,7 @@ namespace Dev2.Studio.ViewModels
             var result = dialog.ShowDialog();
             if (dialog.OpenDependencyGraph)
             {
-                AddDependencyVisualizerWorkSurface(model);
-                return false;
+                AddReverseDependencyVisualizerWorkSurface(model);
             }
             return result.HasValue && result.Value;
         }
