@@ -175,6 +175,9 @@ namespace Dev2.Activities
             using(var process = new Process())
             {
                 var processStartInfo = CreateProcessStartInfo(val);
+                
+                if (processStartInfo == null) throw new ArgumentNullException("processStartInfo");
+
                 process.StartInfo = processStartInfo;
                 bool processStarted = process.Start();
                 outputReader = process.StandardOutput;
@@ -195,7 +198,9 @@ namespace Dev2.Activities
                             process.Kill();
                             throw new ApplicationException("The process required user input.");
                         }
+
                         var processThread = process.Threads[0];
+
                         if (processThread.ThreadState == ThreadState.Wait && processThread.WaitReason == ThreadWaitReason.UserRequest)
                         {
                             process.Kill();
@@ -204,6 +209,8 @@ namespace Dev2.Activities
                     }
                     
                     CheckChildProcesses(process.Id);
+
+                    Thread.Sleep(10);
                 }
                 process.Close();
             }
@@ -212,16 +219,15 @@ namespace Dev2.Activities
 
         void CheckChildProcesses(int id)
         {
-             var searcher = new ManagementObjectSearcher("root\\CIMV2",
-                    string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
+             var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
 
             var managementObjectCollection = searcher.Get();
             foreach(ManagementObject queryObj in managementObjectCollection)
             {
                 var nameOfProcess = queryObj["Name"];
                 var pid = Convert.ToInt32(queryObj["ProcessId"]);
-                 var processById = Process.GetProcessById(pid);
-                 processById.Kill();
+                var processById = Process.GetProcessById(pid);
+                processById.Kill();
                 throw new ApplicationException(string.Format("Process tried to start another process {0}", nameOfProcess));
              }
         }
@@ -241,24 +247,36 @@ namespace Dev2.Activities
         {
             if(val.Contains("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
             if(val.Contains("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
+
             var fileName = Path.GetFileName(val);
             var thePath = Path.GetDirectoryName(val);
-            var indexOf = fileName.IndexOf(" ");
-            var commandToExecute =  Path.Combine(thePath,fileName);
-            var args = string.Empty;
-            if(indexOf != -1)
+
+            if (fileName != null)
             {
-                args = fileName.Substring(indexOf+1);
-                commandToExecute = Path.Combine(thePath,fileName.Replace(args, ""));
+                var indexOf = fileName.IndexOf(" ", StringComparison.Ordinal);
+                if (thePath != null)
+                {
+                    var commandToExecute =  Path.Combine(thePath,fileName);
+                    var args = string.Empty;
+                    if(indexOf != -1)
+                    {
+                        args = fileName.Substring(indexOf+1);
+                        commandToExecute = Path.Combine(thePath,fileName.Replace(args, ""));
+                    }
+
+                    var processStartInfo = new ProcessStartInfo(commandToExecute, args);
+                    processStartInfo.UseShellExecute = false;
+                    processStartInfo.ErrorDialog = false;
+                    processStartInfo.RedirectStandardError = true;
+                    processStartInfo.RedirectStandardInput = true;
+                    processStartInfo.RedirectStandardOutput = true;
+                    processStartInfo.CreateNoWindow = true;
+
+                    return processStartInfo;
+                }
             }
-            var processStartInfo = new ProcessStartInfo(commandToExecute, args);
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.ErrorDialog = false;
-            processStartInfo.RedirectStandardError = true;
-            processStartInfo.RedirectStandardInput = true;
-            processStartInfo.RedirectStandardOutput = true;
-            processStartInfo.CreateNoWindow = true;
-            return processStartInfo;
+
+            return null;
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)

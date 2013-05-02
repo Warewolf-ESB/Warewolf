@@ -20,21 +20,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    [Ignore]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resouces saved by SaveResources()
         const int SaveResourceCount = 6;
 
-        static string _workspacesDir;
+        //static string _workspacesDir;
 
         #region ClassInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            _workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
-            Directory.SetCurrentDirectory(testContext.TestDir);
+            //_workspacesDir = Path.Combine(testContext.TestDir, "Workspaces");
+            //Directory.SetCurrentDirectory(testContext.TestDir);
         }
 
         #endregion
@@ -46,20 +45,20 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestInitialize]
         public void TestInitialize()
         {
-            Monitor.Enter(TestLock);
+           // Monitor.Enter(TestLock);
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
             //DirectoryHelper.CleanUp(_workspacesDir);
-            Monitor.Exit(TestLock);
+            //Monitor.Exit(TestLock);
         }
 
         [ClassCleanup]
         public static void ClassCleanup()
         {
-            DirectoryHelper.CleanUp(_workspacesDir);
+            //DirectoryHelper.CleanUp(_workspacesDir);
 
         }
         #endregion
@@ -1372,10 +1371,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
                 File.WriteAllText(res.FilePath, contents, Encoding.UTF8);
 
-                if (!string.IsNullOrEmpty(versionNo))
-                {
-                    File.WriteAllText(Path.Combine(resourcesPath, string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)), contents, Encoding.UTF8);
-                }
+                //if (!string.IsNullOrEmpty(versionNo))
+                //{
+                //    File.WriteAllText(Path.Combine(resourcesPath, string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)), contents, Encoding.UTF8);
+                //}
                 result.Add(res);
             }
             return result;
