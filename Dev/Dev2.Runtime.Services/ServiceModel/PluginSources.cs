@@ -87,46 +87,32 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region GetServerDirectoryTree
+        #region ValidateAssemblyImageFormat
 
-        // POST: Service/PluginSources/GetServerDirectoryTree
-        public string GetServerDirectoryTree(string args, Guid workspaceID, Guid dataListID)
+        // POST: Service/PluginSources/ValidateAssemblyImageFormat
+        public string ValidateAssemblyImageFormat(string args, Guid workspaceID, Guid dataListID)
         {
-            //Initialize DirectoryInfo to server root directory
-            var directory = new DirectoryInfo(Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture)+":\\");
-            if(!string.IsNullOrEmpty(args))
+            var toJson = @"{""validationresult"":""success""}";
+            try
             {
-                directory = new DirectoryInfo(Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture) + ":\\" + args);
+                Assembly loadedAssembly = Assembly.LoadFile(args);
             }
-
-            //Build directory tree in JSON, only dll files included
-            string name = string.Empty;
-            string json = "[";
-            foreach (DirectoryInfo d in directory.GetDirectories())
+            catch(Exception e)
             {
-                name = Regex.Replace(d.Name, @"\\", @"\\");
-                json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
-                        name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                json += ',';
+                ServerLogger.LogError(e.Message);
+                toJson = @"{""validationresult"":""failure""}";
             }
-
-            foreach (FileInfo f in directory.GetFiles())
-            {
-                if(f.Name.EndsWith(".dll"))
-                {
-                    json += @"{""title"":""" + f.Name + @""", ""key"":""" +
-                            f.Name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                    json += ',';
-                }
-            }
-            json=json.Remove(json.LastIndexOf(",", System.StringComparison.Ordinal));
-            json += ']';
-            return json;
+            return toJson;
         }
 
         #endregion
 
-        #region GetServerDirectoryTree
+
+        #region REFACTOR
+
+        #region GetGACListing
+
+        // TODO  : Replace with management service?
 
         // POST: Service/PluginSources/GetGacList
         public string GetGacList(string args, Guid workspaceID, Guid dataListID)
@@ -157,7 +143,50 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        #region GetServerDirectoryTree
+
+        // TODO : Replace with internal service call to management method...
+
+        // POST: Service/PluginSources/GetServerDirectoryTree
+        public string GetServerDirectoryTree(string args, Guid workspaceID, Guid dataListID)
+        {
+            //Initialize DirectoryInfo to server root directory
+            var directory = new DirectoryInfo(Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture) + ":\\");
+            if (!string.IsNullOrEmpty(args))
+            {
+                directory = new DirectoryInfo(Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture) + ":\\" + args);
+            }
+
+            //Build directory tree in JSON, only dll files included
+            string name = string.Empty;
+            string json = "[";
+            foreach (DirectoryInfo d in directory.GetDirectories())
+            {
+                name = Regex.Replace(d.Name, @"\\", @"\\");
+                json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
+                        name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
+                json += ',';
+            }
+
+            foreach (FileInfo f in directory.GetFiles())
+            {
+                if (f.Name.EndsWith(".dll"))
+                {
+                    json += @"{""title"":""" + f.Name + @""", ""key"":""" +
+                            f.Name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
+                    json += ',';
+                }
+            }
+            json = json.Remove(json.LastIndexOf(",", System.StringComparison.Ordinal));
+            json += ']';
+            return json;
+        }
+
+        #endregion
+
         #region GetRootDriveLetter
+
+        // TODO : Replace with internal service call
 
         // POST: Service/PluginSources/GetRootDriveLetter
         public string GetRootDriveLetter(string args, Guid workspaceID, Guid dataListID)
@@ -169,6 +198,8 @@ namespace Dev2.Runtime.ServiceModel
         #endregion
 
         #region GetDirectoryIntellisense
+
+        // TODO : Replace with management method
 
         // POST: Service/PluginSources/GetDirectoryIntellisense
         public string GetDirectoryIntellisense(string args, Guid workspaceID, Guid dataListID)
@@ -183,7 +214,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             foreach (FileInfo f in directory.GetFiles())
             {
-                if(f.Name.EndsWith(".dll"))
+                if (f.Name.EndsWith(".dll"))
                 {
                     dirList.Add(args + f.Name);
                 }
@@ -192,24 +223,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
-        #region ValidateAssemblyImageFormat
-
-        // POST: Service/PluginSources/ValidateAssemblyImageFormat
-        public string ValidateAssemblyImageFormat(string args, Guid workspaceID, Guid dataListID)
-        {
-            var toJson = @"{""validationresult"":""success""}";
-            try
-            {
-                Assembly loadedAssembly = Assembly.LoadFile(args);
-            }
-            catch(Exception e)
-            {
-                ServerLogger.LogError(e.Message);
-                toJson = @"{""validationresult"":""failure""}";
-            }
-            return toJson;
-        }
 
         #endregion
     }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
 using Dev2.Reflection;
 using System.Text;
 using Dev2.Workspaces;
+using Dev2.Common;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -22,8 +24,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string json = "[";
                 while (GAC.GetNextAssembly(assemblyEnum, out assemblyName) == 0)
                 {
-                    json += @"{""AssemblyName"":""" + GAC.GetName(assemblyName) + @"""}";
-                    json += ",";
+                    try
+                    {
+                        var ver = GAC.GetVersion(assemblyName).ToString();
+                        json += @"{""AssemblyName"":""" + GAC.GetName(assemblyName) + " " + ver + @"""}";
+                        json += ",";
+                    }
+                    catch (Exception e)
+                    {
+                        ServerLogger.LogError(e.Message);
+                    }
                 }
                 json += "]";
                 json = json.Replace(",]", "]"); //remove the last comma in the string in order to have valid json

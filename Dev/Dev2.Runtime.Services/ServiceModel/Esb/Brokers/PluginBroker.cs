@@ -19,15 +19,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         IOutputDescription TestPlugin(PluginService pluginService);
     }
 
+    /// <summary>
+    /// Used to interact with plugins
+    /// </summary>
     public class PluginBroker : IPluginBroker
     {
         public NamespaceList GetNamespaces(PluginSource pluginSource)
         {
-            pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(),Guid.Empty,Guid.Empty);
-            var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
             var namespacelist = new NamespaceList();
-            namespacelist.AddRange(interrogatePlugin);
-            return namespacelist;
+            if (pluginSource != null)
+            {
+                //pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);
+                var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
+                
+                namespacelist.AddRange(interrogatePlugin);
+                
+            }
+
+            return namespacelist;    
         }
 
         public List<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
@@ -97,9 +106,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             loadedAssembly = null;
             if(assemblyLocation.StartsWith("GAC:"))
             {
-                Type t = Type.GetType(assemblyName);
-                loadedObject = Activator.CreateInstance(t);
-                loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
+
+                loadedAssembly = Assembly.Load(assemblyName);
+
+                //Type t = Type.GetType(assemblyName);
+                //if (t != null)
+                //{
+                //    loadedObject = Activator.CreateInstance(t);
+                //    loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
+                //}
+
             }
             else
             {

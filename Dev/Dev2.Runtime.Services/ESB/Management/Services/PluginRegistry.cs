@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
 using Dev2.PathOperations;
-using Dev2.Reflection;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services

@@ -247,7 +247,6 @@
     <Compile Include="Network\Execution\IExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="Network\Execution\INetworkExecutionChannel.cs" />
     <Compile Include="PathOperations\FileRepository.cs" />
-    <Compile Include="Reflection\GAC.cs" />
     <Compile Include="Reflection\NullableHelper.cs" />
     <Compile Include="Session\Debug\DebugTO.cs" />
     <Compile Include="Session\Debug\IDebugSession.cs" />

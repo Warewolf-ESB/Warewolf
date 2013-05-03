@@ -237,6 +237,7 @@ namespace ActivityUnitTests.ActivityTest
             var fetchErrors = Compiler.FetchErrors(executeProcess.DataListID);
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
         }
+
         [TestMethod]
         [Ignore]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResultuninstall()
