@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Network
 {
     [TestClass]
-    [Ignore]
     public class TcpClientHostTests
     {
         #region ConnectAsync
@@ -66,7 +65,6 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
-        [Ignore]
         public void ConnectAsyncWithValidIpAddressReturnsTrue()
         {
            ConnectAsyncTest("192.168.104.11", 80, true, NetworkState.Connecting, NetworkState.Online, false);
