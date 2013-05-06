@@ -11,7 +11,7 @@ namespace Dev2.Studio.Core.Models {
     {
         public IContextualResourceModel ResourceModel { get; set; }
         public string ServiceInputData { get; set; }
-        public int WaitTimeForTransition { get; set; }
         public DebugMode DebugModeSetting { get; set; }
+        public bool RememberInputs { get; set; }
     }
 }

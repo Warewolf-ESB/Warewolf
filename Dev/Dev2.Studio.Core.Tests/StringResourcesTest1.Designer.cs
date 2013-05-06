@@ -88,14 +88,7 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;DataList&gt;
-        ///  &lt;scalar1 Description=&quot;&quot; /&gt;
-        ///  &lt;scalar2 Description=&quot;&quot; /&gt;
-        ///  &lt;Recset Description=&quot;&quot;&gt;
-        ///    &lt;Field1 Description=&quot;&quot; /&gt;
-        ///    &lt;Field2 Description=&quot;&quot; /&gt;
-        ///  &lt;/Recset&gt;
-        ///&lt;/DataList&gt;.
+        ///   Looks up a localized string similar to &lt;DataList&gt;&lt;scalar1 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;In&quot; /&gt;&lt;scalar2 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;In&quot; /&gt;&lt;Recset Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;None&quot; &gt;&lt;Field1 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;None&quot; /&gt;&lt;Field2 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;None&quot; /&gt;&lt;/Recset&gt;&lt;/DataList&gt;.
         /// </summary>
         public static string DebugInputWindow_DataList {
             get {
@@ -114,20 +107,25 @@ namespace Dev2.Core.Tests {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;DataList&gt;
-        ///  &lt;scalar1 Description=&quot;&quot;&gt;ScalarData1&lt;/scalar1&gt;
-        ///  &lt;scalar2 Description=&quot;&quot;&gt;ScalarData2&lt;/scalar2&gt;
-        ///  &lt;Recset Description=&quot;&quot;&gt;
-        ///    &lt;Field1 Description=&quot;&quot;&gt;Field1Data1&lt;/Field1&gt;
-        ///    &lt;Field2 Description=&quot;&quot;&gt;Field2Data1&lt;/Field2&gt;
+        ///  &lt;scalar1&gt;ScalarData1&lt;/scalar1&gt;
+        ///  &lt;scalar2&gt;ScalarData2&lt;/scalar2&gt;
+        ///  &lt;Recset&gt;
+        ///    &lt;Field1&gt;Field1Data1&lt;/Field1&gt;
+        ///    &lt;Field2&gt;Field2Data1&lt;/Field2&gt;
         ///  &lt;/Recset&gt;
-        ///  &lt;Recset Description=&quot;&quot;&gt;
-        ///    &lt;Field1 Description=&quot;&quot;&gt;Field1Data2&lt;/Field1&gt;
-        ///    &lt;Field2 Description=&quot;&quot;&gt;Field2Data2&lt;/Field2&gt;
+        ///  &lt;Recset&gt;
+        ///    &lt;Field1&gt;Field1Data2&lt;/Field1&gt;
+        ///    &lt;Field2&gt;Field2Data2&lt;/Field2&gt;
         ///  &lt;/Recset&gt;
-        ///  &lt;Recset Description=&quot;&quot;&gt;
-        ///    &lt;Field1 Description=&quot;&quot;&gt;Field1Data3&lt;/Field1&gt;
-        ///    &lt;Field2 Description=&quot;&quot;&gt;Field2Data3&lt;/Field2&gt;
-        ///  [rest of string was truncated]&quot;;.
+        ///  &lt;Recset&gt;
+        ///    &lt;Field1&gt;Field1Data3&lt;/Field1&gt;
+        ///    &lt;Field2&gt;Field2Data3&lt;/Field2&gt;
+        ///  &lt;/Recset&gt;
+        ///  &lt;Recset&gt;
+        ///    &lt;Field1&gt;Field1Data4&lt;/Field1&gt;
+        ///    &lt;Field2&gt;Field2Data4&lt;/Field2&gt;
+        ///  &lt;/Recset&gt;
+        ///&lt;/DataList&gt;.
         /// </summary>
         public static string DebugInputWindow_XMLData {
             get {

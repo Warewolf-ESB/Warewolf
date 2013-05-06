@@ -91,11 +91,6 @@ namespace Dev2.Core.Tests
             part.Setup(c => c.IsScalar).Returns(true);
             parts.Add(part.Object);
 
-            //Mock Setup
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.MainViewModel;
-
-            //Juries 8810 TODO
-            //mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
             Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);

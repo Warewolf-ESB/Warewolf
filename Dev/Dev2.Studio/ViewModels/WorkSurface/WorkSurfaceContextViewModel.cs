@@ -266,30 +266,31 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void SetDebugStatus(DebugStatus debugStatus)
         {
-            if (debugStatus == DebugStatus.Finished)
+            if(debugStatus == DebugStatus.Finished)
+            {
                 _contextualResourceModel.Environment.Connection.RemoveDebugWriter(DebugWriter.ID);
+                CommandManager.InvalidateRequerySuggested();
+            }
+
             if (debugStatus == DebugStatus.Configure)
                 DebugOutputViewModel.Clear();
 
             DebugOutputViewModel.DebugStatus = debugStatus;
-            CommandManager.InvalidateRequerySuggested();
         }
 
         public void DisplayDebugOutput(IDebugState debugState)
         {
             DebugOutputViewModel.Append(debugState);
-            CommandManager.InvalidateRequerySuggested();
         }
 
         public void GetServiceInputDataFromUser(IServiceDebugInfoModel input)
         {
-            var inputDataViewModel = new WorkflowInputDataViewModel(input);
+            var inputDataViewModel = new WorkflowInputDataViewModel(input) {Parent = this};
             _windowManager.ShowDialog(inputDataViewModel);
         }
 
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
-            FindMissing();
 
             if (resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
@@ -300,10 +301,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
             Environment.Connection.AddDebugWriter(DebugWriter);
+
             Save(resourceModel, true);
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             IServiceDebugInfoModel debugInfoModel =
-                ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, 0, mode);
+                ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
             GetServiceInputDataFromUser(debugInfoModel);
         }
 
@@ -341,10 +343,21 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             Save(_contextualResourceModel, true);
 
+            BindToModel();
+
             if (_contextualResourceModel == null || _contextualResourceModel.Environment == null ||
                 _contextualResourceModel.Environment.Connection == null) return;
 
             Process.Start(StudioToWizardBridge.GetWorkflowUrl(_contextualResourceModel).AbsoluteUri);
+        }
+
+        public void BindToModel()
+        {
+            var vm = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+            if (vm != null)
+            {
+                vm.BindToModel();
+            }
         }
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
@@ -360,7 +373,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public bool IsEnvironmentConnected()
         {
             return Environment != null && Environment.IsConnected;
-
         }
 
         public void FindMissing()
@@ -389,12 +401,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            var vm = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-            if (vm != null)
-            {
-                vm.BindToModel();
-                vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            }
+            FindMissing();
 
             if (!isLocalSave)
             {
@@ -506,6 +513,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             base.OnActivate();
             DataListSingleton.SetDataList(DataListViewModel);
+            DebugOutputViewModel.DebugWriter = DebugWriter;
 
             var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
             if (workflowDesignerViewModel != null)

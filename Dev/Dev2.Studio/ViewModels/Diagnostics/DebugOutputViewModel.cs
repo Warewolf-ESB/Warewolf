@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -12,6 +13,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.AppResources.Comparers;
@@ -86,6 +88,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion
 
         #region Properties
+        public ProcessController ProcessController { get; set; }
 
         public DebugStatus DebugStatus
         {
@@ -416,16 +419,22 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region public methods
 
-        public void OpenMoreLink(DebugLineItem item)
+        public void OpenMoreLink(IDebugLineItem item)
         {
+            if (item == null)
+                return;
+
             if (!string.IsNullOrEmpty(item.MoreLink))
             {
-                Process.Start(new ProcessStartInfo(item.MoreLink));
+                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(item.MoreLink)));
             }
         }
 
-        public bool CanOpenMoreLink(DebugLineItem item)
+        public bool CanOpenMoreLink(IDebugLineItem item)
         {
+            if (item == null)
+                return false;
+
             return !string.IsNullOrEmpty(item.MoreLink);
         }
 
@@ -586,10 +595,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //Juries - This is a dirty hack, naughty naughty.
             //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
             //
-            if (content is IDebugState)
-            {
-                var state = (IDebugState) content;
-                if (state.StateType == StateType.Append)
             if (content.StateType == StateType.Append)
             {
                 _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, content);
@@ -606,10 +611,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
             }
 
-                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText,
-                                                                      false,
-                                                                  DepthLimit);
-        }
+            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText,
+                                                                    false,
+                                                                    DepthLimit);
         }
 
         /// <summary>

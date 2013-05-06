@@ -1508,7 +1508,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+           // AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
         #endregion

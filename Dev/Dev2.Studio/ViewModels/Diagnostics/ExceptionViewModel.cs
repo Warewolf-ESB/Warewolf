@@ -29,6 +29,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             WindowNavigation = ImportService.GetExportValue<IWindowManager>();
             FeedbackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
+            DisplayName = "Error";
         }
 
         #endregion Constructor

@@ -87,11 +87,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region OnCompleted
 
-        void OnCompleted(NativeActivityContext activityContext, ActivityInstance completedInstance, TResult result)
+        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, TResult result)
         {
-            Result.Set(activityContext, result);
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            Result.Set(context, result);
             _theResult = result;
-            OnExecutedCompleted(activityContext, false, false);
+
+            if (dataObject != null && dataObject.IsDebug)
+            {
+                DispatchDebugState(context, StateType.After);
+            }
+
+            OnExecutedCompleted(context, false, false);
+
+
         }
 
         #endregion
@@ -100,6 +109,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
+            IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
+            if (dataObject != null && dataObject.IsDebug)
+            {
+                DispatchDebugState(faultContext, StateType.After);
+            }
             OnExecutedCompleted(faultContext, true, false);
         }
 

@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
         xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
         xmlns:igDock="http://infragistics.com/DockManager"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         Title="Debug"         
         Width="450"        
         Height="400"       
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
+        cal:Message.Attach="[Event Closed] = [Action ViewClosed]"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}">
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/debugplay.png" ></BitmapImage>

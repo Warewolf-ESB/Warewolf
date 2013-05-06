@@ -6,6 +6,7 @@ using System.Security.Principal;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -13,6 +14,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
@@ -33,26 +35,145 @@ namespace Dev2.Core.Tests
         private static Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
         private static Mock<IContextualResourceModel> _firstResource;
         private Mock<IContextualResourceModel> _secondResource;
-        private Mock<IEventAggregator> _eventAggregator;
-        private Mock<IResourceDependencyService> _resourceDependencyService;
-        MainViewModel _mainViewModel;
-        private string _resourceName = "TestResource";
-        private string _displayName = "test2";
-        private string _serviceDefinition = "<x/>";
+        private static Mock<IEventAggregator> _eventAggregator;
+        private static Mock<IResourceDependencyService> _resourceDependencyService;
+        static MainViewModel _mainViewModel;
+        private static string _resourceName = "TestResource";
+        private static string _displayName = "test2";
+        private static string _serviceDefinition = "<x/>";
         private static ImportServiceContext _importServiceContext;
-        private Guid _serverID = Guid.NewGuid();
-        private Guid _workspaceID = Guid.NewGuid();
-        private Guid _firstResourceID = Guid.NewGuid();
+        private static Guid _serverID = Guid.NewGuid();
+        private static Guid _workspaceID = Guid.NewGuid();
+        private static Guid _firstResourceID = Guid.NewGuid();
         private Guid _secondResourceID = Guid.NewGuid();
-        public Mock<IPopupController> _popupController;
-        private Mock<IFeedbackInvoker> _feedbackInvoker;
-        private Mock<IWebController> _webController;
-        private Mock<IWindowManager> _windowManager;
+        public static Mock<IPopupController> _popupController;
+        private static Mock<IFeedbackInvoker> _feedbackInvoker;
+        private static Mock<IWebController> _webController;
+        private static Mock<IWindowManager> _windowManager;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            CreateFullExportsAndVm();
+        }
+
+        [TestMethod]
+        public void OpenNullLineItemDoesntStartProcess()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+            var vm = new DebugOutputViewModel();
+            vm.OpenMoreLink(null);
+            Assert.IsNull(vm.ProcessController);
+        }
+
+        [TestMethod]
+        public void OpenEmptyMoreLinkDoesntStartProcess()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+            var vm = new DebugOutputViewModel();
+
+            var lineItem = new Mock<IDebugLineItem>();
+            lineItem.SetupGet(l => l.MoreLink).Returns("");
+
+            vm.OpenMoreLink(lineItem.Object);
+            Assert.IsNull(vm.ProcessController);
+        }
+
+        [TestMethod]
+        public void DebugOutputViewModelCanOpenNonNullOrEmptyMoreLinkLineItem()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var lineItem = new Mock<IDebugLineItem>();
+            lineItem.SetupGet(l => l.MoreLink).Returns("More");
+
+            var vm = new DebugOutputViewModel();
+
+            Assert.IsTrue(vm.CanOpenMoreLink(lineItem.Object).Equals(true));
+        }
+
+        [TestMethod]
+        public void DebugOutputViewModelCantOpenEmptyMoreLinkLineItem()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+            var vm = new DebugOutputViewModel();
+
+            var lineItem = new Mock<IDebugLineItem>();
+            lineItem.SetupGet(l => l.MoreLink).Returns("");
+            Assert.IsTrue(vm.CanOpenMoreLink(lineItem.Object).Equals(false));
+        }
+
+        [TestMethod]
+        public void DebugOutputViewModelCantOpenNullMoreLinkLineItem()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+            var vm = new DebugOutputViewModel();
+
+            Assert.IsTrue(vm.CanOpenMoreLink(null).Equals(false));
+        }
+
+
+        [TestMethod]
+        public void DebugOutputViewModelAppendErrorExpectErrorMessageAppende()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID.ToString);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID.ToString);
+            mock2.SetupGet(m => m.StateType).Returns(StateType.Append);
+            mock2.SetupGet(m => m.HasError).Returns(true);
+            mock2.SetupGet(m => m.ErrorMessage).Returns("Error Test");
+
+            mock1.SetupSet(s => s.ErrorMessage).Callback(s => Assert.IsTrue(s.Equals("Error Test")));
+            mock1.SetupSet(s => s.HasError).Callback(s => Assert.IsTrue(s.Equals(true)));
+
+            var vm = new DebugOutputViewModel();
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+            Assert.IsTrue(vm.RootItems.Count == 1);
+            var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
+            Assert.IsTrue(root.HasError.Equals(true));
+        }
+
+        [TestMethod]
+        public void DebugOutputViewModelAppendNestedDebugstatesExpectNestedInRootItems()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID.ToString);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID.ToString);
+
+            var vm = new DebugOutputViewModel();
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+            Assert.IsTrue(vm.RootItems.Count == 1);
+            var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
+
+            Assert.IsTrue(root.Content.Equals(mock1.Object));
+
+            var firstChild = root.Children.First() as DebugStateTreeViewItemViewModel;
+            Assert.IsTrue(firstChild.Content.ParentID.Equals(_firstResourceID.ToString()));
+        }
 
         [TestMethod]
         public void DebugOutputDisplayedExpectsDisplayedToCorrectViewModel()
         {
-            CreateFullExportsAndVm();
+            ImportService.CurrentContext = _importServiceContext;
+
             AddAdditionalContext();
             var msg = new DebugWriterWriteMessage
                 (DebugStateFactory.Create(_firstResource.Object.ServerID, _firstResource.Object.ID, StateType.Message,
@@ -75,7 +196,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(secondDebug.RootItems.Count == 1 && secondItem.Content == "Test2");
         }
 
-        private void CreateFullExportsAndVm()
+        private static void CreateFullExportsAndVm()
         {
             CreateEnvironmentModel();
             var securityContext = GetMockSecurityContext();
@@ -103,7 +224,7 @@ namespace Dev2.Core.Tests
         }
 
 
-        public Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
+        public static Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
         {
             var result = new Mock<IContextualResourceModel>();
 
@@ -119,7 +240,7 @@ namespace Dev2.Core.Tests
             return result;
         }
 
-        public Mock<IFrameworkSecurityContext> GetMockSecurityContext()
+        public static Mock<IFrameworkSecurityContext> GetMockSecurityContext()
         {
             var mockIdentity = new Mock<IIdentity>();
             mockIdentity.Setup(i => i.Name).Returns("Test User");
@@ -137,7 +258,7 @@ namespace Dev2.Core.Tests
             return _environmentRepo;
         }
 
-        private void CreateEnvironmentModel()
+        private static void CreateEnvironmentModel()
         {
             _environmentModel = CreateMockEnvironment();
 
@@ -191,7 +312,7 @@ namespace Dev2.Core.Tests
             return connection;
         }
 
-        public Mock<IWorkspaceItemRepository> GetworkspaceItemRespository()
+        public static Mock<IWorkspaceItemRepository> GetworkspaceItemRespository()
         {
             _mockWorkspaceRepo = new Mock<IWorkspaceItemRepository>();
             var list = new List<IWorkspaceItem>();

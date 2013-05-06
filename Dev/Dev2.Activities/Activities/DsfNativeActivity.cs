@@ -243,22 +243,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
 
-            if (!isResumable && !dataObject.IsDataListScoped)
-            {
-                //compiler.ForceDeleteDataListByID(dataListExecutionID);
-                //compiler.DeleteDataListByID(dataListExecutionID);
-            }
-            else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
-            {
-                // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
-                dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                compiler.ForceDeleteDataListByID(dataListExecutionID);
-            }
+                if (!isResumable && !dataObject.IsDataListScoped)
+                {
+                    //compiler.ForceDeleteDataListByID(dataListExecutionID);
+                    //compiler.DeleteDataListByID(dataListExecutionID);
+                }
+                else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
+                {
+                    // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
+                    dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
+                    compiler.ForceDeleteDataListByID(dataListExecutionID);
+                }
 
-            if (!dataObject.IsDataListScoped)
-            {
-                dataObject.ParentInstanceID = _previousParentInstanceID;
-            }
+                if (!dataObject.IsDataListScoped)
+                {
+                    dataObject.ParentInstanceID = _previousParentInstanceID;
+                }
         }
 
         #endregion

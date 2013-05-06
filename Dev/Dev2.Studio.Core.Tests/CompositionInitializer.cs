@@ -66,6 +66,30 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
+        internal static ImportServiceContext InitializeWithEventAggregator(Mock<IEventAggregator> eventAggregator)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+
+            Mock<IWindowManager> dev2WindowManager = new Mock<IWindowManager>();
+            ImportService.AddExportedValueToContainer(dev2WindowManager.Object);
+
+            Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
+            ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
+
+            Mock<IMainViewModel> mainViewModel = new Mock<IMainViewModel>();
+            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+
+            Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
+            ImportService.AddExportedValueToContainer(webCommunication.Object);
+
+            return importServiceContext;
+        }
+
         internal static ImportServiceContext InitializeForMeflessBaseViewModel()
         {
             var importServiceContext = new ImportServiceContext();

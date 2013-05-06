@@ -295,11 +295,12 @@
                     <DataTemplate x:Key="DebugLineItemTemplate">
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding Value}" Margin="3,0,3,0" Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}"/>
-                            <Button VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                            <Button x:Name="MoreLink" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                                 Width="15" 
-                                cal:Message.Attach="OpenMoreLink($dataContext)"
-                                Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}">
-                                <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
+                                Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
+                                    cal:Message.Attach="OpenMoreLink($DataContext)"
+                                    cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>                              
                             </Button>
                         </StackPanel>
                     </DataTemplate>

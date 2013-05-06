@@ -316,6 +316,7 @@
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
+    <Compile Include="Controller\ProcessController.cs" />
     <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>

@@ -19,10 +19,11 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class WorkflowInputDataViewModel : SimpleBaseViewModel
+    public sealed class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
         #region Fields
         //2012.10.11: massimo.guerrera - Added for PBI 5781
@@ -32,16 +33,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         private DebugTO _debugTO;
         private string _xmlData;
         private bool _rememberInputs;
-        private IContextualResourceModel _resourceModel;
+        private readonly IContextualResourceModel _resourceModel;
         #endregion Fields
 
         #region Ctor
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input)
         {
-            //2012.10.11: massimo.guerrera - Added for PBI 5781           
-            _workflowInputs = new OptomizedObservableCollection<IDataListItem>(); 
-
-            var debugTO = new DebugTO
+            DebugTO = new DebugTO
             {
                 DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList)
                                ? input.ResourceModel.DataList
@@ -49,23 +47,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ServiceName = input.ResourceModel.ResourceName,
                 WorkflowID = input.ResourceModel.ResourceName,
                 WorkflowXaml = input.ResourceModel.WorkflowXaml,
+                XmlData = input.ServiceInputData,
                 ResourceID =  input.ResourceModel.ID,
                 ServerID = input.ResourceModel.ServerID,
-                RememberInputs = true
+                RememberInputs = input.RememberInputs
             };
 
             if (input.DebugModeSetting == DebugMode.DebugInteractive)
             {
-                debugTO.IsDebugMode = true;
+                DebugTO.IsDebugMode = true;
             }
 
-            DebugTO = debugTO;
             _resourceModel = input.ResourceModel;
+            DisplayName = "Debug input data";
         }
         #endregion Ctor
 
         #region Properties
-
         /// <summary>
         /// Broker that contain all session data and methods
         /// </summary>
@@ -98,7 +96,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _workflowInputs;
+                return _workflowInputs ?? (_workflowInputs = new OptomizedObservableCollection<IDataListItem>());
             }
             private set
             {
@@ -185,6 +183,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ExecuteWorkflow()
         {
+            if (_resourceModel == null || _resourceModel.Environment == null)
+            {
+                return;
+            }
+
+            var context = Parent as WorkSurfaceContextViewModel;
+            if (context != null) context.BindToModel();
 
             var clientContext = _resourceModel.Environment.DsfChannel as IStudioClientContext;
             if (clientContext != null)

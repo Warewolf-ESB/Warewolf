@@ -82,11 +82,9 @@ namespace Dev2.Session
                 tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat("XMLWithoutSysTags"), out errors).FetchAsString();
                 //End Bug 8018
 
-                to.XmlData = !tmp.RememberInputs
-                                 ? (to.DataList ?? "<DataList></DataList>")
-                                 : (tmp.XmlData ?? "<DataList></DataList>");
-
-                to.RememberInputs = tmp.RememberInputs;
+                to.XmlData = tmp.RememberInputs
+                                 ? (tmp.XmlData ?? "<DataList></DataList>")
+                                 : (to.XmlData ?? "<DataList></DataList>");
             }
 
             // if no XML data copy over the DataList

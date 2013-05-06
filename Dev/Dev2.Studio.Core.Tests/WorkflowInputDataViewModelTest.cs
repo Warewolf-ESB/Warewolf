@@ -1,9 +1,17 @@
-﻿using Dev2.Composition;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Session;
+using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -18,11 +26,20 @@ namespace Dev2.Core.Tests {
     public class WorkflowInputDataViewModelTest {
         DebugTO debugTO = new DebugTO();
 
+      //  Mock<IContextualResourceModel> _mockResource = new Mock<IContextualResourceModel>();
+        private Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
+        private Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
+        private string _resourceName = "TestWorkflow";
+
         /// <summary>
         /// We are exporting the MEF IoC container so that we can inject dependencies into other classes
         /// </summary>
 
         private TestContext testContextInstance;
+
+        private WorkflowInputDataViewModel _workflowInputDataviewModel;
+
+        private Mock<IEventAggregator> _eventAggregator;
 
         /// <summary>
         ///Gets or sets the result context which provides
@@ -38,190 +55,146 @@ namespace Dev2.Core.Tests {
         }
 
         #region Additional result attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first result in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each result
+
         [TestInitialize()]
         public void EnvironmentTestsInitialize() 
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-
-            debugTO.ServiceName="TestWorkflow";
-            debugTO.WorkflowID="TestWorkflow";
-            debugTO.DataList=StringResourcesTest.DebugInputWindow_DataList;
-            debugTO.XmlData=StringResourcesTest.DebugInputWindow_XMLData;
-            debugTO.IsDebugMode=true;
-            debugTO.WorkflowXaml=StringResourcesTest.DebugInputWindow_WorkflowXaml;
-            debugTO.RememberInputs=false;            
-            
-            //_worfflowInputDataviewModel = new WorkflowInputDataViewModel(_mockDebug.Object);
+            _eventAggregator = new Mock<IEventAggregator>();
+            ImportService.CurrentContext = CompositionInitializer.InializeWithEventAggregator(_eventAggregator.Object);
         }
-        //
-        //Use TestCleanup to run code after each result has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
         #endregion
 
-        #region LoadInputs Tests      
-        // Sashen.Naidoo: 9144 + 9147 : Fixed tests and updated code to cater for issues with Debugging
-        //                              When debug data hydrated the debug window, the display fields of record sets were incorrect.
-        [TestMethod]
+        #region LoadInputs Tests    
+  
+
+       [TestMethod]
         public void LoadInputs_Expected_Inputs_Loaded()
-        {
-            //Juries TODO
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
-            //for (int i = 1; i < _workflowInputDataviewModel.WorkflowInputs.Count; i++)
-            //{
-            //    Assert.AreEqual(testDataListItems[i].DisplayValue, _workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
-            //    Assert.AreEqual(testDataListItems[i].Value, _workflowInputDataviewModel.WorkflowInputs[i].Value);
-            //}
+       {
+           var mockResouce = GetMockResource();
+           var _serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+           _serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(_serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
+            for (int i = 1; i < _workflowInputDataviewModel.WorkflowInputs.Count; i++)
+            {
+                Assert.AreEqual(testDataListItems[i].DisplayValue, _workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
+                Assert.AreEqual(testDataListItems[i].Value, _workflowInputDataviewModel.WorkflowInputs[i].Value);
+            }
         }
 
         [TestMethod]
         public void LoadInputs_BlankXMLData_Expected_Blank_Inputs()
-        {
-            //Juries TODO
-            //debugTO.XmlData = string.Empty;
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //foreach (var input in _workflowInputDataviewModel.WorkflowInputs)
-            //{
-            //    Assert.AreEqual(string.Empty, input.Value);
-            //}
-            //Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 4);
-            
+       {
+           var mockResouce = GetMockResource();
+           var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+           serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns("<DataList></DataList>");
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            foreach (var input in _workflowInputDataviewModel.WorkflowInputs)
+            {
+                Assert.AreEqual(string.Empty, input.Value);
+            }
+            Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 4);          
         }
 
         [TestMethod]
         public void LoadInputs_BlankDataList_Expected_Blank_Inputs()
         {
-            //Juries TODO
-            //debugTO.DataList = "<DataList></DataList>";
-            //debugTO.XmlData = string.Empty;
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 0);
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns("<DataList></DataList>");
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
 
 
         //2013.01.22: Ashley Lewis - Bug 7837 
         [TestMethod]
-        public void Save_NullDataList_Expected_NoErrors()
+        public void Save_EmptyDataList_Expected_NoErrors()
         {
-            //Juries TODO
-            //debugTO.DataList = null;
-            //debugTO.XmlData = string.Empty;
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //_workflowInputDataviewModel.Save();
-            //Assert.AreEqual("", _workflowInputDataviewModel.DebugTO.Error);
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            _workflowInputDataviewModel.Save();
+            Assert.AreEqual("", _workflowInputDataviewModel.DebugTO.Error);
         }
+
         [TestMethod]
         public void Cancel_NullDataList_Expected_NoErrors()
         {
-            //Juries TODO
-            //debugTO.DataList = null;
-            //debugTO.XmlData = string.Empty;
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //_workflowInputDataviewModel.Cancel();
-            //Assert.AreEqual("", _workflowInputDataviewModel.DebugTO.Error);
+            var mockResouce = GetMockResource();
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            _workflowInputDataviewModel.Cancel();
+            Assert.AreEqual("", _workflowInputDataviewModel.DebugTO.Error);
         }
+
         [TestMethod]
         public void LoadInputs_NullDataList_Expected_Blank_Inputs()
         {
-            //Juries TODO
-            //debugTO.DataList = null;
-            //debugTO.XmlData = string.Empty;
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 0);
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
         #endregion LoadInputs Tests
-
-        #region SetXML
-
-
-        #endregion SetXML
 
         #region SetWorkflowInputData
 
         [TestMethod]
         public void SetWorkflowInputData_ExtraRows_Expected_Row_Available()
         {
-            //Juries TODO
-            //debugTO.XmlData = GetTestXMLData();
-            //_workflowInputDataviewModel = new WorkflowInputDataViewModel(debugTO);
-            //_workflowInputDataviewModel.LoadWorkflowInputs();
-            //OptomizedObservableCollection<IDataListItem> inputValues = GetInputTestDataDataNames();
+            var mockResouce = GetMockResource();
+            var _serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            _serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(_serviceDebugInfo.Object);
+            _workflowInputDataviewModel.LoadWorkflowInputs();
+            OptomizedObservableCollection<IDataListItem> inputValues = GetInputTestDataDataNames();
 
-            //// Cannot perform Collection Assert due to use of mocks for datalist items to remove dependancies during test
-            //for (int i = 0; i < _workflowInputDataviewModel.WorkflowInputs.Count; i++)
-            //{
-            //    Assert.AreEqual(inputValues[i].DisplayValue, _workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
-            //    Assert.AreEqual(inputValues[i].Value, _workflowInputDataviewModel.WorkflowInputs[i].Value);
-            //    Assert.AreEqual(inputValues[i].IsRecordset, _workflowInputDataviewModel.WorkflowInputs[i].IsRecordset);
-            //    Assert.AreEqual(inputValues[i].RecordsetIndex, _workflowInputDataviewModel.WorkflowInputs[i].RecordsetIndex);
-            //    Assert.AreEqual(inputValues[i].Field, _workflowInputDataviewModel.WorkflowInputs[i].Field);
-            //}
-            
-        }
-
-        
+            // Cannot perform Collection Assert due to use of mocks for datalist items to remove dependancies during test
+            for (int i = 0; i < _workflowInputDataviewModel.WorkflowInputs.Count; i++)
+            {
+                Assert.AreEqual(inputValues[i].DisplayValue, _workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
+                Assert.AreEqual(inputValues[i].Value, _workflowInputDataviewModel.WorkflowInputs[i].Value);
+                Assert.AreEqual(inputValues[i].IsRecordset, _workflowInputDataviewModel.WorkflowInputs[i].IsRecordset);
+                Assert.AreEqual(inputValues[i].RecordsetIndex, _workflowInputDataviewModel.WorkflowInputs[i].RecordsetIndex);
+                Assert.AreEqual(inputValues[i].Field, _workflowInputDataviewModel.WorkflowInputs[i].Field);
+            }          
+        }      
 
         #endregion SetWorkflowInputData
 
-        #region Private Methods
-
-        private string GetTestXMLData()
+        #region CloseWorkflowTest
+        [TestMethod]
+        public void CloseInputExpectFinishMessage()
         {
-            return @"<DataList>
-  <scalar1>ScalarData1</scalar1>
-  <scalar2>ScalarData2</scalar2>
-  <Recset>
-    <Field1>Field1Data1</Field1>
-    <Field2>Field2Data1</Field2>
-  </Recset>
-  <Recset>
-    <Field1>Field1Data2</Field1>
-    <Field2>Field2Data2</Field2>
-  </Recset>
-  <Recset>
-    <Field1>Field1Data3</Field1>
-    <Field2>Field2Data3</Field2>
-  </Recset>
-  <Recset>
-    <Field1>Field1Data4</Field1>
-    <Field2>Field2Data4</Field2>
-  </Recset>
-<Recset>
-    <Field1>Field1Data5</Field1>
-    <Field2>Field2Data5</Field2>
-  </Recset>
-<Recset>
-    <Field1>Field1Data6</Field1>
-    <Field2>Field2Data6</Field2>
-  </Recset>
-</DataList>";
+           _eventAggregator.Setup(evt => evt.Publish(It.IsAny<SetDebugStatusMessage>()))
+               .Callback<object>((o) =>
+                   {
+                       var msg = (SetDebugStatusMessage) o;
+                       Assert.IsTrue(msg.DebugStatus == DebugStatus.Finished);
+                       var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow,
+                                                                            _resourceID, _serverID);
+                       Assert.IsTrue(msg.WorkSurfaceKey.Equals(workSurfaceKey));
+                   }).Verifiable();
+
+           var mockResouce = GetMockResource();
+           var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            _workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object);
+            _workflowInputDataviewModel.ViewClosed();
+            _eventAggregator.Verify(evt => evt.Publish(It.IsAny<SetDebugStatusMessage>()), Times.Once());
         }
+
+        #endregion
+
+        #region Private Methods
 
         private OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
         {
@@ -287,6 +260,25 @@ namespace Dev2.Core.Tests {
             return records.Object;
         }
 
+        private Mock<IContextualResourceModel> GetMockResource()
+        {
+            var mockResource = new Mock<IContextualResourceModel>();
+            mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
+            mockResource.SetupGet(r => r.ResourceName).Returns(_resourceName);
+            mockResource.SetupGet(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            mockResource.SetupGet(r => r.ID).Returns(_resourceID);
+            mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
+            return mockResource;
+        }
+
+        private Mock<IServiceDebugInfoModel> GetMockServiceDebugInfo(Mock<IContextualResourceModel> mockResouce)
+        {
+            Mock<IServiceDebugInfoModel> _serviceDebugInfo = new Mock<IServiceDebugInfoModel>();
+            _serviceDebugInfo.SetupGet(sd => sd.DebugModeSetting).Returns(DebugMode.DebugInteractive);
+            _serviceDebugInfo.SetupGet(sd => sd.ResourceModel).Returns(mockResouce.Object);
+            _serviceDebugInfo.SetupGet(sd => sd.RememberInputs).Returns(false);
+            return _serviceDebugInfo;
+        }
 
         #endregion Private Methods
 
