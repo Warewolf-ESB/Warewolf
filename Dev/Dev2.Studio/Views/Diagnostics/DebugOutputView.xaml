@@ -287,7 +287,11 @@
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>            
-            <TreeView Grid.Row="0" ItemsSource="{Binding RootItems}" BorderBrush="Transparent">
+            <TreeView Grid.Row="0" 
+                      ItemsSource="{Binding RootItems}" 
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      BorderBrush="Transparent">
                 <i:Interaction.Behaviors>
                     <b:TreeviewScrollToEndOnNewContent />
                 </i:Interaction.Behaviors>
