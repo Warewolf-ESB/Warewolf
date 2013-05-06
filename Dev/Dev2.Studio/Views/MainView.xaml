@@ -680,10 +680,10 @@
 				<igDock:XamDockManager.Panes>
 					<igDock:SplitPane x:Name="DockBottom" igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
 						<igDock:TabGroupPane>
-                            <customControls:CachingContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
+                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
 								IsPinned="False" AllowClose="False">
                                 <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}"/>
-							</customControls:CachingContentPane>
+							</igDock:ContentPane>
 							<!-- TODO PBI 8291 
                             <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
                             <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />-->

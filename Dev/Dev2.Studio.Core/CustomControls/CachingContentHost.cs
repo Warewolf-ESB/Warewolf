@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 
@@ -10,18 +6,18 @@ namespace Dev2.Studio.Core.CustomControls
 {
     public class CachingContentHost : ContentControl
     {
-         private Grid _contentGrid;
+        private readonly Grid _contentGrid;
         private UIElement _currentView;
 
         public CachingContentHost()
         {
             _contentGrid = new Grid();
-            this.Content = _contentGrid;
+            Content = _contentGrid;
         }
 
         public object CurrentItem
         {
-            get { return (object)GetValue(CurrentItemProperty); }
+            get { return GetValue(CurrentItemProperty); }
             set { SetValue(CurrentItemProperty, value); }
         }
 
@@ -60,8 +56,8 @@ namespace Dev2.Studio.Core.CustomControls
         {
             var context = View.GetContext(this);
             var view = ViewLocator.LocateForModel(viewModel, this, context);
-
             ViewModelBinder.Bind(viewModel, view, context);
+
             return view;
         }
 
@@ -76,26 +72,32 @@ namespace Dev2.Studio.Core.CustomControls
 
         private void SourceScreen_Deactivated(object sender, DeactivationEventArgs e)
         {
-            if (e.WasClosed)
+            if (!e.WasClosed)
             {
-                var sourceScreen = sender as IScreen;
-                sourceScreen.Deactivated -= SourceScreen_Deactivated;
-
-                var view = GetView(sourceScreen);
-                _contentGrid.Children.Remove(view);
+                return;
             }
+
+            var sourceScreen = sender as IScreen;
+            if (sourceScreen == null)
+            {
+                return;
+            }
+
+            sourceScreen.Deactivated -= SourceScreen_Deactivated;
+            var view = GetView(sourceScreen);
+            _contentGrid.Children.Remove(view);
         }
 
-        private void BringToFront(UIElement control)
+        private static void BringToFront(UIElement control)
         {
-            control.Visibility = System.Windows.Visibility.Visible;
+            control.Visibility = Visibility.Visible;
         }
 
-        private void SendToBack(UIElement control)
+        private static void SendToBack(UIElement control)
         {
             if (control != null)
             {
-                control.Visibility = System.Windows.Visibility.Collapsed;
+                control.Visibility = Visibility.Collapsed;
             }
         }
     }
