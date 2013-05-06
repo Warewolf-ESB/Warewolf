@@ -137,7 +137,14 @@ namespace Dev2.Integration.Tests
 
                         var proc = Process.GetProcessById(Int32.Parse(pid));
 
-                        proc.Kill();
+                        try
+                        {
+                            proc.Kill();
+                        }
+                        catch
+                        {
+                            // Do nothing
+                        }
                     }
                 }
             }
