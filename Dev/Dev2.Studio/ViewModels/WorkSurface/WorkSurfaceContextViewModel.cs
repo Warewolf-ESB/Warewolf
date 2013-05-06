@@ -402,6 +402,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             FindMissing();
+            BindToModel();
 
             if (!isLocalSave)
             {
@@ -445,6 +446,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         private void Build(IContextualResourceModel resource, bool deploy = true)
         {
+
             if (resource == null || resource.Environment == null || !resource.Environment.IsConnected)
             {
                 return;
