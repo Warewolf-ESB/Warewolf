@@ -202,6 +202,8 @@
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="Controller\IPopUp.cs" />
+    <Compile Include="CustomControls\CachingContentHost.cs" />
+    <Compile Include="CustomControls\CachingContentPane.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="ErrorHandling\enErrorType.cs" />

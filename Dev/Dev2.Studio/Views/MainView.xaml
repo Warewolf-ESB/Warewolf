@@ -15,6 +15,7 @@
                      xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
                      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
                      xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
+                     xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
                      x:Class="Dev2.Studio.Views.MainView"
                      WindowState="Maximized"
                      Title="{Binding DisplayName}"
@@ -679,10 +680,10 @@
 				<igDock:XamDockManager.Panes>
 					<igDock:SplitPane x:Name="DockBottom" igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
 						<igDock:TabGroupPane>
-							<igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
+                            <customControls:CachingContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
 								IsPinned="False" AllowClose="False">
-                                <diagnostics:DebugOutputView DataContext="{Binding ActiveItem.DebugOutputViewModel}"/>
-							</igDock:ContentPane>
+                                <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}"/>
+							</customControls:CachingContentPane>
 							<!-- TODO PBI 8291 
                             <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
                             <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />-->
