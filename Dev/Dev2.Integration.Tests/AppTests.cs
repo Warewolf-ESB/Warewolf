@@ -9,7 +9,6 @@ using System.Threading;
 namespace Dev2.Integration.Tests
 {
     [TestClass]
-    [Ignore]
     public class AppTests
     {
         // Fixed by Michael RE Broken Integration Tests (12th Feb 2013)
@@ -60,9 +59,9 @@ namespace Dev2.Integration.Tests
                 }
             }
 
-            //Assert.AreEqual(true, actual);
+            Assert.AreEqual(true, actual);
 
-            Assert.Inconclusive("Not a sane Integration Test!!!");
+            //Assert.Inconclusive("Not a sane Integration Test!!!");
         }
     }
 }

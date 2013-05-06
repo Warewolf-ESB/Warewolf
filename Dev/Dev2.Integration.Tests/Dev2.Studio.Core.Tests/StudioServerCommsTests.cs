@@ -18,7 +18,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     //                              & that the Studio always performs it's connection actions in a 
     //                              synchronous fashion.
     [TestClass]
-    [Ignore]
     public class StudioServerCommsTests
     {                      
         #region Environment Connection Tests
