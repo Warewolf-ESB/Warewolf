@@ -54,22 +54,6 @@ namespace Dev2.Studio.Webs
             {
                 return;
             }
-
-            bool doesServiceExist = resourceModel.Environment.ResourceRepository.Find(
-                r => r.ResourceName == "Dev2ServiceDetails").Count > 0;
-
-            if (doesServiceExist)
-            {
-                var resourceViewModel = new ResourceWizardViewModel(resourceModel);
-                var uriString = StudioToWizardBridge.GetUriString(resourceModel, includeArgs);
-                _win = new WebPropertyEditorWindow(resourceViewModel, uriString) { Width = 850, Height = 600 };
-                _win.ShowDialog();
-            }
-            else
-            {
-                _popupProvider.Show(StringResources.DialogBody_MissingWizard, StringResources.DialogTitle_MissingWizard,
-                                   MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         private void ShowWebpartWizard(IPropertyEditorWizard layoutObjectToOpenWizardFor)

@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Common;
+﻿using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +13,6 @@ using System.Xml.Linq;
 namespace Dev2.Tests.Runtime
 {
     [TestClass]
-    [Ignore]
     public class FileSystemInstanceStoreIoTests
     {
         const string TestFileName = "TestInstanceStore";
@@ -24,7 +24,9 @@ namespace Dev2.Tests.Runtime
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            var currentDir = Path.Combine(testContext.TestDir, Guid.NewGuid().ToString());
+            //var currentDir = Path.Combine(testContext.TestDir, Guid.NewGuid().ToString());
+            var currentDir = EnvironmentVariables.ApplicationPath;
+
             TestPath = Path.Combine(currentDir, "InstanceStore");
             Directory.CreateDirectory(TestPath);
             Directory.SetCurrentDirectory(currentDir);

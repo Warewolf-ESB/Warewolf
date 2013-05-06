@@ -44,7 +44,10 @@ namespace Dev2.Studio.Webs
                 else if(resourceModel.IsResourceService)
                 {
                     resourceType = ResourceType.PluginSource;
-            }
+                }else if (resourceModel.DisplayName == "DbSource")
+                {
+                    resourceType = ResourceType.DbSource;
+                }
             }
             else
             {
