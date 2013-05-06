@@ -343,8 +343,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             Save(_contextualResourceModel, true);
 
-            BindToModel();
-
             if (_contextualResourceModel == null || _contextualResourceModel.Environment == null ||
                 _contextualResourceModel.Environment.Connection == null) return;
 
