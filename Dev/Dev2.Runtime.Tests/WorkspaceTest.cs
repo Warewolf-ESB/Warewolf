@@ -22,11 +22,11 @@ namespace Dev2.DynamicServices.Test
 
         const enDynamicServiceObjectType ServiceType = enDynamicServiceObjectType.DynamicService;
 
-        static string _testDir;
+        //static string _testDir;
 
         Guid _workspaceID;
-        static int _currentTestNum;
-        static string _currentTestDir;
+        //static int _currentTestNum;
+        //static string _currentTestDir;
 
         #region ClassInitialize
 

@@ -128,7 +128,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     getAssemblyVersion = GAC.GetVersion(gacIterator).ToString();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     getAssemblyVersion = "0.0.0.0";
                 }
