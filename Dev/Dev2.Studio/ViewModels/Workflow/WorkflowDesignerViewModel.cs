@@ -655,25 +655,29 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var DecisionFields = new List<string>();
             string expression = decision.ExpressionText;
-            int startIndex = expression.IndexOf('"');
-            startIndex = startIndex + 1;
-            int endindex = expression.IndexOf('"', startIndex);
-            string decisionValue = expression.Substring(startIndex, endindex - startIndex);
-
-            // Travis.Frisinger - 25.01.2013 
-            // We now need to parse this data for regions ;)
-
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
-            // NEED - DataList for active workflow
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(decisionValue,
-                                                                                       DataListSingleton.ActiveDataList
-                                                                                                        .WriteToResourceModel
-                                                                                           (), true);
-
-            // push them into the list
-            foreach (var p in parts)
+            if (!string.IsNullOrEmpty(expression))
             {
-                DecisionFields.Add(DataListUtil.StripBracketsFromValue(p.Option.DisplayValue));
+                int startIndex = expression.IndexOf('"');
+                startIndex = startIndex + 1;
+                int endindex = expression.IndexOf('"', startIndex);
+                string decisionValue = expression.Substring(startIndex, endindex - startIndex);
+
+                // Travis.Frisinger - 25.01.2013 
+                // We now need to parse this data for regions ;)
+
+                IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
+                // NEED - DataList for active workflow
+                IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(decisionValue,
+                                                                                           DataListSingleton
+                                                                                               .ActiveDataList
+                                                                                               .WriteToResourceModel
+                                                                                               (), true);
+
+                // push them into the list
+                foreach (var p in parts)
+                {
+                    DecisionFields.Add(DataListUtil.StripBracketsFromValue(p.Option.DisplayValue));
+                }
             }
 
             return DecisionFields;
