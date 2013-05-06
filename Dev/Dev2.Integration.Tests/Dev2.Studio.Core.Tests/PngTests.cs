@@ -19,7 +19,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     /// Summary description for PngTests
     /// </summary>
     [TestClass]
-    [Ignore]
     public class PngTests
     {
         private ToolboxUserControl toolbox;
