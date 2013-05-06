@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Dev2.Common.ExtMethods;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 
@@ -23,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
-
+            resourceDefinition = resourceDefinition.Unescape();
             string result = WorkspaceRepository.Instance.ServerWorkspace.Save(resourceDefinition, roles);
             WorkspaceRepository.Instance.RefreshWorkspaces();
 

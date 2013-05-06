@@ -533,6 +533,45 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion
 
+        #region BuildUnlimitedPackage
+
+        [TestMethod]
+        public void BuildUnlimitedPackageWhereResourceExpectResourceDefinitionInPackage()
+        {
+            //------------Setup for test--------------------------
+            _model.Setup(c => c.ResourceName).Returns("TestName");
+            const string expectedValueForResourceDefinition = "This is the resource definition";
+            _model.Setup(c => c.ToServiceDefinition()).Returns(expectedValueForResourceDefinition);
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
+            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
+            var rand = new Random();
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.Save(_model.Object);
+            //------------Execute Test---------------------------
+            var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(_model.Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
+            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,expectedValueForResourceDefinition);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BuildUnlimitedPackageWhereNullResourceExpectException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            _repo.BuildUnlimitedPackage(null);
+            //------------Assert Results-------------------------
+        }
+
+        #endregion
+
     }
 
 }

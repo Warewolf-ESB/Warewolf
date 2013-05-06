@@ -214,12 +214,22 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 workflow.Update(resource);
             }
 
-            dynamic package = new UnlimitedObject();
-            package.Service = "DeployResourceService";
-            package.ResourceXml = resource.ToServiceDefinition();
-            package.Roles = string.Join(",", _securityContext.Roles ?? new string[0]);
+            var package = BuildUnlimitedPackage(resource);
 
             ExecuteCommand(_environmentModel, package, false);
+        }
+
+        public dynamic BuildUnlimitedPackage(IResourceModel resource)
+        {
+            if(resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            dynamic package = new UnlimitedObject();
+            package.Service = "DeployResourceService";
+            package.ResourceDefinition = resource.ToServiceDefinition();
+            package.Roles = string.Join(",", _securityContext.Roles ?? new string[0]);
+            return package;
         }
 
         public void Save(ICollection<IResourceModel> instanceObjs)
