@@ -106,6 +106,15 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ! @ #$% ^&amp;* ( ) +_{ }| [] \: &quot;; &apos;&lt;&gt; ?, ./.
+        /// </summary>
+        public static string SpecialChars {
+            get {
+                return ResourceManager.GetString("SpecialChars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Activity mc:Ignorable=&quot;sap&quot; x:Class=&quot;ServiceToBindFrom&quot; xmlns=&quot;http://schemas.microsoft.com/netfx/2009/xaml/activities&quot; xmlns:av=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; xmlns:mc=&quot;http://schemas.openxmlformats.org/markup-compatibility/2006&quot; xmlns:mva=&quot;clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities&quot; xmlns:s=&quot;clr-namespace:System;assembly=mscorlib&quot; xmlns:sap=&quot;http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation&quot; xmlns:scg=&quot;clr-namespace:System.Col [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TestWorkflowXAML {

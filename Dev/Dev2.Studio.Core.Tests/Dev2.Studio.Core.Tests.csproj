@@ -226,6 +226,7 @@
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
+    <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewModelTests\Configuration\RuntimeConfigurationViewModelTests.cs" />
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
     <Compile Include="ViewModelTests\DsfActivityViewModelTests.cs" />
@@ -312,7 +313,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
-    <Folder Include="UtilsTests\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

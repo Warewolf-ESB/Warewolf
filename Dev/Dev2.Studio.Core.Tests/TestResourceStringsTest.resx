@@ -794,4 +794,7 @@
   &lt;/mainmenu&gt;
 &lt;/WebsiteConfig&gt;</value>
   </data>
+  <data name="SpecialChars" xml:space="preserve">
+    <value>! @ #$% ^&amp;* ( ) +_{ }| [] \: "; '&lt;&gt; ?, ./</value>
+  </data>
 </root>

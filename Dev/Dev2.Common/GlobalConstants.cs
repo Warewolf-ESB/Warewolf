@@ -142,5 +142,8 @@ namespace Dev2.Common
         public const bool runtimeNamespaceClean = true;
 
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
+
+        // Used both Resource's LoadDependencies method
+        public static readonly string EmptyDependcyListElement = "<XamlDefinition />";
     }
 }

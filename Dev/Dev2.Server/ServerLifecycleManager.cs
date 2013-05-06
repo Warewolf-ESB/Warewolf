@@ -359,12 +359,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         private int Stop(bool didBreak, int result)
         {
-            //Dev2RedisClient.StopRedis();
-            //if(!ExecuteWorkflowGroup("Cleanup"))
-            //{
-            //    didBreak = true;
-            //    result = 6;
-            //}
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             UnloadSettingsProvider();
@@ -1524,8 +1518,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             WriteLine("");
-            WriteLine("Press any key to exit...");
-            Console.ReadLine();
+            //WriteLine("Press any key to exit...");
+            //Console.ReadLine();
         }
 
         private void Fail(string message, string details)
@@ -1540,8 +1534,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             WriteLine("");
-            WriteLine("Press any key to exit...");
-            Console.ReadLine();
+            //WriteLine("Press any key to exit...");
+            //Console.ReadLine();
         }
         #endregion
 

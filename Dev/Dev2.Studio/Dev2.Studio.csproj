@@ -346,6 +346,7 @@
     <Compile Include="Factory\RuntimeConfigurationViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
     <Compile Include="Utils\DsfActivityDropUtils.cs">

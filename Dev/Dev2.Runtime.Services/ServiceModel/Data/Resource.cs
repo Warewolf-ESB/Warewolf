@@ -159,7 +159,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             if(xml==null) return;
             var loadXML = xml.Descendants("XamlDefinition").ToList();
             if(loadXML.Count!=1) return;
-             var textReader = new StringReader( loadXML[0].Value);
+
+            var textReader = new StringReader(loadXML[0].Value);
             try
             {
                 XElement elementToUse;
@@ -192,7 +193,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
             } catch(Exception e)
             {
-                ServerLogger.LogError(e.Message);
+                var resName = xml.AttributeSafe("Name");
+                ServerLogger.LogError("Loading dependencies for [ " + resName + " ] caused " + e.Message);
             }
         }
 

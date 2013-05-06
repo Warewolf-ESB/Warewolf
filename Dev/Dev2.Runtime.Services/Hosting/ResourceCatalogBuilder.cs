@@ -94,7 +94,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch (Exception e)
                     {
-                        ServerLogger.LogError(e.Message);
+                        ServerLogger.LogError("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
 
                     var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(xml.ToString(SaveOptions.None));

@@ -54,6 +54,9 @@ namespace Dev2.Integration.Tests
                 var started = false;
                 var startCnt = 0;
 
+                // term any existing server processes ;)
+                TerminateProcess(_serverProcName);
+
                 while (!started && startCnt < 5)
                 {
                     try
@@ -67,8 +70,6 @@ namespace Dev2.Integration.Tests
                             started = true;
                             ServerLogger.LogMessage("** Server Started for Integration Test Run");
                         }
-
-
                     }
                     catch (Exception e)
                     {
@@ -77,13 +78,14 @@ namespace Dev2.Integration.Tests
                         // most likely a server is already running, kill it and try again ;)
                         startCnt++;
 
-                        // term any existing server processes ;)
-                        TerminateProcess(_serverProcName);
+                        
                     }
                     finally
                     {
                         if (!started){
                             ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
+                            // term any existing server processes ;)
+                            TerminateProcess(_serverProcName);
                         }
                     }
                 }
