@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Dev2.Common;
 using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
 using Dev2.PathOperations;
@@ -67,11 +68,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                if (asmLoc != null)
+                if (asmLoc.StartsWith(GlobalConstants.GACPrefix))
                 {
-                    if (asmLoc.StartsWith("GAC:"))
-                    {
-                        baseLocation = "GAC:";
+                    baseLocation = GlobalConstants.GACPrefix;
                         // we have a plugin loaded into the global assembly cache
                         gacQualifiedName = asmLoc.Substring(4);
                     }
@@ -82,7 +81,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                         plugins = new[] { asmLoc };
                     }
                 }
-            }
 
             bool includePublic = true;
             bool includePrivate = true;

@@ -8,6 +8,7 @@
     var $sourcetabs = $("#sourcetabs");
     var $assemblyFileLocation = $("#pluginAssemblyFileLocation");
     $sourcetabs.tabs();
+    $sourcetabs.removeClass("ui-widget-content");
 
     self.onSaveCompleted = null;
     self.driveLetter = '';
@@ -35,10 +36,14 @@
             if (term == "") {
                 self.refreshGacList(self.allGacAssemblies());
                 self.updateHelpText("gacSearchTerm");
+				
+				$("#gacSearchTerm").attr('placeholder', 'Search');
+				
+				
                 return self.allGacAssemblies();
             }
             var filteredList = ko.utils.arrayFilter(self.allGacAssemblies(), function (assembly) {
-                return assembly.Text.toLowerCase().indexOf(term) !== -1;
+                return assembly.AssemblyName.toLowerCase().indexOf(term) !== -1;
             });
             self.updateHelpText("gacSearchTerm:" + filteredList.length);
             self.refreshGacList(filteredList);
@@ -97,6 +102,7 @@
                         $assemblyFileLocation.autocomplete("search");
                     });
                 } else {
+				
                     if (newvalue.match("GAC:") != null) {//is assembly a gac entry?
                         self.findInGacList(newvalue);
                     } else {//assembly is neither file nor gac entry
@@ -125,7 +131,8 @@
     });
 
     self.isFormValid = ko.computed(function () {
-        var isValid = self.isAssemblyFileValid() || self.isAssemblyInGacList();//$.inArray(self.data.assemblyLocation().substr(4, self.data.assemblyLocation().length-4), self.allGacAssemblies()) > -1);
+        var isValid = self.isAssemblyFileValid();//$.inArray(self.data.assemblyLocation().substr(4, self.data.assemblyLocation().length-4), self.allGacAssemblies()) > -1);
+		
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
@@ -133,11 +140,21 @@
     });
 
     self.validateAssemblyFile = function (id) {
-        $.post("Service/PluginSources/ValidateAssemblyImageFormat" + window.location.search, self.data.assemblyLocation(), function (data) {
-            if (data.validationresult == "success") {
+
+		$.post("Service/PluginSources/ValidateAssemblyImageFormat" + window.location.search, self.data.assemblyLocation(), function (data) {
+
+            if (data.validationresult == "success" && id.indexOf("GAC:") < 0) {
                 self.isAssemblyFileValid(true);
                 self.isAssemblyInGacList(false);
-            } else {
+				
+			}else if(data.validationresult == "success" && id.indexOf("GAC:") >= 0){
+				self.isAssemblyFileValid(true);
+				self.updateHelpText(id);
+            } else if(data.validationresult != "success" && id.indexOf("GAC:") >= 0){
+				self.isAssemblyFileValid(false);
+				self.updateHelpText(id);
+				
+			}else {
                 self.isAssemblyFileValid(false);
             }
         })
@@ -152,7 +169,7 @@
         }
         self.isAssemblyInGacList(false);
         self.allGacAssemblies().forEach(function (entry) {
-            if (entry.Text == id) {
+            if (entry.AssemblyName == id) {
                 self.isAssemblyInGacList(true);
                 self.isAssemblyFileValid(false);
                 return true;
@@ -169,7 +186,12 @@
                 text = text ? text : "";
             } else {
                 if (id.match("GAC:") != null) {
-                    text = "<h4>Global Cache</h4><p>You have selected " + id + "</p>";
+					if(self.isAssemblyFileValid()){
+						text = "<h4>Global Cache</h4><p>You have selected " + id + "</p>";
+					}else{
+						// invalid asm ;(
+						text = "<h4>Global Cache</h4><p>" + id + " is an invalid assembly file</p>";
+					}
                 } 
                 if (id.match(".dll") != null) {
                     if (self.isAssemblyFileValid()) {
@@ -219,8 +241,10 @@
         self.data.assemblyLocation($gacList.val());
     });
     $gacList.on("click", function() {
-        self.updateHelpText($gacList.val());
-        self.data.assemblyLocation($gacList.val());
+        
+		self.data.assemblyLocation($gacList.val());
+		self.validateAssemblyFile($gacList.val());
+	
     });
 
     self.saveViewModel = SaveViewModel.create("Service/PluginSources/Save", self, saveContainerID);
@@ -237,16 +261,24 @@
         });
     };
     
-    //Server drive letter init
-    $.post("Service/PluginSources/GetRootDriveLetter" + window.location.search, "", function (driveLetterResult) {
-        self.driveLetter = driveLetterResult[0].driveLetter;
-    });
+	// set root URL
+	var baseURL = utils.parseBaseURL(window.location + "");
+	
+	// Travis.Frisinger - Refactored to use Management Services ;)
+	$.ajax({
+		type: 'POST',
+		url : baseURL+"/Services/FindDriveService",
+		success : function (driveLetterResult) {
+					self.driveLetter = driveLetterResult[0].driveLetter.replace("/","\\");
+				  },
+		async:false
+	
+	});
 
-    //
-    //GAC Assemblies Init
-    //
-    $.post("Service/PluginSources/GetGacList" + window.location.search, "", function (gacResult) {
+	// Travis.Frisinger - Refacotred to use Management Services ;)
+	$.post(baseURL+"/Services/RegisteredAssemblyService", "", function (gacResult) {
         //populate full list
+		
         self.allGacAssemblies(gacResult);
         //view full list
         self.refreshGacList(self.allGacAssemblies());
@@ -255,12 +287,15 @@
             self.gacListScrollIntoView(self.data.assemblyLocation());
         }
     });
-    
-    //
+	
+	
+	// Travis.Frisinger - Refactord to use Management Services ;)
+	//
     // Dynatree Init
     //
     self.treePathLoaded = true;
-    $.post("Service/PluginSources/GetServerDirectoryTree" + window.location.search, "", function (fullResult) {
+    $.post(baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.driveLetter, "", function (fullResult) {
+	
         $fileTree.dynatree({
             onCreate: function (node, nodeSpan) {
                 if (!node.data.isFolder) {
@@ -270,7 +305,8 @@
             children: fullResult,
             onLazyRead: function (node) {
                 if (node.data.isFolder) {
-                    $.post("Service/PluginSources/GetServerDirectoryTree" + window.location.search, self.resolvePath(node), function (lazyResult) {
+
+                    $.post(baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.resolvePath(node), "", function (lazyResult) {
                         node.setLazyNodeStatus(DTNodeStatus_Ok);
                         if (lazyResult.ErrorMessage == null) {
                             node.addChild(lazyResult);
@@ -291,6 +327,7 @@
                                             }, 'fast');
                                             self.updateHelpText(childNode.data.title);
                                             self.validateAssemblyFile(childNode.data.title);
+                                            $(".dynatree-title", childNode.li).addClass("dynatree-selectedtitle");
                                         }
                                         return false;//stop searching
                                     }
@@ -307,19 +344,24 @@
             },
             onClick: function (node, event) {
                 if (!node.data.isFolder) {
-                    self.data.assemblyLocation(self.driveLetter + ":\\" + self.resolvePath(node));
+                    self.data.assemblyLocation(self.resolvePath(node));
                     $assemblyFileLocation.removeClass("ui-autocomplete-loading");
                     self.updateHelpText(node.data.title);
                     self.validateAssemblyFile(node.data.title);
+                    $(".dynatree-title", $fileTree).removeClass("dynatree-selectedtitle");//every list item in the tree
+                    $(".dynatree-title", node.li).addClass("dynatree-selectedtitle");//just the selected list item
                 }
             }
         });
     });
-
+    
     self.removeExpander = function (node) {
         node.li.innerHTML = node.li.innerHTML.replace("dynatree-expander", "dynatree-noexpander");//TODO fix (the node shouldnt shift across)
+        $(node.li).css("margin-left", "16px");
         node.render();
     };
+    
+
 
     self.load = function (theResourceID) {
         //
@@ -359,21 +401,22 @@
 
     //load self.assemblies into GACList. avoids duplicates
     self.refreshGacList = function (assemblyList) {
-        assemblyList.sort(utils.textCaseInsensitiveSort);
         $gacList.empty();
         for (var indx = 0; indx < assemblyList.length; indx++) {
             //avoid duplicates
             if (indx == assemblyList.length - 1) {
                 var option = document.createElement("option");
-                option.text = assemblyList[indx].Text;
-                option.value = "GAC:" + assemblyList[indx].Text;
+                option.text = assemblyList[indx].AssemblyName;
+                option.value = "GAC:" + assemblyList[indx].AssemblyName;
+				option.title = assemblyList[indx].AssemblyName;
                 $gacList.append(option, null);
             } else {
-                if (assemblyList[indx].Text != assemblyList[indx + 1].Text) {
+                if (assemblyList[indx].AssemblyName != assemblyList[indx + 1].AssemblyName) {
                     //dont add element if its duplicated
                     var option = document.createElement("option");
-                    option.text = assemblyList[indx].Text;
-                    option.value = "GAC:" + assemblyList[indx].Text;
+                    option.text = assemblyList[indx].AssemblyName;
+                    option.value = "GAC:" + assemblyList[indx].AssemblyName;
+					option.title = assemblyList[indx].AssemblyName;
                     $gacList.append(option, null);
                 }
             }
@@ -384,6 +427,7 @@
     self.gacListScrollIntoView = function (assembly) {
         $sourcetabs.tabs("option", "active", 1);
         $gacList.focus();
+        $gacList.val("");
         $gacList.val(assembly);
         self.updateHelpText($gacList.val());
         if ($gacList.val() != null) {
@@ -408,10 +452,15 @@
     self.resolvePath = function (node) {
         var fullNodePath = "";
         var nodeIterator = node;
+
         for (var i = 0; i < node.getLevel() ; i++) {
             fullNodePath = nodeIterator.data.title + "\\" + fullNodePath;
             nodeIterator = nodeIterator.getParent();
         }
+		
+		// assign drive letter ;)
+		fullNodePath = self.driveLetter + fullNodePath;
+		
         //trailing slashes trigger autocomplete so they are shaved off
         return fullNodePath.substr(0,fullNodePath.lastIndexOf('\\'));
     };
@@ -458,9 +507,11 @@
         $("#pluginSourceContainer").height(400);
         
         //pad search box
-        $("#gacSearchTerm").css("margin-left","116px");
+        $("#gacSearchTerm").css("margin-left", "116px");
         
-        //2013.04.16: Ashley Lewis PBI 8721 TODO find out what this is for:
+        //remove resize
+        $fileTree.css("resize", "horizontal");
+        
         $dialogContainerID.dialog("open");
     };
     
@@ -481,6 +532,8 @@
                 }
             }
         });
+        $($dialogContainerID).attr("style", "padding: 0");
+        
         $("button").button();
         $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Plugin')");
         $dialogSaveButton.attr("tabindex", "8");
@@ -490,8 +543,6 @@
     if (!$dialogContainerID) {
         self.load(resourceID);
     }
-
-    $(".ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable").removeAttr("width");
 };
 
 

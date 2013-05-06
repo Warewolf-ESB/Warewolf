@@ -35,8 +35,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Globalization;
+using Dev2.Common;
 
-namespace Dev2.Common.Reflection
+namespace Dev2.Reflection
 {
     #region Flags
 
@@ -629,10 +630,10 @@ namespace Dev2.Common.Reflection
             IAssemblyEnum iterator = null;
 
             try { iterator = GAC.CreateGACEnum(); }
-            catch 
+            catch (Exception e)
             {
+                TraceWriter.WriteTrace("Could not obtain GAC assembly enumerator, " + e.Message);
                 iterator = null;
-                throw;
             }
 
             if (iterator == null) return false;

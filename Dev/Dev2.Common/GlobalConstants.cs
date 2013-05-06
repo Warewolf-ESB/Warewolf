@@ -143,6 +143,9 @@ namespace Dev2.Common
 
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
+        // GAC
+        public static readonly string GACPrefix = "GAC:";
+
         // Used both Resource's LoadDependencies method
         public static readonly string EmptyDependcyListElement = "<XamlDefinition />";
     }

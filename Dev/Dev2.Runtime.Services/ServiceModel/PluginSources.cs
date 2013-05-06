@@ -11,6 +11,7 @@ using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Newtonsoft.Json;
 using PluginSource = Dev2.Runtime.ServiceModel.Data.PluginSource;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -50,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel
             if(string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))
             {
                 //resolve AssemblyName from AssemblyLocation
-                if(!pluginSourceDetails.AssemblyLocation.StartsWith("GAC:"))
+                if (!pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
                 {
                     //assembly location refers to a file, read the assembly name out of the dll file
                     pluginSourceDetails.AssemblyLocation = pluginSourceDetails.AssemblyLocation.EndsWith("\\") ?
@@ -71,7 +72,7 @@ namespace Dev2.Runtime.ServiceModel
                 else
                 {
                     //assembly location refers to the GAC
-                    var getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':')+1, pluginSourceDetails.AssemblyLocation.IndexOf(' ')-4);
+                    var getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':')+1);
                     pluginSourceDetails.AssemblyName = getName;
                 }
             }
@@ -87,119 +88,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region ValidateAssemblyImageFormat
-
-        // POST: Service/PluginSources/ValidateAssemblyImageFormat
-        public string ValidateAssemblyImageFormat(string args, Guid workspaceID, Guid dataListID)
-        {
-            var toJson = @"{""validationresult"":""success""}";
-            try
-            {
-                Assembly loadedAssembly = Assembly.LoadFile(args);
-            }
-            catch(Exception e)
-            {
-                ServerLogger.LogError(e.Message);
-                toJson = @"{""validationresult"":""failure""}";
-            }
-            return toJson;
-        }
-
-        #endregion
-
-
-        #region REFACTOR
-
-        #region GetGACListing
-
-        // TODO  : Replace with management service?
-
-        // POST: Service/PluginSources/GetGacList
-        public string GetGacList(string args, Guid workspaceID, Guid dataListID)
-        {
-            var fullGAC = GAC.CreateGACEnum();
-            IAssemblyName gacIterator;
-            GAC.GetNextAssembly(fullGAC, out gacIterator);
-            string json = "[";
-            while (GAC.GetNextAssembly(fullGAC, out gacIterator) == 0)
-            {
-                string getAssemblyVersion = string.Empty;
-                try
-                {
-                    getAssemblyVersion = GAC.GetVersion(gacIterator).ToString();
-                }
-                catch (Exception)
-                {
-                    getAssemblyVersion = "0.0.0.0";
-                }
-                json += @"{""Text"":""" + GAC.GetName(gacIterator) + " " + getAssemblyVersion + @"""}";
-                json += ',';
-            }
-
-            json = json.Remove(json.LastIndexOf(",", System.StringComparison.Ordinal));
-            json += ']';
-            return json;
-        }
-
-        #endregion
-
-        #region GetServerDirectoryTree
-
-        // TODO : Replace with internal service call to management method...
-
-        // POST: Service/PluginSources/GetServerDirectoryTree
-        public string GetServerDirectoryTree(string args, Guid workspaceID, Guid dataListID)
-        {
-            //Initialize DirectoryInfo to server root directory
-            var directory = new DirectoryInfo(Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture) + ":\\");
-            if (!string.IsNullOrEmpty(args))
-            {
-                directory = new DirectoryInfo(Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture) + ":\\" + args);
-            }
-
-            //Build directory tree in JSON, only dll files included
-            string name = string.Empty;
-            string json = "[";
-            foreach (DirectoryInfo d in directory.GetDirectories())
-            {
-                name = Regex.Replace(d.Name, @"\\", @"\\");
-                json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
-                        name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                json += ',';
-            }
-
-            foreach (FileInfo f in directory.GetFiles())
-            {
-                if (f.Name.EndsWith(".dll"))
-                {
-                    json += @"{""title"":""" + f.Name + @""", ""key"":""" +
-                            f.Name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                    json += ',';
-                }
-            }
-            json = json.Remove(json.LastIndexOf(",", System.StringComparison.Ordinal));
-            json += ']';
-            return json;
-        }
-
-        #endregion
-
-        #region GetRootDriveLetter
-
-        // TODO : Replace with internal service call
-
-        // POST: Service/PluginSources/GetRootDriveLetter
-        public string GetRootDriveLetter(string args, Guid workspaceID, Guid dataListID)
-        {
-            var toJson = @"[{""driveLetter"":""" + Path.GetPathRoot(Environment.CurrentDirectory)[0].ToString(CultureInfo.InvariantCulture) + @"""}]";
-            return toJson;
-        }
-
-        #endregion
-
-        #region GetDirectoryIntellisense
-
-        // TODO : Replace with management method
+        #region GetDirectoryIntellisense - TODO : REFACTOR
 
         // POST: Service/PluginSources/GetDirectoryIntellisense
         public string GetDirectoryIntellisense(string args, Guid workspaceID, Guid dataListID)
@@ -214,7 +103,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             foreach (FileInfo f in directory.GetFiles())
             {
-                if (f.Name.EndsWith(".dll"))
+                if(f.Name.EndsWith(".dll"))
                 {
                     dirList.Add(args + f.Name);
                 }
@@ -223,6 +112,41 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+        #region ValidateAssemblyImageFormat
+
+        // POST: Service/PluginSources/ValidateAssemblyImageFormat
+        public string ValidateAssemblyImageFormat(string args, Guid workspaceID, Guid dataListID)
+        {
+            var toJson = @"{""validationresult"":""failure""}";
+
+            var broker = new PluginBroker();
+
+            if (broker.ValidatePlugin(args))
+            {
+                toJson = @"{""validationresult"":""success""}";
+            }
+
+            //if (args.EndsWith(".dll"))
+            //{
+            //    try
+            //    {
+            //        Assembly loadedAssembly = Assembly.LoadFile(args);
+            //        toJson = @"{""validationresult"":""success""}";
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        ServerLogger.LogError(e.Message);
+                    
+            //    }
+            //}
+            //else if (args.StartsWith(GlobalConstants.GACPrefix))
+            //{
+                
+            //}
+            
+            return toJson;
+        }
 
         #endregion
     }

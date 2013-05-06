@@ -394,7 +394,12 @@ namespace Dev2.Runtime.ServiceModel
         {
             var broker = new PluginBroker();
             var pluginSource = JsonConvert.DeserializeObject<PluginSource>(args);
-            return broker.GetNamespaces(pluginSource);
+            if (pluginSource != null)
+            {
+                return broker.GetNamespaces(pluginSource);    
+            }
+            
+            return new NamespaceList();
         }
 
         #endregion

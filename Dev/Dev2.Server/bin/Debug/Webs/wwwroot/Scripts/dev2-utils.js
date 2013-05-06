@@ -62,3 +62,10 @@ utils.makeClearFilterButton = function (buttonID) {
       .append('<img height="16px" width="16px" src="images/clear-filter.png" />')
       .button();
 };
+
+utils.parseBaseURL = function(baseURL){
+	pathArray = baseURL.split( '/' );
+	host = pathArray[0] + "//"+ pathArray[1] + pathArray[2];
+	
+	return host;
+}

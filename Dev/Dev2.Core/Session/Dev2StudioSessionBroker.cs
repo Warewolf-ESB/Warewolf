@@ -25,8 +25,8 @@ namespace Dev2.Session
         private static readonly DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
         private static readonly DataListFormat binaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
-        private readonly object _settingsLock = new object();
-        private readonly object _initLock = new object();
+        private readonly static object _settingsLock = new object();
+        private readonly static object _initLock = new object();
         #endregion
 
         private IActivityIOPath _debugPath; //ActivityIOFactory.CreatePathFromString(_debugPersistPath);

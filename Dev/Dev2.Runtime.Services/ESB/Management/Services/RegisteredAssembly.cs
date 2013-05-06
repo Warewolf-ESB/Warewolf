@@ -16,6 +16,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
+            SortedSet<string> gacList = new SortedSet<string>();
+
             StringBuilder result = new StringBuilder();
             try
             {
@@ -26,15 +28,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     try
                     {
-                        var ver = GAC.GetVersion(assemblyName).ToString();
-                        json += @"{""AssemblyName"":""" + GAC.GetName(assemblyName) + " " + ver + @"""}";
-                        json += ",";
+                        var ver = ", Version=" + GAC.GetVersion(assemblyName);
+
+                        gacList.Add(GAC.GetName(assemblyName)  + ver);
+
                     }
                     catch (Exception e)
                     {
                         ServerLogger.LogError(e.Message);
                     }
                 }
+
+                // now process each sorted entry
+                foreach (string entry in gacList)
+                {
+                    json += @"{""AssemblyName"":""" + entry + @"""}";
+                    json += ",";
+                }
+
                 json += "]";
                 json = json.Replace(",]", "]"); //remove the last comma in the string in order to have valid json
                 result.Append("<JSON>");

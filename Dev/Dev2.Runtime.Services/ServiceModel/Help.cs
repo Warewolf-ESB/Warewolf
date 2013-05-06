@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ namespace Dev2.Runtime.ServiceModel
                     case "pluginSource":
                         result.Add("default", "<h4>Plugin File</h4><p>Select a Dll file to connect to</p>");
                         result.Add("pluginAssemblyFileLocation", "Enter the plugin <b>file address.</b> e.g. 'C:\\Warewolf\\Plugins\\email.plugin.dll'");
-                        result.Add("pluginAssemblyGACLocation", "Enter the plugin <b>assembly name</b> starting with 'GAC:' and followed by the verion number e.g. 'GAC:Microsoft.Email.Client.Library 2.0.0.0'");
+                        result.Add("pluginAssemblyGACLocation", "Enter the plugin <b>assembly name</b> starting with '" + GlobalConstants.GACPrefix + "' and followed by the verion number e.g. '" + GlobalConstants.GACPrefix + "Microsoft.Email.Client.Library 2.0.0.0'");
                         result.Add("tab 0", "<h4>Plugin File</h4><p>Select a Dll file to connect to</p>");
                         result.Add("tab 1", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");
                         result.Add("GACList", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");

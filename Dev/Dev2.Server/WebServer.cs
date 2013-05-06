@@ -696,11 +696,11 @@ namespace Dev2
             // JSON Data ;)
             if (executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
             {
-                // we have a JSON payload, quite a silly way to do this...
-                //json = json.Replace("\r\n", string.Empty).Replace(",])", "])");
 
-                //return new StringCommunicationResponseWriter(json, "application/json");
-                //json = json.Replace("\r\n", string.Empty).Replace(",])", "])");
+                Random r = new Random(DateTime.Now.Millisecond);
+
+                int v1 = r.Next(1, 100);
+                int v2 = r.Next(1, 100);
 
                 start = result.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
                 if (start >= 0)

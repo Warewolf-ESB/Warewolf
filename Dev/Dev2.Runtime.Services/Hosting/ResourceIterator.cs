@@ -7,6 +7,9 @@ using Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Runtime.Hosting
 {
+    /// <summary>
+    /// What does this class do?
+    /// </summary>
     internal class ResourceIterator : IResourceIterator
     {
         #region Singleton Instance
@@ -75,27 +78,30 @@ namespace Dev2.Runtime.Hosting
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
             {
-                var files = Directory.GetFiles(path, "*.xml");
-                foreach(var file in files)
+                if (Directory.Exists(path))
                 {
-                    // XML parsing will add overhead - so just read file and use string ops instead
-                    var content = File.ReadAllText(file);
-                    var iteratorResult = new ResourceIteratorResult { Content = content };
-                    var delimiterFound = false;
-                    foreach(var delimiter in delimiters)
+                    var files = Directory.GetFiles(path, "*.xml");
+                    foreach (var file in files)
                     {
-                        string value;
-                        if(delimiter.TryGetValue(content, out value))
+                        // XML parsing will add overhead - so just read file and use string ops instead
+                        var content = File.ReadAllText(file);
+                        var iteratorResult = new ResourceIteratorResult {Content = content};
+                        var delimiterFound = false;
+                        foreach (var delimiter in delimiters)
                         {
-                            delimiterFound = true;
-                            iteratorResult.Values.Add(delimiter.ID, value);
+                            string value;
+                            if (delimiter.TryGetValue(content, out value))
+                            {
+                                delimiterFound = true;
+                                iteratorResult.Values.Add(delimiter.ID, value);
+                            }
                         }
-                    }
-                    if(delimiterFound)
-                    {
-                        if(!action(iteratorResult))
+                        if (delimiterFound)
                         {
-                            return;
+                            if (!action(iteratorResult))
+                            {
+                                return;
+                            }
                         }
                     }
                 }

@@ -306,8 +306,14 @@ ul.dynatree-container a
 ul.dynatree-container a:hover
 {
 /*	text-decoration: underline; */
-	background: #F2F7FD; /* light blue */
-	border-color: #B8D6FB; /* darker light blue */
+	border: 1px solid #B8D6FB; /* darker light blue */
+    border-right: 0 transparent;
+}
+
+.dynatree-selectedtitle
+{
+	background-color: #F2F7FD !important; /* light blue */
+	border: 1px solid #B8D6FB !important; /* darker light blue */
 }
 
 span.dynatree-node a
@@ -326,7 +332,8 @@ span.dynatree-folder a
 ul.dynatree-container a:focus,
 span.dynatree-focused a:link  /* @IE */
 {
-	background-color: #EFEBDE; /* gray */
+    /*2013.05.03: Ashley Lewis - Bug 9348 Active nodes have their styles set at run time
+	background-color: #EFEBDE; gray */
 }
 
 span.dynatree-has-children a
@@ -346,8 +353,9 @@ span.dynatree-selected a
 
 span.dynatree-active a
 {
+    /*2013.05.03: Ashley Lewis - Bug 9348 Active nodes have their styles set at run time
 	border: 1px solid #99DEFD;
-	background-color: #D8F0FA;
+	background-color: #D8F0FA;*/
 }
 
 /*******************************************************************************

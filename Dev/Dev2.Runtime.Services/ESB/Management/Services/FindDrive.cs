@@ -110,7 +110,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var directory = new DirectoryInfo(drive.Name);
                     string name = Regex.Replace(directory.Name, @"\\", @"/");
-                    json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
+                    json += @"{""driveLetter"":""" + name + @""", ""isFolder"": true, ""key"":""" +
                             name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") +
                             @""", ""isLazy"": true, ""children"": [";
                     // Travis.Frisinger : 20.09.2012 - Removed for speed
