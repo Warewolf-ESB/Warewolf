@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.IO;
 using HttpFramework;
 using HttpFramework.Sessions;
 
@@ -22,7 +16,7 @@ namespace Unlimited.Applications.WebServer
     {
         #region Constants
         private const string DefaultContentType = "text/html; charset=";
-        const double SizeCapForDownload = 512000; // 500 KB size limit
+        const double SizeCapForDownload = 51200; // 50 KB size limit
         #endregion
 
         #region Instance Fields
