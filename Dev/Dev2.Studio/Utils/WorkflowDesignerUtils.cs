@@ -94,6 +94,7 @@ namespace Dev2.Studio.Utils
         public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
+
             if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
                 foreach (var dataListItem in DataListSingleton.ActiveDataList.DataList)
                 {
