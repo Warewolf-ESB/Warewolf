@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dev2.Common.Common;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,13 @@ namespace Dev2.Data.Binary_Objects
 {
     public class Dev2PersistantDictionary<T> where T : class
     {
+        // internal location data ;)
+        private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private const string _savePath = @"Dev2\DataListServerTmp\";
+        private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
+
+        private static object _dirLock = new object();
+
         #region Fields
 
         private readonly string _completeFilename = @"C:\persist.dic";
@@ -28,7 +36,19 @@ namespace Dev2.Data.Binary_Objects
         {
             if (!string.IsNullOrEmpty(filename))
             {
-                _completeFilename = filename;
+                lock (_dirLock)
+                {
+                    if (!Directory.Exists(DataListPersistPath))
+                    {
+                        Directory.CreateDirectory(DataListPersistPath);
+                    }
+
+                    
+                }
+
+                _completeFilename = Path.Combine(DataListPersistPath, filename);
+                
+                //_completeFilename = filename;
             }
 
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -136,11 +156,14 @@ namespace Dev2.Data.Binary_Objects
                 return;
             }
 
+
             // Get tmp file path
             string directory = Path.GetDirectoryName(_completeFilename);
             if (directory == null)
             {
-                throw new Exception(string.Format("Unable to create compact path. '{0}' doesn't contain a valid directory name.", _completeFilename));
+                throw new Exception(
+                    string.Format("Unable to create compact path. '{0}' doesn't contain a valid directory name.",
+                                    _completeFilename));
             }
 
             string tempFile = string.Format("{0}.tmp", Guid.NewGuid());
@@ -149,7 +172,9 @@ namespace Dev2.Data.Binary_Objects
             // Open temp file to write entries to
             try
             {
-                using (FileStream tmpFileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (
+                    FileStream tmpFileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write,
+                                                                FileShare.None))
                 {
                     // Write entries sequentially into the tmp file, this will exclude any removed entries.
                     foreach (var key in Keys.ToList())
@@ -215,6 +240,7 @@ namespace Dev2.Data.Binary_Objects
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             _lastCompactSize = _file.Length;
             _hasBeenRemoveSinceLastCompact = false;
+            
         }
 
         private T ConvertFromBytes(byte[] payload)
@@ -279,8 +305,8 @@ namespace Dev2.Data.Binary_Objects
 
         public void Add(string key, T objToAdd)
         {
-            //lock (_opsLock)
-            //{
+            lock (_opsLock)
+            {
                 if (_file.Length - _lastCompactSize > _compactThresholdSize)
                 {
                     Compact();
@@ -306,19 +332,19 @@ namespace Dev2.Data.Binary_Objects
                 }
 
                 _file.Write(data, 0, data.Length);
-            //}
+            }
         }
 
         public void Remove(string key)
         {
-            //lock (_opsLock)
-            //{
+            lock (_opsLock)
+            {
                 string tmp;
                 if (_lstIndexes.TryRemove(key, out tmp))
                 {
                     _hasBeenRemoveSinceLastCompact = true;
                 }
-            //}
+            }
         }
 
         #endregion
@@ -341,6 +367,11 @@ namespace Dev2.Data.Binary_Objects
             if (!disposing) return;
             _file.Close();
             _file.Dispose();
+            // remove the file ;)
+            try
+            {
+                File.Delete(_completeFilename);
+            }catch{}
         }
 
 
