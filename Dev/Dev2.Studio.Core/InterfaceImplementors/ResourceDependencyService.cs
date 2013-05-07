@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             dynamic request = new UnlimitedObject();
             request.Service = "FindDependencyService";
             request.ResourceName = resourceModel.ResourceName;
-
+            request.GetDependsOnMe = true;
             var workspaceID = ((IStudioClientContext)resourceModel.Environment.DsfChannel).WorkspaceID;
 
             var result = resourceModel.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);

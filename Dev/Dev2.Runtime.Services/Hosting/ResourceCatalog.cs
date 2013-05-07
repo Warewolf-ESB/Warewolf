@@ -981,7 +981,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     if(tree.ResourceName == resourceName)
                     {
-                        dependants.Add(tree.ResourceName);
+                        dependants.Add(resource.ResourceName);
                     }
                 });
             });
