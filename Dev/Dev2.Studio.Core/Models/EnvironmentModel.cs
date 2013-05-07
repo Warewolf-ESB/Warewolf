@@ -2,6 +2,7 @@
 using System.Network;
 using System.Windows;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -89,12 +90,13 @@ namespace Dev2.Studio.Core.Models
         #region Connect
 
         public void Connect()
-            {
+        {
             if(string.IsNullOrEmpty(Name))
-                {
+            {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
-        }
+            }
 
+            StudioLogger.LogMessage("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
         }
 
@@ -103,9 +105,10 @@ namespace Dev2.Studio.Core.Models
             if(other == null)
             {
                 throw new ArgumentNullException("other");
-                }
+            }
+
             if(!other.IsConnected)
-        {
+            {
                 other.Connection.Connect();
 
                 if(!other.IsConnected)

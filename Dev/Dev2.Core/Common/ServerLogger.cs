@@ -4,6 +4,19 @@ using System.IO;
 namespace Dev2.Common
 {
     /// <summary>
+    /// Studio logger
+    /// </summary>
+    public static class StudioLogger
+    {
+        
+        public static void LogMessage(string message)
+        {
+            ServerLogger.EnableInfoOutput = true;
+            ServerLogger.LogMessage(message);
+        }
+    }
+
+    /// <summary>
     /// A single common logging location ;)
     /// </summary>
     public static class ServerLogger
