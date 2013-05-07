@@ -6039,4 +6039,66 @@ iiiiiiiiiiii</value>
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="RandomActivityDataListShape" xml:space="preserve">
+    <value>&lt;DataList&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1/&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2/&gt;
+	&lt;/recset2&gt;
+	&lt;OutVar1/&gt;
+	&lt;OutVar2/&gt;
+	&lt;OutVar3/&gt;
+	&lt;OutVar4/&gt;
+	&lt;OutVar5/&gt;
+&lt;/DataList&gt;</value>
+  </data>
+  <data name="RandomActivityDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;10&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;20&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;30&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;40&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;50&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-10&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-20&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-30&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-40&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-50&lt;/field2&gt;	
+	&lt;/recset2&gt;		
+	&lt;OutVar1&gt;100&lt;/OutVar1&gt;
+	&lt;OutVar2&gt;200&lt;/OutVar2&gt;
+	&lt;OutVar3&gt;300&lt;/OutVar3&gt;
+	&lt;OutVar4&gt;400&lt;/OutVar4&gt;
+	&lt;OutVar5&gt;500&lt;/OutVar5&gt;
+&lt;/ADL&gt;</value>
+  </data>
 </root>

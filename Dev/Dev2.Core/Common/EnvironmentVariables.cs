@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace Dev2.Common
 {
@@ -75,5 +76,19 @@ namespace Dev2.Common
         }
 
         public static bool IsServerOnline { get; set; }
+
+        /// <summary>
+        /// Gets the encoding for character maps.
+        /// </summary>
+        /// <param></param>
+        /// <returns name="Encoding"></returns>
+         public struct CharacterMap
+         {
+             public static Encoding DefaultEncoding = Encoding.ASCII;//TODO: { get; set; }
+             public static int LettersStartNumber = 97;//TODO: { get; set; }
+             //public static int NumbersStartNumber = 48;//TODO: { get; set; }
+             public static int LettersLength = 26;
+             //public static int NumbersLength = 10;
+         }
     }
 }

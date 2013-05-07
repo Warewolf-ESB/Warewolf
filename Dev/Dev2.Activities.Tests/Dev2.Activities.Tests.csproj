@@ -103,6 +103,7 @@
     <Compile Include="ActivityTests\MultiAssignActivity.cs" />
     <Compile Include="ActivityTests\NumberFormatActivityTests.cs" />
     <Compile Include="ActivityTests\PathRenameTests.cs" />
+    <Compile Include="ActivityTests\RandomActivityTests.cs" />
     <Compile Include="ActivityTests\ReplaceActivityTests.cs" />
     <Compile Include="ActivityTests\SortRaceConditionTest.cs" />
     <Compile Include="ActivityTests\SortRecordsTest.cs" />

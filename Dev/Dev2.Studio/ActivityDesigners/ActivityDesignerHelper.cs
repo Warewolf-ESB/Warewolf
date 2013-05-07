@@ -51,7 +51,8 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfFindRecordsActivity), typeof (DsfFindRecordsActivityDesigner)},
                     {typeof (DsfNumberFormatActivity), typeof (DsfNumberFormatActivityDesigner)},
                     {typeof (DsfExecuteCommandLineActivity), typeof (DsfExecuteCommandLineActivityDesigner)},
-                    {typeof (DsfGatherSystemInformationActivity), typeof (DsfGatherSystemInformationActivityDesigner)}
+                    {typeof (DsfGatherSystemInformationActivity), typeof (DsfGatherSystemInformationActivityDesigner)},
+                    {typeof (DsfRandomActivity), typeof (DsfRandomActivityDesigner)}
 
                     // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
                 };

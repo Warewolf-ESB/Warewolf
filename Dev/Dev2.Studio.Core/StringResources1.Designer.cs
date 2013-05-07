@@ -699,7 +699,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images\BDSSplash.png.
+        ///   Looks up a localized string similar to Images\SplashPage.png.
         /// </summary>
         public static string SplashImage {
             get {

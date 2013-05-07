@@ -96,6 +96,7 @@
     <Compile Include="Activities\DsfIndexActivity.cs" />
     <Compile Include="Activities\DsfNativeActivity.cs" />
     <Compile Include="Activities\DsfNumberFormatActivity.cs" />
+    <Compile Include="Activities\DsfRandomActivity.cs" />
     <Compile Include="Activities\DsfReplaceActivity.cs" />
     <Compile Include="Activities\DsfServiceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />

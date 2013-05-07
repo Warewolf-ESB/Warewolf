@@ -53,6 +53,7 @@
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
+    <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="Patterns\AvlTree.cs" />

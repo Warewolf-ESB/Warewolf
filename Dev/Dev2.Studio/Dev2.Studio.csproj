@@ -203,6 +203,9 @@
     <Compile Include="ActivityDesigners\DsfNumberFormatActivityDesigner.xaml.cs">
       <DependentUpon>DsfNumberFormatActivityDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ActivityDesigners\DsfRandomActivityDesigner.xaml.cs">
+      <DependentUpon>DsfRandomActivityDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDesigners\DsfReplaceActivityDesigner.xaml.cs">
       <DependentUpon>DsfReplaceActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -347,6 +350,7 @@
     <Compile Include="Factory\RuntimeConfigurationViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
@@ -662,6 +666,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfNumberFormatActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDesigners\DsfRandomActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -991,6 +999,8 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\SplashPage.png" />
+    <Resource Include="Images\Random.png" />
     <Resource Include="Images\Stop.png" />
     <Resource Include="Images\ClearFilterIcon.png" />
     <Resource Include="Images\GreyCrossIcon.png" />
@@ -1027,7 +1037,6 @@
     <Content Include="Help\StudioShortCutKeys.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\BDSSplash.png" />
     <Resource Include="Images\ui-button.png" />
     <Resource Include="Images\Migrate_Alert.png" />
     <Resource Include="Images\DateTimeDiff.png" />

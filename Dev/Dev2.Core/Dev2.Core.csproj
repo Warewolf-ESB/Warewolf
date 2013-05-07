@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity\IWorkflowActivityMessage.cs" />
+    <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\EnvironmentVariables.cs" />
     <Compile Include="Common\Field.cs" />
     <Compile Include="Common\Format.cs" />

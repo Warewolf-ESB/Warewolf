@@ -183,7 +183,7 @@ namespace Dev2.Studio.Webs
             }        
             string pageName = "dialogs/savedialog";        
             double width = 612;          
-            double height = 457;
+            double height = 459;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
           
             environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}", pageName, workspaceID, resourceID, type), callbackHandler, width, height);            

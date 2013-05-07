@@ -23,54 +23,48 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Utils.ActivityDesignerUtils;
 using Infragistics.Windows.Controls;
 
-namespace Unlimited.Applications.BusinessDesignStudio.Activities {
+namespace Unlimited.Applications.BusinessDesignStudio.Activities
+{
     public partial class DsfForEachActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
     {
-        public DsfForEachActivityDesigner() {
+        public DsfForEachActivityDesigner()
+        {
             InitializeComponent();
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             EventAggregator.Subscribe(this);
-            this.DropPoint.PreviewDrop+=DropPointOnDragEnter;
-            this.DropPoint.PreviewDragOver+=DropPointOnDragEnter;
+            this.DropPoint.PreviewDrop += DropPointOnDragEnter;
+            this.DropPoint.PreviewDragOver += DropPointOnDragEnter;
         }
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
             bool dropEnabled = true;
             var formats = e.Data.GetFormats();
-            if(!formats.Any()) return;
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat")>=0);
-            if(String.IsNullOrEmpty(modelItemString))
+            if (!formats.Any()) return;
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat") >= 0);
+            if (String.IsNullOrEmpty(modelItemString))
             {
                 modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat") >= 0);
-                if(String.IsNullOrEmpty(modelItemString)) return;
+                if (String.IsNullOrEmpty(modelItemString)) return;
             }
-            var objectData = e.Data.GetData(modelItemString);
-            var data = objectData as ModelItem;
-            if(data != null && (data.ItemType == typeof(FlowDecision) || data.ItemType == typeof(FlowSwitch<string>)))
-            {
-                dropEnabled = false;
-
-            }
-            else
-            {
-                var stringValue = (string)objectData;
-                if(stringValue.Contains("Decision") || stringValue.Contains("Switch"))
-                {
-                    dropEnabled = false;
-                }
-            }
-            if(!dropEnabled)
+            var objectData = e.Data.GetData(modelItemString);            
+            ForeachActivityDesignerUtils foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
+            dropEnabled = foreachActivityDesignerUtils.ForeachDropPointOnDragEnter(objectData);
+            if (!dropEnabled)
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
+
+            
         }
 
         protected IEventAggregator EventAggregator { get; set; }
-        protected override void OnModelItemChanged(object newItem) {
+        protected override void OnModelItemChanged(object newItem)
+        {
             base.OnModelItemChanged(newItem);
             ModelItem item = newItem as ModelItem;
 
@@ -87,8 +81,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             }
         }
 
-     
-        private void Highlight(IDataListItemModel dataListItemViewModel) {
+
+        private void Highlight(IDataListItemModel dataListItemViewModel)
+        {
             List<string> containingFields = new List<string>();
 
             ForEverytxt.BorderBrush = Brushes.LightGray;
@@ -96,9 +91,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
             containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
 
-            if (containingFields.Count > 0) {
-                foreach (string item in containingFields) {
-                    if (item.Equals("foreachElementName")) {
+            if (containingFields.Count > 0)
+            {
+                foreach (string item in containingFields)
+                {
+                    if (item.Equals("foreachElementName"))
+                    {
                         ForEverytxt.BorderBrush = System.Windows.Media.Brushes.Aqua;
                         ForEverytxt.BorderThickness = new Thickness(2.0);
                     }
@@ -110,11 +108,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             Highlight(message.DataListItemModel);
         }
 
-        public void Dispose() {
-           EventAggregator.Unsubscribe(this);
+        public void Dispose()
+        {
+            EventAggregator.Unsubscribe(this);
         }
 
-        private void ForEverytxt_LostFocus(object sender, RoutedEventArgs e) {
+        private void ForEverytxt_LostFocus(object sender, RoutedEventArgs e)
+        {
             //var textBox = sender as TextBox;
             //char[] token = { ']' };
             //string[] tokens = textBox.Text.Split(token);
@@ -124,10 +124,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             //            textBox.Text = textBox.Text.Insert(textBox.Text.IndexOf("]"), "()");
             //        }
             //    }
-                //else if (textBox.Text.EndsWith("]]") && tokens.Count() > 3) {
-                // we have a recursive evaluation happening, only scalars or recordset().field are allowed
+            //else if (textBox.Text.EndsWith("]]") && tokens.Count() > 3) {
+            // we have a recursive evaluation happening, only scalars or recordset().field are allowed
 
-                //}
+            //}
             //}
         }
     }

@@ -69,6 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 // TODO PBI 8291
                 //category.Add(new ToolboxItemWrapper(typeof(DsfWebPageActivity), "/images/User.png", "Human Interface"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/IndexToolIcon.png", "Find Index"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/Random.png", "Random"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ReplaceIcon.png", "Replace"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/Info.png", "System Information"));
             }

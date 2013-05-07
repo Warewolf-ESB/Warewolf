@@ -1688,6 +1688,73 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;DataList&gt;
+        ///	&lt;firstName/&gt;
+        ///	&lt;lastName/&gt;
+        ///	&lt;telNum/&gt;
+        ///	&lt;index/&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1/&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset2&gt;
+        ///		&lt;field2/&gt;
+        ///	&lt;/recset2&gt;
+        ///	&lt;OutVar1/&gt;
+        ///	&lt;OutVar2/&gt;
+        ///	&lt;OutVar3/&gt;
+        ///	&lt;OutVar4/&gt;
+        ///	&lt;OutVar5/&gt;
+        ///&lt;/DataList&gt;.
+        /// </summary>
+        internal static string RandomActivityDataListShape {
+            get {
+                return ResourceManager.GetString("RandomActivityDataListShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;firstName/&gt;
+        ///	&lt;lastName/&gt;
+        ///	&lt;telNum/&gt;
+        ///	&lt;index/&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;10&lt;/field1&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;20&lt;/field1&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;30&lt;/field1&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;40&lt;/field1&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;50&lt;/field1&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset2&gt;
+        ///		&lt;field2&gt;-10&lt;/field2&gt;
+        ///	&lt;/recset2&gt;
+        ///	&lt;recset2&gt;
+        ///		&lt;field2&gt;-20&lt;/field2&gt;
+        ///	&lt;/recset2&gt;
+        ///	&lt;recset2&gt;
+        ///		&lt;field2&gt;-30&lt;/field2&gt;
+        ///	&lt;/recset2&gt;
+        ///	&lt;recset2&gt;
+        ///		&lt;field2&gt;-40&lt;/field2&gt;
+        ///	&lt;/recset2&gt;
+        ///	&lt;recset2&gt;
+        ///		&lt;fi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RandomActivityDataListWithData {
+            get {
+                return ResourceManager.GetString("RandomActivityDataListWithData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;ADL&gt;
         ///&lt;fname&gt;&lt;/fname&gt;
         ///&lt;lname&gt;&lt;/lname&gt;
