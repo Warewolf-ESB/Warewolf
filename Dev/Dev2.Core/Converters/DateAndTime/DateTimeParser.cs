@@ -321,6 +321,9 @@ namespace Dev2.Converters.DateAndTime
             result = new DateTimeResultTO();
             error = "";
 
+            //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
+            var culturesTried = 0;
+            const int MaxAttempts = 7;
             if (string.IsNullOrWhiteSpace(data))
             {
                 nothingDied = false;
@@ -329,43 +332,86 @@ namespace Dev2.Converters.DateAndTime
             else if (string.IsNullOrWhiteSpace(inputFormat))
             {
                 //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                //nothingDied = false;
-                //error = "Format can't be null/empty.";
                 inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
             }
-
-            if (nothingDied)
+            else
             {
-                char[] dateTimeArray = data.ToArray();
-                List<IDateTimeFormatPartTO> formatParts = new List<IDateTimeFormatPartTO>();
-                int position = 0;
-
-                //
-                // Get input format parts
-                //
-                nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
-
-                if (nothingDied)
+                //never try invariant culture if the user set the input format
+                culturesTried = MaxAttempts;
+            }
+            if(nothingDied)
+            {
+                //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
+                while (culturesTried <= MaxAttempts)
                 {
-                    //
-                    // Extract information from the dateTime string for every part
-                    //
-                    int count = 0;
-                    while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
-                    {
-                        IDateTimeFormatPartTO formatPart = formatParts[count];
+                    char[] dateTimeArray = data.ToArray();
+                    List<IDateTimeFormatPartTO> formatParts = new List<IDateTimeFormatPartTO>();
+                    int position = 0;
 
-                        int resultLength;
-                        if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
+                    //
+                    // Get input format parts
+                    //
+                    nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
+
+                    if (nothingDied)
+                    {
+                        //
+                        // Extract information from the dateTime string for every part
+                        //
+                        int count = 0;
+                        while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                         {
-                            position += resultLength;
+                            IDateTimeFormatPartTO formatPart = formatParts[count];
+
+                            int resultLength;
+                            if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
+                            {
+                                position += resultLength;
+                            }
+                            else
+                            {
+                                nothingDied = false;
+                            }
+
+                            count++;
+                        }
+                        //2013.05.03: Ashley Lewis - Bug 9300 try other cultures and patterns (be very lenient if the user left input format blank)
+                        if(!nothingDied)
+                        {
+                            switch(culturesTried)
+                            {
+                                case 0: inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
+                                    break;
+                                case 1: inputFormat = TranslateDotNetToDev2Format(CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
+                                    break;
+                                case 2: inputFormat = TranslateDotNetToDev2Format(CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
+                                    break;
+                                case 3: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
+                                    break;
+                                case 4: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
+                                    break;
+                                case 5: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
+                                    break;
+                                case 6: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
+                                    break;
+                            }
+
+                            if (culturesTried < MaxAttempts)
+                            {
+                                nothingDied = true;
+                            }
+                            else
+                            {
+                                error = "Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)";
+                            }
+
+                            culturesTried++;
                         }
                         else
                         {
-                            nothingDied = false;
+                            //Stop trying different formats
+                            culturesTried = MaxAttempts+1;
                         }
-
-                        count++;
                     }
                 }
             }

@@ -258,31 +258,57 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
             Assert.AreEqual(expected, result);
         }
 
+        //06.05.2013: Ashley Lewis - Bug 9300
         /// <summary>
-        /// Tests that if the input format is null, the formatter returns an error regarding this
+        /// Tests that if the input format is null, the formatter assumes current culture default date time formatting and tries invariant culture
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void FormatInputFormatNULLorEmpty_Expected_ErrorMessageReturnedByDateTimeTool()
+        public void FormatInputFormatNULLorEmptyExpectedDefaultFormatUsed()
         {
-            bool isFormatCorrect;
             string result = string.Empty;
             string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
-            dateTimeTO.DateTime = "14101988";
+            dateTimeTO.DateTime = "05/06/2013 10:29:50 AM";
             dateTimeTO.InputFormat = null;
-            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd";
-            dateTimeTO.TimeModifierType = "Years";
-            dateTimeTO.TimeModifierAmount = 23;
-            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
-            if (isFormatCorrect)
-            {
-                Assert.Fail("Incorrect ouput format should not work correctly.");
-            }
-            else
-            {
-                Assert.IsTrue(!string.IsNullOrEmpty(errorMsg));
-            }
+            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
+            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            string expected = "2013/05/06 10:29:50 AM";
+
+            Assert.AreEqual(expected, result, "Date time did not default input format to en-US");
+        }
+        /// <summary>
+        /// Tests that if the input format is null, the formatter assumes invariant culture default date time formatting and tries invariant culture
+        /// </summary>
+        [TestMethod]
+        public void FormatInputFormatNULLorEmptyExpectedInvariantFormatUsed()
+        {
+            string result = string.Empty;
+            string errorMsg = string.Empty;
+            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
+            dateTimeTO.DateTime = "05/06/2013 10:29:50";
+            dateTimeTO.InputFormat = null;
+            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
+            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            string expected = "2013/05/06 10:29:50 AM";
+
+            Assert.AreEqual(expected, result, "Date time did not default input format to invariant culture");
+        }
+        /// <summary>
+        /// Tests that if the input format is null, the formatter assumes FullDateTimeFormat formatting and tries invariant culture
+        /// </summary>
+        [TestMethod]
+        public void FormatInputFormatNULLorEmptyExpectedFullDateTimeFormatUsed()
+        {
+            string result = string.Empty;
+            string errorMsg = string.Empty;
+            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
+            dateTimeTO.DateTime = "Monday, May 06, 2013 10:29:50 AM";
+            dateTimeTO.InputFormat = null;
+            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
+            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            string expected = "2013/05/06 10:29:50 AM";
+
+            Assert.AreEqual(expected, result, "Date time did not default input format to full date time");
         }
 
 

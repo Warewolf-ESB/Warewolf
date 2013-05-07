@@ -58,8 +58,12 @@ namespace Dev2.Converters.DateAndTime
 
             bool nothingDied = true;
             IDateTimeResultTO dateTimeResultTO;
+
+            //2013.05.06: Ashley Lewis - Bug 9300 - trim should allow null input format
+            dateTimeTO.InputFormat = dateTimeTO.InputFormat != null ? dateTimeTO.InputFormat.Trim() : null;
+
             //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Added trim to data
-            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat.Trim(), out dateTimeResultTO, out error))
+            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error))
             {                               
                 //
                 // Parse time, if present
@@ -87,8 +91,6 @@ namespace Dev2.Converters.DateAndTime
                     if (string.IsNullOrWhiteSpace(outputFormat))
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                        //nothingDied = false;
-                        //error = "Format can't be null/empty.";
                         outputFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
                     }
 
@@ -98,7 +100,7 @@ namespace Dev2.Converters.DateAndTime
                     List<IDateTimeFormatPartTO> formatParts = new List<IDateTimeFormatPartTO>();
 
                     //
-                    // Get input format parts
+                    // Get output format parts
                     //
                     nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
 
