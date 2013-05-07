@@ -134,6 +134,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     ServerLogger.LogError(e.Message);
                 }
             }
+            else
+            {
+                //does not start with gac prefix or end with .dll
+                result = false;
+            }
 
             return result;
         }

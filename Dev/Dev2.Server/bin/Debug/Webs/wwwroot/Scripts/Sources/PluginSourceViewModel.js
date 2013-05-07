@@ -23,8 +23,7 @@
         assemblyLocation: ko.observable("")
     };
     
-    self.isAssemblyFileValid = ko.observable(false);
-    self.isAssemblyInGacList = ko.observable(false);
+    self.isAssemblyValid = ko.observable(false);
     self.allGacAssemblies = ko.observableArray();
     self.gacSearchTerm = ko.observable("");
     self.gacSearchTerm.subscribe(function (newvalue) {
@@ -102,18 +101,15 @@
                         $assemblyFileLocation.autocomplete("search");
                     });
                 } else {
-				
                     if (newvalue.match("GAC:") != null) {//is assembly a gac entry?
-                        self.findInGacList(newvalue);
+                        self.validateAssemblyFile(newvalue);
                     } else {//assembly is neither file nor gac entry
-                        self.isAssemblyFileValid(false);
-                        self.isAssemblyInGacList(false);
+                        self.isAssemblyValid(false);
                     }
                 }
             }
         } else {//assembly is blank
-            self.isAssemblyFileValid(false);
-            self.isAssemblyInGacList(false);
+            self.isAssemblyValid(false);
         }
     });
     
@@ -131,49 +127,27 @@
     });
 
     self.isFormValid = ko.computed(function () {
-        var isValid = self.isAssemblyFileValid();//$.inArray(self.data.assemblyLocation().substr(4, self.data.assemblyLocation().length-4), self.allGacAssemblies()) > -1);
-		
+        var isValid = self.isAssemblyValid();
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
         return isValid;
     });
 
-    self.validateAssemblyFile = function (id) {
-
-		$.post("Service/PluginSources/ValidateAssemblyImageFormat" + window.location.search, self.data.assemblyLocation(), function (data) {
-
-            if (data.validationresult == "success" && id.indexOf("GAC:") < 0) {
-                self.isAssemblyFileValid(true);
-                self.isAssemblyInGacList(false);
-				
-			}else if(data.validationresult == "success" && id.indexOf("GAC:") >= 0){
-				self.isAssemblyFileValid(true);
-				self.updateHelpText(id);
-            } else if(data.validationresult != "success" && id.indexOf("GAC:") >= 0){
-				self.isAssemblyFileValid(false);
-				self.updateHelpText(id);
-				
-			}else {
-                self.isAssemblyFileValid(false);
-            }
-        })
-            .success(function () {
+    self.validateAssemblyFile = function(id) {
+        $.ajax({
+            type: 'POST',
+            url: "Service/PluginSources/ValidateAssemblyImageFormat" + window.location.search,
+            data: self.data.assemblyLocation(),
+            success: function (data) {
+                if (data.validationresult == "success") {
+                    self.isAssemblyValid(true);
+                } else {
+                    self.isAssemblyValid(false);
+                }
                 self.updateHelpText(id);
-            });
-    };
-
-    self.findInGacList = function (id) {
-        if (id.match("GAC:") != null) {
-            id = self.removeGacPrefix(id);
-        }
-        self.isAssemblyInGacList(false);
-        self.allGacAssemblies().forEach(function (entry) {
-            if (entry.AssemblyName == id) {
-                self.isAssemblyInGacList(true);
-                self.isAssemblyFileValid(false);
-                return true;
-            }
+            },
+            async: false
         });
     };
 
@@ -186,15 +160,15 @@
                 text = text ? text : "";
             } else {
                 if (id.match("GAC:") != null) {
-					if(self.isAssemblyFileValid()){
+                    if (self.isAssemblyValid()) {
 						text = "<h4>Global Cache</h4><p>You have selected " + id + "</p>";
 					}else{
 						// invalid asm ;(
-						text = "<h4>Global Cache</h4><p>" + id + " is an invalid assembly file</p>";
+						text = "<h4>Global Cache</h4><p>" + id + " is an invalid assembly</p>";
 					}
                 } 
                 if (id.match(".dll") != null) {
-                    if (self.isAssemblyFileValid()) {
+                    if (self.isAssemblyValid()) {
                         text = "<h4>Plugin File</h4><p>You have selected " + id + "</p>";
                     } else {
                         text = "<h4>Plugin File</h4><p>" + id + " is an invalid assembly file</p>";
@@ -236,15 +210,9 @@
     });
     
     //manually bind GACList to assemblyLocation (GACList.selectedOption binding is for arrays)
-    $gacList.on("change", function() {
-        self.updateHelpText($gacList.val());
+    $gacList.on("change", function () {
         self.data.assemblyLocation($gacList.val());
-    });
-    $gacList.on("click", function() {
-        
-		self.data.assemblyLocation($gacList.val());
-		self.validateAssemblyFile($gacList.val());
-	
+        self.validateAssemblyFile($gacList.val());
     });
 
     self.saveViewModel = SaveViewModel.create("Service/PluginSources/Save", self, saveContainerID);
@@ -276,84 +244,96 @@
 	});
 
 	// Travis.Frisinger - Refacotred to use Management Services ;)
-	$.post(baseURL+"/Services/RegisteredAssemblyService", "", function (gacResult) {
-        //populate full list
-		
-        self.allGacAssemblies(gacResult);
-        //view full list
-        self.refreshGacList(self.allGacAssemblies());
-        //show selected item
-        if (self.data.assemblyLocation() != null && self.data.assemblyLocation().match("GAC:") != null) {
-            self.gacListScrollIntoView(self.data.assemblyLocation());
-        }
-    });
-	
-	
-	// Travis.Frisinger - Refactord to use Management Services ;)
-	//
-    // Dynatree Init
-    //
-    self.treePathLoaded = true;
-    $.post(baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.driveLetter, "", function (fullResult) {
-	
-        $fileTree.dynatree({
-            onCreate: function (node, nodeSpan) {
-                if (!node.data.isFolder) {
-                    self.removeExpander(node);//remove expander icon
-                }
-            },
-            children: fullResult,
-            onLazyRead: function (node) {
-                if (node.data.isFolder) {
+	$.ajax({
+	    url: baseURL + "/Services/RegisteredAssemblyService",
+	    data: "",
+	    success: function(gacResult) {
+	        //populate full list
 
-                    $.post(baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.resolvePath(node), "", function (lazyResult) {
-                        node.setLazyNodeStatus(DTNodeStatus_Ok);
-                        if (lazyResult.ErrorMessage == null) {
-                            node.addChild(lazyResult);
-                        } else {
-                            console.log(lazyResult.ErrorMessage);
+	        self.allGacAssemblies(gacResult);
+	        //view full list
+	        self.refreshGacList(self.allGacAssemblies());
+	        //show selected item
+	        if (self.data.assemblyLocation() != null && self.data.assemblyLocation().match("GAC:") != null) {
+	            self.gacListScrollIntoView(self.data.assemblyLocation());
+	        }
+	    }
+	});
+
+    self.treePathLoaded = true;
+    self.initializeDynatree = function() {
+	    // Travis.Frisinger - Refactord to use Management Services ;)
+	    //
+        // Dynatree Init
+        //
+        $.ajax({
+            type: 'POST',
+            url: baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.driveLetter,
+            data: '',
+            success: function(fullResult) {
+                $fileTree.dynatree({
+                    onCreate: function(node, nodeSpan) {
+                        if (!node.data.isFolder) {
+                            self.removeExpander(node); //remove expander icon
                         }
-                    })
-                        .success(function () {
-                            //highjack lazyload to load in assembly location into the tree (this avoids using loadKeyPath)
-                            if (!self.treePathLoaded && self.data.assemblyLocation() != null) {
-                                node.visit(function (childNode) {
-                                    //use childNode.getLevel to find the assembly location part
-                                    if (childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()]) {
-                                        childNode.expand(true);//trigger recursive call
-                                        if (!childNode.data.isFolder) {
-                                            $fileTree.animate({ // animate the scrolling to the node
-                                                scrollTop: ($(childNode.li).offset().top - 150) - $fileTree.offset().top + $fileTree.scrollTop()
-                                            }, 'fast');
-                                            self.updateHelpText(childNode.data.title);
-                                            self.validateAssemblyFile(childNode.data.title);
-                                            $(".dynatree-title", childNode.li).addClass("dynatree-selectedtitle");
-                                        }
-                                        return false;//stop searching
+                    },
+                    children: fullResult,
+                    onLazyRead: function(node) {
+                        if (node.data.isFolder) {
+
+                            $.post(baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.resolvePath(node), "", function(lazyResult) {
+                                node.setLazyNodeStatus(DTNodeStatus_Ok);
+                                if (lazyResult.ErrorMessage == null) {
+                                    node.addChild(lazyResult);
+                                } else {
+                                    console.log(lazyResult.ErrorMessage);
+                                }
+                            })
+                                .success(function() {
+                                    //highjack lazyload to load in assembly location into the tree (this avoids using loadKeyPath)
+                                    if (!self.treePathLoaded && self.data.assemblyLocation() != null) {
+                                        node.visit(function(childNode) {
+                                            //use childNode.getLevel to find the assembly location part
+                                            if (childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()]) {
+                                                childNode.expand(true); //trigger recursive call
+                                                if (!childNode.data.isFolder) {
+                                                    $fileTree.animate({
+                                                        // animate the scrolling to the node
+                                                        scrollTop: ($(childNode.li).offset().top - 150) - $fileTree.offset().top + $fileTree.scrollTop()
+                                                    }, 'fast');
+                                                    self.updateHelpText(childNode.data.title);
+                                                    self.validateAssemblyFile(childNode.data.title);
+                                                    $(".dynatree-title", childNode.li).addClass("dynatree-selectedtitle");
+                                                }
+                                                return false; //stop searching
+                                            }
+                                        });
+                                    }
+                                    if (node.getChildren() == null) {
+                                        self.removeExpander(node); //remove expander icon
                                     }
                                 });
-                            }
-                            if (node.getChildren() == null) {
-                                self.removeExpander(node);//remove expander icon
-                            }
-                        });
-                } else {
-                    node.setLazyNodeStatus(DTNodeStatus_Ok);
-                    self.treePathLoaded = true;//don't allow lazy load to be hijacked to load assembly paths anymore
-                }
+                        } else {
+                            node.setLazyNodeStatus(DTNodeStatus_Ok);
+                            self.treePathLoaded = true; //don't allow lazy load to be hijacked to load assembly paths anymore
+                        }
+                    },
+                    onClick: function(node, event) {
+                        if (!node.data.isFolder) {
+                            self.data.assemblyLocation(self.resolvePath(node));
+                            $assemblyFileLocation.removeClass("ui-autocomplete-loading");
+                            self.updateHelpText(node.data.title);
+                            self.validateAssemblyFile(node.data.title);
+                            $(".dynatree-title", $fileTree).removeClass("dynatree-selectedtitle"); //every list item in the tree
+                            $(".dynatree-title", node.li).addClass("dynatree-selectedtitle"); //just the selected list item
+                        }
+                    }
+                });
             },
-            onClick: function (node, event) {
-                if (!node.data.isFolder) {
-                    self.data.assemblyLocation(self.resolvePath(node));
-                    $assemblyFileLocation.removeClass("ui-autocomplete-loading");
-                    self.updateHelpText(node.data.title);
-                    self.validateAssemblyFile(node.data.title);
-                    $(".dynatree-title", $fileTree).removeClass("dynatree-selectedtitle");//every list item in the tree
-                    $(".dynatree-title", node.li).addClass("dynatree-selectedtitle");//just the selected list item
-                }
-            }
+            dataType: 'json',
+            async: false
         });
-    });
+    };
     
     self.removeExpander = function (node) {
         node.li.innerHTML = node.li.innerHTML.replace("dynatree-expander", "dynatree-noexpander");//TODO fix (the node shouldnt shift across)
@@ -361,8 +341,6 @@
         node.render();
     };
     
-
-
     self.load = function (theResourceID) {
         //
         //Form Init
@@ -389,13 +367,10 @@
             }
         })
             .always(function () {
+                self.loadTreePath();
                 if (self.data.assemblyLocation() != null && self.data.assemblyLocation().match("GAC:") != null) {
                     self.gacListScrollIntoView(self.data.assemblyLocation());
-                } else {
-                    if (self.data.assemblyLocation() != null && self.data.assemblyLocation().match(".dll") != null) {
-                        self.loadTreePath();
-                    }
-                }
+                } 
             });
     };
 
@@ -429,21 +404,17 @@
         $gacList.focus();
         $gacList.val("");
         $gacList.val(assembly);
-        self.updateHelpText($gacList.val());
-        if ($gacList.val() != null) {
-            self.isAssemblyInGacList(true);
-            self.isAssemblyFileValid(false);
-        }
+        self.validateAssemblyFile($gacList.val());
     };
 
     //load a path into the tree
     self.loadTreePath = function () {
         self.treePathLoaded = false;
-        //childNode.expand(true) triggers lazyload which recursively loads all of assembly location into the dynatree (this is only on load, treePathLoaded is the flag to ensure this)
+        self.initializeDynatree();
         var treeRoot = $fileTree.dynatree("getRoot");
         treeRoot.visit(function (childNode) {
             if (self.data.assemblyLocation() != null && childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()]) {
-                childNode.expand(true);
+                childNode.expand(true);//triggers lazyload which recursively loads all of assembly location into the dynatree (this is only on load, treePathLoaded is the flag to ensure this)
                 return false;
             }
         });
