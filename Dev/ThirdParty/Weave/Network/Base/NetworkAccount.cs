@@ -108,7 +108,8 @@ namespace System.Network
                     return false;
                 }
 
-                return true;
+                return false; // Travis.Frisinger
+                //return true;
             }
 
             return false;

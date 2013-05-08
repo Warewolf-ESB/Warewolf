@@ -158,12 +158,12 @@ namespace Dev2.Studio.Core.Network
             }
 
             // THIS IS NOT A CLEVER IDEA, WIN2K8 FALLS FLAT USING THE SAME IDENTITY FOR BOTH LOCAL AND REMOTE SERVER, BUT USING A RANDOM GUID WORKS JUST FINE ;)
-            //var winIdentity = identity as WindowsIdentity;
-            //var userName = (winIdentity != null && winIdentity.User != null) ? winIdentity.User.Value : identity.Name;
+            var winIdentity = identity as WindowsIdentity;
+            var userName = (winIdentity != null && winIdentity.User != null) ? winIdentity.User.Value : identity.Name;
 
             // TODO: Remove LoginAsync using hard-coded password
             // See StudioAccountProvider in Dev2.Runtime assembly
-            return await LoginAsync(Guid.NewGuid().ToString(), "abc123xyz");
+            return await LoginAsync(userName, "abc123xyz");
         }
 
         public async Task<bool> LoginAsync(string userName, string password)
