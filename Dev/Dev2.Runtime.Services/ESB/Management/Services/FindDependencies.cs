@@ -56,10 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 });
                
             }
-//            if (dependencies != null)
-//            {
-//                dependencies.ToList().ForEach(c => sb.Append(FindDependenciesRecursive(c.ResourceName, workspaceID)));
-//            }
+
             sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceName));
             sb.Append("</node>");
             var findDependenciesRecursive = sb.ToString();
