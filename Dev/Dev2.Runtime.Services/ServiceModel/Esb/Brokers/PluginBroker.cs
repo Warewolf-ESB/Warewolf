@@ -244,8 +244,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                 result.DataSourceShapes.Add(dataSourceShape);
                 IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                IList<Dev2TypeConversion> convertedArgs = null;
-                ObjectHandle objHAndle = null;
                 Assembly loadedAssembly;
 
                 if(!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly)) return null;
