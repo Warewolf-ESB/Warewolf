@@ -1,8 +1,5 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Text;
+﻿using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
@@ -10,42 +7,23 @@ using Dev2.Common.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
-    /// Summary description for RandomActivityTests
+    ///     Summary description for RandomActivityTests
     /// </summary>
     [TestClass]
     public class RandomActivityTests : BaseActivityUnitTest
     {
-        public RandomActivityTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
+        /// </summary>
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
+
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -65,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
         #endregion
 
         #region Numbers Tests
@@ -83,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             int actualNum;
             int.TryParse(actual, out actualNum);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(actualNum >= start && actualNum <= end);
             }
@@ -99,12 +78,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset2(*).field2]]", "[[recset1(*).field1]]", string.Empty, "[[recset2(*).field2]]");
 
             IDSFDataObject result = ExecuteProcess();
-           
+
             string error = string.Empty;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
-            
-            if (string.IsNullOrEmpty(error))
+
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(dataListItems.Count == 5);
                 int firstRes;
@@ -140,7 +119,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(dataListItems.Count == 10);
                 int firstRes;
@@ -177,9 +156,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);                
+                Assert.AreEqual(expected, actual);
             }
             else
             {
@@ -199,7 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -221,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -243,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -265,7 +244,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -287,7 +266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -309,7 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -331,11 +310,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;            
+            string error = string.Empty;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(actual.Length == length);
             }
@@ -347,7 +326,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         public void GenerateRandomLettersWithLengthOfTenRecordsetWithIndexValueExpectedFiveRandomCharString()
-        {           
+        {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, "[[recset1(1).field1]]", "[[OutVar1]]");
 
             IDSFDataObject result = ExecuteProcess();
@@ -356,7 +335,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(actual.Length == 10);
             }
@@ -376,15 +355,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error = string.Empty;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
-            
-            if (string.IsNullOrEmpty(error))
+
+            if(string.IsNullOrEmpty(error))
             {
-                Assert.IsTrue(dataListItems.Count == 5);           
+                Assert.IsTrue(dataListItems.Count == 5);
                 Assert.AreEqual(dataListItems[0].TheValue.Length, 10);
                 Assert.AreEqual(dataListItems[1].TheValue.Length, 20);
                 Assert.AreEqual(dataListItems[2].TheValue.Length, 30);
                 Assert.AreEqual(dataListItems[3].TheValue.Length, 40);
-                Assert.AreEqual(dataListItems[4].TheValue.Length, 50);                           
+                Assert.AreEqual(dataListItems[4].TheValue.Length, 50);
             }
             else
             {
@@ -404,7 +383,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -426,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -448,7 +427,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -461,56 +440,80 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         #region GetDebugInputs/Outputs
-        
-        [TestMethod]        
-        public void RandomGetDebugInputOutputWithRecordsetUsingStartNotationExpectedPass()        
+
+        [TestMethod]
+        public void RandomGetDebugInputOutputWithRecordsetUsingStartNotationExpectedPass()
         {
-            DsfRandomActivity act = new DsfRandomActivity {RandomType = enRandomType.Numbers,From = "[[recset2(*).field2]]",To = "[[recset1(*).field1]]",Result = "[[OutVar1]]"};
+            DsfRandomActivity act = new DsfRandomActivity { RandomType = enRandomType.Numbers, From = "[[recset2(*).field2]]", To = "[[recset1(*).field1]]", Result = "[[recset1(*).field1]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
-                                                                ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
+                ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(2, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(32, inRes[1].FetchResultsList().Count);
-            
+            Assert.AreEqual("Between", inRes[1].FetchResultsList()[0].Value);
+            Assert.AreEqual("[[recset2(1).field2]]", inRes[1].FetchResultsList()[1].Value);
+            Assert.AreEqual("=", inRes[1].FetchResultsList()[2].Value);
+            Assert.AreEqual("-10", inRes[1].FetchResultsList()[3].Value);
+            Assert.AreEqual("[[recset2(2).field2]]", inRes[1].FetchResultsList()[4].Value);
+            Assert.AreEqual("=", inRes[1].FetchResultsList()[5].Value);
+            Assert.AreEqual("-20", inRes[1].FetchResultsList()[6].Value);
+            Assert.AreEqual("[[recset2(3).field2]]", inRes[1].FetchResultsList()[7].Value);
+            Assert.AreEqual("=", inRes[1].FetchResultsList()[8].Value);
+            Assert.AreEqual("-30", inRes[1].FetchResultsList()[9].Value);
+            Assert.AreEqual("[[recset2(4).field2]]", inRes[1].FetchResultsList()[10].Value);            
+            Assert.AreEqual("=", inRes[1].FetchResultsList()[11].Value);
+            Assert.AreEqual("-40", inRes[1].FetchResultsList()[12].Value);
+            Assert.AreEqual("[[recset2(5).field2]]", inRes[1].FetchResultsList()[13].Value);
+            Assert.AreEqual("=", inRes[1].FetchResultsList()[14].Value);
+            Assert.AreEqual("-50", inRes[1].FetchResultsList()[15].Value);
 
+            int intRes;
             Assert.AreEqual(5, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[2].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[3].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[4].FetchResultsList().Count);
+            Assert.AreEqual(15, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(15, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual(15, outRes[2].FetchResultsList().Count);
+            Assert.AreEqual(15, outRes[3].FetchResultsList().Count);
+            Assert.AreEqual(15, outRes[4].FetchResultsList().Count);
+            Assert.AreEqual("[[recset1(1).field1]]", outRes[4].FetchResultsList()[0].Value);
+            Assert.AreEqual("=", outRes[4].FetchResultsList()[1].Value);
+            Assert.IsTrue(int.TryParse(outRes[4].FetchResultsList()[2].Value,out intRes));
+            Assert.AreEqual("[[recset1(2).field1]]", outRes[4].FetchResultsList()[3].Value);
+            Assert.AreEqual("=", outRes[4].FetchResultsList()[4].Value);
+            Assert.IsTrue(int.TryParse(outRes[4].FetchResultsList()[5].Value, out intRes));
+            Assert.AreEqual("[[recset1(3).field1]]", outRes[4].FetchResultsList()[6].Value);
+            Assert.AreEqual("=", outRes[4].FetchResultsList()[7].Value);
+            Assert.IsTrue(int.TryParse(outRes[4].FetchResultsList()[8].Value, out intRes));
         }
 
         [TestMethod]
         public void RandomGetDebugInputOutputWithRecordsetUsingNumericNotationExpectedPass()
         {
-            DsfRandomActivity act = new DsfRandomActivity { RandomType = enRandomType.Letters,Length = "[[recset1(1).field1]]", Result = "[[OutVar1]]" };
+            DsfRandomActivity act = new DsfRandomActivity { RandomType = enRandomType.Letters, Length = "[[recset1(1).field1]]", Result = "[[OutVar1]]" };
 
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
-                                                                ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
+                ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(2, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(5, inRes[1].FetchResultsList().Count);
 
-
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         #endregion
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, enRandomType randomType, string from, string to, string length, string result)
+        void SetupArguments(string currentDL, string testData, enRandomType randomType, string from, string to, string length, string result)
         {
             TestStartNode = new FlowStep
             {
