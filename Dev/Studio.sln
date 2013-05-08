@@ -48,11 +48,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Test", "Dev2.Common.Test\Dev2.Common.Test.csproj", "{71C21990-9738-4548-B113-BB8C5B64B913}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weave", "ThirdParty\Weave\Weave.csproj", "{518A69D3-183E-46A1-B6B7-43B375FE2BCC}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 22
+		SccNumberOfProjects = 21
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -116,9 +114,6 @@ Global
 		SccProjectUniqueName20 = Dev2.Common.Test\\Dev2.Common.Test.csproj
 		SccProjectName20 = Dev2.Common.Test
 		SccLocalPath20 = Dev2.Common.Test
-		SccProjectUniqueName21 = ThirdParty\\Weave\\Weave.csproj
-		SccProjectName21 = ThirdParty/Weave
-		SccLocalPath21 = ThirdParty\\Weave
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -394,22 +389,6 @@ Global
 		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|x64.ActiveCfg = Release|Any CPU
 		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|x86.ActiveCfg = Release|Any CPU
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|x64.ActiveCfg = Debug|x64
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|x64.Build.0 = Debug|x64
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|x86.ActiveCfg = Debug|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Debug|x86.Build.0 = Debug|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|Mixed Platforms.Build.0 = Release|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x64.ActiveCfg = Release|x64
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x64.Build.0 = Release|x64
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x86.ActiveCfg = Release|x86
-		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

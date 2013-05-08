@@ -108,7 +108,7 @@ namespace System.Network
                     return false;
                 }
 
-                return false; // Travis.Frisinger
+                return false; // Travis.Frisinger - Fix for Multi-Login
                 //return true;
             }
 

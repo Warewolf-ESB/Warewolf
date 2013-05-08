@@ -25,6 +25,7 @@ using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Unlimited.Framework;
 
 namespace Unlimited.Applications.DynamicServicesHost
 {
@@ -339,7 +340,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
-            //if(!didBreak && !ExecuteWorkflowGroup("Initialization"))
+            //if (!didBreak && !ExecuteWorkflowGroup("Initialization"))
             //{
             //    result = 5;
             //    didBreak = true;
@@ -362,6 +363,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             UnloadSettingsProvider();
+            //ExecuteWorkflowGroup("Termination"); // Run clean up workflow ;)
 
             if (!didBreak)
             {
@@ -1417,19 +1419,19 @@ namespace Unlimited.Applications.DynamicServicesHost
         //{
         //    WorkflowEntry[] entries;
 
-        //    if(_workflowGroups.TryGetValue(groupName, out entries))
+        //    if (_workflowGroups.TryGetValue(groupName, out entries))
         //    {
-        //        for(int i = 0; i < entries.Length; i++)
+        //        for (int i = 0; i < entries.Length; i++)
         //        {
         //            WorkflowEntry entry = entries[i];
         //            StringBuilder builder = new StringBuilder();
 
-        //            if(entry.Arguments.Length > 0)
+        //            if (entry.Arguments.Length > 0)
         //            {
         //                builder.AppendLine("<XmlData>");
         //                builder.AppendLine("  <ADL>");
 
-        //                for(int k = 0; k < entry.Arguments.Length; k++)
+        //                for (int k = 0; k < entry.Arguments.Length; k++)
         //                {
         //                    builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
         //                }
@@ -1439,18 +1441,24 @@ namespace Unlimited.Applications.DynamicServicesHost
         //            }
 
         //            string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
-        //            string result = null;
+        //            Guid result;
 
-        //            try { result = _esbEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID); }
-        //            catch(Exception e)
+        //            try
+        //            {
+        //                ErrorResultTO errors;
+        //                IDSFDataObject dataObj = new DsfDataObject(requestXML, GlobalConstants.NullDataListID);
+        //                result = _esbEndpoint.ExecuteRequest(dataObj, GlobalConstants.ServerWorkspaceID, out errors);
+        //                //result = _esbEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID);
+        //            }
+        //            catch (Exception e)
         //            {
         //                Fail("Workflow \"" + entry.Name + "\" execution failed", e);
         //                return false;
         //            }
 
-        //            if(ResultContainsError(result))
+        //            if (result == Guid.Empty)
         //            {
-        //                Fail("Workflow \"" + entry.Name + "\" execution failed", result);
+        //                Fail("Workflow \"" + entry.Name + "\" execution failed");
         //                return false;
         //            }
         //        }
