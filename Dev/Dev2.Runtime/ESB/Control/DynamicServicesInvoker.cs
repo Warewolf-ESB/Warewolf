@@ -170,14 +170,6 @@ namespace Dev2.Runtime.ESB
             switch (serviceAction.ActionType)
             {
 
-                //case enActionType.InvokeDynamicService:
-                //    //return new InternalServiceContainer(serviceAction, dataObj, theWorkspace);
-                    
-                //    //result = DynamicService(serviceAction, dataObj.DataListID);
-
-                //    throw new Exception("Please adjust type to that of internal action!!!");
-                //break;
-
                 case enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                 break;
@@ -224,16 +216,6 @@ namespace Dev2.Runtime.ESB
                 serviceAction.Source = serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
             }
         }
-
-        // This method was missing after the resource catalogue port, it doesn't seem to be used any more but
-        // just in case it is needed I've left it here.
-        //private void MapActivityToService(WorkflowActivityDef activity, ServiceLocator serviceLocator)
-        //{
-        //    if (!string.IsNullOrWhiteSpace(activity.ServiceName))
-        //    {
-        //        activity.Service = serviceLocator.FindServiceByName(activity.ServiceName, _workspace.ID);
-        //    }
-        //}
 
         #endregion
 

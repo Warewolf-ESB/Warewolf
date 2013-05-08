@@ -52,6 +52,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IDebugState _debugState;
         bool _isOnDemandSimulation;
 
+        // I need to cache recordset data to build up later iteations ;)
+        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>(); 
+
         #region ShouldExecuteSimulation
 
         bool ShouldExecuteSimulation
@@ -651,7 +654,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Added IsEmpty check for Bug 9263 ;)
                     if (!dlEntry.IsEmpty())
                     {
-                        foreach (var debugItem in CreateRecordsetDebugItems(expression, dlEntry))
+                        foreach (var debugItem in CreateRecordsetDebugItems(expression, dlEntry, string.Empty, -1))
                         {
                             results.Add(debugItem);
                         }
@@ -709,7 +712,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (currentRecset != null)
                     {
-                        resultsToPush = CreateRecordsetDebugItems(expression, currentRecset);
+                        resultsToPush = CreateRecordsetDebugItems(expression, currentRecset, value, iterationNumber);
                     }
                 }
                 else if (recsetIndexType == enRecordsetIndexType.Blank)
@@ -779,7 +782,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        private IList<IDebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry)
+        private IList<IDebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt)
         {
             string initExpression = expression;
             IList<IDebugItemResult> results = new List<IDebugItemResult>();
@@ -807,6 +810,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (string.IsNullOrEmpty(fieldName) ||
                             recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
                         {
+
+                            string injectVal = recordField.TheValue;
+                            if (!string.IsNullOrEmpty(value) && recordField.ItemCollectionIndex == (iterCnt+1))
+                            {
+                                injectVal = value;
+                                _rsCachedValues[recordField.DisplayValue] = injectVal;
+                            }
+                            else if (string.IsNullOrEmpty(injectVal) && recordField.ItemCollectionIndex != (iterCnt + 1))
+                            {
+                                // is it in the cache? ;)
+                                _rsCachedValues.TryGetValue(recordField.DisplayValue, out injectVal);
+                                if (injectVal == null)
+                                {
+                                    injectVal = string.Empty;
+                                }
+                            }
+
                             if (indexType == enRecordsetIndexType.Star)
                             {
                                 string recsetName = DataListUtil.CreateRecordsetDisplayValue(dlEntry.Namespace,
@@ -816,13 +836,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
                                 results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
                                 results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = recordField.TheValue, GroupName = initExpression, GroupIndex = index });
+                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
                             }
                             else
                             {
                                 results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
                                 results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = recordField.TheValue, GroupName = initExpression, GroupIndex = index });
+                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
                                 //Add here
                             }
                         }
