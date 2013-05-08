@@ -1,6 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
@@ -16,75 +19,79 @@ using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Unlimited.Framework;
 
+#endregion
+
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
     public class ResourceRepository : IResourceRepository
     {
-        readonly List<IResourceModel> _resourceModels;
-        readonly List<string> _reservedServices;
-        readonly IEnvironmentModel _environmentModel;
-        readonly IFrameworkSecurityContext _securityContext;
-        readonly IWizardEngine _wizardEngine;
-        readonly HashSet<Guid> _cachedServices;
+        private readonly HashSet<Guid> _cachedServices;
+        private readonly IEnvironmentModel _environmentModel;
+        private readonly List<string> _reservedServices;
+        private readonly List<IResourceModel> _resourceModels;
+        private readonly IFrameworkSecurityContext _securityContext;
+        private readonly IWizardEngine _wizardEngine;
+        private bool _isLoaded;
 
         private bool _isDisposed;
 
         public event EventHandler ItemAdded;
 
-        #region Constructor
-
-        public ResourceRepository(IEnvironmentModel environmentModel)
-            : this(environmentModel, ImportService.GetExportValue<IWizardEngine>())
+        public bool IsLoaded
         {
-        }
-
-        public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
-        {
-            if (wizardEngine == null)
+            get { return _isLoaded; }
+            set
             {
-                throw new ArgumentNullException("wizardEngine");
+                if (_isLoaded == value)
+                {
+                    return;
+                }
+
+                if (!value)
+                {
+                    _cachedServices.Clear();
+                    _reservedServices.Clear();
+                }
+
+                _isLoaded = value;
             }
-            _reservedServices = new List<string>();
-            _resourceModels = new List<IResourceModel>();
-            _environmentModel = environmentModel;
-            _securityContext = environmentModel.Connection.SecurityContext;
-            _wizardEngine = wizardEngine;
-            _cachedServices = new HashSet<Guid>();
         }
 
-        #endregion Constructor
-
-        public bool IsLoaded { get; set; }
-        public IWizardEngine WizardEngine { get { return _wizardEngine; } }
+        public IWizardEngine WizardEngine
+        {
+            get { return _wizardEngine; }
+        }
 
         #region Methods
 
         public void Load()
         {
-            // BUG 9276 : TWR : 2013.04.19 - added IsLoaded check to prevent unnecessary loading of resources
-            if (!IsLoaded)
+            if (IsLoaded)
             {
-                IsLoaded = true;
-                try
-                {
-                    //_resourceModels.Clear();
-                    AddResources(ResourceType.WorkflowService);
-                    AddResources(ResourceType.Service);
-                    AddResources(ResourceType.Source);
-                    AddResources("ReservedService");
-                }
-                catch
-                {
-                    IsLoaded = false;
-                }
+                return;
+            }
+
+            IsLoaded = true;
+            try
+            {
+                _resourceModels.Clear();
+                _reservedServices.Clear();
+                AddResources(ResourceType.WorkflowService);
+                AddResources(ResourceType.Service);
+                AddResources(ResourceType.Source);
+                AddResources("ReservedService");
+            }
+            catch
+            {
+                IsLoaded = false;
             }
         }
 
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
         {
             IList<IWorkspaceItem> applicableWorkspaceItems = workspaceItems
-                .Where(w => w.ServerID == ((IStudioClientContext)_environmentModel.DsfChannel).ServerID &&
-                    w.WorkspaceID == ((IStudioClientContext)_environmentModel.DsfChannel).WorkspaceID)
+                .Where(w => w.ServerID == ((IStudioClientContext) _environmentModel.DsfChannel).ServerID &&
+                            w.WorkspaceID == ((IStudioClientContext) _environmentModel.DsfChannel).WorkspaceID)
                 .ToList();
 
             var rootElement = new XElement("WorkspaceItems");
@@ -101,19 +108,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public List<IResourceModel> ReloadResource(string resourceName, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer)
+        public List<IResourceModel> ReloadResource(string resourceName, ResourceType resourceType,
+                                                   IEqualityComparer<IResourceModel> equalityComparer)
         {
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
             reloadPayload.ResourceName = resourceName;
-            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
+            reloadPayload.ResourceType = Enum.GetName(typeof (ResourceType), resourceType);
 
             ExecuteCommand(_environmentModel, reloadPayload);
 
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "GetResourceService";
             findPayload.ResourceName = resourceName;
-            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
+            findPayload.ResourceType = Enum.GetName(typeof (ResourceType), resourceType);
             findPayload.Roles = string.Join(",", _securityContext.Roles);
 
             var findResultObj = ExecuteCommand(_environmentModel, findPayload);
@@ -122,7 +130,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var wfServices = (resourceType == ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
             if (wfServices is List<UnlimitedObject>)
             {
-                foreach (dynamic item in wfServices)
+                foreach (var item in wfServices)
                 {
                     IResourceModel resource = HydrateResourceModel(resourceType, item);
                     var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
@@ -148,7 +156,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         /// <summary>
-        /// Checks if a resources exists and is a workflow.
+        ///     Checks if a resources exists and is a workflow.
         /// </summary>
         public bool IsWorkflow(string resourceName)
         {
@@ -171,13 +179,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return _resourceModels;
         }
 
-        public ICollection<IResourceModel> Find(System.Linq.Expressions.Expression<Func<IResourceModel, bool>> expression)
+        public ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression)
         {
             Func<IResourceModel, bool> func = expression.Compile();
             return _resourceModels.FindAll(func.Invoke);
         }
 
-        public IResourceModel FindSingle(System.Linq.Expressions.Expression<Func<IResourceModel, bool>> expression)
+        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression)
         {
             Func<IResourceModel, bool> func = expression.Compile();
 
@@ -187,7 +195,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Save(IResourceModel instanceObj)
         {
-            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            var workflow =
+                FindSingle(
+                    c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
             if (workflow == null)
             {
                 _resourceModels.Add(instanceObj);
@@ -203,7 +213,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void DeployResource(IResourceModel resource)
         {
-            IResourceModel workflow = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            IResourceModel workflow =
+                FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
             if (workflow == null)
             {
                 _resourceModels.Add(resource);
@@ -216,19 +227,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var package = BuildUnlimitedPackage(resource);
 
             ExecuteCommand(_environmentModel, package, false);
-        }
-
-        public dynamic BuildUnlimitedPackage(IResourceModel resource)
-        {
-            if(resource == null)
-            {
-                throw new ArgumentNullException("resource");
-            }
-            dynamic package = new UnlimitedObject();
-            package.Service = "DeployResourceService";
-            package.ResourceDefinition = resource.ToServiceDefinition();
-            package.Roles = string.Join(",", _securityContext.Roles ?? new string[0]);
-            return package;
         }
 
         public void Save(ICollection<IResourceModel> instanceObjs)
@@ -282,6 +280,31 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return data;
         }
 
+        public void Add(IResourceModel instanceObj)
+            //Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
+        {
+            _resourceModels.Insert(_resourceModels.Count, instanceObj);
+        }
+
+        public void ForceLoad()
+        {
+            IsLoaded = false;
+            Load();
+        }
+
+        public dynamic BuildUnlimitedPackage(IResourceModel resource)
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            dynamic package = new UnlimitedObject();
+            package.Service = "DeployResourceService";
+            package.ResourceDefinition = resource.ToServiceDefinition();
+            package.Roles = string.Join(",", _securityContext.Roles ?? new string[0]);
+            return package;
+        }
+
         private UnlimitedObject ExecuteDeleteResource(IContextualResourceModel resource)
         {
             dynamic request = new UnlimitedObject();
@@ -298,15 +321,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (data.HasError)
             {
-                MessageBox.Show(Application.Current.MainWindow, model.ResourceType.GetDescription() + " \"" + model.ResourceName +
-                                                                "\" could not be deleted, reason: " + data.Error,
+                MessageBox.Show(Application.Current.MainWindow,
+                                model.ResourceType.GetDescription() + " \"" + model.ResourceName +
+                                "\" could not be deleted, reason: " + data.Error,
                                 model.ResourceType.GetDescription() + " Deletion Failed", MessageBoxButton.OK);
             }
-        }
-
-        public void Add(IResourceModel instanceObj)//Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
-        {
-            _resourceModels.Insert(_resourceModels.Count, instanceObj);
         }
 
         #endregion Methods
@@ -315,13 +334,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private void AddResources(string resourceType)
         {
-            dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = "FindResourceService";
-            dataObj.ResourceName = "*";
-            dataObj.ResourceType = resourceType;
-            dataObj.Roles = string.Join(",", _securityContext.Roles);
-
-            var resultObj = ExecuteCommand(_environmentModel, dataObj);
+            var resultObj = GetDataObject(resourceType);
 
             string xml = resultObj.XmlString;
             var index = 0;
@@ -340,37 +353,42 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        private void AddResources(ResourceType resourceType)
+        private dynamic GetDataObject(string resourceType)
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindResourceService";
             dataObj.ResourceName = "*";
-            dataObj.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
+            dataObj.ResourceType = resourceType;
             dataObj.Roles = string.Join(",", _securityContext.Roles);
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj);
+            return resultObj;
+        }
+
+        private void AddResources(ResourceType resourceType)
+        {
+            var resultObj = GetDataObject(Enum.GetName(typeof(ResourceType), resourceType));
 
             dynamic wfServices = (resourceType == ResourceType.Source) ? resultObj.Source : resultObj.Service;
             if (wfServices is List<UnlimitedObject>)
             {
-                foreach (dynamic item in wfServices)
+                foreach (var item in wfServices)
                 {
                     try
                     {
                         IResourceModel resource = HydrateResourceModel(resourceType, item);
                         if (resource != null)
                         {
-                        _resourceModels.Add(resource);
-                        if (ItemAdded != null)
-                        {
-                            ItemAdded(resource, null);
+                            _resourceModels.Add(resource);
+                            if (ItemAdded != null)
+                            {
+                                ItemAdded(resource, null);
+                            }
                         }
                     }
-
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Ignore malformed resources
                         // TODO Log this
@@ -389,126 +407,131 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data)
         {
-            Guid id = Guid.Parse(data.GetValue("ID"));
+            Guid id;
+            Guid.TryParse(data.GetValue("ID"), out id);
+
             if (!IsInCache(id))
             {
                 // add to cache of services fetched ;)
                 _cachedServices.Add(id);
 
-            var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
-            resource.ResourceType = resourceType;
+                var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
+                resource.ResourceType = resourceType;
 
                 // TODO : make this property use new fetch definition service ;)
 
                 if (data.XamlDefinition is string)
-            {
-                if (!string.IsNullOrEmpty(data.XamlDefinition))
                 {
-                    resource.WorkflowXaml = data.XamlDefinition;
-                    resource.ServiceDefinition = data.XmlString;
+                    if (!string.IsNullOrEmpty(data.XamlDefinition))
+                    {
+                        resource.WorkflowXaml = data.XamlDefinition;
+                        resource.ServiceDefinition = data.XmlString;
+                    }
                 }
-            }
 
-            resource.DataList = data.GetValue("DataList");
+                resource.DataList = data.GetValue("DataList");
                 resource.ID = id;
 
-            resource.ServerID = Guid.Parse(data.GetValue("ServerID"));
+                Guid serverID;
+                Guid.TryParse(data.GetValue("ServerID"), out serverID);
+                resource.ServerID = serverID;
 
-            resource.Version = Version.Parse(data.GetValue("Version"));
+                Version version;
+                Version.TryParse(data.GetValue("Version"), out version);
+                resource.Version = version;
 
-            if (string.IsNullOrEmpty(resource.ServiceDefinition))
-            {
-                resource.ServiceDefinition = data.XmlString;
-            }
-
-            if (data.DisplayName is string)
-            {
-                resource.DisplayName = data.DisplayName;
-            }
-            else
-            {
-                resource.DisplayName = resourceType.ToString();
-            }
-
-            if (data.IconPath is string)
-            {
-                resource.IconPath = data.IconPath;
-            }
-
-            if (data.AuthorRoles is string)
-            {
-                resource.AuthorRoles = data.AuthorRoles;
-            }
-
-            if (data.Category is string)
-            {
-                resource.Category = data.Category;
-            }
-            else
-            {
-                resource.Category = string.Empty;
-            }
-
-            if (data.Tags is string)
-            {
-                resource.Tags = data.Tags;
-            }
-
-            if (data.Comment is string)
-            {
-                resource.Comment = data.Comment;
-            }
-
-            if (data.UnitTestTargetWorkflowService is string)
-            {
-                resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
-            }
-
-            if (data.HelpLink is string)
-            {
-                if (!string.IsNullOrEmpty(data.HelpLink))
+                if (string.IsNullOrEmpty(resource.ServiceDefinition))
                 {
-                    resource.HelpLink = data.HelpLink;
+                    resource.ServiceDefinition = data.XmlString;
                 }
-            }
 
-            if (data.IsNewWorkflow is string)
-            {
-                resource.IsNewWorkflow = false;
-                if (string.Equals(data.IsNewWorkflow,"true",StringComparison.InvariantCulture))
+                if (data.DisplayName is string)
                 {
-                    resource.IsNewWorkflow = true;
-                    NewWorkflowNames.Instance.Add(resource.DisplayName);
+                    resource.DisplayName = data.DisplayName;
                 }
-            }
-
-            var service = resourceType == ResourceType.Source ? data.Source : data.Service;
-            if (service is List<UnlimitedObject>)
-            {
-                foreach (dynamic svc in service)
+                else
                 {
+                    resource.DisplayName = resourceType.ToString();
+                }
 
-                    if (svc.Name is string)
-                    {
-                        resource.ResourceName = svc.Name;
-                    }
-                    else
-                    {
-                        // Travis : if we here it means Name is an element in the datalist
-                        var tmpObj = (svc as UnlimitedObject);
+                if (data.IconPath is string)
+                {
+                    resource.IconPath = data.IconPath;
+                }
 
-                        // ReSharper disable PossibleNullReferenceException
-                        var xDoc = new XmlDocument();
-                        xDoc.LoadXml(tmpObj.XmlString);
-                        var n = xDoc.SelectSingleNode("Service");
-                        resource.ResourceName = n.Attributes["Name"].Value;
-                        // ReSharper restore PossibleNullReferenceException
+                if (data.AuthorRoles is string)
+                {
+                    resource.AuthorRoles = data.AuthorRoles;
+                }
+
+                if (data.Category is string)
+                {
+                    resource.Category = data.Category;
+                }
+                else
+                {
+                    resource.Category = string.Empty;
+                }
+
+                if (data.Tags is string)
+                {
+                    resource.Tags = data.Tags;
+                }
+
+                if (data.Comment is string)
+                {
+                    resource.Comment = data.Comment;
+                }
+
+                if (data.UnitTestTargetWorkflowService is string)
+                {
+                    resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
+                }
+
+                if (data.HelpLink is string)
+                {
+                    if (!string.IsNullOrEmpty(data.HelpLink))
+                    {
+                        resource.HelpLink = data.HelpLink;
                     }
                 }
-            }
 
-            return resource;
-        }
+                if (data.IsNewWorkflow is string)
+                {
+                    resource.IsNewWorkflow = false;
+                    if (string.Equals(data.IsNewWorkflow, "true", StringComparison.InvariantCulture))
+                    {
+                        resource.IsNewWorkflow = true;
+                         NewWorkflowNames.Instance.Add(resource.DisplayName);
+                    }
+                }
+
+                var service = resourceType == ResourceType.Source ? data.Source : data.Service;
+                if (service is List<UnlimitedObject>)
+                {
+                    foreach (var svc in service)
+                    {
+                        if (svc.Name is string)
+                        {
+                            resource.ResourceName = svc.Name;
+                        }
+                        else
+                        {
+                            // Travis : if we here it means Name is an element in the datalist
+                            var tmpObj = (svc as UnlimitedObject);
+
+                            // ReSharper disable PossibleNullReferenceException
+                            var xDoc = new XmlDocument();
+                            xDoc.LoadXml(tmpObj.XmlString);
+                            var n = xDoc.SelectSingleNode("Service");
+                            resource.ResourceName = n.Attributes["Name"].Value;
+                            // ReSharper restore PossibleNullReferenceException
+                        }
+                    }
+                }
+
+                return resource;
+            }
 
             return null;
         }
@@ -560,7 +583,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region FindResourcesByID
 
-        public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType)
+        public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment,
+                                                              IEnumerable<string> guids, ResourceType resourceType)
         {
             if (targetEnvironment == null || guids == null)
             {
@@ -570,7 +594,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindResourcesByID";
             dataObj.GuidCsv = string.Join(",", guids); // BUG 9276 : TWR : 2013.04.19 - reintroduced to all filtering
-            dataObj.Type = Enum.GetName(typeof(ResourceType), resourceType);
+            dataObj.Type = Enum.GetName(typeof (ResourceType), resourceType);
 
             var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
 
@@ -584,7 +608,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region FindSourcesByType
 
-        public static List<UnlimitedObject> FindSourcesByType(IEnvironmentModel targetEnvironment, enSourceType sourceType)
+        public static List<UnlimitedObject> FindSourcesByType(IEnvironmentModel targetEnvironment,
+                                                              enSourceType sourceType)
         {
             if (targetEnvironment == null)
             {
@@ -593,7 +618,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindSourcesByType";
-            dataObj.Type = Enum.GetName(typeof(enSourceType), sourceType);
+            dataObj.Type = Enum.GetName(typeof (enSourceType), sourceType);
 
             var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
 
@@ -607,7 +632,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region AddItems
 
-        static void AddItems(ICollection<UnlimitedObject> result, dynamic items)
+        private static void AddItems(ICollection<UnlimitedObject> result, dynamic items)
         {
             if (items is IEnumerable<UnlimitedObject>)
             {
@@ -623,10 +648,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region ExecuteCommand
 
-        static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj, bool convertResultToUnlimitedObject = true)
+        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj,
+                                              bool convertResultToUnlimitedObject = true)
         {
             var workspaceID = targetEnvironment.Connection.WorkspaceID;
-            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID, GlobalConstants.NullDataListID);
+            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
+                                                                     GlobalConstants.NullDataListID);
 
             if (result == null)
             {
@@ -651,14 +678,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Implementation of IDisposable
 
-        ~ResourceRepository()
-        {
-            // Do not re-create Dispose clean-up code here.
-            // Calling Dispose(false) is optimal in terms of
-            // readability and maintainability.
-            Dispose(false);
-        }
-
         // Do not make this method virtual.
         // A derived class should not be able to override this method.
         public void Dispose()
@@ -673,6 +692,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             GC.SuppressFinalize(this);
         }
 
+        ~ResourceRepository()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
+        }
+
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
         // or indirectly by a user's code. Managed and unmanaged resources
@@ -680,7 +707,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         // If disposing equals false, the method has been called by the
         // runtime from inside the finalizer and you should not reference
         // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
             if (!_isDisposed)
@@ -700,5 +727,27 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #endregion
 
+        #region Constructor
+
+        public ResourceRepository(IEnvironmentModel environmentModel)
+            : this(environmentModel, ImportService.GetExportValue<IWizardEngine>())
+        {
+        }
+
+        public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
+        {
+            if (wizardEngine == null)
+            {
+                throw new ArgumentNullException("wizardEngine");
+            }
+            _reservedServices = new List<string>();
+            _resourceModels = new List<IResourceModel>();
+            _environmentModel = environmentModel;
+            _securityContext = environmentModel.Connection.SecurityContext;
+            _wizardEngine = wizardEngine;
+            _cachedServices = new HashSet<Guid>();
+        }
+
+        #endregion Constructor
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Dev2;
 using Dev2.Composition;
@@ -12,6 +13,7 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -34,14 +36,11 @@ namespace BusinessDesignStudio.Unit.Tests
         ResourceRepository _repo;
         readonly Mock<IResourceModel> _model = new Mock<IResourceModel>();
         readonly Mock<IFrameworkSecurityContext> _securityContext = new Mock<IFrameworkSecurityContext>();
+        private Guid _resourceGuid = Guid.NewGuid();
+        private Guid _serverID = Guid.NewGuid();
+        private Guid _workspaceID = Guid.NewGuid();
 
         #endregion Variables
-
-        #region Constructor and TestContext
-
-
-
-        #endregion Constructor and TestContext
 
         #region Additional result attributes
         //Use TestInitialize to run code before running each result 
@@ -53,8 +52,12 @@ namespace BusinessDesignStudio.Unit.Tests
             _resourceModel.Setup(res => res.ResourceName).Returns("Resource");
             _resourceModel.Setup(res => res.DisplayName).Returns("My New Resource");
             _resourceModel.Setup(res => res.ServiceDefinition).Returns("My new Resource service definition");
+            _resourceModel.Setup(res => res.ID).Returns(_resourceGuid);
+            _resourceModel.Setup(res => res.WorkflowXaml).Returns("OriginalXaml");
 
             _dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<x><text>Im Happy</text></x>").Verifiable();
+            _dataChannel.Setup(channel => channel.ServerID).Returns(_serverID);
+            _dataChannel.Setup(channel => channel.WorkspaceID).Returns(_workspaceID);
 
             _securityContext.Setup(s => s.Roles).Returns(new string[2]);
 
@@ -87,15 +90,10 @@ namespace BusinessDesignStudio.Unit.Tests
         public void Load_CreateAndLoadResource_SingleResource_Expected_ResourceReturned()
         {
             //Arrange
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
-            var rand = new Random();
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(true);
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            var conn = SetupConnection();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
 
@@ -105,6 +103,152 @@ namespace BusinessDesignStudio.Unit.Tests
             //Assert
             Assert.IsTrue(resources.Equals(1));
 
+
+        }
+
+        /// <summary>
+        /// Test case for creating a resource and saving the resource model in resource factory
+        /// </summary>
+        [TestMethod]
+        public void ForceLoadSuccessfullLoadExpectIsLoadedTrue()
+        {
+            //Arrange
+            var conn = SetupConnection();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload></Payload>"));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            _repo.Save(_model.Object);
+            _repo.ForceLoad();
+
+            Assert.IsTrue(_repo.IsLoaded);
+        }
+
+        /// <summary>
+        /// Test case for creating a resource and saving the resource model in resource factory
+        /// </summary>
+        [TestMethod]
+        public void ForceLoadWithExceptionOnLoadExpectsIsLoadedFalse()
+        {
+            //Arrange
+            var conn = SetupConnection();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns("<Payload><Service Name=\"TestWorkflowService1\", <= Bad payload</Payload>");
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            _repo.Save(_model.Object);
+            _repo.ForceLoad();
+
+            //Assert
+            Assert.IsFalse(_repo.IsLoaded);
+
+        }
+
+        /// <summary>
+        /// Test case for creating a resource and saving the resource model in resource factory
+        /// </summary>
+        [TestMethod]
+        public void ForceLoadWith2WorkflowsExpectResourcesLoaded()
+        {
+            //Arrange
+            var conn = SetupConnection();
+
+            var guid1 = Guid.NewGuid().ToString();
+            var guid2 = Guid.NewGuid().ToString();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\"></Service></Payload>", guid1, guid2));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            _repo.Save(_model.Object);
+            _repo.ForceLoad();
+            int resources = _repo.All().Count;
+            //Assert
+            Assert.IsTrue(resources.Equals(2));
+            var resource = _repo.All().First();
+
+            Assert.IsTrue(resource.ResourceType == ResourceType.WorkflowService);
+            Assert.IsTrue(resource.ResourceName == "TestWorkflowService1");
+        }   
+
+        /// <summary>
+        /// Test case for creating a resource and saving the resource model in resource factory
+        /// </summary>
+        [TestMethod]
+        public void LoadWorkflowExpectsFromCache()
+        {
+            //Arrange
+            var conn = SetupConnection();
+
+            var guid2 = Guid.NewGuid().ToString();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            _repo.ForceLoad();
+
+            int resources = _repo.All().Count;
+
+            guid2 = Guid.NewGuid().ToString();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+
+            _repo.ForceLoad();
+
+            //Assert
+            Assert.IsTrue(resources.Equals(2));
+            var resource = _repo.All().First();
+            var resource2 = _repo.All().Last();
+
+            Assert.IsTrue(resource.WorkflowXaml == "ChangedDefinition");
+            Assert.IsTrue(resource2.WorkflowXaml == "ChangedDefinition");
+        }
+
+        private Mock<IEnvironmentConnection> SetupConnection()
+        {
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
+            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
+            var rand = new Random();
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.AppServerUri)
+                .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.WebServerUri)
+                .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.IsConnected).Returns(true);
+            return conn;
+        }
+
+        /// <summary>
+        /// Test case for creating a resource and saving the resource model in resource factory
+        /// </summary>
+        [TestMethod]
+        public void ForceLoadWith2ReservedResourcesExpectsServicesAdded()
+        {
+            //Arrange
+            var conn = SetupConnection();
+
+            const string reserved1 = "TestName1";
+            const string reserved2 = "TestName2";
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><ReservedName>{0}</ReservedName><ReservedName>{1}</ReservedName></Payload>", reserved1,reserved2));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            _repo.Save(_model.Object);
+            _repo.ForceLoad();
+
+            Assert.IsTrue(_repo.IsReservedService(reserved1));
+            Assert.IsTrue(_repo.IsReservedService(reserved2));
         }
 
         /// <summary>
@@ -116,17 +260,10 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             _model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
-            var rand = new Random();
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(true);
+            var conn = SetupConnection();
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
 
             //Act
             _repo.Save(_resourceModel.Object);
@@ -140,22 +277,49 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Create resource with human Interface service type
         /// </summary>
         [TestMethod]
+        public void UpdateResourcesExpectsWorkspacesLoadedBypassCache()
+        {
+            //Arrange
+            _model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
+
+            var conn = SetupConnection();
+
+
+            var guid2 = Guid.NewGuid().ToString();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedXaml\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            //Act
+            _repo.Save(_resourceModel.Object);
+            _repo.Load();
+            //Assert
+            var resource = _repo.All().First();
+            Assert.IsTrue(resource.WorkflowXaml.Equals("OriginalXaml"));
+
+            var workspaceItemMock = new Mock<IWorkspaceItem>();
+            workspaceItemMock.Setup(s => s.ServerID).Returns(_serverID);
+            workspaceItemMock.Setup(s => s.WorkspaceID).Returns(_workspaceID);
+
+            _repo.UpdateWorkspace(new List<IWorkspaceItem> { workspaceItemMock.Object });
+            resource = _repo.All().First();
+            Assert.IsTrue(resource.WorkflowXaml.Equals("ChangedXaml"));
+        }
+
+        /// <summary>
+        /// Create resource with human Interface service type
+        /// </summary>
+        [TestMethod]
         public void LoadMultipleResourceLoad_HumanInterfaceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
             _model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
-            var rand = new Random();
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(true);
+            var conn = SetupConnection();
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
 
             //Act
             _repo.Save(_resourceModel.Object);
@@ -174,17 +338,10 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             _model.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
-            var rand = new Random();
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(true);
+            var conn = SetupConnection();
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
 
             //Act
             _repo.Save(_resourceModel.Object);
@@ -194,17 +351,13 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsTrue(_repo.All().Count.Equals(2));
         }
 
-        // Test requires checking - maybe we need more stringent policy in code.
-        //Creating reource repository with null environment connection
-        //[TestMethod]
-        //[ExpectedException(typeof(InvalidOperationException))]
-        //public void Load_CreateResourceNullEnvironmentConnection_Expected_InvalidOperationException() {
-
-        //    //Act
-        //    environmentConnection.Setup(prop => prop.IsConnected).Returns(false);
-        //    repo.Save(resourceModel.Object);
-        //    repo.Load();
-        //}
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Load_CreateResourceNullEnvironmentConnection_Expected_InvalidOperationException() 
+        {
+            _environmentConnection.Setup(prop => prop.IsConnected).Returns(false);
+            _repo.Save(_resourceModel.Object);
+        }
 
         #endregion Load Tests
 
@@ -218,17 +371,10 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             _model.Setup(c => c.ResourceName).Returns("TestName");
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
-            var rand = new Random();
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(true);
+            var conn = SetupConnection();
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
 
             _repo.Save(_model.Object);
             _repo.Load();
@@ -252,14 +398,8 @@ namespace BusinessDesignStudio.Unit.Tests
             model2.Setup(c => c.DisplayName).Returns("result");
             model2.Setup(c => c.ResourceName).Returns("result");
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
-            var rand = new Random();
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(true);
+            var conn = SetupConnection();
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -273,11 +413,6 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion Save Tests
-
-        #region Find Tests
-
-
-        #endregion Find Tests
 
         #region RemoveResource Tests
 
@@ -407,7 +542,6 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion Missing Environment Information Tests
-
 
         #region ReloadResource Tests
 
@@ -571,6 +705,11 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
+
+        #region IsLoaded
+
+
+        #endregion IsLoaded
 
     }
 
