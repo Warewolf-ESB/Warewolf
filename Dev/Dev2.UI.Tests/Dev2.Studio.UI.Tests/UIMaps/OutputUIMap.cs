@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -152,7 +154,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             theControl.Find();
 
             // Sub button
-            UITestControl closeBtn = new UITestControl(theControl);
+            var closeBtn = new UITestControl(theControl);
             closeBtn.SearchProperties.Add("AutomationId", "closeBtn");
             closeBtn.Find();
 
@@ -160,17 +162,49 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             Mouse.Click(closeBtn);
         }
 
+        public void ClickSearch()
+        {
+            // Base control
+            UITestControl theControl = UIBusinessDesignStudioWindow.UIDebugOutputCustom;
+            theControl.Find();
+
+            // Sub button
+            var srchBtn = new UITestControl(theControl);
+            srchBtn.SearchProperties.Add("AutomationId", "UI_DataListSearchtxt_AutoID");
+            srchBtn.Find();
+
+            // The clicking is a bit slow for some reason - Need to investigate
+            Mouse.Click(srchBtn);
+        }
+
+        public void ClearSearch()
+        {
+            // Base control
+            UITestControl theControl = UIBusinessDesignStudioWindow.UIDebugOutputCustom;
+            theControl.Find();
+
+            // Sub button
+            var srchBtn = new UITestControl(theControl);
+            srchBtn.SearchProperties.Add("AutomationId", "UI_DataListSearchtxt_AutoID");
+            srchBtn.Find();
+
+            // The clicking is a bit slow for some reason - Need to investigate
+            Mouse.Click(srchBtn);
+            Keyboard.SendKeys("^a");
+            Keyboard.SendKeys("{DELETE}");
+        }
+
         public UITestControlCollection GetWorkflowSteps(UITestControl theWorkflow, string controlId)
         {
-            UITestControl stepSearcher = new UITestControl(theWorkflow);
+            var stepSearcher = new UITestControl(theWorkflow);
             stepSearcher.SearchProperties.Add("AutomationId", controlId, PropertyExpressionOperator.Contains);
             UITestControlCollection steps = stepSearcher.FindMatchingControls();
             return steps;
         }
 
-        private bool IsStepInError(WpfTreeItem theStep)
+        private static bool IsStepInError(WpfTreeItem theStep)
         {
-            UITestControl errorSearcher = new UITestControl(theStep);
+            var errorSearcher = new UITestControl(theStep);
             errorSearcher.SearchProperties.Add("ControlType", "Text");
             errorSearcher.SearchProperties.Add("Name", "Error : ");
             UITestControlCollection errorResults = errorSearcher.FindMatchingControls();

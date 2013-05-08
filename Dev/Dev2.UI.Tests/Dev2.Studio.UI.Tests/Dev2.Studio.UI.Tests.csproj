@@ -84,6 +84,14 @@
     <Compile Include="UIMaps\ActivityDropWindowUIMap.Designer.cs">
       <DependentUpon>ActivityDropWindowUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="UIMaps\DatabaseSourceUIMap.cs" />
+    <Compile Include="UIMaps\DatabaseSourceUIMap.Designer.cs">
+      <DependentUpon>DatabaseSourceUIMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIMaps\PluginSourceMap.cs" />
+    <Compile Include="UIMaps\PluginSourceMap.Designer.cs">
+      <DependentUpon>PluginSourceMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\SaveDialogUIMap.cs">
       <DependentUpon>SaveDialogUIMap.uitest</DependentUpon>
     </Compile>
@@ -196,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="UIMaps\ActivityDropWindowUIMap.uitest" />
+    <None Include="UIMaps\PluginSourceMap.uitest" />
     <None Include="UIMaps\SaveDialogUIMap.uitest" />
     <None Include="UIMaps\SwitchWizardUIMap.uitest" />
     <None Include="UIMaps\DatabaseSourceUIMap.uitest" />

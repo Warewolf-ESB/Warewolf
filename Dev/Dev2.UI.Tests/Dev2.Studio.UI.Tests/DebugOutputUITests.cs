@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Linq;
+using Dev2.CodedUI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
@@ -42,18 +43,18 @@ namespace Dev2.Studio.UI.Tests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
+        public TestContext myTestContext
         {
             get
             {
-                return testContextInstance;
+                return _myTestContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                _myTestContextInstance = value;
             }
         }
-        private TestContext testContextInstance;
+        private TestContext _myTestContextInstance;
 
         // You can use the following additional attributes as you write your tests:
 
@@ -72,6 +73,7 @@ namespace Dev2.Studio.UI.Tests
                 }
             }
 
+            CloseError();
 
             // Set focus to the Studio (So your Coded UI Test doesn't start doing stuff on your actual screen)
             WpfWindow theWindow = new WpfWindow();
@@ -79,7 +81,7 @@ namespace Dev2.Studio.UI.Tests
             theWindow.Find();
             theWindow.SetFocus();
 
-            bool toCheck = true;
+            var toCheck = true;
 
             // On the test box, all test initialisations should always run
             if (UITestUtils.GetStudioWindowName().Contains("IntegrationTester"))
@@ -172,13 +174,10 @@ namespace Dev2.Studio.UI.Tests
 
         }
 
-        ////Use TestCleanup to run code after each test has run
+        //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
         //public void MyTestCleanup()
-        //{        
-        //    // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
-        //    // For more information on generated code, see http://go.microsoft.com/fwlink/?LinkId=179463
-        //}
+        //{}
 
         #endregion
 
@@ -193,11 +192,11 @@ namespace Dev2.Studio.UI.Tests
         //                                 the page displayed by the browser, and checks that the debug output window does not contain
         //                                 the result of what came from the server when executing the workflow.
         [TestMethod]
-        public void DebugOutput_Given_RefreshOnBrowser_Expected_DebugOutputWindowNotUpdated()
+        public void DebugOutputWithRefreshOnBrowserExpectedDebugOutputWindowNotUpdated()
         {
             // Create a new workflow
 
-            string workflowToCreate = "DebugOutputOnRefreshBrowser";
+            const string workflowToCreate = "DebugOutputOnRefreshBrowser";
             CreateWorkflow(workflowToCreate);
 
             UITestControl control = TabManagerUIMap.FindTabByName(workflowToCreate);
@@ -218,8 +217,8 @@ namespace Dev2.Studio.UI.Tests
                 DebugUIMap.ExecuteDebug();
                 // Check the output tab for the debug data
                 DockManagerUIMap.ClickOpenTabPage("Output");
-                UITestControlCollection ctrl = DebugOutputUIMap.GetOutputWindow();
-                UITestControlCollection initialOutputs = DebugOutputUIMap.GetStepInOutputWindow(ctrl[1], "Assign (1)");
+                var ctrl = DebugOutputUIMap.GetOutputWindow();
+                var initialOutputs = DebugOutputUIMap.GetStepInOutputWindow(ctrl[1], "Assign (1)");
                 // View in Browser then refresh
                 RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
                 Thread.Sleep(1000);
@@ -241,6 +240,61 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", workflowToCreate);
         }
 
+        //2013.05.07: Ashley Lewis - Bug 7904
+        [TestMethod]
+        public void DebugOutputWithLargeDataExpectedDebugOutputWindowUpdatedWithin5Seconds()
+        {
+            //Open LargeFileTesting workflow
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("large");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            //Click debug
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{F5}");
+
+            //Assert the debug output window is responsive after 5 seconds
+            Thread.Sleep(5000);
+            CloseError();
+            // Get data split step
+            DockManagerUIMap.ClickOpenTabPage("Output");
+            DebugOutputUIMap.ClearSearch();
+            Mouse.Click();
+            Keyboard.SendKeys("Data Split");
+            var getSteps = DebugOutputUIMap.GetOutputWindow();
+            Assert.IsTrue(getSteps.Count == 1, "Debug output window took too long to respond");
+            var dataSplitDebugOutput = getSteps[0];
+            Assert.IsTrue(dataSplitDebugOutput.Exists, "Debug output window took too long to respond");
+
+            //Assert recset node expands and the more data link within that recset node is visible
+            var expander = dataSplitDebugOutput.GetChildren().Last(c => c.ControlType.Name == "Expander");
+            Mouse.Move(expander, new Point(0, 0));
+            Mouse.Move(new Point(Mouse.Location.X + 5, Mouse.Location.Y + 5));
+            Mouse.Click();
+            Mouse.Move(new Point(Mouse.Location.X - 25, Mouse.Location.Y - 25));
+            Mouse.Click();
+            for (var i = 0; i < 4; i++)
+            {
+                Mouse.MoveScrollWheel(-1);
+            }
+            // Get more data link
+            var moreLink = expander.GetChildren()[1].GetChildren().Last(c => c.Name == "...");
+            var moreLinkClickablePoint = new Point();
+            Assert.IsTrue(moreLink.TryGetClickablePoint(out moreLinkClickablePoint), "Recordset did not expand properly");
+        }
+
+        static void CloseError()
+        {
+            var errMsg = new UIErrorWindow();
+            if(errMsg.Exists)
+            {
+                Mouse.DoubleClick(errMsg, new Point(errMsg.Width - 15, 5));
+                Mouse.Click();
+            }
+        }
 
         #endregion Debug Output Tests
 
@@ -475,6 +529,56 @@ namespace Dev2.Studio.UI.Tests
         private ToolboxUIMap _toolboxManagerUIMap;
 
         #endregion Toolbox UI Map
+
+        #region UIBusinessDesignStudioWindow
+
+        public class UiBusinessDesignStudioWindow : WpfWindow
+        {
+
+            public UiBusinessDesignStudioWindow()
+            {
+                SearchProperties[UITestControl.PropertyNames.Name] = TestBase.GetStudioWindowName();
+                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                WindowTitles.Add(TestBase.GetStudioWindowName());
+            }
+
+            public WpfTabList UiRibbonTabList
+            {
+                get
+                {
+                    if ((_mUiRibbonTabList == null))
+                    {
+                        _mUiRibbonTabList = new WpfTabList(this);
+                        _mUiRibbonTabList.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ribbon";
+                        _mUiRibbonTabList.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    }
+                    return this._mUiRibbonTabList;
+                }
+            }
+
+            #region Fields
+            private WpfTabList _mUiRibbonTabList;
+            #endregion
+        }
+
+        #endregion
+
+        #region UIErrorWindow
+
+		public class UIErrorWindow : WpfWindow
+        {
+
+            public UIErrorWindow()
+            {
+                #region Search Criteria
+                SearchProperties[UITestControl.PropertyNames.Name] = "Error";
+                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                WindowTitles.Add("Error");
+                #endregion
+            }
+        } 
+
+	    #endregion
 
         #endregion UI Maps
 
