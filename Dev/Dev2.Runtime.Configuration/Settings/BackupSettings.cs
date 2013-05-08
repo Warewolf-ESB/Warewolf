@@ -8,13 +8,13 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region CTOR
 
-        public BackupSettings()
-            : base(SettingName, "Backup")
+        public BackupSettings(string webServerUri)
+            : base(SettingName, "Backup",webServerUri)
         {
         }
 
-        public BackupSettings(XElement xml)
-            : base(xml)
+        public BackupSettings(XElement xml,string webServerUri)
+            : base(xml,webServerUri)
         {
         }
 

@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using Dev2.Common.ServiceModel;
+using Dev2.Data.Binary_Objects;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
@@ -8,6 +14,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -49,6 +56,28 @@ namespace Dev2.Runtime.ServiceModel
             {
                 dynamic argsObj = JObject.Parse(args);
                 result = Read(workspaceID, ParseResourceType(argsObj.resourceType.Value));
+            }
+            catch (Exception ex)
+            {
+                RaiseError(ex);
+            }
+            return result;
+        }
+        // POST: Service/Resources/Services
+        public ResourceList Services(string args, Guid workspaceID, Guid dataListID)
+        {
+            var result = new ResourceList();
+            try
+            {
+                var resourceType = ParseResourceType(args);
+                if(resourceType == ResourceType.WorkflowService)
+                {
+                    result = Read(workspaceID, resourceType);
+                }
+                else
+                {
+                    throw new ArgumentException("Resource Type passed not WorkflowService");
+                }
             }
             catch (Exception ex)
             {
@@ -311,5 +340,71 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+        public string DataListInputVariables(string resourceID, Guid workspaceID, Guid dataListID)
+        {
+            Guid rsID   ;
+            if(!Guid.TryParse(resourceID, out rsID))
+            {
+                RaiseError(new ArgumentException("Invalid ResouceID."));
+                return "";
+            }
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, rsID);
+            if(resource == null)
+            {
+                RaiseError(new ArgumentException("Workflow not found."));
+                return "";
+            }
+            var services = ResourceCatalog.Instance.GetDynamicObjects(resource);
+
+            var tmp = services.FirstOrDefault();
+            var result = "<DataList></DataList>";
+
+            if (tmp != null)
+            {
+                result = tmp.DataListSpecification;
+            }
+            var dataListSpec = XElement.Load(new StringReader(result));
+            if(dataListSpec.HasElements)
+            {
+                var validElements = new List<DataListVariable>();
+                var xElements = dataListSpec.Elements();
+                xElements.ForEach(element => GetInputElements(element, validElements));
+                var dataListInputVariables = JsonConvert.SerializeObject(validElements);
+                return dataListInputVariables;
+            }
+            return "";
+        }
+
+        static void GetInputElements(XElement element, List<DataListVariable> validElements)
+        {
+            if(IsInputElement(element) && !element.HasElements)
+            {
+                validElements.Add(new DataListVariable{Name = element.Name.LocalName});
+            }            
+        }
+
+        static bool IsInputElement(XElement element)
+        {
+           if(element.HasAttributes)
+            {
+                XAttribute xAttribute = element.Attribute("ColumnIODirection");
+                if (xAttribute != null)
+                {
+                    var value = xAttribute.Value;
+                    enDev2ColumnArgumentDirection columnIODirection;
+                    if(Enum.TryParse(value, true, out columnIODirection))
+                    {
+                        return columnIODirection == enDev2ColumnArgumentDirection.Input || columnIODirection == enDev2ColumnArgumentDirection.Both;                   
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
+    public class DataListVariable
+    {
+        public string Name { get; set; }
     }
 }

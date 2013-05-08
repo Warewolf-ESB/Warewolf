@@ -1,8 +1,10 @@
-﻿using Dev2.Common;
+﻿using System.Diagnostics;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -180,5 +182,151 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
         #endregion
 
+        #region Services
+        
+        [TestMethod]
+        public void ServicesWithValidArgsExpectedReturnsList()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            try
+            {
+                const int Modulo = 2;
+                const int ExpectedCount = 6;
+                for(var i = 0; i < ExpectedCount; i++)
+                {
+                    var resource = new Resource
+                    {
+                        ResourceID = Guid.NewGuid(),
+                        ResourceName = string.Format("My Name {0}", i),
+                        ResourcePath = string.Format("My Path {0}", i),
+                        ResourceType = (i % Modulo == 0) ? ResourceType.WorkflowService : ResourceType.Unknown
+                    };
+                    resource.Save(workspaceID);
+                }
+                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var result = resources.Services(ResourceType.WorkflowService.ToString(), workspaceID, Guid.Empty);
+
+                Assert.AreEqual(ExpectedCount / Modulo, result.Count);
+            }
+            finally
+            {
+                if(Directory.Exists(workspacePath))
+                {
+                    DirectoryHelper.CleanUp(workspacePath);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ServicesWithNullArgsExpectedReturnsEmptyList()
+        {
+            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var result = resources.Services(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void ServicesWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var result = resources.Services("xxxx", Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+        #endregion
+
+        #region DataListInputVariables
+
+        [TestMethod]
+        public void DataListInputVariablesWhereNullArgsExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            //------------Execute Test---------------------------
+            var result = resources.DataListInputVariables(null, Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", result);
+        }
+
+        [TestMethod]
+        public void DataListInputVariablesWhereInvalidArgsExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            //------------Execute Test---------------------------
+            var result = resources.DataListInputVariables("xxxx", Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", result);
+        }
+        
+       [TestMethod]
+        public void DataListInputWhereValidArgsDataListHasInputsScalarsAndRecSetExpectCorrectString()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var servicesPath = Path.Combine(workspacePath, "Services");
+            var sourcesPath = Path.Combine(workspacePath, "Sources");
+            var pluginsPath = Path.Combine(workspacePath, "Plugins");
+            try
+            {
+                Directory.CreateDirectory(servicesPath);
+                Directory.CreateDirectory(sourcesPath);
+                Directory.CreateDirectory(pluginsPath);
+
+                var xml = XmlResource.Fetch("TestForEachOutput");
+                xml.Save(Path.Combine(servicesPath, "TestForEachOutput.xml"));
+
+                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resource = ResourceCatalog.Instance.GetResource(workspaceID, "TestForEachOutput");
+                //------------Execute Test---------------------------
+                var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID, Guid.Empty);
+                //------------Assert Results-------------------------
+                StringAssert.Contains(dataListInputVariables, "inputScalar");
+                StringAssert.Contains(dataListInputVariables, "bothScalar");
+            }
+            finally
+            {
+                if (Directory.Exists(workspacePath))
+                {
+                    DirectoryHelper.CleanUp(workspacePath);
+                }
+            }
+        }
+        
+        [TestMethod]
+        public void DataListInputWhereValidArgsDataListHasNoInputsExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var servicesPath = Path.Combine(workspacePath, "Services");
+            var sourcesPath = Path.Combine(workspacePath, "Sources");
+            var pluginsPath = Path.Combine(workspacePath, "Plugins");
+            try
+            {
+                Directory.CreateDirectory(servicesPath);
+                Directory.CreateDirectory(sourcesPath);
+                Directory.CreateDirectory(pluginsPath);
+
+                var xml = XmlResource.Fetch("Bug6619");
+                xml.Save(Path.Combine(servicesPath, "Bug6619.xml"));
+
+                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resource = ResourceCatalog.Instance.GetResource(workspaceID, "Bug6619");
+                //------------Execute Test---------------------------
+                var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID, Guid.Empty);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(string.IsNullOrEmpty(dataListInputVariables));
+            }
+            finally
+            {
+                if (Directory.Exists(workspacePath))
+                {
+                    DirectoryHelper.CleanUp(workspacePath);
+                }
+            }
+        }
+        #endregion
     }
 }

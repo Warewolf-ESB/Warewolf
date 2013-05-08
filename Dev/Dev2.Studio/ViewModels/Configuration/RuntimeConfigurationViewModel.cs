@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using System.Windows.Input;
+using Dev2.Composition;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -7,6 +8,7 @@ using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.WorkSurface;
 using System;
@@ -26,6 +28,7 @@ namespace Dev2.Studio.ViewModels.Configuration
         private readonly string _configurationEntrypointMethodName = "EntryPoint";
         private UserControl _runtimeConfigurationUserControl;
         private IEnvironmentModel _currentEnvironment;
+        private RelayCommand<IServer> _sourceServerChangedCommand;
         private bool _isWorking;
         private bool _saveSuccessfull;
 
@@ -42,6 +45,19 @@ namespace Dev2.Studio.ViewModels.Configuration
         }
 
         #endregion
+
+        #region Commands
+
+        public RelayCommand<IServer> SourceServerChangedCommand
+        {
+            get
+            {
+                return _sourceServerChangedCommand ?? (_sourceServerChangedCommand
+                                                       = new RelayCommand<IServer>(ServerChanged));
+            }
+        }
+
+        #endregion Commands
 
         #region Properties
 
@@ -187,12 +203,17 @@ namespace Dev2.Studio.ViewModels.Configuration
         public void Cancel()
         {
             //Publish settings save cancel message
-            EventAggregator.Publish(new SettingsSaveCancelMessage(CurrentEnvironment));
+            Load(CurrentEnvironment);
         }
 
         #endregion
 
         #region Private Methods
+
+        private void ServerChanged(IServer server)
+        {
+            Load(server.Environment);
+        }
 
         private void LoadUserControl()
         {
@@ -209,7 +230,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
             catch(Exception e)
             {
-                ShowErrorAndCancel("Unable to load runtime configuration assembly.", e);
+                ShowError("Unable to load runtime configuration assembly.", e);
                 return;
             }
 
@@ -226,7 +247,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
             catch (Exception e)
             {
-                ShowErrorAndCancel(string.Format("Unable to locate type '{0}' in runtime configuration assembly.", _configurationTypeLocation), e);
+                ShowError(string.Format("Unable to locate type '{0}' in runtime configuration assembly.", _configurationTypeLocation), e);
                 return;
             }
 
@@ -247,7 +268,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
             catch (Exception e)
             {
-                ShowErrorAndCancel(string.Format("Unable to locate entry point method '{0}.{1}' in runtime configuration assembly.", _configurationTypeLocation, _configurationEntrypointMethodName), e);
+                ShowError(string.Format("Unable to locate entry point method '{0}.{1}' in runtime configuration assembly.", _configurationTypeLocation, _configurationEntrypointMethodName), e);
             }
         }
 
@@ -264,11 +285,11 @@ namespace Dev2.Studio.ViewModels.Configuration
             INetworkMessage result;
             try
             {
-                result = CurrentEnvironment.DsfChannel.SendMessage(settingsMessage);
+                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
             }
             catch (Exception e)
             {
-                ShowErrorAndCancel("An error occured while sending a message to the server.", e);
+                ShowError("An error occured while sending a message to the server.", e);
                 return false;
             }
 
@@ -276,7 +297,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             ErrorMessage errorMessage = result as ErrorMessage;
             if (errorMessage != null)
             {
-                ShowErrorAndCancel(errorMessage.Message, null);
+                ShowError(errorMessage.Message, null);
                 return false;
             }
 
@@ -284,7 +305,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             SettingsMessage resultSettingsMessage = result as SettingsMessage;
             if (resultSettingsMessage == null)
             {
-                ShowErrorAndCancel("An unknown response was received from the server.", null);
+                ShowError("An unknown response was received from the server.", null);
                 return false;
             }
 
@@ -315,11 +336,11 @@ namespace Dev2.Studio.ViewModels.Configuration
             INetworkMessage result;
             try
             {
-                result = CurrentEnvironment.DsfChannel.SendMessage(settingsMessage);
+                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
             }
             catch (Exception e)
             {
-                ShowErrorAndCancel("An error occured while sending a message to the server.", e);
+                ShowError("An error occured while sending a message to the server.", e);
                 return;
             }
 
@@ -327,7 +348,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             ErrorMessage errorMessage = result as ErrorMessage;
             if (errorMessage != null)
             {
-                ShowErrorAndCancel(errorMessage.Message, null);
+                ShowError(errorMessage.Message, null);
                 return;
             }
 
@@ -342,11 +363,16 @@ namespace Dev2.Studio.ViewModels.Configuration
             // Deal with version conflict
             if (resultSettingsMessage.Result == NetworkMessageResult.VersionConflict)
             {
-                MessageBoxResult overwriteResult = Popup.Show("The settings on the server are newer than the ones you are saving, would you like to overwrite the server settings.", "Newer Settings", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                MessageBoxResult overwriteResult = Popup.Show("The settings on the server are newer than the ones you are saving, would you like to overwrite the server settings.", "Newer Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-                if (overwriteResult == MessageBoxResult.Yes)
+                switch (overwriteResult)
                 {
+                    case MessageBoxResult.Yes:
                     Save(configurationXML, true);
+                        break;
+                    default:
+                        Cancel();
+                        break;
                 }
                 return;
             }
@@ -358,14 +384,13 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
 
             //Publish settings save cancel message
-            EventAggregator.Publish(new SettingsSaveCancelMessage(CurrentEnvironment));
+            Load(CurrentEnvironment);
         }
 
-        private void ShowErrorAndCancel(string errorMessage, Exception innerException)
+        private void ShowError(string errorMessage, Exception innerException)
         {
             Exception errorEx = new Exception(errorMessage, innerException);
             ExceptionFactory.CreateViewModel(errorEx).Show();
-            Cancel();
         }
 
         #endregion Private Methods

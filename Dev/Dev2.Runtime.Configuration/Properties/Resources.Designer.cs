@@ -59,5 +59,59 @@ namespace Dev2.Runtime.Configuration.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid FilterMode enumeration value. The value must be one of the defined AutoCompleteFilterMode values to be accepted..
+        /// </summary>
+        internal static string AutoComplete_OnFilterModePropertyChanged_InvalidValue {
+            get {
+                return ResourceManager.GetString("AutoComplete_OnFilterModePropertyChanged_InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid maximum drop down height value &apos;{0}&apos;. The value must be greater than or equal to zero..
+        /// </summary>
+        internal static string AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue {
+            get {
+                return ResourceManager.GetString("AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid MinimumPopulateDelay value &apos;{0}&apos;. The value must be greater than or equal to zero..
+        /// </summary>
+        internal static string AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue {
+            get {
+                return ResourceManager.GetString("AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot set read-only property SearchText..
+        /// </summary>
+        internal static string AutoComplete_OnSearchTextPropertyChanged_InvalidWrite {
+            get {
+                return ResourceManager.GetString("AutoComplete_OnSearchTextPropertyChanged_InvalidWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The RoutedPropertyChangingEvent cannot be canceled..
+        /// </summary>
+        internal static string RoutedPropertyChangingEventArgs_CancelSet_InvalidOperation {
+            get {
+                return ResourceManager.GetString("RoutedPropertyChangingEventArgs_CancelSet_InvalidOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://localhost:1234/wwwroot/services/Service/Resources/{0}.
+        /// </summary>
+        internal static string ServicesAddress {
+            get {
+                return ResourceManager.GetString("ServicesAddress", resourceCulture);
+            }
+        }
     }
 }

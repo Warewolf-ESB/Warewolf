@@ -1,11 +1,14 @@
-﻿using Dev2.Runtime.Configuration.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using Dev2.Runtime.Configuration.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
-    public class LoggingSettings : SettingsBase
+    public class LoggingSettings : SettingsBase, IDataErrorInfo, ILoggingSettings
     {
         #region Fields
 
@@ -21,12 +24,29 @@ namespace Dev2.Runtime.Configuration.Settings
         private int _nestedLevelCount;
         private string _logFileDirectory;
         private string _serviceInput;
-        private WorkflowDescriptor _postWorkflow;
-        private List<WorkflowDescriptor> _workflows;
+        private IWorkflowDescriptor _postWorkflow;
+        private ObservableCollection<IWorkflowDescriptor> _workflows;
+        private bool _logAll;
+        private bool _runPostWorkflow;
 
         #endregion
 
         #region Properties
+
+        public bool RunPostWorkflow
+        {
+            get { return _runPostWorkflow; }
+            set
+            {
+                if (_runPostWorkflow == value)
+                {
+                    return;
+                }
+
+                _runPostWorkflow = value;
+                NotifyOfPropertyChange(() => RunPostWorkflow);
+            }
+        }
 
         public bool IsLoggingEnabled
         {
@@ -37,7 +57,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isLoggingEnabled = value;
-                OnPropertyChanged("IsLoggingEnabled");
+                NotifyOfPropertyChange(() => IsLoggingEnabled);
             }
         }
 
@@ -50,7 +70,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isVersionLogged = value;
-                OnPropertyChanged("IsVersionLogged");
+                NotifyOfPropertyChange(() => IsVersionLogged);
             }
         }
 
@@ -63,7 +83,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isTypeLogged = value;
-                OnPropertyChanged("IsTypeLogged");
+                NotifyOfPropertyChange(() => IsTypeLogged);
             }
         }
 
@@ -76,7 +96,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isDurationLogged = value;
-                OnPropertyChanged("IsDurationLogged");
+                NotifyOfPropertyChange(() => IsDurationLogged);
             }
         }
 
@@ -89,7 +109,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isDataAndTimeLogged = value;
-                OnPropertyChanged("IsDataAndTimeLogged");
+                NotifyOfPropertyChange(() => IsDataAndTimeLogged);
             }
         }
 
@@ -102,7 +122,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isInputLogged = value;
-                OnPropertyChanged("IsInputLogged");
+                NotifyOfPropertyChange(() => IsInputLogged);
             }
         }
 
@@ -115,7 +135,22 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _isOutputLogged = value;
-                OnPropertyChanged("IsOutputLogged");
+                NotifyOfPropertyChange(() => IsOutputLogged);
+            }
+        }
+
+        public bool LogAll
+        {
+            get { return _logAll; }
+            set
+            {
+                if (_logAll == value)
+                {
+                    return;
+                }
+
+                _logAll = value;
+                NotifyOfPropertyChange(() => LogAll);
             }
         }
 
@@ -128,7 +163,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _nestedLevelCount = value;
-                OnPropertyChanged("NestedLevelCount");
+                NotifyOfPropertyChange(() => NestedLevelCount);
             }
         }
 
@@ -141,7 +176,7 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _logFileDirectory = value;
-                OnPropertyChanged("LogFileDirectory");
+                NotifyOfPropertyChange(() => LogFileDirectory);
             }
         }
 
@@ -154,11 +189,11 @@ namespace Dev2.Runtime.Configuration.Settings
             set
             {
                 _serviceInput = value;
-                OnPropertyChanged("ServiceInput");
+                NotifyOfPropertyChange(() => ServiceInput);
             }
         }
 
-        public WorkflowDescriptor PostWorkflow
+        public IWorkflowDescriptor PostWorkflow
         {
             get
             {
@@ -166,40 +201,45 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_postWorkflow == value)
+                {
+                    return;
+                }
+
                 _postWorkflow = value;
-                OnPropertyChanged("PostWorkflow");
+                NotifyOfPropertyChange(() => PostWorkflow);
             }
         }
 
-        public List<WorkflowDescriptor> Workflows
+        public ObservableCollection<IWorkflowDescriptor> Workflows
         {
             get
             {
+                if (_workflows == null)
+                {
+                    _workflows = new ObservableCollection<IWorkflowDescriptor>();
+                }
                 return _workflows;
             }
-            private set
-            {
-                _workflows = value;
-                OnPropertyChanged("Workflows");
-            }
-        }
+        }    
 
         #endregion
 
         #region CTOR
 
-        public LoggingSettings()
-            : base(SettingName, "Logging")
+        public LoggingSettings(string webserverUri)
+            : base(SettingName, "Logging", webserverUri)
         {
-            PostWorkflow = new WorkflowDescriptor();
-            Workflows = new List<WorkflowDescriptor>();
         }
 
-        public LoggingSettings(XElement xml)
-            : base(xml)
+        public LoggingSettings(XElement xml, string webserverUri)
+            : base(xml, webserverUri)
         {
-            Workflows = new List<WorkflowDescriptor>();
-            PostWorkflow = new WorkflowDescriptor(xml.Element("PostWorkflow"));
+            var postWorkflow = xml.Element("PostWorkflow");
+            if (postWorkflow != null)
+            {
+                PostWorkflow = new WorkflowDescriptor(xml.Element("PostWorkflow"));
+            }
 
             bool boolValue;
             int intValue;
@@ -211,16 +251,19 @@ namespace Dev2.Runtime.Configuration.Settings
             IsInputLogged = bool.TryParse(xml.AttributeSafe("IsInputLogged"), out boolValue) && boolValue;
             IsOutputLogged = bool.TryParse(xml.AttributeSafe("IsOutputLogged"), out boolValue) && boolValue;
             NestedLevelCount = Int32.TryParse(xml.AttributeSafe("NestedLevelCount"), out intValue) ? intValue : 0;
+            LogAll = bool.TryParse(xml.AttributeSafe("LogAll"), out boolValue) && boolValue;
             LogFileDirectory = xml.AttributeSafe("LogFileDirectory");
             ServiceInput = xml.AttributeSafe("ServiceInput");
 
             var workflows = xml.Element("Workflows");
-            if(workflows != null)
+            if (workflows == null)
             {
-                foreach(var workflow in workflows.Elements())
-                {
-                    Workflows.Add(new WorkflowDescriptor(workflow));
-                }
+                return;
+            }
+
+            foreach (var workflow in workflows.Elements())
+            {
+                Workflows.Add(new WorkflowDescriptor(workflow));
             }
         }
 
@@ -230,11 +273,20 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public override XElement ToXml()
         {
-            var postWorkflow = PostWorkflow.ToXml();
-            postWorkflow.Name = "PostWorkflow";
+            XElement postWorkflow = null;
+            if (PostWorkflow != null)
+            {
+                postWorkflow = PostWorkflow.ToXml();
+                postWorkflow.Name = "PostWorkflow";
+            }
 
             var workflows = new XElement("Workflows");
-            foreach(var workflow in Workflows)
+
+            var toPersist = from wf in Workflows
+                            where wf.IsSelected
+                            select wf;
+
+            foreach (var workflow in toPersist)
             {
                 workflows.Add(workflow.ToXml());
             }
@@ -249,6 +301,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 new XAttribute("IsInputLogged", IsInputLogged),
                 new XAttribute("IsOutputLogged", IsOutputLogged),
                 new XAttribute("NestedLevelCount", NestedLevelCount),
+                new XAttribute("LogAll", LogAll),
                 new XAttribute("LogFileDirectory", LogFileDirectory ?? string.Empty),
                 new XAttribute("ServiceInput", ServiceInput ?? string.Empty),
                 postWorkflow,
@@ -258,5 +311,24 @@ namespace Dev2.Runtime.Configuration.Settings
         }
 
         #endregion
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string result = string.Empty;
+                propertyName = propertyName ?? string.Empty;
+                if (propertyName == string.Empty || propertyName == "PostWorkflow")
+                {
+                    if (RunPostWorkflow && !Workflows.Contains(PostWorkflow))
+                    {
+                        result = "Invalid workflow selected";
+                    }
+                }
+                return result;
+            }
+        }
+
+        public string Error { get; private set; }
     }
 }

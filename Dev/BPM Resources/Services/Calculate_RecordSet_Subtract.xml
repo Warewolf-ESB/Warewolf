@@ -1,4 +1,21 @@
-<Service Name="Calculate_RecordSet_Subtract" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="Calculate_RecordSet_Subtract" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+﻿<Service ID="b2b0cc87-32ba-4504-8046-79edfb18d5fd" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate_RecordSet_Subtract" ResourceType="WorkflowService"><DisplayName>Calculate_RecordSet_Subtract</DisplayName><Category>Integration Test Services</Category><IsNewWorkflow>false</IsNewWorkflow><AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles><Comment>An integration Test service to test record set operations</Comment><Tags></Tags><IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath><HelpLink>a:\</HelpLink><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><DataList><result Description="" IsEditable="True" ColumnIODirection="None" /><Employees Description="" IsEditable="True" ColumnIODirection="Both"><Funds Description="" IsEditable="True" ColumnIODirection="Both" /><Name Description="" IsEditable="True" ColumnIODirection="Both" /></Employees></DataList><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="Calculate_RecordSet_Subtract"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.Common"
+ xmlns:ddc="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
+ xmlns:ddcb="clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"
+ xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
+ xmlns:dddo="clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"
+ xmlns:ddsm="clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+ xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
     &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
     &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
@@ -15,98 +32,106 @@
       &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
       &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
       &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+      &lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&gt;
     &lt;/Flowchart.Variables&gt;
     &lt;sap:WorkflowViewStateService.ViewState&gt;
       &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
         &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
         &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
         &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
-        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;270,40 160,40 160,152&lt;/av:PointCollection&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;270,40 162.5,40 162.5,152&lt;/av:PointCollection&gt;
         &lt;x:Double x:Key="Width"&gt;816&lt;/x:Double&gt;
         &lt;x:Double x:Key="Height"&gt;763&lt;/x:Double&gt;
       &lt;/scg:Dictionary&gt;
     &lt;/sap:WorkflowViewStateService.ViewState&gt;
     &lt;Flowchart.StartNode&gt;
-      &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+      &lt;FlowStep x:Name="__ReferenceID0"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;23.5,152&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;278,88&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;301.5,196 342,196 342,407&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="278,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="a6079387-2e23-4ad5-b00d-559ef4b81f68" UpdateAllOccurrences="False"&gt;
+          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="8"&gt;
+              &lt;uaba:ActivityDTO FieldName="[[Employees(1).Name]]" FieldValue="Sashen" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[Employees(1).Funds]]" FieldValue="1234" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[Employees(2).Name]]" FieldValue="Ninja" IndexNumber="3" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[Employees(2).Funds]]" FieldValue="2000000" IndexNumber="4" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="5" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+            &lt;/scg:List&gt;
+          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;
+            &lt;InOutArgument x:TypeArguments="x:String" /&gt;
+          &lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;
+        &lt;/uaba:DsfMultiAssignActivity&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID1"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;227,407&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;230,106&lt;/av:Size&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfCalculateActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="DsfCalculateActivity" Expression="mod([[Employees(2).Funds]],[[Employees(1).Funds]])" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="230,106" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" Result="[[result]]" SimulationMode="OnDemand" UniqueID="4b5ab147-ceaf-4686-b353-6e82e6c0a651"&gt;
+              &lt;uaba:DsfCalculateActivity.ParentInstanceID&gt;
+                &lt;InOutArgument x:TypeArguments="x:String" /&gt;
+              &lt;/uaba:DsfCalculateActivity.ParentInstanceID&gt;
+            &lt;/uaba:DsfCalculateActivity&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
     &lt;/Flowchart.StartNode&gt;
-    &lt;FlowStep x:Name="__ReferenceID1"&gt;
-      &lt;sap:WorkflowViewStateService.ViewState&gt;
-        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
-          &lt;av:Point x:Key="ShapeLocation"&gt;23.5,152&lt;/av:Point&gt;
-          &lt;av:Size x:Key="ShapeSize"&gt;273,116&lt;/av:Size&gt;
-          &lt;av:PointCollection x:Key="ConnectorLocation"&gt;160,268 160,460 227,460&lt;/av:PointCollection&gt;
-        &lt;/scg:Dictionary&gt;
-      &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,116" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
-        &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
-          &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="8"&gt;
-            &lt;uaba:ActivityDTO FieldName="[[Employees(1).Name]]" FieldValue="Sashen" IndexNumber="1"&gt;
-              &lt;uaba:ActivityDTO.OutList&gt;
-                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
-              &lt;/uaba:ActivityDTO.OutList&gt;
-            &lt;/uaba:ActivityDTO&gt;
-            &lt;uaba:ActivityDTO FieldName="[[Employees(1).Funds]]" FieldValue="1234" IndexNumber="2"&gt;
-              &lt;uaba:ActivityDTO.OutList&gt;
-                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
-              &lt;/uaba:ActivityDTO.OutList&gt;
-            &lt;/uaba:ActivityDTO&gt;
-            &lt;uaba:ActivityDTO FieldName="[[Employees(2).Name]]" FieldValue="Ninja" IndexNumber="3"&gt;
-              &lt;uaba:ActivityDTO.OutList&gt;
-                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
-              &lt;/uaba:ActivityDTO.OutList&gt;
-            &lt;/uaba:ActivityDTO&gt;
-            &lt;uaba:ActivityDTO FieldName="[[Employees(2).Funds]]" FieldValue="2000000" IndexNumber="4"&gt;
-              &lt;uaba:ActivityDTO.OutList&gt;
-                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
-              &lt;/uaba:ActivityDTO.OutList&gt;
-            &lt;/uaba:ActivityDTO&gt;
-            &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="5"&gt;
-              &lt;uaba:ActivityDTO.OutList&gt;
-                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
-              &lt;/uaba:ActivityDTO.OutList&gt;
-            &lt;/uaba:ActivityDTO&gt;
-          &lt;/scg:List&gt;
-        &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
-      &lt;/uaba:DsfMultiAssignActivity&gt;
-      &lt;FlowStep.Next&gt;
-        &lt;FlowStep x:Name="__ReferenceID0"&gt;
-          &lt;sap:WorkflowViewStateService.ViewState&gt;
-            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
-              &lt;av:Point x:Key="ShapeLocation"&gt;227,407&lt;/av:Point&gt;
-              &lt;av:Size x:Key="ShapeSize"&gt;246,106&lt;/av:Size&gt;
-            &lt;/scg:Dictionary&gt;
-          &lt;/sap:WorkflowViewStateService.ViewState&gt;
-          &lt;uaba:DsfCalculateActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="DsfCalculateActivity" Expression="mod([[Employees(2).Funds]],[[Employees(1).Funds]])" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="246,106" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" Result="[[result]]" /&gt;
-        &lt;/FlowStep&gt;
-      &lt;/FlowStep.Next&gt;
-    &lt;/FlowStep&gt;
     &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
     &lt;FlowStep&gt;
       &lt;sap:WorkflowViewStateService.ViewState&gt;
         &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
           &lt;av:Point x:Key="ShapeLocation"&gt;519,243&lt;/av:Point&gt;
-          &lt;av:Size x:Key="ShapeSize"&gt;282,194&lt;/av:Size&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;256,80&lt;/av:Size&gt;
         &lt;/scg:Dictionary&gt;
       &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName="Input" sap:VirtualizedContainerService.HintSize="282,194" Text="Employees(2).Funds finding the remainder&amp;#xD;&amp;#xA;when divided by Employees(1).Funds" /&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Input" sap:VirtualizedContainerService.HintSize="256,80" Text="Employees(2).Funds finding the remainder&amp;#xA;when divided by Employees(1).Funds" /&gt;
     &lt;/FlowStep&gt;
     &lt;FlowStep&gt;
       &lt;sap:WorkflowViewStateService.ViewState&gt;
         &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
           &lt;av:Point x:Key="ShapeLocation"&gt;500,3&lt;/av:Point&gt;
-          &lt;av:Size x:Key="ShapeSize"&gt;304,194&lt;/av:Size&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;278,80&lt;/av:Size&gt;
         &lt;/scg:Dictionary&gt;
       &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName="Description" sap:VirtualizedContainerService.HintSize="304,194" Text="This will find the modulus of a record set value&amp;#xD;&amp;#xA;when divided by another recordset value" /&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Description" sap:VirtualizedContainerService.HintSize="278,80" Text="This will find the modulus of a record set value&amp;#xA;when divided by another recordset value" /&gt;
     &lt;/FlowStep&gt;
     &lt;FlowStep&gt;
       &lt;sap:WorkflowViewStateService.ViewState&gt;
         &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
           &lt;av:Point x:Key="ShapeLocation"&gt;580,503&lt;/av:Point&gt;
-          &lt;av:Size x:Key="ShapeSize"&gt;201,260&lt;/av:Size&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;202,260&lt;/av:Size&gt;
         &lt;/scg:Dictionary&gt;
       &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName="Expected" sap:VirtualizedContainerService.HintSize="201,260" Text="&amp;lt;Dev2XMLResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;ADL&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;Employees&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;Funds&amp;gt;1234&amp;lt;/Funds&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;Name&amp;gt;Sashen&amp;lt;/Name&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/Employees&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;Employees&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;Funds&amp;gt;2000000&amp;lt;/Funds&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;Name&amp;gt;Ninja&amp;lt;/Name&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/Employees&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;result&amp;gt;920&amp;lt;/result&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/ADL&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;JSON/&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/Dev2XMLResult&amp;gt;" /&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Expected" sap:VirtualizedContainerService.HintSize="202,260" Text="&amp;lt;Dev2XMLResult&amp;gt;&amp;#xA;&amp;lt;ADL&amp;gt;&amp;#xA;&amp;lt;Employees&amp;gt;&amp;#xA;&amp;lt;Funds&amp;gt;1234&amp;lt;/Funds&amp;gt;&amp;#xA;&amp;lt;Name&amp;gt;Sashen&amp;lt;/Name&amp;gt;&amp;#xA;&amp;lt;/Employees&amp;gt;&amp;#xA;&amp;lt;Employees&amp;gt;&amp;#xA;&amp;lt;Funds&amp;gt;2000000&amp;lt;/Funds&amp;gt;&amp;#xA;&amp;lt;Name&amp;gt;Ninja&amp;lt;/Name&amp;gt;&amp;#xA;&amp;lt;/Employees&amp;gt;&amp;#xA;&amp;lt;result&amp;gt;920&amp;lt;/result&amp;gt;&amp;#xA;&amp;lt;/ADL&amp;gt;&amp;#xA;&amp;lt;JSON/&amp;gt;&amp;#xA;&amp;lt;/Dev2XMLResult&amp;gt;" /&gt;
     &lt;/FlowStep&gt;
   &lt;/Flowchart&gt;
-&lt;/Activity&gt;</XamlDefinition></Action><AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles><Comment>An integration Test service to test record set operations</Comment><Category>Integration Test Services</Category><HelpLink>a:\</HelpLink><DisplayName>Workflow</DisplayName><DataList><Employees Description=""><Funds Description="" /><Name Description="" /></Employees><result Description="" /></DataList><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>1HUd5Me9AnfZqr874RMMONVzj6o=</DigestValue></Reference></SignedInfo><SignatureValue>NfWPNtFqFDJvAyAc2sQmHJ8lIwYkYDfvPqM0OqOjpfuWIniU7DCJx4JZa6Y/yLKg5Iofr9dz5SFqMtdUx0wMkxFRCsdWORNFoy21NauTfZkoP8yWHTro2XQpD0JEzcsswVXK8jjVkMqEAqJC4sDud1rzqLoX4COmjlh1GMBeVdc=</SignatureValue></Signature></Service>
+&lt;/Activity&gt;</XamlDefinition></Action><BizRule /><WorkflowActivityDef /><Source /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>wX5GGp6/5l8znN0qe8e71jVQmdA=</DigestValue></Reference></SignedInfo><SignatureValue>ak2HcHTrJvPiX9D0s63ENxGPPthfNUxoz+5Dr1BWQeHeTtDCqy+r8fa4VTjAdrPjqScooepw8uDEcmF7/S0HW+7utQqlO5aq5KUojMjhemeLrH9RpxS8STBnBZR10QOZ+Yn5Ky3Sa0rX4QGJ2OtmNkiKWZIKz/VvtsDBDV3vLAE=</SignatureValue></Signature></Service>

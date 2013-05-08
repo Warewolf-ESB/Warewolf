@@ -1,13 +1,30 @@
 ﻿using System;
 using System.Xml.Linq;
+using Caliburn.Micro;
 
 namespace Dev2.Runtime.Configuration.ComponentModel
 {
-    public class WorkflowDescriptor
+    public class WorkflowDescriptor : PropertyChangedBase, IWorkflowDescriptor
     {
-        public Guid WorkflowID { get; set; }
-        public string Name { get; set; }
-        public bool IsSelected { get; set; }
+        private bool _isSelected;
+
+        public string ResourceID { get; set; }
+        public string ResourceName { get; set; }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected == value)
+                {
+                    return;
+                }
+
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
+            }
+        }
 
         #region WorkflowDescriptor
 
@@ -22,14 +39,9 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 return;
             }
 
-            Name = xml.AttributeSafe("Name");
-
-            Guid workflowID;
-            WorkflowID = Guid.TryParse(xml.AttributeSafe("WorkflowID"), out workflowID) ? workflowID : Guid.Empty;
-
-            bool isSelected;
-            IsSelected = bool.TryParse(xml.AttributeSafe("IsSelected"), out isSelected) && isSelected;
-
+            ResourceName = xml.AttributeSafe("ResourceName");
+            ResourceID = xml.AttributeSafe("ResourceID");
+            IsSelected = true;
         }
 
         #endregion
@@ -39,9 +51,8 @@ namespace Dev2.Runtime.Configuration.ComponentModel
         public XElement ToXml()
         {
             var result = new XElement("Workflow",
-                new XAttribute("WorkflowID", WorkflowID),
-                new XAttribute("Name", Name ?? string.Empty),
-                new XAttribute("IsSelected", IsSelected)
+                new XAttribute("ResourceID", ResourceID ?? string.Empty),
+                new XAttribute("ResourceName", ResourceName ?? string.Empty)
                 );
             return result;
         }

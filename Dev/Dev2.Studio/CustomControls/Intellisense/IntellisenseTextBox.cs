@@ -1,6 +1,5 @@
 ﻿using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.InterfaceImplementors;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Studio.InterfaceImplementors;
 
 namespace Dev2.UI
 {

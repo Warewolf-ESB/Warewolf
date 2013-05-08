@@ -39,6 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Dev2.Runtime.Configuration\bin\Debug\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\Dev2.Core.Tests\bin\Debug\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -72,6 +78,7 @@
     <Compile Include="Settings\SettingsBaseMock.cs" />
     <Compile Include="Settings\SettingsBaseTests.cs" />
     <Compile Include="ViewModels\MainViewModelTests.cs" />
+    <Compile Include="ViewModels\LoggingViewModelTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,13 +5,13 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
 {
     public class SettingsBaseMock : SettingsBase
     {
-        public SettingsBaseMock(string settingName, string displayName)
-            : base(settingName, displayName)
+        public SettingsBaseMock(string settingName, string displayName, string webServerUri)
+            : base(settingName, displayName,webServerUri)
         {
         }
 
-        public SettingsBaseMock(XElement xml)
-            : base(xml)
+        public SettingsBaseMock(XElement xml,string webServerUri)
+            : base(xml,webServerUri)
         {
         }
     }

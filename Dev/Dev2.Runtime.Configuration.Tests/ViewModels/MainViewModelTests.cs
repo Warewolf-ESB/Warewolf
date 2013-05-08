@@ -29,7 +29,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         public void SaveCommandExecutedExpectedSaveCallbackInvokedWithCorrectData()
         {
             bool callbackExecuted = false;
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
             string expected = config.ToXml().ToString();
             string actual = "";
 
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void SaveCommandExecutedWhereSaveCallbackIsNullExpectedNoException()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
 
             mainViewModel.SaveCommand.Execute(null);
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void SaveCommandExecutedWhereSaveCallbackThrowsExceptionExpectedErrorInErrorsCollection()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
 
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), x =>
             {
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         public void CancelCommandExecutedExpectedCancelCallbackInvoked()
         {
             bool callbackExecuted = false;
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
 
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, () =>
             {
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void CancelCommandExecutedWhereCancelCallbackIsNullExpectedNoException()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
 
             mainViewModel.SaveCommand.Execute(null);
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void CancelCommandExecutedWhereCancelCallbackThrowsExceptionExpectedErrorInErrorsCollection()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
 
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, () =>
             {
@@ -113,20 +113,20 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         }
 
         [TestMethod]
-        public void SetSelectedSettingsObjectsExpectedSettingsViewCreated()
+        public void SetSelectedSettingsObjectsExpectedSettingsViewModelActivated()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
 
             mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
 
-            Assert.IsNotNull(mainViewModel.SettingsView, "When a settings object is selected the view isn't being created.");
+            Assert.IsNotNull(mainViewModel.ActiveItem,"When a settings object is selected the viewmodel isnt activated");
         }
 
         [TestMethod]
         public void ClearErrorsCommandWhenThereAreErrorsExpectedErrorsCleared()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration();
+            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
 
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, () =>
             {

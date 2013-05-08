@@ -8,10 +8,7 @@ namespace Dev2.Studio.Core.Interfaces
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using Dev2.DataList.Contract;
-    using Unlimited.Framework;
     
 
     /// <summary>

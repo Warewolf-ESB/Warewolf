@@ -11,8 +11,7 @@
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core" 
-                    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core" >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Brushes.xaml"/>

@@ -122,6 +122,10 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
+            ImportService.AddExportedValueToContainer(assemblyRepository.Object);
+            ImportService.AddExportedValueToContainer(windowManager.Object);
+            ImportService.AddExportedValueToContainer(popup.Object);
+
             Mock<IEventAggregator> mockEventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
 
@@ -134,9 +138,6 @@ namespace Dev2.Core.Tests
             Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
             ImportService.AddExportedValueToContainer(webCommunication.Object);
 
-            ImportService.AddExportedValueToContainer(assemblyRepository.Object);
-            ImportService.AddExportedValueToContainer(windowManager.Object);
-            ImportService.AddExportedValueToContainer(popup.Object);
 
             return importServiceContext;
         }

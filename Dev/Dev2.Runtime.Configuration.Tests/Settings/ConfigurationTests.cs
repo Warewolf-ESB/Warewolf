@@ -1,4 +1,5 @@
-﻿using Dev2.Runtime.Configuration.Tests.XML;
+﻿using System.Data;
+using Dev2.Runtime.Configuration.Tests.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         [TestMethod]
         public void ConstructorWithDefaultExpectedInitializesAllProperties()
         {
-            var config = new Configuration.Settings.Configuration();
+            var config = new Configuration.Settings.Configuration("localhost");
             ValidateInitializesAllProperties(config);
         }
 
@@ -23,9 +24,20 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         public void ConstructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             // ReSharper disable UnusedVariable
-            var config = new Configuration.Settings.Configuration(null);
+            var config = new Configuration.Settings.Configuration((XElement)null);
+            // ReSharper restore UnusedVariable
+        } 
+        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructorWithNullWebServerUriExpectedThrowsArgumentNullException()
+        {
+            // ReSharper disable UnusedVariable
+            var config = new Configuration.Settings.Configuration((string)null);
             // ReSharper restore UnusedVariable
         }
+        
+     
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -40,13 +52,20 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithInvalidXmlExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable UnusedVariable
+            // ReSharper disable UnusedVariable  
             var config = new Configuration.Settings.Configuration(new XElement("x", new XAttribute("Version", "1.0"), new XElement("y"), new XElement("z")));
             // ReSharper restore UnusedVariable
         }
 
         [TestMethod]
         public void ConstructorWithValidXmlArgumentExpectedInitializesAllProperties()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            ValidateInitializesAllProperties(config);
+        }       
+        
+        [TestMethod]
+        public void ConstructorWithValidXmlNullWebServerUriArgumentExpectedThrowsArgumentNullException()
         {
             var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
             ValidateInitializesAllProperties(config);
@@ -59,7 +78,7 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         [TestMethod]
         public void ToXmlExpectedReturnsXml()
         {
-            var config = new Configuration.Settings.Configuration();
+            var config = new Configuration.Settings.Configuration("localhost");
             var result = config.ToXml();
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(XElement));
@@ -68,7 +87,7 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         [TestMethod]
         public void ToXmlExpectedInvokesToXmlForEachProperty()
         {
-            var config = new Configuration.Settings.Configuration();
+            var config = new Configuration.Settings.Configuration("localhost");
             var result = config.ToXml();
 
             var properties = config.GetType().GetProperties();

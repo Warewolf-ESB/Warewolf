@@ -8,13 +8,13 @@ namespace Dev2.Runtime.Configuration.Settings
         
         #region CTOR
 
-        public SecuritySettings()
-            : base(SettingName, "Security")
+        public SecuritySettings(string webServerUri)
+            : base(SettingName, "Security",webServerUri)
         {
         }
 
-        public SecuritySettings(XElement xml)
-            : base(xml)
+        public SecuritySettings(XElement xml, string webServerUri)
+            : base(xml,webServerUri)
         {
         }
 

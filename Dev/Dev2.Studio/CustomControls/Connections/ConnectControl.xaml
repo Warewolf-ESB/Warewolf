@@ -10,7 +10,10 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Text="{Binding Path=LabelText, ElementName=ConnectUserControl}" VerticalAlignment="Center" />
-        <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" Grid.Column="1" x:Name="TheServerComboBox" DisplayMemberPath="Alias" ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" DropDownOpened="OnServerDropDownOpened"  SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="22" VerticalAlignment="Bottom"
+        <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" 
+                  Grid.Column="1" x:Name="TheServerComboBox" DisplayMemberPath="Alias" ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" 
+                  DropDownOpened="OnServerDropDownOpened"  SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="22" 
+                  VerticalAlignment="Bottom"
                   IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">

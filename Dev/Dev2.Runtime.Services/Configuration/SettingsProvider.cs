@@ -47,6 +47,7 @@ namespace Dev2.Runtime.Configuration
             }
         }
 
+        public static string WebServerUri { get; set; }
         #endregion
 
         #region CTOR
@@ -58,6 +59,7 @@ namespace Dev2.Runtime.Configuration
         {
             AssemblyHashCode = GetAssemblyHashCode();
             Configuration = ReadConfiguration();
+            Configuration.WebServerUri = WebServerUri;
         }
 
         #endregion
@@ -118,6 +120,7 @@ namespace Dev2.Runtime.Configuration
             var filePath = GetFilePath();
             var canSave = request.Action == NetworkMessageAction.Overwrite || !File.Exists(filePath);
             var configNew = new Settings.Configuration(request.ConfigurationXml);
+            configNew.WebServerUri = WebServerUri;
             if(!canSave)
             {
                 var configOld = new Settings.Configuration(XElement.Load(filePath));
@@ -201,6 +204,8 @@ namespace Dev2.Runtime.Configuration
                 try
                 {
                     var xml = XElement.Load(filePath);
+                    xml.SetAttributeValue("WebServerUri", WebServerUri);
+                    
                     return new Settings.Configuration(xml);
                 }
                 // ReSharper disable EmptyGeneralCatchClause
@@ -210,7 +215,7 @@ namespace Dev2.Runtime.Configuration
                     // error occurred so ignore and load empty
                 }
             }
-            return new Settings.Configuration();
+            return new Settings.Configuration(WebServerUri);
         }
 
         #endregion

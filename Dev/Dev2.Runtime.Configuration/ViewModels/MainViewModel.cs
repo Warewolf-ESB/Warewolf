@@ -1,4 +1,6 @@
-﻿using Dev2.Runtime.Configuration.ComponentModel;
+﻿using Caliburn.Micro;
+using Dev2.Runtime.Configuration.ComponentModel;
+using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -8,25 +10,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : Conductor<SettingsViewModelBase>.Collection.OneActive
     {
-        #region INotifyPropertyChanged Impl
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region Fields
 
         private ObservableCollection<string> _errors;
@@ -95,7 +84,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             private set
             {
                 _errorsVisible = value;
-                OnPropertyChanged("ErrorsVisible");
+                NotifyOfPropertyChange(() => ErrorsVisible);
             }
         }
 
@@ -108,7 +97,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             private set
             {
                 _settingsObjects = value;
-                OnPropertyChanged("SettingsObjects");
+                NotifyOfPropertyChange(() => SettingsObjects);
             }
         }
 
@@ -121,7 +110,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             private set
             {
                 _errors = value;
-                OnPropertyChanged("Errors");
+                NotifyOfPropertyChange(() => Errors);
             }
         }
 
@@ -134,7 +123,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             set
             {
                 _selectedSettingsObjects = value;
-                OnPropertyChanged("SelectedSettingsObjects");
+                NotifyOfPropertyChange(() => SelectedSettingsObjects);
                 UpdateSettingsView(_selectedSettingsObjects);
             }
         }
@@ -148,7 +137,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             private set
             {
                 _settingsView = value;
-                OnPropertyChanged("SettingsView");
+                NotifyOfPropertyChange(() => SettingsView);
             }
         }
 
@@ -208,6 +197,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 SetError(string.Format("The following error occured while executing the save callback '{0}'.", ex.Message));
             }
+            Configuration.HasChanges = false;
         }
 
         private void Cancel()
@@ -254,24 +244,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
 
             // Instantiate view model
-            SettingsViewModelBase viewModel = CreateViewModel(settingsObject.ViewModel, settingsObject.Object);
-            if (viewModel == null)
-            {
-                SetError("Couldn't find a view model for currently seelcted settings.");
-                SettingsView = null;
-                return;
-            }
-
-            // Instantiate view
-            UserControl view = CreateView(settingsObject.View, viewModel);
-            if (view == null)
-            {
-                SetError("Couldn't find a view for currently seelcted settings.");
-                SettingsView = null;
-                return;
-            }
-
-            SettingsView = view;
+            var vm = CreateViewModel(settingsObject.ViewModel, settingsObject.Object);
+            Items.Add(vm);
+            ActivateItem(vm);
         }
 
         private SettingsViewModelBase CreateViewModel(Type viewModelType, object Object)
@@ -291,25 +266,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
             return viewModel;
         }
-
-        private UserControl CreateView(Type viewType, object dataContext)
-        {
-            UserControl view = null;
-            try
-            {
-                view = Activator.CreateInstance(viewType) as UserControl;
-            }
-            finally
-            {
-                if (view != null)
-                {
-                    view.DataContext = dataContext;
-                }
-            }
-
-            return view;
-        }
-
         #endregion
     }
 }

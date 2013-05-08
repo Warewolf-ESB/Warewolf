@@ -506,7 +506,7 @@
 							<DataTemplate>
 								<ribbon:RibbonButton Label="{Binding Label}"
 									LargeImageSource="{Binding LargeImageSource}"
-									Command="{Binding Command}" />
+									Command="{Binding Command}" /> 
 							</DataTemplate>
 						</ribbon:RibbonGroup.ItemTemplate>
 					</ribbon:RibbonGroup>

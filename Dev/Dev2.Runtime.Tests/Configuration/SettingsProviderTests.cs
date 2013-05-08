@@ -39,6 +39,7 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void InstanceExpectedReturnsSingletonInstance()
         {
+            SettingsProvider.WebServerUri = "localhost";
             var provider1 = SettingsProvider.Instance;
             var provider2 = SettingsProvider.Instance;
             Assert.AreSame(provider1, provider2);
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void InstanceExpectedIsNotNull()
         {
+            SettingsProvider.WebServerUri = "localhost";
             var provider = SettingsProvider.Instance;
             Assert.IsNotNull(provider);
         }
@@ -82,6 +84,7 @@ namespace Dev2.Tests.Runtime.Configuration
         [ExpectedException(typeof(ArgumentNullException))]
         public void ProcessMessageWithNullArgumentsExpectedThrowsArgumentNullException()
         {
+            SettingsProvider.WebServerUri = "localhost";
             var provider = new SettingsProvider();
             provider.ProcessMessage(null);
         }
@@ -90,6 +93,7 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessMessageWithValidArgumentsExpectedDoesNotReturnNull()
         {
+            SettingsProvider.WebServerUri = "localhost";
             //var request = new Mock<ISettingsMessage>();
             var request = new SettingsMessage();
             var provider = new SettingsProvider();
@@ -140,7 +144,7 @@ namespace Dev2.Tests.Runtime.Configuration
             //request.SetupProperty(m => m.ConfigurationXml);
             //request.SetupProperty(m => m.Assembly);
             //request.SetupProperty(m => m.AssemblyHashCode);
-
+            SettingsProvider.WebServerUri = "localhost";
             var provider = new SettingsProvider();
 
             var request = new SettingsMessage
@@ -165,7 +169,7 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessWriteWithOverwriteExpectedSavesConfigurationAndReturnsSuccess()
         {
-            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration();
+            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration("localhost");
 
             //var request = new Mock<ISettingsMessage>();
             //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Overwrite);
@@ -196,7 +200,7 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessWriteWithWriteAndNoFileOnDiskExpectedSavesConfigurationAndReturnsSuccess()
         {
-            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration();
+            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration("localhost");
 
             //var request = new Mock<ISettingsMessage>();
             //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
@@ -227,8 +231,8 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessWriteWithWriteAndOlderVersionOnDiskExpectedSavesConfigurationAndReturnsSuccess()
         {
-            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
-            var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 0) };
+            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration("localhost") { Version = new Version(1, 2) };
+            var configOld = new Dev2.Runtime.Configuration.Settings.Configuration("localhost") { Version = new Version(1, 0) };
 
             //var request = new Mock<ISettingsMessage>();
             //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
@@ -263,8 +267,8 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessWriteWithWriteAndSameVersionOnDiskExpectedSavesConfigurationAndReturnsSuccess()
         {
-            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
-            var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
+            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration("localhost") { Version = new Version(1, 2) };
+            var configOld = new Dev2.Runtime.Configuration.Settings.Configuration("localhost") { Version = new Version(1, 2) };
 
             //var request = new Mock<ISettingsMessage>();
             //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);
@@ -300,8 +304,8 @@ namespace Dev2.Tests.Runtime.Configuration
         [TestMethod]
         public void ProcessWriteWithWriteAndNewerVersionOnDiskExpectedDoesNotSaveConfigurationAndReturnsVersionConflict()
         {
-            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 0) };
-            var configOld = new Dev2.Runtime.Configuration.Settings.Configuration { Version = new Version(1, 2) };
+            var configNew = new Dev2.Runtime.Configuration.Settings.Configuration("localhost") { Version = new Version(1, 0) };
+            var configOld = new Dev2.Runtime.Configuration.Settings.Configuration("localhost") { Version = new Version(1, 2) };
 
             //var request = new Mock<ISettingsMessage>();
             //request.SetupGet(m => m.Action).Returns(NetworkMessageAction.Write);

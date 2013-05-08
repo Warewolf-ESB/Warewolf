@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="3">
-            <Dev2:ConnectControl Grid.Row="0" Width="250" IsEnabled="False"
+            <Dev2:ConnectControl Grid.Row="0" Width="250"
                                  LabelText="Server:" 
                                  ServerChangedCommand="{Binding SourceServerChangedCommand}"
                                  ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"

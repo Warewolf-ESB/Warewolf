@@ -2,29 +2,18 @@
 using System.ComponentModel;
 using System.Data;
 using System.Xml.Linq;
+using Caliburn.Micro;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
-    public abstract class SettingsBase : INotifyPropertyChanged
+    public abstract class SettingsBase : PropertyChangedBase
     {
-        #region INotifyPropertyChanged Impl
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
 
         #region Fields
 
         private string _settingName;
         private string _displayName;
+        string _webServerUri;
 
         #endregion
 
@@ -39,7 +28,7 @@ namespace Dev2.Runtime.Configuration.Settings
             private set
             {
                 _settingName = value;
-                OnPropertyChanged("SettingName");
+                NotifyOfPropertyChange(() => SettingName);
             }
         }
 
@@ -52,7 +41,20 @@ namespace Dev2.Runtime.Configuration.Settings
             private set
             {
                 _displayName = value;
-                OnPropertyChanged("DisplayName");
+                NotifyOfPropertyChange(() => DisplayName);
+            }
+        }
+        
+        public string WebServerUri
+        {
+            get
+            {
+                return _webServerUri;
+            }
+            private set
+            {
+                _webServerUri = value;
+                NotifyOfPropertyChange(() => WebServerUri);
             }
         }
 
@@ -60,7 +62,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region CTOR
 
-        protected SettingsBase(string settingName, string displayName)
+        protected SettingsBase(string settingName, string displayName,string webServerUri)
         {
             if(string.IsNullOrEmpty(settingName))
             {
@@ -70,24 +72,33 @@ namespace Dev2.Runtime.Configuration.Settings
             {
                 throw new ArgumentNullException("displayName");
             }
+            if (string.IsNullOrEmpty(webServerUri))
+            {
+                throw new ArgumentNullException("webServerUri");
+            }
             SettingName = settingName;
             DisplayName = displayName;
+            WebServerUri = webServerUri;
         }
 
-        protected SettingsBase(XElement xml)
+        protected SettingsBase(XElement xml,string webServerUri)
         {
             if(xml == null)
             {
                 throw new ArgumentNullException("xml");
             }
-            SettingName = xml.Name.LocalName;
-
             var displayName = xml.AttributeSafe("DisplayName");
             if(string.IsNullOrEmpty(displayName))
             {
                 throw new NoNullAllowedException("displayName");
             }
+            if (string.IsNullOrEmpty(webServerUri))
+            {
+                throw new NoNullAllowedException("webServerUri");
+            }
+            SettingName = xml.Name.LocalName;
             DisplayName = displayName;
+            WebServerUri = webServerUri;
         }
 
         #endregion

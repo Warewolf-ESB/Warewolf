@@ -26,6 +26,7 @@ using Dev2.Network.Execution;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Unlimited.Framework;
+using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
 namespace Unlimited.Applications.DynamicServicesHost
 {
@@ -314,12 +315,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
-            // PBI 1018 - Settings Framework (TWR: 2013.03.07)
-            if (!didBreak && !LoadSettingsProvider())
-            {
-                result = 95;
-                didBreak = true;
-            }
 
             if (!didBreak && !OpenNetworkExecutionChannel())
             {
@@ -340,7 +335,14 @@ namespace Unlimited.Applications.DynamicServicesHost
                 didBreak = true;
             }
 
-            //if (!didBreak && !ExecuteWorkflowGroup("Initialization"))
+            // PBI 1018 - Settings Framework (TWR: 2013.03.07)
+            if (!didBreak && !LoadSettingsProvider())
+            {
+                result = 95;
+                didBreak = true;
+            }
+
+            //if(!didBreak && !ExecuteWorkflowGroup("Initialization"))
             //{
             //    result = 5;
             //    didBreak = true;
@@ -1662,6 +1664,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             Write("Loading settings provider...  ");
             // First call to instance loads the provider.
+            var machineName = Environment.MachineName;
+            SettingsProvider.WebServerUri = string.Format("http://{0}:1234", machineName);
             var instance = Dev2.Runtime.Configuration.SettingsProvider.Instance;
             instance.Start(StudioMessaging.MessageAggregator, StudioMessaging.MessageBroker);
             WriteLine("done.");

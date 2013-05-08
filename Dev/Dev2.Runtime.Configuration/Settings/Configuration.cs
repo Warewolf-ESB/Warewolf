@@ -29,15 +29,38 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #endregion
 
-        #region Class Members
+        #region Fields
 
         private bool _hasChanges;
 
         #endregion
 
-        #region Fields
+        #region Constructors
+
+        public Configuration(string webServerUri)
+        {
+            WebServerUri = webServerUri;
+            Init(null);
+        }
+
+        public Configuration(XElement xml)
+        {
+            if(xml == null)
+            {
+                throw new ArgumentNullException("xml");
+            }
+           
+          
+            Init(xml);
+        }
+
+        #endregion
+
+        #region Properties
 
         public Version Version { get; set; }
+
+        public string WebServerUri { get; set; }
 
         public bool HasChanges
         {
@@ -51,30 +74,6 @@ namespace Dev2.Runtime.Configuration.Settings
                 OnPropertyChanged("HasChanges");
             }
         }
-
-        #endregion
-
-        #region Constructors
-
-        public Configuration()
-        {
-            Init(null);
-        }
-
-        public Configuration(XElement xml)
-        {
-            if(xml == null)
-            {
-                throw new ArgumentNullException("xml");
-            }
-
-            Init(xml);
-        }
-
-        #endregion
-
-        #region Properties
-
         [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
         public LoggingSettings Logging { get; private set; }
 
@@ -89,6 +88,7 @@ namespace Dev2.Runtime.Configuration.Settings
         public XElement ToXml()
         {
             var result = new XElement("Settings",
+                new XAttribute("WebServerUri",WebServerUri),
                 new XAttribute("Version", Version.ToString()),
                 Logging.ToXml(),
                 Security.ToXml(),
@@ -111,16 +111,17 @@ namespace Dev2.Runtime.Configuration.Settings
             if (xml == null)
             {
                 Version = new Version(1, 0);
-                Logging = new LoggingSettings();
-                Security = new SecuritySettings();
-                Backup = new BackupSettings();
+                Logging = new LoggingSettings(WebServerUri);
+                Security = new SecuritySettings(WebServerUri);
+                Backup = new BackupSettings(WebServerUri);
             }
             else
             {
+                WebServerUri = xml.AttributeSafe("WebServerUri");
                 Version = new Version(xml.AttributeSafe("Version"));
-                Logging = new LoggingSettings(xml.Element(LoggingSettings.SettingName));
-                Security = new SecuritySettings(xml.Element(SecuritySettings.SettingName));
-                Backup = new BackupSettings(xml.Element(BackupSettings.SettingName));                
+                Logging = new LoggingSettings(xml.Element(LoggingSettings.SettingName), WebServerUri);
+                Security = new SecuritySettings(xml.Element(SecuritySettings.SettingName), WebServerUri);
+                Backup = new BackupSettings(xml.Element(BackupSettings.SettingName), WebServerUri);                
             }
 
             Logging.PropertyChanged += SettingChanged;

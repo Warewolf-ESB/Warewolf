@@ -267,11 +267,14 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
-                Result = NetworkMessageResult.Success
+                Result = NetworkMessageResult.Success,
+                AssemblyHashCode = "ABC",
+                Assembly = new byte[1]
             };
 
             Mock<IEnvironmentModel> environment = Dev2MockFactory.SetupEnvironmentModel<SettingsMessage>(resultMessage);
             Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository = new Mock<IRuntimeConfigurationAssemblyRepository>();
+            assemblyRepository.Setup(r => r.Load(It.IsAny<string>())).Returns(typeof(IConfigurationAssemblyMarker).Assembly);
 
             Mock<IPopupController> popup = new Mock<IPopupController>();
             popup.Setup(p => p.Show()).Verifiable();
@@ -285,6 +288,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
 
             popup.Verify(p => p.Show(), Times.Never(), "A pop was shown on success, this means there was an unexpected error.");
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Never(), "A error dialog was shown on success, this means there was an unexpected error.");
+            Assert.IsNotNull(runtimeConfigurationViewModel.RuntimeConfigurationUserControl, "The usercontrol wasn't populated from the configuration assembly.");
         }
 
         [TestMethod]

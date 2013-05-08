@@ -35,6 +35,11 @@ namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 
             foreach(var property in properties)
             {
+                if (property.Name == "IsNotifying")
+                {
+                    continue;
+                }
+
                 var expected = xml.AttributeSafe(property.Name).ToLower();
                 var actual = property.GetValue(workflow).ToString().ToLower();
                 Assert.AreEqual(expected, actual);
@@ -55,19 +60,22 @@ namespace Dev2.Runtime.Configuration.Tests.ComponentModel
         }
 
         [TestMethod]
-        public void ToXmlExpectedSerializesEachProperty()
+        public void ToXmlExpectedSerializesIDandName()
         {
             var workflow = new WorkflowDescriptor
             {
-                WorkflowID = Guid.NewGuid(),
-                Name = "Testing123",
-                IsSelected = true
+                ResourceID = Guid.NewGuid().ToString(),
+                ResourceName = "Testing123"
             };
             var result = workflow.ToXml();
 
             var properties = workflow.GetType().GetProperties();
             foreach(var property in properties)
             {
+                if (property.Name == "IsNotifying" || property.Name == "IsSelected")
+                {
+                    continue;  
+                }
                 var expected = property.GetValue(workflow).ToString().ToLower();
                 var actual = result.AttributeSafe(property.Name).ToLower();
                 Assert.AreEqual(expected, actual);

@@ -1,29 +1,31 @@
 ﻿
 using System.ComponentModel;
+using Caliburn.Micro;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
-    public abstract class SettingsViewModelBase : INotifyPropertyChanged
+    public abstract class SettingsViewModelBase : Screen
     {
-        #region INotifyPropertyChanged Impl
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region Fields
 
         private object _object;
 
         #endregion
+
+        #region events
+
+        public delegate void UnderlyingObjectChangedHandler();
+        public event UnderlyingObjectChangedHandler UnderlyingObjectChanged;
+
+        protected void OnUnderlyingObjectChanged()
+        {
+            if (UnderlyingObjectChanged != null)
+            {
+                UnderlyingObjectChanged();
+            }
+        }
+
+        #endregion events
 
         #region Properties
 
@@ -36,10 +38,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
             set
             {
                 _object = value;
-                OnPropertyChanged("DataContext");
+                NotifyOfPropertyChange(() => Object);
+                OnUnderlyingObjectChanged();
             }
         }
 
         #endregion
+
     }
 }

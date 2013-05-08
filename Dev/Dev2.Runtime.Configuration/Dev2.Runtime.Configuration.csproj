@@ -18,6 +18,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
+    <ExpressionBlendVersion>5.2.30810.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +38,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -47,14 +54,50 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BooleanInvertConverter.cs">
+      <Link>Converters\BooleanInvertConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BoolToVisibilityConverter.cs">
+      <Link>Converters\BoolToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\NullToVisibilityConverter.cs">
+      <Link>Converters\NullToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="ComponentModel\DataListVariable.cs" />
+    <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComponentModel\SettingsObject.cs" />
     <Compile Include="ComponentModel\SettingsObjectAttribute.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
+    <Compile Include="Converters\NullToBoolConvert.cs" />
+    <Compile Include="CustomControls\AutoCompleteBox.cs" />
+    <Compile Include="CustomControls\AutoCompleteBoxAutomationPeer.cs" />
+    <Compile Include="CustomControls\AutoCompleteFilter.cs" />
+    <Compile Include="CustomControls\AutoCompleteFilterMode.cs" />
+    <Compile Include="CustomControls\AutoCompleteFilterPredicate.cs" />
+    <Compile Include="CustomControls\BindingEvaluator.cs" />
+    <Compile Include="CustomControls\DirectoryCompletionBox.cs" />
+    <Compile Include="CustomControls\Extensions.cs" />
+    <Compile Include="CustomControls\InteractionHelper.cs" />
+    <Compile Include="CustomControls\ISelectionAdapter.cs" />
+    <Compile Include="CustomControls\IUpdateVisualState.cs" />
+    <Compile Include="CustomControls\PopulatedEventArgs.cs" />
+    <Compile Include="CustomControls\PopulatedEventHandler.cs" />
+    <Compile Include="CustomControls\PopulatingEventArgs.cs" />
+    <Compile Include="CustomControls\PopulatingEventHandler.cs" />
+    <Compile Include="CustomControls\PopupHelper.cs" />
+    <Compile Include="CustomControls\RoutedPropertyChangingEventArgs.cs" />
+    <Compile Include="CustomControls\RoutedPropertyChangingEventHandler.cs" />
+    <Compile Include="CustomControls\SelectorSelectionAdapter.cs" />
+    <Compile Include="CustomControls\VisualStates.cs" />
+    <Compile Include="CustomControls\VisualTreeExtensions.cs" />
+    <Compile Include="CustomControls\WeakEventListener.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IAssemblyMarker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -71,14 +114,19 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings\BackupSettings.cs" />
+    <Compile Include="Settings\ILoggingSettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
     <Compile Include="Settings\Configuration.cs" />
     <Compile Include="Settings\SettingsBase.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
+    <Compile Include="ComponentModel\ComputerDrive.cs" />
     <Compile Include="ViewModels\LoggingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModelBase.cs" />
+    <Compile Include="Views\FileBrowser.xaml.cs">
+      <DependentUpon>FileBrowser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
@@ -95,8 +143,22 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\ConfigResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoggingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -105,6 +167,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
