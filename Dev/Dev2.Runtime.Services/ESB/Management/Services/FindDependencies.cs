@@ -27,7 +27,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
-                dependsOnMe = bool.Parse(dependsOnMeString);
+                if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
+                {
+                    dependsOnMe = false;
+                }
             }
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             return dependsOnMe ? string.Format("<graph title=\"Dependants Graph Of {0}\">{1}</graph>", resourceName, FindWhatDependsOnMe(resourceName, theWorkspace.ID)) : string.Format("<graph title=\"Dependency Graph Of {0}\">{1}</graph>", resourceName, FindDependenciesRecursive(resourceName, theWorkspace.ID));
@@ -41,7 +44,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 dependants.ForEach(c =>
                 {
-                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", c));
+                    var resource = ResourceCatalog.Instance.GetResource(workspaceID, c);
+                    var brokenString = "false";
+                    if(resource == null)
+                    {
+                        brokenString = "true";
+                    }
+                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"{1}\">", c,brokenString));
                     sb.Append(string.Format("<dependency id=\"{0}\" />", resourceName));
                     sb.Append("</node>");
                 });
@@ -90,18 +99,20 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceName);
             var sb = new StringBuilder();
-            var dependencies = resource.Dependencies;
-            if(dependencies != null)
+            var brokenString = "true";
+            if(resource != null)
             {
-                sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceName));
-                dependencies.ForEach(c => sb.Append(string.Format("<dependency id=\"{0}\" />", c.ResourceName)));
-                sb.Append("</node>");
+                brokenString = "false";
+                var dependencies = resource.Dependencies;
+                if(dependencies != null)
+                {
+                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceName));
+                    dependencies.ForEach(c => sb.Append(string.Format("<dependency id=\"{0}\" />", c.ResourceName)));
+                    sb.Append("</node>");
+                    dependencies.ToList().ForEach(c => sb.Append(FindDependenciesRecursive(c.ResourceName, workspaceID)));
+                }
             }
-            if(dependencies != null)
-            {
-                dependencies.ToList().ForEach(c => sb.Append(FindDependenciesRecursive(c.ResourceName, workspaceID)));
-            }
-            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceName));
+            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"{1}\">", resourceName,brokenString));
             sb.Append("</node>");
             var findDependenciesRecursive = sb.ToString();
             return findDependenciesRecursive;
