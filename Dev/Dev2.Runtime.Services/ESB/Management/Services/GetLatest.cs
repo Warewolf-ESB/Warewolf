@@ -5,7 +5,6 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
-using Unlimited.Framework;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -16,9 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
-
             StringBuilder result = new StringBuilder();
-
             string editedItemsXml;
 
             values.TryGetValue("EditedItemsXml", out editedItemsXml);
@@ -40,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch (Exception ex)
             {
                 result.Append("<Error>Error updating workspace</Error>");
-                TraceWriter.WriteTrace(ex.StackTrace);
+                TraceWriter.WriteTrace(ex.Message + Environment.NewLine + " Stacktrace: " + ex.StackTrace);
             }
 
             return result.ToString();

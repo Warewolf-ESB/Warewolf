@@ -224,11 +224,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void DbMethodsWithInvalidArgsExpectedReturnsEmptyList()
+        public void DbMethodsWithInvalidArgsExpectedReturnsErrorList()
         {
             var services = new Dev2.Runtime.ServiceModel.Services();
             var result = services.DbMethods("xxxx", Guid.Empty, Guid.Empty);
-            Assert.AreEqual(0, result.Count);
+            Assert.AreEqual(1, result.Count, "Got " + result);
         }
 
         [TestMethod]

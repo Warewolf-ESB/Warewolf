@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dev2.Common;
+using System;
 
 namespace Dev2.Runtime.Diagnostics
 {
@@ -21,14 +22,14 @@ namespace Dev2.Runtime.Diagnostics
         protected void RaiseError(Exception ex)
         {
             RaiseError(ex.Message);
+            ServerLogger.LogError(ex.Message + " " + ex.StackTrace);
         }
 
         protected void RaiseError(string error)
         {
             HasErrors = true;
             Error = error;
-
-            // TODO: Implement logging
+            ServerLogger.LogError(error);
         }
     }
 }

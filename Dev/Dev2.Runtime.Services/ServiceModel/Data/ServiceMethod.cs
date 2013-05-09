@@ -16,6 +16,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
         }
 
+        public ServiceMethod(string error, string stackTrace)
+            : this("Error : " + error, stackTrace, null, null, null)
+        {
+        }
+
         public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs)
         {
             Name = name;

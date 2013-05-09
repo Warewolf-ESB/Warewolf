@@ -64,15 +64,19 @@ namespace Dev2.Runtime.ServiceModel
         public ServiceMethodList DbMethods(string args, Guid workspaceID, Guid dataListID)
         {
             var result = new ServiceMethodList();
-            try
+            if (!string.IsNullOrEmpty(args))
             {
-                var source = JsonConvert.DeserializeObject<DbSource>(args);
-                var serviceMethods = FetchMethods(source);
-                result.AddRange(serviceMethods);
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
+                try
+                {
+                    var source = JsonConvert.DeserializeObject<DbSource>(args);
+                    var serviceMethods = FetchMethods(source);
+                    result.AddRange(serviceMethods);
+                }
+                catch (Exception ex)
+                {
+                    RaiseError(ex);
+                    result.Add(new ServiceMethod(ex.Message, ex.StackTrace));
+                }
             }
             return result;
         }
