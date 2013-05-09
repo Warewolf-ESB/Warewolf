@@ -14,13 +14,13 @@ namespace Dev2.Studio.Webs.Callbacks
 
         #region CTOR
 
-        public ConnectCallbackHandler()
-            : this(EnvironmentRepository.Instance)
+        public ConnectCallbackHandler(Guid? context = null)
+            : this(EnvironmentRepository.Instance, context)
         {
         }
 
-        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
-            : base(currentEnvironmentRepository)
+        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
+            : base(currentEnvironmentRepository, context)
         {
             Server = new ServerDTO();
             Uri defaultWebServerUri;
@@ -101,8 +101,8 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             CurrentEnvironmentRepository.Save(Server.Environment);
-            EventAggregator.Publish(new AddServerToExplorerMessage(Server.Environment));
-            //Mediator.SendMessage(MediatorMessages.AddServerToExplorer, Server.Environment);
+            EventAggregator.Publish(new AddServerToExplorerMessage(Server.Environment, Context));
+            EventAggregator.Publish(new AddServerToDeployMessage(Server, Context));
         }
 
         #endregion

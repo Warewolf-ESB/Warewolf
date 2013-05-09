@@ -125,6 +125,16 @@ namespace Dev2.UI
 
         #endregion
 
+        public Guid? Context
+        {
+            get { return (Guid?)GetValue(ContextProperty); }
+            set { SetValue(ContextProperty, value); }
+        }
+
+       public static readonly DependencyProperty ContextProperty =
+            DependencyProperty.Register("Context", typeof(Guid?), typeof(ConnectControl));
+
+        
         #endregion Dependency Properties
 
         #region LoadServers
@@ -184,7 +194,7 @@ namespace Dev2.UI
 
         void OnConnectClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server);
+            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, context: Context);
         }
 
         #endregion

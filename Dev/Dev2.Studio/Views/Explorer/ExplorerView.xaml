@@ -21,6 +21,7 @@
 
             <Dev2:ConnectControl Grid.ColumnSpan="2" Margin="5"
                                  LabelText="Connect:" 
+                                 Context="{Binding Context}"
                                  EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
                                  ConnectButtonAutomationID="UI_ExplorerConnectBtn_AutoID"
                                  ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"/>

@@ -17,12 +17,13 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public abstract class WebsiteCallbackHandler : IPropertyEditorWizard
     {
-        protected WebsiteCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
+        protected WebsiteCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
         {
             if(currentEnvironmentRepository == null)
             {
                 throw new ArgumentNullException("currentEnvironmentRepository");
             }
+            Context = context;
             CurrentEnvironmentRepository = currentEnvironmentRepository;
             ImportService.SatisfyImports(this);
         }
@@ -31,7 +32,8 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public Window Owner { get; set; }
 
-        public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }
+        public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }        
+        public Guid? Context { get; private set; }
 
         [Import]
         public IEventAggregator EventAggregator { get; set; }

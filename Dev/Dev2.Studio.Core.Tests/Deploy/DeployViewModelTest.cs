@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
@@ -194,7 +195,82 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region AddServerToDeployMessage
+
+        [TestMethod]
+        public void HandleAddServerToDeployMessageWithSourceContextExpectSelectedAsSource()
+        {
+            ServerDTO server;
+            DeployViewModel vm;
+            var envID = SetupVMForMessages(out server, out vm);
+
+            var sourceCtx = vm.SourceContext;
+
+            var msg = new AddServerToDeployMessage(server, sourceCtx);
+            vm.Handle(msg);
+            Assert.IsTrue(vm.SelectedSourceServer.ID.Equals(envID.ToString()));
+        }
+
+
+        [TestMethod]
+        public void HandleAddServerToDeployMessageWithDestinationContextExpectSelectedAsDestination()
+        {
+            ServerDTO server;
+            DeployViewModel vm;
+            var envID = SetupVMForMessages(out server, out vm);
+
+            var destCtx = vm.DestinationContext;
+
+            var msg = new AddServerToDeployMessage(server, destCtx);
+            vm.Handle(msg);
+            Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
+
+        }
+
+        [TestMethod]
+        public void HandleAddServerToDeployMessageWithIsSourceTrueExpectSelectedAsSource()
+        {
+            ServerDTO server;
+            DeployViewModel vm;
+            var envID = SetupVMForMessages(out server, out vm);
+
+            var msg = new AddServerToDeployMessage(server, true, false);
+            vm.Handle(msg);
+            Assert.IsTrue(vm.SelectedSourceServer.ID.Equals(envID.ToString()));
+
+        }
+
+
+        [TestMethod]
+        public void HandleAddServerToDeployMessageWithIsDestinationTrueExpectSelectedAsDestination()
+        {
+            ServerDTO server;
+            DeployViewModel vm;
+            var envID = SetupVMForMessages(out server, out vm);
+
+            var msg = new AddServerToDeployMessage(server, false, true);
+            vm.Handle(msg);
+            Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
+        }
+
+        #endregion
+
         #region CreateEnvironmentRepositoryMock
+
+        private static Guid SetupVMForMessages(out ServerDTO server, out DeployViewModel vm)
+        {
+            ImportService.CurrentContext = _okayContext;
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var envID = env.Object.ID;
+            server = new ServerDTO(env.Object);
+
+            var serverProvider = new Mock<IServerProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(new List<IServer> { server });
+            var repo = CreateEnvironmentRepositoryMock();
+
+            vm = new DeployViewModel(serverProvider.Object, repo.Object);
+            return envID;
+        }
 
         static Mock<IEnvironmentRepository> CreateEnvironmentRepositoryMock()
         {

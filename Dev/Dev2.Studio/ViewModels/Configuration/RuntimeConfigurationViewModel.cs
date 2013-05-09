@@ -31,6 +31,7 @@ namespace Dev2.Studio.ViewModels.Configuration
         private RelayCommand<IServer> _sourceServerChangedCommand;
         private bool _isWorking;
         private bool _saveSuccessfull;
+        private Guid? _context;
 
         #endregion
 
@@ -60,6 +61,14 @@ namespace Dev2.Studio.ViewModels.Configuration
         #endregion Commands
 
         #region Properties
+
+        public Guid? Context
+        {
+            get
+            {
+                return _context ?? (_context = Guid.NewGuid());
+            }
+        }
 
         /// <summary>
         /// The user control used to configure the runtime configuration

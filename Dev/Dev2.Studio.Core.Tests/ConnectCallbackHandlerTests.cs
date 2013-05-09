@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
+using System.Globalization;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -37,6 +39,8 @@ namespace Dev2.Core.Tests
 
         static ImportServiceContext ImportContext;
 
+        private static Mock<IEventAggregator> _eventAgrregator;
+
         #region Class/TestInitialize
 
         [ClassInitialize]
@@ -50,7 +54,8 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
+            _eventAgrregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer<IEventAggregator>(_eventAgrregator.Object);
 
         }
 
@@ -143,7 +148,70 @@ namespace Dev2.Core.Tests
             currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s == handler.Server.Environment)));
             // ReSharper restore PossibleUnintendedReferenceComparison
         }
+        
+        [TestMethod]
+        public void SaveWithValidConnectionExpectsAddServerToExplorerMessage()
+        {
+            var aggregator = new Mock<IEventAggregator>();
 
+            var currentRepository = new Mock<IEnvironmentRepository>();
+            currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+
+            var environmentId = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(environmentId);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(environment.Object);
+            
+            var ctx = Guid.NewGuid();
+            var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
+
+            handler.EventAggregator = aggregator.Object;
+
+            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()))
+                            .Callback<Object>(m =>
+                                {
+                                    var msg = (AddServerToExplorerMessage) m;
+                                    Assert.IsTrue(msg.Context.Equals(ctx));
+                                    Assert.IsTrue(msg.EnvironmentModel.ID.Equals(handler.Server.Environment.ID));
+                                })
+                             .Verifiable();
+
+            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+
+            aggregator.Verify(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()), Times.Once());
+        }        
+
+        [TestMethod]
+        public void SaveWithValidConnectionExpectsAddServerToDeployMessage()
+        {
+            var aggregator = new Mock<IEventAggregator>();
+
+            var currentRepository = new Mock<IEnvironmentRepository>();
+            currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+
+            var environment = new Mock<IEnvironmentModel>();
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(environment.Object);
+
+            var ctx = Guid.NewGuid();
+            var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
+
+            handler.EventAggregator = aggregator.Object;
+
+            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToDeployMessage>()))
+                            .Callback<Object>(m =>
+                            {
+                                var msg = (AddServerToDeployMessage)m;
+                                Assert.IsTrue(msg.Context.Equals(ctx));
+                                Assert.IsTrue(msg.Server.ID.ToString(CultureInfo.InvariantCulture)
+                                                 .Equals(ConnectionID.ToString(CultureInfo.InvariantCulture),
+                                                         StringComparison.InvariantCultureIgnoreCase));
+                            })
+                             .Verifiable();
+
+            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+
+            aggregator.Verify(e => e.Publish(It.IsAny<AddServerToDeployMessage>()), Times.Once());
+        }
 
         [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Tests

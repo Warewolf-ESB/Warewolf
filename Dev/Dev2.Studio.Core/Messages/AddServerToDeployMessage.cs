@@ -11,12 +11,19 @@ namespace Dev2.Studio.Core.Messages
         public IServer Server { get; set; }
         public bool IsSource { get; set; }
         public bool IsDestination { get; set; }
+        public Guid? Context { get; set; }
 
         public AddServerToDeployMessage(IServer server, bool isSource, bool isDestination)
         {
             Server = server;
             IsSource = isSource;
             IsDestination = isDestination;
+        }
+
+        public AddServerToDeployMessage(IServer server, Guid? context)
+        {
+            Server = server;
+            Context = context;
         }
     }
 }

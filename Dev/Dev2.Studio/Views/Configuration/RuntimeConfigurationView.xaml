@@ -17,7 +17,8 @@
                                  LabelText="Server:" 
                                  ServerChangedCommand="{Binding SourceServerChangedCommand}"
                                  ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
-                                 ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"/>
+                                 ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
+                                 Context="{Binding Context}" />
             <customDev2Controls:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="5,0,0,0" 
                                                     Visibility="{Binding IsWorking, Converter={StaticResource BoolToVisConverter}}"
                                                     AutomationProperties.AutomationId="UI_Progress_Indicator" />

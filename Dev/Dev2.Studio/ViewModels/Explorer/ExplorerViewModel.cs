@@ -22,6 +22,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         private RelayCommand _environmentChangedCommand;
         private enDsfActivityType _activityType;
         private bool _fromActivityDrop;
+        private Guid? _context;
 
         #endregion Class Members
 
@@ -77,6 +78,14 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public NavigationViewModel NavigationViewModel { get; set; }
 
+        public Guid? Context
+        {
+            get
+            {
+                return _context ?? (_context = Guid.NewGuid());
+            }
+        }
+
         #endregion Properties
 
         #region Private Methods
@@ -84,7 +93,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         private void AddEnvironment(IEnvironmentModel environmentModel)
         {
             EnvironmentRepository.Save(environmentModel);
-            NavigationViewModel.AddEnvironment(environmentModel);
             EnvironmentRepository.WriteSession(NavigationViewModel.Environments.Select(e => e.ID));
         }
 
@@ -202,6 +210,9 @@ namespace Dev2.Studio.ViewModels.Explorer
         public void Handle(AddServerToExplorerMessage message)
         {
             AddEnvironment(message.EnvironmentModel);
+
+            if (message.Context != null && message.Context == Context)
+                NavigationViewModel.AddEnvironment(message.EnvironmentModel);
         }
 
         #endregion

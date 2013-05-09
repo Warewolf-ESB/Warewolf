@@ -59,6 +59,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private int _sourceDeployItemCount;
         private int _destinationDeployItemCount;
+        private Guid? _destinationContext;
+        private Guid? _sourceContext;
 
         #endregion Class Members
 
@@ -123,6 +125,23 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
+
+        public Guid? SourceContext
+        {
+            get
+            {
+                return _sourceContext ?? (_sourceContext = Guid.NewGuid());
+            }
+        }
+
+        public Guid? DestinationContext
+        {
+            get
+            {
+                return _destinationContext ?? (_destinationContext = Guid.NewGuid());
+            }
+        }
+
         [Import(typeof(IWindowManager))]
         public IWindowManager WindowManager { get; set; }
 
@@ -694,7 +713,22 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(AddServerToDeployMessage message)
         {
-            AddServer(message.Server, message.IsSource, message.IsDestination);
+            if (message.Context != null)
+            {
+                var ctx = message.Context;
+                if (ctx.Equals(SourceContext))
+                {
+                    AddServer(message.Server, true, false);
+                }
+                else if (ctx.Equals(DestinationContext))
+                {
+                    AddServer(message.Server, false, true);
+                }
+            }
+            else
+            {
+                AddServer(message.Server, message.IsSource, message.IsDestination);        
+            }
         }
     }
 

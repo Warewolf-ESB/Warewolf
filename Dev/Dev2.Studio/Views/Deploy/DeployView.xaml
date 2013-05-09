@@ -37,7 +37,8 @@
                                  LabelText="Source Server:" 
                                  ServerChangedCommand="{Binding SourceServerChangedCommand}"
                                  ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
-                                 ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"/>
+                                 ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
+                                 Context="{Binding SourceContext}"/>
 
                     
                 <nv:NavigationView Grid.Row="1" DataContext="{Binding Source}" x:Name="SourceNavigationView">
@@ -108,6 +109,7 @@
                                  Margin="3"
                                  LabelText="Destination Server:" 
                                  ServerChangedCommand="{Binding TargetServerChangedCommand}"
+                                 Context="{Binding DestinationContext}"
                                  ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"/>
 

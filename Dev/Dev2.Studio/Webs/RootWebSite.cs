@@ -100,7 +100,7 @@ namespace Dev2.Studio.Webs
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null, Guid? context = null)
         {
             if (environment == null)
             {
@@ -118,7 +118,7 @@ namespace Dev2.Studio.Webs
                 case ResourceType.Server:
                     workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                     pageName = "sources/server";
-                    pageHandler = new ConnectCallbackHandler();
+                    pageHandler = new ConnectCallbackHandler(context);
                     width = 705;
                     height = 492;
                     break;
