@@ -1,4 +1,5 @@
 ﻿using Dev2;
+using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -179,13 +180,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            throw new NotImplementedException();
+            foreach (Tuple<string, string> t in updates)
+            {
+
+                if (t.Item1 == SortField)
+                {
+                    SortField = t.Item2;
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            throw new NotImplementedException();
+           
         }
+
+        #region GetForEachInputs/Outputs
+
+        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        {
+            return GetForEachItems(context, StateType.Before, SortField);
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        {
+            return new List<DsfForEachItem>();
+        }
+
+        #endregion
 
 
         #region GetDebugInputs/Outputs

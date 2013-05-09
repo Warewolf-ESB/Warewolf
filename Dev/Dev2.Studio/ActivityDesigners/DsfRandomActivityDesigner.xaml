@@ -62,7 +62,7 @@
         
         <Label Grid.Column="0" Grid.Row="1" x:Name="lblLength" Content="Range"/>
         <dev2:IntellisenseTextBox x:Name="txtFrom" 
-                                  DefaultText="Start" 
+                                  DefaultText="From" 
                                   Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.Row="1" 
                                   Margin="0,2,1,2"
@@ -89,7 +89,7 @@
         </dev2:IntellisenseTextBox>
 
         <dev2:IntellisenseTextBox x:Name="txtTo" 
-                                  DefaultText="End" 
+                                  DefaultText="To" 
                                   Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="3" Grid.Row="1" 
                                   Margin="0,2,1,2"

@@ -160,32 +160,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
 
-            //foreach (Tuple<string, string> t in updates)
-            //{
-            //    // locate all updates for this tuple
-            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
+            foreach (Tuple<string, string> t in updates)
+            {
+                // locate all updates for this tuple
+                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
 
-            //    // issues updates
-            //    foreach (var a in items)
-            //    {
-            //        a.FieldValue = t.Item2;
-            //    }
-            //}
+                // issues updates
+                foreach (var a in items)
+                {
+                    a.FieldValue = t.Item2;
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            //foreach (Tuple<string, string> t in updates)
-            //{
-            //    // locate all updates for this tuple
-            //    var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldValue.Equals(t.Item1));
+            foreach (Tuple<string, string> t in updates)
+            {
+                // locate all updates for this tuple
+                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Equals(t.Item1));
 
-            //    // issues updates
-            //    foreach (var a in items)
-            //    {
-            //        a.FieldName = t.Item2;
-            //    }
-            //}
+                // issues updates
+                foreach (var a in items)
+                {
+                    a.FieldName = t.Item2;
+                }
+            }
         }
 
         #endregion        

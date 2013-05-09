@@ -222,7 +222,6 @@ namespace ActivityUnitTests.ActivityTests
         public void Sclar_To_Base64_Back_To_Text_Expect_Original()
         {
 
-
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[test]]", "Text", "Base64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base64", "Text", "[[test]]", 2) };
             SetupArguments(
                 @"<root><test>data</test></root>"
@@ -235,7 +234,7 @@ namespace ActivityUnitTests.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, "test", out actual, out error);
 
-            Assert.AreEqual("data", actual);
+            Assert.AreEqual("data", actual, "Got " + actual);
         }
 
         #endregion Language Tests

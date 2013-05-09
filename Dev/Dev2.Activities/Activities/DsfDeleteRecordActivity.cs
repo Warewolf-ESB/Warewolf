@@ -95,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
                 if (dataObject.IsDebug)
                 {
-                    AddDebugOutputItem(RecordsetName, entry.FetchScalar().TheValue, executionID);
+                    AddDebugOutputItem(Result, entry.FetchScalar().TheValue, executionID);
                 }
                 allErrors.MergeErrors(errors);
 
@@ -177,12 +177,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            throw new NotImplementedException();
+            foreach (Tuple<string, string> t in updates)
+            {
+
+                if (t.Item1 == RecordsetName)
+                {
+                    RecordsetName = t.Item2;
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            throw new NotImplementedException();
+            if (updates.Count == 1)
+            {
+                Result = updates[0].Item2;
+            }
         }
 
         #region GetForEachInputs/Outputs

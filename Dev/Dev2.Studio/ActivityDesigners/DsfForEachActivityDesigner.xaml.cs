@@ -17,7 +17,10 @@ using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Data.Enums;
+using Dev2.DataList.Contract;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -50,11 +53,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat") >= 0);
                 if (String.IsNullOrEmpty(modelItemString)) return;
             }
-            var objectData = e.Data.GetData(modelItemString);            
+            var objectData = e.Data.GetData(modelItemString);
             ForeachActivityDesignerUtils foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
             dropEnabled = foreachActivityDesignerUtils.ForeachDropPointOnDragEnter(objectData);
             if (!dropEnabled)
-            {
+                {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
@@ -81,36 +84,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+     
+        private void Highlight(IDataListItemModel dataListItemViewModel) {
+            //List<string> containingFields = new List<string>();
 
-        private void Highlight(IDataListItemModel dataListItemViewModel)
-        {
-            List<string> containingFields = new List<string>();
+            //ForEverytxt.BorderBrush = Brushes.LightGray;
+            //ForEverytxt.BorderThickness = new Thickness(1.0);
 
-            ForEverytxt.BorderBrush = Brushes.LightGray;
-            ForEverytxt.BorderThickness = new Thickness(1.0);
+            //containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
 
-            containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
-
-            if (containingFields.Count > 0)
-            {
-                foreach (string item in containingFields)
-                {
-                    if (item.Equals("foreachElementName"))
-                    {
-                        ForEverytxt.BorderBrush = System.Windows.Media.Brushes.Aqua;
-                        ForEverytxt.BorderThickness = new Thickness(2.0);
+            //if (containingFields.Count > 0) {
+            //    foreach (string item in containingFields) {
+            //        if (item.Equals("foreachElementName")) {
+            //            ForEverytxt.BorderBrush = System.Windows.Media.Brushes.Aqua;
+            //            ForEverytxt.BorderThickness = new Thickness(2.0);
+            //        }
+            //    }
+            //}
                     }
-                }
-            }
-        }
         public void Handle(DataListItemSelectedMessage message)
         {
-            Highlight(message.DataListItemModel);
+            //Highlight(message.DataListItemModel);
         }
 
         public void Dispose()
         {
-            EventAggregator.Unsubscribe(this);
+           EventAggregator.Unsubscribe(this);
         }
 
         private void ForEverytxt_LostFocus(object sender, RoutedEventArgs e)
@@ -124,11 +123,50 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //            textBox.Text = textBox.Text.Insert(textBox.Text.IndexOf("]"), "()");
             //        }
             //    }
-            //else if (textBox.Text.EndsWith("]]") && tokens.Count() > 3) {
-            // we have a recursive evaluation happening, only scalars or recordset().field are allowed
+                //else if (textBox.Text.EndsWith("]]") && tokens.Count() > 3) {
+                // we have a recursive evaluation happening, only scalars or recordset().field are allowed
 
+                //}
             //}
-            //}
+        }
+
+        void CbxForEachType_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox cbx = sender as ComboBox;
+            if (cbx != null)
+            {
+                if (cbx.Items.Count == 0)
+                {
+                    cbx.ItemsSource = Dev2EnumConverter.ConvertEnumsTypeToStringList<enForEachType>();
+                }
+            }
+        }
+
+        void CbxForEachType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {          
+            switch ((string)e.AddedItems[0])
+            {
+                case "* in Range":
+                    txtFrom.Visibility = Visibility.Visible;
+                    txtTo.Visibility = Visibility.Visible;
+                    txtCSVIndexes.Visibility = Visibility.Hidden;
+                    txtNumber.Visibility = Visibility.Hidden;
+                    break;
+
+                case "* in CSV":
+                    txtFrom.Visibility = Visibility.Hidden;
+                    txtTo.Visibility = Visibility.Hidden;
+                    txtCSVIndexes.Visibility = Visibility.Visible;
+                    txtNumber.Visibility = Visibility.Hidden;
+                    break;
+
+                default:
+                    txtFrom.Visibility = Visibility.Hidden;
+                    txtTo.Visibility = Visibility.Hidden;
+                    txtCSVIndexes.Visibility = Visibility.Hidden;
+                    txtNumber.Visibility = Visibility.Visible;
+                    break;
+            }
         }
     }
 }

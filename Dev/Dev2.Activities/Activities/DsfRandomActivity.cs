@@ -12,6 +12,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Activities
 {
@@ -27,17 +28,21 @@ namespace Dev2.Activities
         #region Properties
 
         [FindMissing]
+        [Inputs("Length")]
         public string Length { get; set; }
 
         public enRandomType RandomType { get; set; }       
 
         [FindMissing]
+        [Inputs("From")]
         public string From { get; set; }
 
         [FindMissing]
+        [Inputs("To")]
         public string To { get; set; }
 
         [FindMissing]
+        [Outputs("Result")]
         public string Result { get; set; }
 
         #endregion
@@ -194,10 +199,32 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            foreach (Tuple<string, string> t in updates)
+            {
+
+                if (t.Item1 == From)
+                {
+                    From = t.Item2;
+                }
+
+                if (t.Item1 == To)
+                {
+                    To = t.Item2;
+                }
+
+                if (t.Item1 == Length)
+                {
+                    Length = t.Item2;
+                }                
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            if (updates.Count == 1)
+            {
+                Result = updates[0].Item2;
+            }
         }
 
         #endregion
@@ -323,5 +350,19 @@ namespace Dev2.Activities
         }
 
         #endregion Get Inputs/Outputs
+
+        #region GetForEachInputs/Outputs
+
+        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        {
+            return GetForEachItems(context, StateType.Before,To,From,Length);
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        {
+            return GetForEachItems(context, StateType.After, Result);
+        }
+
+        #endregion
     }
 }

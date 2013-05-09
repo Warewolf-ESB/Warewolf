@@ -511,17 +511,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var exactMatch = !s.EndsWith("()]]");
                         var matchText = exactMatch ? s : s.TrimStart('[').TrimEnd(']');
 
-                        result.AddRange((from item in items
-                                         where exactMatch
-                                                   ? string.Compare(matchText, item.Name, StringComparison.OrdinalIgnoreCase) == 0
-                                                   : item.Name.Contains(matchText) //Need to loop through all fields
-                                         select new DsfForEachItem
-                                         {
-                                             GroupID = item.GroupID,
-                                             Name = item.Name.Replace("(", "(" + item.RowIndex),
-                                             Value = item.Value,
-                                             RowIndex = item.RowIndex
-                                         }));
+                        if(stateType == StateType.Before)
+                        {
+                            result.AddRange((from item in items
+                                             where exactMatch
+                                                       ? string.Compare(matchText, item.Name, StringComparison.OrdinalIgnoreCase) == 0
+                                                       : item.Name.Contains(matchText) //Need to loop through all fields
+                                             select new DsfForEachItem
+                                             {
+                                                 GroupID = item.GroupID,
+                                                 Name = item.Name.Replace("(", "(" + item.RowIndex),
+                                                 Value = item.Value,
+                                                 RowIndex = item.RowIndex
+                                             }));
+                        }
+                        else if(stateType == StateType.After)
+                        {
+                            result.AddRange((from item in items
+                                             where exactMatch
+                                                       ? string.Compare(matchText, item.Name, StringComparison.OrdinalIgnoreCase) == 0
+                                                       : item.Name.Contains(matchText) //Need to loop through all fields
+                                             select new DsfForEachItem
+                                             {
+                                                 GroupID = item.GroupID,
+                                                 Name = item.Name.Replace("(", "(" + item.RowIndex),
+                                                 Value = item.Name,
+                                                 RowIndex = item.RowIndex
+                                             }));
+                        }
+                        
                     }
                     else
                     {

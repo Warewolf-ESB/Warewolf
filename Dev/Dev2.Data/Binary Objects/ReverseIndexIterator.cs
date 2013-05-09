@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Dev2.Data.Binary_Objects
 {
     [Serializable]
-    public class IndexIterator : IIndexIterator
+    public class ReverseIndexIterator : IIndexIterator
     {
-        private int _curValue;
+         private int _curValue;
         private IndexList _indexList;
 
         public IndexList IndexList
@@ -29,7 +31,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool IsEmpty { get { return (_curValue - Count == 0); } }
 
-        public IndexIterator(HashSet<int> gaps, int maxValue)
+        public ReverseIndexIterator(HashSet<int> gaps, int maxValue)
         {
             IndexList = new IndexList(gaps, maxValue);
             _curValue = 1;
@@ -40,10 +42,10 @@ namespace Dev2.Data.Binary_Objects
             int canidate = _curValue;
             while (IndexList.Gaps.Contains(canidate))
             {
-                canidate++;
+                canidate--;
             }
 
-            return (canidate <= IndexList.MaxValue);
+            return (canidate >= IndexList.MaxValue);
         }
 
         public int FetchNextIndex()
@@ -55,12 +57,12 @@ namespace Dev2.Data.Binary_Objects
             // _curValue++;
             while (IndexList.Gaps.Contains(canidate))
             {
-                canidate++;
+                canidate--;
             }
 
             result = canidate;
 
-            _curValue = canidate + 1; // save next value ;)
+            _curValue = canidate - 1; // save next value ;)
 
             return result;
         }
@@ -94,6 +96,5 @@ namespace Dev2.Data.Binary_Objects
             }
             return new IndexIterator(gaps, IndexList.MaxValue);
         }
-
     }
 }

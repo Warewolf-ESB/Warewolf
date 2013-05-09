@@ -96,5 +96,20 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         }
 
         #endregion Scalar Tests
+
+        #region All Tools Test
+
+        [TestMethod]
+        public void ForEachAllToolsTest()
+        {
+            string PostData = String.Format("{0}{1}", WebserverURI, "ForEachUpgradeTest");
+            string expected = @"<Result>ForEach: Success</Result>";
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+        }
+
+        #endregion Scalar Tests
     }
 }

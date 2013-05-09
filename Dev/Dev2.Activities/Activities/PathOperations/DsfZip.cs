@@ -224,7 +224,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (updates.Count == 1)
             {
-                OutputPath = updates[0].Item2;
+                Result = updates[0].Item2;
             }
         }
 

@@ -214,20 +214,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ComboBox cbx = sender as ComboBox;
             dynamic temp = cbx.DataContext;
-            string selectedVal = temp.ConvertType;
-            if (cbx != null)
+            if(temp != null)
             {
-                if (cbx.Items.Count == 0)
+                string selectedVal = temp.ConvertType;
+                if(cbx != null)
                 {
-                    cbx.ItemsSource = CaseConverter.ConvertTypes;
-                }
-                if (string.IsNullOrWhiteSpace(selectedVal))
-                {
-                    cbx.SelectedIndex = 0;
-                }
-                else
-                {
-                    cbx.SelectedValue = selectedVal;
+                    if(cbx.Items.Count == 0)
+                    {
+                        cbx.ItemsSource = CaseConverter.ConvertTypes;
+                    }
+                    if(string.IsNullOrWhiteSpace(selectedVal))
+                    {
+                        cbx.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        cbx.SelectedValue = selectedVal;
+                    }
                 }
             }
         }

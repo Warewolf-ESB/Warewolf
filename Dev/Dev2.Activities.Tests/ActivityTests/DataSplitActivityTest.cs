@@ -1,4 +1,5 @@
 ﻿using Dev2;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -110,14 +111,14 @@ namespace ActivityUnitTests.ActivityTest
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
-            string expected = @"896";
+            string expected = @"Title|Fname|LNa";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
             }
             else
             {
@@ -138,9 +139,9 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { @"896", "5.Sir|Ric", "hard|", "Branson|0812457" };
+            List<string> expected = new List<string> { @"Title|Fname|LNa", "me|TelNo|", "1.Mr", "|Frank|Williams" };
             List<string> actual = new List<string>();
-            List<string> errors = new List<string>();
+
             for (int i = 1; i <= 4; i++)
             {
                 string returnVal = string.Empty;
@@ -148,7 +149,7 @@ namespace ActivityUnitTests.ActivityTest
                 GetScalarValueFromDataList(result.DataListID, "OutVar" + i, out returnVal, out error);
                 actual.Add(returnVal.Trim());
             }
-            ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            Utils.StringComparer comparer = new Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -229,45 +230,46 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = @"Branson|0812457";
+            string expected = @"me|TelNo|
+1.Mr";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
         }
 
         // Bug : 8725
-        //[TestMethod]
-        //public void NoResultVariableInAnyRow_Expected_Still_Split_But_Dont_Insert_Any()
-        //{
+        [TestMethod]
+        public void NoResultVariableInAnyRow_Expected_Still_Split_But_Dont_Insert_Any()
+        {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 2));
+            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
 
-        //    _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
-        //    _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 2));
-        //    SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
+            IDSFDataObject result = ExecuteProcess();
 
-        //    IDSFDataObject result = ExecuteProcess();
+            List<bool> isPopulated = new List<bool>();
+            ErrorResultTO errors = new ErrorResultTO();
+            IBinaryDataList dList = compiler.FetchBinaryDataList(result.DataListID, out errors);
 
-        //    List<bool> isPopulated = new List<bool>();
-        //    ErrorResultTO errors = new ErrorResultTO();
-        //    IBinaryDataList dList = _compiler.FetchBinaryDataList(result.DataListID, out errors);
+            foreach (string data in dList.FetchAllKeys())
+            {
+                IBinaryDataListEntry entry = null;
+                string error = string.Empty;
+                dList.TryGetEntry(data, out entry, out error);
+                if (entry.FetchAppendRecordsetIndex() == 1)
+                {
+                    isPopulated.Add(false);
+                }
+                else
+                {
+                    isPopulated.Add(true);
+                }
+            }
 
-        //    foreach (string data in dList.FetchAllKeys())
-        //    {
-        //        IBinaryDataListEntry entry = null;
-        //        string error = string.Empty;
-        //        dList.TryGetEntry(data, out entry, out error);
-        //        if (entry.FetchAppendRecordsetIndex() == 1)
-        //        {
-        //            isPopulated.Add(false);
-        //        }
-        //        else
-        //        {
-        //            isPopulated.Add(true);
-        //        }
-        //    }
-
-        //    CollectionAssert.DoesNotContain(isPopulated, true);
-        //}
+            CollectionAssert.DoesNotContain(isPopulated, true);
+        }
 
         [TestMethod]
         public void IndexTypeSplit_Expected_Split_At_An_Index()
@@ -276,13 +278,13 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "896";
+            string expected = "Title|Fname|LNa";
             string actual = string.Empty;
             string error = string.Empty;
 
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, "Got " + actual + " but expected " + expected);
         }
 
         [TestMethod]
@@ -295,7 +297,7 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"0812457896";
+            string expected = @"Title";
             string actual = string.Empty;
             string error = string.Empty;
 
@@ -319,13 +321,9 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
 
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out tempResult, out error);
-            Assert.AreEqual("Mr", tempResult);
+            Assert.AreEqual("Title", tempResult);
             GetScalarValueFromDataList(result.DataListID, "OutVar2", out tempResult, out error);
-            Assert.AreEqual(@"Frank|Williams|0795628443
-2.Mr|Enzo|Ferrari|0821169853
-3.Mrs|Jenny|Smith|0762458963
-4.Ms|Kerrin|deSilvia|0724587310
-5.Sir|Richard|Branson|0812457896", tempResult.Trim());
+            Assert.AreEqual(@"Fname|LName|TelNo|", tempResult.Trim());
 
         }
 
@@ -371,7 +369,7 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "spaces", "with" };
+            List<string> expected = new List<string> { "Test", "source" };
             List<string> actual = new List<string>();
             string tempActual = string.Empty;
             string error = string.Empty;
@@ -392,14 +390,14 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"5.Sir|Richard|Branson|0812457896";
+            string expected = @"Title|Fname|LName|TelNo|";
             string actual = string.Empty;
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
             }
             else
             {

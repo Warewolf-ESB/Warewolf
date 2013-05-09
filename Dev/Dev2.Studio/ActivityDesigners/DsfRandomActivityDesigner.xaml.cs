@@ -51,19 +51,15 @@ namespace Dev2.Studio.ActivityDesigners
 
             switch ((string)e.AddedItems[0])
             {
-                case "GUID":
-                    txtLength.Text = string.Empty;
-                    txtLength.IsEnabled = false;
-                    txtFrom.Visibility = Visibility.Hidden;
-                    txtFrom.Text = string.Empty;
-                    txtTo.Text = string.Empty;
+                case "GUID":                    
+                    txtLength.IsEnabled = false;                    
+                    txtFrom.Visibility = Visibility.Hidden;                
                     txtTo.Visibility = Visibility.Hidden;
                     lblTo.Visibility = Visibility.Hidden;
                     lblLength.Content = "Length";
                     break;
 
-                case "Numbers":
-                    txtLength.Text = string.Empty;
+                case "Numbers":               
                     txtLength.IsEnabled = false;
                     txtFrom.Visibility = Visibility.Visible;                    
                     txtTo.Visibility = Visibility.Visible;
@@ -72,9 +68,7 @@ namespace Dev2.Studio.ActivityDesigners
                     break;               
                
                 default:                    
-                    txtLength.IsEnabled = true;
-                    txtFrom.Text = string.Empty;
-                    txtTo.Text = string.Empty;
+                    txtLength.IsEnabled = true;                  
                     txtFrom.Visibility = Visibility.Hidden;   
                     txtTo.Visibility = Visibility.Hidden;
                     lblTo.Visibility = Visibility.Hidden;

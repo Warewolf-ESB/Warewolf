@@ -357,7 +357,6 @@
     <Compile Include="Utils\DsfActivityDropUtils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingInputAction.cs" />
     <Compile Include="ViewModels\DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="ViewModels\DataList\DataListViewModel.cs" />

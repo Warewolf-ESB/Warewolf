@@ -107,14 +107,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (ResultsCollection.Count > 0)
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
+                    
                     if (dataObject.IsDebug)
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);
                     }
+
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                     string tmp = string.Empty;
+
+                    bool singleInnerIteration = ArePureScalarTargets(ResultsCollection);
+                    bool exit = false;
                     while (itr.HasMoreRecords())
                     {
                         IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
@@ -132,8 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
                                 
-
-                                while (tokenizer.HasMoreOps())
+                                while (tokenizer.HasMoreOps() && !exit)
                                 {
                                      tmp = tokenizer.NextToken();                                   
 
@@ -146,18 +150,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     if (pos == end)
                                     {
                                         pos = 0;
-                                        opCnt++;
-                                        //IList<IDataListPayloadIterationFrame<string>> frames = toUpsert.FetchFrames(false);                                        
+                                        opCnt++;                                     
 
                                         toUpsert.FlushIterationFrame();
-                                        
-                                        //if (dataObject.IsDebug)
-                                        //{
-                                        //    foreach(IDataListPayloadIterationFrame<string> dataListPayloadIterationFrame in frames)
-                                        //    {
-                                        //        AddDebugOutputItem(dataListPayloadIterationFrame.FetchNextFrameItem().Expression, dataListPayloadIterationFrame.FetchNextFrameItem().Value, pos + 1, dlID);    
-                                        //    }                                            
-                                        //}
+
+                                        if (singleInnerIteration)
+                                        {
+                                            exit = true;
+                                        }
                                     }
                                     else
                                     {
@@ -186,6 +186,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
                                     
                                 }
+
                                 toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
                             }
@@ -222,6 +223,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Private Methods
+
+        private bool ArePureScalarTargets(IList<DataSplitDTO> args)
+        {
+
+            foreach (var arg in args)
+            {
+                if(DataListUtil.IsValueRecordset(arg.OutputVariable))
+                {
+                    return false;
+                }    
+            }
+
+            return true;
+        }
 
         private void AddSourceStringDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId)
         {

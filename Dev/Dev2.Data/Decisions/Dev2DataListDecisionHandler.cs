@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Utils;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -75,8 +76,8 @@ namespace Dev2.Data.Decision
             
             if (tmp != null)
             {
-                string model = tmp.FetchScalar().TheValue; // Get evalauted data value
-
+                string model = tmp.FetchScalar().TheValue; // Get evalauted data value                
+                model = JSONUtils.ReplaceSlashes(model);                
                 if (dlID != GlobalConstants.NullDataListID)
                 {
 

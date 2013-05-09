@@ -400,7 +400,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // locate all updates for this tuple
                 Tuple<string, string> t1 = t;
-                var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.ToExpression) && c.FromExpression.Equals(t1.Item1)));
+                //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
+                //var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.ToExpression) && c.FromExpression.Equals(t1.Item1)));
+                var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Equals(t1.Item1)));
 
                 // issues updates
                 foreach (var a in items)
@@ -426,6 +428,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
         {
+            //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
+            _foreachItems = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression)).Select(c => c.FromExpression).ToArray();
             return GetForEachItems(context, StateType.After, _foreachItems);
         }
 
