@@ -91,17 +91,17 @@ namespace Dev2.Utilities
 
         public static void SetArmText(ModelItem decisionActivity, Dev2DecisionStack dds)
         {
-            SetArmText(decisionActivity, dds, GlobalConstants.TrueArmPropertyText);
-            SetArmText(decisionActivity, dds, GlobalConstants.FalseArmPropertyText);
+            SetArmText(decisionActivity, GlobalConstants.TrueArmPropertyText, dds.TrueArmText);
+            SetArmText(decisionActivity, GlobalConstants.FalseArmPropertyText, dds.FalseArmText);
         }
 
-        public static void SetArmText(ModelItem decisionActivity, Dev2DecisionStack dds, string armType)
+        public static void SetArmText(ModelItem decisionActivity, string armType, string val)
         {
             ModelProperty tArm = decisionActivity.Properties[armType];
 
             if (tArm != null)
             {
-                tArm.SetValue(dds.TrueArmText);
+                tArm.SetValue(val);
             }
         }
 
@@ -113,6 +113,14 @@ namespace Dev2.Utilities
             if (activity == null) return null;
             ModelProperty property = activity.Properties[expressionProperty];
             return property == null ? null : property.Value;
+        }
+
+        public static ModelItem GetRootActivityFromWrapper<T>(Tuple<ModelItem, T> wrapper)
+        {
+
+            ModelItem activity = wrapper.Item1;
+            if (activity == null) return null;
+            return activity;
         }
     }
 }

@@ -62,7 +62,9 @@ namespace Dev2.Studio.Controller
             IEnvironmentModel environment = wrapper.Item2;
 
             var activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.ConditionPropertyText);
-            if (activity == null)
+            var rootActivity = ActivityHelper.GetRootActivityFromWrapper(wrapper);
+
+            if (activity == null || rootActivity == null)
             {
                 return;
             }
@@ -102,9 +104,11 @@ namespace Dev2.Studio.Controller
                     return;
                 }
 
+                //activityExpression.Properties[GlobalConstants.TrueArmPropertyText];
+
                 ActivityHelper.SetArmTextDefaults(dds);
                 ActivityHelper.InjectExpression(dds, activityExpression);
-                ActivityHelper.SetArmText(activity, dds);
+                ActivityHelper.SetArmText(rootActivity, dds);
             }
             catch
             {
