@@ -40,10 +40,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>C:\Development\Dev\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>C:\Development\Dev\Binaries\Moq.dll</HintPath>
+      <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
