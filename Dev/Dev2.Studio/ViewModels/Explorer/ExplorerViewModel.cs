@@ -92,6 +92,12 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private void AddEnvironment(IEnvironmentModel environmentModel)
         {
+            NavigationViewModel.AddEnvironment(environmentModel);
+            SaveEnvironment(environmentModel);
+        }
+
+        private void SaveEnvironment(IEnvironmentModel environmentModel)
+        {
             EnvironmentRepository.Save(environmentModel);
             EnvironmentRepository.WriteSession(NavigationViewModel.Environments.Select(e => e.ID));
         }
@@ -209,7 +215,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(AddServerToExplorerMessage message)
         {
-            AddEnvironment(message.EnvironmentModel);
+            SaveEnvironment(message.EnvironmentModel);
 
             if (message.Context != null && message.Context == Context)
                 NavigationViewModel.AddEnvironment(message.EnvironmentModel);

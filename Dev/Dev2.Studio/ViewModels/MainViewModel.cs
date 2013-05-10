@@ -203,7 +203,8 @@ namespace Dev2.Studio.ViewModels
 
         public ICommand DeployAllCommand
         {
-            get { return _deployAllCommand ?? (_deployAllCommand = new RelayCommand(param => DeployAll())); }
+            get { return _deployAllCommand ?? (_deployAllCommand = new RelayCommand(param => DeployAll(),
+                                                                       param => IsActiveEnvironmentConnected())); }
         }
 
         public ICommand ResetLayoutCommand
@@ -223,7 +224,8 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _settingsCommand ?? (_settingsCommand =
-                                            new RelayCommand(param => AddSettingsWorkSurface(ActiveEnvironment)));
+                                            new RelayCommand(param => AddSettingsWorkSurface(ActiveEnvironment),
+                                                                       param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -253,7 +255,8 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _deployCommand ??
-                       (_deployCommand = new RelayCommand(param => AddDeployResourcesWorkSurface(CurrentResourceModel)));
+                       (_deployCommand = new RelayCommand(param => AddDeployResourcesWorkSurface(CurrentResourceModel),
+                                                                       param => IsActiveEnvironmentConnected()));
             }
         }
 
