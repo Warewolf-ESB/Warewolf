@@ -1,4 +1,5 @@
-﻿using Dev2.Runtime.ServiceModel.Data;
+﻿using Dev2.Common;
+using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -79,7 +80,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 throw new ArgumentNullException("dbService.Source");
             }
 
-            IOutputDescription result;
+            IOutputDescription result = null;
             using (var conn = CreateConnection(dbService.Source.ConnectionString))
             {
                 conn.Open();
@@ -104,10 +105,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
-                    if(!string.IsNullOrEmpty(xmlResult))
+                    if (!string.IsNullOrEmpty(xmlResult))
                     {
                         dataSourceShape.Paths.AddRange(dataBrowser.Map(xmlResult));
                     }
+                }
+                catch (Exception e)
+                {
+                    ServerLogger.LogError(e);
                 }
                 finally
                 {
@@ -117,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     }
                     catch(Exception e)
                     {
-                        TraceWriter.WriteTrace("Transactional Error : " + e.Message + Environment.NewLine + e.StackTrace);
+                        ServerLogger.LogError("Transactional Error : " + e.Message + Environment.NewLine + e.StackTrace);
                     }
                 }
             }
@@ -149,11 +154,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                         {
                             read = rowProcessor(reader);
                         }
-                        catch(Exception)
+                        catch(Exception e)
                         {
-                            if(!continueOnProcessorException)
+                            if (!continueOnProcessorException)
                             {
                                 throw;
+                            }
+                            else
+                            {
+                                ServerLogger.LogError(e);
                             }
                         }
 

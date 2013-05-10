@@ -6,7 +6,7 @@ using System.Text;
 namespace Dev2.Common
 {
     /// <summary>
-    /// Environment  Variables to be used in the Server
+    /// Environment Variables to be used in the Server
     /// </summary>
     public static class EnvironmentVariables
     {

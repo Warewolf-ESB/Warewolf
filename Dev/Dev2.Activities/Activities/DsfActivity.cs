@@ -199,6 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             // 1) I need to build iterators to loop
                             Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
+                            Dev2ActivityIOIteration outputItr = new Dev2ActivityIOIteration();
 
                             int iterateTotal = 2;
                             // only iterate if we are not invoking from a for each ;)
@@ -210,6 +211,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             // save input mapping to restore later
                             string newInputs = InputMapping;
+                            string newOutputs = OutputMapping;
                             int iterateIdx = 1;
 
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
@@ -237,7 +239,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 compiler.SetParentID(resultID, datalistID);
                                 //  Do Output shaping
-                                compiler.Shape(resultID, enDev2ArgumentType.Output, OutputMapping, out tmpErrors);
+                                string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
+                                compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
                                 if (!dataObject.IsDataListScoped)

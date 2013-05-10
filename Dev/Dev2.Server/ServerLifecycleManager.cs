@@ -67,6 +67,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             bool commandLineParameterProcessed = false;
             if (options.Install)
             {
+                ServerLogger.LogToWinApplicationEvents("Install Server", EventLogEntryType.Information);
+
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -82,6 +84,8 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.StartService)
             {
+                ServerLogger.LogToWinApplicationEvents("Start Server", EventLogEntryType.Information);
+
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -97,6 +101,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.StopService)
             {
+                ServerLogger.LogToWinApplicationEvents("Stop Server", EventLogEntryType.Information);
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -112,6 +117,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.Uninstall)
             {
+                ServerLogger.LogToWinApplicationEvents("Uninstall Server", EventLogEntryType.Information);
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -426,26 +432,37 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         private static bool EnsureRunningAsAdministrator(string[] arguments)
         {
-            if (!IsElevated())
+
+            try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location);
-                startInfo.Verb = "runas";
-                startInfo.Arguments = string.Join(" ", arguments);
-
-                Process process = new Process();
-                process.StartInfo = startInfo;
-
-                try
+                if (!IsElevated())
                 {
-                    process.Start();
-                }
-                catch (Exception)
-                {
-                    //Intentionally left blank incase the user denies the app admin
-                    //privilidges.
-                }
+                    ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location);
+                    startInfo.Verb = "runas";
+                    startInfo.Arguments = string.Join(" ", arguments);
 
-                return false;
+                    Process process = new Process();
+                    process.StartInfo = startInfo;
+
+                    try
+                    {
+                        process.Start();
+                    }
+                    catch (Exception e)
+                    {
+                        ServerLogger.LogToWinApplicationEvents(
+                            "Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,
+                            EventLogEntryType.Error);
+                        //Intentionally left blank incase the user denies the app admin
+                        //privilidges.
+                    }
+
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                ServerLogger.LogToWinApplicationEvents("Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,EventLogEntryType.Error);
             }
 
             return true;
@@ -1518,7 +1535,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         private void Fail(string message, Exception e)
         {
             WriteLine("Critical Failure: " + message);
-
+            ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + e.Message + Environment.NewLine + "StackTrace : " + e.StackTrace, EventLogEntryType.Error);
+            
             if (e != null)
             {
                 WriteLine("Details");
@@ -1535,6 +1553,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         private void Fail(string message, string details)
         {
             WriteLine("Critical Failure: " + message);
+            ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + message + Environment.NewLine + "Details : " + details, EventLogEntryType.Error);
+
 
             if (!String.IsNullOrEmpty(details))
             {

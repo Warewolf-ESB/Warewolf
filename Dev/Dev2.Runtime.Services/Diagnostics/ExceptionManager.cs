@@ -22,14 +22,15 @@ namespace Dev2.Runtime.Diagnostics
         protected void RaiseError(Exception ex)
         {
             RaiseError(ex.Message);
-            ServerLogger.LogError(ex.Message + " " + ex.StackTrace);
+            ServerLogger.LogMessage(ex.Message + " Stacktrace : " + ex.Message);
         }
 
         protected void RaiseError(string error)
         {
             HasErrors = true;
             Error = error;
-            ServerLogger.LogError(error);
+
+            ServerLogger.LogMessage(error);
         }
     }
 }

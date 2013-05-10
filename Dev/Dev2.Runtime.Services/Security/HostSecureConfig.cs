@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dev2.Common;
+using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
@@ -7,11 +8,16 @@ using System.Xml.Linq;
 
 namespace Dev2.Runtime.Security
 {
+    /// <summary>
+    /// The Secure Config
+    /// </summary>
     public class HostSecureConfig : ISecureConfig
     {
         const string SectionName = "secureSettings";
 
         public const string FileName = "Dev2.Server.exe.secureconfig";
+
+        //public static string LiveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Dev2", FileName);
 
         #region Ctor
 
@@ -84,6 +90,7 @@ namespace Dev2.Runtime.Security
 
                 if (shouldProtectConfig)
                 {
+                    ServerLogger.LogMessage("Protecting Config...");
                     ProtectConfig();
                 }
             }
@@ -95,6 +102,7 @@ namespace Dev2.Runtime.Security
 
         private void EnsureSecureConfigFileExists()
         {
+            // We need to check both the live and development paths ;)
             if (!File.Exists(FileName))
             {
                 var newSettings = new NameValueCollection();
@@ -137,19 +145,27 @@ namespace Dev2.Runtime.Security
         /// </summary>
         protected virtual void ProtectConfig()
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var section = config.GetSection(SectionName);
-            if (section != null)
+            try
             {
-                if (!section.SectionInformation.IsProtected)
+                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var section = config.GetSection(SectionName);
+                if (section != null)
                 {
-                    if (!section.ElementInformation.IsLocked)
+                    if (!section.SectionInformation.IsProtected)
                     {
-                        section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
-                        section.SectionInformation.ForceSave = true;
-                        config.Save(ConfigurationSaveMode.Full);
+                        if (!section.ElementInformation.IsLocked)
+                        {
+                            section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
+                            section.SectionInformation.ForceSave = true;
+                            config.Save(ConfigurationSaveMode.Full);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                ServerLogger.LogError(e);
+                throw e;
             }
         }
 

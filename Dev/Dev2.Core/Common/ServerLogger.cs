@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Dev2.Common
@@ -22,6 +23,7 @@ namespace Dev2.Common
     public static class ServerLogger
     {
 
+        private static string _evtSrc = "Warewolf Server";
         // Configured via ServerLifeCycleManager ;)
 
         /// <summary>
@@ -104,6 +106,25 @@ namespace Dev2.Common
             {
                 InternalLogMessage(message, "ERROR");
             }
+        }
+
+        public static void LogError(Exception e)
+        {
+            if (EnableErrorOutput)
+            {
+                InternalLogMessage(e.Message + Environment.NewLine + e.StackTrace, "ERROR");
+            }
+        }
+
+        
+        public static void LogToWinApplicationEvents(string message, EventLogEntryType typeOf)
+        {
+            if (!EventLog.SourceExists(_evtSrc))
+            {
+                EventLog.CreateEventSource(_evtSrc, "Application");
+            }
+
+            EventLog.WriteEntry(_evtSrc, message, typeOf);
         }
 
         /// <summary>

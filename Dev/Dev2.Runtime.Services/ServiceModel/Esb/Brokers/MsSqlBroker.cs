@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -27,6 +28,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             Func<IDbCommand, IList<IDataParameter>, string, bool> functionProcessor, bool continueOnProcessorException = false)
         {
             var sqlConnection = connection as SqlConnection;
+
             if (sqlConnection == null)
             {
                 throw new ArgumentException(string.Format("Expected type '{0}', received '{1}'.", typeof(SqlConnection), connection), "connection");
@@ -205,18 +207,28 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 Func<IDataReader, bool> helptextProcessor = reader =>
                 {
-                    object value = reader.GetValue(0);
-                    if (value != null)
-                    {
-                        sb.Append(value.ToString());
-                    }
-                    return true;
+                        object value = reader.GetValue(0);
+                        if (value != null)
+                        {
+                            sb.Append(value.ToString());
+                        }
+
+                        return true;
                 };
-                ExecuteSelect(helpTextCommand, helptextProcessor, false, CommandBehavior.Default);
+
+                ExecuteSelect(helpTextCommand, helptextProcessor, true, CommandBehavior.Default);
             }
-            finally
+            catch (Exception e)
+            {
+                ServerLogger.LogError(e);   
+            }finally
             {
                 helpTextCommand.Dispose();
+            }
+
+            if (sb.Length == 0)
+            {
+                sb.Append("Error : Could not fetch source.");
             }
 
             return sb.ToString();
@@ -330,8 +342,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 SqlCommandBuilder.DeriveParameters(command);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                ServerLogger.LogError(e);
                 return false;
             }
         }
