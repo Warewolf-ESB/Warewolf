@@ -17,6 +17,7 @@ namespace Dev2.Runtime.Configuration.Settings
         bool IsInputLogged { get; set; }
         bool IsOutputLogged { get; set; }
         bool LogAll { get; set; }
+        bool IsInitializing { get; set; }
         int NestedLevelCount { get; set; }
         string LogFileDirectory { get; set; }
         string ServiceInput { get; set; }

@@ -124,6 +124,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         public void UpdateSelection()
         {
             LoggingSettings.NotifyOfPropertyChange("Workflows");
+            LoggingSettings.NotifyOfPropertyChange("PostWorkflow");
         }
 
         public void FileSelectionTextChanged()
@@ -158,12 +159,24 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void LoadWorkflows()
         {
+            LoggingSettings.IsInitializing = true;
+
             var resources = GetResources();
             foreach (var resource in resources)
             {
                 if (LoggingSettings.Workflows.All(wf => wf.ResourceID != resource.ResourceID))
                     LoggingSettings.Workflows.Add(resource);
             }
+
+            if (LoggingSettings.RunPostWorkflow)
+            {
+                LoggingSettings.PostWorkflow =
+                    LoggingSettings.Workflows
+                                   .FirstOrDefault(wf =>
+                                                   wf.ResourceID.Equals(LoggingSettings.PostWorkflow.ResourceID));
+            }
+
+            LoggingSettings.IsInitializing = false;
         }
 
         private IEnumerable<WorkflowDescriptor> GetResources()
@@ -238,7 +251,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
              var address = String.Format(_webServerUri+"{0}", "DataListInputVariables");
              var datalistJSON = WebClient.UploadString(address, LoggingSettings.PostWorkflow.ResourceID);
-            return JsonConvert.DeserializeObject<IEnumerable<DataListVariable>>(datalistJSON);
+             return JsonConvert.DeserializeObject<IEnumerable<DataListVariable>>(datalistJSON);
         }
         #endregion private methods
     }

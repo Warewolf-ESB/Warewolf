@@ -19,6 +19,8 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Properties
 
+        public bool IsInitializing { get; set; }
+
         public string SettingName 
         {
             get

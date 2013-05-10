@@ -198,7 +198,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
             runtimeConfigurationViewModel.Load(environment.Object);
 
-            Assert.IsNotNull(runtimeConfigurationViewModel.RuntimeConfigurationUserControl, "The usercontrol wasn't populated from the configuration assembly.");
+            Assert.IsTrue(runtimeConfigurationViewModel.InitializationRequested, "Initialization wasnt requested by the configuration assembly.");
         }
 
         #endregion
@@ -288,7 +288,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
 
             popup.Verify(p => p.Show(), Times.Never(), "A pop was shown on success, this means there was an unexpected error.");
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Never(), "A error dialog was shown on success, this means there was an unexpected error.");
-            Assert.IsNotNull(runtimeConfigurationViewModel.RuntimeConfigurationUserControl, "The usercontrol wasn't populated from the configuration assembly.");
+            Assert.IsTrue(runtimeConfigurationViewModel.InitializationRequested, "Initialization wasnt requested by the configuration assembly.");
         }
 
         [TestMethod]

@@ -135,6 +135,13 @@ namespace Dev2.Runtime.Configuration.Settings
 
         private void SettingChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            var loggingSettings = sender as LoggingSettings;
+            if (loggingSettings != null)
+            {
+                var settings = loggingSettings;
+                if (settings.IsInitializing) return;
+            }
+
             if (!HasChanges)
             {
                 HasChanges = true;

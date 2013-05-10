@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 using Dev2.Composition;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
@@ -69,6 +70,8 @@ namespace Dev2.Studio.ViewModels.Configuration
                 return _context ?? (_context = Guid.NewGuid());
             }
         }
+
+        public bool InitializationRequested { get; set; } 
 
         /// <summary>
         /// The user control used to configure the runtime configuration
@@ -147,11 +150,17 @@ namespace Dev2.Studio.ViewModels.Configuration
 
         #region Override Methods
 
-        protected override void OnActivate()
+        protected override void OnViewAttached(object view, object context)
         {
-            base.OnActivate();
-            Load(CurrentEnvironment);
+            base.OnViewAttached(view, context);
+            var worker = new BackgroundWorker();
+            worker.DoWork += (sender, args) =>
+            {
+                Load(CurrentEnvironment);
+            };
+            worker.RunWorkerAsync();
         }
+
 
         #endregion
 
@@ -272,8 +281,20 @@ namespace Dev2.Studio.ViewModels.Configuration
                     ConfigurationXml, saveCallback, cancelCallback, settingChangedCallback
                 };
 
+                InitializationRequested = true;
+
                 // Invoke
-                RuntimeConfigurationUserControl = configurationType.InvokeMember(_configurationEntrypointMethodName, BindingFlags.Default | BindingFlags.InvokeMethod, null, null, parameters) as UserControl;
+                if (Application.Current != null)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            RuntimeConfigurationUserControl =
+                                configurationType.InvokeMember
+                                    (_configurationEntrypointMethodName,
+                                     BindingFlags.Default | BindingFlags.InvokeMethod,
+                                     null, null, parameters) as UserControl;
+                        }), null);
+                }
             }
             catch (Exception e)
             {

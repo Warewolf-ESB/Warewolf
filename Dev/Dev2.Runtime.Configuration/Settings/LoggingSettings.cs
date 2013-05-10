@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Runtime.Configuration.ComponentModel;
@@ -221,7 +222,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 }
                 return _workflows;
             }
-        }    
+        }
 
         #endregion
 
@@ -235,11 +236,9 @@ namespace Dev2.Runtime.Configuration.Settings
         public LoggingSettings(XElement xml, string webserverUri)
             : base(xml, webserverUri)
         {
+            IsInitializing = true;
+
             var postWorkflow = xml.Element("PostWorkflow");
-            if (postWorkflow != null)
-            {
-                PostWorkflow = new WorkflowDescriptor(xml.Element("PostWorkflow"));
-            }
 
             bool boolValue;
             int intValue;
@@ -265,6 +264,15 @@ namespace Dev2.Runtime.Configuration.Settings
             {
                 Workflows.Add(new WorkflowDescriptor(workflow));
             }
+
+            if (postWorkflow != null)
+            {
+                PostWorkflow = new WorkflowDescriptor(xml.Element("PostWorkflow"));
+            }
+
+            RunPostWorkflow = (PostWorkflow != null);
+
+            IsInitializing = false;
         }
 
         #endregion
