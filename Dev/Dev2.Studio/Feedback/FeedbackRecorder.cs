@@ -19,12 +19,15 @@
 // /output            :Store output of record session in given path.
 // /stopevent        :Event to signal after output files are generated.
 
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Studio.AppResources.Exceptions;
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using Dev2.Studio.Controller;
 
 namespace Dev2.Studio.Feedback
 {
@@ -39,6 +42,7 @@ namespace Dev2.Studio.Feedback
         private const string StartParameters = "/start /gui 0 /output \"{0}\"";
         private const string StopParameters = "/stop";
         private readonly Func<string, bool> _fileExistsFunction;
+        private IList<ProcessController> _runningProcesses;
 
         #endregion Class Members
 
@@ -70,6 +74,10 @@ namespace Dev2.Studio.Feedback
         #endregion Constructor
 
         #region Properties
+        public IList<ProcessController> RunningProcesses
+        {
+            get { return _runningProcesses ?? (_runningProcesses = new List<ProcessController>()); }
+        }
 
         /// <summary>
         /// Gets the output path.
@@ -146,32 +154,22 @@ namespace Dev2.Studio.Feedback
         /// </summary>
         public void KillAllRecordingTasks()
         {
-            Process[] processes = Process.GetProcessesByName("psr");
+            var runningProcesses = Process.GetProcessesByName("psr");
 
-            if (processes.Length == 0)
+            foreach (var process in runningProcesses)
             {
-                return;
-            }
-
-            int timeouts = 0;
-
-            foreach (Process process in processes)
-            {
-                if (!process.HasExited)
+                ProcessController controller;
+                if (!RunningProcesses.Any(p => p.UtilityProcess.Equals(process)))
                 {
-                    process.Kill();
-                    process.WaitForExit(10000);
-                    if (!process.HasExited)
-                    {
-                        timeouts++;
-                    }
+                    controller = new ProcessController(process);
+                    RunningProcesses.Add(controller);
+                    controller.Kill();
                 }
-            }
-
-            if (timeouts > 0)
-            {
-                throw new FeedbackRecordingTimeoutException(
-                    "Couldn't exit all recording processes.");
+                else
+                {
+                    controller = RunningProcesses.First(p => p.UtilityProcess.Equals(process));
+                    controller.Kill();
+                }
             }
         }
 
@@ -184,15 +182,16 @@ namespace Dev2.Studio.Feedback
         /// </summary>
         private void StartProcess()
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo(Executable, string.Format(StartParameters, OutputPath));
-            //startInfo.Verb = "runas"; //2013.02.06: Ashley Lewis - Bug 8611: indicates to elevate privileges
-            //startInfo.UseShellExecute = true; //2013.02.06: Ashley Lewis - Bug 8611: Required for raising privileges
-            startInfo.ErrorDialog = false;
-
-            Process process = new Process();
-            process.StartInfo = startInfo;
-            process.Start();
+            var processController = new ProcessController
+                {
+                    Arguments = string.Format(StartParameters, OutputPath),
+                    CmdLine = Executable,
+                    Verb = "runas",
+                    UseShellExecute = true
+                };
+            processController.Start();
             LastRecordingStartDateTimeStamp = DateTime.Now;
+            RunningProcesses.Add(processController);
         }
 
         /// <summary>
@@ -203,19 +202,18 @@ namespace Dev2.Studio.Feedback
         {
             Process[] processesToMonitor = Process.GetProcessesByName("psr");
 
-            if (processesToMonitor.Length == 0)
+            if (RunningProcesses.Count == 0)
             {
                 throw new FeedbackRecordingNoProcessesExcpetion("No processes to stop.");
             }
 
-            ProcessStartInfo startInfo = new ProcessStartInfo(Executable, StopParameters);
-            startInfo.Verb = "runas"; //2013.02.06: Ashley Lewis - Bug 8611: indicates to elevate privileges
-            startInfo.UseShellExecute = true; //2013.02.06: Ashley Lewis - Bug 8611: Required for raising privileges
-            
-            startInfo.ErrorDialog = false;
-
-            Process process = new Process();
-            process.StartInfo = startInfo;
+            var processController = new ProcessController
+            {
+                Arguments = StopParameters,
+                CmdLine = Executable,
+                Verb = "runas",
+                UseShellExecute = true
+            };
 
             //
             // This check is to prevent stop from being called to soon after pse.exe has been started.
@@ -229,7 +227,8 @@ namespace Dev2.Studio.Feedback
                 Thread.Sleep(500);
             }
 
-            process.Start();
+            processController.Start();
+            RunningProcesses.Add(processController);
 
             WaitForProcessesToEnd(processesToMonitor);
         }

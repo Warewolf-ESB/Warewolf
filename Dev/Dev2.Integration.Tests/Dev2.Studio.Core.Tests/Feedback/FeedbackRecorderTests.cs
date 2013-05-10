@@ -8,7 +8,6 @@ using System.Threading;
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Feedback
 {
     [TestClass]
-    [Ignore]
     public class FeedbackRecorderTests
     {
         #region Class Members
@@ -139,9 +138,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Feedback
 
         #region Test Methods
 
-        // Brendon.Page, 2013-01-10 - This test needs to be a medium\large because unit test agents don't run in interactive mode, this prevents the
-        //                            Problem Steps Recorder from ever becoming ready and in a state were it will record, this in turn
-        //                            means that the 'psr.exe /stop' command will never be observed.
         [TestMethod]
         public void StopRecording_Where_PsrIsRunning_Expected_ProcessStops()
         {

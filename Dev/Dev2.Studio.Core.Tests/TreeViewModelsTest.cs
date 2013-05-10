@@ -333,11 +333,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void EnvironmentNodeRemoveCommand_Expected_MediatorRemoveServerFromExplorerMessage()
         {
-            //_removeServerFromExplorerMessageReceived = false;
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.RemoveServerFromExplorer, o => messageRecieved = true);
             environmentVM.RemoveCommand.Execute(null);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveServerFromExplorerMessage>()), Times.Once());
-           // Assert.IsTrue(_removeServerFromExplorerMessageReceived);
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()), Times.Once());
         }
 
         #endregion Environment

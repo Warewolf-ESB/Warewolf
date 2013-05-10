@@ -304,7 +304,6 @@
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
-    <Compile Include="Messages\RemoveServerFromExplorerMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
     <Compile Include="Messages\ResourceCheckedMessage.cs" />
     <Compile Include="Messages\EnvironmentConnectedMessage.cs" />
