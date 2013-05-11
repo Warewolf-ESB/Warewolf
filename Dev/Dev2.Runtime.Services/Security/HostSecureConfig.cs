@@ -90,7 +90,6 @@ namespace Dev2.Runtime.Security
 
                 if (shouldProtectConfig)
                 {
-                    ServerLogger.LogMessage("Protecting Config...");
                     ProtectConfig();
                 }
             }
