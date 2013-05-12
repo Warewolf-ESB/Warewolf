@@ -15,6 +15,7 @@ namespace Dev2.Server.UI.Tests {
     /// Summary description for ResumptionTest
     /// </summary>
     [CodedUITest]
+    [Ignore]
     public class ResumptionTest {
         public ResumptionTest() {
         }

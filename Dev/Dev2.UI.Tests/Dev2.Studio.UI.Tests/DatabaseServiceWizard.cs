@@ -11,6 +11,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
+    [Ignore]
     public class DatabaseServiceWizard : UIMapBase
     {
         TestBase myTestBase = new TestBase();

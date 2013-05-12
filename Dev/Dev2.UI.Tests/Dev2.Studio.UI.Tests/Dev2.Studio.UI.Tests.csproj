@@ -45,6 +45,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dev2.Core">
+      <HintPath>..\..\Dev2.Integration.Tests\bin\Debug\Dev2.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="RibbonControlsLibrary">
       <HintPath>..\..\Binaries\RibbonControlsLibrary.dll</HintPath>
@@ -240,8 +243,16 @@
     <Folder Include="Binaries\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dev2.Server\Dev2.Server.csproj">
+      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
+      <Name>Dev2.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
+      <Name>Dev2.Studio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Server.UI.Tests\Dev2.Server.UI.Tests.csproj">
-      <Project>{A29057CF-14FE-4E0D-A016-365CA5B85CC8}</Project>
+      <Project>{a29057cf-14fe-4e0d-a016-365ca5b85cc8}</Project>
       <Name>Dev2.Server.UI.Tests</Name>
     </ProjectReference>
   </ItemGroup>

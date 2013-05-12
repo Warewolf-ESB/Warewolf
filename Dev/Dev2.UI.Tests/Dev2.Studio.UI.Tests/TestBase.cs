@@ -57,6 +57,7 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
+    [Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
