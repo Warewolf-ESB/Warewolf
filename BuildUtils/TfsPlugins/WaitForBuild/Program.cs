@@ -79,6 +79,9 @@ namespace WaitForBuild
             private QueueStatus _status;
             private IBuildDetail _build;
 
+            private int _nullHits = 0;
+            private readonly int _timeoutNullHits = 10;
+
             public BuildStatusWatcher(int queueBuildId)
             {
                 _queueBuildId = queueBuildId;
@@ -96,6 +99,7 @@ namespace WaitForBuild
 
             public void Connect(IBuildServer buildServer, string tfsProject)
             {
+               
                 _queuedBuildsView = buildServer.CreateQueuedBuildsView(tfsProject);
                 _queuedBuildsView.StatusChanged += QueuedBuildsViewStatusChanged;
                 _queuedBuildsView.Connect(5000, null);
@@ -108,15 +112,24 @@ namespace WaitForBuild
 
             private void QueuedBuildsViewStatusChanged(object sender, StatusChangedEventArgs e)
             {
-                if (e.Changed)
-                {
+                //if (e.Changed)
+                //{
                     var queuedBuild = _queuedBuildsView.QueuedBuilds.FirstOrDefault(x => x.Id == _queueBuildId);
                     if (queuedBuild != null)
                     {
                         _status = queuedBuild.Status;
                         _build = queuedBuild.Build;
                     }
-                }
+                    else
+                    {
+                        _nullHits++;
+
+                        if (_nullHits == _timeoutNullHits)
+                        {
+                            _status = QueueStatus.Canceled;
+                        }
+                    }
+                //}
             }
         }
     }

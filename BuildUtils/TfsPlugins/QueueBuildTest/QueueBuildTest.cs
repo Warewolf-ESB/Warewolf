@@ -35,7 +35,7 @@ namespace QueueBuildTest
 
             int id = bq.Run(server, project, def);
 
-            int res = WaitForProgram.Main(new string[]{server, project, ""+id});
+            int res = WaitForProgram.Main(new string[]{server, project, "20793"});
 
 
             Assert.IsTrue(res == 0, "Failed to watch build or bad parms exit code { " + id + " }");
