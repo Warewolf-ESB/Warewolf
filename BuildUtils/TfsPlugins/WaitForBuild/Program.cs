@@ -26,10 +26,10 @@ namespace WaitForBuild
             {
                 try
                 {
-                    string server = args[0];
-                    string project = args[1];
+                    string server = args[0].Trim();
+                    string project = args[1].Trim();
                     int id;
-                    Int32.TryParse(args[2], out id);
+                    Int32.TryParse(args[2].Trim(), out id);
 
                     TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
                     IBuildServer buildServer = (IBuildServer) tfs.GetService(typeof (IBuildServer));
@@ -43,21 +43,21 @@ namespace WaitForBuild
                     } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
 
                     bsw.Disconnect();
+
+                    // ensure both the build and test passed ;)
+                    if (bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded && bsw.Build.TestStatus == BuildPhaseStatus.Succeeded)
+                    {
+                        return 0; // success ;)
+                    }
+                    else
+                    {
+                        return 1; // failure ;(
+                    }
                 }
                 catch (Exception e)
                 {
                     File.WriteAllText(LogFile(), DateTime.Now + " :: Execution Errors { " + e.Message + " }");
                     return 3; // exception failure ;(
-                }
-
-                // ensure both the build and test passed ;)
-                if (bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded && bsw.Build.TestStatus == BuildPhaseStatus.Succeeded)
-                {
-                    return 0; // success ;)
-                }
-                else
-                {
-                    return 1; // failure ;(
                 }
             }
             else
