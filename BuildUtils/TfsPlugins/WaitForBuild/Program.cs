@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 
@@ -7,28 +9,46 @@ namespace WaitForBuild
 {
     public class WaitForProgram
     {
+        private static string LogfileName = @"BuildQueueLog.txt";
+
+        private static string LogFile()
+        {
+            var loc = Assembly.GetExecutingAssembly().Location;
+            var dir = Path.GetDirectoryName(loc);
+
+            return Path.Combine(dir, LogfileName);
+        }
+
         public static int Main(string[] args)
         {
 
             if (args.Length == 3)
             {
-                string server = args[0];
-                string project = args[1];
-                int id;
-                Int32.TryParse(args[2], out id);
-
-                TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
-                IBuildServer buildServer = (IBuildServer) tfs.GetService(typeof (IBuildServer));
-
-                BuildStatusWatcher bsw = new BuildStatusWatcher(id);
-
-                bsw.Connect(buildServer, project);
-
-                do
+                try
                 {
-                } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
+                    string server = args[0];
+                    string project = args[1];
+                    int id;
+                    Int32.TryParse(args[2], out id);
 
-                bsw.Disconnect();
+                    TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
+                    IBuildServer buildServer = (IBuildServer) tfs.GetService(typeof (IBuildServer));
+
+                    BuildStatusWatcher bsw = new BuildStatusWatcher(id);
+
+                    bsw.Connect(buildServer, project);
+
+                    do
+                    {
+                    } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
+
+                    bsw.Disconnect();
+                }
+                catch (Exception e)
+                {
+                    File.WriteAllText(LogFile(), DateTime.Now + " :: Execution Errors { " + e.Message + " }");
+                    return 3; // exception failure ;(
+                }
 
                 // ensure both the build and test passed ;)
                 if (bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded && bsw.Build.TestStatus == BuildPhaseStatus.Succeeded)
