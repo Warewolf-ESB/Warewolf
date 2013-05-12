@@ -1,46 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 
 namespace WaitForBuild
 {
-    class WaitForProgram
+    public class WaitForProgram
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
-           
 
-            string server = "http://rsaklfsvrgendev:8080/tfs/";
-            string project = "DEV2 SCRUM Project";
-            string def = "Async Integration Run - Travis";
-            int id;
-            Int32.TryParse(args[0], out id);
-
-            TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
-            IBuildServer buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
-            IBuildDefinition buildDef = buildServer.GetBuildDefinition(project, def);
-
-            BuildStatusWatcher bsw = new BuildStatusWatcher(id);
-
-            bsw.Connect(buildServer, project);
-
-            do
+            if (args.Length == 3)
             {
-            } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
+                string server = args[0];
+                string project = args[1];
+                int id;
+                Int32.TryParse(args[2], out id);
 
-            bsw.Disconnect();
+                TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
+                IBuildServer buildServer = (IBuildServer) tfs.GetService(typeof (IBuildServer));
 
-            if (bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded)
-            {
-                return 0; // success ;)
+                BuildStatusWatcher bsw = new BuildStatusWatcher(id);
+
+                bsw.Connect(buildServer, project);
+
+                do
+                {
+                } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
+
+                bsw.Disconnect();
+
+                // ensure both the build and test passed ;)
+                if (bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded && bsw.Build.TestStatus == BuildPhaseStatus.Succeeded)
+                {
+                    return 0; // success ;)
+                }
+                else
+                {
+                    return 1; // failure ;(
+                }
             }
             else
             {
-                return 1; // failure ;(
+                return 2; // failure with args ;(
             }
         }
 
@@ -76,7 +78,7 @@ namespace WaitForBuild
             {
                 _queuedBuildsView = buildServer.CreateQueuedBuildsView(tfsProject);
                 _queuedBuildsView.StatusChanged += QueuedBuildsViewStatusChanged;
-                _queuedBuildsView.Connect(10000, null);
+                _queuedBuildsView.Connect(5000, null);
             }
 
             public void Disconnect()
