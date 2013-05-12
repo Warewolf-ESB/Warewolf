@@ -35,7 +35,7 @@
         public bool CloseWizard()
         {
             WpfWindow uIPluginServiceDetailsWindow = GetWindow();
-            Keyboard.SendKeys(uIPluginServiceDetailsWindow, "%{F4}");
+            Keyboard.SendKeys(uIPluginServiceDetailsWindow, "%{ESC}");
             if (uIPluginServiceDetailsWindow.Exists)
             {
                 return false;
