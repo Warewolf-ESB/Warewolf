@@ -267,7 +267,7 @@ namespace Unlimited.UnitTest.Framework
             
             Console.WriteLine(result1 + " seconds for " + runs + " with 5 cols");
 
-            Assert.IsTrue(result1 <= 12, " It Took " + result1); // Given 0.75 WAS : 0.75
+            Assert.IsTrue(result1 <= 25, " It Took " + result1); // Given 0.75 WAS : 0.75
             // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!
            
         }
