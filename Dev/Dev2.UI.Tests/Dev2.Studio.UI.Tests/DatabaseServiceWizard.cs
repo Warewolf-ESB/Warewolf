@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.CodedUI.Tests;
-using Dev2.Server.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -85,8 +84,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DatabaseServiceWizardCreateNewServiceWithTotallyBlankWorkspaceExpectedServiceCreated()
         {
             //Initialize server
-            var serverManipulations = new ServerBugTests();
-            serverManipulations.ClearServerWorkSpace(TestContext.TestRunDirectory);
+           // var serverManipulations = new ServerBugTests();
+           // serverManipulations.ClearServerWorkSpace(TestContext.TestRunDirectory);
             System.Threading.Thread.Sleep(2000);//Give the server time to initialize (shouldn't take long since server workspace is clear)
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoRefresh();
@@ -102,7 +101,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Clean up
             ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", bothServerAndSourceCategoryNames, bothServerAndSourceNames);
             ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", bothServerAndSourceCategoryNames, bothServerAndSourceNames);
-            serverManipulations.RefillWorkSpaceAfterClear(TestContext.TestRunDirectory);
+            //serverManipulations.RefillWorkSpaceAfterClear(TestContext.TestRunDirectory);
         }
     }
 }

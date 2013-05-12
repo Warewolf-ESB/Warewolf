@@ -258,10 +258,6 @@
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Server.UI.Tests\Dev2.Server.UI.Tests.csproj">
-      <Project>{a29057cf-14fe-4e0d-a016-365ca5b85cc8}</Project>
-      <Name>Dev2.Server.UI.Tests</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

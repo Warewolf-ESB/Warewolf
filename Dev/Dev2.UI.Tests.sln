@@ -5,15 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.UI.Tests", "Dev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server.UI.Tests", "Dev2.UI.Tests\Dev2.Server.UI.Tests\Dev2.Server.UI.Tests.csproj", "{A29057CF-14FE-4E0D-A016-365CA5B85CC8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.SignerApp", "Dev2.Runtime.SignerApp\Dev2.Runtime.SignerApp.csproj", "{B932D3AA-2F29-45FC-8200-22B1B48081E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -23,15 +21,12 @@ Global
 		SccProjectUniqueName2 = Dev2.Server\\Dev2.Server.csproj
 		SccProjectName2 = Dev2.Server
 		SccLocalPath2 = Dev2.Server
-		SccProjectUniqueName3 = Dev2.UI.Tests\\Dev2.Server.UI.Tests\\Dev2.Server.UI.Tests.csproj
-		SccProjectName3 = Dev2.UI.Tests/Dev2.Server.UI.Tests
-		SccLocalPath3 = Dev2.UI.Tests\\Dev2.Server.UI.Tests
-		SccProjectUniqueName4 = Dev2.Runtime.SignerApp\\Dev2.Runtime.SignerApp.csproj
-		SccProjectName4 = Dev2.Runtime.SignerApp
-		SccLocalPath4 = Dev2.Runtime.SignerApp
-		SccProjectUniqueName5 = Dev2.Studio\\Dev2.Studio.csproj
-		SccProjectName5 = Dev2.Studio
-		SccLocalPath5 = Dev2.Studio
+		SccProjectUniqueName3 = Dev2.Runtime.SignerApp\\Dev2.Runtime.SignerApp.csproj
+		SccProjectName3 = Dev2.Runtime.SignerApp
+		SccLocalPath3 = Dev2.Runtime.SignerApp
+		SccProjectUniqueName4 = Dev2.Studio\\Dev2.Studio.csproj
+		SccProjectName4 = Dev2.Studio
+		SccLocalPath4 = Dev2.Studio
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,18 +67,6 @@ Global
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876}.Release|x64.Build.0 = Release|x64
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876}.Release|x86.ActiveCfg = Release|x86
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876}.Release|x86.Build.0 = Release|x86
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Release|x64.ActiveCfg = Release|Any CPU
-		{A29057CF-14FE-4E0D-A016-365CA5B85CC8}.Release|x86.ActiveCfg = Release|Any CPU
 		{B932D3AA-2F29-45FC-8200-22B1B48081E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B932D3AA-2F29-45FC-8200-22B1B48081E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B932D3AA-2F29-45FC-8200-22B1B48081E4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
