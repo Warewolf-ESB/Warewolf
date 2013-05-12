@@ -19,7 +19,7 @@ namespace QueueBuild
             return Path.Combine(dir, LogfileName);
         }
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             DateTime buildTS = DateTime.Now;
 
@@ -38,7 +38,7 @@ namespace QueueBuild
 
                 try
                 {
-                    qb.Run(server, project, def);
+                    return qb.Run(server, project, def);
                 }
                 catch(Exception e)
                 {
@@ -55,22 +55,41 @@ namespace QueueBuild
                 }
                 File.WriteAllText(LogFile(), buildTS + " :: *** Arguments Error With {  " + argsPayload + " }");
             }
+
+            return -1; // 
         }
     }
 
     public class BuildQueuer
     {
 
-        public void Run(string server, string project, string def)
+        public int Run(string server, string project, string def)
         {
 
             TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
             IBuildServer buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
             IBuildDefinition buildDef = buildServer.GetBuildDefinition(project, def);
 
+
             IBuildRequest req = buildDef.CreateBuildRequest();
 
-            req.BuildServer.QueueBuild(req);
+            IQueuedBuild qReq = req.BuildServer.QueueBuild(req);
+
+            return qReq.Id;
+
+            //buildServer.CreateQueuedBuildsView()
+
+            //Guid id = qReq.BatchId;
+
+            //var ticket = qReq.BuildDefinition.QueueStatus;
+
+            //var id2  = qReq.Id;
+
+            //IBuildDetail[] details = buildDef.QueryBuilds();
+
+            //string buildNumber = details[0].BuildNumber;
+            //var qqq = details[0]./
+
         }
 
     }

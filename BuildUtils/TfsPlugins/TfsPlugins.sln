@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildTest", "QueueBuil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kill", "Kill\Kill.csproj", "{C96F04AE-9C43-4465-B1E0-57A0ABE3D195}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitForBuild", "WaitForBuild\WaitForBuild.csproj", "{BC744D87-5733-4B4E-98A8-8C220FC311EC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -22,6 +24,9 @@ Global
 		SccProjectUniqueName3 = Kill\\Kill.csproj
 		SccProjectName3 = Kill
 		SccLocalPath3 = Kill
+		SccProjectUniqueName4 = WaitForBuild\\WaitForBuild.csproj
+		SccProjectName4 = WaitForBuild
+		SccLocalPath4 = WaitForBuild
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +45,10 @@ Global
 		{C96F04AE-9C43-4465-B1E0-57A0ABE3D195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C96F04AE-9C43-4465-B1E0-57A0ABE3D195}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C96F04AE-9C43-4465-B1E0-57A0ABE3D195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

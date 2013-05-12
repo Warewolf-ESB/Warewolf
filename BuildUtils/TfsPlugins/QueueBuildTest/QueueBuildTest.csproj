@@ -39,6 +39,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -61,6 +63,10 @@
     <ProjectReference Include="..\QueueBuild\QueueBuild.csproj">
       <Project>{7d4f3b7a-cf2b-41d5-a144-862ebccda9a3}</Project>
       <Name>QueueBuild</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WaitForBuild\WaitForBuild.csproj">
+      <Project>{bc744d87-5733-4b4e-98a8-8c220fc311ec}</Project>
+      <Name>WaitForBuild</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
