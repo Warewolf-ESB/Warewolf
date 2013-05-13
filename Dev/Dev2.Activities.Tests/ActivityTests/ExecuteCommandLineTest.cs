@@ -437,7 +437,8 @@ namespace ActivityUnitTests.ActivityTest
             StringAssert.Contains(actual,expected);
         }
 
-        [TestMethod]        
+        [TestMethod]
+        [Ignore]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
         {            
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = "ping rsaklfsvrgendev",CommandResult = "[[CompanyName]]"};

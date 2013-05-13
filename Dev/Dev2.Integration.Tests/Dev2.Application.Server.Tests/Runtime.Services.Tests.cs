@@ -177,6 +177,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         // http://127.0.0.1:1234/services/Bug9394
 
         [TestMethod]
+        [Ignore]
         public void TestDomainUserCanExecut()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9394");
