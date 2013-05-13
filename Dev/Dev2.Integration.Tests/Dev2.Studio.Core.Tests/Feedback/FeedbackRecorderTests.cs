@@ -139,6 +139,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Feedback
         #region Test Methods
 
         [TestMethod]
+        [Ignore]
         public void StopRecording_Where_PsrIsRunning_Expected_ProcessStops()
         {
             FeedbackRecorder recorder = new FeedbackRecorder();
@@ -149,7 +150,8 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Feedback
 
             if (CheckIfProcessIsRunning())
             {
-                Assert.Fail("Recording process failed to stop!");
+                Assert.Fail("Recording" +
+                            " process failed to stop!");
             }
         }
 
