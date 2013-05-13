@@ -126,24 +126,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 toJson = @"{""validationresult"":""success""}";
             }
-
-            //if (args.EndsWith(".dll"))
-            //{
-            //    try
-            //    {
-            //        Assembly loadedAssembly = Assembly.LoadFile(args);
-            //        toJson = @"{""validationresult"":""success""}";
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        ServerLogger.LogError(e.Message);
-                    
-            //    }
-            //}
-            //else if (args.StartsWith(GlobalConstants.GACPrefix))
-            //{
-                
-            //}
             
             return toJson;
         }

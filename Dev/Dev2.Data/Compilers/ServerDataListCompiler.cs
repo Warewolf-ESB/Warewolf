@@ -2042,7 +2042,10 @@ namespace Dev2.Server.Datalist
 
                                 if(payload.IsDebug)
                                 {
-                                    debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);    
+                                    if(entry != null)
+                                    {
+                                        debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                    }
                                 }
                                 
                                 if (entry != null)

@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("default", "<h4>New Database Source Details</h4><p>This creates a connection to an existing database server.</p>");
                         result.Add("dbSourceServerType", "Enter the database <b>type</b> e.g. Microsoft SQL");
                         result.Add("dbSourceServer", "Enter the database <b>server url</b> e.g. IP address or computer name");
-                        result.Add("dbSourceUserID", "Enter your <b>user name</b>.");
+                        result.Add("dbSourceUserID", "Enter either your database <b>user name</b> or a Windows domain username e.g. 'Domainname\\Username'");
                         result.Add("dbSourcePassword", "Enter the <b>password</b> for the server.");
                         result.Add("dbSourceDatabase", "Select one of the <b>databases</b> hosted by the server");
                         break;

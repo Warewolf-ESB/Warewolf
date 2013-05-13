@@ -52,7 +52,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             switch (forEachType)
             {
                 case enForEachType.InRange:
-                    if(from.Contains("*"))
+                    if(from.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the From field.");
                         break;
@@ -68,7 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         break;
                     }
 
-                    if (to.Contains("*"))
+                    if (to.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the To field.");
                         break;
@@ -113,26 +113,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         errors.MergeErrors(allErrors);
                         break;
                     }
-                    int minVal = listOfIndexes.Min();
-                    int maxVal = listOfIndexes.Max();
-                    HashSet<int> gaps = new HashSet<int>();
-                    for(int i = minVal; i < maxVal; i++)
-                    {
-                        if(!listOfIndexes.Contains(i))
-                        {
-                            gaps.Add(i);
-                        }
-                    }
-                    localIndexIterator = new IndexIterator(new HashSet<int>(), maxVal);
-                    indexList = new IndexList(gaps, maxVal);
-                    indexList.MinValue = minVal;
-                    indexList.MaxValue = maxVal;
-                    localIndexIterator.IndexList = indexList;
-                    IndexIterator = localIndexIterator;
+                    ListIndexIterator listLocalIndexIterator = new ListIndexIterator(listOfIndexes);
+                    ListOfIndex listOfIndex = new ListOfIndex(listOfIndexes);
+                    listLocalIndexIterator.IndexList = listOfIndex;
+                    IndexIterator = listLocalIndexIterator;
                     break;
                 default:
 
-                    if (numberOfExecutes.Contains("*"))
+                    if (numberOfExecutes.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the Numbers field.");
                         break;

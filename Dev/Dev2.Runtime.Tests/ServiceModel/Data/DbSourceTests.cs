@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Xml.Linq;
 using Dev2.Common.ServiceModel;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Unlimited.Framework.Converters.Graph;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -14,52 +17,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class DbSourceTests
     {
-        #region Test
-
-        [TestMethod]
-        public void TestWithInvalidUriFormatExpectedReturnsInvalidResult()
-        {
-            var conn = new DbSource
-            {
-                ResourceType = ResourceType.DbSource,
-                Server = "http://www.google.co.za"
-            };
-            var dbSources = new DbSources();
-            var result = dbSources.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-            Assert.AreEqual(false, result.IsValid);
-
-        }
-
-        //[TestMethod]
-        //public void Test_With_ValidUriFormatForInvalidHost_Expected_ReturnsInvalidResult()
-        //{
-        //    var conn = new DbSource
-        //    {
-        //        ResourceType = ResourceType.DbSource,
-        //        //Server = "http://localhost:77/dsf"
-        //        Server = "http://localhost:77/dsf"
-        //    };
-        //    var DbSources = new DbSources();
-        //    var result = DbSources.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-        //    Assert.AreEqual(false, result.IsValid);
-        //}
-
-        [TestMethod]
-        public void TestWithValidUriFormatExpectedReturnsValidResult()
-        {
-            var conn = new DbSource
-            {
-                ResourceType = ResourceType.DbSource,
-                Server = "192.168.13.42"
-            };
-            var dbSources = new DbSourcesMock { DatabaseValidationHitCount = 0 };
-            var result = dbSources.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-            Assert.AreEqual(1, dbSources.DatabaseValidationHitCount);
-            Assert.AreEqual(true, result.IsValid);
-        }
-
-        #endregion
-
         #region ToString Tests
 
         [TestMethod]

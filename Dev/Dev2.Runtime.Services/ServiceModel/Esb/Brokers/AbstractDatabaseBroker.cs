@@ -56,8 +56,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             using(var conn = CreateConnection(dbSource.ConnectionString))
             {
-                conn.Open();
                 GetStoredProcedures(conn, procedureFunc, functionFunc);
+                conn.Close();
             }
 
             return serviceMethods;
@@ -83,7 +83,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             IOutputDescription result = null;
             using (var conn = CreateConnection(dbService.Source.ConnectionString))
             {
-                conn.Open();
                 IDbTransaction transaction = conn.BeginTransaction();
 
                 try
@@ -109,6 +108,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     {
                         dataSourceShape.Paths.AddRange(dataBrowser.Map(xmlResult));
                     }
+                    conn.Close();
                 }
                 catch (Exception e)
                 {
@@ -119,6 +119,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     try
                     {
                         transaction.Rollback();
+                        conn.Close();
                     }
                     catch(Exception e)
                     {

@@ -2,9 +2,17 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Principal;
 using System.Text;
 using System.Xml;
+using Dev2.PathOperations;
+using Microsoft.Win32.SafeHandles;
 using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
@@ -14,6 +22,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     /// </summary>
     public class MsSqlBroker : AbstractDatabaseBroker
     {
+        const int LOGON32_PROVIDER_DEFAULT = 0;
+        //This parameter causes LogonUser to create a primary token. 
+        const int LOGON32_LOGON_INTERACTIVE = 2;
+
         #region Override Methods
 
         /// <summary>
@@ -70,6 +82,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 }
 
             }
+            
         }
 
         /// <summary>
@@ -79,13 +92,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <exception cref="System.ArgumentException">command</exception>
         protected override DataSet ExecuteSelect(IDbCommand command)
         {
+            var dataset = new DataSet();
+
             var sqlCommand = command as SqlCommand;
-            if (command == null)
+            if (sqlCommand == null)
             {
                 throw new ArgumentException(string.Format("Expected type {0}.", typeof(SqlCommand)), "command");
             }
 
-            var dataset = new DataSet();
             var adapter = new SqlDataAdapter(sqlCommand);
 
             adapter.Fill(dataset);
@@ -97,9 +111,60 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// Creates a connection.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
+
+        // Inpersonate HERE
+        // TODO : Manip if Domain Here to Windows ConStr
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override IDbConnection CreateConnection(string connectionString)
         {
-            return new SqlConnection(connectionString);
+            var result = new SqlConnection();
+            string username = null;
+            string pass = null;
+            connectionString = ImpersonateDomainUser(connectionString, out username, out pass);
+            if(!RequiresAuth(username))
+            {
+                result = new SqlConnection(connectionString);
+                result.Open();
+            }else
+            {
+                // handle UNC path
+                PathOperations.SafeTokenHandle safeTokenHandle;
+
+                try
+                {
+                    string user = ExtractUserName(username);
+                    string domain = ExtractDomain(username);
+                    bool loginOk = LogonUser(user, domain, pass, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+
+                    if (loginOk)
+                    {
+                        using (safeTokenHandle)
+                        {
+
+                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            {
+                                // Do the operation here
+                                result = new SqlConnection(connectionString);
+                                result.Open();
+
+                                impersonatedUser.Undo(); // remove impersonation now
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // login failed
+                        throw new Exception("Failed to authenticate with user [ " + username + " ].");
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+        }
+            }
+            return result;
         }
 
         /// <summary>
@@ -141,21 +206,91 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public List<string> GetDatabasesSchema(string connectionString)
         {
             var result = new List<string>();
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = (CreateConnection(connectionString) as SqlConnection))
             {
-                conn.Open();
-                DataTable tblDatabases = conn.GetSchema("Databases");
+                DataTable tblDatabases = null;
+                if(conn != null)
+                {
+                    tblDatabases = conn.GetSchema("Databases");
                 conn.Close();
+                }
 
+                if(tblDatabases != null)
+                {
                 result.AddRange(from DataRow row in tblDatabases.Rows
                                 select (row["database_name"] ?? string.Empty).ToString());
+            }
             }
             return result;
         }
 
         #endregion
 
+        public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
+        {
+            private SafeTokenHandle()
+                : base(true)
+            {
+            }
+
+            [DllImport("kernel32.dll")]
+            [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+            [SuppressUnmanagedCodeSecurity]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            private static extern bool CloseHandle(IntPtr handle);
+
+            protected override bool ReleaseHandle()
+            {
+                return CloseHandle(handle);
+            }
+        }
+
         #region Private Methods
+
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
+            int dwLogonType, int dwLogonProvider, out PathOperations.SafeTokenHandle phToken);
+
+        private string ExtractUserName(string username)
+        {
+            string result = string.Empty;
+
+            int idx = username.IndexOf("\\", StringComparison.InvariantCulture);
+
+            if (idx > 0)
+            {
+                result = username.Substring((idx + 1));
+            }
+
+            return result;
+        }
+
+        private string ExtractDomain(string username)
+        {
+            string result = string.Empty;
+
+            int idx = username.IndexOf("\\", StringComparison.InvariantCulture);
+
+            if (idx > 0)
+            {
+                result = username.Substring(0, idx);
+            }
+
+            return result;
+        }
+
+        private bool RequiresAuth(string userName)
+        {
+
+            bool result = false;
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                result = true;
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Determines whether the specified row represents a stored procedure.
@@ -207,13 +342,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 Func<IDataReader, bool> helptextProcessor = reader =>
                 {
-                        object value = reader.GetValue(0);
-                        if (value != null)
-                        {
-                            sb.Append(value.ToString());
-                        }
+                    object value = reader.GetValue(0);
+                    if (value != null)
+                    {
+                        sb.Append(value.ToString());
+                    }
 
-                        return true;
+                    return true;
                 };
 
                 ExecuteSelect(helpTextCommand, helptextProcessor, true, CommandBehavior.Default);
@@ -265,7 +400,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         private DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
             DataColumn dataColumn = dataTable.Columns[columnName];
-            if(dataColumn == null)
+            if (dataColumn == null)
             {
                 throw new Exception(string.Format("MSSQL Intergate : Unable to load '{0}' column of '{1}'.", columnName, dataTable.TableName));
             }
@@ -281,7 +416,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         private DataTable GetSchema(SqlConnection sqlConnection, string collectionName)
         {
             DataTable proceduresDataTable = sqlConnection.GetSchema(collectionName);
-            if(proceduresDataTable == null)
+            if (proceduresDataTable == null)
             {
                 throw new Exception(string.Format("MSSQL Intergate : Unable to load the '{0}' schema.", collectionName));
             }
@@ -342,11 +477,114 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 SqlCommandBuilder.DeriveParameters(command);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                ServerLogger.LogError(e);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Load domain of a connection string.
+        /// </summary>
+        /// <param name="connectionString">A connection string.</param>
+        /// <param name="domain">The domain described by the connection string.</param>
+        private static bool TryLoadDomainParameters(string connectionString, out string UsernameAndPassword)
+        {
+            try
+            {
+                if (connectionString.IndexOf("User ID=", System.StringComparison.Ordinal) >= 0)
+                {
+                    var userNameIndex = connectionString.IndexOf("User ID=", System.StringComparison.Ordinal);
+                    var passwordIndex = connectionString.IndexOf("Password=", System.StringComparison.Ordinal);
+                    if (connectionString.IndexOf(';', passwordIndex) >= 0 && connectionString.IndexOf(';', passwordIndex) > userNameIndex)
+                    {
+                        int end = connectionString.IndexOf(';', passwordIndex) + 1;
+                        if (end > 0)
+                        {
+                            UsernameAndPassword = connectionString.Substring(userNameIndex, (end - userNameIndex));
+                            return true;
+            }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ServerLogger.LogError(e);                
+                UsernameAndPassword = null;
+                return false;
+            }
+            UsernameAndPassword = null;
+                return false;
+            }
+
+        /// <summary>
+        /// Inject domain parameters into a connection string.
+        /// </summary>
+        /// <param name="connectionString">A connection string.</param>
+        private static string InjectDomainParams(string connectionString)
+        {
+            const string InjectTokenStart = ";Initial Catalog=";
+            const string ToInject = "Integrated Security=SSPI;";
+            var injectIndex = connectionString.IndexOf(';', connectionString.IndexOf(InjectTokenStart, System.StringComparison.Ordinal)) + InjectTokenStart.Length;
+            var end = connectionString.IndexOf(";", injectIndex);
+            var result = connectionString.Remove( (end+1) );
+            result = result.Insert((end+1), ToInject);
+            return result;
+        }
+
+        /// <summary>
+        /// Alter connection string
+        /// </summary>
+        /// <param name="connectionString">A connection string.</param>
+        private static string ImpersonateDomainUser(string connectionString, out string Username, out string Password)
+        {
+            // Inpersonate HERE
+            int userID = connectionString.IndexOf("User ID=", StringComparison.Ordinal);
+            if (connectionString.IndexOf("\\", userID, StringComparison.Ordinal) >= 0)
+            {
+                string tryGetParams = null;
+                if (TryLoadDomainParameters(connectionString, out tryGetParams))
+                {
+                    if (!string.IsNullOrEmpty(tryGetParams))
+                    {
+                        int userNameLen = (tryGetParams.IndexOf("Password=", StringComparison.Ordinal) - "User ID=".Length)-1;
+
+                        Username = tryGetParams.Substring("User ID=".Length, userNameLen);
+                        int passwdStart = tryGetParams.IndexOf("Password=", StringComparison.Ordinal) + "Password=".Length;
+                        int passwdEnd = tryGetParams.IndexOf(";", passwdStart, StringComparison.Ordinal);
+                        Password = tryGetParams.Substring(passwdStart, (passwdEnd - passwdStart));
+                        return InjectDomainParams(connectionString);
+                    }
+                }
+
+            }
+            Username = null;
+            Password = null;
+            return connectionString;
+        }
+
+        /// <summary>
+        /// Get username from conneciton string
+        /// </summary>
+        /// <param name="connectionString">A connection string.</param>
+        private static string GetUserName(string connectionString)
+        {
+            const string UsernameToken = "User ID=";
+            var UsernameIndex = connectionString.IndexOf(UsernameToken, System.StringComparison.Ordinal) + UsernameToken.Length;
+            //get from username token end to password token start
+            return connectionString.Substring(UsernameIndex, connectionString.IndexOf(";Password=", System.StringComparison.Ordinal) - UsernameIndex);
+        }
+
+        /// <summary>
+        /// Get password from connection string
+        /// </summary>
+        /// <param name="connectionString">A connection string.</param>
+        private static string GetPassword(string connectionString)
+        {
+            const string PassToken = "Password=";
+            var PassIndex = connectionString.IndexOf(PassToken, System.StringComparison.Ordinal) + PassToken.Length;
+            //get from username token end to password token start
+            return connectionString.Substring(PassIndex, connectionString.IndexOf(';', PassIndex) - PassIndex);
         }
 
         #endregion

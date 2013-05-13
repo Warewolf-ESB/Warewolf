@@ -28,10 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     try
                     {
-                        var ver = ", Version=" + GAC.GetVersion(assemblyName);
-
-                        gacList.Add(GAC.GetName(assemblyName)  + ver);
-
+                        gacList.Add(GAC.GetDisplayName(assemblyName, ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN));
                     }
                     catch (Exception e)
                     {

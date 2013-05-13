@@ -210,7 +210,7 @@
     });
     
     //manually bind GACList to assemblyLocation (GACList.selectedOption binding is for arrays)
-    $gacList.on("change", function () {
+    $gacList.on("change", function (newvalue) {
         self.data.assemblyLocation($gacList.val());
         self.validateAssemblyFile($gacList.val());
     });
@@ -247,7 +247,7 @@
 	$.ajax({
 	    url: baseURL + "/Services/RegisteredAssemblyService",
 	    data: "",
-	    success: function(gacResult) {
+	    success: function (gacResult) {
 	        //populate full list
 
 	        self.allGacAssemblies(gacResult);
@@ -381,7 +381,8 @@
             //avoid duplicates
             if (indx == assemblyList.length - 1) {
                 var option = document.createElement("option");
-                option.text = assemblyList[indx].AssemblyName;
+                //2013.05.13: Ashley Lewis Bug 9348 clean up value and name
+                option.text = self.CleanAssemblyName(assemblyList[indx].AssemblyName);
                 option.value = "GAC:" + assemblyList[indx].AssemblyName;
 				option.title = assemblyList[indx].AssemblyName;
                 $gacList.append(option, null);
@@ -389,7 +390,8 @@
                 if (assemblyList[indx].AssemblyName != assemblyList[indx + 1].AssemblyName) {
                     //dont add element if its duplicated
                     var option = document.createElement("option");
-                    option.text = assemblyList[indx].AssemblyName;
+                    //2013.05.13: Ashley Lewis Bug 9348 clean up value and name
+                    option.text = self.CleanAssemblyName(assemblyList[indx].AssemblyName);
                     option.value = "GAC:" + assemblyList[indx].AssemblyName;
 					option.title = assemblyList[indx].AssemblyName;
                     $gacList.append(option, null);
@@ -442,6 +444,11 @@
 
     self.removeGacPrefix = function(name) {
         return name.substr(4, name.length - 4);
+    };
+
+    self.CleanAssemblyName = function(fullName) {
+        var secondComma = fullName.indexOf(',', fullName.indexOf("Version="));
+        return fullName.substr(0, secondComma);
     };
 
     self.showDialog = function (sourceName, onSaveCompleted) {

@@ -1,4 +1,6 @@
 ﻿using Dev2;
+using Dev2.Activities;
+using Dev2.Common.Enums;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -80,7 +82,7 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
              Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
-            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(2));
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(10));
         }
 
         [TestMethod]
@@ -197,6 +199,25 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         [TestMethod]
+        public void NumberOfExecutionsWithCsvExpectedTotalExecutions4()
+        {
+            SetupArguments(
+                            ActivityStrings.ForEachCurrentDataList
+                          , ActivityStrings.ForEachDataListShape
+                          , enForEachType.InCSV
+                          , false
+                          , null
+                          , null
+                          , null
+                          , "6,9,9,6"
+                          );
+            IDSFDataObject result;
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            ErrorResultTO errors;
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(4));
+        }
+
+        [TestMethod]
         public void NumberOfExecutionsWithReverseOrderCsvExpectedTotalExecutions3()
         {
             SetupArguments(
@@ -225,13 +246,13 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
-                          , enForEachType.NumOfExecution
+                          , enForEachType.InRange
                           , false
                           , null
-                          , null
-                          , null
-                          , null
                           , "1"
+                          , "1"
+                          , null
+                          , null
                           );
 
 
@@ -259,13 +280,13 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
-                          , enForEachType.NumOfExecution
+                          , enForEachType.InRange
                           , false
                           , outputMapping
-                          , null
-                          , null
-                          , null
                           , "1"
+                          , "1"
+                          , null
+                          , null
                           );
 
 
@@ -292,13 +313,13 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
-                          , enForEachType.NumOfExecution
+                          , enForEachType.InRange
                           , false
                           , outputMapping
-                          , null
-                          , null
-                          , null
                           , "1"
+                          , "1"
+                          , null
+                          , null
                           );
 
 
@@ -321,13 +342,13 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
-                          , enForEachType.NumOfExecution
+                          , enForEachType.InRange
                           , false
                           , outputMapping
-                          , null
-                          , null
-                          , null
                           , "1"
+                          , "1"
+                          , null
+                          , null
                           );
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
@@ -429,8 +450,7 @@ namespace ActivityUnitTests.ActivityTest
         public void GetDebugInputOutputWithScalarsExpectedPass()
         {
             //Used recordset with a numeric index as a scalar because it the only place were i had numeric values and it evalues to a scalar 
-            var act = new DsfForEachActivity { ForEachType = enForEachType.NumOfExecution, NumOfExections = "[[Numeric(1).num]]" };
-
+            var act = new DsfForEachActivity { ForEachType = enForEachType.NumOfExecution, NumOfExections = "[[Numeric(1).num]]" };            
             IList<IDebugItem> inRes;
             IList<IDebugItem> outRes;
 

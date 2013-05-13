@@ -32,7 +32,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
         private string _forEachElementName;
         private string _displayName;
-        int _previousIndex = -1;
+        int _previousInputsIndex = -1;
+        int _previousOutputsIndex = -1;
+        private string _inputsToken = "*";
+        private string _outputsToken = "*"; 
 
         // ReSharper disable InconsistentNaming
         private ForEachBootstrapTO operationalData;
@@ -184,8 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {                   
                     DispatchDebugState(context, StateType.Before);
                 }
-
-                //ForEachBootstrapTO exePayload = FetchExecutionType(elmName, executionID, compiler, out errors);
+                
                 allErrors.MergeErrors(errors);
                 string error;
                 ForEachInnerActivityTO innerA = GetInnerActivity(out error);
@@ -204,10 +206,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         // set the iteration data ;)
                         IterateIOMapping(idx, context);
                     }
+                    else
+                    {
+                        dataObject.IsDataListScoped = false;
+                    }
                     // schedule the func to execute ;)
                     // ReSharper disable RedundantTypeArgumentsOfMethod
-                    dataObject.ParentInstanceID = InstanceID;
-                    dataObject.IsDataListScoped = true; // set for ForEach execution ;)
+                    dataObject.ParentInstanceID = InstanceID;                    
 
                     context.ScheduleFunc<string, bool>(DataFunc, string.Empty, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
@@ -249,6 +254,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             string newInputs = string.Empty;
             string newOutputs = string.Empty;
+            bool updateInputToken = false;
+            bool updateOutputToken = false;
 
             // Now mutate the mappings ;)
             //Bug 8725 do not mutate mappings
@@ -265,13 +272,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #region Coded Activity IO ManIP
 
-                var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
-
-                string token = "*";
-
-                if (_previousIndex != -1)
+                var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);                
+                               
+                if (_previousInputsIndex != -1)
                 {
-                    token = (_previousIndex).ToString();
+                    if(_inputsToken != "*")
+                    {
+                        _inputsToken = (_previousInputsIndex).ToString();    
+                    }                    
+                }
+
+                if (_previousOutputsIndex != -1)
+                {
+                    if (_outputsToken != "*")
+                    {
+                        _outputsToken = (_previousOutputsIndex).ToString();
+                    }
                 }
 
                 if (tmp != null)
@@ -279,8 +295,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
                     IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
-
-                    AmendInputs(idx, data, token, updates);
+                    if (AmendInputs(idx, data, _inputsToken, updates))
+                    {
+                        updateInputToken = true;
+                    }
 
                     // push updates for Inputs
                     tmp.UpdateForEachInputs(updates, context);
@@ -291,12 +309,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     operationalData.InnerActivity.CurCodedInputs = updates;
 
-
                     // Process outputs
                     data = tmp.GetForEachOutputs(context);
                     updates = new List<Tuple<string, string>>();
 
-                    AmendInputs(idx, data, token, updates);
+                    if (AmendOutputs(idx, data, _outputsToken, updates))
+                    {
+                        updateOutputToken = true;
+                    }
 
                     // push updates 
                     tmp.UpdateForEachOutputs(updates, context);
@@ -316,8 +336,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
-
-                        AmendInputs(idx, data, token, updates);
+                        if (AmendInputs(idx, data, _inputsToken, updates))
+                        {
+                            updateInputToken = true;
+                        }
 
                         // push updates 
                         tmp2.UpdateForEachInputs(updates, context);
@@ -331,8 +353,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         data = tmp2.GetForEachOutputs(context);
                         updates = new List<Tuple<string, string>>();
 
-
-                        AmendInputs(idx, data, token, updates);
+                        if (AmendOutputs(idx, data, _outputsToken, updates))
+                        {
+                            updateOutputToken = true;
+                        }
 
                         // push updates 
                         tmp2.UpdateForEachOutputs(updates, context);
@@ -343,10 +367,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         operationalData.InnerActivity.CurCodedOutputs = updates;
                     }
-                }
-
+                }               
                 #endregion
-
             }
 
             //Bug 8725 do not mutate mappings
@@ -357,7 +379,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //newOutputs = newOutputs.Replace("(*)", "(" + idx + ")");
                 newOutputs = inputItr.IterateMapping(newOutputs, idx);
             }
-
 
             var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
             if (dev2ActivityIoMapping != null)
@@ -370,19 +391,48 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 activityIoMapping.OutputMapping = newOutputs;
             }
-            _previousIndex = idx;
+            if (updateInputToken)
+            {
+                _inputsToken = idx.ToString();
+            }
+            if (updateOutputToken)
+            {
+                _outputsToken = idx.ToString();
+            }
         }
 
-        static void AmendInputs(int idx, IList<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
+        static bool AmendInputs(int idx, IList<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
         {
+            bool result = false;
             // amend inputs ;)
             foreach (DsfForEachItem d in data)
             {
                 string input = d.Value;
-                input = input.Replace("(" + token + ")", "(" + idx + ")");
-
+                if (input.Contains("(" + token + ")"))
+                {
+                    input = input.Replace("(" + token + ")", "(" + idx + ")");
+                    result = true;    
+                }                
                 updates.Add(new Tuple<string, string>(d.Value, input));
             }
+            return result;
+        }
+
+        static bool AmendOutputs(int idx, IList<DsfForEachItem> data, string token, IList<Tuple<string, string>> updates)
+        {
+            bool result = false;
+            // amend inputs ;)
+            foreach (DsfForEachItem d in data)
+            {
+                string input = d.Value;
+                if (input.Contains("(" + token + ")"))
+                {
+                    input = input.Replace("(" + token + ")", "(" + idx + ")");
+                    result = true;
+                }
+                updates.Add(new Tuple<string, string>(d.Value, input));
+            }
+            return result;
         }
        
         /// <summary>
@@ -396,9 +446,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-                       
-            
-
+                                  
             if (dataObject.IsDebug)
             {
                 DebugItem itemToAdd = new DebugItem();

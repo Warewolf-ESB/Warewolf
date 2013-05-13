@@ -38,7 +38,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         // Blocked by Bug 7926
         
         [TestMethod]
-        [Ignore]
         public void ForEachNestedWorkFlow()
         {
 
@@ -49,12 +48,23 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
 
             Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
         }
+
+        [TestMethod]
+        public void ForEachRecordsetIndexNotToBeReplacedWorkFlow()
+        {
+
+            string PostData = String.Format("{0}{1}", WebserverURI, "ForEachWithStarAndStaticIndex");
+            string expected = @"DataList><results><res>50</res></results></DataList";
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+        }
         
         #endregion ForEach Behaviour Tests
 
         #region Iteration Number Tests
 
-        //TODO:Speak to barney about if we need the foreach anymore
         [TestMethod]
         public void ForEachNumber() {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNumber");
@@ -67,8 +77,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
 
         // Sashen: 28-01-2012 : Once the fix is made and this test passes, please put your name and a comment regarding the test.
         // Bug 8366
-        [TestMethod]
-        [Ignore]
+        [TestMethod]   
         public void ForEachAssign_Expected_AssignWorksForEveryIteration() {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachAssign");
             string expected = @"<Result> Dummy_String Dummy_String_Inner Dummy_String_Inner Dummy_String_Inner Dummy_String_Inner</Result>    <Input>Dummy_String_Inner</Input>";

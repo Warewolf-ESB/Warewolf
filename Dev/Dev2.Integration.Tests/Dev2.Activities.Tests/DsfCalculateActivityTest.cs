@@ -60,8 +60,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Calculate RecordSet Tests
 
-        [TestMethod] // - OK
-        [Ignore]
+        [TestMethod] // - OK      
         public void Calculate_Activity_RecordSetEvaluation_Expected_RecordSetResolutionCorrectlyEvaluated()
         {
             string postData = string.Format("{0}{1}", _webServerURI, "Calculate_RecordSet_Subtract");

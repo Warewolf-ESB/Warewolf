@@ -8,7 +8,7 @@ namespace Dev2.Data.Binary_Objects
     [Serializable]
     public class ReverseIndexIterator : IIndexIterator
     {
-         private int _curValue;
+        private int _curValue;
         private IndexList _indexList;
 
         public IndexList IndexList
