@@ -26,7 +26,7 @@
                       Content="Turn Logging On" IsChecked="{Binding Object.IsLoggingEnabled, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,5" 
 				AutomationProperties.AutomationId="UI_SettingsLogging_TurnOnLogging_Check"/>
 
-        <GroupBox Header="What to log" Padding="3" Grid.Row="1" BorderBrush="#FF69A1BF"  IsEnabled="{Binding Object.IsLoggingEnabled}">
+        <GroupBox Header="What to log" Padding="3" Grid.Row="1" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -137,7 +137,7 @@
 					</Grid>
 				</Grid>
 			</GroupBox>
-        <GroupBox Header="Where to log to" Padding="3" Grid.Row="2" BorderBrush="#FF69A1BF"  IsEnabled="{Binding Object.IsLoggingEnabled}">
+        <GroupBox Header="Where to log to" Padding="3" Grid.Row="2" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">
 				<Grid>
 					<Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -184,7 +184,7 @@
                 </Grid>
 			</GroupBox>
 
-        <GroupBox Header="After logging" Padding="3" Grid.Row="3" BorderBrush="#FF69A1BF"  IsEnabled="{Binding Object.IsLoggingEnabled}">
+        <GroupBox Header="After logging" Padding="3" Grid.Row="3" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" />

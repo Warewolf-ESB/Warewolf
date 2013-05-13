@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings Version="1.3" WebServerUri="localhost">
-  <Logging DisplayName="Logging" />
+  <Logging DisplayName="Logging"/>
   <Security DisplayName="Security" />
   <Backup DisplayName="Backup" />
 </Settings>

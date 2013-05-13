@@ -548,18 +548,23 @@ namespace BusinessDesignStudio.Unit.Tests
         ///// <summary>
         ///// Create resource with source type
         ///// </summary>
-        //[TestMethod]
-        //public void ReloadResource_Where_cake_Expected_morecake()
-        //{
-        //    //Arrange
-        //    model.Setup(c => c.ResourceType).Returns(enResourceType.WorkflowService);
-        //    //Act
-        //    repo.Load();
-        //    repo.ReloadResource("Resource", enResourceType.WorkflowService, ResourceModelEqualityComparer.Current);
-        //    //Assert
-        //    Assert.IsTrue(repo.All().Count.Equals(2));
-        //}
-
+        [TestMethod]
+        public void ReloadResourcesWhereNothingLoadedExpectNonEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            
+            //------------Execute Test---------------------------
+            var reloadedResources = _repo.ReloadResource("TestWorkflowService",ResourceType.WorkflowService,new ResourceModelEqualityComparerForTest());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,reloadedResources.Count);
+        }       
+        
         #endregion ReloadResource Tests
 
         #region FindResourcesByID
@@ -607,6 +612,79 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion
 
+        #region Find
+       
+        [TestMethod]
+        public void FindWithValidFunctionExpectResourceReturned()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.ForceLoad();
+            //------------Execute Test---------------------------
+            var resourceModels = _repo.Find(model => model.ID == newGuid);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, resourceModels.Count);
+            Assert.AreEqual(newGuid,resourceModels.ToList()[0].ID);
+        }
+
+        [TestMethod]
+        public void FindWithNullFunctionExpectNullReturned()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.ForceLoad();
+            //------------Execute Test---------------------------
+            var resourceModels = _repo.Find(null);
+            //------------Assert Results-------------------------
+            Assert.IsNull(resourceModels);
+        }
+        #endregion
+
+        #region IsWorkflow
+        [TestMethod]
+        public void IsWorkflowValidWorkflowExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.ForceLoad();
+            //------------Execute Test---------------------------
+            var isWorkFlow = _repo.IsWorkflow("TestWorkflowService1");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isWorkFlow);
+        } 
+        
+        [TestMethod]
+        public void IsWorkflowNotValidWorkflowExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.ForceLoad();
+            //------------Execute Test---------------------------
+            var isWorkFlow = _repo.IsWorkflow("TestWorkflowService");
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isWorkFlow);
+        }
+        #endregion
         #region AddEnvironment
 
         [TestMethod]
@@ -711,6 +789,31 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion IsLoaded
 
-    }
+        #region Constructor
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructWhereNullWizardEngineExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            new ResourceRepository(_environmentModel.Object, null);
+            //------------Assert Results-------------------------
+            //See expected exception attribute
+        }
+        #endregion
+    }
+    public class ResourceModelEqualityComparerForTest:IEqualityComparer<IResourceModel>
+    {
+
+        public bool Equals(IResourceModel x, IResourceModel y)
+        {
+            return x.ID == y.ID;
+        }
+
+        public int GetHashCode(IResourceModel obj)
+        {
+            return obj.GetHashCode();
+        }
+    }
 }

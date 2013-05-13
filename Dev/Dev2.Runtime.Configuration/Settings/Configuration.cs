@@ -1,10 +1,12 @@
-﻿using Dev2.Runtime.Configuration.ComponentModel;
+﻿using Caliburn.Micro;
+using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.ViewModels;
 using Dev2.Runtime.Configuration.Views;
 using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
@@ -13,22 +15,8 @@ namespace Dev2.Runtime.Configuration.Settings
     // - Then add new property for class here and initialize it in constructors
     // - Then add property to ToXml() 
     // ------------------------------------------------------------------------------
-    public sealed class Configuration : INotifyPropertyChanged
+    public sealed class Configuration : PropertyChangedBase
     {
-        #region INotifyPropertyChanged Impl
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        internal void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region Fields
 
         private bool _hasChanges;
@@ -70,10 +58,26 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_hasChanges == value)
+                {
+                    return;
+                }
+
                 _hasChanges = value;
-                OnPropertyChanged("HasChanges");
+                NotifyOfPropertyChange(() => HasChanges);
             }
         }
+
+        public bool HasError
+        {
+            get
+            {
+                return (Logging != null && Logging.HasError) ||
+                       (Security != null && Security.HasError) ||
+                       (Backup != null && Backup.HasError);
+            }
+        }
+
         [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
         public LoggingSettings Logging { get; private set; }
 
@@ -133,13 +137,18 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Event Handlers
 
-        private void SettingChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private void SettingChanged(object sender, PropertyChangedEventArgs e)
         {
             var loggingSettings = sender as LoggingSettings;
             if (loggingSettings != null)
             {
                 var settings = loggingSettings;
                 if (settings.IsInitializing) return;
+            }
+
+            if (e.PropertyName == "HasError")
+            {
+                NotifyOfPropertyChange(() => HasError);
             }
 
             if (!HasChanges)

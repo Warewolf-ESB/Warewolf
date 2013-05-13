@@ -35,7 +35,7 @@ namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 
             foreach(var property in properties)
             {
-                if (property.Name == "IsNotifying")
+                if (property.Name == "IsNotifying" || property.Name == "IsSelected")
                 {
                     continue;
                 }

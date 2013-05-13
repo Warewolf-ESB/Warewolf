@@ -14,7 +14,10 @@ namespace Dev2.Studio.ViewModels.Explorer
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    public class ExplorerViewModel : BaseViewModel,IHandle<UpdateExplorerMessage>,IHandle<RemoveEnvironmentMessage>,IHandle<AddServerToExplorerMessage>
+    public class ExplorerViewModel : BaseViewModel,
+                                     IHandle<UpdateExplorerMessage>,
+                                     IHandle<RemoveEnvironmentMessage>,
+                                     IHandle<AddServerToExplorerMessage>
     {
         #region Class Members
         

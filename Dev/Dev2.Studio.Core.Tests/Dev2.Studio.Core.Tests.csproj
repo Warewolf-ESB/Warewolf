@@ -168,6 +168,7 @@
     <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="ExecutionClientChannelTests.cs" />
+    <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
     <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
     <Compile Include="Feedback\FeedbackInvokerTests.cs" />

@@ -48,6 +48,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             try
             {
                 Configuration = new Settings.Configuration(configurationXML);
+                Configuration.PropertyChanged += ConfigurationPropertyChanged;
             }
             catch(Exception)
             {
@@ -146,7 +147,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get
             {
                 return _saveCommand ??
-                       (_saveCommand = new RelayCommand(param => Save()));
+                       (_saveCommand = new RelayCommand(param => Save(), parm => CanSaveConfig()));
             }
         }
 
@@ -155,9 +156,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get
             {
                 return _cancelCommand ??
-                       (_cancelCommand = new RelayCommand(param => Cancel()));
+                       (_cancelCommand = new RelayCommand(param => Cancel(), parm => CanCancel()));
             }
         }
+
 
         public ICommand ClearErrorsCommand
         {
@@ -168,7 +170,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public Settings.Configuration Configuration { get; set; }
+        public Settings.Configuration Configuration { get; private set; }
 
         #endregion
 
@@ -181,6 +183,29 @@ namespace Dev2.Runtime.Configuration.ViewModels
         #endregion
 
         #region Private Methods
+
+        private static void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "HasChanges":
+                    CommandManager.InvalidateRequerySuggested();
+                    break;
+                case "HasError":
+                    CommandManager.InvalidateRequerySuggested();
+                    break;
+            }
+        }
+
+        private bool CanSaveConfig()
+        {
+            return Configuration.HasChanges && !Configuration.HasError;
+        }
+
+        private bool CanCancel()
+        {
+            return Configuration.HasChanges;
+        }
 
         private void Save()
         {

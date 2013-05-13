@@ -57,6 +57,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isLoggingEnabled == value)
+                {
+                    return;
+                }
+
                 _isLoggingEnabled = value;
                 NotifyOfPropertyChange(() => IsLoggingEnabled);
             }
@@ -70,6 +75,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isVersionLogged == value)
+                {
+                    return;
+                }
+
                 _isVersionLogged = value;
                 NotifyOfPropertyChange(() => IsVersionLogged);
             }
@@ -83,6 +93,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isTypeLogged == value)
+                {
+                    return;
+                }
+
                 _isTypeLogged = value;
                 NotifyOfPropertyChange(() => IsTypeLogged);
             }
@@ -96,6 +111,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isDurationLogged == value)
+                {
+                    return;
+                }
+
                 _isDurationLogged = value;
                 NotifyOfPropertyChange(() => IsDurationLogged);
             }
@@ -109,6 +129,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isDataAndTimeLogged == value)
+                {
+                    return;
+                }
+
                 _isDataAndTimeLogged = value;
                 NotifyOfPropertyChange(() => IsDataAndTimeLogged);
             }
@@ -122,6 +147,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isInputLogged == value)
+                {
+                    return;
+                }
+
                 _isInputLogged = value;
                 NotifyOfPropertyChange(() => IsInputLogged);
             }
@@ -135,6 +165,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_isOutputLogged == value)
+                {
+                    return;
+                }
+
                 _isOutputLogged = value;
                 NotifyOfPropertyChange(() => IsOutputLogged);
             }
@@ -163,6 +198,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_nestedLevelCount == value)
+                {
+                    return;
+                }
+
                 _nestedLevelCount = value;
                 NotifyOfPropertyChange(() => NestedLevelCount);
             }
@@ -176,6 +216,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_logFileDirectory == value)
+                {
+                    return;
+                }
+
                 _logFileDirectory = value;
                 NotifyOfPropertyChange(() => LogFileDirectory);
             }
@@ -189,6 +234,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             set
             {
+                if (_serviceInput == value)
+                {
+                    return;
+                }
+
                 _serviceInput = value;
                 NotifyOfPropertyChange(() => ServiceInput);
             }
@@ -333,10 +383,10 @@ namespace Dev2.Runtime.Configuration.Settings
                         result = "Invalid workflow selected";
                     }
                 }
+
+                Error = result;
                 return result;
             }
         }
-
-        public string Error { get; private set; }
     }
 }

@@ -181,6 +181,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression)
         {
+            if(expression == null) return null;
             Func<IResourceModel, bool> func = expression.Compile();
             return _resourceModels.FindAll(func.Invoke);
         }

@@ -37,7 +37,6 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
             // ReSharper restore UnusedVariable
         }
         
-     
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -115,11 +114,60 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
             }
         }
 
+        [TestMethod]
+        public void HasErrorReturnsFalse()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            Assert.IsFalse(config.HasError);
+        }
+
+        [TestMethod]
+        public void HasErrorReturnsTrueWhenLoggingError()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            config.Logging.Error = "Error";
+            Assert.IsTrue(config.HasError);
+        }
+
+        [TestMethod]
+        public void HasErrorReturnsTrueWhenSecurityError()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            config.Security.Error = "Error";
+            Assert.IsTrue(config.HasError);
+        }
+
+        [TestMethod]
+        public void HasErrorReturnsTrueWhenBackupError()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            config.Backup.Error = "Error";
+            Assert.IsTrue(config.HasError);
+        }
+
+        [TestMethod]
+        public void LoggingSettingChangedExpectsHasChangesTrueWhenNotInitializating()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            config.Logging.IsInitializing = false;
+            config.Logging.IsDataAndTimeLogged = true;
+            Assert.IsTrue(config.HasChanges);
+        }
+
+        [TestMethod]
+        public void LoggingSettingChangedExpectsHasChangesFalseWhenInitializating()
+        {
+            var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
+            config.Logging.IsDataAndTimeLogged = true;
+            Assert.IsFalse(config.HasChanges);
+        }
+
         #endregion
 
         //
         // Static helpers
         //
+       
 
         #region ValidateInitializesAllProperties
 

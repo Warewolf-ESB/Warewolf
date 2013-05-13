@@ -14,6 +14,7 @@ namespace Dev2.Runtime.Configuration.Settings
         private string _settingName;
         private string _displayName;
         string _webServerUri;
+        private string _error = string.Empty;
 
         #endregion
 
@@ -29,6 +30,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             private set
             {
+                if (_settingName == value)
+                {
+                    return;
+                }
+
                 _settingName = value;
                 NotifyOfPropertyChange(() => SettingName);
             }
@@ -42,6 +48,11 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             private set
             {
+                if (_displayName == value)
+                {
+                    return;
+                }
+
                 _displayName = value;
                 NotifyOfPropertyChange(() => DisplayName);
             }
@@ -55,11 +66,39 @@ namespace Dev2.Runtime.Configuration.Settings
             }
             private set
             {
+                if (_webServerUri == value)
+                {
+                    return;
+                }
+
                 _webServerUri = value;
                 NotifyOfPropertyChange(() => WebServerUri);
             }
         }
 
+        public string Error
+        {
+            get
+            {
+                return _error;
+            }
+            set
+            {
+                if (_error == value)
+                {
+                    return;
+                }
+
+                _error = value;
+                NotifyOfPropertyChange(() => Error);
+                NotifyOfPropertyChange(() => HasError);
+            }
+        }
+
+        public bool HasError
+        {
+            get { return !string.IsNullOrWhiteSpace(Error); }
+        }
         #endregion
 
         #region CTOR
