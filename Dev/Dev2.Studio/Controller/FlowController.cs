@@ -42,7 +42,7 @@ namespace Dev2.Studio.Controller
         {
             _popupController = popupController;
             _eventAggregator = eventAggregator;
-            if (_eventAggregator != null)
+            if(_eventAggregator != null)
                 _eventAggregator.Subscribe(this);
 
             _callBackHandler = new Dev2DecisionCallbackHandler();
@@ -64,34 +64,41 @@ namespace Dev2.Studio.Controller
             var activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.ConditionPropertyText);
             var rootActivity = ActivityHelper.GetRootActivityFromWrapper(wrapper);
 
-            if (activity == null || rootActivity == null)
+            if(activity == null || rootActivity == null)
             {
                 return;
             }
 
-            string val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+            var activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+            var ds = DataListConstants.DefaultStack;
 
-            ModelProperty activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
-
-            if (activityExpression != null && activityExpression.Value != null)
+            if(activityExpression != null && activityExpression.Value != null)
             {
                 //we got a model, push it in to the Model region ;)
                 // but first, strip and extract the model data ;)
 
-                val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
+                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
 
-                if (string.IsNullOrEmpty(val))
+                if(!string.IsNullOrEmpty(eval))
                 {
-                    val = JsonConvert.SerializeObject(DataListConstants.DefaultStack);
+                    ds = JsonConvert.DeserializeObject<Dev2DecisionStack>(eval);
                 }
             }
 
+            var displayName = wrapper.Item1.Properties[GlobalConstants.DisplayNamePropertyText];
+            if(displayName != null && displayName.Value != null)
+            {
+                ds.DisplayText = displayName.Value.ToString();
+            }
+
+            var val = JsonConvert.SerializeObject(ds);
+
             // Now invoke the Wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.DecisionWizardLocation)
+            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.DecisionWizardLocation)
                                , UriKind.Absolute, out requestUri)) return;
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 510);
+            _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 540);
 
             // Wizard finished...
             try
@@ -99,16 +106,15 @@ namespace Dev2.Studio.Controller
                 string tmp = WebHelper.CleanModelData(_callBackHandler);
                 var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
-                if (dds == null)
+                if(dds == null)
                 {
                     return;
                 }
 
-                //activityExpression.Properties[GlobalConstants.TrueArmPropertyText];
-
                 ActivityHelper.SetArmTextDefaults(dds);
                 ActivityHelper.InjectExpression(dds, activityExpression);
                 ActivityHelper.SetArmText(rootActivity, dds);
+                ActivityHelper.SetDisplayName(rootActivity, dds); // PBI 9220 - 2013.04.29 - TWR
             }
             catch
             {
@@ -121,39 +127,50 @@ namespace Dev2.Studio.Controller
         public void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
         {
             IEnvironmentModel environment = wrapper.Item2;
-            ModelItem activity = ActivityHelper.GetActivityFromWrapper(wrapper,
-                                                                       GlobalConstants.SwitchExpressionPropertyText);
+            ModelItem activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.SwitchExpressionPropertyText);
 
-            if (activity == null) return;
-
-            ModelProperty activityExpression =
-                activity.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
-
-            string webModel = JsonConvert.SerializeObject(DataListConstants.DefaultSwitch);
-
-            if (activityExpression != null && activityExpression.Value != null)
+            if(activity == null)
             {
-                string val = ActivityHelper.ExtractData(activityExpression.Value.ToString());
-                if (!string.IsNullOrEmpty(val))
+                return;
+            }
+
+            var activityExpression = activity.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
+            var ds = DataListConstants.DefaultSwitch;
+
+
+            if(activityExpression != null && activityExpression.Value != null)
+            {
+                var val = ActivityHelper.ExtractData(activityExpression.Value.ToString());
+                if(!string.IsNullOrEmpty(val))
                 {
-                    var ds = new Dev2Switch {SwitchVariable = val};
-                    webModel = JsonConvert.SerializeObject(ds);
+                    ds.SwitchVariable = val;
                 }
             }
 
+            var displayName = wrapper.Item1.Properties[GlobalConstants.DisplayNamePropertyText];
+            if(displayName != null && displayName.Value != null)
+            {
+                ds.DisplayText = displayName.Value.ToString();
+            }
+
+            var webModel = JsonConvert.SerializeObject(ds);
+
             // now invoke the wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDropWizardLocation),
+            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDropWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, webModel, 770, 175);
+            _callBackHandler = WebHelper.ShowWebpage(requestUri, webModel, 770, 205);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
             try
             {
-                var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                ActivityHelper.InjectExpression(ds, activityExpression);
+                var resultSwitch = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
+                ActivityHelper.InjectExpression(resultSwitch, activityExpression);
+
+                // PBI 9220 - 2013.04.29 - TWR
+                ActivityHelper.SetDisplayName(wrapper.Item1, resultSwitch); // MUST use wrapper.Item1 otherwise it won't be visible!
             }
             catch
             {
@@ -177,7 +194,7 @@ namespace Dev2.Studio.Controller
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
+            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
             _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
@@ -206,15 +223,15 @@ namespace Dev2.Studio.Controller
             string modelData = JsonConvert.SerializeObject(DataListConstants.DefaultCase);
 
             // Extract existing value ;)
-            if (switchCaseValue != null)
+            if(switchCaseValue != null)
             {
                 string val = switchCaseValue.ComputedValue.ToString();
-                modelData = JsonConvert.SerializeObject(new Dev2Switch {SwitchVariable = val});
+                modelData = JsonConvert.SerializeObject(new Dev2Switch { SwitchVariable = val });
             }
 
             // now invoke the wizard ;)
             Uri requestUri;
-            if (!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
+            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
                                UriKind.Absolute, out requestUri)) return;
 
             _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
@@ -225,9 +242,9 @@ namespace Dev2.Studio.Controller
             {
                 var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
 
-                if (ds != null)
+                if(ds != null)
                 {
-                    if (switchCaseValue != null)
+                    if(switchCaseValue != null)
                     {
                         switchCaseValue.SetValue(ds.SwitchVariable);
                     }

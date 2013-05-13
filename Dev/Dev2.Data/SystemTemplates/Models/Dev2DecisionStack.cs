@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Data.Decisions.Operations;
+using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Text;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2DecisionStack : IDev2DataModel
+    public class Dev2DecisionStack : IDev2DataModel, IDev2FlowModel
     {
         private string _ver = "1.0.0";
 
         #region Properties
 
-        public IList<Dev2Decision> TheStack { get;  set; }
+        public IList<Dev2Decision> TheStack { get; set; }
 
-        public int TotalDecisions { 
-            get {  return TheStack.Count; } 
+        public int TotalDecisions
+        {
+            get { return TheStack.Count; }
         }
 
         [JsonIgnore]
@@ -34,8 +35,10 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string FalseArmText { get; set; }
 
+        public string DisplayText { get; set; }
+
         #endregion
-        
+
         public string ToWebModel()
         {
 
@@ -68,9 +71,9 @@ namespace Dev2.Data.SystemTemplates.Models
             //}
             //else
             //{
-                result = result.Replace("\"", "!"); // Quote so it is VB compliant
+            result = result.Replace("\"", "!"); // Quote so it is VB compliant
             //}
-            
+
 
             return result;
         }
@@ -87,7 +90,7 @@ namespace Dev2.Data.SystemTemplates.Models
             {
                 result.Append(dd.GenerateUserFriendlyModel());
                 // append mode if not at end
-                if( (cnt+1) < TheStack.Count)
+                if((cnt + 1) < TheStack.Count)
                 {
                     result.Append(Mode);
                 }
@@ -102,7 +105,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             return result.ToString();
         }
-        
+
         // ReSharper disable InconsistentNaming
         public static string FromVBPersitableModelToJSON(string val)
         // ReSharper restore InconsistentNaming
@@ -113,7 +116,7 @@ namespace Dev2.Data.SystemTemplates.Models
             //{
             //    return val.Replace(GlobalConstants.VBSerializerToken, "\"");
             //}
-            
+
             return val.Replace("!", "\"");
 
         }
@@ -126,11 +129,11 @@ namespace Dev2.Data.SystemTemplates.Models
         public static string ExtractModelFromWorkflowPersistedData(string val)
         {
             int start = val.IndexOf("(", StringComparison.Ordinal);
-            if (start > 0)
+            if(start > 0)
             {
                 int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
 
-                if (end > start)
+                if(end > start)
                 {
                     start += 2;
                     val = val.Substring(start, (end - start));
@@ -186,7 +189,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string RemoveNaughtyCharsFromModel(string val)
         {
-            var toReplace = new string[]{"!", "[[]]", "&"};
+            var toReplace = new string[] { "!", "[[]]", "&" };
 
             foreach(var r in toReplace)
             {

@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Activities;
+using System.Activities.Expressions;
 using System.Activities.Statements;
 using Dev2;
+using System.Collections.Generic;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
+using Dev2.Tests.Activities.ActivityTests;
+using Dev2.Utilities;
+using Microsoft.CSharp.Activities;
+using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -20,53 +29,6 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class DsfFlowNodeTests : BaseActivityUnitTest
     {
-        public DsfFlowNodeTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
         #region Decision Tests
 
         // 2013.02.13: Ashley Lewis - Bug 8725, Task 8913
@@ -156,6 +118,119 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion
+
+        #endregion
+
+        #region FlowNodeExpression
+
+        [TestMethod]
+        public void FlowNodeExpressionExpectedIsCSharpValue()
+        {
+            // BUG 9304 - 2013.05.08 - TWR - designer/runtime error can be removed by converting the underlying expression to a CSharpValue
+
+            var flowNode = new TestFlowNodeActivity<string>();
+            var expected = typeof(CSharpValue<string>);
+            var actual = flowNode.GetTheExpression().GetType();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FlowNodeWithValidDecisionExpressionExpectedExpressionIsEvaluatedCorrectly()
+        {
+            // BUG 9304 - 2013.05.08 - TWR - designer/runtime error can be removed by converting the underlying expression to a CSharpValue
+
+            const string Shape = "<DataList><A/><B/><C/></DataList>";
+            const string Data = "<DataList><A>5</A><B>3</B><C>abc</C></DataList>";
+
+            RunActivity(Shape, Data, "True", new DsfFlowDecisionActivity
+            {
+                ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'[[A]]','Col2':'[[B]]','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsGreaterThan'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If [[A]] Is Greater Than [[B]]'}\",AmbientDataList)"
+            });
+
+            RunActivity(Shape, Data, "False", new VisualBasicValue<bool>
+            {
+                ExpressionText = "Dev2DecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[C]]!,!Col2!:!!,!Col3!:!!,!PopulatedColumnCount!:1,!EvaluationFn!:!IsNumeric!}],!TotalDecisions!:1,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!}\",AmbientDataList)"
+            });
+        }
+
+        [TestMethod]
+        public void FlowNodeWithValidSwitchExpressionExpectedExpressionIsEvaluatedCorrectly()
+        {
+            // BUG 9304 - 2013.05.08 - TWR - designer/runtime error can be removed by converting the underlying expression to a CSharpValue
+
+            const string ExpectedValue = "5";
+            const string Shape = "<DataList><A/><B/><C/></DataList>";
+            const string Data = "<DataList><A>" + ExpectedValue + "</A><B>3</B><C>2</C></DataList>";
+
+            RunActivity(Shape, Data, ExpectedValue, new DsfFlowSwitchActivity
+            {
+                ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"[[A]]\",AmbientDataList)"
+            });
+        }
+
+        #endregion
+
+        #region RunActivity
+
+        static void RunActivity<TResult>(string shape, string data, string expectedValue, Activity<TResult> activity)
+        {
+            const string OutputResultKey = "Result";
+
+            #region Create workflow activity
+
+            // This setup MUST mimick the way we setup workflows - WorkflowHelper.CreateWorkflow() !!
+            var flowchart = new Flowchart
+            {
+                StartNode = new FlowStep
+                {
+                    Action = new Assign<TResult>
+                    {
+                        To = new ArgumentReference<TResult> { ArgumentName = OutputResultKey },
+                        Value = new InArgument<TResult>(activity)
+                    }
+                }
+            };
+            var workflow = new DynamicActivity<TResult>
+            {
+                Name = WorkflowHelper.ToNamespaceTypeString(activity.GetType()),
+                Implementation = () => flowchart
+            };
+
+            WorkflowHelper.SetProperties(workflow.Properties);
+            WorkflowHelper.SetVariables(flowchart.Variables);
+
+        #endregion
+
+            var dataObject = NativeActivityTest.CreateDataObject(false, false);
+            var compiler = DataListFactory.CreateDataListCompiler();
+
+            ErrorResultTO errors;
+            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, shape, out errors);
+
+            WorkflowHelper.Instance.CompileExpressions(workflow);
+
+            var actual = string.Empty;
+            var reset = new AutoResetEvent(false);
+
+            var inputArgs = new Dictionary<string, object> { { "AmbientDataList", new List<string> { dataObject.DataListID.ToString() } } };
+
+            NativeActivityTest.Run(workflow, dataObject, inputArgs,
+                (ex, outputs) =>
+                {
+                    if(ex != null)
+                    {
+                        reset.Set();
+                        throw ex;
+                    }
+                    actual = outputs[OutputResultKey].ToString();
+                    reset.Set();
+                });
+
+            reset.WaitOne();
+
+            Assert.AreEqual(expectedValue, actual);
+        }
 
         #endregion
     }

@@ -1,5 +1,4 @@
-﻿
-<div id="container">
+﻿<div id="container">
     <div class="float-left">
 
         <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;">
@@ -20,8 +19,8 @@
 
                         <div class="button-bar">
                             <!--<span style="font-size:18px; float:left; margin-left:20px;">
-                                    If: 
-                                </span>-->
+								If: 
+							</span>-->
                             <button name="addRow" id="addRow" data-bind="click: addRow" title="Add a new statement">Add Statement </button>
                         </div>
 
@@ -33,19 +32,19 @@
                                     <!--<textarea Name="Col1" id="Col1" draggable="false" 
                                               data-bind="hasfocus: ko.observable(true), visible: PopulatedColumnCnt > 0, value: Col1, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
                                               class="veryShortField required noResizeTextArea topAlign"></textarea>-->
-								    <input type="text" name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt > 0" class="veryShortField required" />                              
-                                    
+								    <input type="text" name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt() > 0" class="veryShortField required" />                              
+
                                     <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign">
                                     </select>
-                                    
+
                                     <textarea name="Col2" id="Col2" draggable="false" 
-                                              data-bind="hasfocus: PopulatedColumnCnt == 2, visible: PopulatedColumnCnt == 2, value: Col2, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
+                                              data-bind="hasfocus: PopulatedColumnCnt() == 2, visible: PopulatedColumnCnt() == 2, value: Col2, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
                                               class="wideField noResizeTextArea required topAlign" ></textarea>
-                                  
-                                    <span data-bind="visible: PopulatedColumnCnt == 3" class="topAlign fixedHeight">
+
+                                    <span data-bind="visible: PopulatedColumnCnt() == 3" class="topAlign fixedHeight">
                                         <input type="text" name="Col2a" id="Col2a" data-bind="hasfocus: PopulatedColumnCnt == 3, value: Col2, valueUpdate: 'afterkeydown'" class="veryShortField required" />
-                                         And
-                                        <input type="text" name="Col3" id="Col3" data-bind="value: Col3, valueUpdate: 'afterkeydown'" class="veryShortField required" />
+                                        <span style="margin-top: 2px">&nbsp;And</span>
+										<input type="text" name="Col3" id="Col3" data-bind="value: Col3, valueUpdate: 'afterkeydown'" class="veryShortField required" />
                                     </span>
 
                                     <span class="floatRight topAlign">
@@ -62,6 +61,10 @@
                         </div>
 
                         <div style="margin-top: 20px; width: 100%; float: left;">
+                            <div style="margin-left: -99px;">
+                                <label for="displayText" id="Label1">Display text </label>
+                                <input style="margin-left: 10px" type="text" name="displayText" id="displayText" class="veryShortField" data-bind="value: data.DisplayText" />
+                            </div>
                             <div style="margin-left: -89px;">
                                 <label for="trueArmText" id="trueArm">True arm text </label>
                                 <input type="text" name="trueArmText" id="trueArmText" class="veryShortField" data-bind="value: data.TrueArmText" />
@@ -84,6 +87,7 @@
                                 <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
                             </span>
                         </div>
+
 
                     </div>
                 </div>

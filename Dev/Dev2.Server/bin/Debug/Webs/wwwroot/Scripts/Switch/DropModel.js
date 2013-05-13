@@ -6,9 +6,8 @@
     document.title = "Switch Flow";
 
     self.data = {
-
+        DisplayText: ko.observable(""),
         SwitchVariable: ko.observable("")
-
     };
 
     self.save = function () {
@@ -56,6 +55,19 @@
             self.data.SwitchVariable(response.SwitchVariable);
         }
 
-    }
+        var responseDisplayText = "";
+        if (response.DisplayText != undefined) {
+            responseDisplayText = response.DisplayText;
+        }
 
+        self.displayTextComputed = ko.computed(function () {
+            var result = self.data.SwitchVariable();
+            self.data.DisplayText(result);
+            return result;
+        });
+
+        if (responseDisplayText != "") {
+            self.data.DisplayText(response.DisplayText);
+        }
+    };
 }

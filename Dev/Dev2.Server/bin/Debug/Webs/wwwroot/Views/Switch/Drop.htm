@@ -18,10 +18,14 @@
 						
 						<!--  KO Template -->
 						<div style="width:100%;">							
-							<div>
-								<label style="float:left; width:200px; margin-left:-33px;">Variable to Switch on : </label>
-								<input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'afterkeydown'" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on This Variable"/>	
-							</div>
+						    <div>
+						        <label style="float:left; width:200px; margin-left:-33px;">Variable to Switch on : </label>
+						        <input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'afterkeydown'" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on This Variable"/>	
+						    </div>
+                              <div>
+                                <label style="margin-left: -96px;" for="displayText" id="Label1">Display text : </label>
+                                <input style="margin-left: 63px" type="text" name="displayText" id="displayText" class="veryShortField" data-bind="value: data.DisplayText" />
+                            </div>
 						</div>
 
 						<div class="button-bar" style="margin: 20px 2px 10px 0;">

@@ -14,6 +14,9 @@
     xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core" >
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Themes.xaml"/>
+        <ResourceDictionary Source="SplitterExpansionButton.xaml"/>
+        <ResourceDictionary Source="SplitterPanel.xaml"/>
         <ResourceDictionary Source="Brushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 

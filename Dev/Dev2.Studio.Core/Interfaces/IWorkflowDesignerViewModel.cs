@@ -16,8 +16,7 @@ namespace Dev2.Studio.Core.ViewModels {
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
         void Dispose();
-        bool NotifyItemSelected(object primarySelection);
-        ActivityBuilder GetBaseUnlimitedFlowchartActivity();
+        bool NotifyItemSelected(object primarySelection);        
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
     }

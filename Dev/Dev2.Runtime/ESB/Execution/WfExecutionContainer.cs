@@ -1,21 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
-using System;
 using Dev2.Runtime.Security;
+using Dev2.Utilities;
 using Dev2.Workspaces;
-using Dev2.Common;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
+        readonly IWorkflowHelper _workflowHelper;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+            : this(sa, dataObj, theWorkspace, esbChannel, WorkflowHelper.Instance)
+        {
+
+        }
+
+        // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IWorkflowHelper workflowHelper)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            
+            _workflowHelper = workflowHelper;
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -32,27 +42,27 @@ namespace Dev2.Runtime.ESB.Execution
             IBinaryDataListEntry tmp = compiler.Evaluate(DataObject.DataListID,
                                                              DataList.Contract.enActionType.System,
                                                              enSystemTag.Bookmark.ToString(), false, out errors);
-            if (tmp != null)
+            if(tmp != null)
             {
                 bookmark = tmp.FetchScalar().TheValue;
             }
 
             tmp = compiler.Evaluate(DataObject.DataListID, DataList.Contract.enActionType.System,
                                         enSystemTag.InstanceId.ToString(), false, out errors);
-            if (tmp != null)
+            if(tmp != null)
             {
                 Guid.TryParse(tmp.FetchScalar().TheValue, out instanceId);
-            }       
+            }
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             // Set server ID, only if not set yet - origininal server;
-            if (DataObject.ServerID == Guid.Empty)
+            if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
             // Set server ID, only if not set yet - origininal resource;
-            if (DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
+            if(DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
             // Travis : Now set Data List
@@ -62,11 +72,13 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
+                // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
+                _workflowHelper.CompileExpressions(activity.Value as DynamicActivity);
                 IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject, new List<object> { EsbChannel, }, instanceId, TheWorkspace, bookmark, out errors);
 
                 result = exeResult.DataListID;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 errors.AddError(ex.Message);
             }

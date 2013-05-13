@@ -6,7 +6,7 @@ namespace Dev2.Data.SystemTemplates.Models
     /// <summary>
     /// A model for the Switch on the workflow designer
     /// </summary>
-    public class Dev2Switch : IDev2DataModel
+    public class Dev2Switch : IDev2DataModel, IDev2FlowModel
     {
 
         /// <summary>
@@ -55,10 +55,16 @@ namespace Dev2.Data.SystemTemplates.Models
 
             return result;
         }
-        
+
         public string GenerateUserFriendlyModel()
         {
             return "on " + SwitchVariable;
         }
+
+        #region Implementation of IDev2FlowModel
+
+        public string DisplayText { get; set; }
+
+        #endregion
     }
 }

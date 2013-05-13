@@ -87,7 +87,8 @@ namespace Dev2.Common
         public const string DataListIoColDirection = "ColumnIODirection";
 
         // Decision Wizard Constants
-        public const string InjectedDecisionHandler = "Dev2DecisionHandler.Instance.ExecuteDecisionStack"; // Amdend in GetBaseUnlimitedFlowchartActivity()
+        public const string InjectedDecisionHandler = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack";
+        public const string InjectedDecisionHandlerOld = "Dev2DecisionHandler.Instance.ExecuteDecisionStack";
         public const string InjectedDecisionDataListVariable = "AmbientDataList";
         public const string ExpressionPropertyText = "ExpressionText";
         public const string ConditionPropertyText = "Condition";
@@ -99,12 +100,15 @@ namespace Dev2.Common
         public const string DefaultFalseArmText = "False";
         public const string VBSerializerToken = "__!__";
 
+        public const string DisplayNamePropertyText = "DisplayName"; // PBI 9220 - 2013.04.29 - TWR
+
         // Switch Wizard Constants
         public const string SwitchDropWizardLocation = "wwwroot/switch/drop";
         public const string SwitchDragWizardLocation = "wwwroot/switch/drag";
         public const string SwitchExpressionPropertyText = "Expression";
         public const string SwitchExpressionTextPropertyText = "ExpressionText";
-        public const string InjectedSwitchDataFetch = "Dev2DecisionHandler.Instance.FetchSwitchData";
+        public const string InjectedSwitchDataFetchOld = "Dev2DecisionHandler.Instance.FetchSwitchData";
+        public const string InjectedSwitchDataFetch = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData";
 
         public const string SwitchWizardErrorString = "Couldn't find the resource needed to configure the Switch.";
         public const string SwitchWizardErrorHeading = "Missing System Model Dev2Switch";

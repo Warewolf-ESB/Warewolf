@@ -1,4 +1,13 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows;
+using Dev2.Composition;
+using Dev2.Core.Tests.Environments;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
@@ -11,14 +20,9 @@ using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
@@ -74,18 +78,6 @@ namespace Dev2.Core.Tests
 
         #endregion Test Initialize
 
-        #region GetBaseUnlimitedFlowchartActivity Tests
-
-        [TestMethod]
-        public void GetBaseUnlimitedFlowchartActivity()
-        {
-            LayoutDesigner = new WorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object);
-            ActivityBuilder b = LayoutDesigner.GetBaseUnlimitedFlowchartActivity();
-            Assert.IsTrue(b != null);
-        }
-
-        #endregion GetBaseUnlimitedFlowchartActivity Tests
-
         #region Remove Unused Tests
 
         /// <summary>
@@ -111,7 +103,7 @@ namespace Dev2.Core.Tests
             DataListItems.Add(secondDataListItem);
 
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-          //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -122,7 +114,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-           // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             workflowDesigner.RemoveAllUnusedDataListItems(dataListViewModel);
             Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 0);
@@ -155,8 +147,8 @@ namespace Dev2.Core.Tests
             DataListItems.Add(dataListItem);
             DataListItems.Add(secondDataListItem);
 
-           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-          //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+            //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
@@ -167,7 +159,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-           // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
             workflowDesigner.AddMissingOnlyWithNoPopUp(null);
             Assert.IsTrue(76 == dataListViewModel.ScalarCollection.Count);
@@ -200,11 +192,11 @@ namespace Dev2.Core.Tests
             DataListItems.Add(dataListItem);
             DataListItems.Add(secondDataListItem);
 
-           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-          //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
+            //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
-           // mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
+            // mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
@@ -212,7 +204,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
-          //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
             Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsUsed);
             Assert.IsTrue(dataListViewModel.ScalarCollection[1].IsUsed);
@@ -345,7 +337,7 @@ namespace Dev2.Core.Tests
             designerAttributes.Add(typeof(TransformActivity), typeof(DsfTransformActivityDesigner));
             designerAttributes.Add(typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner));
             designerAttributes.Add(typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner));
-           // wf.MediatorRepo = _mockMediatorRepo.Object;
+            // wf.MediatorRepo = _mockMediatorRepo.Object;
             wf.InitializeDesigner(designerAttributes);
 
             return wf;
@@ -386,18 +378,18 @@ namespace Dev2.Core.Tests
             DataListItems.Add(secondDataListItem.Object);
 
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-           // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
+            // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
             //Juries 8810 TODO
             //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
-            
+
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
-            workflowDesigner.PopUp = mockPopUp.Object;                      
-            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();            
+            workflowDesigner.PopUp = mockPopUp.Object;
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             return workflowDesigner.WorkflowVerifiedDataParts.Count;
         }
 
@@ -1143,6 +1135,120 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
         }
+
+        #region InitializeDesigner
+
+        // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+        [TestMethod]
+        public void WorkflowDesignerViewModelInitializeDesignerExpectedInitializesFramework45Properties()
+        {
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wfd = new WorkflowDesignerViewModel(crm.Object);
+            var attr = new Dictionary<Type, Type>();
+
+            wfd.InitializeDesigner(attr);
+
+            var designerConfigService = wfd.Designer.Context.Services.GetService<DesignerConfigurationService>();
+            Assert.AreEqual(new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5)), designerConfigService.TargetFrameworkName);
+            Assert.IsTrue(designerConfigService.AutoConnectEnabled);
+            Assert.IsTrue(designerConfigService.AutoSplitEnabled);
+            Assert.IsTrue(designerConfigService.BackgroundValidationEnabled);
+            Assert.IsTrue(designerConfigService.PanModeEnabled);
+            Assert.IsTrue(designerConfigService.RubberBandSelectionEnabled);
+
+            // Disabled for now
+            Assert.IsFalse(designerConfigService.AnnotationEnabled);
+            Assert.IsFalse(designerConfigService.AutoSurroundWithSequenceEnabled);
+
+            var designerView = wfd.Designer.Context.Services.GetService<DesignerView>();
+            Assert.AreEqual(ShellHeaderItemsVisibility.Breadcrumb, designerView.WorkflowShellHeaderItemsVisibility & ShellHeaderItemsVisibility.Breadcrumb);
+            Assert.AreEqual(ShellHeaderItemsVisibility.ExpandAll, designerView.WorkflowShellHeaderItemsVisibility & ShellHeaderItemsVisibility.ExpandAll);
+            Assert.AreEqual(ShellHeaderItemsVisibility.CollapseAll, designerView.WorkflowShellHeaderItemsVisibility & ShellHeaderItemsVisibility.CollapseAll);
+
+            Assert.AreEqual(ShellBarItemVisibility.Zoom, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.Zoom);
+            Assert.AreEqual(ShellBarItemVisibility.PanMode, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.PanMode);
+            Assert.AreEqual(ShellBarItemVisibility.MiniMap, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.MiniMap);
+
+            Assert.IsNotNull(wfd.OutlineView);
+        }
+
+        // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
+        [TestMethod]
+        public void WorkflowDesignerViewModelInitializeDesignerExpectedInvokesWorkflowHelper()
+        {
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wh = new Mock<IWorkflowHelper>();
+            wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
+            wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
+            wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
+
+            var wfd = new WorkflowDesignerViewModel(crm.Object, wh.Object);
+
+            var attr = new Dictionary<Type, Type>();
+
+            wfd.InitializeDesigner(attr);
+
+            wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
+            wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
+        }
+
+        #endregion
+
+        #region CTOR
+
+        // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void WorkflowDesignerViewModelConstructorWithNullWorkflowHelperExpectedThrowsArgumentNullException()
+        {
+            var wfd = new WorkflowDesignerViewModel(null, null);
+        }
+
+        #endregion
+
+        #region ServiceDefinition
+
+        // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
+        [TestMethod]
+        public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
+        {
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wh = new Mock<IWorkflowHelper>();
+            wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
+            wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
+            wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
+
+            var wfd = new WorkflowDesignerViewModel(crm.Object, wh.Object);
+
+            var attr = new Dictionary<Type, Type>();
+
+            wfd.InitializeDesigner(attr);
+
+            var serviceDef = wfd.ServiceDefinition;
+            wh.Verify(h => h.SerializeWorkflow(It.IsAny<ModelService>()));
+        }
+
+        #endregion
 
     }
 }

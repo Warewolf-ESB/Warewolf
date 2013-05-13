@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
-using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.SystemTemplates
 {
@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.SystemTemplates
     {
         static object _testGuard = new object();
         [TestInitialize]
-        public  void TestInit()
+        public void TestInit()
         {
             Monitor.Enter(_testGuard);
         }
@@ -33,11 +33,11 @@ namespace Dev2.Data.Tests.SystemTemplates
         [TestMethod]
         public void CanBootStrapModel_To_JSON_Expect_ValidModel()
         {
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "False", TrueArmText = "True"};
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "False", TrueArmText = "True", DisplayText = "Is True" };
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
             string result = dlc.ConvertModelToJson(dds);
-            string expected = @"{""TheStack"":[],""TotalDecisions"":0,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":""True"",""FalseArmText"":""False""}";
+            string expected = @"{""TheStack"":[],""TotalDecisions"":0,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Is True""}";
 
             Assert.AreEqual(expected, result);
         }
@@ -70,7 +70,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            dds.AddModelItem(new Dev2Decision(){Col1 = "[[A]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNumeric});
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[A]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNumeric });
 
             string result = dlc.ConvertModelToJson(dds);
 
@@ -92,7 +92,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             Dev2DecisionStack dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(data);
 
-            Assert.AreEqual(1,dds.TotalDecisions);
+            Assert.AreEqual(1, dds.TotalDecisions);
         }
 
         #endregion
@@ -113,12 +113,12 @@ namespace Dev2.Data.Tests.SystemTemplates
             dds.AddModelItem(new Dev2Decision() { Col1 = "[[A]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNumeric });
 
             Guid id = dlc.PushSystemModelToDataList(dds, out errors);
-            
+
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
 
-            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
 
@@ -144,7 +144,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
 
-            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""},{""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNotNumeric""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""},{""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNotNumeric""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
 
@@ -170,7 +170,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             // ExecuteDecisionStack
             string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
-            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>(){bdl.UID.ToString()});
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
 
 
             c.DeleteDataListByID(bdl.UID); // clean up ;)
@@ -331,7 +331,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
-            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
         }
@@ -355,7 +355,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
-            string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
         }

@@ -1,4 +1,11 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Windows;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
@@ -6,14 +13,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using Microsoft.VisualBasic.Activities;
-using System;
-using System.Activities;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Model;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Windows;
+using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
@@ -24,15 +24,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         // Changing the ExpressionText property of a VisualBasicValue during runtime has no effect. 
         // The expression text is only evaluated and converted to an expression tree when CacheMetadata() is called.
-        readonly VisualBasicValue<TResult> _expression;
+        readonly CSharpValue<TResult> _expression; // BUG 9304 - 2013.05.08 - TWR - Changed type to CSharpValue
         TResult _theResult;
 
         #region Ctor
 
         protected DsfFlowNodeActivity(string displayName)
-            : base(displayName, true)
+            : this(displayName, DebugDispatcher.Instance, true)
         {
-            _expression = new VisualBasicValue<TResult>();
+        }
+
+        // BUG 9304 - 2013.05.08 - TWR - Added this constructor for testing purposes
+        protected DsfFlowNodeActivity(string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false)
+            : base(displayName, debugDispatcher, isAsync)
+        {
+            _expression = new CSharpValue<TResult>();
         }
 
         #endregion
@@ -78,7 +84,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             if(dataObject != null && dataObject.IsDebug)
             {
-                DispatchDebugState(context,StateType.Before);
+                DispatchDebugState(context, StateType.Before);
             }
             context.ScheduleActivity(_expression, OnCompleted, OnFaulted);
         }
@@ -127,12 +133,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var flowNode = CreateFlowNode();
             var designer = target as ActivityDesigner;
             ModelItem modelItem = null;
-            if (designer != null)
+            if(designer != null)
             {
                 var modelProperty = designer.ModelItem.Properties["Nodes"];
-                if (modelProperty != null)
+                if(modelProperty != null)
                 {
-                    if (modelProperty.Collection != null)
+                    if(modelProperty.Collection != null)
                     {
                         modelItem = modelProperty.Collection.Add(flowNode);
                     }
@@ -203,20 +209,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 DebugItem itemToAdd = new DebugItem();
                 string userModel = dds.GenerateUserFriendlyModel();
 
-                foreach (Dev2Decision dev2Decision in dds.TheStack)
+                foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    if (DataListUtil.IsEvaluated(dev2Decision.Col1))
-                    {                                                
+                    if(DataListUtil.IsEvaluated(dev2Decision.Col1))
+                    {
                         userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList));
                         itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
-                    if (DataListUtil.IsEvaluated(dev2Decision.Col2))
-                    {                                                
+                    if(DataListUtil.IsEvaluated(dev2Decision.Col2))
+                    {
                         userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList));
                         itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
-                    if (DataListUtil.IsEvaluated(dev2Decision.Col3))
-                    {                                                
+                    if(DataListUtil.IsEvaluated(dev2Decision.Col3))
+                    {
                         userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList));
                         itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
@@ -230,7 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 result.Add(itemToAdd);
 
             }
-            catch (JsonSerializationException)
+            catch(JsonSerializationException)
             {
                 Dev2Switch ds = new Dev2Switch() { SwitchVariable = val };
 
@@ -243,7 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 result.Add(itemToAdd);
 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Error" });
@@ -271,18 +277,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
-                if (_theResult.ToString() == "True")
+                if(_theResult.ToString() == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if (_theResult.ToString() == "False")
+                else if(_theResult.ToString() == "False")
                 {
                     resultString = dds.FalseArmText;
                 }
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
                 result.Add(itemToAdd);
             }
-            catch (Exception)
+            catch(Exception)
             {
                 //2013.02.11: Ashley lewis - Bug 8725: Task 8730 - This means it is a swith, not a decision
 
@@ -306,16 +312,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO errors = new ErrorResultTO();
             var dlEntry = c.Evaluate(dataList.UID, enActionType.User, Expression, true, out errors);
-            if (dlEntry.IsRecordset)
+            if(dlEntry.IsRecordset)
             {
-                if (DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Numeric)
+                if(DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Numeric)
                 {
                     int index;
-                    if (int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(Expression), out index))
+                    if(int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(Expression), out index))
                     {
                         string error;
                         IList<IBinaryDataListItem> listOfCols = dlEntry.FetchRecordAt(index, out error);
-                        foreach (IBinaryDataListItem binaryDataListItem in listOfCols)
+                        foreach(IBinaryDataListItem binaryDataListItem in listOfCols)
                         {
                             result = binaryDataListItem.TheValue;
                         }
@@ -354,5 +360,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        // BUG 9304 - 2013.05.08 - TWR - Added for testing purposes
+        public CodeActivity<TResult> GetTheExpression()
+        {
+            return _expression;
+        }
+
+        // BUG 9304 - 2013.05.08 - TWR - Added for testing purposes
+        public string GetTheResult()
+        {
+            return _theResult.ToString();
+        }
+
     }
 }

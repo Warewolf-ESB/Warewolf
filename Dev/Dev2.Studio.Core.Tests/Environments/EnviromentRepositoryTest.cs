@@ -28,7 +28,7 @@ namespace Dev2.Core.Tests.Environments
         // Needed for Source initialization!!!
         public static ImportServiceContext EnviromentRepositoryImportServiceContext;
 
-        readonly object _testLock = new object();
+        static readonly object TestLock = new object();
 
         #region MyClass/TestInitialize
 
@@ -54,14 +54,14 @@ namespace Dev2.Core.Tests.Environments
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Monitor.Enter(_testLock);
+            Monitor.Enter(TestLock);
             ImportService.CurrentContext = EnviromentRepositoryImportServiceContext;
         }
 
         [TestCleanup]
         public void MyTestCleanup()
         {
-            Monitor.Exit(_testLock);
+            Monitor.Exit(TestLock);
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿// Make this available to chrome debugger
-//@ sourceURL=DecisionViewModel.js  
+//@ sourceURL=DecisionModel.js  
 
+/* Model for Decision Wizard */
 function DecisionViewModel() {
     var self = this;
     var $mainForm = $("#mainForm");
@@ -11,11 +12,12 @@ function DecisionViewModel() {
     self.data = {
         /* Injected Data */
         Mode: ko.observable("AND"),
+        DisplayText: ko.observable("Is true?"),
         TrueArmText: ko.observable("True"),
         FalseArmText: ko.observable("False"),
         IsAnd: ko.observable(true),
         TheStack: ko.observableArray([]),
-        
+
         /* End Injected	Data */
 
         /* The data here must match the server's decision functions */
@@ -58,8 +60,12 @@ function DecisionViewModel() {
             { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 },
         ])
     };
-
+    
     self.intellisenseOptions = [];
+
+    self.createEmptyDecision = function () {
+        return { Col1: ko.observable(""), Col2: ko.observable(""), Col3: ko.observable(""), PopulatedColumnCnt: ko.observable(1), EvaluationFn: ko.observable("Choose...") };
+    };
 
     self.ShowDelete = function (idx) {
         var result = false;
@@ -73,18 +79,17 @@ function DecisionViewModel() {
 
     self.addRow = function () {
         // Default Row ;)
-		// { displayValue: "Choose...", optionValue: "Choose...", columnCount: 0 },
-        self.data.TheStack.push({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...'});
+        self.data.TheStack.push(self.createEmptyDecision());
 
         // Find the element and select it. -- decisionRow
         var $span = $("#decisionRow:last-child");
+
         //var $li = $span.parent();
         //self.selectResourcePathElement($span);
         $decisionView.scrollTo($span, 280); // height of container
 
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
-        
 
     };
 
@@ -97,24 +102,19 @@ function DecisionViewModel() {
 
     };
 
-    self.rowChanged = function (elm, event) {
+    self.rowChanged = self.rowChanged = function (elm, event) {
 
         self.autoResize(event.target.previousElementSibling);
         self.autoResize(event.target.nextElementSibling);
 
-        var idx = self.data.TheStack().indexOf(elm);
-        var val = elm.EvaluationFn;
-
         // find function element to use ;)
         var cnt = ko.utils.arrayFirst(self.data.decisionFunctions(), function (item) {
-            return elm.EvaluationFn === item.optionValue;
+            return elm.EvaluationFn() === item.optionValue;
         });
+        elm.PopulatedColumnCnt(cnt.columnCount);
 
-        self.data.TheStack.splice(idx, 1, { Col1: elm.Col1, Col2: elm.Col2, Col3: elm.Col3, PopulatedColumnCnt: cnt.columnCount, EvaluationFn: val });
-    
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
-        
     };
 
     self.toggleMode = function () {
@@ -174,10 +174,13 @@ function DecisionViewModel() {
             response = dai.data;
         }
 
+        var responseDisplayText = "";
+        
         if (response.TheStack != undefined) {
             // load decisions
             for (var i = 0; i < response.TheStack.length; i++) {
-                self.AddDecision({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2, Col3: response.TheStack[i].Col3, PopulatedColumnCnt: response.TheStack[i].PopulatedColumnCount, EvaluationFn: response.TheStack[i].EvaluationFn });
+                var decision = ko.mapping.fromJS({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2, Col3: response.TheStack[i].Col3, PopulatedColumnCnt: response.TheStack[i].PopulatedColumnCount, EvaluationFn: response.TheStack[i].EvaluationFn });
+                self.AddDecision(decision);               
             }
 
             // set Stack data
@@ -191,33 +194,60 @@ function DecisionViewModel() {
 
             // set the arms
             self.data.TrueArmText(response.TrueArmText);
-
             self.data.FalseArmText(response.FalseArmText);
-
+            
+            responseDisplayText = response.DisplayText;
         } else {
             // Add a decision
-            self.AddDecision({ Col1: '', Col2: '', Col3: '', PopulatedColumnCnt: 1, EvaluationFn: 'Choose...' });
+            self.AddDecision(self.createEmptyDecision());
+        }
+        
+        self.displayTextComputed = ko.computed(function () {
+            var firstDecision = self.data.TheStack()[0];
+            var option = ko.utils.arrayFirst(self.data.decisionFunctions(), function (item) {
+                return firstDecision.EvaluationFn() === item.optionValue;
+            });
+
+            var result = "";
+            switch (option.columnCount) {
+                case 0:
+                    result = "If " + option.displayValue;
+                    break;
+                case 2:
+                    result = "If " + firstDecision.Col1() + " " + option.displayValue + " " + firstDecision.Col2();
+                    break;
+                case 3:
+                    result = "If " + firstDecision.Col1() + " " + option.displayValue + " " + firstDecision.Col2() + " and " + firstDecision.Col3();
+                    break;
+                default:
+                    result = "If " + firstDecision.Col1() + " " + option.displayValue;
+            }
+            self.data.DisplayText(result);
+            return result;
+        });
+
+        if (responseDisplayText != "") {
+            self.data.DisplayText(response.DisplayText);
         }
     };
 
-    self.onKeyDown = function(model, event) {
+    self.onKeyDown = function (model, event) {
         var key = event.keyCode;
 
         if (event.ctrlKey && key == 13) {
             self.addRow();
         } else {
-            self.autoResize(event.target);           
+            self.autoResize(event.target);
             return true;
         }
     };
-    
 
     self.autoResize = function (textarea) {
         //var oldHeight = parseInt(textarea.style.height.replace("px", ""));
-        textarea.style.height = '12px';
+        textarea.style.height = '18px';
         var newHeight = textarea.scrollHeight - 5;
         textarea.style.height = newHeight + 'px';
         //textarea.style.height = (oldHeight > newHeight ? oldHeight : newHeight) + 'px';
     };
-
 }
+   
