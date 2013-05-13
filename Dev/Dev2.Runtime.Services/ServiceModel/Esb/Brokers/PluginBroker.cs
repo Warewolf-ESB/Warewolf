@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         List<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName);
         ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName);
         IOutputDescription TestPlugin(PluginService pluginService);
-        bool ValidatePlugin(string toLoad);
+        bool ValidatePlugin(string toLoad, out string error);
     }
 
     /// <summary>
@@ -105,9 +105,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// </summary>
         /// <param name="toLoad">To load.</param>
         /// <returns></returns>
-        public bool ValidatePlugin(string toLoad)
+        public bool ValidatePlugin(string toLoad, out string error)
         {
             bool result = true;
+            error = null;
 
             if (toLoad.StartsWith(GlobalConstants.GACPrefix))
             {
@@ -120,6 +121,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 {
                     result = false;
                     ServerLogger.LogError(e.Message);
+                    error = e.Message;
                 }
             }
             else if(toLoad.EndsWith(".dll"))
@@ -132,12 +134,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 {
                     result = false;
                     ServerLogger.LogError(e.Message);
+                    error = e.Message;
                 }
             }
             else
             {
                 //does not start with gac prefix or end with .dll
                 result = false;
+                error = "Not a Dll file";
             }
 
             return result;

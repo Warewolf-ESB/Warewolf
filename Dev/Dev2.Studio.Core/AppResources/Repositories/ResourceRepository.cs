@@ -132,7 +132,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 foreach (var item in wfServices)
                 {
-                    IResourceModel resource = HydrateResourceModel(resourceType, item);
+                    IResourceModel resource = HydrateResourceModel(resourceType, item, true);
                     var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
                     if (resourceToUpdate != null)
@@ -188,10 +188,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression)
         {
-            Func<IResourceModel, bool> func = expression.Compile();
-
-
+            if (expression != null && _reservedServices != null)
+            {
+                var func = expression.Compile();
+                if(func.Method != null)
+                {
             return _resourceModels.Find(func.Invoke);
+        }
+            }
+            return null;
         }
 
         public void Save(IResourceModel instanceObj)
@@ -406,12 +411,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return _cachedServices.Contains(id);
         }
 
-        private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data)
+        private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data, bool forced = false)
         {
             Guid id;
             Guid.TryParse(data.GetValue("ID"), out id);
 
-            if (!IsInCache(id))
+            //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
+            if (!IsInCache(id) || forced)
             {
                 // add to cache of services fetched ;)
                 _cachedServices.Add(id);

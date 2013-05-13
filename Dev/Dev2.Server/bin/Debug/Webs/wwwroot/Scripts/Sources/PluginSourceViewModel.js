@@ -24,6 +24,7 @@
     };
     
     self.isAssemblyValid = ko.observable(false);
+    self.validationErrorMsg = ko.observable();
     self.allGacAssemblies = ko.observableArray();
     self.gacSearchTerm = ko.observable("");
     self.gacSearchTerm.subscribe(function (newvalue) {
@@ -91,9 +92,7 @@
     //and do all validation
     self.data.assemblyLocation.subscribe(function (newvalue) {
         if (newvalue && newvalue != "") {
-            if (newvalue.match(".dll") != null) {//is assembly a file?
-                self.validateAssemblyFile(self.getFileFromPath(newvalue));
-            } else {
+            if (newvalue.match("GAC:") != null) {//is assembly a file?
                 $assemblyFileLocation.removeClass("ui-autocomplete-loading");
                 if (newvalue[newvalue.length - 1] == '\\') {
                     $.post("Service/PluginSources/GetDirectoryIntellisense" + window.location.search, self.data.assemblyLocation(), function(result) {
@@ -107,6 +106,8 @@
                         self.isAssemblyValid(false);
                     }
                 }
+            } else {
+                self.validateAssemblyFile(self.getFileFromPath(newvalue));
             }
         } else {//assembly is blank
             self.isAssemblyValid(false);
@@ -134,7 +135,7 @@
         return isValid;
     });
 
-    self.validateAssemblyFile = function(id) {
+    self.validateAssemblyFile = function (helpID) {
         $.ajax({
             type: 'POST',
             url: "Service/PluginSources/ValidateAssemblyImageFormat" + window.location.search,
@@ -144,8 +145,9 @@
                     self.isAssemblyValid(true);
                 } else {
                     self.isAssemblyValid(false);
+                    self.validationErrorMsg(data.validationresult);
                 }
-                self.updateHelpText(id);
+                self.updateHelpText(helpID);
             },
             async: false
         });
@@ -154,7 +156,7 @@
     self.updateHelpText = function (id) {
         if (id != null) {
             var text = "";
-            if (id && id.match(".dll") == null && id.match("GAC:") == null && id.match("gacSearchTerm:") == null) {
+            if (id && id.match('.') == null && id.match("GAC:") == null && id.match("gacSearchTerm:") == null) {
                 text = self.helpDictionary[id];
                 text = text ? text : self.helpDictionary.default;
                 text = text ? text : "";
@@ -164,14 +166,14 @@
 						text = "<h4>Global Cache</h4><p>You have selected " + id + "</p>";
 					}else{
 						// invalid asm ;(
-						text = "<h4>Global Cache</h4><p>" + id + " is an invalid assembly</p>";
+						text = "<h4>Global Cache</h4><p>" + id + " returned error: " + self.validationErrorMsg() + "</p>";
 					}
                 } 
-                if (id.match(".dll") != null) {
+                else {
                     if (self.isAssemblyValid()) {
                         text = "<h4>Plugin File</h4><p>You have selected " + id + "</p>";
                     } else {
-                        text = "<h4>Plugin File</h4><p>" + id + " is an invalid assembly file</p>";
+                        text = "<h4>Plugin File</h4><p>" + id + " returned error: " + self.validationErrorMsg() + "</p>";
                     }
                 }
                 if (id.match("gacSearchTerm:")) {

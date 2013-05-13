@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Reflection;
 using Dev2.Common.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Newtonsoft.Json;
@@ -72,7 +69,7 @@ namespace Dev2.Runtime.ServiceModel
                 else
                 {
                     //assembly location refers to the GAC
-                    var getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':')+1);
+                    var getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':') + 1);//To get just the name add length, pluginSourceDetails.AssemblyLocation.IndexOf(',') - 4
                     pluginSourceDetails.AssemblyName = getName;
                 }
             }
@@ -122,9 +119,15 @@ namespace Dev2.Runtime.ServiceModel
 
             var broker = new PluginBroker();
 
-            if (broker.ValidatePlugin(args))
+            string errorMsg;
+
+            if(broker.ValidatePlugin(args, out errorMsg))
             {
                 toJson = @"{""validationresult"":""success""}";
+            }
+            else
+            {
+                toJson = @"{""validationresult"":"""+errorMsg+@"""}";
             }
             
             return toJson;

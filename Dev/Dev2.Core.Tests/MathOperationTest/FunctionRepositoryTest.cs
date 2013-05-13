@@ -152,17 +152,12 @@ namespace Unlimited.UnitTest.Framework.MathOperationTest {
         /// FunctionRepository FindSingle NULL expression expected error from repository.
         /// </summary>
         [TestMethod]
-        public void FunctionRepository_FindSingle_NullExpression_Expected_ErrorFromRepository() {
-            IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
+        public void FunctionRepository_FindSingle_NullExpression_Expected_NullReturned() {
+            var functionRepo = MathOpsFactory.FunctionRepository();
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
-            try {
-                IFunction functions = functionRepo.FindSingle(null);
-            }
-            catch(ArgumentNullException) {
-                // if there is a null argument exception, the find has performed it's job correctly
-                Assert.IsTrue(true);
-            }
+            var functions = functionRepo.FindSingle(null);
+            Assert.IsNull(functions);
         }
 
         #endregion FindSingle Tests

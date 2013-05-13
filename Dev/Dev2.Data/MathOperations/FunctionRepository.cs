@@ -62,9 +62,7 @@ namespace Dev2.MathOperations {
                     return func;
                 }
             }
-            else {
-                throw new ArgumentNullException("Expression cannot be null");
-            }
+            return null;
         }
 
 
