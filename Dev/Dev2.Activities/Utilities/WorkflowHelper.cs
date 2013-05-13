@@ -340,7 +340,11 @@ namespace Dev2.Utilities
         {
             if(activity != null)
             {
-                activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);
+                if (!string.IsNullOrEmpty(activity.ExpressionText))
+                {
+                    activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);    
+                }
+                
             }
         }
 
