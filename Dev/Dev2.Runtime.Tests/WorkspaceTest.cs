@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -15,47 +16,42 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for WorkspaceTest
     /// </summary>
     [TestClass]
-    [Ignore]
+
     public class WorkspaceTest
     {
         const string ServiceName = "Calculate_RecordSet_Subtract";
 
         const enDynamicServiceObjectType ServiceType = enDynamicServiceObjectType.DynamicService;
-        static object syncRoot = new object();
+
+        readonly static object SyncRoot = new object();
+        readonly static object MonitorLock = new object();
 
         //static string _testDir;
 
-        //static int _currentTestNum;
-        //static string _currentTestDir;
+        //#region ClassInitialize
 
-        #region ClassInitialize
+        //[ClassInitialize]
+        //public static void ClassInitialize(TestContext testContext)
+        //{      
+        //    _testDir = testContext.TestDeploymentDir;
+        //}
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            //// HACK: shorten test directory path by removing auto generated folder....
-            //var parentDir = Directory.GetParent(testContext.TestDir);
-            //var tempDir = testContext.TestDir.Remove(0, parentDir.FullName.Length);
-            //var keys = testContext.Properties.Keys.OfType<string>().ToList();
-            //foreach(var key in keys)
-            //{
-            //    var value = testContext.Properties[key] as string;
-            //    if(value != null)
-            //    {
-            //        testContext.Properties[key] = value.Replace(tempDir, string.Empty);
-            //    }
-            //}
-
-            //_testDir = testContext.TestDir;
-            //_currentTestNum = 0;
-        }
-
-        #endregion
+        //#endregion
 
         #region TestInitialize/Cleanup
 
-        //static readonly object TestLock = new object();
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            Monitor.Enter(MonitorLock);
+            //EnvironmentVariables.ApplicationPath = Path.Combine(_testDir, Path.GetRandomFileName());
+        }
 
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Monitor.Exit(MonitorLock);
+        }
 
         #endregion
 
@@ -75,7 +71,7 @@ namespace Dev2.DynamicServices.Test
         {
 
             //Lock because of access to resourcatalog
-            lock (syncRoot)
+            lock(SyncRoot)
             {
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Edit);
@@ -103,7 +99,7 @@ namespace Dev2.DynamicServices.Test
         public void UpdateWorkItemWithCommitAction()
         {
             //Lock because of access to resourcatalog
-            lock (syncRoot)
+            lock(SyncRoot)
             {
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
@@ -125,7 +121,7 @@ namespace Dev2.DynamicServices.Test
         public void UpdateWorkItemWithCommitActionOnSameWorkspace()
         {
             //Lock because of access to resourcatalog
-            lock (syncRoot)
+            lock(SyncRoot)
             {
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
