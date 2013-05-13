@@ -35,95 +35,95 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
-            lock (_tumbler)
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                var loc = assembly.Location;
+            //lock (_tumbler)
+            //{
+            //    var assembly = Assembly.GetExecutingAssembly();
+            //    var loc = assembly.Location;
 
-                var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
-                var studioLoc = Path.Combine(Path.GetDirectoryName(loc), _studioName);
+            //    var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+            //    var studioLoc = Path.Combine(Path.GetDirectoryName(loc), _studioName);
 
-                //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
+            //    //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
 
-                ServerLogger.LogMessage("Server Loc -> " + serverLoc);
-                ServerLogger.LogMessage("Studio Loc -> " + studioLoc);
-                ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+            //    ServerLogger.LogMessage("Server Loc -> " + serverLoc);
+            //    ServerLogger.LogMessage("Studio Loc -> " + studioLoc);
+            //    ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
 
-                var args = "-t";
+            //    var args = "-t";
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = false;
-                startInfo.UseShellExecute = true;
-                startInfo.FileName = serverLoc;
-                //startInfo.RedirectStandardOutput = true;
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.Arguments = args;
+            //    ProcessStartInfo startInfo = new ProcessStartInfo();
+            //    startInfo.CreateNoWindow = false;
+            //    startInfo.UseShellExecute = true;
+            //    startInfo.FileName = serverLoc;
+            //    //startInfo.RedirectStandardOutput = true;
+            //    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //    startInfo.Arguments = args;
 
-                // Setup studio proc info
-                ProcessStartInfo studioInfo = new ProcessStartInfo();
-                studioInfo.CreateNoWindow = false;
-                studioInfo.UseShellExecute = true;
-                studioInfo.FileName = studioLoc;
-                studioInfo.WindowStyle = ProcessWindowStyle.Maximized;
+            //    // Setup studio proc info
+            //    ProcessStartInfo studioInfo = new ProcessStartInfo();
+            //    studioInfo.CreateNoWindow = false;
+            //    studioInfo.UseShellExecute = true;
+            //    studioInfo.FileName = studioLoc;
+            //    studioInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
 
-                var started = false;
-                var studioStart = false;
-                var startCnt = 0;
+            //    var started = false;
+            //    var studioStart = false;
+            //    var startCnt = 0;
 
-                // term any existing server processes ;)
-                TerminateProcess(_serverProcName);
-                // term any existing studio processes ;)
-                TerminateProcess(_studioProcName);
+            //    // term any existing server processes ;)
+            //    TerminateProcess(_serverProcName);
+            //    // term any existing studio processes ;)
+            //    TerminateProcess(_studioProcName);
 
-                while (!started && !studioStart && startCnt < 5)
-                {
-                    try
-                    {
-                        if (!started)
-                        {
-                            _serverProc = Process.Start(startInfo);
-                        }
-                        if (!studioStart)
-                        {
-                            _studioProc = Process.Start(studioInfo);
-                        }
+            //    while (!started && !studioStart && startCnt < 5)
+            //    {
+            //        try
+            //        {
+            //            if (!started)
+            //            {
+            //                _serverProc = Process.Start(startInfo);
+            //            }
+            //            if (!studioStart)
+            //            {
+            //                _studioProc = Process.Start(studioInfo);
+            //            }
 
-                        // Wait for server to start
-                        Thread.Sleep(10000); // wait up to 15 seconds for server to start ;)
-                        if (!_serverProc.HasExited)
-                        {
-                            started = true;
-                            ServerLogger.LogMessage("** Server Started for CodedUI Test Run");
-                        }
-                        if (!_studioProc.HasExited)
-                        {
-                            studioStart = true;
-                            ServerLogger.LogMessage("** Studio Started for CodedUI Test Run");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        ServerLogger.LogMessage("Exception : " + e.Message);
+            //            // Wait for server to start
+            //            Thread.Sleep(10000); // wait up to 15 seconds for server to start ;)
+            //            if (!_serverProc.HasExited)
+            //            {
+            //                started = true;
+            //                ServerLogger.LogMessage("** Server Started for CodedUI Test Run");
+            //            }
+            //            if (!_studioProc.HasExited)
+            //            {
+            //                studioStart = true;
+            //                ServerLogger.LogMessage("** Studio Started for CodedUI Test Run");
+            //            }
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            ServerLogger.LogMessage("Exception : " + e.Message);
 
-                        // most likely a server is already running, kill it and try again ;)
-                        startCnt++;
+            //            // most likely a server is already running, kill it and try again ;)
+            //            startCnt++;
 
-                    }
-                    finally
-                    {
-                        if (!started && !studioStart)
-                        {
-                            ServerLogger.LogMessage("** Server Failed to Start for CodedUI Test Run");
-                            // term any existing server processes ;)
-                            TerminateProcess(_serverProcName);
-                            ServerLogger.LogMessage("** Studio Failed to Start for CodedUI Test Run");
-                            // term any existing server processes ;)
-                            TerminateProcess(_studioProcName);
-                        }
-                    }
-                }
-            }
+            //        }
+            //        finally
+            //        {
+            //            if (!started && !studioStart)
+            //            {
+            //                ServerLogger.LogMessage("** Server Failed to Start for CodedUI Test Run");
+            //                // term any existing server processes ;)
+            //                TerminateProcess(_serverProcName);
+            //                ServerLogger.LogMessage("** Studio Failed to Start for CodedUI Test Run");
+            //                // term any existing server processes ;)
+            //                TerminateProcess(_studioProcName);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -132,17 +132,17 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
         [AssemblyCleanup()]
         public static void Teardown()
         {
-            if (_serverProc != null)
-            {
-                _serverProc.Kill();
-                ServerLogger.LogMessage("Server Terminated");
-            }
+            //if (_serverProc != null)
+            //{
+            //    _serverProc.Kill();
+            //    ServerLogger.LogMessage("Server Terminated");
+            //}
 
-            if (_studioProc != null)
-            {
-                _studioProc.Kill();
-                ServerLogger.LogMessage("Studio Terminated");
-            }
+            //if (_studioProc != null)
+            //{
+            //    _studioProc.Kill();
+            //    ServerLogger.LogMessage("Studio Terminated");
+            //}
         }
 
 
