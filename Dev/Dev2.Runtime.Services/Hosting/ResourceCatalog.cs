@@ -93,7 +93,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-
         #region Properties
 
         public int WorkspaceCount

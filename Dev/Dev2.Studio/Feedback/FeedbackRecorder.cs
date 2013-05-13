@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using Dev2.Studio.AppResources.Exceptions;
 using System;
 using System.ComponentModel.Composition;
@@ -287,12 +288,24 @@ namespace Dev2.Studio.Feedback
                     process.WaitForExit(10000);
                     if (!process.HasExited)
                     {
+                        KillProcesses(process.Id);
                         throw new FeedbackRecordingTimeoutException("Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'");
                     }
                 }
             }
         }
+        void KillProcesses(int id)
+        {
+            var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ProcessId={0}", id));
 
+            var managementObjectCollection = searcher.Get();
+            foreach (ManagementObject queryObj in managementObjectCollection)
+            {
+                var pid = Convert.ToInt32(queryObj["ProcessId"]);
+                var processById = Process.GetProcessById(pid);
+                processById.Kill();
+            }
+        }
         #endregion Private Methods
     }
 }

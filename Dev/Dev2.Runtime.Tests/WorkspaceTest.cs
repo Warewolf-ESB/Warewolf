@@ -21,10 +21,10 @@ namespace Dev2.DynamicServices.Test
         const string ServiceName = "Calculate_RecordSet_Subtract";
 
         const enDynamicServiceObjectType ServiceType = enDynamicServiceObjectType.DynamicService;
+        static object syncRoot = new object();
 
         //static string _testDir;
 
-        Guid _workspaceID;
         //static int _currentTestNum;
         //static string _currentTestDir;
 
@@ -56,37 +56,6 @@ namespace Dev2.DynamicServices.Test
 
         //static readonly object TestLock = new object();
 
-        // TODO : Refactor this entire class ;(
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            //Monitor.Enter(TestLock);
-
-            // User int's to keep dir name short!
-            //_currentTestNum++;
-            //_currentTestDir = Path.Combine(_testDir, _currentTestNum.ToString(CultureInfo.InvariantCulture));
-            //Directory.CreateDirectory(_currentTestDir);
-
-            // Set current directory to new one each time so that tests do not clash
-            //Directory.SetCurrentDirectory(_currentTestDir);
-
-            _workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            ResourceCatalogTests.SaveResources(Guid.Empty, _workspaceID, null, true, true, new string[0], new[] { ServiceName }, out resources);
-
-            // Force reload of server workspace from _currentTestDir
-            ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            var repositoryInstance = WorkspaceRepository.Instance;
-            repositoryInstance.RefreshWorkspaces();
-
-            //Monitor.Exit(TestLock);
-        }
 
         #endregion
 
@@ -104,19 +73,25 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void UpdateWorkItemWithEditAction()
         {
-            var workspaceItem = new Mock<IWorkspaceItem>();
-            workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Edit);
-            workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
-            workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
-            var workspace = WorkspaceRepository.Instance.Get(_workspaceID);
+            //Lock because of access to resourcatalog
+            lock (syncRoot)
+            {
+                var workspaceItem = new Mock<IWorkspaceItem>();
+                workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Edit);
+                workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
+                workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
-            var previous = ResourceCatalog.Instance.GetResource(_workspaceID, ServiceName);
-            workspace.Update(workspaceItem.Object, previous.AuthorRoles);
-            var next = ResourceCatalog.Instance.GetResource(_workspaceID, ServiceName);
-            Assert.AreNotSame(previous, next);
+                Guid workspaceID;
+                var repositoryInstance = SetupRepo(out workspaceID);
+                var workspace = repositoryInstance.Get(workspaceID);
+
+                var previous = ResourceCatalog.Instance.GetResource(workspaceID, ServiceName);
+                workspace.Update(workspaceItem.Object, previous.AuthorRoles);
+                var next = ResourceCatalog.Instance.GetResource(workspaceID, ServiceName);
+                Assert.AreNotSame(previous, next);
+            }
         }
-
 
         [TestMethod]
         public void UpdateWorkItemWithDiscardAction()
@@ -127,33 +102,46 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void UpdateWorkItemWithCommitAction()
         {
-            var workspaceItem = new Mock<IWorkspaceItem>();
-            workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
-            workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
-            workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
+            //Lock because of access to resourcatalog
+            lock (syncRoot)
+            {
+                var workspaceItem = new Mock<IWorkspaceItem>();
+                workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
+                workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
+                workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
-            var workspace = WorkspaceRepository.Instance.Get(_workspaceID);
+                Guid workspaceID;
+                var repositoryInstance = SetupRepo(out workspaceID);
+                var workspace = repositoryInstance.Get(workspaceID);
 
-            var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
-            workspace.Update(workspaceItem.Object, previous.AuthorRoles);
-            var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
-            Assert.AreNotSame(previous, next);
+                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                workspace.Update(workspaceItem.Object, previous.AuthorRoles);
+                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                Assert.AreNotSame(previous, next);
+            }
         }
 
         [TestMethod]
         public void UpdateWorkItemWithCommitActionOnSameWorkspace()
         {
-            var workspaceItem = new Mock<IWorkspaceItem>();
-            workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
-            workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
-            workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
+            //Lock because of access to resourcatalog
+            lock (syncRoot)
+            {
+                var workspaceItem = new Mock<IWorkspaceItem>();
+                workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
+                workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
+                workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
-            var workspace = WorkspaceRepository.Instance.Get(GlobalConstants.ServerWorkspaceID);
+                Guid workspaceID;
+                var repositoryInstance = SetupRepo(out workspaceID);
 
-            var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
-            workspace.Update(workspaceItem.Object, previous.AuthorRoles);
-            var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
-            Assert.AreSame(previous, next);
+                var workspace = repositoryInstance.Get(GlobalConstants.ServerWorkspaceID);
+
+                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                workspace.Update(workspaceItem.Object, previous.AuthorRoles);
+                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                Assert.AreSame(previous, next);
+            }
         }
 
         [TestMethod]
@@ -205,9 +193,10 @@ namespace Dev2.DynamicServices.Test
         public void DeleteDecreasesItemCountByOne()
         {
             // this will add           
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
+            var workspace = repositoryInstance.Get(workspaceID);
 
-            var workspace = repositoryInstance.Get(_workspaceID);
             var expected = repositoryInstance.Count - 1;
             repositoryInstance.Delete(workspace);
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -217,7 +206,8 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void DeleteNullItemExpectedNoOperationPerformed()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var expected = repositoryInstance.Count;
             repositoryInstance.Delete(null);
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -230,7 +220,8 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void SaveWithNewWorkspaceIncreasesItemCountByOne()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var expected = repositoryInstance.Count + 1;
             Guid myGuid = Guid.NewGuid();
             var workspace = new Workspace(myGuid);
@@ -241,7 +232,8 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void SaveWithNullWorkspaceIncreasesItemCountByOne()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var expected = repositoryInstance.Count;
             repositoryInstance.Save(null);
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -254,14 +246,16 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void ServerWorkspaceCreatedAfterInstantiation()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             Assert.IsNotNull(repositoryInstance.ServerWorkspace);
         }
 
         [TestMethod]
         public void ServerWorkspaceCreatedWithServerWorkspaceID()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             Assert.AreEqual(WorkspaceRepository.ServerWorkspaceID, repositoryInstance.ServerWorkspace.ID);
         }
 
@@ -272,7 +266,8 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithEmptyGuidReturnsServerWorkspace()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var result = repositoryInstance.Get(Guid.Empty);
             Assert.AreSame(repositoryInstance.ServerWorkspace, result);
         }
@@ -280,7 +275,8 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithServerWorkspaceIDReturnsServerWorkspace()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var result = repositoryInstance.Get(WorkspaceRepository.ServerWorkspaceID);
             Assert.AreSame(repositoryInstance.ServerWorkspace, result);
         }
@@ -288,8 +284,8 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithNewWorkspaceIDIncreasesItemCountByOne()
         {
-
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var expected = repositoryInstance.Count + 1;
             repositoryInstance.Get(Guid.NewGuid());
             Assert.AreEqual(expected, repositoryInstance.Count);
@@ -298,12 +294,25 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void GetWithForceReloadsWorkspace()
         {
-            var repositoryInstance = WorkspaceRepository.Instance;
+            Guid workspaceID;
+            var repositoryInstance = SetupRepo(out workspaceID);
             var previous = repositoryInstance.ServerWorkspace;
             var result = repositoryInstance.Get(WorkspaceRepository.ServerWorkspaceID, true);
             Assert.AreNotSame(previous, result);
         }
 
         #endregion Get Tests
+
+        public static WorkspaceRepository SetupRepo(out Guid workspaceID)
+        {
+            var repo = new WorkspaceRepository();
+            workspaceID = Guid.NewGuid();
+            List<IResource> resources;
+            ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { ServiceName }, out resources);
+
+            // Force reload of server workspace from _currentTestDir
+            ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);
+            return repo;
+        }
     }
 }

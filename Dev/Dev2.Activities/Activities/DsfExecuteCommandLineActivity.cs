@@ -188,6 +188,7 @@ namespace Dev2.Activities
                 }
 
                 process.StandardInput.Close();
+                Thread.Sleep(1000);
                 while(!process.HasExited)
                 {
                     if(!process.HasExited)

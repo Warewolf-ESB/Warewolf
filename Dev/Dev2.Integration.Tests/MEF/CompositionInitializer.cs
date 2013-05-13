@@ -22,8 +22,9 @@ namespace Dev2.Integration.Tests.MEF
 
             // set up window behavior
             Mock<IEventAggregator> eventAgg = new Mock<IEventAggregator>();
+            Mock<IWindowManager> windowManMock = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer<IEventAggregator>(eventAgg.Object);
-
+            ImportService.AddExportedValueToContainer(windowManMock.Object);
             return importServiceContext;
         }
 

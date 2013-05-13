@@ -63,13 +63,11 @@ namespace Dev2.Workspaces
 
         #region Initialization
 
-        // Prevent instantiation
-        private WorkspaceRepository()
+        public WorkspaceRepository()
         {
             Directory.CreateDirectory(EnvironmentVariables.WorkspacePath);
             Get(ServerWorkspaceID, true);
         }
-
         #endregion
 
         #region Properties

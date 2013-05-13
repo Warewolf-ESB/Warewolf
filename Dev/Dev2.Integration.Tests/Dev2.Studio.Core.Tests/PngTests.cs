@@ -1,5 +1,7 @@
-﻿using Dev2.Composition;
+﻿using System;
+using Dev2.Composition;
 using Dev2.Integration.Tests.MEF;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Windows.Controls.Ribbon;
 using System.Activities.Presentation.Toolbox;
@@ -19,16 +21,15 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     /// Summary description for PngTests
     /// </summary>
     [TestClass]
-    [Ignore]
     public class PngTests
     {
-        private ToolboxUserControl toolbox;
-        private ToolboxCategory ControlFlowCat;
-        private ToolboxCategory LoopConstructsCat;
-        private ToolboxCategory RecordsetCat;
-        private ToolboxCategory UtilityCat;
-        private ToolboxCategory FileOrFolderCat;
-        private static readonly object _testLock = new object();
+        private static ToolboxUserControl toolbox;
+        private static ToolboxCategory ControlFlowCat;
+        private static ToolboxCategory LoopConstructsCat;
+        private static ToolboxCategory RecordsetCat;
+        private static ToolboxCategory UtilityCat;
+        private static ToolboxCategory FileOrFolderCat;
+        private static object _testLock = new object();
 
         public PngTests()
         {
@@ -38,6 +39,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         }
 
         private TestContext testContextInstance;
+        static App _myApp;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -60,13 +62,18 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
+         [ClassInitialize()]
+         public static void MyClassInitialize(TestContext testContext)
+         {
+            
+         }
         //
         // Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup()]
         public static void MyClassCleanup()
         {
+
+            
         }
         //
         // Use TestInitialize to run code before running each test 
@@ -74,27 +81,41 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         public void MyTestInitialize()
         {
             Monitor.Enter(_testLock);
+//            if(System.Windows.Application.Current == null)
+//            {
+//                try
+//                {
+//                    _myApp = new App();
+//                }
+//                catch(Exception e)
+//                {
+//                    
+//                }
+//                _myApp = null;
+//            }
             // Sashen.Naidoo - 12:02:2012 - In order to facilitate the resource dictionary on the Studio
             //                              We have to instantiate the Studio, but not start it up
             //                              once this has occured, we have the Studio's context and the designer icons
             //                              work.
-            if (System.Windows.Application.Current == null)
-            {
-                App myApp = new App();
-                myApp = null;
-            }
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeMockedWindowNavigationBehavior();
 
             if (toolbox == null)
             {
                 toolbox = new ToolboxUserControl();
+                ResourceDictionary dict = new ResourceDictionary();
+                Uri uri = new Uri("/Dev2.Studio;component/Resources/ResourceDictionary.xaml", UriKind.Relative);
+                dict.Source = uri;
+                toolbox.Resources.MergedDictionaries.Add(dict);
+                uri = new Uri("/Dev2.Studio;component/Resources/Brushes.xaml", UriKind.Relative);
+                dict.Source = uri;
+                toolbox.Resources.MergedDictionaries.Add(dict);
                 ControlFlowCat = toolbox.GetToolboxCategoryByName("Control Flow");
                 LoopConstructsCat = toolbox.GetToolboxCategoryByName("Loop Constructs");
                 RecordsetCat = toolbox.GetToolboxCategoryByName("Recordset");
                 UtilityCat = toolbox.GetToolboxCategoryByName("Utility");
                 FileOrFolderCat = toolbox.GetToolboxCategoryByName("File and Folder");
             }
+
         }
         //
         // Use TestCleanup to run code after each test has run
@@ -103,7 +124,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         public void MyTestCleanup()
         {
 
-            Monitor.Exit(_testLock);
+            
         }
         
         #endregion
@@ -229,45 +250,9 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         }
 
         [TestMethod]
-        public void DataSplit_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfDataSplitActivityDesigner designer = new DsfDataSplitActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
-
-        [TestMethod]
-        public void DateTime_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfDateTimeActivityDesigner designer = new DsfDateTimeActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
-
-        [TestMethod]
-        public void ForEach_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfForEachActivityDesigner designer = new DsfForEachActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
-
-        [TestMethod]
         public void Http_Designer_Icon_Expected_Pass_NoException()
         {
             DsfHttpActivityDesigner designer = new DsfHttpActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
-
-        [TestMethod]
-        public void MutiAssign_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfMultiAssignActivityDesigner designer = new DsfMultiAssignActivityDesigner();
             ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
             BitmapSource image = icon.ImageSource as BitmapSource;
             Assert.IsTrue(image != null);

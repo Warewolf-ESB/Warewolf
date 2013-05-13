@@ -24,6 +24,7 @@ namespace Dev2.Tests.Runtime.Hosting
     {
         // Change this if you change the number of resouces saved by SaveResources()
         const int SaveResourceCount = 6;
+        static object syncRoot = new object();
 
         #region Instance
 
@@ -1254,31 +1255,38 @@ namespace Dev2.Tests.Runtime.Hosting
 
         public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources, services, out resources);
-            var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(copyToWorkspaceID);
-            DirectoryHelper.Copy(sourceWorkspacePath, targetWorkspacePath, true);
+            lock (syncRoot)
+            {
+                var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources,
+                                                        services, out resources);
+                var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(copyToWorkspaceID);
+                DirectoryHelper.Copy(sourceWorkspacePath, targetWorkspacePath, true);
+            }
         }
 
         public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var sourcesPath = Path.Combine(workspacePath, "Sources");
-            var servicesPath = Path.Combine(workspacePath, "Services");
-
-            Directory.CreateDirectory(Path.Combine(sourcesPath, "VersionControl"));
-            Directory.CreateDirectory(Path.Combine(servicesPath, "VersionControl"));
-
-            resources = new List<IResource>();
-            if (sources != null && sources.Length != 0)
+            lock (syncRoot)
             {
-                resources.AddRange(SaveResources(sourcesPath, versionNo, injectID, signXml, sources));
-            }
-            if (services != null && services.Length != 0)
-            {
-                resources.AddRange(SaveResources(servicesPath, versionNo, injectID, signXml, services));
-            }
+                var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                var sourcesPath = Path.Combine(workspacePath, "Sources");
+                var servicesPath = Path.Combine(workspacePath, "Services");
 
-            return workspacePath;
+                Directory.CreateDirectory(Path.Combine(sourcesPath, "VersionControl"));
+                Directory.CreateDirectory(Path.Combine(servicesPath, "VersionControl"));
+
+                resources = new List<IResource>();
+                if (sources != null && sources.Length != 0)
+                {
+                    resources.AddRange(SaveResources(sourcesPath, versionNo, injectID, signXml, sources));
+                }
+                if (services != null && services.Length != 0)
+                {
+                    resources.AddRange(SaveResources(servicesPath, versionNo, injectID, signXml, services));
+                }
+
+                return workspacePath;
+            }
         }
 
         static string SaveResources(Guid workspaceID, out List<IResource> resources)
@@ -1291,40 +1299,46 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, params string[] resourceNames)
         {
-            var result = new List<IResource>();
-            foreach (var resourceName in resourceNames)
+            lock (syncRoot)
             {
-                var xml = XmlResource.Fetch(resourceName);
-                if (injectID)
+                var result = new List<IResource>();
+                foreach (var resourceName in resourceNames)
                 {
-                    var idAttr = xml.Attribute("ID");
-                    if (idAttr == null)
+                    var xml = XmlResource.Fetch(resourceName);
+                    if (injectID)
                     {
-                        xml.Add(new XAttribute("ID", Guid.NewGuid()));
+                        var idAttr = xml.Attribute("ID");
+                        if (idAttr == null)
+                        {
+                            xml.Add(new XAttribute("ID", Guid.NewGuid()));
+                        }
                     }
+
+                    var contents = xml.ToString(SaveOptions.DisableFormatting);
+                    if (signXml)
+                    {
+                        contents = HostSecurityProvider.Instance.SignXml(contents);
+                    }
+                    var res = new Resource(xml)
+                        {
+                            FilePath = Path.Combine(resourcesPath, resourceName + ".xml")
+                        };
+
+                    // Just in case sign the xml
+
+                    File.WriteAllText(res.FilePath, contents, Encoding.UTF8);
+
+                    if (!string.IsNullOrEmpty(versionNo))
+                    {
+                        File.WriteAllText(
+                            Path.Combine(resourcesPath,
+                                         string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)),
+                            contents, Encoding.UTF8);
+                    }
+                    result.Add(res);
                 }
-
-                var contents = xml.ToString(SaveOptions.DisableFormatting);
-                if (signXml)
-                {
-                    contents = HostSecurityProvider.Instance.SignXml(contents);
-                }
-                var res = new Resource(xml)
-                {
-                    FilePath = Path.Combine(resourcesPath, resourceName + ".xml")
-                };
-
-                // Just in case sign the xml
-
-                File.WriteAllText(res.FilePath, contents, Encoding.UTF8);
-
-                if (!string.IsNullOrEmpty(versionNo))
-                {
-                    File.WriteAllText(Path.Combine(resourcesPath, string.Format("VersionControl\\{0}.V{1}.xml", resourceName, versionNo)), contents, Encoding.UTF8);
-                }
-                result.Add(res);
+                return result;
             }
-            return result;
         }
 
         #endregion
