@@ -1,15 +1,22 @@
-﻿using Dev2.Common;
+﻿using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Principal;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.DB_Sanity;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Microsoft.Win32.SafeHandles;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using enActionType = Dev2.DataList.Contract.enActionType;
@@ -156,44 +163,164 @@ namespace Dev2.Runtime.ESB.Execution
             return cmd;
         }
 
-        private string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs )
+
+        #region DB Impersionation
+
+        const int LOGON32_PROVIDER_DEFAULT = 0;
+        //This parameter causes LogonUser to create a primary token. 
+        const int LOGON32_LOGON_INTERACTIVE = 2;
+
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
+            int dwLogonType, int dwLogonProvider, out PathOperations.SafeTokenHandle phToken);
+
+        public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
+        {
+            private SafeTokenHandle()
+                : base(true)
+            {
+            }
+
+            [DllImport("kernel32.dll")]
+            [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+            [SuppressUnmanagedCodeSecurity]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            private static extern bool CloseHandle(IntPtr handle);
+
+            protected override bool ReleaseHandle()
+            {
+                return CloseHandle(handle);
+            }
+        }
+
+        #endregion
+
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        private string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs)
         {
             string xmlData;
 
             using (var dataset = new DataSet())
             {
-                using (var connection = new SqlConnection(serviceAction.Source.ConnectionString))
+
+                string UserName;
+                string Password;
+                string connectionString = serviceAction.Source.ConnectionString;
+                string conStr = MsSqlBroker.ImpersonateDomainUser(connectionString, out UserName, out Password);
+
+                try
                 {
-                    SqlCommand cmd = null;
 
-                    try
+                    if (!MsSqlBroker.RequiresAuth(UserName))
                     {
-                        cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
-                    }
-                    catch(Exception)
-                    {
-                        if(cmd != null)
+                        using (var connection = new SqlConnection(conStr))
                         {
-                            cmd.Dispose();
+                            SqlCommand cmd = null;
+
+                            try
+                            {
+                                cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
+                            }
+                            catch (Exception)
+                            {
+                                if (cmd != null)
+                                {
+                                    cmd.Dispose();
+                                }
+
+                                throw;
+                            }
+
+                            connection.Open();
+
+                            using (cmd)
+                            {
+                                using (var adapter = new SqlDataAdapter(cmd))
+                                {
+                                    adapter.Fill(dataset);
+                                }
+                            }
+                            connection.Close();
                         }
-                        throw;
                     }
-
-                    connection.Open();
-
-                    using (cmd)
+                    else
                     {
-                        using (var adapter = new SqlDataAdapter(cmd))
+                        // handle UNC path
+                        PathOperations.SafeTokenHandle safeTokenHandle;
+
+                        try
                         {
-                            adapter.Fill(dataset);
+                            string user = MsSqlBroker.ExtractUserName(UserName);
+                            string domain = MsSqlBroker.ExtractDomain(UserName);
+                            bool loginOk = LogonUser(user, domain, Password, LOGON32_LOGON_INTERACTIVE,
+                                                     LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+
+                            if (loginOk)
+                            {
+                                using (safeTokenHandle)
+                                {
+
+                                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                    using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                    {
+                                        // Do the operation here
+                                        using (var connection = new SqlConnection(conStr))
+                                        {
+                                            SqlCommand cmd = null;
+
+                                            try
+                                            {
+                                                cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
+                                            }
+                                            catch (Exception)
+                                            {
+                                                if (cmd != null)
+                                                {
+                                                    cmd.Dispose();
+                                                }
+                                                throw;
+                                            }
+
+                                            connection.Open();
+
+                                            using (cmd)
+                                            {
+                                                using (var adapter = new SqlDataAdapter(cmd))
+                                                {
+                                                    adapter.Fill(dataset);
+                                                }
+                                            }
+                                        }
+
+
+                                        impersonatedUser.Undo(); // remove impersonation now
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // login failed
+                                throw new Exception("Failed to authenticate with user [ " + UserName + " ].");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw e;
                         }
                     }
-                    connection.Close();
                 }
-                xmlData = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataset.GetXml());
-            }
+                catch (Exception e)
+                {
+                    ServerLogger.LogError(e);
+                }
 
-            return xmlData;
+
+                xmlData = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataset.GetXml()); ;
+
+                return xmlData;
+
+            }
         }
 
         private IOutputFormatter GetOutputFormatterFromServiceAction(ServiceAction serviceAction)

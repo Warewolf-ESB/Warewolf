@@ -174,6 +174,21 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             Assert.AreEqual(true, result.IsValid);
         }
 
+        // http://127.0.0.1:1234/services/Bug9394
+
+        [TestMethod]
+        public void TestDomainUserCanExecut()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9394");
+            string expected = @"<countries><CountryID>10</CountryID><Description>Azerbaijan</Description></countries>";
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            // Ensure we got result from executing ;)
+            Assert.IsTrue(ResponseData.IndexOf(expected) >= 0);            
+
+            //Assert.Inconclusive("Test is failing because of plugins");
+        }
         #endregion
 
         #region Get Service Methods

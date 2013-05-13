@@ -162,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 catch (Exception e)
                 {
                     throw e;
-        }
+                }
             }
             return result;
         }
@@ -251,7 +251,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
             int dwLogonType, int dwLogonProvider, out PathOperations.SafeTokenHandle phToken);
 
-        private string ExtractUserName(string username)
+        public static string ExtractUserName(string username)
         {
             string result = string.Empty;
 
@@ -265,7 +265,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
 
-        private string ExtractDomain(string username)
+        public static string ExtractDomain(string username)
         {
             string result = string.Empty;
 
@@ -279,7 +279,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
 
-        private bool RequiresAuth(string userName)
+        public static bool RequiresAuth(string userName)
         {
 
             bool result = false;
@@ -536,11 +536,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// Alter connection string
         /// </summary>
         /// <param name="connectionString">A connection string.</param>
-        private static string ImpersonateDomainUser(string connectionString, out string Username, out string Password)
+        public static string ImpersonateDomainUser(string connectionString, out string Username, out string Password)
         {
             // Inpersonate HERE
             int userID = connectionString.IndexOf("User ID=", StringComparison.Ordinal);
-            if (connectionString.IndexOf("\\", userID, StringComparison.Ordinal) >= 0)
+            if (userID != -1 && connectionString.IndexOf("\\", userID, StringComparison.Ordinal) >= 0)
             {
                 string tryGetParams = null;
                 if (TryLoadDomainParameters(connectionString, out tryGetParams))
