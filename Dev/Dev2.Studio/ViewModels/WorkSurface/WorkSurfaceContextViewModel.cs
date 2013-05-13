@@ -266,7 +266,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void SetDebugStatus(DebugStatus debugStatus)
         {
-            if(debugStatus == DebugStatus.Finished)
+            if (debugStatus == DebugStatus.Finished && DebugWriter != null)
             {
                 _contextualResourceModel.Environment.Connection.RemoveDebugWriter(DebugWriter.ID);
                 CommandManager.InvalidateRequerySuggested();
