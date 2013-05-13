@@ -63,15 +63,25 @@ namespace Dev2.Studio.Controller
             _isRunning = true;           
         }
 
-        public void Kill()
+        public void Kill(string processName)
         {
+            var theScope = new ManagementScope("root\\cimv2");
+            var theQuery = new ObjectQuery(string.Format("SELECT * FROM Win32_Process WHERE Name='{0}.exe'", processName));
+            var theSearcher = new ManagementObjectSearcher(theScope, theQuery);
+            var theCollection = theSearcher.Get();
+
+            foreach (ManagementObject theCurObject in theCollection)
+            {
+                theCurObject.InvokeMethod("Terminate", null);
+            }
+
             while (!UtilityProcess.HasExited)
             {
                 CheckChildProcesses(UtilityProcess.Id);
                 Thread.Sleep(10);
             }
 
-            UtilityProcess.Close();  
+            UtilityProcess.Close();
         }
 
         void CheckChildProcesses(int id)

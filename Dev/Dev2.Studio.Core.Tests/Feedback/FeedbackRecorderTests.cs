@@ -9,7 +9,6 @@ using System.Threading;
 namespace Dev2.Core.Tests.Feedback
 {
     [TestClass]
-    [Ignore]
     public class FeedbackRecorderTests
     {
         #region Class Members
@@ -126,6 +125,9 @@ namespace Dev2.Core.Tests.Feedback
         private static bool CheckIfProcessIsRunning()
         {
             Process[] processes = Process.GetProcessesByName("psr");
+            if (processes.Length > 0)
+                Thread.Sleep(3); 
+            processes = Process.GetProcessesByName("psr");
             return processes.Length > 0;
         }
 
@@ -263,6 +265,7 @@ namespace Dev2.Core.Tests.Feedback
 
             recorder.StartRecording(outputPath);
             recorder.KillAllRecordingTasks();
+
 
             if (CheckIfProcessIsRunning())
             {

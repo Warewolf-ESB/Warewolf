@@ -21,7 +21,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     /// Summary description for PngTests
     /// </summary>
     [TestClass]
-    [Ignore]
     public class PngTests
     {
         private static ToolboxUserControl toolbox;
@@ -116,7 +115,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
                 UtilityCat = toolbox.GetToolboxCategoryByName("Utility");
                 FileOrFolderCat = toolbox.GetToolboxCategoryByName("File and Folder");
             }
-
+            ImportService.CurrentContext = CompositionInitializer.InitializeMockedWindowNavigationBehavior();
         }
         //
         // Use TestCleanup to run code after each test has run

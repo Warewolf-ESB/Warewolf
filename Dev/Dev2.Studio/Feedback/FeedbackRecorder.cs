@@ -164,12 +164,12 @@ namespace Dev2.Studio.Feedback
                 {
                     controller = new ProcessController(process);
                     RunningProcesses.Add(controller);
-                    controller.Kill();
+                    controller.Kill("psr");
                 }
                 else
                 {
                     controller = RunningProcesses.First(p => p.UtilityProcess.Equals(process));
-                    controller.Kill();
+                    controller.Kill("psr");
                 }
             }
         }
@@ -187,7 +187,7 @@ namespace Dev2.Studio.Feedback
                 {
                     Arguments = string.Format(StartParameters, OutputPath),
                     CmdLine = Executable,
-                    Verb = "runas",
+                   // Verb = "runas",
                     UseShellExecute = true
                 };
             processController.Start();
@@ -212,7 +212,7 @@ namespace Dev2.Studio.Feedback
             {
                 Arguments = StopParameters,
                 CmdLine = Executable,
-                Verb = "runas",
+               // Verb = "runas",
                 UseShellExecute = true
             };
 
