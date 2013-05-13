@@ -1,6 +1,7 @@
 ﻿using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -701,10 +702,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     IBinaryDataListItem item = dlEntry.FetchScalar();
-                    foreach (var debugItem in CreateScalarDebugItems(expression, item.TheValue, dlId))
-                    {
-                        results.Add(debugItem);
-                    }
+                    CreateScalarDebugItems(expression, item.TheValue, dlId, results);
+                    //                    foreach (var debugItem in CreateScalarDebugItems(expression, item.TheValue, dlId))
+                    //                    {
+                    //                        results.Add(debugItem);
+                    //                    }
 
                 }
             }
@@ -777,9 +779,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        private IList<IDebugItemResult> CreateScalarDebugItems(string expression, string value, Guid dlId)
+        private IList<IDebugItemResult> CreateScalarDebugItems(string expression, string value, Guid dlId, IList<IDebugItemResult> results =null)
         {
-            IList<IDebugItemResult> results = new List<IDebugItemResult>();
+            if(results==null)
+            {
+               results = new List<IDebugItemResult>();
+            }
 
             results.Add(new DebugItemResult
             {
@@ -806,7 +811,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<IDebugItemResult> results = new List<IDebugItemResult>();
             var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
             enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
-
             string error;
             if (indexType == enRecordsetIndexType.Blank && string.IsNullOrEmpty(fieldName))
             {
@@ -817,59 +821,86 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var idxItr = dlEntry.FetchRecordsetIndexes();
                 while (idxItr.HasMore())
                 {
-                    //string error;
-                    var index = idxItr.FetchNextIndex();
-                    var record = dlEntry.FetchRecordAt(index, out error);
-                    int innerCount = 0;
-                    // ReSharper disable LoopCanBeConvertedToQuery
-                    foreach (var recordField in record)
-                    // ReSharper restore LoopCanBeConvertedToQuery
-                    {
-                        if (string.IsNullOrEmpty(fieldName) ||
-                            recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
-                        {
-
-                            string injectVal = recordField.TheValue;
-                            if (!string.IsNullOrEmpty(value) && recordField.ItemCollectionIndex == (iterCnt+1))
-                            {
-                                injectVal = value;
-                                _rsCachedValues[recordField.DisplayValue] = injectVal;
-                            }
-                            else if (string.IsNullOrEmpty(injectVal) && recordField.ItemCollectionIndex != (iterCnt + 1))
-                            {
-                                // is it in the cache? ;)
-                                _rsCachedValues.TryGetValue(recordField.DisplayValue, out injectVal);
-                                if (injectVal == null)
-                                {
-                                    injectVal = string.Empty;
-                                }
-                            }
-
-                            if (indexType == enRecordsetIndexType.Star)
-                            {
-                                string recsetName = DataListUtil.CreateRecordsetDisplayValue(dlEntry.Namespace,
-                                                                                             recordField
-                                                                                                 .FieldName,
-                                                                                             index.ToString(CultureInfo.InvariantCulture));
-                                recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
-                            }
-                            else
-                            {
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
-                                //Add here
-                            }
-                        }
-                        innerCount++;
-                    }
+                    GetValues(dlEntry, value, iterCnt, idxItr, indexType, results, initExpression, fieldName);
+                    
                 }
             }
             return results;
         }
+
+        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, string fieldName=null)
+        {
+            string error;
+            //string error;
+            var index = idxItr.FetchNextIndex();
+            //if(index>11) continue;
+            if(string.IsNullOrEmpty(fieldName))
+            {
+                var record = dlEntry.FetchRecordAt(index, out error);
+                //int innerCount = 0;
+                // ReSharper disable LoopCanBeConvertedToQuery
+                foreach(var recordField in record)
+                // ReSharper restore LoopCanBeConvertedToQuery
+                {
+                    GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index);
+                }
+            }
+            else
+            {
+                //var record = dlEntry.FetchRecordAt(index, out error);
+                var recordField = dlEntry.TryFetchRecordsetColumnAtIndex(fieldName, index, out error);
+                //int innerCount = 0;
+                // ReSharper disable LoopCanBeConvertedToQuery
+                //foreach (var recordField in record)
+                // ReSharper restore LoopCanBeConvertedToQuery
+                {
+                    GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index);
+                }
+            }
+        }
+
+        void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index)
+        {
+            if(string.IsNullOrEmpty(fieldName) ||
+                recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                string injectVal = recordField.TheValue;
+                if(!string.IsNullOrEmpty(value) && recordField.ItemCollectionIndex == (iterCnt + 1))
+                {
+                    injectVal = value;
+                    _rsCachedValues[recordField.DisplayValue] = injectVal;
+                }
+                else if(string.IsNullOrEmpty(injectVal) && recordField.ItemCollectionIndex != (iterCnt + 1))
+                {
+                    // is it in the cache? ;)
+                    _rsCachedValues.TryGetValue(recordField.DisplayValue, out injectVal);
+                    if(injectVal == null)
+                    {
+                        injectVal = string.Empty;
+                    }
+                }
+
+                if(indexType == enRecordsetIndexType.Star)
+                {
+                    string recsetName = DataListUtil.CreateRecordsetDisplayValue(dlEntry.Namespace,
+                        recordField.FieldName,
+                        index.ToString(CultureInfo.InvariantCulture));
+                    recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
+                }
+                else
+                {
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
+                    //Add here
+                }
+            }
+           // innerCount++;
+        }
+
         #endregion
 
         #region Get Debug State

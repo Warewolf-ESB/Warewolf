@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows.Controls;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
@@ -139,11 +140,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 
                                 while (tokenizer.HasMoreOps() && !exit)
                                 {
-                                     tmp = tokenizer.NextToken();                                   
+                                     tmp = tokenizer.NextToken();
 
-                                    if (!string.IsNullOrEmpty(ResultsCollection[pos].OutputVariable))
+                                    var dataSplitDto = ResultsCollection[pos];
+                                    var outputVariable = dataSplitDto.OutputVariable;
+                                    if (!string.IsNullOrEmpty(outputVariable))
                                     {
-                                        toUpsert.Add(ResultsCollection[pos].OutputVariable, tmp);                                        
+                                        toUpsert.Add(outputVariable, tmp);
+//                                        if(dataObject.IsDebug)
+//                                        {
+//                                            string expression = outputVariable;
+//                                            if(expression.Contains("()."))
+//                                            {
+//                                                expression = expression.Replace("().", "(*).");
+//                                            }
+//
+//                                            //IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
+//                                            IBinaryDataListEntry entry = itr.FetchEntry();
+//
+//                                            AddDebugOutputItemFromEntry(expression, entry, pos + 1, dlID);
+//                                        }
                                     }
 
                                     // Per pass
@@ -171,6 +187,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (dataObject.IsDebug)
                                 {
                                     int innerCount = 1;
+                                    var outputVariable = ResultsCollection[0].OutputVariable;
+                                    if (outputVariable.Contains("()."))
+                                    {
+                                        outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", System.StringComparison.Ordinal));
+                                        outputVariable = outputVariable.Replace("()", "(*)")+"]]";
+                                    }
+                                    var binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                                     foreach(DataSplitDTO dataSplitDto in ResultsCollection)
                                     {
                                         string expression = dataSplitDto.OutputVariable;
@@ -179,9 +202,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             expression = expression.Replace("().", "(*).");
                                         }
 
-                                        IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
+                                        //IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
                                                                                 
-                                        AddDebugOutputItemFromEntry(expression, entry, innerCount, dlID);
+                                       // AddDebugOutputItemFromEntry(expression, entry, innerCount, dlID);
+                                        AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount, dlID);
                                         innerCount++;
                                     }
                                     

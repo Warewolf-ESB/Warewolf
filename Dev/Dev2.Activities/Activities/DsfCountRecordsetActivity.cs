@@ -109,7 +109,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(dataObject.IsDebug)
                     {
-                        AddDebugInputItem(RecordsetName,"Recordset",recset,executionId);
+//                        var dev2Columns = recset.Columns;
+//                        foreach(var dev2Column in dev2Columns)
+//                        {
+//                            var columnName = dev2Column.ColumnName;
+//                            var expression = RecordsetName.Insert(RecordsetName.IndexOf("()", System.StringComparison.Ordinal)+2, "." + columnName);
+//                            if (expression.Contains("()."))
+//                            {
+//                                expression = expression.Replace("().", "(*).");
+//                            }
+//                            
+//                        }
+
+                        AddDebugInputItem(RecordsetName, "Recordset", recset, executionId);
                     }
 
                     if (recset != null)
