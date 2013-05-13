@@ -33,12 +33,12 @@ namespace QueueBuildTest
             string project = "DEV2 SCRUM Project";
             string def = "Branch Gated Check-in - Dev Nightly";
 
-            int id = bq.Run(server, project, def);
+            //int id = bq.Run(server, project, def);
 
-            int res = WaitForProgram.Main(new string[]{server, project, "20793"});
+            int res = WaitForProgram.Main(new string[]{server, project, "20803"});
 
 
-            Assert.IsTrue(res == 0, "Failed to watch build or bad parms exit code { " + id + " }");
+            Assert.IsTrue(res == 0, "Failed to watch build or bad parms exit code { " + res + " }");
         }
     }
 }

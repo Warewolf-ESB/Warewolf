@@ -22,37 +22,46 @@ namespace Kill
         {
             if (args.Length == 1)
             {
-                File.AppendAllText(LogFile(), DateTime.Now + " :: Kill Process { " + args[0] + " }" + Environment.NewLine);
-                var processName = args[0];
-                var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
-                //initialize the searcher with the query it is
-                //supposed to execute
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+                try
                 {
-                    //execute the query
-                    ManagementObjectCollection processes = searcher.Get();
-                    if (processes.Count <= 0)
+                    File.AppendAllText(LogFile(),
+                                       DateTime.Now + " :: Kill Process { " + args[0] + " }" + Environment.NewLine);
+                    var processName = args[0];
+                    var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+                    //initialize the searcher with the query it is
+                    //supposed to execute
+                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
                     {
-                        File.AppendAllText(LogFile(), "No processes " + Environment.NewLine);
-                    }
-                    else
-                    {
-                        foreach (ManagementObject process in processes)
+                        //execute the query
+                        ManagementObjectCollection processes = searcher.Get();
+                        if (processes.Count <= 0)
                         {
-                            //print process properties
-                            
-                            process.Get();
-                            PropertyDataCollection processProperties = process.Properties;
+                            File.AppendAllText(LogFile(), "No processes " + Environment.NewLine);
+                        }
+                        else
+                        {
+                            foreach (ManagementObject process in processes)
+                            {
+                                //print process properties
 
-                            var pid = processProperties["ProcessID"].Value.ToString();
+                                process.Get();
+                                PropertyDataCollection processProperties = process.Properties;
 
-                            File.AppendAllText(LogFile(), "Killed Process { " + pid + " } " + Environment.NewLine);
+                                var pid = processProperties["ProcessID"].Value.ToString();
 
-                            var proc = Process.GetProcessById(Int32.Parse(pid));
+                                File.AppendAllText(LogFile(), "Killed Process { " + pid + " } " + Environment.NewLine);
 
-                            proc.Kill();
+                                var proc = Process.GetProcessById(Int32.Parse(pid));
+
+                                proc.Kill();
+                            }
                         }
                     }
+                }
+                catch (Exception e)
+                {
+                    File.AppendAllText(LogFile(),
+                                       DateTime.Now + " :: Error { " + e.Message + " }" + Environment.NewLine + e.StackTrace);   
                 }
             }
         }

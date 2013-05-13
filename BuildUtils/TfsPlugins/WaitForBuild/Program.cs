@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 
@@ -40,6 +41,7 @@ namespace WaitForBuild
 
                     do
                     {
+                        Thread.Sleep(1000);
                     } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
 
                     bsw.Disconnect();
