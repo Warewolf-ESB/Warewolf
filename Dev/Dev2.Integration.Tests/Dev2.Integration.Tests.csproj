@@ -90,9 +90,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Dev2.Activities">
-      <HintPath>bin\Debug\Dev2.Activities.dll</HintPath>
-    </Reference>
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
     </Reference>
@@ -364,6 +361,10 @@
     <None Include="Resources\DeleteWorkflowTest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>

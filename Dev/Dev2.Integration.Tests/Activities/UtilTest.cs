@@ -1,6 +1,5 @@
 ﻿using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Unlimited.UnitTest.Activities
 {
