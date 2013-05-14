@@ -2,11 +2,11 @@
     var self = this;
 
     var $dialogContainerID = null;
-    var $dialogSaveButton = null;
     var $fileTree = $("#fileTree");
     var $gacList = $("#GACList");
     var $sourcetabs = $("#sourcetabs");
     var $assemblyFileLocation = $("#pluginAssemblyFileLocation");
+    var $dialogSaveButton = $("#saveButton");
     $sourcetabs.tabs();
     $sourcetabs.removeClass("ui-widget-content");
 
@@ -38,7 +38,6 @@
                 self.updateHelpText("gacSearchTerm");
 				
 				$("#gacSearchTerm").attr('placeholder', 'Search');
-				
 				
                 return self.allGacAssemblies();
             }
@@ -104,6 +103,7 @@
                         self.validateAssemblyFile(newvalue);
                     } else {//assembly is neither file nor gac entry
                         self.isAssemblyValid(false);
+                        self.enableSaveButton(false);
                     }
                 }
             } else {
@@ -111,6 +111,7 @@
             }
         } else {//assembly is blank
             self.isAssemblyValid(false);
+            self.enableSaveButton(false);
         }
     });
     
@@ -143,8 +144,10 @@
             success: function (data) {
                 if (data.validationresult == "success") {
                     self.isAssemblyValid(true);
+                    self.enableSaveButton(true);
                 } else {
                     self.isAssemblyValid(false);
+                    self.enableSaveButton(false);
                     self.validationErrorMsg(data.validationresult);
                 }
                 self.updateHelpText(helpID);
@@ -152,24 +155,30 @@
             async: false
         });
     };
+    
+    self.enableSaveButton = function (enabled) {
+        $dialogSaveButton.button("option", "disabled", !enabled);
+    };
 
     self.updateHelpText = function (id) {
         if (id != null) {
             var text = "";
-            if (id && id.match('.') == null && id.match("GAC:") == null && id.match("gacSearchTerm:") == null) {
+            if (id.indexOf(".") == -1 && id.match("GAC:") == null && id.match("gacSearchTerm:") == null) {
                 text = self.helpDictionary[id];
                 text = text ? text : self.helpDictionary.default;
                 text = text ? text : "";
             } else {
                 if (id.match("GAC:") != null) {
                     if (self.isAssemblyValid()) {
+                        self.enableSaveButton(true);
 						text = "<h4>Global Cache</h4><p>You have selected " + id + "</p>";
 					}else{
-						// invalid asm ;(
+                        // invalid asm ;(
+                        self.enableSaveButton(false);
 						text = "<h4>Global Cache</h4><p>" + id + " returned error: " + self.validationErrorMsg() + "</p>";
 					}
                 } 
-                else {
+                if (id.indexOf(".") != -1) {
                     if (self.isAssemblyValid()) {
                         text = "<h4>Plugin File</h4><p>You have selected " + id + "</p>";
                     } else {
@@ -478,13 +487,14 @@
         if ($btnSave) {
             $btnSave.hide();
         }
+        
         var $btnCancel = $("#nonButtonBarCancelButton");
         if ($btnCancel) {
             $btnCancel.hide();
         }
 
         // the dialog button bar adds about 50px, take 50px from the div height
-        $("#pluginSourceContainer").height(400);
+        $("#pluginSourceContainer").height(410);
         
         //pad search box
         $("#gacSearchTerm").css("margin-left", "116px");
@@ -512,11 +522,11 @@
                 }
             }
         });
-        $($dialogContainerID).attr("style", "padding: 0");
         
         $("button").button();
         $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Plugin')");
         $dialogSaveButton.attr("tabindex", "8");
+        $dialogSaveButton.attr("data-bind", "jEnable: isFormValid");
         $dialogSaveButton.next().attr("tabindex", "9");
     };
 
@@ -524,7 +534,6 @@
         self.load(resourceID);
     }
 };
-
 
 PluginSourceViewModel.create = function (pluginSourceContainerID, saveContainerID) {
     // apply jquery-ui themes

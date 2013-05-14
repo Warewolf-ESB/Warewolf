@@ -148,7 +148,7 @@ namespace Dev2.Studio.Webs
                     pageName = "sources/pluginsource";
                     pageHandler = new SourceCallbackHandler();
                     width = 743;
-                    height = 473;
+                    height = 474;
                     break;
 
                 default:
