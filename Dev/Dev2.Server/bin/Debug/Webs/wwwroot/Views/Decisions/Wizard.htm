@@ -32,14 +32,14 @@
                                     <!--<textarea Name="Col1" id="Col1" draggable="false" 
                                               data-bind="hasfocus: ko.observable(true), visible: PopulatedColumnCnt > 0, value: Col1, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
                                               class="veryShortField required noResizeTextArea topAlign"></textarea>-->
-								    <input type="text" name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt() > 0" class="veryShortField required" />                              
+								    <input type="text" name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt() > 0" class="veryShortField" />                              
 
                                     <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign">
                                     </select>
 
                                     <textarea name="Col2" id="Col2" draggable="false" 
                                               data-bind="hasfocus: PopulatedColumnCnt() == 2, visible: PopulatedColumnCnt() == 2, value: Col2, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
-                                              class="wideField noResizeTextArea required topAlign" ></textarea>
+                                              class="wideField noResizeTextArea topAlign" ></textarea>
 
                                     <span data-bind="visible: PopulatedColumnCnt() == 3" class="topAlign fixedHeight">
                                         <input type="text" name="Col2a" id="Col2a" data-bind="hasfocus: PopulatedColumnCnt == 3, value: Col2, valueUpdate: 'afterkeydown'" class="veryShortField required" />

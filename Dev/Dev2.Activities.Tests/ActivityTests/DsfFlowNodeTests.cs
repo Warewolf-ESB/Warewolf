@@ -171,6 +171,55 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion
 
+        #region DecisionFlowNodeExpressionWithNulls
+        //2013.05.14: Ashley Lewis for bug 9339 - allow blanks in expression
+
+        [TestMethod]
+        public void FlowNodeWithBlankIsEqualToBlankExpectedExpressionEvaluatesToTrue()
+        {
+            const string Dl = "<DataList></DataList>";
+
+            RunActivity(Dl, Dl, "True", new DsfFlowDecisionActivity
+            {
+                ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsEqual'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Equal To null'}\",AmbientDataList)"
+            });
+        }
+
+        [TestMethod]
+        public void FlowNodeWithBlankIsBinaryExpectedExpressionEvaluatesToFalse()
+        {
+            const string Dl = "<DataList></DataList>";
+
+            RunActivity(Dl, Dl, "False", new DsfFlowDecisionActivity
+            {
+                ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsBinary'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Binary'}\",AmbientDataList)"
+            });
+        }
+
+        [TestMethod]
+        public void FlowNodeWithIsBlankAnEmailExpectedExpressionEvaluatesToFalse()
+        {
+            const string Dl = "<DataList></DataList>";
+
+            RunActivity(Dl, Dl, "False", new DsfFlowDecisionActivity
+            {
+                ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsEmail'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Email'}\",AmbientDataList)"
+            });
+        }
+
+        [TestMethod]
+        public void FlowNodeWithIsBlankGreaterThanBlankExpectedExpressionEvaluatesToFalse()
+        {
+            const string Dl = "<DataList></DataList>";
+
+            RunActivity(Dl, Dl, "False", new DsfFlowDecisionActivity
+            {
+                ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsGreaterThan'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Greater Than null'}\",AmbientDataList)"
+            });
+        }
+
+        #endregion
+
         #region RunActivity
 
         static void RunActivity<TResult>(string shape, string data, string expectedValue, Activity<TResult> activity)
