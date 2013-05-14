@@ -107,9 +107,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private void RemoveEnvironment(IEnvironmentModel environment)
         {
-            EnvironmentRepository.Remove(environment);
             NavigationViewModel.RemoveEnvironment(environment);
-            EnvironmentRepository.WriteSession(NavigationViewModel.Environments.Select(e => e.ID));
         }
 
         /// <summary>
@@ -142,8 +140,8 @@ namespace Dev2.Studio.ViewModels.Explorer
             EnvironmentRepository.Load();
 
             // Load the default environment
-            NavigationViewModel.AddEnvironment(Core.EnvironmentRepository.Instance.Source);
-            EventAggregator.Publish(new SetActiveEnvironmentMessage(Core.EnvironmentRepository.Instance.Source));
+            NavigationViewModel.AddEnvironment(EnvironmentRepository.Source);
+            EventAggregator.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
 
             //
             // Add last session's environments to the navigation view model
@@ -218,10 +216,13 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(AddServerToExplorerMessage message)
         {
-            SaveEnvironment(message.EnvironmentModel);
+            if (message.Context == null || message.Context != Context)
+            {
+                return;
+            }
 
-            if (message.Context != null && message.Context == Context)
-                NavigationViewModel.AddEnvironment(message.EnvironmentModel);
+            SaveEnvironment(message.EnvironmentModel);
+            NavigationViewModel.AddEnvironment(message.EnvironmentModel);
         }
 
         #endregion

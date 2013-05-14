@@ -18,5 +18,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         void WriteSession(IEnumerable<Guid> environmentGuids);
 
+        void ForceLoad();
+
     }
 }

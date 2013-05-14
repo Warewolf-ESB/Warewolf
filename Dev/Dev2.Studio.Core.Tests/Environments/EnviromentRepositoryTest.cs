@@ -229,7 +229,7 @@ namespace Dev2.Core.Tests.Environments
 
             var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
             Assert.IsTrue(repo.IsLoaded);
-            repo.Load();
+            repo.ForceLoad();
             Assert.IsFalse(repo.IsLoaded);
             Assert.AreEqual(1, repo.LoadInternalHitCount);
         }

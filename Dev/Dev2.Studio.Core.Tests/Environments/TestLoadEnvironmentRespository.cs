@@ -19,9 +19,9 @@ namespace Dev2.Core.Tests.Environments
             // Set IsLoaded = true, so that we don't connect to the server when invoking .All()
             IsLoaded = true;
 
-            if(environments != null)
+            if (environments != null)
             {
-                foreach(var environment in environments)
+                foreach (var environment in environments)
                 {
                     AddInternal(environment);
                 }
@@ -32,5 +32,11 @@ namespace Dev2.Core.Tests.Environments
         {
             LoadInternalHitCount++;
         }
+
+        public override System.Collections.Generic.ICollection<IEnvironmentModel> All()
+        {
+            return _environments;
+        }
     }
+
 }

@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core
 
         static readonly object _fileLock = new Object();
         static readonly object _restoreLock = new Object();
-        readonly List<IEnvironmentModel> _environments;
+        protected readonly List<IEnvironmentModel> _environments;
         private bool _isDisposed;
 
         #region Singleton Instance
@@ -107,7 +107,7 @@ namespace Dev2.Studio.Core
 
         #region All/Find/FindSingle/Load
 
-        public ICollection<IEnvironmentModel> All()
+        public virtual ICollection<IEnvironmentModel> All()
         {
             LoadInternal();
             return _environments;
@@ -127,10 +127,14 @@ namespace Dev2.Studio.Core
 
         public void Load()
         {
-            IsLoaded = false;
             LoadInternal();
         }
 
+        public void ForceLoad()
+        {
+            IsLoaded = false;
+            LoadInternal();
+        }
         #endregion
 
         #region Save
