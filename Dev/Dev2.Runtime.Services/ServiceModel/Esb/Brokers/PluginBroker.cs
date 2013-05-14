@@ -130,11 +130,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 {
                     Assembly.LoadFile(toLoad);
                 }
-                catch (Exception e)
+                catch
                 {
-                    result = false;
-                    ServerLogger.LogError(e.Message);
-                    error = e.Message;
+                    try
+                    {
+                        Assembly.UnsafeLoadFrom(toLoad);
+                    }
+                    catch (Exception e)
+                    {
+                        result = false;
+                        ServerLogger.LogError(e.Message);
+                        error = e.Message;
+                    }
                 }
             }
             else
