@@ -44,11 +44,11 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" Margin="3,3,3,0" Width="80" 
+                <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" Margin="5,3,5,0" Width="80" 
                         Grid.Column="0"
                         AutomationProperties.AutomationId="UI_SettingsSaveBtn"/>
 
-                <Button HorizontalAlignment="Right" Content="Cancel" Command="{Binding CancelCommand}" Margin="3,3,3,0" Width="80" 
+                <Button HorizontalAlignment="Right" Content="Cancel" Command="{Binding CancelCommand}" Margin="8,3,5,0" Width="80" 
                         Grid.Column="1"
                         AutomationProperties.AutomationId="UI_SettingsCancelBtn"/>
             </Grid>		
