@@ -156,10 +156,16 @@ function DecisionViewModel() {
         $(element).filter("input").autocomplete({
             source: self.intellisenseOptions
         });
+        $(element).filter("textarea").autocomplete({
+            source: self.intellisenseOptions
+        });
     };
 
     self.afterRowRender = function (elements) {
         $(elements[1]).find("input").autocomplete({
+            source: self.intellisenseOptions
+        });
+        $(elements[1]).find("textarea").autocomplete({
             source: self.intellisenseOptions
         });
     };
