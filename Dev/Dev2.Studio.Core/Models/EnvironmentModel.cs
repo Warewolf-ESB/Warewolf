@@ -20,6 +20,8 @@ namespace Dev2.Studio.Core.Models
     {
         bool _publishEventsOnDispatcherThread;
 
+        public bool ShouldLoadResources { get; set; }
+
         #region CTOR
 
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread = true)
@@ -48,6 +50,8 @@ namespace Dev2.Studio.Core.Models
             {
                 throw new ArgumentNullException("environmentConnection");
             }
+
+            ShouldLoadResources = true;
 
             ID = id; // The resource ID
             Connection = environmentConnection;
@@ -135,18 +139,9 @@ namespace Dev2.Studio.Core.Models
 
         #region LoadResources
 
-        //// Not visible from the interface view
-        //public void Connect(string alias, Uri address)
-        //{
-        //    Name = alias;
-        //    DsfAddress = address;
-        //    Connection.Connect();
-        //    EventAggregator.Publish(new EnvironmentConnectedMessage(this));
-        //}
-
         public void LoadResources()
         {
-            if(Connection.IsConnected)
+            if(Connection.IsConnected && ShouldLoadResources)
             {
                 ResourceRepository.Load();
             }

@@ -135,7 +135,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode oldResoure = vm.Root.FindChild(mockResourceModel.Object);
 
                                                 //Assert.AreEqual("Mock", oldResoure.DisplayName);
@@ -161,7 +161,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode oldResoure = vm.Root.FindChild(mockResourceModel.Object);
 
                                                 Assert.AreEqual("Mock", oldResoure.DisplayName);
@@ -186,7 +186,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
                                                 ITreeNode oldCategory = serviceTypeVM.FindChild("Testing");
                                                 resourceVM = oldCategory.FindChild(mockResourceModel.Object);
@@ -224,7 +224,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
                                                 ITreeNode oldCategory = serviceTypeVM.FindChild("Testing");
                                                 resourceVM = oldCategory.FindChild(mockResourceModel.Object);
@@ -255,7 +255,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
 
                                                 mockResourceModel.Setup(r => r.Category).Returns("Testing5");
@@ -281,7 +281,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
 
                                                 mockResourceModel.Setup(r => r.Category).Returns("Testing2");
@@ -311,7 +311,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 var newResource = new Mock<IContextualResourceModel>();
                                                 newResource.Setup(r => r.ResourceType)
                                                            .Returns(ResourceType.WorkflowService);
@@ -343,7 +343,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 var newResource = new Mock<IContextualResourceModel>();
                                                 newResource.Setup(r => r.ResourceType)
                                                            .Returns(ResourceType.WorkflowService);
@@ -370,7 +370,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void AddEnvironment_Expected_RootAndChildrenCreated()
+        public void AddEnvironmentWithShouldLoadResourcesTrueExpectedRootAndChildrenCreated()
         {
             ITreeNode workflowServiceTypeVM = null;
             ITreeNode serviceTypeVM = null;
@@ -381,7 +381,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 workflowServiceTypeVM =
                                                     vm.Root.FindChild(ResourceType.WorkflowService);
                                                 serviceTypeVM = vm.Root.FindChild(ResourceType.Service);
@@ -398,6 +398,34 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(serviceTypeVM.ChildrenCount == 1);
         }
 
+        [TestMethod]
+        public void AddEnvironmentWithShouldLoadResourcesFalseExpectedNoEnvironmentAdded()
+        {
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                        {
+                                            Init(false, false);
+                                        });
+            reset.WaitOne();
+
+            Assert.AreEqual(0,vm.Root.Children.Count());
+        }
+
+        [TestMethod]
+        public void AddEnvironmentWithShouldLoadResourcesTrueExpectedEnvironmentAdded()
+        {
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                        {
+                                            Init(false, true);
+                                        });
+            reset.WaitOne();
+
+            Assert.AreEqual(1, vm.Root.Children.Count());
+        }
+
         #endregion Updating Resources
 
         #region Filtering
@@ -411,7 +439,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                  resourceVM = vm.Root.FindChild(mockResourceModel.Object);
 
                                                 Assert.IsTrue(vm.Root.ChildrenCount == 3);
@@ -457,7 +485,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode resourceVM = vm.Root.FindChild(mockResourceModel.Object);
                                                 ITreeNode resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
                                                 resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
@@ -489,7 +517,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 resourceVM = vm.Root.FindChild(mockResourceModel.Object);
                                                 ITreeNode resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
                                                 ITreeNode resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
@@ -523,7 +551,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 resourceVM = vm.Root.FindChild(mockResourceModel.Object);
                                                 resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
                                                 resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
@@ -556,7 +584,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 vm.UpdateSearchFilter("ZD");
                                             });
             reset.WaitOne();
@@ -573,7 +601,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 ITreeNode resourceVM = vm.Root.FindChild(mockResourceModel.Object);
                                                 ITreeNode resourceVM2_1 = vm.Root.FindChild(mockResourceModel1.Object);
                                                 ITreeNode resourceVM2_2 = vm.Root.FindChild(mockResourceModel2.Object);
@@ -604,7 +632,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 vm.UpdateSearchFilter("zd");
                                                 vm.Root.NotifyOfFilterPropertyChanged(false);
 
@@ -630,7 +658,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 nonMatchingNode1 = vm.Root.FindChild(mockResourceModel.Object);
                                                 matchingNode = vm.Root.FindChild(mockResourceModel2.Object);
 
@@ -656,7 +684,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 nonMatchingCategory =
                                                     vm.Root.FindChild(mockResourceModel.Object).TreeParent;
                                                 matchingCategory =
@@ -685,7 +713,7 @@ namespace Dev2.Core.Tests
             ThreadExecuter.RunCodeAsSTA(reset,
                                         () =>
                                             {
-                                            Init(false);
+                                                Init(false, true);
                                                 // FromCurrentSynchronizationContext will now resolve to the dispatcher thread here
                                                 mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
                                                 mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
@@ -708,7 +736,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedOnlyWorkflowsToBeInTree()
         {
-            Init(false);
+            Init(false, true);
             vm = new NavigationViewModel(false, true, enDsfActivityType.Workflow);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
@@ -718,7 +746,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeServiceExpectedOnlyServicesToBeInTree()
         {
-            Init(false);
+            Init(false, true);
             vm = new NavigationViewModel(false, true, enDsfActivityType.Service);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
@@ -728,7 +756,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeSourceExpectedOnlySourcesToBeInTree()
         {
-            Init(false);
+            Init(false, true);
             vm = new NavigationViewModel(false, true, enDsfActivityType.Source);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
@@ -738,7 +766,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeAllExpectedAllItemsToBeInTree()
         {
-            Init(false);
+            Init(false, true);
             vm = new NavigationViewModel(false, true, enDsfActivityType.All);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(3, vm.Root.Children[0].Children.Count);
@@ -750,7 +778,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedWorkflowsWithNoChilrenToBeInTree()
         {
-            Init(true);
+            Init(true, true);
             vm = new NavigationViewModel(false, true, enDsfActivityType.Workflow);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
@@ -761,14 +789,14 @@ namespace Dev2.Core.Tests
 
         #region Private Test Methods
 
-        private void Init(bool addWizardChildToResource)
+        private void Init(bool addWizardChildToResource, bool shouldLoadResources)
         {
             //if (Application.Current == null)
             //{
             //    App app = new App();
             //}
 
-            SetupMockEnvironment();
+            SetupMockEnvironment(shouldLoadResources);
 
             Mock<IResourceRepository> mockResourceRepository;
             SetUpResources(addWizardChildToResource, out mockResourceRepository);
@@ -777,12 +805,13 @@ namespace Dev2.Core.Tests
             vm.AddEnvironment(mockEnvironmentModel.Object);
         }
 
-        void SetupMockEnvironment()
+        void SetupMockEnvironment(bool shouldLoadResources)
         {
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
+            mockEnvironmentModel.SetupGet(x => x.ShouldLoadResources).Returns(shouldLoadResources);
         }
 
         void SetUpResources(bool addWizardChildToResource, out Mock<IResourceRepository> mockResourceRepository)

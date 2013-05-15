@@ -354,7 +354,6 @@
     <Compile Include="Factory\DeployViewModelFactory.cs" />
     <Compile Include="Factory\DialogViewModelFactory.cs" />
     <Compile Include="Factory\InputOutputViewModelFactory.cs" />
-    <Compile Include="Factory\RuntimeConfigurationViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
     <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />

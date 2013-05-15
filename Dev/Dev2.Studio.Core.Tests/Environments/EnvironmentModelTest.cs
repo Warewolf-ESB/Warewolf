@@ -180,7 +180,6 @@ namespace Dev2.Core.Tests.Environments
 
         #endregion
 
-
         #region ServerStateChanged
 
         // PBI 9228: TWR - 2013.04.17
@@ -240,7 +239,6 @@ namespace Dev2.Core.Tests.Environments
 
 
         #endregion
-
 
         #region ServerStateChanged
 
@@ -327,7 +325,7 @@ namespace Dev2.Core.Tests.Environments
         #region LoadResources
 
         [TestMethod]
-        public void EnvironmentModelLoadResourcesExpectedInvokesLoadOnResourceRepository()
+        public void EnvironmentModelLoadResourcesWithShouldLoadTrueExpectedInvokesLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Load()).Verifiable();
@@ -338,9 +336,30 @@ namespace Dev2.Core.Tests.Environments
 
             var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
+            Assert.IsTrue(env.ShouldLoadResources);
+
             env.LoadResources();
 
-            resourceRepo.Verify(r => r.Load());
+            resourceRepo.Verify(r => r.Load(), Times.Once());
+        }
+
+        [TestMethod]
+        public void EnvironmentModelLoadResourcesWithShouldLoadFalseExpectedNotInvokeLoadOnResourceRepository()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.Load()).Verifiable();
+
+            var connection = CreateConnection();
+            connection.Setup(c => c.DisplayName).Returns("Test");
+            connection.Setup(c => c.IsConnected).Returns(true);
+
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+
+            env.ShouldLoadResources = false;
+
+            env.LoadResources();
+
+            resourceRepo.Verify(r => r.Load(), Times.Never());
         }
 
         #endregion

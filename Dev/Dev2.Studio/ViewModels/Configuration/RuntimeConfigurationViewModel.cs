@@ -38,10 +38,8 @@ namespace Dev2.Studio.ViewModels.Configuration
 
         #region Constructor
 
-        public RuntimeConfigurationViewModel(IEnvironmentModel environment)
+        public RuntimeConfigurationViewModel()
         {
-            CurrentEnvironment = environment;
-
             RuntimeConfigurationAssemblyRepository = ImportService.GetExportValue<IRuntimeConfigurationAssemblyRepository>();
             Popup = ImportService.GetExportValue<IPopupController>();
         }
@@ -170,8 +168,10 @@ namespace Dev2.Studio.ViewModels.Configuration
         {
             if(environment == null)
             {
-                throw new ArgumentNullException("environment");
+                return;
             }
+
+            environment.ShouldLoadResources = false;
 
             IsWorking = true;
 
@@ -187,6 +187,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             finally
             {
                 IsWorking = false;
+                environment.ShouldLoadResources = true;
             }
         }
 

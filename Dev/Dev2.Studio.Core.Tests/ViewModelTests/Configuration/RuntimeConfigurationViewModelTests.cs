@@ -21,8 +21,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         #region Load Tests
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void LoadWhereEnvironmentIsNullExpectedException()
+        public void LoadWhereEnvironmentIsNullExpectedNothing()
         {
             Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository = new Mock<IRuntimeConfigurationAssemblyRepository>();
             Mock<IPopupController> popup = new Mock<IPopupController>();
@@ -30,7 +29,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
 
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(null);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(null);
         }
 
@@ -45,7 +44,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -64,7 +63,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -83,7 +82,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -117,7 +116,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             }).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             assemblyRepository.Verify(r => r.Add(It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -143,7 +142,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository = new Mock<IRuntimeConfigurationAssemblyRepository>();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -169,7 +168,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             assemblyRepository.Setup(r => r.Load(It.IsAny<string>())).Returns(typeof(RuntimeConfigurationViewModelTests).Assembly);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -195,7 +194,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             assemblyRepository.Setup(r => r.Load(It.IsAny<string>())).Returns(typeof(IConfigurationAssemblyMarker).Assembly);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Load(environment.Object);
 
             Assert.IsTrue(runtimeConfigurationViewModel.InitializationRequested, "Initialization wasnt requested by the configuration assembly.");
@@ -216,7 +215,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -235,7 +234,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -256,7 +255,8 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
+            runtimeConfigurationViewModel.Load(environment.Object);
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             popup.Verify(m => m.Show(), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -283,7 +283,8 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             windowManager.Setup(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null)).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
+            runtimeConfigurationViewModel.Load(environment.Object);
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             popup.Verify(p => p.Show(), Times.Never(), "A pop was shown on success, this means there was an unexpected error.");
@@ -307,7 +308,8 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             popup.Setup(p => p.Show()).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
+            runtimeConfigurationViewModel.Load(environment.Object); 
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             popup.Verify(p => p.Show(), Times.Once(), "A pop was shown on success, this means there was an unexpected error.");
@@ -329,7 +331,9 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             popup.Setup(p => p.Show()).Verifiable();
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
-            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel(environment.Object);
+            RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
+
+            runtimeConfigurationViewModel.Load(environment.Object); 
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             popup.Verify(p => p.Show(), Times.Once(), "An popup was meant to be shown but it wasn't.");

@@ -27,6 +27,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
+using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
@@ -224,8 +225,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _settingsCommand ?? (_settingsCommand =
-                                            new RelayCommand(param => AddSettingsWorkSurface(ActiveEnvironment),
-                                                                       param => IsActiveEnvironmentConnected()));
+                                            new RelayCommand(param => AddSettingsWorkSurface()));
             }
         }
 
@@ -255,8 +255,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _deployCommand ??
-                       (_deployCommand = new RelayCommand(param => AddDeployResourcesWorkSurface(CurrentResourceModel),
-                                                                       param => IsActiveEnvironmentConnected()));
+                       (_deployCommand = new RelayCommand(param => AddDeployResourcesWorkSurface(CurrentResourceModel)));
             }
         }
 
@@ -530,22 +529,17 @@ namespace Dev2.Studio.ViewModels
 
             ActivateOrCreateWorkSurface<DependencyVisualiserViewModel>
                 (WorkSurfaceContext.ReverseDependencyVisualiser, resource,
-                 new[] { new Tuple<string, object>("GetDependsOnMe",true),new Tuple<string, object>("ResourceModel", resource)
-                                 });
+                 new[]
+                     {
+                         new Tuple<string, object>("GetDependsOnMe", true),
+                         new Tuple<string, object>("ResourceModel", resource)
+                     });
         }
 
-        public void AddSettingsWorkSurface(IEnvironmentModel environment)
+        public void AddSettingsWorkSurface()
         {
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, environment.DataListChannel.ServerID);
-
-            var exist = ActivateWorkSurfaceIfPresent(key);
-
-            if (exist)
-            {
-                return;
-            }
-
-            AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateRuntimeConfigurationViewModel(environment));
+            ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>
+                (WorkSurfaceContext.Settings);
         }
 
         public void RemoveSettingsWorkSurface(IEnvironmentModel environment)

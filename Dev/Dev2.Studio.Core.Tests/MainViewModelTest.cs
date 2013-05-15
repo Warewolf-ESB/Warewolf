@@ -96,17 +96,37 @@ namespace Dev2.Core.Tests
         }
 
         #endregion init
-
+     
         [TestMethod]
-        public void IsActiveEnvironmentConnectExpectTrue()
+        public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
             lock (syncroot)
             {
-            CreateFullExportsAndVm();
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            var actual = _mainViewModel.IsActiveEnvironmentConnected();
-            Assert.IsTrue(actual);
+                CreateFullExportsAndVm();
+                Assert.IsTrue(_mainViewModel.DeployCommand.CanExecute(null));
+            }
         }
+
+        [TestMethod]
+        public void SettingsCommandCanExecuteIrrespectiveOfEnvironments()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                Assert.IsTrue(_mainViewModel.SettingsCommand.CanExecute(null));
+            }
+        }
+
+        [TestMethod]
+        public void SettingsCommandCreatesSettingsWorkSurfaceContext()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                _mainViewModel.SettingsCommand.Execute(null);
+                var ctx = _mainViewModel.ActiveItem;
+                Assert.IsTrue(ctx.WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Settings);
+            }
         }
 
         [TestMethod]
@@ -114,10 +134,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-            CreateFullExportsAndVm();
-            var actual = _mainViewModel.IsActiveEnvironmentConnected();
-            Assert.IsTrue(actual == false);
-        }
+                CreateFullExportsAndVm();
+                var actual = _mainViewModel.IsActiveEnvironmentConnected();
+                Assert.IsTrue(actual == false);
+            }
         }
 
         [TestMethod]
@@ -238,45 +258,6 @@ namespace Dev2.Core.Tests
 
             var activeCtx = _mainViewModel.ActiveItem;
             Assert.IsTrue(activeCtx.Equals(notActiveCtx));
-        }
-        }
-
-        [TestMethod]
-        public void SettingCommandExpectSettingsSurfaceAddedForActiveEnvironment()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            var datalistchannelmock = new Mock<INetworkDataListChannel>();
-            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            _mainViewModel.SettingsCommand.Execute(null);
-            var ctx = _mainViewModel.ActiveItem;
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, _serverID);
-            Assert.IsTrue(ctx.WorkSurfaceKey.Equals(key));
-        }
-        }
-
-        [TestMethod]
-        public void SettingCommandExpectSettingsACtiveForActiveEnvironment()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            var datalistchannelmock = new Mock<INetworkDataListChannel>();
-            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            _mainViewModel.SettingsCommand.Execute(null);
-
-            var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            _mainViewModel.ActivateItem(notActiveCtx);
-
-            _mainViewModel.SettingsCommand.Execute(null);
-            var ctx = _mainViewModel.ActiveItem;
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings, _serverID);
-            Assert.IsTrue(ctx.WorkSurfaceKey.Equals(key));
         }
         }
 

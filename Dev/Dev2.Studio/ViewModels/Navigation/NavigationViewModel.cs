@@ -64,7 +64,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
         }
 
-        public NavigationViewModel(bool useAuxiliryConnections, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+        public NavigationViewModel(bool useAuxiliryConnections,
+            IEnvironmentRepository environmentRepository, 
+            bool isFromActivityDrop = false, 
+            enDsfActivityType activityType = enDsfActivityType.All)
         {
             if(environmentRepository == null)
             {
@@ -242,22 +245,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region public methods
 
         /// <summary>
-        /// Adds all environments from repository.
-        /// </summary>
-        /// <author>Jurie.Smit</author>
-        /// <date>2013/01/28</date>
-        public void AddAllEnvironmentsFromRepository()
-        {
-            EnvironmentRepository.All().ToList().ForEach(Environments.Add);
-        }
-
-        /// <summary>
         ///     Adds an environment and it's resources to the tree
         /// </summary>
         public void AddEnvironment(IEnvironmentModel environment)
         {
-            if(Environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
-                return;
+            if (Environments.Any(e => e.ID == environment.ID)) return;
 
             Environments.Add(environment);
             LoadEnvironmentResources(environment);
@@ -368,18 +360,18 @@ namespace Dev2.Studio.ViewModels.Navigation
                     Connect(environment);
                 }
 
-                if(environment != null && environment.IsConnected)
+                if(environment != null && environment.IsConnected && environment.ShouldLoadResources)
                 {
                     //
                     // Load the environemnts resources
                     //
                     environment.LoadResources();
-                }
 
                 //
                 // Build the resources into a tree
                 //
                 BuildNavigationItemViewModels(environment);
+            }
             }
             finally
             {

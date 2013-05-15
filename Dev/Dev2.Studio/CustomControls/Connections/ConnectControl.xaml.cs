@@ -172,11 +172,13 @@ namespace Dev2.UI
                     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
                     var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
 
+                    //Used by deployviewmodel and settings - to do, please use only one.
                     if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
                     {
                         Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
                     }
 
+                    //Used by rest.
                     if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
                     {
                         Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));

@@ -11,7 +11,7 @@ namespace Dev2.Studio.Core.Helpers
         public static void SetValues(Object instance, Tuple<string, object>[] properties)
         {
             if (instance == null) return;
-            if (!properties.Any()) return;
+            if (properties == null || !properties.Any()) return;
 
             foreach (var property in properties)
             {

@@ -38,6 +38,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             var environment = y as IEnvironmentModel;
             if (environment == null) return false;
             if (x == null) return false;
+            if (environment.ID == x.ID) return true; 
             if(environment.Connection.AppServerUri == null || x.Connection.AppServerUri == null) return false;
 
             return x.Connection.AppServerUri.AbsoluteUri == environment.Connection.AppServerUri.AbsoluteUri;

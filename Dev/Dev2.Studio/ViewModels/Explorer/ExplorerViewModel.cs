@@ -43,10 +43,9 @@ namespace Dev2.Studio.ViewModels.Explorer
                 throw new ArgumentNullException("environmentRepository");
             }
             EnvironmentRepository = environmentRepository;
-            NavigationViewModel = new NavigationViewModel(false, isFromActivityDrop, activityType);
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            NavigationViewModel = new NavigationViewModel(false, _fromActivityDrop, _activityType);
+            NavigationViewModel = new NavigationViewModel(false, environmentRepository, _fromActivityDrop, _activityType);
             LoadEnvironments();
         }
 
@@ -134,9 +133,11 @@ namespace Dev2.Studio.ViewModels.Explorer
         private void LoadEnvironments()
         {
             if (EnvironmentRepository == null) return;
+
             //
             // Load environments from repository
             //
+            if (!EnvironmentRepository.IsLoaded)
             EnvironmentRepository.Load();
 
             // Load the default environment
@@ -221,8 +222,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                 return;
             }
 
-            SaveEnvironment(message.EnvironmentModel);
-            NavigationViewModel.AddEnvironment(message.EnvironmentModel);
+            AddEnvironment(message.EnvironmentModel);
         }
 
         #endregion

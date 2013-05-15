@@ -23,7 +23,7 @@ namespace Dev2.Core.Tests.Environments
             {
                 foreach (var environment in environments)
                 {
-                    AddInternal(environment);
+                    _environments.Add(environment);
                 }
             }
         }

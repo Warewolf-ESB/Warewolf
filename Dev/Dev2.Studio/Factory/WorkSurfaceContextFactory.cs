@@ -40,14 +40,6 @@ namespace Dev2.Studio.Factory
             return context;
         }
 
-        public static WorkSurfaceContextViewModel CreateRuntimeConfigurationViewModel(IEnvironmentModel environmentModel)
-        {
-            var vm = RuntimeConfigurationViewModelFactory.CreateRuntimeConfigurationViewModel(environmentModel);
-            var context = CreateWorkSurfaceContextViewModelForServer(vm, WorkSurfaceContext.Settings, environmentModel.DataListChannel.ServerID);
-            return context;
-        }
-
-
         /// <summary>
         /// Creates the work surface context view model, only use for surfaces that are unique per context.
         /// </summary>
