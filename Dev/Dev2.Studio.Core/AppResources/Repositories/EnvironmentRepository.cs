@@ -322,15 +322,16 @@ namespace Dev2.Studio.Core
         protected virtual void AddInternal(IEnvironmentModel environment)
         {
             var index = _environments.IndexOf(environment);
-            if(index == -1)
+
+            if (index == -1)
             {
                 _environments.Add(environment);
             }
             else
             {
                 _environments.RemoveAt(index);
-                _environments.Insert(index, environment);
-            }
+                _environments.Add(environment);
+            } 
             RaiseItemAdded();
         }
 

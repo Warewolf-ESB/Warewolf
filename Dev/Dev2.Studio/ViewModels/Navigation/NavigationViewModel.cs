@@ -270,11 +270,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void RemoveEnvironment(IEnvironmentModel environment)
         {
             var idx = Environments.FindIndex(e => e.ID == environment.ID);
-            Environments.RemoveAt(idx);
 
+            if (idx != -1)
+            {
+            Environments.RemoveAt(idx);
             var environmentNavigationItemViewModel =
                 Find(environment, true);
             Root.Children.Remove(environmentNavigationItemViewModel);
+        }
         }
 
         /// <summary>

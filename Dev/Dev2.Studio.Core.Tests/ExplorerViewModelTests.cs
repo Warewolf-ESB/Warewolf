@@ -77,7 +77,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void RemoveEnvironmentMessageDoesNotRemovesEnvironmentFromRepository()
+        public void RemoveEnvironmentMessageRemovesFromRepo()
         {
             //------Setup---------
             ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
@@ -85,6 +85,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
+            mockEnvironment.Setup(e => e.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             //------Assert---------
             Assert.AreEqual(vm.EnvironmentRepository.All().Count, 1);

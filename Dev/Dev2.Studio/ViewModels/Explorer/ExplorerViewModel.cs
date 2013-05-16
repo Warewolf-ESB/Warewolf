@@ -110,6 +110,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         private void RemoveEnvironment(IEnvironmentModel environment)
         {
             NavigationViewModel.RemoveEnvironment(environment);
+            SaveEnvironment(environment);
         }
 
         /// <summary>

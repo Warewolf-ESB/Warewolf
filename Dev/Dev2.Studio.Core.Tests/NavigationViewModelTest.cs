@@ -13,6 +13,7 @@ using Dev2.Studio;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
@@ -31,7 +32,7 @@ namespace Dev2.Core.Tests
     {
         #region Test Variables
 
-        private object _lock = new object();
+        private static object _lock = new object();
         private Mock<IEnvironmentModel> mockEnvironmentModel;
         private Mock<IContextualResourceModel> mockResourceModel;
         private Mock<IContextualResourceModel> mockResourceModel1;
@@ -704,6 +705,64 @@ namespace Dev2.Core.Tests
 
         #endregion Filtering
 
+        #region remove
+
+        [TestMethod]
+        public void RemoveEnvironmentsWhenEnvironmentConnected()
+        {
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                        {
+                                            Init(false, true);
+                                            // FromCurrentSynchronizationContext will now resolve to the dispatcher thread here
+                                            mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
+                                            mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
+
+                                            Assert.IsTrue(vm.Environments.Count == 1);
+                                            Assert.IsTrue(vm.Root.ChildrenCount > 0);
+
+                                            vm.RemoveEnvironment(mockEnvironmentModel.Object);
+
+                                        });
+            reset.WaitOne();
+
+            Assert.IsTrue(vm.Environments.Count == 0);
+            Assert.IsTrue(vm.Root.ChildrenCount == 0);
+            
+        }
+
+        [TestMethod]
+        public void NoExceptionWhenEnvironmentNotInEnvironmentList()
+        {
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                        {
+                                            Init(false, true);
+                                            // FromCurrentSynchronizationContext will now resolve to the dispatcher thread here
+                                            mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
+                                            mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
+
+                                            Assert.IsTrue(vm.Environments.Count == 1);
+                                            Assert.IsTrue(vm.Root.ChildrenCount > 0);
+
+                                            var nonAddedMock = GetMockEnvironment();
+                                            nonAddedMock.Setup(m => m.ID).Returns(Guid.NewGuid);
+
+                                            vm.RemoveEnvironment(nonAddedMock.Object);
+
+                                        });
+            reset.WaitOne();
+
+            Assert.IsTrue(vm.Environments.Count == 1);
+            Assert.IsTrue(vm.Root.ChildrenCount > 0);
+
+        }
+
+        #endregion remove
+
+
         #region Disconnect
 
         [TestMethod]
@@ -807,11 +866,17 @@ namespace Dev2.Core.Tests
 
         void SetupMockEnvironment(bool shouldLoadResources)
         {
-            mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-            mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
+            mockEnvironmentModel = GetMockEnvironment();
             mockEnvironmentModel.SetupGet(x => x.ShouldLoadResources).Returns(shouldLoadResources);
+        }
+
+        private Mock<IEnvironmentModel> GetMockEnvironment()
+        {
+            var mock = new Mock<IEnvironmentModel>();
+            mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mock.SetupGet(x => x.IsConnected).Returns(true);
+            return mock;
         }
 
         void SetUpResources(bool addWizardChildToResource, out Mock<IResourceRepository> mockResourceRepository)
