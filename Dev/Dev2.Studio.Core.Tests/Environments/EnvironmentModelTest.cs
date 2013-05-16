@@ -325,6 +325,25 @@ namespace Dev2.Core.Tests.Environments
         #region LoadResources
 
         [TestMethod]
+        public void EnvironmentModelForceLoadResourcesExpectedInvokesForceLoadOnResourceRepository()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.ForceLoad()).Verifiable();
+
+            var connection = CreateConnection();
+            connection.Setup(c => c.DisplayName).Returns("Test");
+            connection.Setup(c => c.IsConnected).Returns(true);
+
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+
+            Assert.IsTrue(env.CanStudioExecute);
+
+            env.ForceLoadResources();
+
+            resourceRepo.Verify(r => r.ForceLoad(), Times.Once());
+        }
+
+        [TestMethod]
         public void EnvironmentModelLoadResourcesWithShouldLoadTrueExpectedInvokesLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
@@ -336,7 +355,7 @@ namespace Dev2.Core.Tests.Environments
 
             var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
-            Assert.IsTrue(env.ShouldLoadResources);
+            Assert.IsTrue(env.CanStudioExecute);
 
             env.LoadResources();
 
@@ -355,7 +374,7 @@ namespace Dev2.Core.Tests.Environments
 
             var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
-            env.ShouldLoadResources = false;
+            env.CanStudioExecute = false;
 
             env.LoadResources();
 
@@ -439,7 +458,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
-        
+
         #region CreateEnvironmentModel
 
         static EnvironmentModel CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)

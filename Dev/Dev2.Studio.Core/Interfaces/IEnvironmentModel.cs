@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Interfaces
         Guid ID { get; }
         string Name { get; set; }
         bool IsConnected { get; }
-        bool ShouldLoadResources { get; set; }
+        bool CanStudioExecute { get; set; }
 
         IStudioEsbChannel DsfChannel { get; }
         INetworkExecutionChannel ExecutionChannel { get; }
@@ -22,6 +22,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Connect();
         void Disconnect();
         void Connect(IEnvironmentModel model);
+        void ForceLoadResources();
         void LoadResources();
         bool IsLocalHost();
 

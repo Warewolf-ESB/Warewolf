@@ -471,7 +471,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return TreeParent.FindRootNavigationViewModel();
             }
 
-            return root.Parent as INavigationContext;
+            var parent = root.Parent as INavigationContext;
+            return parent;
         }
 
         /// <summary>

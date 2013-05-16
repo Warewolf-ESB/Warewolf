@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
@@ -277,6 +278,46 @@ namespace Dev2.Core.Tests
         #region Environment
 
         [TestMethod]
+        public void EnvironmentNodeCanConnectWhenCanStudioExecuteFalseAndConnected()
+        {
+            mockEnvironmentModel.Setup(e => e.CanStudioExecute).Returns(false);
+            mockEnvironmentModel.Setup(e => e.IsConnected).Returns(true);
+            Assert.IsTrue(environmentVM.CanConnect);
+        }
+
+        [TestMethod]
+        public void EnvironmentNodeCanConnectWhenNotConnected()
+        {
+            mockEnvironmentModel.Setup(e => e.IsConnected).Returns(false);
+            Assert.IsTrue(environmentVM.CanConnect);
+        }
+
+        [TestMethod]
+        public void EnvironmentNodeConnectCommadsSetsCanStudioExecute()
+        {
+            //------Test Setup---------
+            mockEnvironmentModel.Setup(e => e.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(e => e.CanStudioExecute)
+                .Returns(false)
+                .Verifiable();
+            mockEnvironmentModel.Setup(e => e.ForceLoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(e => e.IsConnected).Returns(false);
+            var navigationVM = new Mock<INavigationContext>();
+            navigationVM.Setup(vm => vm.Update(It.IsAny<IEnvironmentModel>())).Verifiable();
+            rootVM.Parent = navigationVM.Object;
+
+            //------Test Execution---------
+            environmentVM.ConnectCommand.Execute(null);
+
+            //------Assertion--------
+            mockEnvironmentModel.Verify(e => e.ForceLoadResources(), Times.Once());
+            mockEnvironmentModel.Verify(e => e.Connect(), Times.Once());
+            navigationVM.Verify(vm => vm.Update(It.IsAny<IEnvironmentModel>()), Times.Once());
+
+        }
+
+        [TestMethod]
         public void EnvironmentNodeExpectHasNewResourceCommand()
         {
             Assert.IsNotNull(environmentVM.NewResourceCommand);
@@ -312,6 +353,11 @@ namespace Dev2.Core.Tests
         {
             mockEnvironmentModel.Setup(c => c.Connect()).Verifiable();
             mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(false);
+
+            var navigationVM = new Mock<INavigationContext>();
+            navigationVM.Setup(vm => vm.Update(It.IsAny<IEnvironmentModel>())).Verifiable();
+            rootVM.Parent = navigationVM.Object;
+
             var cmd = environmentVM.ConnectCommand;
             cmd.Execute(null);
 

@@ -307,7 +307,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void UpdateWorkspaces()
         {
-            var mainVM = ImportService.GetExportValue<IMainViewModel>();
             if(IsRefreshing)
             {
                 return;
@@ -372,7 +371,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     Connect(environment);
                 }
 
-                if(environment != null && environment.IsConnected && environment.ShouldLoadResources)
+                if(environment != null && environment.IsConnected && environment.CanStudioExecute)
                 {
                     //
                     // Load the environemnts resources
@@ -485,6 +484,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void SetSelectedItemNull()
         {
             EventAggregator.Publish(new SetSelectedIContextualResourceModel(null, false));
+        }
+
+        public virtual void Update(IEnvironmentModel environmentModel)
+        {
+            UpdateWorkspace(environmentModel, _workspaceItemRepository.WorkspaceItems);
         }
 
         ///// <summary>

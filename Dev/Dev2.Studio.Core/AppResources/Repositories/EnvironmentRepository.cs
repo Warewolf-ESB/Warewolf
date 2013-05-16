@@ -331,7 +331,7 @@ namespace Dev2.Studio.Core
             {
                 _environments.RemoveAt(index);
                 _environments.Add(environment);
-            } 
+            }
             RaiseItemAdded();
         }
 

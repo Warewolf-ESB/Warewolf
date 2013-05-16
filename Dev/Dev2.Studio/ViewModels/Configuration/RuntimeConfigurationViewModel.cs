@@ -171,7 +171,10 @@ namespace Dev2.Studio.ViewModels.Configuration
                 return;
             }
 
-            environment.ShouldLoadResources = false;
+            if (!environment.IsConnected)
+            {
+                environment.CanStudioExecute = false;
+            }
 
             IsWorking = true;
 
@@ -187,7 +190,6 @@ namespace Dev2.Studio.ViewModels.Configuration
             finally
             {
                 IsWorking = false;
-                environment.ShouldLoadResources = true;
             }
         }
 

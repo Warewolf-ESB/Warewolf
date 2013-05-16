@@ -508,7 +508,9 @@ namespace Dev2.Studio.ViewModels
                 return false;
             }
 
-            return ((ActiveEnvironment != null) && (ActiveEnvironment.IsConnected));
+            return ((ActiveEnvironment != null) && 
+                (ActiveEnvironment.IsConnected) && 
+                (ActiveEnvironment.CanStudioExecute));
         }
 
         public void AddDependencyVisualizerWorkSurface(IContextualResourceModel resource)
@@ -533,11 +535,11 @@ namespace Dev2.Studio.ViewModels
                      {
                          new Tuple<string, object>("GetDependsOnMe", true),
                          new Tuple<string, object>("ResourceModel", resource)
-                                 });
+                     });
         }
 
         public void AddSettingsWorkSurface()
-            {
+        {
             ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>
                 (WorkSurfaceContext.Settings);
         }

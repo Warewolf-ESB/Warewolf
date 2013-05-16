@@ -146,7 +146,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override bool CanConnect
         {
             get { return EnvironmentModel != null 
-                && !EnvironmentModel.IsConnected; }
+                && (!EnvironmentModel.IsConnected || !EnvironmentModel.CanStudioExecute); }
         }
 
         public override bool HasFileMenu
@@ -367,9 +367,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void Connect()
         {
-            if (EnvironmentModel.IsConnected) return;
+            if (EnvironmentModel.IsConnected && EnvironmentModel.CanStudioExecute) return;
 
+            EnvironmentModel.CanStudioExecute = true;
             EnvironmentModel.Connect();
+            EnvironmentModel.ForceLoadResources();
+            var vm = FindRootNavigationViewModel();
+            vm.Update(EnvironmentModel);
             RaisePropertyChangedForCommands();
         }
 

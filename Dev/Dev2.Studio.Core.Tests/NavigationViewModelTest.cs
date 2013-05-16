@@ -867,13 +867,12 @@ namespace Dev2.Core.Tests
         void SetupMockEnvironment(bool shouldLoadResources)
         {
             mockEnvironmentModel = GetMockEnvironment();
-            mockEnvironmentModel.SetupGet(x => x.ShouldLoadResources).Returns(shouldLoadResources);
+            mockEnvironmentModel.SetupGet(x => x.CanStudioExecute).Returns(shouldLoadResources);
         }
 
         private Mock<IEnvironmentModel> GetMockEnvironment()
         {
             var mock = new Mock<IEnvironmentModel>();
-            mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             mock.SetupGet(x => x.IsConnected).Returns(true);
             return mock;

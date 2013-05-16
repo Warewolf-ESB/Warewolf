@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Models
     {
         bool _publishEventsOnDispatcherThread;
 
-        public bool ShouldLoadResources { get; set; }
+        public bool CanStudioExecute { get; set; }
 
         #region CTOR
 
@@ -51,7 +51,7 @@ namespace Dev2.Studio.Core.Models
                 throw new ArgumentNullException("environmentConnection");
             }
 
-            ShouldLoadResources = true;
+            CanStudioExecute = true;
 
             ID = id; // The resource ID
             Connection = environmentConnection;
@@ -144,11 +144,23 @@ namespace Dev2.Studio.Core.Models
         }
         #endregion
 
+        #region ForceLoadResources
+
+        public void ForceLoadResources()
+        {
+            if (Connection.IsConnected && CanStudioExecute)
+            {
+                ResourceRepository.ForceLoad();
+            }
+        }
+
+        #endregion
+
         #region LoadResources
 
         public void LoadResources()
         {
-            if(Connection.IsConnected && ShouldLoadResources)
+            if(Connection.IsConnected && CanStudioExecute)
             {
                 ResourceRepository.Load();
             }
