@@ -685,6 +685,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsFalse(isWorkFlow);
         }
         #endregion
+
         #region AddEnvironment
 
         [TestMethod]
@@ -801,6 +802,52 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
             //See expected exception attribute
         }
+        #endregion
+
+        #region HydrateResourceTest
+
+        [TestMethod]
+        public void HydrateResourceHydratesConnectionString()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format(TestResourceStringsTest.ResourcesToHydrate, _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            //------------Execute Test---------------------------
+            _repo.Save(_model.Object);
+            _repo.ForceLoad();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,_repo.All().Count(r => r.ConnectionString == TestResourceStringsTest.ResourceToHydrateConnectionString1));
+            Assert.AreEqual(1, _repo.All().Count(r => r.ConnectionString == TestResourceStringsTest.ResourceToHydrateConnectionString2));
+        }
+
+        [TestMethod]
+        public void HydrateResourceHydratesResourceType()
+        {            
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format(TestResourceStringsTest.ResourcesToHydrate, _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            //------------Execute Test---------------------------
+            _repo.Save(_model.Object);
+            _repo.ForceLoad();
+            var resources = _repo.All().Cast<IContextualResourceModel>();
+            var servers = resources.Where(r => r.ServerResourceType == "Server");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, servers.Count());
+        
+        }
+
         #endregion
     }
     public class ResourceModelEqualityComparerForTest:IEqualityComparer<IResourceModel>

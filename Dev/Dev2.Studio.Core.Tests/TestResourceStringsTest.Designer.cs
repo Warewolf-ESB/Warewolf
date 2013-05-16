@@ -97,6 +97,42 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Payload&gt;&lt;Service Name=&quot;TestWorkflowService1&quot; ID=&quot;{0}&quot; ResourceType=&quot;Server&quot; ConnectionString=&quot;AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234&quot;&gt;&lt;/Service&gt;&lt;Service Name=&quot;TestWorkflowService1&quot; ID=&quot;{1}&quot; ResourceType=&quot;Server&quot; ConnectionString=&quot;AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234&quot;&gt;&lt;/Service&gt;&lt;/Payload&gt;.
+        /// </summary>
+        public static string ResourcesToHydrate {
+            get {
+                return ResourceManager.GetString("ResourcesToHydrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://rsatest1:77/dsf.
+        /// </summary>
+        public static string ResourceToHydrateActualAppUri {
+            get {
+                return ResourceManager.GetString("ResourceToHydrateActualAppUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234.
+        /// </summary>
+        public static string ResourceToHydrateConnectionString1 {
+            get {
+                return ResourceManager.GetString("ResourceToHydrateConnectionString1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234.
+        /// </summary>
+        public static string ResourceToHydrateConnectionString2 {
+            get {
+                return ResourceManager.GetString("ResourceToHydrateConnectionString2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;XMLService&gt;Xml&lt;/XMLService&gt;.
         /// </summary>
         public static string serviceDefinition {

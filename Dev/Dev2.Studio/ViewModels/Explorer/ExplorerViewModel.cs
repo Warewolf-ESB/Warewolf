@@ -7,6 +7,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 
@@ -15,6 +16,7 @@ namespace Dev2.Studio.ViewModels.Explorer
     [Export]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ExplorerViewModel : BaseViewModel,
+                                     INavigationContext,
                                      IHandle<UpdateExplorerMessage>,
                                      IHandle<RemoveEnvironmentMessage>,
                                      IHandle<AddServerToExplorerMessage>
@@ -45,7 +47,8 @@ namespace Dev2.Studio.ViewModels.Explorer
             EnvironmentRepository = environmentRepository;
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            NavigationViewModel = new NavigationViewModel(false, environmentRepository, _fromActivityDrop, _activityType);
+            NavigationViewModel = new NavigationViewModel(false, Context, environmentRepository, isFromActivityDrop: _fromActivityDrop, activityType: _activityType);
+            NavigationViewModel.Parent = this;
             LoadEnvironments();
         }
 
@@ -208,7 +211,10 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(RemoveEnvironmentMessage message)
         {
-            RemoveEnvironment(message.EnvironmentModel);
+            if (Context == message.Context)
+            {
+                RemoveEnvironment(message.EnvironmentModel);
+            }
         }
 
         #endregion
@@ -227,5 +233,4 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #endregion
     }
-
 }

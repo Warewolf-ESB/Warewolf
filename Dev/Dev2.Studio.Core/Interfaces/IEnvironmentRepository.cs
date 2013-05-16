@@ -20,5 +20,8 @@ namespace Dev2.Studio.Core.Interfaces
 
         void ForceLoad();
 
+        void Remove(string appserverUri);
+
+        IEnvironmentModel Get(string appserverUri);
     }
 }

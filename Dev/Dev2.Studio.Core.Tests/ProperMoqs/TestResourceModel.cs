@@ -88,10 +88,13 @@ namespace Dev2.Core.Tests.ProperMoqs {
         }
 
         public bool IsNewWorkflow { get; set; }
+        public string ServerResourceType { get; set; }
 
         public void Update(IResourceModel resourceModel) {
             return;
         }
+
+        public string ConnectionString { get; set; }
 
         public string ToServiceDefinition() {
             return "TestDefinition";

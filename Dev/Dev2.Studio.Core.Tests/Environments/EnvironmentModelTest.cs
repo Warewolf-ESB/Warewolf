@@ -439,7 +439,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
-
+        
         #region CreateEnvironmentModel
 
         static EnvironmentModel CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)
@@ -452,6 +452,29 @@ namespace Dev2.Core.Tests.Environments
             return new EnvironmentModel(id, connection, repo.Object, false);
         }
 
+        #endregion
+
+        #region IsLocalHost
+
+        [TestMethod]
+        public void IsLocalHost()
+        {
+            var conn = CreateConnection();
+            conn.Setup(c => c.DisplayName).Returns("localhost");
+            var env = CreateEnvironmentModel(Guid.NewGuid(), conn.Object);
+            var isLocalHost = env.IsLocalHost();
+            Assert.IsTrue(isLocalHost);
+        }
+
+        [TestMethod]
+        public void IsNotLocalHost()
+        {
+            var conn = CreateConnection();
+            conn.Setup(c => c.DisplayName).Returns("notlocalhost");
+            var env = CreateEnvironmentModel(Guid.NewGuid(), conn.Object);
+            var isLocalHost = env.IsLocalHost();
+            Assert.IsFalse(isLocalHost);
+        }
         #endregion
 
         #region Enums

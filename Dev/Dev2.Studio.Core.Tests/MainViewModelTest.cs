@@ -1,22 +1,15 @@
-﻿//5559 Update these tests
+﻿#region
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Composition;
-using Dev2.Core.Tests.Environments;
 using Dev2.DataList.Contract.Network;
-using Dev2.Diagnostics;
-using Dev2.Enums;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -37,74 +30,74 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework;
 
+#endregion
+
 //using System.Windows.Media.Imaging;
 
 namespace Dev2.Core.Tests
 {
-
-
     /// <summary>
-    ///This is a result class for mvTest and is intended
-    ///to contain all mvTest Unit Tests
-    ///</summary>
-    [TestClass()]
+    ///     This is a result class for mvTest and is intended
+    ///     to contain all mvTest Unit Tests
+    /// </summary>
+    [TestClass]
     public class mvTest
     {
-
         #region Variables
 
-        Mock<IResourceRepository> _resourceRepo;
+        private static ImportServiceContext _importServiceContext;
+        private static readonly object syncroot = new object();
+        private static readonly object monitorLock = new object();
+        private readonly Guid _firstResourceID = Guid.NewGuid();
+        private readonly Guid _secondResourceID = Guid.NewGuid();
+        private readonly Guid _serverID = Guid.NewGuid();
+        private readonly Guid _workspaceID = Guid.NewGuid();
+        private string _displayName = "test2";
+        private Mock<IEnvironmentConnection> _environmentConnection;
         private Mock<IEnvironmentModel> _environmentModel;
         private IEnvironmentRepository _environmentRepo;
-        private Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
-        private Mock<IContextualResourceModel> _firstResource;
-        private Mock<IContextualResourceModel> _secondResource;
         private Mock<IEventAggregator> _eventAggregator;
-        private Mock<IResourceDependencyService> _resourceDependencyService;
-        MainViewModel _mainViewModel;
-        private string _resourceName = "TestResource";
-        private string _displayName = "test2";
-        private string _serviceDefinition = "<x/>";
-        private static ImportServiceContext _importServiceContext;
-        private Guid _serverID = Guid.NewGuid();
-        private Guid _workspaceID = Guid.NewGuid();
-        private Guid _firstResourceID = Guid.NewGuid();
-        private Guid _secondResourceID = Guid.NewGuid();
-        public Mock<IPopupController> _popupController;
         private Mock<IFeedbackInvoker> _feedbackInvoker;
+        private Mock<IContextualResourceModel> _firstResource;
+        private MainViewModel _mainViewModel;
+        private Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
+        public Mock<IPopupController> _popupController;
+        private Mock<IResourceDependencyService> _resourceDependencyService;
+        private string _resourceName = "TestResource";
+        private Mock<IResourceRepository> _resourceRepo;
+        private Mock<IContextualResourceModel> _secondResource;
+        private string _serviceDefinition = "<x/>";
         private Mock<IWebController> _webController;
         private Mock<IWindowManager> _windowManager;
-        private static object syncroot = new object();
-        private static object monitorLock = new object();
 
         #endregion Variables
 
         #region init
 
         //Use TestInitialize to run code before running each result
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             Monitor.Enter(monitorLock);
         }
 
         //Use TestInitialize to run code before running each result
-        [TestCleanup()]
+        [TestCleanup]
         public void MyTestCleanup()
         {
             Monitor.Exit(monitorLock);
         }
 
         #endregion init
-     
+
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.DeployCommand.CanExecute(null));
-            }
+        }
         }
 
         [TestMethod]
@@ -134,10 +127,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var actual = _mainViewModel.IsActiveEnvironmentConnected();
-                Assert.IsTrue(actual == false);
-            }
+            CreateFullExportsAndVm();
+            var actual = _mainViewModel.IsActiveEnvironmentConnected();
+            Assert.IsTrue(actual == false);
+        }
         }
 
         [TestMethod]
@@ -212,268 +205,11 @@ namespace Dev2.Core.Tests
             }
         }
 
-        #region Commands
         [TestMethod]
-        public void DisplayAboutDialogueCommandExpectsWindowManagerShowingIDialogueViewModel()
-        {
-            lock (syncroot)
+        public void
+            CloseContextWithCloseTrueAndResourceSavedExpectsRemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved
+            ()
             {
-            CreateFullExportsAndVm();
-                _windowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
-            _mainViewModel.DisplayAboutDialogueCommand.Execute(null);
-            _windowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
-        }
-        }
-
-        [TestMethod]
-        public void AddStudioShortcutsPageCommandExpectsShortKeysActive()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            _mainViewModel.AddStudioShortcutsPageCommand.Execute(null);
-            var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
-            var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsTrue(helpctx.Uri == shortkeyUri);
-        }
-        }
-
-        [TestMethod]
-        public void SettingsSaveCancelMessageExpectsPreviousContextActive()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            var datalistchannelmock = new Mock<INetworkDataListChannel>();
-            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            _mainViewModel.SettingsCommand.Execute(null);
-
-            var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            _mainViewModel.ActivateItem(notActiveCtx);
-
-            var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
-            _mainViewModel.Handle(msg);
-
-            var activeCtx = _mainViewModel.ActiveItem;
-            Assert.IsTrue(activeCtx.Equals(notActiveCtx));
-        }
-        }
-
-        [TestMethod]
-        public void NewResourceCommandExpectsWebControllerDisplayDialogue()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            _mainViewModel.NewResourceCommand.Execute("Service");
-            _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());          
-        }
-        }
-        
-        [TestMethod]
-        public void StartFeedbackCommandCommandExpectsFeedbackInvoked()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-                _feedbackInvoker.Setup(
-                    i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()))
-                                .Verifiable();
-            _mainViewModel.StartFeedbackCommand.Execute(null);
-                _feedbackInvoker.Verify(
-                    i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()),
-                    Times.Once());
-            }
-        }
-
-        [TestMethod]
-        public void StartStopRecordedFeedbackCommandExpectsFeedbackStartedWhenNotInProgress()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            _feedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
-            _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-            _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Once());
-        }
-        }
-
-        [TestMethod]
-        public void StartStopRecordedFeedbackCommandExpectsFeedbackStppedtInProgress()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            var mockAction = new Mock<IAsyncFeedbackAction>();
-            mockAction.Setup(a => a.StartFeedback()).Verifiable();
-            _feedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
-            _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-            _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
-            mockAction.Verify(a => a.FinishFeedBack(), Times.Once());
-        }
-        }
-
-
-        [TestMethod]
-        public void DeployAllCommandWithCurrentResourceAndOpenDeploytabExpectsSelectItemInDeployMessage()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVmWithEmptyRepo();
-
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
-                            .Callback<object>((o =>
-                            {
-                                        var m = (SelectItemInDeployMessage) o;
-                                var r = (IEnvironmentModel) m.Value;
-                                Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
-                            })).Verifiable();
-
-            _mainViewModel.DeployAllCommand.Execute(null);
-            AddAdditionalContext();
-            var ctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-            _mainViewModel.ActivateItem(ctx);
-            _mainViewModel.DeployAllCommand.Execute(null);
-            var activectx = _mainViewModel.ActiveItem;
-            Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
-                WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
-
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()), Times.Once());
-        }
-        }
-
-        [TestMethod]
-        public void DeployAllCommandWithoutCurrentResourceExpectsDeplouViewModelActive()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVmWithEmptyRepo();
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            _mainViewModel.DeployAllCommand.Execute(null);
-            var activectx = _mainViewModel.ActiveItem;
-            Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
-                WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
-        }
-        }
-
-        #endregion
-        
-        [TestMethod]
-        public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => null);
-
-            var msg = new DeleteResourceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-        }
-        }
-          
-        [TestMethod]
-        public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
-            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
-
-
-            var msg = new DeleteResourceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-            }
-     
-        }
-
-        [TestMethod]
-        public void DeleteResourceConfirmedExpectRemoveNavigationResourceMessage()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
-                            .Callback<object>((o =>
-                            {
-                                        var m = (RemoveNavigationResourceMessage) o;
-                                Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
-                            }));
-
-            var msg = new DeleteResourceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
-        }
-        }
-
-        [TestMethod]
-        public void DeleteResourceConfirmedExpectContextRemoved()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            var msg = new DeleteResourceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
-        }
-        }
-
-        [TestMethod]
-        public void DeleteResourceWithConfirmExpectsDependencyServiceCalled()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-            var msg = new DeleteResourceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
-        }
-        }
-
-        [TestMethod]
-        public void DeleteResourceWithDeclineExpectsDependencyServiceCalled()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
-            var msg = new DeleteResourceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
-        }
-        }
-
-        [TestMethod]
-        public void DeleteResourceWithNullResourceExpectsNoPoupShown()
-        {
-            lock (syncroot)
-            {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            var msg = new DeleteResourceMessage(null);
-            _mainViewModel.Handle(msg);
-            _popupController.Verify(s => s.Show(), Times.Never());
-        }
-        }
-
-
-        [TestMethod]
-        public void CloseContextWithCloseTrueAndResourceSavedExpectsRemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
-        {
             lock (syncroot)
             {
             CreateFullExportsAndVm();
@@ -499,7 +235,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void CloseContextWithCloseTrueAndResourceNotSavedPopupOkExpectsRemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage()
+        public void
+            CloseContextWithCloseTrueAndResourceNotSavedPopupOkExpectsRemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage
+            ()
         {
             lock (syncroot)
             {
@@ -532,7 +270,6 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
             _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
             }
-           
         }
 
         [TestMethod]
@@ -783,7 +520,7 @@ namespace Dev2.Core.Tests
             _resourceRepo = new Mock<IResourceRepository>();
 
             _firstResource = CreateResource(ResourceType.WorkflowService);
-            var coll = new Collection<IResourceModel> { _firstResource.Object };
+            var coll = new Collection<IResourceModel> {_firstResource.Object};
             _resourceRepo.Setup(c => c.All()).Returns(coll);
 
             var channel = new Mock<IStudioClientContext>();
@@ -792,7 +529,6 @@ namespace Dev2.Core.Tests
 
             _environmentModel.SetupGet(s => s.DsfChannel).Returns(channel.Object);
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
-
         }
 
         public static Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
@@ -804,12 +540,15 @@ namespace Dev2.Core.Tests
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(Guid.NewGuid());
-            connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            connection.Setup(c => c.AppServerUri)
+                      .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            connection.Setup(c => c.WebServerUri)
+                      .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                      .Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
 
             return connection;
         }
@@ -869,10 +608,356 @@ namespace Dev2.Core.Tests
             var succesResponse = new UnlimitedObject(@"<DataList>Success</DataList>");
 
             _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(succesResponse);
-
         }
+
+        private Mock<IEnvironmentRepository> SetupForDeleteServer()
+        {
+            CreateResourceRepo();
+            var securityContext = GetMockSecurityContext();
+            var workspaceRepo = GetworkspaceItemRespository();
+            var models = new List<IEnvironmentModel> {_environmentModel.Object};
+            var mock = new Mock<IEnvironmentRepository>();
+            mock.Setup(s => s.All()).Returns(models);
+            mock.Setup(s => s.Get(It.IsAny<string>())).Returns(_environmentModel.Object);
+            mock.Setup(s => s.Remove(It.IsAny<IEnvironmentModel>()))
+                .Callback<IEnvironmentModel>(s =>
+                                             Assert.AreEqual(_environmentModel.Object, s))
+                .Verifiable();
+            _popupController = new Mock<IPopupController>();
+            _resourceDependencyService = new Mock<IResourceDependencyService>();
+            _eventAggregator = new Mock<IEventAggregator>();
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()))
+                            .Callback<object>(m =>
+                                {
+                                    var removeMsg = (RemoveEnvironmentMessage) m;
+                                    Assert.AreEqual(_environmentModel.Object, removeMsg.EnvironmentModel);
+                                })
+                            .Verifiable();
+
+            _importServiceContext =
+                CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
+                                                                     environmentRepo: mock.Object,
+                                                                     workspaceItemRepository: workspaceRepo,
+                                                                     popupController: _popupController,
+                                                                     resourceDepService: _resourceDependencyService,
+                                                                     aggregator: _eventAggregator);
+
+            ImportService.CurrentContext = _importServiceContext;
+            _mainViewModel = new MainViewModel(mock.Object, false);
+            SetupForDelete();
+            _firstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
+            _firstResource.Setup(r => r.ServerResourceType).Returns("Server");
+            _firstResource.Setup(r => r.ConnectionString)
+                          .Returns(TestResourceStringsTest.ResourceToHydrateConnectionString1);
+            _environmentConnection = new Mock<IEnvironmentConnection>();
+            _environmentConnection.Setup(c => c.AppServerUri)
+                                  .Returns(new Uri(TestResourceStringsTest.ResourceToHydrateActualAppUri));
+            _environmentModel.Setup(r => r.Connection).Returns(_environmentConnection.Object);
+            return mock;
+        }
+
         #endregion Methods used by tests
 
+        #region Commands
 
+        [TestMethod]
+        public void DisplayAboutDialogueCommandExpectsWindowManagerShowingIDialogueViewModel()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                _windowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
+                _mainViewModel.DisplayAboutDialogueCommand.Execute(null);
+                _windowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void AddStudioShortcutsPageCommandExpectsShortKeysActive()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                _mainViewModel.AddStudioShortcutsPageCommand.Execute(null);
+                var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
+                var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
+                Assert.IsTrue(helpctx.Uri == shortkeyUri);
+            }
+        }
+
+        [TestMethod]
+        public void SettingsSaveCancelMessageExpectsPreviousContextActive()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                var datalistchannelmock = new Mock<INetworkDataListChannel>();
+                datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
+                _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
+                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+                _mainViewModel.SettingsCommand.Execute(null);
+
+                var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+                _mainViewModel.ActivateItem(notActiveCtx);
+
+                var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
+                _mainViewModel.Handle(msg);
+
+                var activeCtx = _mainViewModel.ActiveItem;
+                Assert.IsTrue(activeCtx.Equals(notActiveCtx));
+            }
+        }
+
+        [TestMethod]
+        public void NewResourceCommandExpectsWebControllerDisplayDialogue()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
+                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+                _mainViewModel.NewResourceCommand.Execute("Service");
+                _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void StartFeedbackCommandCommandExpectsFeedbackInvoked()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                _feedbackInvoker.Setup(
+                    i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()))
+                                .Verifiable();
+                _mainViewModel.StartFeedbackCommand.Execute(null);
+                _feedbackInvoker.Verify(
+                    i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()),
+                    Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void StartStopRecordedFeedbackCommandExpectsFeedbackStartedWhenNotInProgress()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                _feedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
+                _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
+                _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void StartStopRecordedFeedbackCommandExpectsFeedbackStppedtInProgress()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                var mockAction = new Mock<IAsyncFeedbackAction>();
+                mockAction.Setup(a => a.StartFeedback()).Verifiable();
+                _feedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
+                _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
+                _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
+                mockAction.Verify(a => a.FinishFeedBack(), Times.Once());
+            }
+        }
+
+
+        [TestMethod]
+        public void DeployAllCommandWithCurrentResourceAndOpenDeploytabExpectsSelectItemInDeployMessage()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVmWithEmptyRepo();
+
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
+                                .Callback<object>((o =>
+                                    {
+                                        var m = (SelectItemInDeployMessage) o;
+                                        var r = (IEnvironmentModel) m.Value;
+                                        Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
+                                    })).Verifiable();
+
+                _mainViewModel.DeployAllCommand.Execute(null);
+                AddAdditionalContext();
+                var ctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+                _mainViewModel.ActivateItem(ctx);
+                _mainViewModel.DeployAllCommand.Execute(null);
+                var activectx = _mainViewModel.ActiveItem;
+                Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
+                    WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
+
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void DeployAllCommandWithoutCurrentResourceExpectsDeplouViewModelActive()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVmWithEmptyRepo();
+                _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+                _mainViewModel.DeployAllCommand.Execute(null);
+                var activectx = _mainViewModel.ActiveItem;
+                Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
+                    WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
+            }
+        }
+
+        #endregion
+
+        #region Delete
+
+        [TestMethod]
+        public void DeleteServerResourceOnLocalHostAlsoDeletesFromEnvironmentRepoAndExplorerTree()
+        {
+            lock (syncroot)
+            {
+                //---------Setup------
+                var mock = SetupForDeleteServer();
+                _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
+
+                //---------Execute------
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+
+                //---------Verify------
+                mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteServerResourceOnOtherServerDoesntDeleteFromEnvironmentRepoAndExplorerTree()
+        {
+            lock (syncroot)
+            {
+                //---------Setup------
+                var mock = SetupForDeleteServer();
+                _environmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
+                _eventAggregator = new Mock<IEventAggregator>();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>())).Verifiable();
+
+                //---------Execute------
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+
+                //---------Verify------
+                mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()), Times.Never());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => null);
+
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
+                _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
+
+
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceConfirmedExpectRemoveNavigationResourceMessage()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
+                                .Callback<object>((o =>
+                                    {
+                                        var m = (RemoveNavigationResourceMessage) o;
+                                        Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
+                                    }));
+
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceConfirmedExpectContextRemoved()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithConfirmExpectsDependencyServiceCalled()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithDeclineExpectsDependencyServiceCalled()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+                var msg = new DeleteResourceMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
+            }
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithNullResourceExpectsNoPoupShown()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                var msg = new DeleteResourceMessage(null);
+                _mainViewModel.Handle(msg);
+                _popupController.Verify(s => s.Show(), Times.Never());
+            }
+        }
+
+        #endregion delete
     }
 }

@@ -375,6 +375,8 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
+        public string ServerResourceType { get; set; }
+
         #endregion Properties
 
         #region Methods
@@ -403,9 +405,12 @@ namespace Dev2.Studio.Core.Models
             DataList = resourceModel.DataList;
             UpdateIconPath(resourceModel.IconPath);
             Version = resourceModel.Version;
+            ConnectionString = resourceModel.ConnectionString;
 
             EventAggregator.Publish(new UpdateResourceDesignerMessage(this));
         }
+
+        public string ConnectionString { get; set; }
 
         public void UpdateIconPath(string iconPath)
         {

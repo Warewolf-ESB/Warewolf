@@ -490,6 +490,25 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.Comment = data.Comment;
                 }
 
+                if (data.ResourceType is string)
+                {
+                    resource.ServerResourceType = data.ResourceType;
+                }
+                else
+                {
+                    resource.ServerResourceType = string.Empty;
+                }
+
+                if (data.ConnectionString is string)
+                {
+                    resource.ConnectionString = data.ConnectionString;
+                }
+                else
+                {
+                    resource.ConnectionString = string.Empty;
+                }
+
+
                 if (data.UnitTestTargetWorkflowService is string)
                 {
                     resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;

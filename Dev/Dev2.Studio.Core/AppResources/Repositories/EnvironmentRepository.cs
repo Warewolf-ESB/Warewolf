@@ -135,6 +135,19 @@ namespace Dev2.Studio.Core
             IsLoaded = false;
             LoadInternal();
         }
+
+        public void Remove(string appserverUri)
+        {
+            var toRemove = Get(appserverUri);
+            Remove(toRemove);
+        }
+
+        public IEnvironmentModel Get(string appserverUri)
+        {
+            var uri = new Uri(appserverUri);
+            return All().FirstOrDefault(e => e.Connection.AppServerUri == uri);
+        }
+
         #endregion
 
         #region Save
@@ -482,6 +495,21 @@ namespace Dev2.Studio.Core
 
         #endregion
 
+        public static string GetAppServerUriFromConnectionString(string connectionstring)
+        {
+            if (string.IsNullOrWhiteSpace(connectionstring))
+            {
+                return string.Empty;
+            }
+
+            const string toLookFor = "AppServerUri";
+            var appServerUriIdx = connectionstring.IndexOf(toLookFor, StringComparison.Ordinal);
+            var length = toLookFor.Length;
+            var substring = connectionstring.Substring(appServerUriIdx + length + 1);
+            var indexofDelimiter = substring.IndexOf(';');
+            var uri = substring.Substring(0, indexofDelimiter);
+            return uri;
+        }
         #endregion
 
         #region Implementation of IDisposable

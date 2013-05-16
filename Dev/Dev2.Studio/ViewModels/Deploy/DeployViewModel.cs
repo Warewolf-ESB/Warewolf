@@ -325,8 +325,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new NavigationViewModel(true);
-            Source = new NavigationViewModel(true);
+            Target = new NavigationViewModel(true, DestinationContext) {Parent = this};
+            Source = new NavigationViewModel(true, SourceContext) { Parent = this };
 
             SetupPredicates();
             SetupCommands();

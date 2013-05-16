@@ -38,5 +38,6 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsWorkflowSaved(string viewModelServiceDef);
         Version Version { get; set; }
         void Update(IResourceModel resourceModel);
+        string ConnectionString { get; set; }
     }
 }

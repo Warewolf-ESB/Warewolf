@@ -718,6 +718,14 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
+        
+        [TestMethod]
+        public void ParseConnectionStringIntoAppServerUri()
+        {
+            var toParse = TestResourceStringsTest.ResourceToHydrateConnectionString1;
+            var result = EnvironmentRepository.GetAppServerUriFromConnectionString(toParse);
+            Assert.AreEqual(TestResourceStringsTest.ResourceToHydrateActualAppUri, result);
+        }
 
         #region CreateMockEnvironment
 

@@ -23,6 +23,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Disconnect();
         void Connect(IEnvironmentModel model);
         void LoadResources();
+        bool IsLocalHost();
 
         // BUG: 8786 - TWR - 2013.02.20 - Added category
         string Category { get; set; }

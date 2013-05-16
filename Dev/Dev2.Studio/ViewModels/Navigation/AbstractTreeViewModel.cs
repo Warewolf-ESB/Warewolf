@@ -461,8 +461,18 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion Commands
-
         #region public methods
+
+        public INavigationContext FindRootNavigationViewModel()
+        {
+            var root = this as RootTreeViewModel;
+            if (root == null)
+            {
+                return TreeParent.FindRootNavigationViewModel();
+            }
+
+            return root.Parent as INavigationContext;
+        }
 
         /// <summary>
         /// Sets the filter text used to set The IsFilteredProperty.

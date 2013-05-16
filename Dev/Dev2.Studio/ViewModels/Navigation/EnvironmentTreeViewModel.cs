@@ -353,8 +353,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         private void Remove()
         {
             if (EnvironmentModel == null) return;
-            EventAggregator.Publish(new RemoveEnvironmentMessage(EnvironmentModel));
+            var rootVM = FindRootNavigationViewModel();
+            var ctx = (rootVM == null) ? null : rootVM.Context;
 
+            EventAggregator.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
             RaisePropertyChangedForCommands();
         }
 

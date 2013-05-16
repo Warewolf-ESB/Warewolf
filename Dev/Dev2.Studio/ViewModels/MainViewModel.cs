@@ -533,11 +533,11 @@ namespace Dev2.Studio.ViewModels
                      {
                          new Tuple<string, object>("GetDependsOnMe", true),
                          new Tuple<string, object>("ResourceModel", resource)
-                     });
+                                 });
         }
 
         public void AddSettingsWorkSurface()
-        {
+            {
             ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>
                 (WorkSurfaceContext.Settings);
         }
@@ -701,6 +701,28 @@ namespace Dev2.Studio.ViewModels
             if (!success)
             {
                 return;
+            }
+
+            //If its deleted from loalhost, and is a server, also delete from repository
+            if (model.Environment.IsLocalHost())
+            {
+                if (model.ResourceType == ResourceType.Source)
+                {
+                    if (model.ServerResourceType == "Server")
+                    {
+                        var appserUri =
+                            Core.EnvironmentRepository.GetAppServerUriFromConnectionString(model.ConnectionString);
+                        var environment = EnvironmentRepository.Get(appserUri);
+
+                        if (environment != null)
+                        {
+                            EventAggregator.Publish(new RemoveEnvironmentMessage(environment, ExplorerViewModel.Context));
+                        }
+
+                        EnvironmentRepository.Remove(environment);
+                    }
+                }
+                
             }
 
             DeleteContext(model);

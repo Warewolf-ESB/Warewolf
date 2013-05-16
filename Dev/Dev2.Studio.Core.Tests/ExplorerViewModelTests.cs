@@ -55,6 +55,7 @@ namespace Dev2.Core.Tests
             Assert.IsInstanceOfType(vm, typeof(IHandle<RemoveEnvironmentMessage>));
         }
 
+        [TestMethod]
         public void RemoveEnvironmentMessageRemovesEnvironmentFromNavigationViewModel()
         {
             //------Setup---------
@@ -67,7 +68,7 @@ namespace Dev2.Core.Tests
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
 
-            var msg = new RemoveEnvironmentMessage(mockEnvironment.Object);
+            var msg = new RemoveEnvironmentMessage(mockEnvironment.Object, vm.Context);
             vm.Handle(msg);
 
             //------Assert---------
@@ -75,6 +76,7 @@ namespace Dev2.Core.Tests
             
         }
 
+        [TestMethod]
         public void RemoveEnvironmentMessageDoesNotRemovesEnvironmentFromRepository()
         {
             //------Setup---------
@@ -87,7 +89,7 @@ namespace Dev2.Core.Tests
             //------Assert---------
             Assert.AreEqual(vm.EnvironmentRepository.All().Count, 1);
 
-            var msg = new RemoveEnvironmentMessage(mockEnvironment.Object);
+            var msg = new RemoveEnvironmentMessage(mockEnvironment.Object, vm.Context);
             vm.Handle(msg);
 
             //------Assert---------

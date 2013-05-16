@@ -120,7 +120,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(mockResourceRepository.Object);
             mockEnvironmentModel.Setup(x => x.LoadResources());
 
-            vm = new NavigationViewModel(false);
+            vm = new NavigationViewModel(false, null);
             vm.AddEnvironment(mockEnvironmentModel.Object);
         }
 
@@ -737,7 +737,7 @@ namespace Dev2.Core.Tests
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedOnlyWorkflowsToBeInTree()
         {
             Init(false, true);
-            vm = new NavigationViewModel(false, true, enDsfActivityType.Workflow);
+            vm = new NavigationViewModel(false, null, true, enDsfActivityType.Workflow);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", vm.Root.Children[0].Children[0].DisplayName);
@@ -747,7 +747,7 @@ namespace Dev2.Core.Tests
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeServiceExpectedOnlyServicesToBeInTree()
         {
             Init(false, true);
-            vm = new NavigationViewModel(false, true, enDsfActivityType.Service);
+            vm = new NavigationViewModel(false, null, true, enDsfActivityType.Service);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("SERVICES", vm.Root.Children[0].Children[0].DisplayName);
@@ -757,7 +757,7 @@ namespace Dev2.Core.Tests
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeSourceExpectedOnlySourcesToBeInTree()
         {
             Init(false, true);
-            vm = new NavigationViewModel(false, true, enDsfActivityType.Source);
+            vm = new NavigationViewModel(false, null, true, enDsfActivityType.Source);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("SOURCES", vm.Root.Children[0].Children[0].DisplayName);
@@ -767,7 +767,7 @@ namespace Dev2.Core.Tests
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeAllExpectedAllItemsToBeInTree()
         {
             Init(false, true);
-            vm = new NavigationViewModel(false, true, enDsfActivityType.All);
+            vm = new NavigationViewModel(false, null, true, enDsfActivityType.All);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(3, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", vm.Root.Children[0].Children[0].DisplayName);
@@ -779,7 +779,7 @@ namespace Dev2.Core.Tests
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedWorkflowsWithNoChilrenToBeInTree()
         {
             Init(true, true);
-            vm = new NavigationViewModel(false, true, enDsfActivityType.Workflow);
+            vm = new NavigationViewModel(false, null, true, enDsfActivityType.Workflow);
             vm.AddEnvironment(mockEnvironmentModel.Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual(0, vm.Root.Children[0].Children[0].Children[1].Children[0].Children.Count);
@@ -801,7 +801,7 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository;
             SetUpResources(addWizardChildToResource, out mockResourceRepository);
 
-            vm = new NavigationViewModel(false);
+            vm = new NavigationViewModel(false, null);
             vm.AddEnvironment(mockEnvironmentModel.Object);
         }
 

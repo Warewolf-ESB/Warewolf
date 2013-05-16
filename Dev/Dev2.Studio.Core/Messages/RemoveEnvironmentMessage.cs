@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using System;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core.Messages
 {
@@ -7,11 +8,13 @@ namespace Dev2.Studio.Core.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public RemoveEnvironmentMessage(IEnvironmentModel environmentModel)
+        public RemoveEnvironmentMessage(IEnvironmentModel environmentModel, Guid? context)
         {
             EnvironmentModel = environmentModel;
+            Context = context;
         }
 
         public IEnvironmentModel EnvironmentModel { get; set; }
+        public Guid? Context { get; set; }
     }
 }

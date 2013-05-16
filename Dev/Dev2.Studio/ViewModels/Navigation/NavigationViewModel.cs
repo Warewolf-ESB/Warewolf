@@ -33,6 +33,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
     public class NavigationViewModel : SimpleBaseViewModel,
+                                       INavigationContext,
                                        IHandle<EnvironmentConnectedMessage>, IHandle<EnvironmentDisconnectedMessage>,
                                        IHandle<UpdateResourceMessage>, IHandle<RemoveNavigationResourceMessage>
     {
@@ -59,14 +60,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="activityType">Sets what regions to show in the tree view </param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public NavigationViewModel(bool useAuxiliryConnections, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(useAuxiliryConnections, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
+        public NavigationViewModel(bool useAuxiliryConnections, Guid? context, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+            : this(useAuxiliryConnections, context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
         {
         }
 
-        public NavigationViewModel(bool useAuxiliryConnections,
-            IEnvironmentRepository environmentRepository, 
-            bool isFromActivityDrop = false, 
+        public NavigationViewModel(bool useAuxiliryConnections, Guid? context, 
+            IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, 
             enDsfActivityType activityType = enDsfActivityType.All)
         {
             if(environmentRepository == null)
@@ -74,6 +74,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 throw new ArgumentNullException("environmentRepository");
             }
             EnvironmentRepository = environmentRepository;
+            Context = context;
 
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
@@ -84,12 +85,20 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             Environments = new List<IEnvironmentModel>();
             _root = TreeViewModelFactory.Create();
+
+            var screen = _root as Screen;
+            if (screen != null)
+            {
+                screen.Parent = this;
+            }
         }
 
 
         #endregion ctor + intit
 
         #region public properties
+
+        public Guid? Context { get; private set; }
 
         public List<IEnvironmentModel> Environments { get; private set; }
 
@@ -260,8 +269,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void RemoveEnvironment(IEnvironmentModel environment)
         {
-            if(!Environments.Remove(environment))
-                return;
+            var idx = Environments.FindIndex(e => e.ID == environment.ID);
+            Environments.RemoveAt(idx);
 
             var environmentNavigationItemViewModel =
                 Find(environment, true);
@@ -782,5 +791,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
             }
         }
+
     }
 }

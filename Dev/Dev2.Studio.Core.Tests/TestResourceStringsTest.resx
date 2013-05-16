@@ -797,4 +797,16 @@
   <data name="SpecialChars" xml:space="preserve">
     <value>! @ #$% ^&amp;* ( ) +_{ }| [] \: "; '&lt;&gt; ?, ./</value>
   </data>
+  <data name="ResourcesToHydrate" xml:space="preserve">
+    <value>&lt;Payload&gt;&lt;Service Name="TestWorkflowService1" ID="{0}" ResourceType="Server" ConnectionString="AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234"&gt;&lt;/Service&gt;&lt;Service Name="TestWorkflowService1" ID="{1}" ResourceType="Server" ConnectionString="AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234"&gt;&lt;/Service&gt;&lt;/Payload&gt;</value>
+  </data>
+  <data name="ResourceToHydrateActualAppUri" xml:space="preserve">
+    <value>http://rsatest1:77/dsf</value>
+  </data>
+  <data name="ResourceToHydrateConnectionString1" xml:space="preserve">
+    <value>AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234</value>
+  </data>
+  <data name="ResourceToHydrateConnectionString2" xml:space="preserve">
+    <value>AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234</value>
+  </data>
 </root>

@@ -423,6 +423,7 @@
     <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
+    <Compile Include="ViewModels\Navigation\INavigationContext.cs" />
     <Compile Include="ViewModels\Navigation\ITreeNode.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceWizardViewModel.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />

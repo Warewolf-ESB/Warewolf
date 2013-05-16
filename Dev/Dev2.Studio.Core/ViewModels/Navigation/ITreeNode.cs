@@ -44,6 +44,7 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         //void VerifyFilterState(string filterText);
         void SetFilter(string filterText, bool updateChildren);
         void NotifyOfFilterPropertyChanged(bool updateParent);
+        INavigationContext FindRootNavigationViewModel();
     }
 
     /// <summary>

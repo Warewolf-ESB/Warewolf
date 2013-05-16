@@ -137,6 +137,13 @@ namespace Dev2.Studio.Core.Models
 
         #endregion
 
+        #region IsLocalHost
+        public bool IsLocalHost()
+        {
+            return Connection.DisplayName == "localhost";
+        }
+        #endregion
+
         #region LoadResources
 
         public void LoadResources()
