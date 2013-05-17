@@ -340,6 +340,12 @@ namespace Dev2.Studio.ViewModels.Configuration
                 return false;
             }
 
+            if (result == null)
+            {
+                ShowError("No response was received while sending a message to the server.", null);
+                return false;
+            }
+
             // Check for error result
             ErrorMessage errorMessage = result as ErrorMessage;
             if (errorMessage != null)

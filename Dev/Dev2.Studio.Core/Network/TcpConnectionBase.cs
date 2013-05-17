@@ -129,7 +129,11 @@ namespace Dev2.Studio.Core.Network
         public INetworkMessage SendReceiveNetworkMessage(INetworkMessage message)
         {
             Connect();
-            return TCPHost.SendReceiveNetworkMessage(message);
+            if (TCPHost != null)
+            {
+                return TCPHost.SendReceiveNetworkMessage(message);
+            }
+            return null;
         }
 
         #endregion
