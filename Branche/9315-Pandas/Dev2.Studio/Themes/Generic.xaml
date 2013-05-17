@@ -1,0 +1,352 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
+                    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+                    xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
+    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+                    xmlns:local="clr-namespace:Dev2.UI">
+    
+    <LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+        <GradientStop Color="#ABADB3" Offset="0.05" />
+        <GradientStop Color="#E2E3EA" Offset="0.07" />
+        <GradientStop Color="#E3E9EF" Offset="1" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="IntellisenseTextBoxErrorForeground" Color="Red" />
+    <SolidColorBrush x:Key="TextBoxDisabledBorder" Color="#ADB2B5" />
+    <SolidColorBrush x:Key="TextBoxDisabledBackground" Color="#F4F4F4" />
+
+    <DataTemplate x:Key="DefaultDefaultTextTemplate">
+        <ContentControl Content="{Binding}" Foreground="Gray" Focusable="False" FontStyle="Italic" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="CakeA" />
+                <ColumnDefinition SharedSizeGroup="CakeB" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0">
+                <Run Text="{Binding Name, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock TextTrimming="CharacterEllipsis" Grid.Column="1" Padding="5,0,0,0" FontStyle="Italic">
+                <Run Text="{Binding DropdownDescription, Mode=OneWay}"/>
+            </TextBlock>
+            <!--<StackPanel Orientation="Horizontal">
+            </StackPanel>-->
+        </Grid>
+    </DataTemplate>
+
+    <LinearGradientBrush x:Key="TextBoxMouseOver" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#5794BF" Offset="0.05" />
+        <GradientStop Color="#B7D5EA" Offset="0.07" />
+        <GradientStop Color="#C7E2F1" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TextBoxFocused" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#3D7BAD" Offset="0.05" />
+        <GradientStop Color="#A4C9E3" Offset="0.07" />
+        <GradientStop Color="#B7D9ED" Offset="1" />
+    </LinearGradientBrush>
+
+    <Style TargetType="{x:Type local:IntellisenseTextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="DefaultTextTemplate" Value="{StaticResource DefaultDefaultTextTemplate}" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="MaxHeight" Value="38.96" />
+        <Setter Property="ItemTemplate" Value="{StaticResource DefaultItemTemplate}" />
+        <Setter Property="AllowMultilinePaste" Value="True" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate >
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:IntellisenseTextBox}">
+                    <Grid x:Name="MainGrid">
+
+                        <Border x:Name="Border" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="1" Background="{TemplateBinding Background}" />
+                        <Border x:Name="MouseOverVisual" Opacity="0" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{StaticResource TextBoxMouseOver}" CornerRadius="1" />
+                        <Border x:Name="FocusVisual" Opacity="0" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{StaticResource TextBoxFocused}" CornerRadius="1" />
+                        <Grid>
+                            <TextBlock x:Name="PART_CalculateModePrefix" Text="fx" VerticalAlignment="Top" Height="23" Padding="2,3,0,3" Visibility="Collapsed" Foreground="Gray" FontStyle="Italic"/>
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                        <ContentPresenter x:Name="PART_DefaultTextHost"
+                                    Content="{TemplateBinding DefaultText}"
+                                    ContentTemplate="{TemplateBinding DefaultTextTemplate}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}"
+                                    Visibility="Collapsed" />
+
+                        <Popup x:Name="PART_Popup" 
+                               HorizontalOffset="1"
+                               VerticalOffset="1"
+                               AllowsTransparency="True"
+                               StaysOpen="False"
+                               Placement="Bottom"
+                               Focusable="False"
+                               PopupAnimation="{StaticResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+                               IsOpen="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                            <Grid MinWidth="{Binding ActualWidth, ElementName=MainGrid}" MaxHeight="200">
+                                <Border x:Name="DropDownBorder" 
+                                             BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
+                                             BorderThickness="1" 
+                                             Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                                    <!--<ScrollViewer x:Name="DropDownScrollViewer">-->
+                                    <ListBox x:Name="PART_ItemList" Grid.IsSharedSizeScope="True"
+                                                                    VirtualizingStackPanel.IsVirtualizing="False"
+                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                    VerticalContentAlignment="Stretch"
+                                                                    HorizontalContentAlignment="Stretch"
+                                                                    ItemsSource="{TemplateBinding ItemsSource}"
+                                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                                    ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                                    DisplayMemberPath="{TemplateBinding DisplayMemberPath}"
+                                                                    SelectionMode="{TemplateBinding SelectionMode}"
+                                                                    SelectedValue="{TemplateBinding SelectedValue}"
+                                                                    SelectedItem="{TemplateBinding SelectedItem}"
+                                                                    SelectedIndex="{TemplateBinding SelectedIndex}">
+                                        <!--2012.0124: Ashley Lewis Bug 8103-->
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                                <Style.Resources>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#6495ED"/>
+                                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#6495ED"/>
+                                                </Style.Resources>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                    </ListBox>
+                                    <!--</ScrollViewer>-->
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="AllowUserCalculateMode" Value="True" />
+                                <Condition Property="IsInCalculateMode" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_CalculateModePrefix" Value="Visible" />
+                                <Setter Property="Margin" TargetName="PART_ContentHost" Value="10,0,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverVisual" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="FocusVisual" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border"  Property="BorderBrush" Value="{StaticResource TextBoxDisabledBorder}" />
+                            <Setter TargetName="Border"  Property="Background" Value="{StaticResource TextBoxDisabledBackground}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="HasError" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource IntellisenseTextBoxErrorForeground}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#F3F3F3" Offset="0"/>
+        <GradientStop Color="#EBEBEB" Offset="0.5"/>
+        <GradientStop Color="#DDDDDD" Offset="0.5"/>
+        <GradientStop Color="#CDCDCD" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PopupDarkBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFA3AEB9" Offset="0" />
+        <GradientStop Color="#FF8399A9" Offset="0.375" />
+        <GradientStop Color="#FF718597" Offset="0.375" />
+        <GradientStop Color="#FF617584" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PopupBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFffffff" />
+                <GradientStop Offset="1" Color="#FFE8EBED" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="ButtonNormalBorder" Color="LightGray"/>
+
+    <Style x:Key="Dev2SquareButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" RoundCorners="False" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </themes:ButtonChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="RenderDefaulted" TargetName="Chrome" Value="true"/>
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="true">
+                            <Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="LightGray"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <converters:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters:FilterStringToBoolConverter>
+
+    <VisualBrush x:Key="SearchHint" TileMode="None" Stretch="None" AlignmentX="Left">
+        <VisualBrush.Transform>
+            <TranslateTransform X="5" Y="0" />
+        </VisualBrush.Transform>
+        <VisualBrush.Visual>
+            <Grid>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Black" Opacity="0.3" Text="Filter"/>
+            </Grid>
+        </VisualBrush.Visual>
+    </VisualBrush>
+
+    <Style x:Key="Dev2ToolBarButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="Blue"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1"/>
+
+    </Style>
+
+    <Style TargetType="customControls:Dev2StatusBar">
+        <Setter Property="StatusBarLabelText" Value=""></Setter>
+        <Setter Property="ProgressBarVisiblity" Value="Visible"></Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StatusBar Width="Auto" Background="{StaticResource ButtonNormalBackground}" Padding="0" Margin="0" Height="22">                       
+                        <StatusBarItem Grid.Column="0" Padding="0" Margin="0" Width="Auto">
+                            <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <customDev2Controls:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customDev2Controls:CircularProgressBar>                                
+                                <Label Margin="0,-4,0,0" Grid.Column="0" Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
+                            </Grid>
+                        </StatusBarItem>
+                        <Separator Width="1" Background="DarkGray"></Separator>
+                        <StatusBarItem>                          
+                        </StatusBarItem>
+                    </StatusBar>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="customControls:Dev2FilterTextBox">
+        <Setter Property="SearchText" Value=""/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="2">
+                        <Grid ShowGridLines="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="22"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="FilterTextBox"                                      
+                                 Grid.Column="0"                                                                  
+                                 Text="{Binding Path=SearchText,Mode=TwoWay, 
+                                 UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"                                 
+                                 HorizontalAlignment="Stretch">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="AutomationProperties.AutomationId" Value="UI_DataListSearchtxt_AutoID"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Button x:Name="FilterButton"
+                                Grid.Column="1"                                
+                                HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                Height="22" Width="22"                             
+                                IsEnabled="{Binding ElementName=FilterTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}"
+                                Style="{StaticResource Dev2SquareButtonStyle}">
+                                <Image Source="/images/ClearFilterIcon.png" Height="15" Width="15"></Image>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="customControls:SimpleGridSplitter">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Height" Value="7"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Thumb x:Name="Thumb"
+                           Height="{TemplateBinding Height}"
+                           Width="{TemplateBinding Width}"
+                           Background="{TemplateBinding Background}"
+                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

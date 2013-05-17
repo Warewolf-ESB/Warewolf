@@ -1,0 +1,47 @@
+﻿<!-- DATACONTEXT = Graph -->
+<UserControl 
+  x:Class="CircularDependencyTool.GraphDetailsView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  >
+  <Border>
+    <DockPanel Background="#BB000000">
+      <TextBlock 
+        DockPanel.Dock="Top" 
+        FontSize="22" 
+        FontWeight="Bold" 
+        Foreground="WhiteSmoke"
+        Padding="2"
+        Text="Circular Dependencies" 
+        TextAlignment="Center"
+        />
+
+      <TreeView 
+        Background="LightGray" 
+        Focusable="False"
+        FontSize="16"                 
+        ItemsSource="{Binding Path=CircularDependencies, Mode=OneTime}" 
+        >
+        <TreeView.ItemContainerStyle>
+          <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True" />
+          </Style>
+        </TreeView.ItemContainerStyle>
+
+        <TreeView.ItemTemplate>
+          <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes, Mode=OneTime}">
+            <TextBlock>
+              <TextBlock Text="{Binding Path=Nodes.Count, Mode=OneTime}" />
+              <Run Text="nodes" />
+            </TextBlock>
+            <HierarchicalDataTemplate.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Path=ID, Mode=OneTime}" />
+              </DataTemplate>
+            </HierarchicalDataTemplate.ItemTemplate>
+          </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
+      </TreeView>
+    </DockPanel>
+  </Border>
+</UserControl>

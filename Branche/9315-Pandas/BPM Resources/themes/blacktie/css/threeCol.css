@@ -1,0 +1,67 @@
+/* Header styles */
+#header {
+	clear:both;
+	float:left;
+	width:100%;
+	border-bottom:1px solid #000;
+}
+label{
+	white-space:nowrap;
+	}
+/* column container */
+.colmask {
+	position:relative;	/* This fixes the IE7 overflow hidden bug */
+	clear:both;
+	float:left;
+	width:100%;			/* width of whole page */
+	/*overflow:hidden;		/* This chops off any overhanging divs */
+	overflow:visible;
+}
+/* common column settings */
+.colright,
+.colmid,
+.colleft {
+	float:left;
+	width:100%;			/* width of page */
+	position:relative;
+}
+.col1,
+.col2,
+.col3 {
+	float:left;
+	position:relative;
+	padding:0 0 1em 0;	/* no left and right padding on columns, we just make them narrower instead 
+					only padding top and bottom is included here, make it whatever value you need */
+	/*overflow:hidden;*/
+	overflow:visible;
+}
+
+/* 3 Column settings */
+.threecol {
+}
+.threecol .colmid {
+	right:25%;			/* width of the right column */
+}
+.threecol .colleft {
+	right:50%;			/* width of the middle column */
+}
+.threecol .col1 {
+	width:46%;			/* width of center column content (column width minus padding on either side) */
+	left:102%;			/* 100% plus left padding of center column */
+}
+.threecol .col2 {
+	width:21%;			/* Width of left column content (column width minus padding on either side) */
+	left:31%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+}
+.threecol .col3 {
+	width:21%;			/* Width of right column content (column width minus padding on either side) */
+	left:85%;			/* Please make note of the brackets here:
+					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
+}
+/* Footer styles */
+#footer {
+	clear:both;
+	float:left;
+	width:100%;
+	border-top:1px solid #000;
+}
