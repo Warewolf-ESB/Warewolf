@@ -2,18 +2,33 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class Resource : IResource
     {
+        #region _rootElements
+
+        static volatile Dictionary<ResourceType, string> _rootElements = new Dictionary<ResourceType, string>
+        {
+            { ResourceType.Unknown, "Service" },
+            { ResourceType.Server, "Source" },
+            { ResourceType.DbService, "Service" },
+            { ResourceType.DbSource, "Source" },
+            { ResourceType.PluginService, "Service" },
+            { ResourceType.PluginSource, "Source" },
+            { ResourceType.EmailSource, "Source" },
+            { ResourceType.WorkflowService, "Service" },
+        };
+
+        #endregion
+
         #region CTOR
 
         public Resource()
@@ -91,121 +106,38 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                 #region Check action type
 
-                XElement action = null;
                 var actions = xml.Element("Actions");
 
-                if (actions != null)
-                {
-                    action = actions.Descendants().FirstOrDefault();                    
-                }
-                else
-                {
-                    action = xml.Element("Action");
-                }
+                var action = actions != null ? actions.Descendants().FirstOrDefault() : xml.Element("Action");
 
                 if(action != null)
                 {
                     var actionTypeStr = action.AttributeSafe("Type");
                     ResourceType = GetResourceTypeFromString(actionTypeStr);
                     IsUpgraded = true;
-//                    enActionType actionType;
-//                    if(Enum.TryParse(actionTypeStr, out actionType))
-//                    {
-//                        switch(actionType)
-//                        {
-//                            case enActionType.InvokeStoredProc:
-//                                ResourceType = ResourceType.DbService;
-//                                IsUpgraded = true;
-//                                break;
-//                            case enActionType.Plugin:
-//                                ResourceType = ResourceType.PluginService;
-//                                IsUpgraded = true;
-//                                break;
-//                            case enActionType.Workflow:
-//                                ResourceType = ResourceType.WorkflowService;
-//                                IsUpgraded = true;
-//                                break;
-//                        }
-//                    }
+                    //                    enActionType actionType;
+                    //                    if(Enum.TryParse(actionTypeStr, out actionType))
+                    //                    {
+                    //                        switch(actionType)
+                    //                        {
+                    //                            case enActionType.InvokeStoredProc:
+                    //                                ResourceType = ResourceType.DbService;
+                    //                                IsUpgraded = true;
+                    //                                break;
+                    //                            case enActionType.Plugin:
+                    //                                ResourceType = ResourceType.PluginService;
+                    //                                IsUpgraded = true;
+                    //                                break;
+                    //                            case enActionType.Workflow:
+                    //                                ResourceType = ResourceType.WorkflowService;
+                    //                                IsUpgraded = true;
+                    //                                break;
+                    //                        }
+                    //                    }
                 }
 
                 #endregion
-
             }
-
-            
-        }
-
-        public ResourceType GetResourceTypeFromString(string actionTypeStr)
-        {
-            enActionType actionType;
-            if (Enum.TryParse(actionTypeStr, out actionType))
-            {
-                switch (actionType)
-                {
-                    case enActionType.InvokeStoredProc:
-                        return ResourceType.DbService;
-                    case enActionType.Plugin:
-                        return ResourceType.PluginService;
-                    case enActionType.Workflow:
-                        return ResourceType.WorkflowService;
-                }
-            }
-            return ResourceType.Unknown;
-        }
-
-        public void LoadDependencies(XElement xml)
-        {
-            if(xml==null) return;
-            var loadXML = xml.Descendants("XamlDefinition").ToList();
-            if(loadXML.Count!=1) return;
-
-            var textReader = new StringReader(loadXML[0].Value);
-            try
-            {
-                XElement elementToUse;
-                if(loadXML[0].HasElements)
-                {
-                    elementToUse = loadXML[0];
-                }
-                else
-                {
-                    elementToUse =XElement.Load(textReader, LoadOptions.None);
-                }
-                var dependenciesFromXML = from desc in elementToUse.Descendants()
-                    where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
-                    select desc;
-                var xElements = dependenciesFromXML as List<XElement> ?? dependenciesFromXML.ToList();
-                var count = xElements.Count();
-                if(count > 0)
-                {
-                    this.Dependencies = new List<ResourceForTree>();
-                    xElements.ForEach(element =>
-                    {
-                        var uniqueIDAsString = element.AttributeSafe("UniqueID");
-                        var resourceName = element.AttributeSafe("ServiceName");
-                        var actionTypeStr = element.AttributeSafe("Type");
-                        var resourceType = GetResourceTypeFromString(actionTypeStr);
-                        Guid uniqueID;
-                        Guid.TryParse(uniqueIDAsString, out uniqueID);
-                        this.Dependencies.Add(CreateResourceForTree(uniqueID, resourceName, resourceType));
-                    });
-                }
-            } catch(Exception e)
-            {
-                var resName = xml.AttributeSafe("Name");
-                ServerLogger.LogError("Loading dependencies for [ " + resName + " ] caused " + e.Message);
-            }
-        }
-
-        static ResourceForTree CreateResourceForTree(Guid resourceID, string resourceName, ResourceType resourceType)
-        {
-            return new ResourceForTree
-            {
-                ResourceID =resourceID,
-                ResourceName = resourceName,
-                ResourceType = resourceType
-            };
         }
 
         #endregion
@@ -261,18 +193,39 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
-        #region Save
+        #region GetResourceTypeFromString
 
-        public virtual void Save(Guid workspaceID)
+        public ResourceType GetResourceTypeFromString(string actionTypeStr)
         {
-            if(ResourceID == Guid.Empty)
+            enActionType actionType;
+            if(Enum.TryParse(actionTypeStr, out actionType))
             {
-                ResourceID = Guid.NewGuid();
+                switch(actionType)
+                {
+                    case enActionType.InvokeStoredProc:
+                        return ResourceType.DbService;
+                    case enActionType.Plugin:
+                        return ResourceType.PluginService;
+                    case enActionType.Workflow:
+                        return ResourceType.WorkflowService;
+                }
             }
-            ResourceCatalog.Instance.SaveResource(workspaceID, this);
+            return ResourceType.Unknown;
         }
 
         #endregion
+
+        //#region Save
+
+        ///// <summary>
+        ///// Saves the specified workspace ID - this is a no-op.
+        ///// </summary>
+        ///// <param name="workspaceID">The workspace ID.</param>
+        //public virtual void Save(Guid workspaceID)
+        //{
+        //}
+
+        //#endregion
 
         #region IsUserInAuthorRoles
 
@@ -311,7 +264,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public virtual XElement ToXml()
         {
             EnsureVersion();
-            return new XElement(Resources.RootElements[ResourceType],
+            return new XElement(_rootElements[ResourceType],
                 new XAttribute("ID", ResourceID),
                 new XAttribute("Version", Version.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
@@ -450,42 +403,69 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
-    }
-    public class ResourceForTree:IComparable<ResourceForTree>
-    {
-        public Guid ResourceID { get; set; }
-        public String ResourceName { get; set; }
-        public ResourceType ResourceType { get; set; }
+        #region LoadDependencies
 
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
+        public void LoadDependencies(XElement xml)
         {
-            return ResourceName;
+            if(xml == null)
+            {
+                return;
+            }
+
+            var loadXml = xml.Descendants("XamlDefinition").ToList();
+            if(loadXml.Count != 1)
+            {
+                return;
+            }
+
+            var textReader = new StringReader(loadXml[0].Value);
+            var errors = new StringBuilder();
+            try
+            {
+                var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+                var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                          where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
+                                          select desc;
+                var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+                var count = xElements.Count();
+                if(count > 0)
+                {
+                    Dependencies = new List<ResourceForTree>();
+                    xElements.ForEach(element =>
+                    {
+                        var uniqueIDAsString = element.AttributeSafe("UniqueID");
+                        var resourceName = element.AttributeSafe("ServiceName");
+                        var actionTypeStr = element.AttributeSafe("Type");
+                        var resourceType = GetResourceTypeFromString(actionTypeStr);
+                        Guid uniqueID;
+                        Guid.TryParse(uniqueIDAsString, out uniqueID);
+                        Dependencies.Add(CreateResourceForTree(uniqueID, resourceName, resourceType));
+                    });
+                }
+            }
+            catch(Exception e)
+            {
+                var resName = xml.AttributeSafe("Name");
+                errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+            }
         }
 
         #endregion
 
-        #region Implementation of IComparable<in ResourceForTree>
+        #region CreateResourceForTree
 
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public int CompareTo(ResourceForTree other)
+        static ResourceForTree CreateResourceForTree(Guid resourceID, string resourceName, ResourceType resourceType)
         {
-            return this.ResourceID.CompareTo(other.ResourceID);
+            return new ResourceForTree
+            {
+                ResourceID = resourceID,
+                ResourceName = resourceName,
+                ResourceType = resourceType
+            };
         }
 
         #endregion
+
+
     }
 }

@@ -7,8 +7,9 @@ using System.Linq;
 using System.Network;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Connection = Dev2.Runtime.ServiceModel.Data.Connection;
@@ -48,8 +49,8 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);               
-                connection.Save(workspaceID);
+                var connection = JsonConvert.DeserializeObject<Connection>(args);
+                ResourceCatalog.Instance.SaveResource(workspaceID, connection);
                 return connection.ToString();
             }
             catch(Exception ex)

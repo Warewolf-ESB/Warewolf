@@ -489,6 +489,10 @@
                                                               Command="{Binding NewResourceCommand}"
                                                               ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
 									CommandParameter="ResourceSource"/>
+                        <ribbon:RibbonApplicationMenuItem Header="New Email Source" 
+                                                          Command="{Binding NewResourceCommand}"
+                                                          ImageSource="pack://application:,,,/Dev2.Studio;component/Images/source.png"
+									                      CommandParameter="EmailSource"/>
                         <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>                       
                         <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
                                                           Command="{Binding ResetLayoutCommand}" 
@@ -545,7 +549,8 @@
                     <ribbon:RibbonGroup x:Name="HomeCreateNewSource" Header="Add Source">
                         <ribbon:RibbonButton Label="Remote Warewolf"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-							Command="{Binding NewResourceCommand}" CommandParameter="Server"
+							Command="{Binding NewResourceCommand}" 
+                            CommandParameter="Server"
 							AutomationProperties.AutomationId="UI_RibbonHomeTabRemoteWorkflowBtn_AutoID" />
                         <ribbon:RibbonButton Label="Database"
 							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_OtherModelService.png"
@@ -557,7 +562,11 @@
 							Command="{Binding NewResourceCommand}"
 							CommandParameter="ResourceSource" 
                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
-
+                        <ribbon:RibbonButton Label="Email"
+							LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/EntityDataModel_OtherModelService.png"
+							Command="{Binding NewResourceCommand}"
+							CommandParameter="EmailSource" 
+                            AutomationProperties.AutomationId="UI_RibbonHomeTabEmailSourceBtn_AutoID" />
 						<!--
                         TODO PBI 8291
                         <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Dev2.Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />

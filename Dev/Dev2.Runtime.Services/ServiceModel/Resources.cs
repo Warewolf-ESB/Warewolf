@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
-using Dev2.Common.ServiceModel;
 using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
@@ -30,18 +28,8 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.DbSource, "Sources" },
             { ResourceType.PluginService, "Services" },
             { ResourceType.PluginSource, "Sources" },
+            { ResourceType.EmailSource, "Sources" },
             { ResourceType.WorkflowService, "Services" },
-        };
-
-        internal static volatile Dictionary<ResourceType, string> RootElements = new Dictionary<ResourceType, string>
-        {
-            { ResourceType.Unknown, "Service" },
-            { ResourceType.Server, "Source" },
-            { ResourceType.DbService, "Service" },
-            { ResourceType.DbSource, "Source" },
-            { ResourceType.PluginService, "Service" },
-            { ResourceType.PluginSource, "Source" },
-            { ResourceType.WorkflowService, "Service" },
         };
 
         #endregion
@@ -57,7 +45,7 @@ namespace Dev2.Runtime.ServiceModel
                 dynamic argsObj = JObject.Parse(args);
                 result = Read(workspaceID, ParseResourceType(argsObj.resourceType.Value));
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
             }
@@ -79,7 +67,7 @@ namespace Dev2.Runtime.ServiceModel
                     throw new ArgumentException("Resource Type passed not WorkflowService");
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
             }
@@ -96,22 +84,22 @@ namespace Dev2.Runtime.ServiceModel
             var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
             var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            if (!String.IsNullOrEmpty(args))
+            if(!String.IsNullOrEmpty(args))
             {
                 var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), args);
 
-                if (resourceType == ResourceType.Server)
+                if(resourceType == ResourceType.Server)
                 {
                     names.Add("localhost"); // auto-added to studio on startup
                 }
                 ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
                 {
                     string value;
-                    if (iteratorResult.Values.TryGetValue(1, out value))
+                    if(iteratorResult.Values.TryGetValue(1, out value))
                     {
                         names.Add(value);
                     }
-                    if (iteratorResult.Values.TryGetValue(2, out value))
+                    if(iteratorResult.Values.TryGetValue(2, out value))
                     {
                         paths.Add(value);
                     }
@@ -128,8 +116,8 @@ namespace Dev2.Runtime.ServiceModel
                     End = "</Category>"
                 });
             }
-                return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
-            }
+            return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
+        }
 
         #endregion
 
@@ -143,7 +131,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceIterator.Instance.IterateAll(workspaceID, iteratorResult =>
             {
                 string value;
-                if (iteratorResult.Values.TryGetValue(1, out value))
+                if(iteratorResult.Values.TryGetValue(1, out value))
                 {
                     result.Add(value);
                 }
@@ -174,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel
             var resources = new ResourceList();
             var resourceTypeStr = resourceType.ToString();
 
-            lock (o)
+            lock(o)
             {
 
 
@@ -183,20 +171,20 @@ namespace Dev2.Runtime.ServiceModel
                     var isResourceType = false;
                     string value;
 
-                    if (iteratorResult.Values.TryGetValue(1, out value))
+                    if(iteratorResult.Values.TryGetValue(1, out value))
                     {
                         // Check ResourceType attribute
                         isResourceType = value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase);
                     }
-                    else if (iteratorResult.Values.TryGetValue(5, out value))
+                    else if(iteratorResult.Values.TryGetValue(5, out value))
                     {
                         // This is here for legacy XML!
                         #region Check Type attribute
 
                         enSourceType sourceType;
-                        if (iteratorResult.Values.TryGetValue(5, out value) && Enum.TryParse(value, out sourceType))
+                        if(iteratorResult.Values.TryGetValue(5, out value) && Enum.TryParse(value, out sourceType))
                         {
-                            switch (sourceType)
+                            switch(sourceType)
                             {
                                 case enSourceType.SqlDatabase:
                                 case enSourceType.MySqlDatabase:
@@ -218,7 +206,7 @@ namespace Dev2.Runtime.ServiceModel
 
                         #endregion
                     }
-                    if (isResourceType)
+                    if(isResourceType)
                     {
                         // older resources may not have an ID yet!!
                         iteratorResult.Values.TryGetValue(2, out value);
@@ -280,7 +268,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceIterator.Instance.Iterate(new[] { directoryName }, workspaceID, iteratorResult =>
             {
                 string value;
-                if (iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = iteratorResult.Content;
                     return false;
@@ -299,7 +287,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceDelimiter delimiter;
             string delimiterValue;
 
-            switch (resourceType)
+            switch(resourceType)
             {
                 case ResourceType.DbSource:
                     delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\"" };
@@ -332,7 +320,7 @@ namespace Dev2.Runtime.ServiceModel
         internal static ResourceType ParseResourceType(string resourceTypeStr)
         {
             ResourceType resourceType;
-            if (!Enum.TryParse(resourceTypeStr, out resourceType))
+            if(!Enum.TryParse(resourceTypeStr, out resourceType))
             {
                 resourceType = ResourceType.Unknown;
             }
@@ -343,7 +331,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public string DataListInputVariables(string resourceID, Guid workspaceID, Guid dataListID)
         {
-            Guid rsID   ;
+            Guid rsID;
             if(!Guid.TryParse(resourceID, out rsID))
             {
                 RaiseError(new ArgumentException("Invalid ResouceID."));
@@ -360,7 +348,7 @@ namespace Dev2.Runtime.ServiceModel
             var tmp = services.FirstOrDefault();
             var result = "<DataList></DataList>";
 
-            if (tmp != null)
+            if(tmp != null)
             {
                 result = tmp.DataListSpecification;
             }
@@ -380,22 +368,22 @@ namespace Dev2.Runtime.ServiceModel
         {
             if(IsInputElement(element) && !element.HasElements)
             {
-                validElements.Add(new DataListVariable{Name = element.Name.LocalName});
-            }            
+                validElements.Add(new DataListVariable { Name = element.Name.LocalName });
+            }
         }
 
         static bool IsInputElement(XElement element)
         {
-           if(element.HasAttributes)
+            if(element.HasAttributes)
             {
                 XAttribute xAttribute = element.Attribute("ColumnIODirection");
-                if (xAttribute != null)
+                if(xAttribute != null)
                 {
                     var value = xAttribute.Value;
                     enDev2ColumnArgumentDirection columnIODirection;
                     if(Enum.TryParse(value, true, out columnIODirection))
                     {
-                        return columnIODirection == enDev2ColumnArgumentDirection.Input || columnIODirection == enDev2ColumnArgumentDirection.Both;                   
+                        return columnIODirection == enDev2ColumnArgumentDirection.Input || columnIODirection == enDev2ColumnArgumentDirection.Both;
                     }
                 }
             }

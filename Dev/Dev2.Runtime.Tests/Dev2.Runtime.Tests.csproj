@@ -91,10 +91,12 @@
     <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="ESB\WfExecutionContainerTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
+    <Compile Include="Hosting\ResourceTypeConverterTests.cs" />
     <Compile Include="ServiceModel\Data\PluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="Hosting\ResourceCatalogTests.cs" />
     <Compile Include="ServiceModel\ConnectionsMock.cs" />
+    <Compile Include="ServiceModel\Data\EmailSourceTests.cs" />
     <Compile Include="ServiceModel\DbSourcesMock.cs" />
     <Compile Include="ServiceModel\Data\DbSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
     <Compile Include="ServiceModel\ServicesMock.cs" />
+    <Compile Include="ServiceModel\EmailSourcesTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="ServiceModel\ResourcesTests.cs" />
@@ -213,7 +216,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\InternallySigned.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\EmailSource.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\CatalogServiceCalculateRecordSetSubtract.xml" />
   </ItemGroup>
@@ -231,6 +236,9 @@
     <EmbeddedResource Include="XML\Bug6619.xml" />
     <EmbeddedResource Include="XML\Bug6619Dep.xml" />
     <EmbeddedResource Include="XML\Bug6619Dep2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\EmailSourceCorrupt.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

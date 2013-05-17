@@ -30,7 +30,7 @@ namespace Dev2.Studio.Webs.Callbacks
             var getDynamicResourceType = jsonObj.ResourceType.Value;
             if(getDynamicResourceType != null)
             {
-                if(getDynamicResourceType == Common.ServiceModel.ResourceType.DbSource.ToString())
+                if(getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString())
                 {
                     //2013.03.12: Ashley Lewis - BUG 9208
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);

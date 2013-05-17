@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// Saves this resource to the specified workspace.
         /// </summary>
         /// <param name="workspaceID">The workspace ID.</param>
-        void Save(Guid workspaceID);
+        //void Save(Guid workspaceID);
 
         /// <summary>
         /// Gets the XML representation of this resource.

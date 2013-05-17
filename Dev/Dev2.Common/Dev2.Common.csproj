@@ -65,7 +65,6 @@
     <Compile Include="ProtocolBuffers\BufferObject\SampleObject.cs" />
     <Compile Include="ProtocolBuffers\IDev2ProtocolBuffer.cs" />
     <Compile Include="ProtocolBuffers\ProtocolBufferFactory.cs" />
-    <Compile Include="ServiceModel\ResourceType.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />

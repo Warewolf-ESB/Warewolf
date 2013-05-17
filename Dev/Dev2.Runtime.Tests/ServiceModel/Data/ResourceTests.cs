@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -72,7 +71,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLString();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader,LoadOptions.None);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -81,32 +80,32 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Bug6619", resource.ResourceName);
             Assert.AreEqual(ResourceType.WorkflowService, resource.ResourceType);
         }
-        
+
         [TestMethod]
         public void ConstructWhereValidXMLWithOneDependenciesExpectResourceWithOneItemInTree()
         {
             //------------Setup for test--------------------------
             var validXML = GetValidXMLString();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader,LoadOptions.None);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
-            Assert.AreEqual(1,resource.Dependencies.Count());
+            Assert.AreEqual(1, resource.Dependencies.Count());
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeChild1 = resourceForTrees[0];
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.ResourceID);
-        } 
-        
+        }
+
         [TestMethod]
         public void ConstructWhereValidXMLWithMultipleDependenciesExpectResourceWithGreaterThanOneItemInTree()
         {
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependencies();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader,LoadOptions.None);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -128,7 +127,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader,LoadOptions.None);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -158,7 +157,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeRoot = resourceForTrees[0];
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeRoot.ResourceID);
-        } 
+        }
 
         string GetValidXMLString()
         {
@@ -265,7 +264,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 "</Signature>" +
                 "</Service>";
         }
-        
+
         string GetValidXMLStringWithMultipleDependencies()
         {
             return "<Service Name=\"Bug6619\" ID=\"1736ca6e-b870-467f-8d25-262972d8c3e8\" ServerID=\"51a58300-7e9d-4927-a57b-e5d700b11b55\">" +

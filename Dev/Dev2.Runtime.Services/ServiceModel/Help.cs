@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Text;
 using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -23,6 +23,9 @@ namespace Dev2.Runtime.ServiceModel
                     case "Server":
                         result.Add("default", "<h4>New Server Details</h4><p>This creates a connection to an existing server.</p>");
                         result.Add("address", "Enter the <b>server url</b> e.g. http://192.168.0.1:77/dsf.");
+                        result.Add("authenticationType", "Determines how to authenticate with the server: "
+                            + "<p><b>Windows</b> - the current user's windows account will be used.</p>"
+                            + "<p><b>User</b> - the given user account will be used.</p>");
                         result.Add("userName", "Enter your <b>user name</b>.");
                         result.Add("password", "Enter the <b>password</b> for the server.");
                         break;
@@ -45,6 +48,17 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("GACList", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");
                         result.Add("gacSearchTerm", "<h4>Global Cache</h4><p>You are viewing all assemblies</p>");
                         break;
+
+                    // PBI 953 - 2013.05.16 - TWR - Added
+                    case "EmailSource":
+                        result.Add("default", "<h4>New Email Source Details</h4><p>This creates a connection to a SMTP server.</p>");
+                        result.Add("host", "Enter the <b>name or IP address</b> of the computer to use for sending SMTP email. e.g.<br/>" + GetSmtpExamples());
+                        result.Add("userName", "Enter the <b>user name</b> used to authenticate the sender.");
+                        result.Add("password", "Enter the <b>password</b> used to authenticate the sender.");
+                        result.Add("enableSsl", "Specifies whether the SMTP client uses <b>Secure Sockets Layer (SSL)</b> to encrypt the connection.");
+                        result.Add("port", "Enter the <b>port number</b> on the SMTP host. The default value is 25. e.g.<br/>" + GetSmtpExamples());
+                        result.Add("timeout", "Enter the amount of <b>time in seconds</b> after which a send operation times out. The default value is 100 seconds.");
+                        break;
                 }
             }
             catch(Exception ex)
@@ -56,5 +70,19 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        // PBI 953 - 2013.05.16 - TWR - Added
+        static string GetSmtpExamples()
+        {
+            const string Format = "<tr><td>{0}</td><td>{1}</td></tr>";
+
+            var servers = new StringBuilder("<table style='width: 100%'><tr><th>Host</th><th>Port</th></tr>");
+            servers.AppendFormat(Format, "smtp.gmail.com", "587");
+            servers.AppendFormat(Format, "smtp.live.com", "587");
+            servers.AppendFormat(Format, "smtp.mail.yahoo.com", "25");
+            servers.AppendFormat(Format, "my-exchange-server", "25");
+
+            servers.Append("</table>");
+            return servers.ToString();
+        }
     }
 }

@@ -6,7 +6,6 @@ using Dev2.Common.Common;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Tests.Runtime.Configuration
 {
@@ -19,13 +18,13 @@ namespace Dev2.Tests.Runtime.Configuration
         public void TestInitialize()
         {
             Monitor.Enter(WriterLock);
+            SettingsProvider.WebServerUri = "localhost";
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            var provider = new SettingsProvider();
-            var filePath = provider.GetFilePath();
+            var filePath = SettingsProvider.GetFilePath();
             var dir = Path.GetDirectoryName(filePath);
             if(dir != null && Directory.Exists(dir))
             {
@@ -183,7 +182,7 @@ namespace Dev2.Tests.Runtime.Configuration
             };
 
             var provider = new SettingsProvider();
-            var filePath = provider.GetFilePath();
+            var filePath = SettingsProvider.GetFilePath();
 
             //var result = provider.ProcessMessage(request.Object);
             var result = provider.ProcessMessage(request);
@@ -214,7 +213,7 @@ namespace Dev2.Tests.Runtime.Configuration
             };
 
             var provider = new SettingsProvider();
-            var filePath = provider.GetFilePath();
+            var filePath = SettingsProvider.GetFilePath();
 
             //var result = provider.ProcessMessage(request.Object);
             var result = provider.ProcessMessage(request);
@@ -246,7 +245,7 @@ namespace Dev2.Tests.Runtime.Configuration
             };
 
             var provider = new SettingsProvider();
-            var filePath = provider.GetFilePath();
+            var filePath = SettingsProvider.GetFilePath();
 
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             var xmlOld = configOld.ToXml();
@@ -282,7 +281,7 @@ namespace Dev2.Tests.Runtime.Configuration
             };
 
             var provider = new SettingsProvider();
-            var filePath = provider.GetFilePath();
+            var filePath = SettingsProvider.GetFilePath();
 
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             var xmlOld = configOld.ToXml();
@@ -319,7 +318,7 @@ namespace Dev2.Tests.Runtime.Configuration
             };
 
             var provider = new SettingsProvider();
-            var filePath = provider.GetFilePath();
+            var filePath = SettingsProvider.GetFilePath();
             var expectedVersion = provider.Configuration.Version;
             var expectedXml = provider.Configuration.ToXml().ToString(SaveOptions.DisableFormatting);
 

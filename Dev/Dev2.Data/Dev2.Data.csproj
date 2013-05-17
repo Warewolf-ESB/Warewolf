@@ -88,7 +88,14 @@
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Network\DataListMessage.cs" />
+    <Compile Include="ServiceModel\AuthenticationType.cs" />
+    <Compile Include="ServiceModel\EmailSource.cs" />
+    <Compile Include="ServiceModel\IResource.cs" />
+    <Compile Include="ServiceModel\Resource.cs" />
+    <Compile Include="ServiceModel\ResourceForTree.cs" />
+    <Compile Include="ServiceModel\ResourceType.cs" />
     <Compile Include="Storage\BinaryBlobStorage.cs" />
     <Compile Include="Storage\Dev2PersistantDictionary.cs" />
     <Compile Include="Storage\IDev2PersistedDictionaryStorage.cs" />

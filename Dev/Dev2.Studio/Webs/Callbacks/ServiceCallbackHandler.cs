@@ -28,7 +28,7 @@ namespace Dev2.Studio.Webs.Callbacks
             if (getDynamicResourceType != null)
             {
                 //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
-                if (getDynamicResourceType == Common.ServiceModel.ResourceType.DbSource.ToString() || getDynamicResourceType == Common.ServiceModel.ResourceType.PluginSource.ToString())
+                if(getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() || getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString())
                 {
                     //2013.03.12: Ashley Lewis - BUG 9208
                     ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);

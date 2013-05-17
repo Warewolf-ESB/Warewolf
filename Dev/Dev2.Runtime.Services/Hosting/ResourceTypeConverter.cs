@@ -1,5 +1,6 @@
-﻿using Dev2.Common.ServiceModel;
-using System;
+﻿using System;
+using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -29,11 +30,11 @@ namespace Dev2.Runtime.Hosting
                     break;
 
                 case TypeService:
-                    resourceTypes = new[] { ResourceType.DbService, ResourceType.PluginService };
+                    resourceTypes = new[] { ResourceType.DbService, ResourceType.PluginService, ResourceType.WebService };
                     break;
 
                 case TypeSource:
-                    resourceTypes = new[] { ResourceType.DbSource, ResourceType.PluginSource, ResourceType.Server };
+                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.EmailSource, ResourceType.WebSource };
                     break;
 
                 case TypeReservedService:
@@ -41,11 +42,11 @@ namespace Dev2.Runtime.Hosting
                     break;
 
                 default: // "*"
-                    if (returnAllWhenNoMatch)
+                    if(returnAllWhenNoMatch)
                     {
                         var values = Enum.GetValues(typeof(ResourceType));
                         resourceTypes = new ResourceType[values.Length];
-                        for (var i = 0; i < values.Length; i++)
+                        for(var i = 0; i < values.Length; i++)
                         {
                             resourceTypes[i] = (ResourceType)values.GetValue(i);
                         }
@@ -75,14 +76,17 @@ namespace Dev2.Runtime.Hosting
                 case ResourceType.Server:
                 case ResourceType.DbSource:
                 case ResourceType.PluginSource:
+                case ResourceType.EmailSource:
+                case ResourceType.WebSource:
                     return TypeSource;
-
-                case ResourceType.WorkflowService:
-                    return TypeWorkflowService;
 
                 case ResourceType.PluginService:
                 case ResourceType.DbService:
+                case ResourceType.WebService:
                     return TypeService;
+
+                case ResourceType.WorkflowService:
+                    return TypeWorkflowService;
 
                 case ResourceType.ReservedService:
                     return TypeReservedService;
@@ -90,6 +94,43 @@ namespace Dev2.Runtime.Hosting
                 default:
                     return TypeWildcard;
             }
+        }
+
+        #endregion
+
+        #region ToResourceType
+
+        public static ResourceType ToResourceType(enSourceType sourceType)
+        {
+            var resourceType = ResourceType.Unknown;
+            switch(sourceType)
+            {
+                case enSourceType.SqlDatabase:
+                case enSourceType.MySqlDatabase:
+                    resourceType = ResourceType.DbSource;
+                    break;
+
+                case enSourceType.Plugin:
+                    resourceType = ResourceType.PluginSource;
+                    break;
+
+                case enSourceType.Dev2Server:
+                    resourceType = ResourceType.Server;
+                    break;
+
+                case enSourceType.EmailSource:
+                    resourceType = ResourceType.EmailSource;
+                    break;
+
+                case enSourceType.WebSource:
+                    resourceType = ResourceType.WebSource;
+                    break;
+
+                case enSourceType.WebService:
+                    resourceType = ResourceType.WebService;
+                    break;
+            }
+            return resourceType;
         }
 
         #endregion

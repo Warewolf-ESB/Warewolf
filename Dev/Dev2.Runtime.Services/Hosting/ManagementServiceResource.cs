@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -22,10 +22,10 @@ namespace Dev2.Runtime.Hosting
             ResourcePath = "Management Services";
         }
 
-        public override void Save(Guid workspaceID)
-        {
-            // Do nothing
-        }
+        //public override void Save(Guid workspaceID)
+        //{
+        //    // Do nothing
+        //}
 
     }
 }

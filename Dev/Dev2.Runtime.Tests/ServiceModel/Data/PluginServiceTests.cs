@@ -1,5 +1,5 @@
 ﻿using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -168,7 +168,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             XElement returnedXelm = pluginService.ToXml();
             string actual = returnedXelm.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual(xmlDataString,actual);
+            Assert.AreEqual(xmlDataString, actual);
         }
 
         #endregion

@@ -4,11 +4,12 @@ using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 using PluginSource = Dev2.Runtime.ServiceModel.Data.PluginSource;
-using Dev2.Runtime.ServiceModel.Esb.Brokers;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -39,7 +40,7 @@ namespace Dev2.Runtime.ServiceModel
         #endregion
 
         #region Save
-        
+
         // POST: Service/PluginSources/Save
         public string Save(string args, Guid workspaceID, Guid dataListID)
         {
@@ -48,7 +49,7 @@ namespace Dev2.Runtime.ServiceModel
             if(string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))
             {
                 //resolve AssemblyName from AssemblyLocation
-                if (!pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+                if(!pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
                 {
                     //assembly location refers to a file, read the assembly name out of the dll file
                     pluginSourceDetails.AssemblyLocation = pluginSourceDetails.AssemblyLocation.EndsWith("\\") ?
@@ -62,7 +63,7 @@ namespace Dev2.Runtime.ServiceModel
                     {
                         if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
                         {
-                            pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal)+1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal)-1);
+                            pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) + 1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) - 1);
                         }
                     }
                 }
@@ -74,10 +75,10 @@ namespace Dev2.Runtime.ServiceModel
                 }
             }
 
-            pluginSourceDetails.Save(workspaceID);
-            if (workspaceID != GlobalConstants.ServerWorkspaceID)
+            ResourceCatalog.Instance.SaveResource(workspaceID, pluginSourceDetails);
+            if(workspaceID != GlobalConstants.ServerWorkspaceID)
             {
-                pluginSourceDetails.Save(GlobalConstants.ServerWorkspaceID);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, pluginSourceDetails);
             }
 
             return pluginSourceDetails.ToString();
@@ -94,11 +95,11 @@ namespace Dev2.Runtime.ServiceModel
 
             //Build intellisense results
             IList<string> dirList = new List<string>();
-            foreach (DirectoryInfo d in directory.GetDirectories())
+            foreach(DirectoryInfo d in directory.GetDirectories())
             {
                 dirList.Add(args + d.Name);
             }
-            foreach (FileInfo f in directory.GetFiles())
+            foreach(FileInfo f in directory.GetFiles())
             {
                 if(f.Name.EndsWith(".dll"))
                 {
@@ -127,9 +128,9 @@ namespace Dev2.Runtime.ServiceModel
             }
             else
             {
-                toJson = @"{""validationresult"":"""+errorMsg+@"""}";
+                toJson = @"{""validationresult"":""" + errorMsg + @"""}";
             }
-            
+
             return toJson;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -28,13 +28,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "SqlDatabase":
                     ServerType = enSourceType.SqlDatabase;
                     Port = 1433;
-                break;
+                    break;
                 case "MySqlDatabase":
                     ServerType = enSourceType.MySqlDatabase;
-                break;
+                    break;
                 default:
                     ServerType = enSourceType.Unknown;
-                break;
+                    break;
             }
 
             ConnectionString = xml.AttributeSafe("ConnectionString");

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
@@ -46,7 +47,7 @@ namespace Dev2.Runtime.ServiceModel
 
                         case ResourceType.PluginService:
                             return PluginService.Create();
-            }
+                    }
                 }
             }
             catch(Exception ex)
@@ -64,7 +65,7 @@ namespace Dev2.Runtime.ServiceModel
         public ServiceMethodList DbMethods(string args, Guid workspaceID, Guid dataListID)
         {
             var result = new ServiceMethodList();
-            if (!string.IsNullOrEmpty(args))
+            if(!string.IsNullOrEmpty(args))
             {
                 try
                 {
@@ -72,7 +73,7 @@ namespace Dev2.Runtime.ServiceModel
                     var serviceMethods = FetchMethods(source);
                     result.AddRange(serviceMethods);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     RaiseError(ex);
                     result.Add(new ServiceMethod(ex.Message, ex.StackTrace));
@@ -168,11 +169,12 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = DeserializeService(args);
-                service.Save(workspaceID);
+                ResourceCatalog.Instance.SaveResource(workspaceID, service);
                 if(workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
-                    service.Save(GlobalConstants.ServerWorkspaceID);
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, service);
                 }
+
                 return service.ToString();
             }
             catch(Exception ex)
@@ -252,7 +254,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
 
-        static void BuildNodesBasedOnPath(string path, Node root,IPath thePath)
+        static void BuildNodesBasedOnPath(string path, Node root, IPath thePath)
         {
             var actualPath = path;
             if(actualPath.Contains('.'))
@@ -270,23 +272,23 @@ namespace Dev2.Runtime.ServiceModel
                     if(firstOrDefault == null)
                     {
                         var item = new Node { Name = parentBit };
-                        item.MyProps.Add(subString,thePath);
+                        item.MyProps.Add(subString, thePath);
                         root.ChildNodes.Add(item);
                     }
                     else
                     {
-                        firstOrDefault.MyProps.Add(subString,thePath);
+                        firstOrDefault.MyProps.Add(subString, thePath);
                     }
                 }
             }
             else
             {
-                root.MyProps.Add(actualPath,thePath);
+                root.MyProps.Add(actualPath, thePath);
             }
-        
+
         }
 
-       
+
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
         {
             if(pluginService == null)
@@ -313,7 +315,7 @@ namespace Dev2.Runtime.ServiceModel
                 pluginService.Recordsets = new RecordsetList();
             }
             var fetchRecordset = pluginService.Recordsets;
-            if(pluginService.Recordsets.Count==0)
+            if(pluginService.Recordsets.Count == 0)
             {
                 var recset = new Recordset();
                 fetchRecordset.Add(recset);
@@ -335,7 +337,7 @@ namespace Dev2.Runtime.ServiceModel
             Node root = new Node();
             paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
             BuildRecordset(addFields, root, rsFields, recordsetBase);
-            
+
             root.ChildNodes.ForEach(node =>
             {
                 var name = node.Name;
@@ -350,7 +352,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     recordset = firstOrDefault;
                 }
-                BuildRecordset(addFields,node,rsFields,recordset);
+                BuildRecordset(addFields, node, rsFields, recordset);
             });
             return fetchRecordset;
         }
@@ -398,11 +400,11 @@ namespace Dev2.Runtime.ServiceModel
         {
             var broker = new PluginBroker();
             var pluginSource = JsonConvert.DeserializeObject<PluginSource>(args);
-            if (pluginSource != null)
+            if(pluginSource != null)
             {
-                return broker.GetNamespaces(pluginSource);    
+                return broker.GetNamespaces(pluginSource);
             }
-            
+
             return new NamespaceList();
         }
 
@@ -442,5 +444,5 @@ namespace Dev2.Runtime.ServiceModel
         public Dictionary<string, IPath> MyProps { get; set; }
         public List<Node> ChildNodes { get; set; }
     }
-    
+
 }

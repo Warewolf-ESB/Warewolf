@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             ResourceType = ResourceType.PluginService;
             var action = xml.Descendants("Action").FirstOrDefault();
-            if (action == null)
+            if(action == null)
             {
                 return;
             }
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             #region Parse Method
 
             Method = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>() };
-            foreach (var input in action.Descendants("Input"))
+            foreach(var input in action.Descendants("Input"))
             {
                 XElement validator;
                 bool emptyToNull;
@@ -73,11 +73,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var outputDescriptionStr = action.ElementSafe("OutputDescription");
             var paths = new List<IPath>();
-            if (!string.IsNullOrEmpty(outputDescriptionStr))
+            if(!string.IsNullOrEmpty(outputDescriptionStr))
             {
                 var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
-                if (description.DataSourceShapes.Count > 0)
+                if(description.DataSourceShapes.Count > 0)
                 {
                     paths = description.DataSourceShapes[0].Paths;
                 }
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             #region Parse Recordset
 
             Recordset = new Recordset { Name = action.AttributeSafe("Name") };
-            foreach (var output in action.Descendants("Output"))
+            foreach(var output in action.Descendants("Output"))
             {
                 Recordset.Fields.Add(new RecordsetField
                 {
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     Path = paths.FirstOrDefault(p => output.AttributeSafe("Value").Equals(p.OutputExpression, StringComparison.InvariantCultureIgnoreCase))
                 });
             }
-            if (Recordset.Name == ResourceName)
+            if(Recordset.Name == ResourceName)
             {
                 Recordset.Name = Method.Name;
             }
@@ -119,15 +119,15 @@ namespace Dev2.Runtime.ServiceModel.Data
             var outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
             outputDescription.DataSourceShapes.Add(dataSourceShape);
-            if (Recordsets != null)
+            if(Recordsets != null)
             {
-                foreach (var recordset in Recordsets)
+                foreach(var recordset in Recordsets)
                 {
-                    foreach (var field in recordset.Fields)
+                    foreach(var field in recordset.Fields)
                     {
                         var path = field.Path;
 
-                        if (path != null)
+                        if(path != null)
                         {
                             string expressionFormat = "[[{1}]]";
                             //                    if(isRecordset)
@@ -154,7 +154,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #region Add method parameters to inputs
 
-            foreach (var parameter in Method.Parameters)
+            foreach(var parameter in Method.Parameters)
             {
                 var input = new XElement("Input",
                     new XAttribute("Name", parameter.Name ?? string.Empty),
@@ -163,7 +163,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
                     );
 
-                if (parameter.IsRequired)
+                if(parameter.IsRequired)
                 {
                     input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
                 }
@@ -177,9 +177,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             #region Add recordset fields to outputs
 
 
-            foreach (var field in Recordset.Fields)
+            foreach(var field in Recordset.Fields)
             {
-                if (isRecordset)
+                if(isRecordset)
                 {
                     var output = new XElement("Output",
                         new XAttribute("Name", field.Name ?? string.Empty),

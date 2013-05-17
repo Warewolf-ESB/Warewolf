@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,16 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
-using System.Threading;
 
 namespace Dev2.Runtime.Hosting
 {
-    public class ResourceCatalog
+    public class ResourceCatalog : IResourceCatalog
     {
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
         readonly ConcurrentDictionary<Guid, object> _workspaceLocks = new ConcurrentDictionary<Guid, object>();
@@ -249,21 +247,8 @@ namespace Dev2.Runtime.Hosting
         /// <param name="sourceType">The type of the source to be queried.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         public string GetPayload(Guid workspaceID, enSourceType sourceType)
-        {
-            var resourceType = ResourceType.Unknown;
-            switch(sourceType)
-            {
-                case enSourceType.SqlDatabase:
-                case enSourceType.MySqlDatabase:
-                    resourceType = ResourceType.DbSource;
-                    break;
-                case enSourceType.Plugin:
-                    resourceType = ResourceType.PluginSource;
-                    break;
-                case enSourceType.Dev2Server:
-                    resourceType = ResourceType.Server;
-                    break;
-            }
+        {            
+            var resourceType = ResourceTypeConverter.ToResourceType(sourceType);
 
             var workspaceResources = GetResources(workspaceID);
             var resources = workspaceResources.FindAll(r => r.ResourceType == resourceType);
@@ -359,7 +344,7 @@ namespace Dev2.Runtime.Hosting
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
             return builder.ResourceList;
-        } 
+        }
 
         #endregion
 
@@ -455,6 +440,10 @@ namespace Dev2.Runtime.Hosting
             var workspaceLock = GetWorkspaceLock(workspaceID);
             lock(workspaceLock)
             {
+                if(resource.ResourceID == Guid.Empty)
+                {
+                    resource.ResourceID = Guid.NewGuid();
+                }
                 return SaveImpl(workspaceID, resource, resource.ToXml().ToString(SaveOptions.DisableFormatting), userRoles);
             }
         }
@@ -968,7 +957,7 @@ namespace Dev2.Runtime.Hosting
         public List<string> GetDependants(Guid workspaceID, string resourceName)
         {
             // ReSharper disable LocalizableElement
-            if(string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName","No resource name given.");
+            if(string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName", "No resource name given.");
             // ReSharper restore LocalizableElement
 
             var resources = GetResources(workspaceID);

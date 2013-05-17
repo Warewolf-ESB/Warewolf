@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Xml.Linq;
-using Dev2.Common.ServiceModel;
-using Dev2.Runtime.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Unlimited.Framework.Converters.Graph;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Tests.Runtime.ServiceModel

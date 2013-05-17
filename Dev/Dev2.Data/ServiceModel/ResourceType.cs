@@ -1,4 +1,4 @@
-﻿namespace Dev2.Common.ServiceModel
+﻿namespace Dev2.Data.ServiceModel
 {
     public enum ResourceType
     {
@@ -10,6 +10,9 @@
         PluginSource,
         //Workflow,
         WorkflowService,
-        ReservedService
+        ReservedService,
+        EmailSource,
+        WebSource,
+        WebService
     }
 }

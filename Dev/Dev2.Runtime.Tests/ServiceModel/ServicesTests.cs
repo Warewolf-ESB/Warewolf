@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using DummyNamespaceForTest;

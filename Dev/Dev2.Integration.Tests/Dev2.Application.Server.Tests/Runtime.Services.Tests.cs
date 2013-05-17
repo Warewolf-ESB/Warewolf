@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;

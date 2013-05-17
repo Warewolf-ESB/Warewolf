@@ -63,9 +63,14 @@ utils.makeClearFilterButton = function (buttonID) {
       .button();
 };
 
-utils.parseBaseURL = function(baseURL){
-	pathArray = baseURL.split( '/' );
-	host = pathArray[0] + "//"+ pathArray[1] + pathArray[2];
-	
-	return host;
-}
+utils.parseBaseURL = function(baseURL) {
+    pathArray = baseURL.split('/');
+    host = pathArray[0] + "//" + pathArray[1] + pathArray[2];
+
+    return host;
+};
+
+utils.isValidEmail = function (email) {
+    var result = email !== "" && /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.test(email);
+    return result;
+};

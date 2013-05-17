@@ -1,10 +1,10 @@
-﻿using Dev2.Network.Messaging;
-using Dev2.Network.Messaging.Messages;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Dev2.Network.Messaging;
+using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Runtime.Configuration
 {
@@ -13,6 +13,8 @@ namespace Dev2.Runtime.Configuration
     /// </summary>
     public class SettingsProvider : NetworkMessageProviderBase<SettingsMessage>
     {
+        public static string WebServerUri { get; set; }
+
         #region Singleton Instance
 
         //
@@ -47,7 +49,6 @@ namespace Dev2.Runtime.Configuration
             }
         }
 
-        public static string WebServerUri { get; set; }
         #endregion
 
         #region CTOR
@@ -59,7 +60,6 @@ namespace Dev2.Runtime.Configuration
         {
             AssemblyHashCode = GetAssemblyHashCode();
             Configuration = ReadConfiguration();
-            Configuration.WebServerUri = WebServerUri;
         }
 
         #endregion
@@ -183,7 +183,7 @@ namespace Dev2.Runtime.Configuration
 
         #region GetFilePath
 
-        public string GetFilePath()
+        public static string GetFilePath()
         {
             var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -205,7 +205,7 @@ namespace Dev2.Runtime.Configuration
                 {
                     var xml = XElement.Load(filePath);
                     xml.SetAttributeValue("WebServerUri", WebServerUri);
-                    
+
                     return new Settings.Configuration(xml);
                 }
                 // ReSharper disable EmptyGeneralCatchClause

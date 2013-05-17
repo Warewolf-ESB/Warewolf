@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-        
+
         #region LoadWorkspaceAsync
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             rc.LoadWorkspaceViaBuilder(null, new string[0]);
         }
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
@@ -138,7 +138,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, rc.LoadWorkspaceViaBuilder("xx", new string[0]).Count);
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
@@ -154,14 +154,14 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.AreEqual(3, result.Count);
 
-            foreach (var resource in result)
+            foreach(var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
@@ -172,16 +172,16 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
 
-            Assert.AreEqual(SaveResourceCount,result.Count);
+            Assert.AreEqual(SaveResourceCount, result.Count);
 
-            foreach (var resource in result)
+            foreach(var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
         {
@@ -197,14 +197,14 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.AreEqual(1, result.Count);
 
-            foreach (var resource in result)
+            foreach(var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
         {
@@ -220,14 +220,14 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.AreEqual(1, result.Count);
 
-            foreach (var resource in result)
+            foreach(var resource in result)
             {
                 var expected = resources.First(r => r.ResourceName == resource.ResourceName);
                 Assert.AreNotEqual(expected.ResourceID, resource.ResourceID);
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithUpgradableXmlExpectedUpgradesXmlWithoutLocking()
         {
@@ -251,7 +251,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-        
+
 
         #region ParallelExecution
 
@@ -268,17 +268,17 @@ namespace Dev2.Tests.Runtime.Hosting
 
             #region Create threads
 
-            for (var i = 0; i < NumWorkspaces; i++)
+            for(var i = 0; i < NumWorkspaces; i++)
             {
                 var workspaceID = Guid.NewGuid();
 
                 List<IResource> resources;
                 SaveResources(workspaceID, out resources);
 
-                for (var j = 0; j < NumThreadsPerWorkspace; j++)
+                for(var j = 0; j < NumThreadsPerWorkspace; j++)
                 {
                     var t = (i * NumThreadsPerWorkspace) + j;
-                    if (j == 0)
+                    if(j == 0)
                     {
                         threadArray[t] = new Thread(() =>
                         {
@@ -305,7 +305,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Parallel.For(0, threadArray.Length, i => threadArray[i].Start());
 
             //Wait until all the threads spawn out and finish.
-            foreach (var t in threadArray)
+            foreach(var t in threadArray)
             {
                 t.Join();
             }
@@ -409,7 +409,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var path = Path.Combine(workspacePath, "Sources", resource1.ResourceName + ".xml");
             var attributes = File.GetAttributes(path);
-            if ((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
+            if((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
             {
                 File.SetAttributes(path, attributes ^ FileAttributes.ReadOnly);
             }
@@ -494,7 +494,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            foreach (var expected in resources)
+            foreach(var expected in resources)
             {
                 var actual = catalog.GetResource(workspaceID, expected.ResourceName);
                 Assert.IsNotNull(actual);
@@ -533,7 +533,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            foreach (var expected in resources)
+            foreach(var expected in resources)
             {
                 var actual = catalog.GetResourceContents(expected);
                 Assert.IsNotNull(actual);
@@ -560,7 +560,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            foreach (var expected in resources)
+            foreach(var expected in resources)
             {
                 var xml = catalog.GetResourceContents(workspaceID, expected.ResourceID, expected.Version);
 
@@ -808,7 +808,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            foreach (var expected in resources)
+            foreach(var expected in resources)
             {
                 var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, ResourceTypeConverter.ToTypeString(expected.ResourceType), null);
                 VerifyPayload(new List<IResource> { expected }, payloadXml);
@@ -823,7 +823,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspaceID, out resources);
 
             var catalog = new ResourceCatalog();
-            foreach (var expected in resources)
+            foreach(var expected in resources)
             {
                 var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, ResourceTypeConverter.ToTypeString(expected.ResourceType), null, false);
                 VerifyPayload(new List<IResource> { expected }, payloadXml);
@@ -1213,7 +1213,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
 
             var workspaces = new List<Guid>();
-            for (var i = 0; i < WorkspaceCount; i++)
+            for(var i = 0; i < WorkspaceCount; i++)
             {
                 var id = Guid.NewGuid();
                 catalog.LoadWorkspace(id);
@@ -1234,7 +1234,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
 
             var workspaces = new List<Guid>();
-            for (var i = 0; i < WorkspaceCount; i++)
+            for(var i = 0; i < WorkspaceCount; i++)
             {
                 var id = Guid.NewGuid();
                 catalog.LoadWorkspace(id);
@@ -1255,7 +1255,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
-            lock (syncRoot)
+            lock(syncRoot)
             {
                 var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources,
                                                         services, out resources);
@@ -1266,7 +1266,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
         {
-            lock (syncRoot)
+            lock(syncRoot)
             {
                 var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
                 var sourcesPath = Path.Combine(workspacePath, "Sources");
@@ -1276,11 +1276,11 @@ namespace Dev2.Tests.Runtime.Hosting
                 Directory.CreateDirectory(Path.Combine(servicesPath, "VersionControl"));
 
                 resources = new List<IResource>();
-                if (sources != null && sources.Length != 0)
+                if(sources != null && sources.Length != 0)
                 {
                     resources.AddRange(SaveResources(sourcesPath, versionNo, injectID, signXml, sources));
                 }
-                if (services != null && services.Length != 0)
+                if(services != null && services.Length != 0)
                 {
                     resources.AddRange(SaveResources(servicesPath, versionNo, injectID, signXml, services));
                 }
@@ -1299,23 +1299,23 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, params string[] resourceNames)
         {
-            lock (syncRoot)
+            lock(syncRoot)
             {
                 var result = new List<IResource>();
-                foreach (var resourceName in resourceNames)
+                foreach(var resourceName in resourceNames)
                 {
                     var xml = XmlResource.Fetch(resourceName);
-                    if (injectID)
+                    if(injectID)
                     {
                         var idAttr = xml.Attribute("ID");
-                        if (idAttr == null)
+                        if(idAttr == null)
                         {
                             xml.Add(new XAttribute("ID", Guid.NewGuid()));
                         }
                     }
 
                     var contents = xml.ToString(SaveOptions.DisableFormatting);
-                    if (signXml)
+                    if(signXml)
                     {
                         contents = HostSecurityProvider.Instance.SignXml(contents);
                     }
@@ -1328,7 +1328,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
                     File.WriteAllText(res.FilePath, contents, Encoding.UTF8);
 
-                    if (!string.IsNullOrEmpty(versionNo))
+                    if(!string.IsNullOrEmpty(versionNo))
                     {
                         File.WriteAllText(
                             Path.Combine(resourcesPath,
@@ -1343,7 +1343,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-        
+
         [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
@@ -1353,7 +1353,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new []{"Bug6619",resourceName}).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1363,10 +1363,10 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,dependants.Count);
-        }      
-        
-        
+            Assert.AreEqual(1, dependants.Count);
+        }
+
+
         [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
@@ -1380,10 +1380,10 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
-            Assert.AreEqual(0,dependants.Count);
-        }   
-        
-        
+            Assert.AreEqual(0, dependants.Count);
+        }
+
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameEmptyStringExpectException()
@@ -1406,7 +1406,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //Exception thrown see attribute
         }
 
-        
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameNullStringExpectException()
@@ -1430,7 +1430,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //Exception thrown see attribute
         }
 
-        
+
         [TestMethod]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
@@ -1451,9 +1451,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
-        }      
+        }
 
-         
+
         #region VerifyPayload
 
         static void VerifyPayload(ICollection<IResource> expectedResources, string payloadXml)
@@ -1462,7 +1462,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.AreEqual(expectedResources.Count, actualResources.Count);
 
-            foreach (var expected in expectedResources)
+            foreach(var expected in expectedResources)
             {
                 var actual = actualResources.FirstOrDefault(r => r.ResourceID == expected.ResourceID && r.ResourceName == expected.ResourceName);
                 Assert.IsNotNull(actual);
@@ -1479,7 +1479,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             Assert.AreEqual(expectedResources.Count, actualGraphs.Count);
 
-            foreach (var expected in expectedResources)
+            foreach(var expected in expectedResources)
             {
                 var actualGraph = actualGraphs.FirstOrDefault(g => g.Name == expected.ResourceName);
                 Assert.IsNotNull(actualGraph);

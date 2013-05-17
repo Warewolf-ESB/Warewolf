@@ -1,14 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.IO;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.ServiceModel;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -165,7 +164,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         ResourcePath = string.Format("My Path {0}", i),
                         ResourceType = (i % Modulo == 0) ? ResourceType.DbSource : ResourceType.Unknown
                     };
-                    resource.Save(workspaceID);
+                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
                 var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID, Guid.Empty);
@@ -183,7 +182,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         #endregion
 
         #region Services
-        
+
         [TestMethod]
         public void ServicesWithValidArgsExpectedReturnsList()
         {
@@ -202,7 +201,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         ResourcePath = string.Format("My Path {0}", i),
                         ResourceType = (i % Modulo == 0) ? ResourceType.WorkflowService : ResourceType.Unknown
                     };
-                    resource.Save(workspaceID);
+                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
                 var result = resources.Services(ResourceType.WorkflowService.ToString(), workspaceID, Guid.Empty);
@@ -258,8 +257,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Assert Results-------------------------
             Assert.AreEqual("", result);
         }
-        
-       [TestMethod]
+
+        [TestMethod]
         public void DataListInputWhereValidArgsDataListHasInputsScalarsAndRecSetExpectCorrectString()
         {
             //------------Setup for test--------------------------
@@ -287,13 +286,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             finally
             {
-                if (Directory.Exists(workspacePath))
+                if(Directory.Exists(workspacePath))
                 {
                     DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }
-        
+
         [TestMethod]
         public void DataListInputWhereValidArgsDataListHasNoInputsExpectEmptyString()
         {
@@ -321,7 +320,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             finally
             {
-                if (Directory.Exists(workspacePath))
+                if(Directory.Exists(workspacePath))
                 {
                     DirectoryHelper.CleanUp(workspacePath);
                 }
