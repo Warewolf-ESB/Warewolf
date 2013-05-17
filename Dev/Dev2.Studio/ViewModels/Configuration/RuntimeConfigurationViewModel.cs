@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Composition;
 using Dev2.Network.Messaging;
@@ -286,17 +287,30 @@ namespace Dev2.Studio.ViewModels.Configuration
 
                 InitializationRequested = true;
 
-                // Invoke
-                if (Application.Current != null)
+                var usercontrol = RuntimeConfigurationAssemblyRepository
+                    .GetUserControlForAssembly(AssemblyHashCode);
+
+                if (usercontrol != null)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    RuntimeConfigurationUserControl = usercontrol;
+                }
+                else
+                {
+                    // Invoke
+                    if (Application.Current != null)
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            RuntimeConfigurationUserControl =
+                            var userControl =
                                 configurationType.InvokeMember
                                     (_configurationEntrypointMethodName,
                                      BindingFlags.Default | BindingFlags.InvokeMethod,
                                      null, null, parameters) as UserControl;
+                            RuntimeConfigurationAssemblyRepository
+                                .UserControlCache.Add(AssemblyHashCode, userControl);
+                            RuntimeConfigurationUserControl = userControl;
                         }), null);
+                    }
                 }
             }
             catch (Exception e)

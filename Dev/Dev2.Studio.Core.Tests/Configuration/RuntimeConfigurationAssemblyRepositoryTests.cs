@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Windows.Controls;
+using Dev2.Common;
 using Dev2.Studio.Core.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -185,6 +186,30 @@ namespace Dev2.Core.Tests.Configuration
 
             // Check that loaded assembly macthes the expected
             Assert.AreEqual(firstAssembly, secondAssembly, "New instances of the assembly are being created on each load, the assembly should be cached per hash then the cached instance returned everytime there after.");
+        }
+
+        [TestMethod]
+        public void GetUserControlRetrievesFromCacheIfExist()
+        {
+            string hash = "ABC";
+            string repositoryPath = GetUniqueRepositoryPath();
+            var repo = new RuntimeConfigurationAssemblyRepository(repositoryPath);
+            var control = new UserControl();
+            repo.UserControlCache.Add(hash, control);
+            var retrievedcontrol = repo.GetUserControlForAssembly(hash);
+            Assert.IsTrue(ReferenceEquals(control, retrievedcontrol));
+        }
+
+        [TestMethod]
+        public void GetUserControlReturnsNullIfNotExist()
+        {
+            string hash = "ABC"; 
+            string repositoryPath = GetUniqueRepositoryPath();     
+            var repo = new RuntimeConfigurationAssemblyRepository(repositoryPath);
+            var control = new UserControl();
+            repo.UserControlCache.Add(hash,control);
+            var retrievedcontrol = repo.GetUserControlForAssembly("DEF");
+            Assert.IsNull(retrievedcontrol);
         }
 
         #endregion

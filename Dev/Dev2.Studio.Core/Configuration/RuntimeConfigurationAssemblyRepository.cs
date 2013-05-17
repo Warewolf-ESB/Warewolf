@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Windows.Controls;
+using Dev2.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -44,6 +45,12 @@ namespace Dev2.Studio.Core.Configuration
 
         #region Private Properties
 
+        private Dictionary<string, UserControl> _userControlCache;
+        public Dictionary<string, UserControl> UserControlCache
+        {
+            get { return _userControlCache ?? (_userControlCache = new Dictionary<string, UserControl>()); }
+        }
+
         private string RepositoryPath { get; set; }
 
         private Dictionary<string, Assembly> AssemblyCache { get; set; }
@@ -55,6 +62,16 @@ namespace Dev2.Studio.Core.Configuration
         public IEnumerable<string> AllHashes()
         {
             return Directory.GetDirectories(RepositoryPath).Select(d => new DirectoryInfo(d).Name);
+        }
+
+        public UserControl GetUserControlForAssembly(string hash)
+        {
+            if (UserControlCache.ContainsKey(hash))
+            {
+                return UserControlCache[hash];
+            }
+
+            return null;
         }
 
         public Assembly Load(string hash)
