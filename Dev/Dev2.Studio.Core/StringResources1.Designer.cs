@@ -64,7 +64,7 @@ namespace Dev2.Studio.Core {
         ///   Looks up a localized string similar to Studio: Version {0}
         ///Server: Version {1}
         ///
-        ///Developed By:.
+        ///Sofware development by: www.dev2.co.za.
         /// </summary>
         public static string About_Content {
             get {
@@ -231,15 +231,6 @@ namespace Dev2.Studio.Core {
         public static string Dev_SPN_Endpoint_Identity {
             get {
                 return ResourceManager.GetString("Dev_SPN_Endpoint_Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/dev2logo.png.
-        /// </summary>
-        public static string Dev2_Logo {
-            get {
-                return ResourceManager.GetString("Dev2_Logo", resourceCulture);
             }
         }
         
@@ -528,7 +519,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/dsf.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/dsf.png.
         /// </summary>
         public static string Navigation_Environment_Icon_Pack_Uri {
             get {
@@ -537,7 +528,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/openfolder.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/openfolder.png.
         /// </summary>
         public static string Navigation_Folder_Icon_Pack_Uri {
             get {
@@ -555,7 +546,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/unittest.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/unittest.png.
         /// </summary>
         public static string Navigation_UnitTest_Icon_Pack_Uri {
             get {
@@ -582,7 +573,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/.
         /// </summary>
         public static string Pack_Uri_Application_Image {
             get {
@@ -591,7 +582,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/helpIcon.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/helpIcon.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Help {
             get {
@@ -600,7 +591,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/home.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/home.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Home {
             get {
@@ -609,7 +600,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/Information.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/Information.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Information {
             get {
@@ -618,7 +609,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/User.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/User.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Webpage {
             get {
@@ -627,7 +618,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/images/webpagebuilder.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/webpagebuilder.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Website {
             get {
@@ -636,7 +627,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png.
         /// </summary>
         public static string Pack_Uri_Debug_Image {
             get {
@@ -645,7 +636,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Dev2.Studio;component/Images/Stop.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/Stop.png.
         /// </summary>
         public static string Pack_Uri_Stop_Image {
             get {
@@ -1181,6 +1172,15 @@ namespace Dev2.Studio.Core {
         public static string User_Interface_Layouts_Directory {
             get {
                 return ResourceManager.GetString("User_Interface_Layouts_Directory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png.
+        /// </summary>
+        public static string Warewolf_Logo {
+            get {
+                return ResourceManager.GetString("Warewolf_Logo", resourceCulture);
             }
         }
         

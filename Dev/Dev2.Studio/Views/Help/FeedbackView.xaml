@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterOwner"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
-        Icon="pack://application:,,,/Dev2.Studio;component/Images/FeedbackSpeaker.png"
+        Icon="pack://application:,,,/Warewolf Studio;component/Images/FeedbackSpeaker.png"
         xmlns:triggerActions="clr-namespace:Dev2.Studio.Core.AppResources.TriggerActions;assembly=Dev2.Studio.Core"
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors">
     <i:Interaction.Behaviors>

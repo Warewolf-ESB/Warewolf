@@ -15,7 +15,7 @@
         cal:Message.Attach="[Event Closed] = [Action ViewClosed]"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}">
     <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Dev2.Studio;component/Images/debugplay.png" ></BitmapImage>
+        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/debugplay.png" ></BitmapImage>
     </Window.Icon>
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=OKCommand}"/>

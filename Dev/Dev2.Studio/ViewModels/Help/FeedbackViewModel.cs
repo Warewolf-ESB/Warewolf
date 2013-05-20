@@ -34,7 +34,7 @@ namespace Dev2.Studio.ViewModels.Help
 
         public FeedbackViewModel()
             : this("")
-        {
+        {            
         }
 
         public FeedbackViewModel(string attachmentPath)
@@ -44,6 +44,7 @@ namespace Dev2.Studio.ViewModels.Help
             var sysInfo = SysInfoService.GetSystemInfo();
             Init(sysInfo, attachmentPath);
             SelectedCategory = "Feedback";
+            DisplayName = "Feedback";
         }
 
         /// <summary>

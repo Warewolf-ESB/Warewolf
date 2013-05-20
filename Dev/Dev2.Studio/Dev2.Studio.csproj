@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Studio</RootNamespace>
-    <AssemblyName>Dev2.Studio</AssemblyName>
+    <AssemblyName>Warewolf Studio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -68,7 +68,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Main.ico</ApplicationIcon>
+    <ApplicationIcon>Warewolf.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdornedControl">
@@ -1016,6 +1016,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\WarewolfLogoMedRes.png" />
     <Resource Include="Images\SplashPage.png" />
     <Resource Include="Images\Random.png" />
     <Resource Include="Images\Stop.png" />
@@ -1044,7 +1045,7 @@
     <Resource Include="Images\wizardIcon.PNG" />
     <Resource Include="Images\mappingIcon.PNG" />
     <Resource Include="Images\Base_Convert.png" />
-    <Resource Include="Main.ico" />
+    <Resource Include="Warewolf.ico" />
     <Resource Include="Images\Find.png" />
     <Resource Include="Images\CaseConversion.png" />
     <Resource Include="Images\Info.png" />

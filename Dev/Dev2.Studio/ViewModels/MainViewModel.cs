@@ -658,7 +658,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OnImportsSatisfied()
         {
-            DisplayName = String.Format("Business Design Studio ({0})", SecurityContext.UserIdentity.Name);
+            DisplayName = String.Format("Warewolf ({0})", SecurityContext.UserIdentity.Name);
             ExplorerViewModel = new ExplorerViewModel();
         }
 

@@ -89,15 +89,15 @@ namespace Dev2.Core.Tests
         }
 
         #endregion init
-     
+
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.DeployCommand.CanExecute(null));
-            }
+        }
         }
 
         [TestMethod]
@@ -127,10 +127,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();
-                var actual = _mainViewModel.IsActiveEnvironmentConnected();
-                Assert.IsTrue(actual == false);
-            }
+            CreateFullExportsAndVm();
+            var actual = _mainViewModel.IsActiveEnvironmentConnected();
+            Assert.IsTrue(actual == false);
+        }
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@ namespace Dev2.Core.Tests
         public void
             CloseContextWithCloseTrueAndResourceSavedExpectsRemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved
             ()
-        {
+            {
             lock (syncroot)
             {
             CreateFullExportsAndVm();
@@ -419,7 +419,7 @@ namespace Dev2.Core.Tests
             lock (syncroot)
             {
             CreateFullExportsAndVm();
-            const string expected = "Business Design Studio (Test User)";
+            const string expected = "Warewolf (Test User)";
             Assert.AreEqual(expected, _mainViewModel.DisplayName);
         }
         }

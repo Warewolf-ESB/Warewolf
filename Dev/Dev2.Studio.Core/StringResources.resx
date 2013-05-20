@@ -381,22 +381,22 @@
     <value>BootStrapWebsite</value>
   </data>
   <data name="Navigation_Folder_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/openfolder.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/openfolder.png</value>
   </data>
   <data name="Navigation_UnitTest_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/unittest.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/unittest.png</value>
   </data>
   <data name="Navigation_Environment_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/dsf.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/dsf.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Home" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/home.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/home.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Webpage" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/User.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/User.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Website" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/webpagebuilder.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/webpagebuilder.png</value>
   </data>
   <data name="DebugData_FilePath" xml:space="preserve">
     <value>DebugData</value>
@@ -482,7 +482,7 @@
     <value>Information.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Information" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/Information.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/Information.png</value>
   </data>
   <data name="Uri_Studio_Homepage" xml:space="preserve">
     <value>Help\StudioHomepage.htm</value>
@@ -491,7 +491,7 @@
     <value>Studio: Version {0}
 Server: Version {1}
 
-Developed By:</value>
+Sofware development by: www.dev2.co.za</value>
   </data>
   <data name="About_Header_Text" xml:space="preserve">
     <value>About</value>
@@ -505,8 +505,8 @@ Developed By:</value>
   <data name="About_Description_Header" xml:space="preserve">
     <value>About Server and Studio</value>
   </data>
-  <data name="Dev2_Logo" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/dev2logo.png</value>
+  <data name="Warewolf_Logo" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png</value>
   </data>
   <data name="SplashImage" xml:space="preserve">
     <value>Images\SplashPage.png</value>
@@ -520,10 +520,10 @@ Developed By:</value>
     <comment>Possible values are Offline and LDAP at this point in time</comment>
   </data>
   <data name="Pack_Uri_Application_Image" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/</value>
   </data>
   <data name="Pack_Uri_Application_Image_Help" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/images/helpIcon.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/helpIcon.png</value>
   </data>
   <data name="ErrorMessageEmptyRecordSet" xml:space="preserve">
     <value>Recordset can not be empty</value>
@@ -583,10 +583,10 @@ Cancel - Returns you to the workflow.</value>
     <value>Missing Wizard</value>
   </data>
   <data name="Pack_Uri_Debug_Image" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/Images/arrow_right.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png</value>
   </data>
   <data name="Pack_Uri_Stop_Image" xml:space="preserve">
-    <value>pack://application:,,,/Dev2.Studio;component/Images/Stop.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/Images/Stop.png</value>
   </data>
   <data name="Ribbon_Debug" xml:space="preserve">
     <value>Debug</value>

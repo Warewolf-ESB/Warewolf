@@ -34,12 +34,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (ActivityType == enDsfActivityType.Workflow)
                 {
-                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Dev2.Studio;component/Images/workflowservice2.png"));
+                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/workflowservice2.png"));
                     DsfActivityType = "Workflow";
                 }
                 else if (ActivityType == enDsfActivityType.Service)
                 {
-                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Dev2.Studio;component/Images/workerservice.png"));
+                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"));
                     DsfActivityType = "Service";
                 }
             }

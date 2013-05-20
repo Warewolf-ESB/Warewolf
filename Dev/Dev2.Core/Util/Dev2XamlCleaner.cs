@@ -18,8 +18,8 @@ namespace Dev2.Util
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.AddIn""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Unlimited.Applications.BusinessDesignStudio""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.Reactive""",
-                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Dev2.Studio""",
-                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Studio""",
+                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Warewolf Studio""",
+                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Warewolf Studio""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.ComponentModel.Composition""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities""",
                                                            
@@ -31,7 +31,7 @@ namespace Dev2.Util
                                                                 { "Unlimited.Applications.BusinessDesignStudio.Activities","Dev2.Activities" },
                                                                 { "Unlimited.Framework","Dev2.Core" },
                                                                 { "Dev2.DataList.Contract","Dev2.Data" },
-                                                                { "Unlimited.Appliations.BusinessDesignStudio","Dev2.Studio" }
+                                                                { "Unlimited.Appliations.BusinessDesignStudio","Warewolf Studio" }
                                                              };
 
         /// <summary>

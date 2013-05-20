@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Warewolf")]
-[assembly: AssemblyProduct("Business Design Studio")]
+[assembly: AssemblyProduct("Warewolf")]
 [assembly: AssemblyCopyright("Copyright © Warewolf 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
