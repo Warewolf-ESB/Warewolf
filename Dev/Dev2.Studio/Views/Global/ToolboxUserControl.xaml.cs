@@ -30,7 +30,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if (category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfFlowDecisionActivity), "/Images/question_and_answer.png", "Decision"));
-                category.Add(new ToolboxItemWrapper(typeof(Sequence), "/Images/blockdevice.png", "Sequence"));
+                //category.Add(new ToolboxItemWrapper(typeof(Sequence), "/Images/blockdevice.png", "Sequence"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFlowSwitchActivity), "/images/branch_element.png", "Switch"));
             }
 

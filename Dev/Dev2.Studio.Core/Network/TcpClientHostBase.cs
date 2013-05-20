@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -158,12 +159,50 @@ namespace Dev2.Studio.Core.Network
             }
 
             // THIS IS NOT A CLEVER IDEA, WIN2K8 FALLS FLAT USING THE SAME IDENTITY FOR BOTH LOCAL AND REMOTE SERVER, BUT USING A RANDOM GUID WORKS JUST FINE ;)
-            var winIdentity = identity as WindowsIdentity;
-            var userName = (winIdentity != null && winIdentity.User != null) ? winIdentity.User.Value : identity.Name;
+            // internal location data ;)
+            //var winIdentity = identity as WindowsIdentity;
+            //var userName = (winIdentity != null && winIdentity.User != null) ? winIdentity.User.Value : identity.Name;
+
+      
+            // THIS IS REQUIRED TO PROPERLY ALLOW MULT CONNECTIONS TO SERVER ;)
+            string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string savePath = @"Dev2\Studio\";
+            string finalPath = Path.Combine(RootPath, savePath);
+
+            var fileLoc = Path.Combine(finalPath, "ID.Studio");
+
+            var tmp = Path.Combine(RootPath, "Dev2");
+
+            if (!Directory.Exists(tmp))
+            {
+                Directory.CreateDirectory(tmp);
+            }
+
+            if (!Directory.Exists(finalPath))
+            {
+                Directory.CreateDirectory(finalPath);
+            }
+
+            Guid id;
+
+            if (!File.Exists(fileLoc))
+            {
+                id = Guid.NewGuid();
+
+                File.WriteAllText(fileLoc, id.ToString());
+
+            }
+            else
+            {
+                var tt = File.ReadAllText(fileLoc);
+                Guid.TryParse(tt, out id);
+            }
+          
+
 
             // TODO: Remove LoginAsync using hard-coded password
             // See StudioAccountProvider in Dev2.Runtime assembly
-            return await LoginAsync(userName, "abc123xyz");
+            return await LoginAsync(id.ToString(), "abc123xyz");
         }
 
         public async Task<bool> LoginAsync(string userName, string password)

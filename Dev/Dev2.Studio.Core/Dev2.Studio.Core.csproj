@@ -523,6 +523,10 @@
       <Project>{B91813C8-499C-4D65-A0D4-57C7FA5F5413}</Project>
       <Name>Dev2.Composition</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{bc22e7c8-58a6-44b3-8934-48a29839876d}</Project>
       <Name>Dev2.UndoFramework</Name>

@@ -13,7 +13,9 @@ using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
@@ -204,8 +206,11 @@ namespace Dev2.Studio.ViewModels
 
         public ICommand DeployAllCommand
         {
-            get { return _deployAllCommand ?? (_deployAllCommand = new RelayCommand(param => DeployAll(),
-                                                                       param => IsActiveEnvironmentConnected())); }
+            get
+            {
+                return _deployAllCommand ?? (_deployAllCommand = new RelayCommand(param => DeployAll(),
+                                                                     param => IsActiveEnvironmentConnected()));
+        }
         }
 
         public ICommand ResetLayoutCommand
@@ -395,7 +400,7 @@ namespace Dev2.Studio.ViewModels
             }
             var key = WorkSurfaceKeyFactory.CreateKey(debugState);
             var ctx = FindWorkSurfaceContextViewModel(key);
-            if(ctx != null)
+            if (ctx != null)
             {
                 ctx.DisplayDebugOutput(debugState);
             }
@@ -430,7 +435,7 @@ namespace Dev2.Studio.ViewModels
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel,false,false));
+                    EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
                 return true;
                 case MessageBoxResult.No:
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
@@ -632,7 +637,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     item.Parent = this;
                     IWorkflowDesignerViewModel wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-                    if(wfItem != null)
+                    if (wfItem != null)
                     {
                         AddWorkspaceItem(wfItem.ResourceModel);
                     }
@@ -905,7 +910,10 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-
+            if(!resourceModel.Environment.ResourceRepository.IsInCache(resourceModel.ID))
+            {
+                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+            }
             AddWorkspaceItem(resourceModel);
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, _createDesigners));
         }
@@ -977,7 +985,7 @@ namespace Dev2.Studio.ViewModels
                         IContextualResourceModel resource = workflowVM.ResourceModel;
                         if (resource != null)
                         {
-                            remove = resource.IsWorkflowSaved(workflowVM.ServiceDefinition);
+                            remove = resource.IsWorkflowSaved;
 
                             if (resource.IsNewWorkflow && remove)
                             {

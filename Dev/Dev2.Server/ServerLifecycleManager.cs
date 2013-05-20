@@ -23,6 +23,9 @@ using Dev2.DynamicServices.Network;
 using Dev2.DynamicServices.Network.DataList;
 using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
+using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Unlimited.Framework;
@@ -67,7 +70,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             bool commandLineParameterProcessed = false;
             if (options.Install)
             {
-                ServerLogger.LogToWinApplicationEvents("Install Server", EventLogEntryType.Information);
+                //ServerLogger.LogToWinApplicationEvents("Install Server", EventLogEntryType.Information);
 
                 commandLineParameterProcessed = true;
 
@@ -84,7 +87,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.StartService)
             {
-                ServerLogger.LogToWinApplicationEvents("Start Server", EventLogEntryType.Information);
+               // ServerLogger.LogToWinApplicationEvents("Start Server", EventLogEntryType.Information);
 
                 commandLineParameterProcessed = true;
 
@@ -101,7 +104,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.StopService)
             {
-                ServerLogger.LogToWinApplicationEvents("Stop Server", EventLogEntryType.Information);
+                //ServerLogger.LogToWinApplicationEvents("Stop Server", EventLogEntryType.Information);
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -117,7 +120,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.Uninstall)
             {
-                ServerLogger.LogToWinApplicationEvents("Uninstall Server", EventLogEntryType.Information);
+                //ServerLogger.LogToWinApplicationEvents("Uninstall Server", EventLogEntryType.Information);
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -217,6 +220,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         private DateTime _nextForcedCollection;
         private Thread _gcmThread;
         private ThreadStart _gcmThreadStart;
+
         //Process _redisProcess;
         // END OF GC MANAGEMENT
         #endregion
@@ -450,9 +454,10 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
                     catch (Exception e)
                     {
-                        ServerLogger.LogToWinApplicationEvents(
-                            "Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,
-                            EventLogEntryType.Error);
+                        ServerLogger.LogError(e);
+                        //ServerLogger.LogToWinApplicationEvents(
+                        //    "Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,
+                        //    EventLogEntryType.Error);
                         //Intentionally left blank incase the user denies the app admin
                         //privilidges.
                     }
@@ -462,7 +467,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
             catch (Exception e)
             {
-                ServerLogger.LogToWinApplicationEvents("Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,EventLogEntryType.Error);
+                ServerLogger.LogError(e);
+                //ServerLogger.LogToWinApplicationEvents("Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,EventLogEntryType.Error);
             }
 
             return true;
@@ -1535,7 +1541,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         private void Fail(string message, Exception e)
         {
             WriteLine("Critical Failure: " + message);
-            ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + e.Message + Environment.NewLine + "StackTrace : " + e.StackTrace, EventLogEntryType.Error);
+            //ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + e.Message + Environment.NewLine + "StackTrace : " + e.StackTrace, EventLogEntryType.Error);
             
             if (e != null)
             {
@@ -1553,7 +1559,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         private void Fail(string message, string details)
         {
             WriteLine("Critical Failure: " + message);
-            ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + message + Environment.NewLine + "Details : " + details, EventLogEntryType.Error);
+            //ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + message + Environment.NewLine + "Details : " + details, EventLogEntryType.Error);
 
 
             if (!String.IsNullOrEmpty(details))
@@ -1669,8 +1675,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         bool LoadResourceCatalog()
         {
             Write("Loading resource catalog...  ");
-            // First call to instance loads the catalog.
-            var instance = Dev2.Runtime.Hosting.ResourceCatalog.Instance;
+            // First call to start initializes instance
+            ResourceCatalog.Start(_networkServer);
             WriteLine("done.");
             return true;
         }

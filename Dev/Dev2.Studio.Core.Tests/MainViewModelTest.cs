@@ -89,15 +89,15 @@ namespace Dev2.Core.Tests
         }
 
         #endregion init
-
+     
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
             lock (syncroot)
             {
-            CreateFullExportsAndVm();
+                CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.DeployCommand.CanExecute(null));
-        }
+            }
         }
 
         [TestMethod]
@@ -127,10 +127,10 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-            CreateFullExportsAndVm();
-            var actual = _mainViewModel.IsActiveEnvironmentConnected();
-            Assert.IsTrue(actual == false);
-        }
+                CreateFullExportsAndVm();
+                var actual = _mainViewModel.IsActiveEnvironmentConnected();
+                Assert.IsTrue(actual == false);
+            }
         }
 
         [TestMethod]
@@ -209,13 +209,13 @@ namespace Dev2.Core.Tests
         public void
             CloseContextWithCloseTrueAndResourceSavedExpectsRemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved
             ()
-            {
+        {
             lock (syncroot)
             {
             CreateFullExportsAndVm();
             Assert.IsTrue(_mainViewModel.Items.Count == 2);
 
-            _firstResource.Setup(r => r.IsWorkflowSaved(It.IsAny<string>())).Returns(true);
+            _firstResource.Setup(r => r.IsWorkflowSaved).Returns(true);
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -243,7 +243,7 @@ namespace Dev2.Core.Tests
             {
             CreateFullExportsAndVm();
             Assert.IsTrue(_mainViewModel.Items.Count == 2);
-            _firstResource.Setup(r => r.IsWorkflowSaved(string.Empty)).Returns(false);
+            _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
 
                 var activetx =
@@ -279,7 +279,7 @@ namespace Dev2.Core.Tests
             {
             CreateFullExportsAndVm();
             Assert.IsTrue(_mainViewModel.Items.Count == 2);
-            _firstResource.Setup(r => r.IsWorkflowSaved(string.Empty)).Returns(false);
+            _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
                 var activetx =
                     _mainViewModel.Items.ToList()

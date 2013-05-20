@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 
@@ -23,9 +24,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var editedItems = new List<string>();
-
+                
                 if (!string.IsNullOrWhiteSpace(editedItemsXml))
                 {
+                    editedItemsXml = editedItemsXml.Unescape();
                     editedItems.AddRange(XElement.Parse(editedItemsXml)
                         .Elements()
                         .Select(x => x.Attribute("ServiceName").Value));

@@ -72,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
@@ -114,6 +115,10 @@
     <Compile Include="Hosting\ResourceTypeConverter.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
+    <Compile Include="Network\IStudioNetworkSession.cs" />
+    <Compile Include="Network\StudioAccount.cs" />
+    <Compile Include="Network\StudioMessaging.cs" />
+    <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />

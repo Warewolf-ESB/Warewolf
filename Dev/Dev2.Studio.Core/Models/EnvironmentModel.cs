@@ -4,7 +4,10 @@ using System.Windows;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract.Network;
+using Dev2.Network;
 using Dev2.Network.Execution;
+using Dev2.Network.Messaging.Messages;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -19,6 +22,7 @@ namespace Dev2.Studio.Core.Models
     public class EnvironmentModel : IEnvironmentModel
     {
         bool _publishEventsOnDispatcherThread;
+        Guid _updateWorkFlowFromServerSubToken;
 
         public bool CanStudioExecute { get; set; }
 
@@ -102,6 +106,25 @@ namespace Dev2.Studio.Core.Models
 
             StudioLogger.LogMessage("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
+            if(Connection.MessageAggregator != null)
+            {
+                _updateWorkFlowFromServerSubToken = Connection.MessageAggregator.Subscribe<UpdateWorkflowFromServerMessage>(UpdateCachedServicesBasedOnChangeFromServer);
+            }
+        }
+
+        void UpdateCachedServicesBasedOnChangeFromServer(UpdateWorkflowFromServerMessage updateWorkflowFromServerMessage, IStudioNetworkChannelContext studioNetworkChannelContext)
+        {
+            var resourceID = updateWorkflowFromServerMessage.ResourceID;
+            if (resourceID != Guid.Empty)
+            {
+                var resourceModel = ResourceRepository.FindSingle(model => model.ID == resourceID);
+                ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+//                if (!resourceModel.Environment.ResourceRepository.IsInCache(resourceModel.ID))
+//                {
+//                   
+//                }
+//                ResourceRepository.RefreshResource(resourceID);
+            }
         }
 
         public void Connect(IEnvironmentModel other)
@@ -131,7 +154,12 @@ namespace Dev2.Studio.Core.Models
         {
             if(Connection.IsConnected)
             {
+                if(_updateWorkFlowFromServerSubToken != Guid.Empty)
+                {
+                    Connection.MessageAggregator.Unsubscibe(_updateWorkFlowFromServerSubToken);
+                }
                 Connection.Disconnect();
+                
             }
         }
 

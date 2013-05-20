@@ -70,6 +70,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         public bool IsResourceService { get; set; }
 
+        public bool IsWorkflowSaved { get; set; }
+
         public IEnvironmentModel Environment { get; private set; }
 
         private readonly Guid _serverID ;
@@ -98,10 +100,6 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         public string ToServiceDefinition() {
             return "TestDefinition";
-        }
-
-        public bool IsWorkflowSaved(string viewModelServiceDef) {
-            return true;
         }
 
         #endregion Methods

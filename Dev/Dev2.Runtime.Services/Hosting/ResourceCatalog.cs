@@ -12,7 +12,10 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Network;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -28,6 +31,7 @@ namespace Dev2.Runtime.Hosting
 
         readonly ConcurrentDictionary<Guid, ManagementServiceResource> _managementServices = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
+        IContextManager<IStudioNetworkSession> _contextManager;
 
         #region Singleton Instance
 
@@ -65,6 +69,16 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
+        
+        public static void Start(IContextManager<IStudioNetworkSession> contextManager)
+        {
+            if(contextManager == null)
+            {
+                throw new ArgumentNullException("contextManager");
+            }
+            _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices(), contextManager);
+        }
+
         #region CTOR
 
         /// <summary>
@@ -74,8 +88,11 @@ namespace Dev2.Runtime.Hosting
         /// </remarks>
         /// </summary>
         /// <param name="managementServices">The management services to be loaded.</param>
-        public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
+        /// <param name="networkOperator">The network operator.</param>
+        public ResourceCatalog(IEnumerable<DynamicService> managementServices = null, IContextManager<IStudioNetworkSession> contextManager = null)
         {
+            _contextManager = contextManager;
+
             // MUST load management services BEFORE server workspace!!
             if(managementServices != null)
             {
@@ -247,7 +264,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="sourceType">The type of the source to be queried.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         public string GetPayload(Guid workspaceID, enSourceType sourceType)
-        {            
+        {
             var resourceType = ResourceTypeConverter.ToResourceType(sourceType);
 
             var workspaceResources = GetResources(workspaceID);
@@ -273,7 +290,7 @@ namespace Dev2.Runtime.Hosting
             {
                 resourceName = string.Empty;
             }
-            else
+            else if(string.IsNullOrEmpty(resourceName)||string.IsNullOrEmpty(type))
             {
                 ThrowExceptionIfInvalid(resourceName, type);
             }
@@ -344,7 +361,7 @@ namespace Dev2.Runtime.Hosting
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
             return builder.ResourceList;
-        }
+        } 
 
         #endregion
 
@@ -830,6 +847,16 @@ namespace Dev2.Runtime.Hosting
                 Status = ExecStatus.Success,
                 Message = string.Format("<CompilerMessage>{0} {1} '{2}'</CompilerMessage>", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
             };
+        }
+
+        public void FireUpdateMessage(Guid id)
+        {
+            var updateWorkflowFromServerMessage = new UpdateWorkflowFromServerMessage();
+            updateWorkflowFromServerMessage.ResourceID = id;
+            foreach(var attachedContext in _contextManager.CurrentContexts)
+            {
+                StudioMessaging.MessageBroker.Send(updateWorkflowFromServerMessage, attachedContext);
+            }
         }
 
         #endregion

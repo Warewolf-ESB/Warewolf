@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Xml.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -27,7 +30,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             resourceDefinition = resourceDefinition.Unescape();
             string result = WorkspaceRepository.Instance.ServerWorkspace.Save(resourceDefinition, roles);
             WorkspaceRepository.Instance.RefreshWorkspaces();
-
+            Guid resourceID;
+            var xml = XElement.Parse(resourceDefinition);
+            if(!Guid.TryParse(xml.AttributeSafe("ID"), out resourceID))
+            {
+            }
+            else
+            {
+                ResourceCatalog.Instance.FireUpdateMessage(resourceID);
+            }
             return result;
         }
 

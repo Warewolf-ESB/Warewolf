@@ -66,6 +66,8 @@ namespace Dev2.Studio.Core.Models
 
         #region Properties
 
+        public bool IsWorkflowSaved { get; set; }
+
         public IEnvironmentModel Environment
         {
             get { return _environment; }
@@ -463,30 +465,38 @@ namespace Dev2.Studio.Core.Models
         /// </summary>
         /// <param name="viewModelServiceDef">The service definition of the view model of the workflow that need to be checked</param>
         /// <returns>Boolean stating if the workflow has been saved</returns>
-        public bool IsWorkflowSaved(string viewModelServiceDef)
-        {
-            bool _isWorkflowSaved = false;
-            string current = viewModelServiceDef;
+        //public bool IsWorkflowSaved(string viewModelServiceDef)
+        //{
+        //    bool _isWorkflowSaved = false;
+        //    string current = viewModelServiceDef;
 
-            // Sanity check ;)
-            if (current == null || WorkflowXaml == null)
-            {
-                throw new InvalidOperationException("Null Workflow Data");
-            }
+        //    // Sanity check ;)
+        //    if (current == null || WorkflowXaml == null)
+        //    {
+        //        throw new InvalidOperationException("Null Workflow Data");
+        //    }
 
-            XElement comp1 = XElement.Parse(current);
-            XElement comp2 = XElement.Parse(WorkflowXaml);
 
-            if (XNode.DeepEquals(comp1, comp2))
-            {
-                _isWorkflowSaved = true;
-            }
-            else
-            {
-                _isWorkflowSaved = false;
-            }
-            return _isWorkflowSaved;
-        }
+        //    if (!string.IsNullOrEmpty(WorkflowXaml))
+        //    {
+        //        XElement comp1 = XElement.Parse(current);
+        //        XElement comp2 = XElement.Parse(WorkflowXaml);
+
+        //        if (XNode.DeepEquals(comp1, comp2))
+        //        {
+        //            _isWorkflowSaved = true;
+        //        }
+        //        else
+        //        {
+        //            _isWorkflowSaved = false;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        _isWorkflowSaved = true;
+        //    }
+        //    return _isWorkflowSaved;
+        //}
 
         #endregion Methods
 

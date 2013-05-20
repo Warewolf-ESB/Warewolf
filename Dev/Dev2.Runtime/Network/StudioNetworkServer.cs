@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Network;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -9,10 +10,11 @@ using Dev2.DynamicServices.Network.Auxiliary;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Runtime.Network;
 
 namespace Dev2.DynamicServices
 {
-    public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession>
+    public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession>, IContextManager<IStudioNetworkSession>
     {
         #region Instance Fields
         private StudioFileSystem _fileSystem;
@@ -284,6 +286,15 @@ namespace Dev2.DynamicServices
                 }
             }
         }
+        #endregion
+
+        #region Implementation of IContextManager<IStudioNetworkSession>
+
+        public IList<IStudioNetworkSession> CurrentContexts { get
+        {
+            return AttachedContexts.Cast<IStudioNetworkSession>().ToList();
+        } }
+
         #endregion
     }
 }

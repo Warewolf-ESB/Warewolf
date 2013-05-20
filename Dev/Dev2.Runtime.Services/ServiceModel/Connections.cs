@@ -13,6 +13,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Connection = Dev2.Runtime.ServiceModel.Data.Connection;
+using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -49,7 +50,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);
+                var connection = JsonConvert.DeserializeObject<Connection>(args);               
                 ResourceCatalog.Instance.SaveResource(workspaceID, connection);
                 return connection.ToString();
             }
@@ -185,6 +186,7 @@ namespace Dev2.Runtime.ServiceModel
                         {
                             if(args.Reply != AuthenticationResponse.Success)
                             {
+                                ServerLogger.LogError("Failed to login for [ " + connection.UserName + " ]");
                                 result.IsValid = false;
                                 result.ErrorMessage = args.Message;
                             }
@@ -195,6 +197,11 @@ namespace Dev2.Runtime.ServiceModel
                             client.LoginStateChanged += loginStateHandler;
                             client.Login(new ServerAuthenticationBroker(connection.UserName, connection.Password));
                             loginCallBack.WaitOne();
+                        }
+                        catch (Exception e)
+                        {
+                            ServerLogger.LogError(e);
+                            throw e;
                         }
                         finally
                         {
@@ -214,6 +221,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result.IsValid = false;
                 result.ErrorMessage = ex.Message;
             }

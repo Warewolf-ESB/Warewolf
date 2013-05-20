@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsDatabaseService { get; set; }
         bool IsPluginService { get; set; }
         bool IsResourceService { get; set; }
-        bool IsWorkflowSaved(string viewModelServiceDef);
+        bool IsWorkflowSaved { get; set; }
         Version Version { get; set; }
         void Update(IResourceModel resourceModel);
         string ConnectionString { get; set; }

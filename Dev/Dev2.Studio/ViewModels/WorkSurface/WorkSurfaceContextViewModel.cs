@@ -405,6 +405,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (!isLocalSave)
             {
                 Build(resource);
+                resource.IsWorkflowSaved = true;
             }
 
             var resourceToUpdate = resource.Environment.ResourceRepository.FindSingle(
@@ -423,6 +424,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             resource.Environment.ResourceRepository.Save(resource);
             EventAggregator.Publish(new UpdateDeployMessage());
+            
         }
 
         private void DisplaySaveResult(string result, IContextualResourceModel resource)

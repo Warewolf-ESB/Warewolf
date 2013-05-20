@@ -134,13 +134,10 @@
     <Compile Include="Network\DataList\DataListServerChannel.cs" />
     <Compile Include="Network\Execution\ExecutionServerChannel.cs" />
     <Compile Include="Network\ServerNetworkChannelContext.cs" />
-    <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioTemplates.cs" />
-    <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Network\StudioAccountProvider.cs" />
     <Compile Include="Network\StudioFileSystem.cs" />
     <Compile Include="Network\StudioNetworkServer.cs" />
-    <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ESB\Control\DynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />

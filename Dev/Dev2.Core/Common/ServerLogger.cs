@@ -117,15 +117,16 @@ namespace Dev2.Common
         }
 
         
-        public static void LogToWinApplicationEvents(string message, EventLogEntryType typeOf)
-        {
-            if (!EventLog.SourceExists(_evtSrc))
-            {
-                EventLog.CreateEventSource(_evtSrc, "Application");
-            }
+        // Causing perm issues ;)
+        //public static void LogToWinApplicationEvents(string message, EventLogEntryType typeOf)
+        //{
+        //    if (!EventLog.SourceExists(_evtSrc))
+        //    {
+        //        EventLog.CreateEventSource(_evtSrc, "Application");
+        //    }
 
-            EventLog.WriteEntry(_evtSrc, message, typeOf);
-        }
+        //    EventLog.WriteEntry(_evtSrc, message, typeOf);
+        //}
 
         /// <summary>
         /// Logs a message.

@@ -11,6 +11,9 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Network;
+using Dev2.Network;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -25,15 +28,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 {
     public class ResourceRepository : IResourceRepository
     {
-        private readonly HashSet<Guid> _cachedServices;
-        private readonly IEnvironmentModel _environmentModel;
-        private readonly List<string> _reservedServices;
-        private readonly List<IResourceModel> _resourceModels;
-        private readonly IFrameworkSecurityContext _securityContext;
-        private readonly IWizardEngine _wizardEngine;
+        private HashSet<Guid> _cachedServices;
+        private IEnvironmentModel _environmentModel;
+        private List<string> _reservedServices;
+        private List<IResourceModel> _resourceModels;
+        private IFrameworkSecurityContext _securityContext;
+        private IWizardEngine _wizardEngine;
         private bool _isLoaded;
 
         private bool _isDisposed;
+        Guid _updateWorkflowServerMessageID;
+
+       
 
         public event EventHandler ItemAdded;
 
@@ -250,6 +256,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             DeleteResource(instanceObj);
         }
 
+        public void RefreshResource(Guid resourceID)
+        {
+            _cachedServices.Remove(resourceID);
+        }
+
         public UnlimitedObject DeleteResource(IResourceModel resource)
         {
             int index = _resourceModels.IndexOf(resource);
@@ -406,7 +417,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             GC.Collect(2);
         }
 
-        private bool IsInCache(Guid id)
+        public bool IsInCache(Guid id)
         {
             return _cachedServices.Contains(id);
         }
@@ -744,7 +755,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 {
                     // TODO 
                 }
-
+                StudioMessaging.MessageAggregator.Unsubscibe(_updateWorkflowServerMessageID);
                 // Call the appropriate methods to clean up
                 // unmanaged resources here.
                 _isDisposed = true;
@@ -773,6 +784,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _wizardEngine = wizardEngine;
             _cachedServices = new HashSet<Guid>();
         }
+
 
         #endregion Constructor
     }

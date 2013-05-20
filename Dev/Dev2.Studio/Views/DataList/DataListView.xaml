@@ -33,7 +33,7 @@
                     Margin="5,0,0,0">
                 <Image Source="/images/erase.png" Height="15" Width="15" />
             </Button>
-            <Button Grid.Column="2" AutomationProperties.AutomationId="UI_Sortbtn_AutoID" Command="{Binding SortCommand}" ToolTip="Sorts the items alphabeticaly" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+            <Button Visibility="Hidden" Grid.Column="2" AutomationProperties.AutomationId="UI_Sortbtn_AutoID" Command="{Binding SortCommand}" ToolTip="Sorts the items alphabeticaly" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                     Margin="5,0,5,0">
                 <Image Source="/images/Sorting.png" Height="18" Width="18" />
             </Button>

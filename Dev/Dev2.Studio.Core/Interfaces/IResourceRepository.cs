@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
@@ -16,8 +17,10 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsWorkflow(string resourceName);
         void Add(IResourceModel resource);
         void ForceLoad();
- 
+
         bool IsLoaded { get; set; } // BUG 9276 : TWR : 2013.04.19 - added IsLoaded check to prevent unnecessary loading of resources
         IWizardEngine WizardEngine { get; }
+        void RefreshResource(Guid resourceID);
+        bool IsInCache(Guid id);
     }
 }

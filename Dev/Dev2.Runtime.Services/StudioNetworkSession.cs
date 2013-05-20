@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Dev2.DynamicServices
 {
-    public class StudioNetworkSession : NetworkContext
+    public class StudioNetworkSession : NetworkContext, IStudioNetworkSession
     {
         private StudioAccount _account;
         private object _auxiliaryLock;

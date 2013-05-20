@@ -7,6 +7,7 @@ using Dev2.Composition;
 using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
 using Dev2.DynamicServices;
+using Dev2.Network;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -65,6 +66,8 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentConnection.Setup(prop => prop.DataChannel).Returns(_dataChannel.Object);
             _environmentConnection.Setup(prop => prop.IsConnected).Returns(true);
             _environmentConnection.Setup(c => c.SecurityContext).Returns(_securityContext.Object);
+            var mock = new Mock<IStudioNetworkMessageAggregator>();
+            _environmentConnection.Setup(connection => connection.MessageAggregator).Returns(mock.Object);
 
             _environmentModel.Setup(m => m.LoadResources()).Verifiable();
             _environmentModel.Setup(m => m.DsfChannel).Returns(_dataChannel.Object);

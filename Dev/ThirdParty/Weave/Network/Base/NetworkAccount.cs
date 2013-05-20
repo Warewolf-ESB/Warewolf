@@ -53,8 +53,11 @@ namespace System.Network
             _lastLogin = DateTime.FromOADate(reader.ReadDouble());
             _totalTimeLoggedIn = TimeSpan.FromTicks(reader.ReadInt64());
             _previousLogin = _lastLogin;
-            _permissions = (StandardAccountPermissions)reader.ReadByte();
-
+            // Travis.Frisinger
+            // Removed to allow this library to work with Warewolf's product suite ;)
+            //_permissions = (StandardAccountPermissions)reader.ReadByte();
+            var ignore = (StandardAccountPermissions)reader.ReadByte(); // chuck it out
+          
             int count = reader.ReadInt32();
             _loginIPs = new List<IPAddress>();
             for (int i = 0; i < count; i++)
