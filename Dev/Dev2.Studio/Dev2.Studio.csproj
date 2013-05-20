@@ -1001,7 +1001,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <None Include="app.config" />
+    <None Include="Warewolf Studio.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Feedback\6601.cd" />
     <None Include="Feedback\6670.cd" />
     <None Include="Properties\licenses.licx" />
@@ -1049,6 +1051,14 @@
     <Resource Include="Images\Find.png" />
     <Resource Include="Images\CaseConversion.png" />
     <Resource Include="Images\Info.png" />
+    <Resource Include="Help\images\debugplay.png" />
+    <Resource Include="Help\images\EntityDataModel_NewEntityModelService.png" />
+    <Resource Include="Help\images\EntityDataModel_OtherModelService.png" />
+    <Resource Include="Help\images\expand.png" />
+    <Resource Include="Help\images\source.png" />
+    <Resource Include="Help\images\viewinbrowser.png" />
+    <Resource Include="Help\images\workerservice.png" />
+    <Resource Include="Help\images\workflowservice2.png" />
     <Content Include="Help\StudioHomepage.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

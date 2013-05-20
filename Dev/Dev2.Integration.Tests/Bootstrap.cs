@@ -17,9 +17,10 @@ namespace Dev2.Integration.Tests
     public class Bootstrap
     {
         private static Process _serverProc;
-        private const string _serverName = "Dev2.Server.exe";
-        private const string _serverProcName = "Dev2.Server";
+        private const string _serverName = "Warewolf Server.exe";
+        private const string _serverProcName = "Warewolf Server";
 
+       
         private static object _tumbler = new object();
 
         /// <summary>
