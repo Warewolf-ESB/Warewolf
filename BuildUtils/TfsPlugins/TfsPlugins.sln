@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kill", "Kill\Kill.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitForBuild", "WaitForBuild\WaitForBuild.csproj", "{BC744D87-5733-4B4E-98A8-8C220FC311EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhostView", "GhostView\GhostView.csproj", "{CA51D993-6F9B-460C-9BB9-E775286EC88E}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -27,6 +29,9 @@ Global
 		SccProjectUniqueName4 = WaitForBuild\\WaitForBuild.csproj
 		SccProjectName4 = WaitForBuild
 		SccLocalPath4 = WaitForBuild
+		SccProjectUniqueName5 = GhostView\\GhostView.csproj
+		SccProjectName5 = GhostView
+		SccLocalPath5 = GhostView
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +54,10 @@ Global
 		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC744D87-5733-4B4E-98A8-8C220FC311EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA51D993-6F9B-460C-9BB9-E775286EC88E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA51D993-6F9B-460C-9BB9-E775286EC88E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA51D993-6F9B-460C-9BB9-E775286EC88E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA51D993-6F9B-460C-9BB9-E775286EC88E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
