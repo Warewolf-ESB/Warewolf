@@ -7,7 +7,6 @@ using System.Threading;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace Dev2.Integration.Tests
 {
     /// <summary>

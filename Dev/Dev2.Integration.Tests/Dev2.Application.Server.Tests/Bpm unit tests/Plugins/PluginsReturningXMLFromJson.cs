@@ -5,6 +5,7 @@ using Dev2.Integration.Tests.Helpers;
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Plugins
 {
     [TestClass]
+    [Ignore]
     public class PluginsReturningXMLFromJson
     {
         // Bug 8378
@@ -19,7 +20,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Pl
             expected = TestHelper.CleanUp(expected);
             ResponseData = TestHelper.CleanUp(ResponseData);
 
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(ResponseData, expected, " **** I expected { " + expected + " } but got { " + ResponseData + " }");
         }
     }
 }

@@ -1589,7 +1589,8 @@ namespace Dev2.Server.Datalist
                                         // Bug 7835
                                         if(!string.IsNullOrEmpty(expression) && !IsEvaluated(expression))
                                         {
-                                            lastFetch = EvaluateComplexExpression(lastFetch, expParts, out errors);
+                                            lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
+                                            errors.AddError(error);
                                             allErrors.MergeErrors(errors);
                                             expression = string.Empty; // all good to blank it ;)
                                         }else if(!string.IsNullOrEmpty(expression) && IsEvaluated(expression))
@@ -1610,8 +1611,10 @@ namespace Dev2.Server.Datalist
                                                 errors.ClearErrors();
                                             }
 
-                                            
-                                            lastFetch = EvaluateComplexExpression(lastFetch, expParts, out errors);
+
+                                            lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
+                                            allErrors.AddError(error);
+                                            allErrors.MergeErrors(errors);
                                             expression = string.Empty;
                                               
                                         }

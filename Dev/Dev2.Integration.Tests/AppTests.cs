@@ -17,13 +17,13 @@ namespace Dev2.Integration.Tests
         public void PrepareApplication_With_ExistingApplication_Expect_OnlyOneApplication()
         {
             List<Process> processesToTryKill = new List<Process>();
-            string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Dev2.Studio.exe");
+            string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Warewolf Studio.exe");
 
             // Check if there is already a studio running, in debug or otherwise
             bool studioAlreadyRunning = false;
             try
             {
-                Mutex.OpenExisting("Dev2.Studio");
+                Mutex.OpenExisting("Warewolf Studio");
                 studioAlreadyRunning = true;
             }
             catch (Exception)
