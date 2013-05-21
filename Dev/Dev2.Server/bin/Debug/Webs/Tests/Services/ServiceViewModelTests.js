@@ -112,6 +112,26 @@ test("SourceNameSubscriberWithChangingSourceNameExpectedSubscriberResetsMethodNa
     equal(model.data.method.Name(), "", "Did Methods Return");
 });
 
+module("Validate With Recordset Name in Param List");
+
+test("IsFormValidWithMethodParamContainsRecordsetNameExpectedFormIsNotValid", function () {
+
+    var model = new DbServiceViewModel();
+    model.hasTestResults(true);
+    model.data.recordset.Name("test input");
+    model.data.method.Parameters([{ Name: "Test Input" }]);
+    ok(!model.isFormValid(), "Is Form Not Valid");
+});
+
+test("IsFormValidWithMethodParamDoesNotContainRecordsetNameExpectedFormIsValid", function () {
+
+    var model = new DbServiceViewModel();
+    model.hasTestResults(true);
+    model.data.recordset.Name("Test Input2");
+    model.data.method.Parameters([{ Name: "Test Input" }]);
+    ok(model.isFormValid(), "Is Form Valid");
+});
+
 module("Database Service Model to Save Model Binding");
 
 test("SaveDialogConstructorExpectedResourceTypeIsDbService", function () {

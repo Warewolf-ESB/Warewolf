@@ -161,24 +161,28 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             foreach(var field in Recordset.Fields)
             {
-                if(isRecordset)
+                //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
+                if(!string.IsNullOrWhiteSpace(field.Alias))
                 {
-                    var output = new XElement("Output",
-                        new XAttribute("Name", field.Name ?? string.Empty),
-                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                        new XAttribute("Value", "[[" + Recordset.Name + "()." + field.Alias + "]]"),
-                        new XAttribute("Recordset", Recordset.Name)
-                        );
-                    outputs.Add(output);
-                }
-                else
-                {
-                    var output = new XElement("Output",
-                        new XAttribute("Name", field.Name ?? string.Empty),
-                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                        new XAttribute("Value", "[[" + field.Alias + "]]")
-                        );
-                    outputs.Add(output);
+                    if(isRecordset)
+                    {
+                        var output = new XElement("Output",
+                            new XAttribute("Name", field.Name ?? string.Empty),
+                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                            new XAttribute("Value", "[[" + Recordset.Name + "()." + field.Alias + "]]"),
+                            new XAttribute("Recordset", Recordset.Name)
+                            );
+                        outputs.Add(output);
+                    }
+                    else
+                    {
+                        var output = new XElement("Output",
+                            new XAttribute("Name", field.Name ?? string.Empty),
+                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                            new XAttribute("Value", "[[" + field.Alias + "]]")
+                            );
+                        outputs.Add(output);
+                    }
                 }
             }
 

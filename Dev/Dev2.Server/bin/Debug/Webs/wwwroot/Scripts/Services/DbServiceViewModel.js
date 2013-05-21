@@ -69,8 +69,25 @@
         }
         return self.hasTestResults();
     });
+    self.doMethodParamsContain = function (toFind) {
+        var result = false;
+        if (toFind) {
+            if ($("#recordsetNameNote").length > 0) {
+                $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name is optional if only returning 1 record.";
+            }
+            for (var i = 0; i < self.data.method.Parameters().length; i++) {
+                if (self.data.method.Parameters()[i].Name && self.data.method.Parameters()[i].Name.toLowerCase() == toFind.toLowerCase()) {
+                    result = true;
+                    if ($("#recordsetNameNote").length > 0) {
+                        $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name cannot be the same as an Input name.";
+                    }
+                }
+            }
+        }
+        return result;
+    };
     self.isFormValid = ko.computed(function () {
-        if (self.hasOutputs()) {
+        if (self.hasOutputs() && !self.doMethodParamsContain(self.data.recordset.Name())) {
             var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
             return isRecordsetNameOptional ? true : self.data.recordset.Name() !== "";
         }
@@ -139,11 +156,22 @@
     };
     
     self.updateRecordset = function (name, fields, records, hasErrors, errorMessage) {
-        self.data.recordset.Name(name ? name.replace(".", "_") : "");
+        self.data.recordset.Name(name ? self.formatRecordsetName(name) : "");
         self.data.recordset.Fields(fields ? fields : []);
         self.data.recordset.Records(records ? records : []);
         self.data.recordset.HasErrors(hasErrors ? hasErrors : false);
         self.data.recordset.ErrorMessage(errorMessage ? errorMessage : "");        
+    };
+
+    self.formatRecordsetName = function(name) {
+        var result = name.replace(".", "_");
+        if (self.doMethodParamsContain(result)) {
+            result = result + "_recordset";
+        }
+        if ($("#recordsetNameNote").length > 0) {
+            $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name is optional if only returning 1 record.";
+        }
+        return result;
     };
     
     self.data.source.subscribe(function (newValue) {

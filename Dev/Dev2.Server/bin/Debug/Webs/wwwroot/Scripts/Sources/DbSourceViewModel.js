@@ -57,7 +57,6 @@
     });
 
     $.post("Service/DbSources/Search" + window.location.search, "", function (result) {
-        console.log(result);
         $dbSourceServer.autocomplete("option", "source", result);
     });
 
