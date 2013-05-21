@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Network;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
@@ -11,11 +12,17 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Network;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Network;
+using Dev2.Network.Messaging;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -118,7 +125,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-
+        
         #region LoadWorkspaceAsync
 
         [TestMethod]
@@ -129,7 +136,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             rc.LoadWorkspaceViaBuilder(null, new string[0]);
         }
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
@@ -138,7 +145,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, rc.LoadWorkspaceViaBuilder("xx", new string[0]).Count);
         }
 
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
@@ -161,7 +168,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
@@ -181,7 +188,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
         {
@@ -204,7 +211,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
         {
@@ -227,7 +234,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-
+        
         [TestMethod]
         public void LoadWorkspaceAsyncWithUpgradableXmlExpectedUpgradesXmlWithoutLocking()
         {
@@ -251,7 +258,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-
+        
 
         #region ParallelExecution
 
@@ -1343,7 +1350,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-
+        #region GetDependants
+        
         [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
@@ -1364,9 +1372,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
-        }
-
-
+        }      
+        
+        
         [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
@@ -1381,9 +1389,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
-        }
-
-
+        }   
+        
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameEmptyStringExpectException()
@@ -1406,7 +1414,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //Exception thrown see attribute
         }
 
-
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameNullStringExpectException()
@@ -1430,7 +1438,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //Exception thrown see attribute
         }
 
-
+        
         [TestMethod]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
@@ -1451,9 +1459,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
-        }
+        }      
 
-
+        #endregion
+         
         #region VerifyPayload
 
         static void VerifyPayload(ICollection<IResource> expectedResources, string payloadXml)
@@ -1489,6 +1498,43 @@ namespace Dev2.Tests.Runtime.Hosting
                 Assert.AreEqual(expected.ResourceType, actual.ResourceType);
                 Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
             }
+        }
+
+        #endregion
+
+        #region Start
+
+        [TestMethod]
+        public void StartShouldSetInstance()
+        {
+            //------------Setup for test--------------------------
+            Mock<IContextManager<IStudioNetworkSession>> mock = new Mock<IContextManager<IStudioNetworkSession>>();
+            //------------Execute Test---------------------------
+            var resourceCatalog = ResourceCatalog.Start(mock.Object);
+            var instance = ResourceCatalog.Instance;
+            //------------Assert Results-------------------------
+            Assert.AreSame(resourceCatalog,instance);
+        }
+        #endregion
+
+        #region FireUpdateMessage
+
+        [TestMethod]
+        public void FireUpdateMessageExpectExpectedRe()
+        {
+            //------------Setup for test--------------------------
+            var messageBroker = new Mock<INetworkMessageBroker>();
+            messageBroker.Setup(broker => broker.Send(It.IsAny<INetworkMessage>(), It.IsAny<IStudioNetworkSession>()));
+            var contextManager = new Mock<IContextManager<IStudioNetworkSession>>();
+            var context = new Mock<IStudioNetworkSession>();
+            var listOfContext = new List<IStudioNetworkSession> { context.Object };
+            contextManager.Setup(manager => manager.CurrentContexts).Returns(listOfContext);
+            StudioMessaging.Start(new Mock<IServerNetworkMessageAggregator<StudioNetworkSession>>().Object,messageBroker.Object);
+            //------------Execute Test---------------------------
+            var resourceCatalog = ResourceCatalog.Start(contextManager.Object);
+            //------------Assert Results-------------------------
+            resourceCatalog.FireUpdateMessage(new Guid());
+            messageBroker.Verify(broker => broker.Send(It.IsAny<UpdateWorkflowFromServerMessage>(), It.IsAny<IStudioNetworkSession>()),Times.Once());
         }
 
         #endregion

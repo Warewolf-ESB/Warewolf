@@ -2,6 +2,9 @@
 using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Network;
+using Dev2.Network.Messaging;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -17,6 +20,7 @@ namespace Dev2.Core.Tests.Environments
     [TestClass]
     public class EnvironmentModelTest
     {
+        bool _wasCalled;
 
         #region CTOR
 
@@ -104,7 +108,6 @@ namespace Dev2.Core.Tests.Environments
 
             connection.Verify(c => c.Connect(It.IsAny<bool>()), Times.Once());
         }
-
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -454,6 +457,7 @@ namespace Dev2.Core.Tests.Environments
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.SecurityContext).Returns(securityContext.Object);
+            
             return conn;
         }
 

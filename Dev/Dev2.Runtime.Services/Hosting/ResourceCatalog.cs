@@ -70,13 +70,14 @@ namespace Dev2.Runtime.Hosting
         #endregion
 
         
-        public static void Start(IContextManager<IStudioNetworkSession> contextManager)
+        public static ResourceCatalog Start(IContextManager<IStudioNetworkSession> contextManager)
         {
             if(contextManager == null)
             {
                 throw new ArgumentNullException("contextManager");
             }
             _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices(), contextManager);
+            return _instance;
         }
 
         #region CTOR
@@ -290,7 +291,7 @@ namespace Dev2.Runtime.Hosting
             {
                 resourceName = string.Empty;
             }
-            else if(string.IsNullOrEmpty(resourceName)||string.IsNullOrEmpty(type))
+            else
             {
                 ThrowExceptionIfInvalid(resourceName, type);
             }

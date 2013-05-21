@@ -32,10 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             WorkspaceRepository.Instance.RefreshWorkspaces();
             Guid resourceID;
             var xml = XElement.Parse(resourceDefinition);
-            if(!Guid.TryParse(xml.AttributeSafe("ID"), out resourceID))
-            {
-            }
-            else
+            if(Guid.TryParse(xml.AttributeSafe("ID"), out resourceID))
             {
                 ResourceCatalog.Instance.FireUpdateMessage(resourceID);
             }

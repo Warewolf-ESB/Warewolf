@@ -18,7 +18,7 @@ namespace Dev2.DynamicServices.Network
         #region Class Members
 
         private static IServerNetworkMessageAggregator<StudioNetworkSession> _networkMessageAggregator;
-        private static NetworkMessageBroker _networkMessageBroker;
+        private static INetworkMessageBroker _networkMessageBroker;
 
         #endregion Class Members
 
@@ -30,6 +30,11 @@ namespace Dev2.DynamicServices.Network
             _networkMessageBroker = new NetworkMessageBroker();
         }
 
+        public static void Start(IServerNetworkMessageAggregator<StudioNetworkSession> messageAggregator, INetworkMessageBroker messageBroker)
+        {
+            _networkMessageAggregator = messageAggregator;
+            _networkMessageBroker = messageBroker;
+        }
         #endregion Constructors
 
         #region Public Static Properties

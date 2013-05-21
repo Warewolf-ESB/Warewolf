@@ -47,8 +47,8 @@ namespace Dev2.Studio.ViewModels
     [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public sealed class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
-                                        IHandle<DeleteResourceMessage>, 
-                                        IHandle<ShowDependenciesMessage>, 
+                                        IHandle<DeleteResourceMessage>,
+                                        IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
                                         IHandle<DebugWriterWriteMessage>,
                                         IHandle<SetActiveEnvironmentMessage>,
@@ -56,7 +56,7 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<DeployResourcesMessage>,
                                         IHandle<ShowHelpTabMessage>,
                                         IHandle<ShowNewResourceWizard>,
-                                        IHandle<SettingsSaveCancelMessage>, 
+                                        IHandle<SettingsSaveCancelMessage>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
                                         IPartImportsSatisfiedNotification
     {
@@ -210,7 +210,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return _deployAllCommand ?? (_deployAllCommand = new RelayCommand(param => DeployAll(),
                                                                      param => IsActiveEnvironmentConnected()));
-        }
+            }
         }
 
         public ICommand ResetLayoutCommand
@@ -253,7 +253,7 @@ namespace Dev2.Studio.ViewModels
                         new RelayCommand(param =>
                                          Application.Current.Shutdown(), param => true));
             }
-            }
+        }
 
         public ICommand DeployCommand
         {
@@ -331,8 +331,8 @@ namespace Dev2.Studio.ViewModels
         public void Handle(DebugWriterWriteMessage message)
         {
             DisplayDebugOutput(message.DebugState);
-        } 
-        
+        }
+
         public void Handle(RemoveResourceAndCloseTabMessage message)
         {
             if (message.ResourceToRemove == null)
@@ -353,7 +353,7 @@ namespace Dev2.Studio.ViewModels
                 message.ResourceToRemove.Environment.ResourceRepository.Remove(res);
             }
         }
-        
+
         public void Handle(DeployResourcesMessage message)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
@@ -377,7 +377,7 @@ namespace Dev2.Studio.ViewModels
         #endregion
 
         #region Private Methods
-   
+
         private void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
         {
             string newWorflowName = NewWorkflowNames.Instance.GetNext();
@@ -436,7 +436,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
-                return true;
+                    return true;
                 case MessageBoxResult.No:
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
                     return true;
@@ -458,7 +458,7 @@ namespace Dev2.Studio.ViewModels
                 var recorderFeedbackAction = new RecorderFeedbackAction();
                 FeedbackInvoker.InvokeFeedback(recorderFeedbackAction);
             }
-                //stop feedback
+            //stop feedback
             else
             {
                 currentRecordFeedbackAction.FinishFeedBack();
@@ -527,8 +527,8 @@ namespace Dev2.Studio.ViewModels
                 (WorkSurfaceContext.DependencyVisualiser, resource,
                  new[] { new Tuple<string, object>("GetDependsOnMe",false),new Tuple<string, object>("ResourceModel", resource)
                                  });
-        } 
-        
+        }
+
         public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)
         {
             if (resource == null)
@@ -540,14 +540,14 @@ namespace Dev2.Studio.ViewModels
                      {
                          new Tuple<string, object>("GetDependsOnMe", true),
                          new Tuple<string, object>("ResourceModel", resource)
-                     });
+                                 });
         }
 
         public void AddSettingsWorkSurface()
-        {
+            {
             ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>
                 (WorkSurfaceContext.Settings);
-        }
+            }
 
         public void RemoveSettingsWorkSurface(IEnvironmentModel environment)
         {
@@ -641,7 +641,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         AddWorkspaceItem(wfItem.ResourceModel);
                     }
-                }                                                    
+                }
             }
             base.OnActivationProcessed(item, success);
         }
@@ -652,8 +652,8 @@ namespace Dev2.Studio.ViewModels
             base.ActivateItem(item);
         }
 
-        #endregion 
-        
+        #endregion
+
         #region ImportsSatisfied
 
         public void OnImportsSatisfied()
@@ -909,10 +909,6 @@ namespace Dev2.Studio.ViewModels
             if (exists)
             {
                 return;
-            }
-            if(!resourceModel.Environment.ResourceRepository.IsInCache(resourceModel.ID))
-            {
-                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
             }
             AddWorkspaceItem(resourceModel);
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, _createDesigners));

@@ -119,11 +119,6 @@ namespace Dev2.Studio.Core.Models
             {
                 var resourceModel = ResourceRepository.FindSingle(model => model.ID == resourceID);
                 ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
-//                if (!resourceModel.Environment.ResourceRepository.IsInCache(resourceModel.ID))
-//                {
-//                   
-//                }
-//                ResourceRepository.RefreshResource(resourceID);
             }
         }
 
