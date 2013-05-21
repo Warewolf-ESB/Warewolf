@@ -15,41 +15,31 @@ namespace GhostView
     {
         static int Main(string[] args)
         {
-            var rdpFile = @"C:\Users\travis.frisinger\Desktop\tfsbld.rdp";
-
-            if (args.Length == 1)
+            
+            if (args.Length == 4)
             {
-                return StartSession(args[0]);
-            }
+                string appPath = args[0];
+                string svr = args[1];
+                string user = args[2];
+                string pass = args[3];
 
-            return StartSession(rdpFile);
+                ProcessStartInfo processStartInfo = new ProcessStartInfo();
 
-        }
+                processStartInfo.FileName = appPath;
+                processStartInfo.CreateNoWindow = true;
+                processStartInfo.Arguments = svr + " " + user + " " + pass;
+                processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
+                Process gView = new Process();
+                gView.StartInfo = processStartInfo;
 
-        private static int StartSession(string rdpFile)
-        {
-            string executable = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\system32\mstsc.exe");
+                gView.Start();
 
-            Process rdcProcess = new Process();
-
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = false;
-            startInfo.UseShellExecute = true;
-            startInfo.FileName = executable;
-            //startInfo.RedirectStandardOutput = true;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.CreateNoWindow = true;
-            startInfo.Arguments = rdpFile;
-
-            if (executable != null)
-            {
-                rdcProcess = Process.Start(startInfo);
-
-                return rdcProcess.Id;
+                return gView.Id;
             }
 
             return -1;
         }
+
     }
 }
