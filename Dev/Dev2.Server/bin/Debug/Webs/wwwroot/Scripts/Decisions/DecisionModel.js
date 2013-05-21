@@ -105,8 +105,8 @@ function DecisionViewModel() {
     self.rowChanged = self.rowChanged = function (elm, event) {
 
         if (event) {
-            self.autoResize(event.target.previousElementSibling);
-            self.autoResize(event.target.nextElementSibling);
+        self.autoResize(event.target.previousElementSibling);
+        self.autoResize(event.target.nextElementSibling);
         }
 
         // find function element to use ;)
