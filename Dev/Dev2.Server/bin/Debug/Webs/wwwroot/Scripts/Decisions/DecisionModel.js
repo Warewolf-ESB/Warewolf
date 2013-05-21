@@ -104,8 +104,10 @@ function DecisionViewModel() {
 
     self.rowChanged = self.rowChanged = function (elm, event) {
 
-        self.autoResize(event.target.previousElementSibling);
-        self.autoResize(event.target.nextElementSibling);
+        if (event) {
+            self.autoResize(event.target.previousElementSibling);
+            self.autoResize(event.target.nextElementSibling);
+        }
 
         // find function element to use ;)
         var cnt = ko.utils.arrayFirst(self.data.decisionFunctions(), function (item) {
@@ -148,6 +150,7 @@ function DecisionViewModel() {
 
     self.AddDecision = function (data) {
         self.data.TheStack.push(data);
+        self.rowChanged(data);
         // apply jquery-ui themes
         $("input[type=submit], a, button").button();
     };
