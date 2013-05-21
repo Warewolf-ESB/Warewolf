@@ -11,7 +11,7 @@ namespace GhostView
     /// Used to start an RDP session for coded UI testing
     /// Provided a maximized screen yet invisible like a ghost ;)
     /// </summary>
-    class GhostViewer
+    class GhostViewerLauncher
     {
         static int Main(string[] args)
         {
