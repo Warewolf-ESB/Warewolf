@@ -13,13 +13,13 @@ namespace SampleRDC
 
         public SessionGhost()
         {
-            int cnt = 5;
+            int cnt = 4;
             string[] args = Environment.CommandLine.Split(' ');
             if (args.Length == cnt)
             {
-                _svr = args[2];
-                _user = args[3];
-                _pass = args[4];
+                _svr = args[1];
+                _user = args[2];
+                _pass = args[3];
             }
 
 
@@ -28,25 +28,12 @@ namespace SampleRDC
             // connect if args ;)
             if (args.Length == cnt)
             {
-                //txtServer.Text = _svr;
-                //txtUserName.Text = _user;
-                //txtPassword.Text = _pass;
+                txtServer.Text = _svr;
+                txtUserName.Text = _user;
+                txtPassword.Text = _pass;
 
                 Connect(_svr, _user, _pass);
             }
-
-            //int minutes = 0;
-
-            //while (minutes < _minToLive)
-            //{
-            //    try
-            //    {
-            //        Thread.Sleep(60*1000); // 1 min ;)
-            //    }catch{}
-            //}
-
-            //// all done ;)
-            //Application.Exit();
         }
 
         private void Connect(string server, string user, string pass)
