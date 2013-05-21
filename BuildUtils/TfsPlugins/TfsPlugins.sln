@@ -9,13 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kill", "Kill\Kill.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitForBuild", "WaitForBuild\WaitForBuild.csproj", "{BC744D87-5733-4B4E-98A8-8C220FC311EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhostViewLanucher", "GhostView\GhostViewLanucher.csproj", "{CA51D993-6F9B-460C-9BB9-E775286EC88E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionGhostLanucher", "GhostView\SessionGhostLanucher.csproj", "{CA51D993-6F9B-460C-9BB9-E775286EC88E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionGhost", "..\..\..\..\Desktop\dtab\SampleRDC\SessionGhost.csproj", "{E4C84928-8787-433E-AB30-CA544FADACBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionGhost", "SampleRDC\SessionGhost.csproj", "{E4C84928-8787-433E-AB30-CA544FADACBC}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -31,9 +31,12 @@ Global
 		SccProjectUniqueName4 = WaitForBuild\\WaitForBuild.csproj
 		SccProjectName4 = WaitForBuild
 		SccLocalPath4 = WaitForBuild
-		SccProjectUniqueName5 = GhostView\\GhostViewLanucher.csproj
-		SccProjectName5 = GhostView
-		SccLocalPath5 = GhostView
+		SccProjectUniqueName5 = SampleRDC\\SessionGhost.csproj
+		SccProjectName5 = SampleRDC
+		SccLocalPath5 = SampleRDC
+		SccProjectUniqueName6 = GhostView\\SessionGhostLanucher.csproj
+		SccProjectName6 = GhostView
+		SccLocalPath6 = GhostView
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
