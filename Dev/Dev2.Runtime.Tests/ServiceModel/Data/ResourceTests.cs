@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -638,6 +639,65 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 "<SignatureValue>Aw4KEyJkPEYNZq3kJ22My0kc8PWrbuV4l2d2OYebadrCOS3KcEar9kEJaNIqrbox9W8PYYKX77S56wbEX6UwXq8g9OaV9LTR99iQcuOGEIDzl59GKiGkIZ/9xZslDId6M1IYqXPtefEgMzAAx0GPTvpDQrQAEyizk7JDxrmRUXY=</SignatureValue>" +
                 "</Signature></Service>";
         }
+
+        #region ParseProperties
+
+        // PBI 5656 - 2013.05.20 - TWR - Created
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceParsePropertiesWithNullStringExpectedThrowsArgumentNullException()
+        {
+            Resource.ParseProperties(null, null);
+        }
+
+        // PBI 5656 - 2013.05.20 - TWR - Created
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceParsePropertiesWithNullPropertiesExpectedThrowsArgumentNullException()
+        {
+            Resource.ParseProperties("", null);
+        }
+
+        // PBI 5656 - 2013.05.20 - TWR - Created
+        [TestMethod]
+        public void ResourceParsePropertiesWithInvalidPropertiesExpectedSafelyIgnoresInvalidProperties()
+        {
+            const string TestStr = "address=http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=South%20Africa;AuthenticationType=Anonymous";
+            var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Address", null },
+                { "UserName", null }
+            };
+            Resource.ParseProperties(TestStr, properties);
+            Assert.IsNotNull(properties["Address"]);
+            Assert.IsNull(properties["UserName"]);
+        }
+
+        // PBI 5656 - 2013.05.20 - TWR - Created
+        [TestMethod]
+        public void ResourceParsePropertiesWithValidPropertiesExpectedParsesProperties()
+        {
+            const string Address = "http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=South%20Africa";
+            const string AuthenticationType = "User";
+            const string UserName = "wert=9^4=&";
+            var testStr = string.Format("address={0};AuthenticationType={1};UserName={2}", Address, AuthenticationType, UserName);
+
+            var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Address", null },
+                { "AuthenticationType", null },
+                { "UserName", null }
+            };
+
+            Resource.ParseProperties(testStr, properties);
+
+            Assert.AreEqual(Address, properties["Address"]);
+            Assert.AreEqual(AuthenticationType, properties["AuthenticationType"]);
+            Assert.AreEqual(UserName, properties["UserName"]);
+        }
+
+        #endregion
+
 
     }
 }

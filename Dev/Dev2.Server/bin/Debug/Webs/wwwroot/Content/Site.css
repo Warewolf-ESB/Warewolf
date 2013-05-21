@@ -110,6 +110,28 @@ h5, h6 {
     margin-bottom: 20px;
 }*/
 
+.sources-web-source-form {
+    width: 415px;
+}
+
+.sources-web-source-form-label {
+    width: 140px;
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+.sources-web-source-label {
+    width: auto;    
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
 .sources-email-source-form {
     width: 415px;
 }

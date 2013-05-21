@@ -45,13 +45,19 @@ namespace Dev2.Studio.Webs
                 {
                     resourceType = ResourceType.PluginSource;
                 }
-                else switch(resourceModel.DisplayName)
+                else switch(resourceModel.DisplayName)  // see ResourceModelFactory.CreateResourceModel()
                     {
                         case "DbSource":
                             resourceType = ResourceType.DbSource;
                             break;
-                        case "EmailSource":
+                        case "EmailSource": // PBI 953 - 2013.05.20 - TWR - Added
                             resourceType = ResourceType.EmailSource;
+                            break;
+                        case "WebSource":   // PBI 5656 - 2013.05.20 - TWR - Added
+                            resourceType = ResourceType.WebSource;
+                            break;
+                        case "WebService":  // PBI 1220 - 2013.05.20 - TWR - Added
+                            resourceType = ResourceType.WebService;
                             break;
                     }
             }
@@ -156,9 +162,23 @@ namespace Dev2.Studio.Webs
                     height = 474;
                     break;
 
-                case ResourceType.EmailSource:
+                case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
                     pageName = "sources/emailsource";
                     pageHandler = new SourceCallbackHandler();
+                    width = 705;
+                    height = 492;
+                    break;
+
+                case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
+                    pageName = "sources/websource";
+                    pageHandler = new WebSourceCallbackHandler();
+                    width = 705;
+                    height = 492;
+                    break;
+
+                case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
+                    pageName = "services/webservice";
+                    pageHandler = new WebServiceCallbackHandler();
                     width = 705;
                     height = 492;
                     break;

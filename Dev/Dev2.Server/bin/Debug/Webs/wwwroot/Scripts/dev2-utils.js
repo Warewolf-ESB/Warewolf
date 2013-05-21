@@ -74,3 +74,8 @@ utils.isValidEmail = function (email) {
     var result = email !== "" && /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.test(email);
     return result;
 };
+
+utils.isValidUrl = function (uri) {
+    var result = uri !== "" && /^((http[s]?|ftp):\/)/i.test(uri);
+    return result;
+};

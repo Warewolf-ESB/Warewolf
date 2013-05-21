@@ -24,6 +24,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.PluginService, "Service" },
             { ResourceType.PluginSource, "Source" },
             { ResourceType.EmailSource, "Source" },
+            { ResourceType.WebSource, "Source" },
+            { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
         };
 
@@ -462,6 +464,34 @@ namespace Dev2.Runtime.ServiceModel.Data
                 ResourceName = resourceName,
                 ResourceType = resourceType
             };
+        }
+
+        #endregion
+
+        #region ParseProperties
+
+        // PBI 5656 - 2013.05.20 - TWR - Refactored
+        public static void ParseProperties(string s, Dictionary<string, string> properties)
+        {
+            if(s == null)
+            {
+                throw new ArgumentNullException("s");
+            }
+            if(properties == null)
+            {
+                throw new ArgumentNullException("properties");
+            }
+
+            var props = s.Split(';');
+            foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
+            {
+                var key = p[0];
+                if(!properties.ContainsKey(key))
+                {
+                    continue;
+                }
+                properties[key] = string.Join("=", p.Skip(1));
+            }
         }
 
         #endregion

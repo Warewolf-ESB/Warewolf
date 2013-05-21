@@ -59,6 +59,17 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("port", "Enter the <b>port number</b> on the SMTP host. The default value is 25. e.g.<br/>" + GetSmtpExamples());
                         result.Add("timeout", "Enter the amount of <b>time in seconds</b> after which a send operation times out. The default value is 100 seconds.");
                         break;
+
+                    // PBI 953 - 2013.05.16 - TWR - Added
+                    case "WebSource":
+                        result.Add("default", "<h4>New Web Source Details</h4><p>This creates a connection to a web service.</p>");
+                        result.Add("address", "Enter the <b>url</b> of the web service. e.g. <span style=\"word-wrap:break-word\">http://www.webservicex.net/globalweather.asmx</span>");
+                        result.Add("authenticationType", "Determines how to authenticate with the server: "
+                                                         + "<p><b>Anonymous</b> - no account will be used.</p>"
+                                                         + "<p><b>User</b> - the given user account will be used.</p>");
+                        result.Add("userName", "Enter the <b>user name</b> used to authenticate with the server.");
+                        result.Add("password", "Enter the <b>password</b> used to authenticate with the server.");
+                        break;
                 }
             }
             catch(Exception ex)
@@ -69,6 +80,8 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+        #region GetSmtpExamples
 
         // PBI 953 - 2013.05.16 - TWR - Added
         static string GetSmtpExamples()
@@ -84,5 +97,8 @@ namespace Dev2.Runtime.ServiceModel
             servers.Append("</table>");
             return servers.ToString();
         }
+
+        #endregion
+
     }
 }

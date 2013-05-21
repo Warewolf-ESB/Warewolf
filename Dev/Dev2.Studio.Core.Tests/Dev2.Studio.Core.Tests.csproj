@@ -218,7 +218,7 @@
     </Compile>
     <Compile Include="TestAggregateCatalog.cs" />
     <Compile Include="TestResourceStrings.Designer.cs" />
-    <Compile Include="ConnectCallbackHandlerTests.cs" />
+    <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -244,6 +244,10 @@
     <Compile Include="WebCommunicationTest.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
     <Compile Include="WebsiteEditorViewModelTest.cs" />
+    <Compile Include="Webs\SourceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\SourceCallbackHandlerTests.cs" />
+    <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
     <Compile Include="WizardTests\WizardEndpointGenerationStrategyProviderTests.cs" />
     <Compile Include="WizardTests\WizardEngineTests.cs" />

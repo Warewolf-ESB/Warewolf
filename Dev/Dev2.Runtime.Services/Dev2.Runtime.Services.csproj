@@ -165,6 +165,7 @@
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Services.cs" />
     <Compile Include="Configuration\SettingsProvider.cs" />
+    <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="ServiceModel\WebModel.cs" />
     <Compile Include="Workspaces\Workspace.cs" />

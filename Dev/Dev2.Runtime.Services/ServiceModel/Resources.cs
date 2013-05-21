@@ -28,7 +28,9 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.DbSource, "Sources" },
             { ResourceType.PluginService, "Services" },
             { ResourceType.PluginSource, "Sources" },
-            { ResourceType.EmailSource, "Sources" },
+            { ResourceType.EmailSource, "Sources" },     
+            { ResourceType.WebSource, "Sources" },
+            { ResourceType.WebService, "Services" },
             { ResourceType.WorkflowService, "Services" },
         };
 

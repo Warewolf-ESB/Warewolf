@@ -4,16 +4,11 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
-    public class SourceCallbackHandler : WebsiteCallbackHandler
+    public class WebServiceCallbackHandler : WebsiteCallbackHandler
     {
 
-        public SourceCallbackHandler()
-            : this(EnvironmentRepository.Instance)
-        {
-        }
-
-        public SourceCallbackHandler(IEnvironmentRepository environmentRepository)
-            : base(environmentRepository)
+        public WebServiceCallbackHandler()
+            : base(EnvironmentRepository.Instance)
         {
         }
 

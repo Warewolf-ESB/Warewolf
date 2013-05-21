@@ -92,6 +92,7 @@
     <Compile Include="ESB\WfExecutionContainerTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="Hosting\ResourceTypeConverterTests.cs" />
+    <Compile Include="ServiceModel\Data\WebSourceTests.cs" />
     <Compile Include="ServiceModel\Data\PluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
     <Compile Include="Hosting\ResourceCatalogTests.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
     <Compile Include="ServiceModel\ServicesMock.cs" />
     <Compile Include="ServiceModel\EmailSourcesTests.cs" />
+    <Compile Include="ServiceModel\WebSourcesTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="ServiceModel\ResourcesTests.cs" />
@@ -240,6 +242,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\EmailSourceCorrupt.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebSource.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

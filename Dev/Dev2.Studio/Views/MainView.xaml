@@ -473,10 +473,17 @@
                                                               ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
                                                               x:FieldModifier="public"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Plugin Service" ToolTip="(Ctrl+Shift+P)"  
-                                                              Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
-									CommandParameter="ResourceService"/>
+                                                          Command="{Binding NewResourceCommand}"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
+									                      CommandParameter="ResourceService"/>
+                        <ribbon:RibbonApplicationMenuItem Header="New Web Service"
+                                                          ToolTip="(Ctrl+Shift+W)"
+                                                          Command="{Binding NewResourceCommand}"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
+                                                          CommandParameter="WebService" />
+                        
                         <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
+                        
                         <ribbon:RibbonApplicationMenuItem Header="New Remote Warewolf Source" 
                                 Command="{Binding NewResourceCommand}" 
                                                               ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
@@ -486,14 +493,20 @@
                                                               ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
 									CommandParameter="DbSource"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Plugin Source" 
-                                                              Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
-									CommandParameter="ResourceSource"/>
+                                                          Command="{Binding NewResourceCommand}"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
+									                      CommandParameter="ResourceSource"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Email Source" 
                                                           Command="{Binding NewResourceCommand}"
                                                           ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
 									                      CommandParameter="EmailSource"/>
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>                       
+                        <ribbon:RibbonApplicationMenuItem Header="New Web Source"
+                                                          Command="{Binding NewResourceCommand}"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
+                                                          CommandParameter="WebSource" />
+                        
+                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>      
+                        
                         <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
                                                           Command="{Binding ResetLayoutCommand}" 
                                                           CommandParameter="{Binding ElementName=dockManager}"/>
@@ -517,24 +530,33 @@
 
                     <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="New Service">
 						<ribbon:RibbonButton Label="Workflow"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-							Command="{Binding NewResourceCommand}" CommandParameter="Workflow"
-							AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID" ToolTip="CRTL + W" />
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
+							                 Command="{Binding NewResourceCommand}" 
+                                             CommandParameter="Workflow"
+                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID"
+                                             ToolTip="Ctrl+W" />
                         <ribbon:RibbonButton Label="Remote Workflow"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-							ToolTip="CRTL + SHIFT + R" />
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
+                                             ToolTip="Ctrl+Shift+R" />
 						<ribbon:RibbonButton Label="Database Service"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="DatabaseService" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID" ToolTip="CRTL + SHIFT + D" />
+						                     LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                 Command="{Binding NewResourceCommand}"
+							                 CommandParameter="DatabaseService"
+                                             AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID"
+                                             ToolTip="Ctrl+Shift+D" />
 						<ribbon:RibbonButton Label="Plugin Service"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="ResourceService" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID" ToolTip="CRTL + SHIFT + P" />
-                        
-						<!--
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                 Command="{Binding NewResourceCommand}"
+							                 CommandParameter="ResourceService"
+                                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID"
+                                             ToolTip="Ctrl+Shift+P" />
+                        <ribbon:RibbonButton Label="Web Service"
+                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+                                             Command="{Binding NewResourceCommand}"
+                                             CommandParameter="WebService"
+                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID"
+                                             ToolTip="Ctrl+Shift+W" />
+                        <!--
                         TODO PBI 8291
                         <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
                         <ribbon:RibbonButton Label="Website" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/webpagebuilder.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Website" />-->
@@ -548,26 +570,31 @@
                     
                     <ribbon:RibbonGroup x:Name="HomeCreateNewSource" Header="Add Source">
                         <ribbon:RibbonButton Label="Remote Warewolf"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-							Command="{Binding NewResourceCommand}" 
-                            CommandParameter="Server"
-							AutomationProperties.AutomationId="UI_RibbonHomeTabRemoteWorkflowBtn_AutoID" />
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
+							                Command="{Binding NewResourceCommand}" 
+                                            CommandParameter="Server"
+							                AutomationProperties.AutomationId="UI_RibbonHomeTabRemoteWorkflowBtn_AutoID" />
                         <ribbon:RibbonButton Label="Database"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="DbSource" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBSourceBtn_AutoID" />
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                Command="{Binding NewResourceCommand}"
+							                CommandParameter="DbSource" 
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBSourceBtn_AutoID" />
                         <ribbon:RibbonButton Label="Plugin"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="ResourceSource" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                Command="{Binding NewResourceCommand}"
+							                CommandParameter="ResourceSource" 
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
                         <ribbon:RibbonButton Label="Email"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
-							Command="{Binding NewResourceCommand}"
-							CommandParameter="EmailSource" 
-                            AutomationProperties.AutomationId="UI_RibbonHomeTabEmailSourceBtn_AutoID" />
-						<!--
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                Command="{Binding NewResourceCommand}"
+							                CommandParameter="EmailSource" 
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabEmailSourceBtn_AutoID" />
+                        <ribbon:RibbonButton Label="Web"
+                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+                                             Command="{Binding NewResourceCommand}"
+                                             CommandParameter="WebSource"
+                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebSourceBtn_AutoID" />
+                        <!--
                         TODO PBI 8291
                         <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
                         <ribbon:RibbonButton Label="Website" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/webpagebuilder.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Website" />-->

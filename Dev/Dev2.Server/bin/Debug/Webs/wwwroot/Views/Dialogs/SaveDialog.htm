@@ -1,7 +1,7 @@
 ﻿<div id="saveForm" title="Save">  
     <div id="dialog-save">
         <div class="field ui-helper-clearfix">
-            <span style="float: left; width: 250px" data-bind="html: viewModel.saveTitle"></span>
+            <span style="float: left; width: 265px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" data-bind="html: viewModel.saveTitle"></span>
             <span style="float: right">
                 <button tabindex="100" type="button" name="newFolderButton" id="newFolderButton" data-bind="click: newFolder">New Folder</button>
                 <input tabindex="101" maxlength="20" type="text" name="searchFolderTerm" id="searchFolderTerm" placeholder="Filter" autocomplete="off" style="width: 10em; vertical-align: middle;" data-bind="value: searchFolderTerm, valueUpdate: 'afterkeydown'" />

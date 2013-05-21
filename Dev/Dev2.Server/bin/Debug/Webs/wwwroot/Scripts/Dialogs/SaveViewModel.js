@@ -104,12 +104,20 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
                 self.addNewFolder();
             }
         }
+    }).keydown(function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+        }
     });
     
     $resourceName.keyup(function (e) {
         // ENTER key pressed
         if (e.keyCode == 13) {
             self.save();
+        }
+    }).keydown(function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
         }
     });
 

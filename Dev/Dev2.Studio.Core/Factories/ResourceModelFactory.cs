@@ -1,16 +1,14 @@
 ﻿using System;
-using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using Dev2.Studio.Core.Models;
 
-namespace Dev2.Studio.Core.Factories{
-    
+namespace Dev2.Studio.Core.Factories
+{
+
     public static class ResourceModelFactory
     {
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment) 
+        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment)
         {
             return new ResourceModel(environment);
         }
@@ -35,13 +33,14 @@ namespace Dev2.Studio.Core.Factories{
             return CreateResourceModel(environment, resourceType, "", displayName);
         }
 
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType, string resourceName,string displayName)
+        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType, string resourceName, string displayName)
         {
             IContextualResourceModel resource = CreateResourceModel(environment);
             resource.ResourceName = string.Empty;
             resource.ID = Guid.NewGuid();
 
-            switch (resourceType) {
+            switch(resourceType)
+            {
                 case "Service":
                     resource.ResourceType = ResourceType.Service;
                     resource.DisplayName = displayName;
@@ -90,6 +89,22 @@ namespace Dev2.Studio.Core.Factories{
                     resource.DisplayName = displayName;
                     resource.ResourceName = resourceName;
                     break;
+
+
+                case "EmailResource":   // PBI 953 - 2013.05.16 - TWR - Added
+                case "WebSource":       // PBI 5656 - 2013.05.20 - TWR - Added
+                    resource.ResourceType = ResourceType.Source;
+                    resource.DisplayName = displayName; // this MUST be ResourceType; see RootWebSite.ShowDialog()
+                    resource.ResourceName = resourceName;
+                    break;
+
+
+                case "WebService":      // PBI 1220 - 2013.05.20 - TWR - Added
+                    resource.ResourceType = ResourceType.Service;
+                    resource.DisplayName = displayName; // this MUST be ResourceType; see RootWebSite.ShowDialog()
+                    resource.ResourceName = resourceName;
+                    break;
+
                 default:
                     resource.ResourceType = ResourceType.WorkflowService;
                     resource.DisplayName = displayName;

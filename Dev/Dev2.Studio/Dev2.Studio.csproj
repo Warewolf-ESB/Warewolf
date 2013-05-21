@@ -409,6 +409,8 @@
       <SubType>Code</SubType>
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Webs\Callbacks\WebSourceCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\WebServiceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbSourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />

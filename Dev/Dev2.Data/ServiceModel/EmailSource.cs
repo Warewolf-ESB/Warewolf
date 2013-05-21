@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
@@ -52,35 +53,30 @@ namespace Dev2.Runtime.ServiceModel.Data
             Timeout = DefaultTimeout;
             Port = DefaultPort;
 
-            var connectionString = xml.AttributeSafe("ConnectionString");
-            var props = connectionString.Split(';');
-            foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
+            var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                switch(p[0].ToLowerInvariant())
-                {
-                    case "host":
-                        Host = p[1];
-                        break;
-                    case "username":
-                        UserName = p[1];
-                        break;
-                    case "password":
-                        Password = p[1];
-                        break;
-                    case "port":
-                        int port;
-                        Port = Int32.TryParse(p[1], out port) ? port : DefaultPort;
-                        break;
-                    case "enablessl":
-                        bool enableSsl;
-                        EnableSsl = bool.TryParse(p[1], out enableSsl) && enableSsl;
-                        break;
-                    case "timeout":
-                        int timeout;
-                        Timeout = Int32.TryParse(p[1], out timeout) ? timeout : DefaultTimeout;
-                        break;
-                }
-            }
+                { "Host", string.Empty },
+                { "UserName", string.Empty },
+                { "Password", string.Empty },
+                { "Port", string.Empty },
+                { "EnableSsl", string.Empty },
+                { "Timeout", string.Empty },
+            };
+
+            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
+
+            Host = properties["Host"];
+            UserName = properties["UserName"];
+            Password = properties["Password"];
+
+            int port;
+            Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
+
+            bool enableSsl;
+            EnableSsl = bool.TryParse(properties["EnableSsl"], out enableSsl) && enableSsl;
+
+            int timeout;
+            Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
         #endregion
