@@ -28,9 +28,9 @@ namespace SampleRDC
             // connect if args ;)
             if (args.Length == cnt)
             {
-                txtServer.Text = _svr;
-                txtUserName.Text = _user;
-                txtPassword.Text = _pass;
+                //txtServer.Text = _svr;
+                //txtUserName.Text = _user;
+                //txtPassword.Text = _pass;
 
                 Connect(_svr, _user, _pass);
             }
