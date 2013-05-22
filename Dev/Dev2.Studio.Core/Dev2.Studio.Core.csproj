@@ -157,6 +157,7 @@
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
     <Compile Include="AppResources\Converters\FilterStringToBoolConvert.cs" />
+    <Compile Include="AppResources\Converters\MultipleBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CountToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeToStringConverter.cs" />

@@ -326,7 +326,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowEditResourceWizardMessage message)
         {
-            ShowEditResourceWizard(message.ResourceModel);
+            ShowEditResourceWizard(message.ResourceModel, message.ForceStandAloneSaveDialog);
         }
 
         public void Handle(ShowHelpTabMessage message)
@@ -352,7 +352,7 @@ namespace Dev2.Studio.ViewModels
             _previousActive = null;
 
             var res = message.ResourceToRemove.Environment
-                .ResourceRepository.FindSingle(c => c.DisplayName == message.ResourceToRemove.DisplayName);
+                .ResourceRepository.FindSingle(c => c.ResourceName == message.ResourceToRemove.ResourceName);
 
             if (res != null)
             {
@@ -471,19 +471,19 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void DisplayResourceWizard(IContextualResourceModel resourceModel, bool isedit)
+        private void DisplayResourceWizard(IContextualResourceModel resourceModel, bool isedit, bool isSaveDialogStandAlone = false)
         {
             if (resourceModel == null)
             {
                 return;
             }
 
-            if (isedit)
+            if (isedit && resourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
             {
                 SaveOpenTabs();
             }
 
-            WebController.DisplayDialogue(resourceModel, isedit);
+            WebController.DisplayDialogue(resourceModel, isedit, isSaveDialogStandAlone);
         }
 
         private void ShowNewResourceWizard(string resourceType)
@@ -496,14 +496,14 @@ namespace Dev2.Studio.ViewModels
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-                DisplayResourceWizard(resourceModel, false);
+                DisplayResourceWizard(resourceModel, false, false);
             }
         }
 
-        private void ShowEditResourceWizard(object resourceModelToEdit)
+        private void ShowEditResourceWizard(object resourceModelToEdit, bool forceStandAloneSaveDialog)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
-            DisplayResourceWizard(resourceModel, true);
+            DisplayResourceWizard(resourceModel, true, forceStandAloneSaveDialog);
         }
 
 
@@ -980,40 +980,42 @@ namespace Dev2.Studio.ViewModels
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)
         {
             bool remove = true;
-            if (!context.DeleteRequested)
+            if(context != null)
+            {
+                if(!context.DeleteRequested)
             {
                 var vm = context.WorkSurfaceViewModel;
-                if (vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
+                    if (vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
                     var workflowVM = vm as IWorkflowDesignerViewModel;
-                    if (workflowVM != null)
+                        if (workflowVM != null)
                     {
                         IContextualResourceModel resource = workflowVM.ResourceModel;
-                        if (resource != null)
+                            if (resource != null)
                         {
                             remove = resource.IsWorkflowSaved;
 
-                            if (resource.IsNewWorkflow && remove)
+                                if (resource.IsNewWorkflow && remove)
                             {
                                 NewWorkflowNames.Instance.Remove(resource.ResourceName);
                             }
 
-                            if (!remove)
+                                if (!remove)
                             {
                                 remove = ShowRemovePopup(workflowVM);
                             }
 
-                            if (remove)
+                                if (remove)
                             {
                                 RemoveWorkspaceItem(workflowVM);
                                 Items.Remove(context);
                                 EventAggregator.Publish(new TabClosedMessage(context));
-                                if (e != null)
+                                    if (e != null)
                                 {
                                     e.Cancel = true;
                                 }
                             }
-                            else if (e != null)
+                                else if (e != null)
                             {
                                 e.Handled = true;
                                 e.Cancel = false;
@@ -1021,6 +1023,7 @@ namespace Dev2.Studio.ViewModels
                         }
                     }
                 }
+            }
             }
 
             return remove;

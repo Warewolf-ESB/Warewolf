@@ -2,12 +2,17 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Infragistics;
+using Microsoft.Expression.Interactivity.Core;
 
 #endregion
 
@@ -23,6 +28,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region private fields
 
         private ResourceType _resourceType;
+        RelayCommand _showNewWorkflowWizard;
 
         #endregion private fields
 
@@ -62,7 +68,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override string DisplayName
         {
             get { return ResourceType.GetTreeDescription(); }
-            }
+        }
 
         /// <summary>
         /// Gets the icon path, by looking at the <see cref="ResourceType" />.
@@ -134,6 +140,54 @@ namespace Dev2.Studio.ViewModels.Navigation
                 _children.CollectionChanged += ChildrenOnCollectionChanged;
             }
         }
+
+        public override ICommand NewResourceCommand
+        {
+            get
+            {
+                return _showNewWorkflowWizard ?? (_showNewWorkflowWizard =
+                    new RelayCommand(ShowNewResourceWizard));
+            }
+        }
+
+        void ShowNewResourceWizard(object obj)
+        {
+            var commandParameter = obj.ToString();
+            EventAggregator.Publish(new ShowNewResourceWizard(commandParameter));
+        }
+
+        public override bool HasNewWorkflowMenu
+        {
+            get
+            {
+                return ResourceType == ResourceType.WorkflowService;
+            }
+        }
+
+        public override bool HasNewServiceMenu
+        {
+            get
+            {
+                return ResourceType == ResourceType.Service;
+            }
+        }
+
+        public override bool HasNewSourceMenu
+        {
+            get
+            {
+                return ResourceType == ResourceType.Source;
+            }
+        }
+
+        public override string DeployTitle
+        {
+            get
+            {
+                return "Deploy All " + DisplayName.ToUpper();
+            }
+        }
+
         #endregion public properties
 
         #region public methods

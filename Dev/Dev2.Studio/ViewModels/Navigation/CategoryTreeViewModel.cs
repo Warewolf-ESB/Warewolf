@@ -5,10 +5,19 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Webs;
+using Dev2.Studio.Webs.Callbacks;
 
 #endregion
 
@@ -24,6 +33,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region private fields
 
         private ResourceType _resourceType;
+        private bool _isRenaming = false;
+        RelayCommand _showNewWorkflowWizard;
 
         #endregion
 
@@ -83,7 +94,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <exception cref="System.InvalidOperationException">Can not set this property</exception>
         public override IEnvironmentModel EnvironmentModel
         {
-            get { return TreeParent.EnvironmentModel; }
+            get { return TreeParent == null ? null : TreeParent.EnvironmentModel; }
             protected set { throw new InvalidOperationException(); }
         }
 
@@ -118,6 +129,127 @@ namespace Dev2.Studio.ViewModels.Navigation
                 _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
                 _children.CollectionChanged += ChildrenOnCollectionChanged;
+            }
+        }
+
+        //2013.05.18: Ashley Lewis for PBI 8858 - workflow folder context menu upgrades
+        public override ICommand NewResourceCommand
+        {
+            get
+            {
+                return _showNewWorkflowWizard ?? (_showNewWorkflowWizard =
+                    new RelayCommand(ShowNewResourceWizard));
+            }
+        }
+
+        void ShowNewResourceWizard(object obj)
+        {
+            IResourceModel hydrateWizard = new ResourceModel(EnvironmentModel);
+            hydrateWizard.Category = DisplayName;
+            hydrateWizard.DisplayName = obj.ToString();
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(hydrateWizard, false));
+        }
+
+        public override bool HasNewWorkflowMenu
+        {
+            get
+            {
+                //return ResourceType == ResourceType.WorkflowService;
+                return false;
+            }
+        }
+
+        public override bool HasNewServiceMenu
+        {
+            get
+            {
+                return ResourceType == ResourceType.Service;
+            }
+        }
+
+        public override bool HasNewSourceMenu
+        {
+            get
+            {
+                return ResourceType == ResourceType.Source;
+            }
+        }
+
+        public override bool IsRenaming
+        {
+            get
+            {
+                return _isRenaming;
+            }
+        }
+
+        //2013.05.19: Ashley Lewis for PBI 8858 - Rename folder context menu item
+        public override ICommand RenameCommand
+        {
+            get
+            {
+                return new RelayCommand(RenameFolder);
+            }
+        }
+
+        void RenameFolder(object obj)
+        {
+            _isRenaming = true;
+        }
+
+        public override bool CanRename
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool CanDelete
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override ICommand DeleteCommand
+        {
+            get
+            {
+                return new RelayCommand(DeleteFolder);
+            }
+        }
+
+        public override string NewWorkflowTitle
+        {
+            get
+            {
+                return "New Workflow in " + DisplayName + "   (Ctrl+W)";
+            }
+        }
+
+        void DeleteFolder(object obj)
+        {
+            foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == DisplayName.ToLower()))
+            {
+                EventAggregator.Publish(new DeleteResourceMessage(resource));
+            }
+            if(Children.Count == 0)
+            {
+                TreeParent.Remove(this);
+            }
+        }
+
+        public override string DeployTitle
+        {
+            get
+            {
+                if(DisplayName.Length > 0)
+                {
+                    return "Deploy All " + DisplayName.ToUpper();
+                }
+                return "Deploy";
             }
         }
 

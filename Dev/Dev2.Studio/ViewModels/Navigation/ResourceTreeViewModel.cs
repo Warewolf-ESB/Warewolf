@@ -8,8 +8,10 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 
@@ -39,6 +41,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _runCommand;
         private RelayCommand _showDependenciesCommand;
         private RelayCommand _showPropertiesCommand;
+        private RelayCommand _duplicateCommand;
+        private RelayCommand _moveRenameCommand;
 
         #endregion private fields
 
@@ -208,7 +212,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanBuild
         {
-            get { return DataContext != null; }
+            //get { return DataContext != null; }
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -221,10 +229,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanDebug
         {
+            //get
+            //{
+            //    return DataContext != null
+            //           && DataContext.ResourceType == ResourceType.WorkflowService;
+            //}
             get
             {
-                return DataContext != null
-                       && DataContext.ResourceType == ResourceType.WorkflowService;
+                return false;
             }
         }
 
@@ -277,11 +289,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanRun
         {
+            //get
+            //{
+            //    return DataContext != null && (
+            //           DataContext.ResourceType == ResourceType.WorkflowService ||
+            //           DataContext.ResourceType == ResourceType.Service);
+            //}
             get
             {
-                return DataContext != null && (
-                       DataContext.ResourceType == ResourceType.WorkflowService ||
-                       DataContext.ResourceType == ResourceType.Service);
+                return false;
             }
         }
 
@@ -314,7 +330,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanHelp
         {
-            get { return DataContext != null; }
+            //get { return DataContext != null; }
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -340,7 +360,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanShowProperties
         {
-            get { return DataContext != null; }
+            //get { return DataContext != null; }
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -353,13 +377,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanCreateWizard
         {
+            //get
+            //{
+            //    return DataContext != null && WizardEngine != null &&
+            //           !WizardEngine.IsWizard(DataContext) &&
+            //           WizardEngine.GetWizard(DataContext) == null &&
+            //           (DataContext.ResourceType == ResourceType.Service ||
+            //            DataContext.ResourceType == ResourceType.WorkflowService);
+            //}
             get
             {
-                return DataContext != null && WizardEngine != null &&
-                       !WizardEngine.IsWizard(DataContext) &&
-                       WizardEngine.GetWizard(DataContext) == null &&
-                       (DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.WorkflowService);
+                return false;
             }
         }
 
@@ -373,13 +401,100 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanEditWizard
         {
+            //get
+            //{
+            //    return DataContext != null && WizardEngine != null &&
+            //           !WizardEngine.IsWizard(DataContext) &&
+            //           WizardEngine.GetWizard(DataContext) != null &&
+            //           (DataContext.ResourceType == ResourceType.Service ||
+            //            DataContext.ResourceType == ResourceType.WorkflowService);
+            //}
+            //2013.05.20: Ashley Lewis for PBI 8858 context menu cleanup
             get
             {
-                return DataContext != null && WizardEngine != null &&
-                       !WizardEngine.IsWizard(DataContext) &&
-                       WizardEngine.GetWizard(DataContext) != null &&
-                       (DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.WorkflowService);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance can be duplicated.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance can duplicate; otherwise, <c>false</c>.
+        /// </value>
+        /// <author>Ashley.lewis</author>
+        /// <date>2013/05/20</date>
+        public override bool CanDuplicate
+        {
+            get
+            {
+                return DataContext != null &&
+                       (DataContext.ResourceType == ResourceType.WorkflowService ||
+                        DataContext.ResourceType == ResourceType.Service ||
+                        DataContext.ResourceType == ResourceType.Source);
+            }
+        }
+
+        public override bool HasNewWorkflowMenu
+        {
+            get
+            {
+                //return DataContext != null &&
+                //       (DataContext.ResourceType == ResourceType.WorkflowService);
+                return false;
+            }
+        }
+
+        public override bool HasNewServiceMenu
+        {
+            get
+            {
+                return DataContext != null &&
+                       (DataContext.ResourceType == ResourceType.Service);
+            }
+        }
+
+        public override bool HasNewSourceMenu
+        {
+            get
+            {
+                return DataContext != null &&
+                       (DataContext.ResourceType == ResourceType.Source);
+            }
+        }
+
+        public override bool CanMoveRename
+        {
+            get
+            {
+                return DataContext != null &&
+                       (DataContext.ResourceType == ResourceType.WorkflowService ||
+                       DataContext.ResourceType == ResourceType.Service ||
+                       DataContext.ResourceType == ResourceType.Source);
+            }
+        }
+
+        public override string NewWorkflowTitle
+        {
+            get
+            {              
+                return "New Workflow in " + DataContext.Category.ToUpper() +"   (Ctrl+W)";
+            }
+        }
+
+        public override string NewServiceTitle
+        {
+            get
+            {
+                return "New Service in " + DataContext.Category.ToUpper();
+            }
+        }
+
+        public override string AddSourceTitle
+        {
+            get
+            {
+                return "Add Source to " + DataContext.Category.ToUpper();
             }
         }
 
@@ -414,8 +529,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override ICommand DeleteCommand
         {
-            get { return _deleteCommand ?? (_deleteCommand = 
-                new RelayCommand(p => Delete(), o => CanDelete)); }
+            get
+            {
+                return _deleteCommand ?? (_deleteCommand =
+                    new RelayCommand(p => Delete(), o => CanDelete));
+            }
         }
 
         /// <summary>
@@ -572,6 +690,55 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        /// <summary>
+        /// Gets the duplicate command.
+        /// </summary>
+        /// <value>
+        /// The duplicate command.
+        /// </value>
+        /// <author>Ashley.Lewis</author>
+        /// <date>2013/05/20</date>
+        public override ICommand DuplicateCommand
+        {
+            get
+            {
+                return _duplicateCommand ?? (_duplicateCommand =
+                    new RelayCommand(Duplicate));
+            }
+        }
+
+        public override ICommand NewResourceCommand
+        {
+            get
+            {
+                return new RelayCommand(ShowNewResourceWizard);
+            }
+        }
+
+        void ShowNewResourceWizard(object obj)
+        {
+            //TODO: Implement in PBI 9501
+            //var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
+            //resourceModel.Category = TreeParent.DisplayName;            
+            //EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
+        }
+
+        /// <summary>
+        /// Gets the duplicate command.
+        /// </summary>
+        /// <value>
+        /// The duplicate command.
+        /// </value>
+        /// <author>Ashley.Lewis</author>
+        /// <date>2013/05/20</date>
+        public override ICommand MoveRenameCommand
+        {
+            get
+            {
+                return _moveRenameCommand ?? (_moveRenameCommand =
+                    new RelayCommand(MoveRename));
+            }
+        }
 
         #endregion commands
 
@@ -709,7 +876,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowProperties()
         {
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
             RaisePropertyChangedForCommands();
         }
 
@@ -755,7 +922,94 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            EventAggregator.Publish(new SaveResourceMessage(DataContext,false));
+            EventAggregator.Publish(new SaveResourceMessage(DataContext, false));
+            RaisePropertyChangedForCommands();
+        }
+
+        /// <summary>
+        /// Sends a message to edit the wizard for this resource with a blank ID
+        /// </summary>
+        /// <author>Ashley.lewis</author>
+        /// <date>2013/05/20</date>
+        public void Duplicate(object obj)
+        {
+            if (DataContext == null) return;
+
+            DataContext.IsDuplicate = true;
+
+            // TODO : Properly send message depending upon the DataContext type ;)
+            var myType = DataContext.ServerResourceType;
+            ResourceType rType;
+            ResourceType.TryParse(myType, out rType);
+
+            if (rType.Equals(ResourceType.WorkflowService))
+            {
+                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, true));
+            }
+            else if (rType.Equals(ResourceType.DbService))
+            {
+                DataContext.IsDatabaseService = true;
+                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+                // db service ;)
+                // TODO : Handle this type ;)
+
+                // VIA ServiceCallbackHandler
+            }
+            else if (rType.Equals(ResourceType.PluginService))
+            {
+                DataContext.IsPluginService = true;
+                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+                // plugin service ;)
+                // TODO : Handle this type ;)
+
+                // VIA ServiceCallbackHandler
+            }
+            else if (rType.Equals(ResourceType.DbSource))
+            {
+                DataContext.DisplayName = "DbSource";
+                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+                // db source ;)
+                // TODO : Handle this type ;)
+
+                // HANDLED BY WEB, WILL NOT WORK!!!
+            }
+            else if (rType.Equals(ResourceType.PluginSource))
+            {
+                DataContext.DisplayName = "PluginSource";
+                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+                // plugin source ;)
+                // TODO : Handle this type ;)
+
+                // HANDLED BY WEB, WILL NOT WORK!!!
+            }
+            //else if (rType.Equals(ResourceType.Server))
+            //{
+            //    // server source ;)
+            //    // TODO : Handle this type ;)
+
+            //    // HANDLED BY WEB, WILL NOT WORK!!!
+            //}
+            
+            RaisePropertyChangedForCommands();
+        }
+
+        /// <summary>
+        /// Sends a message to edit the wizard for this resource with a blank ID
+        /// </summary>
+        /// <author>Ashley.lewis</author>
+        /// <date>2013/05/20</date>
+        public void MoveRename(object obj)
+        {
+            if (DataContext == null) return;
+            if (DataContext.ID == Guid.Empty)
+            {
+                //update old resource
+                DataContext.ID = Guid.NewGuid();
+            }
+
+            // TODO : Handle via resource type?!
+
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
 
@@ -777,6 +1031,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             NotifyOfPropertyChange(() => CanShowProperties);
             NotifyOfPropertyChange(() => CanCreateWizard);
             NotifyOfPropertyChange(() => CanEditWizard);
+            NotifyOfPropertyChange(() => CanDuplicate);
+            NotifyOfPropertyChange(() => CanMoveRename);
             base.RaisePropertyChangedForCommands();
         }
 
@@ -810,10 +1066,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                     EventAggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
                     break;
                 case ResourceType.Source:
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
                     break;
                 case ResourceType.Service:
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
                     break;
             }
         }

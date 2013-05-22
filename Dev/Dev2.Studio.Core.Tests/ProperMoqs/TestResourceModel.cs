@@ -97,6 +97,7 @@ namespace Dev2.Core.Tests.ProperMoqs {
         }
 
         public string ConnectionString { get; set; }
+        public bool IsDuplicate { get; set; }
 
         public string ToServiceDefinition() {
             return "TestDefinition";

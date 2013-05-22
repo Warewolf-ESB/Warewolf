@@ -9,6 +9,37 @@
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
     Name="Explorer">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBox}" x:Key="TreeViewTextBoxStyle">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="AllowDrop" Value="true"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Template="{DynamicResource ScrollViewerControlTemplate1}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                            <Condition Property="IsSelectionActive" Value="false"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+            <ControlTemplate x:Key="ScrollViewerControlTemplate1" TargetType="{x:Type ScrollViewer}">
+                <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+                </Grid>
+            </ControlTemplate>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="30"/>
@@ -53,8 +84,6 @@
                 <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
 
                     <Border IsHitTestVisible="True">
-                        <Border.Resources>
-                        </Border.Resources>
                         <Border.ContextMenu>
                             <ContextMenu Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}">
                                 <ContextMenu.Resources>
@@ -67,12 +96,30 @@
                     
                                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}" Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" Visibility="{Binding CanDisconnect, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID" />
-                                <MenuItem Header="New Workflow   (Ctrl+W)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />
+                                <MenuItem Header="{Binding NewWorkflowTitle}" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" >
+                                 <MenuItem.Visibility>
+                                        <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
+                                            <Binding Path="HasFileMenu"/>
+                                            <Binding Path="HasNewWorkflowMenu"/>
+                                        </MultiBinding>
+                                    </MenuItem.Visibility>
+                                </MenuItem>
+                                <MenuItem Header="{Binding NewServiceTitle}" Visibility="{Binding HasNewServiceMenu, Converter={StaticResource BoolToVisConverter}}" >
+                                    <MenuItem Header="_Remote Workflow Ctrl + Shift + R" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWorkflow" Visibility="Collapsed"></MenuItem>
+                                    <MenuItem Header="_Database Procedure Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbService"></MenuItem>
+                                    <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginService"></MenuItem>
+                                </MenuItem>
+                                <MenuItem Header="{Binding AddSourceTitle}" Visibility="{Binding HasNewSourceMenu, Converter={StaticResource BoolToVisConverter}}" >
+                                    <MenuItem Header="_Remote Warewolf Ctrl + Shift + R" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
+                                    <MenuItem Header="_Database Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
+                                    <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
+                                </MenuItem>
+                                <MenuItem Header="Open" Command="{Binding EditCommand}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                <MenuItem Header="New _Database Procedure Service   (Ctrl+Shift+D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
                                           Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="DatabaseService"/>
-                                <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                <MenuItem Header="New _Plugin Service   (Ctrl+Shift+P)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
                                           Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="ResourceService"/>
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
@@ -87,13 +134,17 @@
                                              CommandParameter="ResourceSource"/>
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Build" Command="{Binding BuildCommand}" Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Deploy" Command="{Binding DeployCommand}" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="{Binding DeployTitle}" Command="{Binding DeployCommand}" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
+                                <!--<MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}" Visibility="{Binding CanDuplicate, Converter={StaticResource BoolToVisConverter}}" />-->
+                                <MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}" Visibility="Collapsed" />
+                                <MenuItem Header="Rename Folder   F2" Command="{Binding RenameCommand}" Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
+                                <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
+                                <MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="Collapsed" />
+                                <MenuItem Header="Delete" Command="{Binding DeleteCommand}" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Debug" Command="{Binding DebugCommand}" Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Run" Command="{Binding RunCommand}" Visibility="{Binding CanRun, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Edit" Command="{Binding EditCommand}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Delete" Command="{Binding DeleteCommand}" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Create Wizard" Command="{Binding CreateWizardCommand}" Visibility="{Binding CanCreateWizard, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Edit Wizard" Command="{Binding EditWizardCommand}" Visibility="{Binding CanEditWizard, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Help" Command="{Binding HelpCommand}" Visibility="{Binding CanHelp, Converter={StaticResource BoolToVisConverter}}" />
@@ -127,7 +178,8 @@
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
+                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+                                            <TextBox Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                             <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
                                             <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
                                             <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>

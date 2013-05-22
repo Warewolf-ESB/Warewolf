@@ -197,7 +197,7 @@ namespace Dev2.UI
 
         void OnConnectClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, context: Context);
+            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, false, false, context: Context);
         }
 
         #endregion

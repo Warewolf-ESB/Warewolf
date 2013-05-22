@@ -414,6 +414,8 @@ namespace Dev2.Studio.Core.Models
 
         public string ConnectionString { get; set; }
 
+        public bool IsDuplicate { get; set; }
+
         public void UpdateIconPath(string iconPath)
         {
             IconPath = string.IsNullOrEmpty(iconPath) ? ResourceType.GetIconLocation() : iconPath;
@@ -459,44 +461,6 @@ namespace Dev2.Studio.Core.Models
 
             return result;
         }
-
-        /// <summary>
-        ///     This method will check if there has been any change on the workflow that havnt been saved
-        /// </summary>
-        /// <param name="viewModelServiceDef">The service definition of the view model of the workflow that need to be checked</param>
-        /// <returns>Boolean stating if the workflow has been saved</returns>
-        //public bool IsWorkflowSaved(string viewModelServiceDef)
-        //{
-        //    bool _isWorkflowSaved = false;
-        //    string current = viewModelServiceDef;
-
-        //    // Sanity check ;)
-        //    if (current == null || WorkflowXaml == null)
-        //    {
-        //        throw new InvalidOperationException("Null Workflow Data");
-        //    }
-
-
-        //    if (!string.IsNullOrEmpty(WorkflowXaml))
-        //    {
-        //        XElement comp1 = XElement.Parse(current);
-        //        XElement comp2 = XElement.Parse(WorkflowXaml);
-
-        //        if (XNode.DeepEquals(comp1, comp2))
-        //        {
-        //            _isWorkflowSaved = true;
-        //        }
-        //        else
-        //        {
-        //            _isWorkflowSaved = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        _isWorkflowSaved = true;
-        //    }
-        //    return _isWorkflowSaved;
-        //}
 
         #endregion Methods
 

@@ -44,6 +44,10 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/PluginSources/Save
         public string Save(string args, Guid workspaceID, Guid dataListID)
         {
+            if (args.IndexOf("\"resourceID\":null,", StringComparison.Ordinal) > 0)
+            {
+                args = args.Replace("\"resourceID\":null,", "\"resourceID\":\"" + Guid.Empty + "\",");
+            }
             var pluginSourceDetails = JsonConvert.DeserializeObject<PluginSource>(args);
 
             if(string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))

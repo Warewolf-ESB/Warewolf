@@ -29,13 +29,22 @@ utils.registerSelectHandler = function ($ol, selectHandler) {
 };
 
 utils.selectListItem = function ($li) {
-    $li.addClass("ui-selected").siblings().removeClass("ui-selected");
+    $($li).addClass("ui-selected").siblings().removeClass("ui-selected");
 };
 
 utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeight) {
     // Find the element and select it.
     var $span = $("li.selectable span:contains('" + itemText + "')");
     var $li = $span.parent();
+    if ($li.length > 0) {
+        $li.each(function() {
+            if (this.innerText == itemText) {
+                $li = this;
+            }
+        });
+    } else {
+        $li = $li[0];
+    }
     utils.selectListItem($li);
     $scrollBox.scrollTo($li, $scrollBoxHeight);
 };

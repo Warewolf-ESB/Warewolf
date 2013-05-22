@@ -48,9 +48,9 @@ namespace Dev2.Studio.Webs
 
         }
 
-        public void DisplayDialogue(IContextualResourceModel resourceModel, bool includeArgs)
+        public void DisplayDialogue(IContextualResourceModel resourceModel, bool includeArgs, bool isSaveDialogStandAlone = false)
         {
-            if (RootWebSite.ShowDialog(resourceModel))
+            if (RootWebSite.ShowDialog(resourceModel, isSaveDialogStandAlone))
             {
                 return;
             }

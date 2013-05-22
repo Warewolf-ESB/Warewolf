@@ -58,6 +58,7 @@
     <converters:StringToAutomationIdConverter x:Key="StringToAutomationIdConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"  />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter"  />
+    <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter"  />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti"  />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />

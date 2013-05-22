@@ -39,5 +39,6 @@ namespace Dev2.Studio.Core.Interfaces
         Version Version { get; set; }
         void Update(IResourceModel resourceModel);
         string ConnectionString { get; set; }
+        bool IsDuplicate { get; set; }
     }
 }

@@ -34,6 +34,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         protected ObservableCollection<ITreeNode> _children;
         // ReSharper restore InconsistentNaming
         private RelayCommand _deployCommand;
+        private RelayCommand _editCommand;
         private string _filterText;
         private ICollectionView _filteredChildren;
         private bool _hasUnfilteredExpandStateBeenSet;
@@ -281,6 +282,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return false; }
         }
 
+        public virtual bool IsRenaming
+        {
+            get { return false; }
+        }
+
         public virtual bool CanManualEdit
         {
             get { return false; }
@@ -326,6 +332,43 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return EnvironmentModel != null && EnvironmentModel.IsConnected; }
         }
 
+        public virtual bool CanRename
+        {
+            get { return false; }
+        }
+
+        public virtual string DeployTitle
+        {
+            get
+            {
+                return "Deploy";
+            }
+        }
+
+        public virtual string NewWorkflowTitle
+        {
+            get
+            {
+                return "New Workflow   (Ctrl+W)";
+            }
+        }
+
+        public virtual string NewServiceTitle
+        {
+            get
+            {
+                return "New Service";
+            }
+        }
+
+        public virtual string AddSourceTitle
+        {
+            get
+            {
+                return "Add Source";
+            }
+        }
+
         public virtual bool CanRemove
         {
             get { return false; }
@@ -346,6 +389,21 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return false; }
         }
 
+        public virtual bool HasNewWorkflowMenu
+        {
+            get { return false; }
+        }
+
+        public virtual bool HasNewServiceMenu
+        {
+            get { return false; }
+        }
+
+        public virtual bool HasNewSourceMenu 
+        {
+            get { return false; }
+        }
+
         public virtual string IconPath
         {
             get { return _iconPath; }
@@ -359,6 +417,16 @@ namespace Dev2.Studio.ViewModels.Navigation
                 _iconPath = value;
                 NotifyOfPropertyChange(() => IconPath);
             }
+        }
+
+        public virtual bool CanDuplicate
+        {
+            get { return false; }
+        }
+
+        public virtual bool CanMoveRename
+        {
+            get { return false; }
         }
 
         #endregion virtual
@@ -440,6 +508,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public virtual ICommand RenameCommand
+        {
+            get { return null; }
+        }
+
         public virtual ICommand NewResourceCommand
         {
             get { return null; }
@@ -456,6 +529,16 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         public virtual ICommand ConnectCommand
+        {
+            get { return null; }
+        }
+
+        public virtual ICommand DuplicateCommand
+        {
+            get { return null; }
+        }
+
+        public virtual ICommand MoveRenameCommand
         {
             get { return null; }
         }

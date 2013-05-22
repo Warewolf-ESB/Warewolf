@@ -32,7 +32,13 @@ namespace Dev2.Studio.Core.AppResources.Enums
         Website,
 
         [Description("Human Interface Process")]
-        HumanInterfaceProcess 
+        HumanInterfaceProcess,
+
+        DbSource,
+        PluginSource,
+        DbService,
+        PluginService,
+        Server
     }
 
     public static class ResourceTypeExtensions

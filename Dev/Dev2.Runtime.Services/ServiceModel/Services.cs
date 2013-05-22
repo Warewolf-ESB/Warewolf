@@ -168,6 +168,10 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
+                if (args.IndexOf("\"resourceID\":null,", StringComparison.Ordinal) > 0)
+                {
+                    args = args.Replace("\"resourceID\":null,", "\"resourceID\":\"" + Guid.Empty + "\",");
+                }
                 var service = DeserializeService(args);
                 ResourceCatalog.Instance.SaveResource(workspaceID, service);
                 if(workspaceID != GlobalConstants.ServerWorkspaceID)

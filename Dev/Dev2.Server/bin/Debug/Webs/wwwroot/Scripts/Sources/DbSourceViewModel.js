@@ -150,6 +150,15 @@
     self.saveViewModel = SaveViewModel.create("Service/DbSources/Save", self, saveContainerID);
 
     self.save = function () {
+        //2013.05.20: Ashley Lewis for PBI 8858 - get context for new plugin service
+        var path = getParameterByName("path");
+        if (path) {
+            self.data.resourcePath(path);
+        }
+        var name = getParameterByName("name");
+        if (name) {
+            self.data.resourceName(name);
+        }
         var isWindowClosedOnSave = $dialogContainerID ? false : true;
         self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {            
             if (!isWindowClosedOnSave) {
@@ -184,6 +193,13 @@
             self.testSucceeded(self.isEditing);
             if ($dialogContainerID) {
                 $dialogContainerID.dialog("option", "title", self.title());
+            }
+        }).success(function () {
+            //2013.05.21: Ashley Lewis for PBI 8858 - clear resource id on duplicate after ersource loaded
+            var isDuplicate = getParameterByName("isDuplicate");
+            if (isDuplicate == "True") {
+                self.data.resourceID(null);
+                self.isEditing = false;
             }
         });
     };

@@ -147,7 +147,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return _editResourceCommand ??
                        (_editResourceCommand =
-                        new RelayCommand(param => EventAggregator.Publish(new ShowEditResourceWizardMessage(_contextualResourceModel))
+                        new RelayCommand(param => EventAggregator.Publish(new ShowEditResourceWizardMessage(_contextualResourceModel, false))
                             , param => CanExecute));
             }
         }
@@ -408,11 +408,25 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 resource.IsWorkflowSaved = true;
             }
 
+            //string result;
             var resourceToUpdate = resource.Environment.ResourceRepository.FindSingle(
                 c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
             if (resourceToUpdate != null)
             {
                 resourceToUpdate.Update(resource);
+                //result = _workspaceItemRepository.UpdateWorkspaceItem(resource);
+                //resource.Environment.ResourceRepository.RemoveResourceFromCache(resource.ID);
+            }
+            else
+            {
+                //2013.05.21: Ashley Lewis for PBI 8858 - add if doesnt exist
+                //_workspaceItemRepository.AddWorkspaceItem(resource);
+                //resource.Environment.ResourceRepository.Add(resource);
+                //resourceToUpdate = resource.Environment.ResourceRepository.FindSingle(
+                //c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+                //resourceToUpdate.Update(resource);
+                //result = _workspaceItemRepository.UpdateWorkspaceItem(resource);
+                //resource.Environment.ResourceRepository.RemoveResourceFromCache(resource.ID);
             }
 
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource);

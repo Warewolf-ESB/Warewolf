@@ -162,7 +162,7 @@
         self.data.recordset.HasErrors(hasErrors ? hasErrors : false);
         self.data.recordset.ErrorMessage(errorMessage ? errorMessage : "");        
     };
-
+    
     self.formatRecordsetName = function(name) {
         var result = name.replace(".", "_");
         if (self.doMethodParamsContain(result)) {
@@ -219,6 +219,13 @@
 
             self.methodNameChanged(false); // reset so that we can track user changes!
             self.title(self.isEditing ? "Edit Database Service - " + result.ResourceName : "New Database Service");
+        }).success(function () {
+            //2013.05.21: Ashley Lewis for PBI 8858 - clear resource id on duplicate after ersource loaded
+            var isDuplicate = getParameterByName("isDuplicate");
+            if (isDuplicate == "True") {
+                self.data.resourceID(null);
+                self.isEditing = false;
+            }
         });
     };
 
@@ -298,6 +305,15 @@
     self.saveViewModel = SaveViewModel.create("Service/Services/Save", self, saveContainerID);
 
     self.save = function () {
+        //2013.05.20: Ashley Lewis for PBI 8858 - get context for new dbservice
+        var path = getParameterByName("path");
+        if (path) {
+            self.data.resourcePath(path);
+        }
+        var name = getParameterByName("name");
+        if (name) {
+            self.data.resourceName(name);
+        }
         self.saveViewModel.showDialog(true);
     };    
 

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
 
@@ -20,36 +22,45 @@ namespace Dev2.Studio.Webs
         // PBI: 801
         // BUG: 8477
         //
-        public static bool ShowDialog(IContextualResourceModel resourceModel)
+        public static bool ShowDialog(IContextualResourceModel resourceModel, bool isSaveDialogStandAlone)
         {
             if(resourceModel == null)
             {
                 return false;
             }
 
-            string resourceID;
+            string resourceID = null;
             var resourceType = ResourceType.Unknown;
 
-            if(string.IsNullOrEmpty(resourceModel.ServiceDefinition))
+            if(string.IsNullOrEmpty(resourceModel.ServiceDefinition) || resourceModel.IsDuplicate)
             {
-                resourceID = Guid.Empty.ToString();
-                if(resourceModel.IsDatabaseService)
+                if(resourceModel.IsDuplicate)
+                {
+                    resourceID = resourceModel.ID.ToString();
+                }
+                else
+                {
+                    resourceID = Guid.Empty.ToString();
+                }
+                if(resourceModel.IsDatabaseService || resourceModel.DisplayName == "DbService")
                 {
                     resourceType = ResourceType.DbService;
                 }
-                else if(resourceModel.IsPluginService)
+                else if(resourceModel.IsPluginService || resourceModel.DisplayName == "PluginService")
                 {
-                    Enum.TryParse(resourceModel.DisplayName, out resourceType);
-                }
-                else if(resourceModel.IsResourceService)
-                {
-                    resourceType = ResourceType.PluginSource;
-                }
-                else switch(resourceModel.DisplayName)  // see ResourceModelFactory.CreateResourceModel()
+                    if(!Enum.TryParse(resourceModel.DisplayName, out resourceType))
                     {
-                        case "DbSource":
-                            resourceType = ResourceType.DbSource;
-                            break;
+                        resourceType = ResourceType.PluginService;
+                    }
+                }
+                else if(resourceModel.IsResourceService || resourceModel.DisplayName == "PluginSource")
+                {
+                    if(!Enum.TryParse(resourceModel.DisplayName, out resourceType))
+                    {
+                        resourceType = ResourceType.PluginSource;
+                    }
+                }else switch(resourceModel.DisplayName)  // see ResourceModelFactory.CreateResourceModel()
+                    {
                         case "EmailSource": // PBI 953 - 2013.05.20 - TWR - Added
                             resourceType = ResourceType.EmailSource;
                             break;
@@ -58,6 +69,9 @@ namespace Dev2.Studio.Webs
                             break;
                         case "WebService":  // PBI 1220 - 2013.05.20 - TWR - Added
                             resourceType = ResourceType.WebService;
+                            break;
+                        case "RemoteWarewolf":
+                            resourceType = ResourceType.Server;
                             break;
                     }
             }
@@ -104,16 +118,22 @@ namespace Dev2.Studio.Webs
                 }
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, resourceID);
+            //2013.05.18: Ashley Lewis for PBI 8858 - add contextual resource
+            return ShowDialog(resourceModel.Environment, resourceType, isSaveDialogStandAlone, resourceModel.IsDuplicate, resourceID, null, resourceModel);
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null, Guid? context = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, bool isSaveDialogStandAlone, bool isDuplicate, string resourceID = null, Guid? context = null, IContextualResourceModel resourceModel = null)
         {
-            if(environment == null)
+            if(isSaveDialogStandAlone)
+            {
+                //resourceType = ResourceType.Unknown;
+            }
+
+            if (environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -123,6 +143,20 @@ namespace Dev2.Studio.Webs
             double width;
             double height;
             var workspaceID = ((IStudioClientContext)environment.DsfChannel).WorkspaceID;
+            string type = null;
+            string path = null;
+            string name = null;
+            if(resourceModel != null)
+            {
+                if(!string.IsNullOrEmpty(resourceModel.Category))
+                {
+                    path = resourceModel.Category.Replace(" ", "%20");
+                }
+                if(!string.IsNullOrEmpty(resourceModel.ResourceName))
+                {
+                    name = resourceModel.ResourceName.Replace(" ", "%20").Replace(".", "%2E");
+                }
+            }
 
             switch(resourceType)
             {
@@ -139,6 +173,7 @@ namespace Dev2.Studio.Webs
                     pageHandler = new ServiceCallbackHandler();
                     width = 941;
                     height = 562;
+                    type = ResourceType.DbService.ToString();
                     break;
 
                 case ResourceType.DbSource:
@@ -168,25 +203,12 @@ namespace Dev2.Studio.Webs
                     width = 705;
                     height = 492;
                     break;
-
-                case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
-                    pageName = "sources/websource";
-                    pageHandler = new WebSourceCallbackHandler();
-                    width = 705;
-                    height = 492;
-                    break;
-
-                case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
-                    pageName = "services/webservice";
-                    pageHandler = new WebServiceCallbackHandler();
-                    width = 705;
-                    height = 492;
-                    break;
                 default:
                     return false;
             }
 
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}", pageName, workspaceID, resourceID), pageHandler, width, height);
+            var args = string.Format("{0}?wid={1}&rid={2}&type={3}&path={4}&name={5}&isDuplicate={6}", pageName, workspaceID, (resourceID != Guid.Empty.ToString()) ? resourceID : null, type, string.IsNullOrEmpty(path) ? null : path.ToUpper(), name, isDuplicate);
+            environment.ShowWebPageDialog(SiteName, args, pageHandler, width, height);
             return true;
         }
 

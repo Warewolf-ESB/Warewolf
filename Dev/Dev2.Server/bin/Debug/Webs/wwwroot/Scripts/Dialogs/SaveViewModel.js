@@ -226,7 +226,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
             width: 600,
             modal: true,            
             position: utils.getDialogPosition(),
-            open: function (event, ui) {                
+            open: function (event, ui) {
                 self.enableSaveButton(self.data.resourceName());
                 var resourcePath = self.data.resourcePath();
                 if (resourcePath) {
@@ -316,6 +316,8 @@ SaveViewModel.showStandAlone = function () {
     $("#" + saveFormID).wrap("<div id='SaveContainer' style='width:610px; height: 455px' />");
 
     var model = new SaveViewModel(null, baseViewModel, saveFormID);
+    
+    model.enableSaveButton(baseViewModel.data.resourceID() !== "");
     
     ko.applyBindings(model, saveForm);
     //model.showDialog(true, null);       

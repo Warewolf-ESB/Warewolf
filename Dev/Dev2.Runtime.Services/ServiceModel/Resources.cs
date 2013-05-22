@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ServiceModel
             { ResourceType.DbSource, "Sources" },
             { ResourceType.PluginService, "Services" },
             { ResourceType.PluginSource, "Sources" },
-            { ResourceType.EmailSource, "Sources" },     
+            { ResourceType.EmailSource, "Sources" },
             { ResourceType.WebSource, "Sources" },
             { ResourceType.WebService, "Services" },
             { ResourceType.WorkflowService, "Services" },
@@ -103,7 +103,8 @@ namespace Dev2.Runtime.ServiceModel
                     }
                     if(iteratorResult.Values.TryGetValue(2, out value))
                     {
-                        paths.Add(value);
+                        //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
+                        paths.Add(value.ToUpper());
                     }
                     return true;
                 }, new ResourceDelimiter
@@ -149,7 +150,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
 
         /////////////////////////////////////////////////////////////////
         // Static Helper methods
