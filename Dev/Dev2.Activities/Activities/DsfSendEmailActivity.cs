@@ -181,7 +181,7 @@ namespace Dev2.Activities
                         AddDebugInputItem(Subject, "Subject", subjectEntry, executionId, indexToUpsertTo);
                         AddDebugInputItem(Body, "Body", bodyEntry, executionId, indexToUpsertTo);
                     }
-                    string result = SendEmail(colItr, SelectedEmailSource, fromAccountItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                    string result = SendEmail(colItr, fromAccountItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
 
                     allErrors.MergeErrors(errors);
                     if (DataListUtil.IsValueRecordset(Result) &&
@@ -227,7 +227,7 @@ namespace Dev2.Activities
 
         }
 
-        string SendEmail(IDev2IteratorCollection colItr, EmailSource emailSourceItr, IDev2DataListEvaluateIterator fromAccountItr, IDev2DataListEvaluateIterator toItr, IDev2DataListEvaluateIterator ccItr, IDev2DataListEvaluateIterator bccItr, IDev2DataListEvaluateIterator subjectItr, IDev2DataListEvaluateIterator bodyItr, IDev2DataListEvaluateIterator attachmentsItr, out ErrorResultTO errors)
+        string SendEmail(IDev2IteratorCollection colItr, IDev2DataListEvaluateIterator fromAccountItr, IDev2DataListEvaluateIterator toItr, IDev2DataListEvaluateIterator ccItr, IDev2DataListEvaluateIterator bccItr, IDev2DataListEvaluateIterator subjectItr, IDev2DataListEvaluateIterator bodyItr, IDev2DataListEvaluateIterator attachmentsItr, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var binaryDataListItem = colItr.FetchNextRow(fromAccountItr);
@@ -246,7 +246,14 @@ namespace Dev2.Activities
             }
             mailMessage.Subject = subjectValue;
             AddToAddresses(toValue, mailMessage);
+              try
+            {
             mailMessage.From = new MailAddress(fromAccountValue);
+            }
+              catch (Exception exception)
+              {
+                  throw new Exception(string.Format("From address is not in the valid format: {0}", fromAccountValue), exception);
+              }
             mailMessage.Body = bodyValue;
             if (!String.IsNullOrEmpty(ccValue))
             {
@@ -281,26 +288,54 @@ namespace Dev2.Activities
         }
         void AddAttachmentsValue(string attachmentsValue, MailMessage mailMessage)
         {
+             try
+            {
             var attachements = GetSplitValues(attachmentsValue, new[] { ',', ';' });
             attachements.ForEach(s => mailMessage.Attachments.Add(new Attachment(s)));
+            }
+             catch (Exception exception)
+             {
+                 throw new Exception(string.Format("Attachments is not in the valid format: {0}", attachmentsValue), exception);
+             }
         }
 
         void AddToAddresses(string toValue, MailMessage mailMessage)
         {
-            var toAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-            toAddresses.ForEach(s => mailMessage.To.Add(new MailAddress(s)));
+            try
+            {
+                var toAddresses = GetSplitValues(toValue, new[] { ',', ';' });
+                toAddresses.ForEach(s => mailMessage.To.Add(new MailAddress(s)));
+            }
+            catch(FormatException exception)
+            {
+                throw  new Exception(string.Format("To address is not in the valid format: {0}", toValue),exception);
+            }
         }
 
         void AddCCAddresses(string toValue, MailMessage mailMessage)
         {
+             try
+            {
             var ccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
             ccAddresses.ForEach(s => mailMessage.CC.Add(new MailAddress(s)));
+            }
+             catch (FormatException exception)
+             {
+                 throw new Exception(string.Format("CC address is not in the valid format: {0}", toValue), exception);
+             }
         }
 
         void AddBCCAddresses(string toValue, MailMessage mailMessage)
         {
+              try
+            {
             var bccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
             bccAddresses.ForEach(s => mailMessage.Bcc.Add(new MailAddress(s)));
+            }
+              catch (FormatException exception)
+              {
+                  throw new Exception(string.Format("BCC address is not in the valid format: {0}", toValue), exception);
+              }
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -394,6 +429,7 @@ namespace Dev2.Activities
 
             if (valueEntry != null)
             {
+                expression = expression.TrimEnd(new[]{'\r','\n'});
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                 if(expression.Contains("[[") && expression.Contains("]]"))
                 {

@@ -117,8 +117,7 @@ namespace Dev2.Studio.Core.Models
             var resourceID = updateWorkflowFromServerMessage.ResourceID;
             if (resourceID != Guid.Empty)
             {
-                var resourceModel = ResourceRepository.FindSingle(model => model.ID == resourceID);
-                ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+                ResourceRepository.RemoveFromCache(resourceID);
             }
         }
 

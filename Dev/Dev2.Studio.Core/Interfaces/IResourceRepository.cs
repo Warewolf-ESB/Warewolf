@@ -22,5 +22,6 @@ namespace Dev2.Studio.Core.Interfaces
         IWizardEngine WizardEngine { get; }
         void RefreshResource(Guid resourceID);
         bool IsInCache(Guid id);
+        void RemoveFromCache(Guid resourceID);
     }
 }

@@ -419,6 +419,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             GC.Collect(2);
         }
 
+        public void RemoveFromCache(Guid id)
+        {
+            if(_cachedServices.Contains(id))
+            {
+                _cachedServices.Remove(id);
+            }
+        }
+
         public bool IsInCache(Guid id)
         {
             return _cachedServices.Contains(id);

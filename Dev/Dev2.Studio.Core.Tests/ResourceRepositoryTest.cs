@@ -852,6 +852,110 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
+
+        #region IsInCache
+        
+        [TestMethod]
+        public void IsInCacheExpectsWhenResourceInCacheReturnsTrue()
+        {
+            //--------------------------Setup-------------------------------------------
+            var conn = SetupConnection();
+            var guid2 = Guid.NewGuid().ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            int resources = _repo.All().Count;
+            var guid = Guid.NewGuid();
+            guid2 = guid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            //--------------------------------------------Execute--------------------------------------------------------------
+            var isInCache = _repo.IsInCache(guid);
+            //--------------------------------------------Assert Results----------------------------------------------------
+            Assert.IsTrue(isInCache);
+        }
+
+        [TestMethod]
+        public void IsInCacheExpectsWhenResourceNotInCacheReturnsFalse()
+        {
+            //--------------------------Setup-------------------------------------------
+            var conn = SetupConnection();
+            var guid2 = Guid.NewGuid().ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            int resources = _repo.All().Count;
+            var guid = Guid.NewGuid();
+            guid2 = guid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            //--------------------------------------------Execute--------------------------------------------------------------
+            var isInCache = _repo.IsInCache(Guid.NewGuid());
+            //--------------------------------------------Assert Results----------------------------------------------------
+            Assert.IsFalse(isInCache);
+        }
+        #endregion
+
+        #region RemoveFromCache
+
+        [TestMethod]
+        public void RemoveFromCacheExpectsWhenResourceInCacheRemovesFromCache()
+        {
+            //--------------------------Setup-------------------------------------------
+            var conn = SetupConnection();
+            var guid2 = Guid.NewGuid().ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            int resources = _repo.All().Count;
+            var guid = Guid.NewGuid();
+            guid2 = guid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            //--------------------------------------------Assert Precondtion----------------------------------------------
+            var isInCache = _repo.IsInCache(guid);
+            Assert.IsTrue(isInCache);
+            //--------------------------------------------Execute--------------------------------------------------------------
+            _repo.RemoveFromCache(guid);
+            //--------------------------------------------Assert Results----------------------------------------------------
+            isInCache = _repo.IsInCache(guid);
+            Assert.IsFalse(isInCache);
+        }
+
+        [TestMethod]
+        public void RemoveFromCacheExpectsWhenResourceNotInCacheDoesNothing()
+        {
+            //--------------------------Setup-------------------------------------------
+            var conn = SetupConnection();
+            var guid2 = Guid.NewGuid().ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            int resources = _repo.All().Count;
+            var guid = Guid.NewGuid();
+            guid2 = guid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+            _repo.ForceLoad();
+            //--------------------------------------------Assert Precondition-------------------------------------------
+            var newGuid = Guid.NewGuid();
+            var isInCache = _repo.IsInCache(newGuid);
+            Assert.IsFalse(isInCache);
+            //--------------------------------------------Execute--------------------------------------------------------------
+            _repo.RemoveFromCache(newGuid);
+            //--------------------------------------------Assert Results----------------------------------------------------
+            isInCache = _repo.IsInCache(newGuid);
+            Assert.IsFalse(isInCache);
+        }
+
+        #endregion
     }
     public class ResourceModelEqualityComparerForTest:IEqualityComparer<IResourceModel>
     {
