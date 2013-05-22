@@ -28,7 +28,7 @@ namespace GhostView
                 processStartInfo.FileName = appPath;
                 //processStartInfo.CreateNoWindow = true;
                 processStartInfo.Arguments = svr + " " + user + " " + pass;
-                processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 Process gView = new Process();
                 gView.StartInfo = processStartInfo;
