@@ -295,6 +295,28 @@ namespace ActivityUnitTests.ActivityTest
         #region Replace Negative Tests
 
         [TestMethod]
+        public void ReplaceRawStringAsInputExpectedFriendlyErrorMessage()
+        {
+            SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "rawstringdata", "Barney", "Wallis", "[[res]]", false);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"<InnerError>Please insert only variables into Fields To Search</InnerError>";
+            string actual = string.Empty;
+            List<string> recsetData = new List<string>();
+            string error = string.Empty;
+            IList<IBinaryDataListItem> dataListItems = new List<IBinaryDataListItem>();
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
+        [TestMethod]
         public void Replace_Recordset_Field_With_Negative_Index_Expected_One_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(-1).field1]]", "Barney", "Wallis", "[[res]]", false);

@@ -136,6 +136,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
                     foreach (string s in toSearch)
                     {
+                        if(!DataListUtil.IsEvaluated(s))
+                        {
+                            allErrors.AddError("Please insert only variables into Fields To Search");
+                            return;
+                        }
                         IBinaryDataListEntry entryToReplaceIn;
 
                         toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert,
