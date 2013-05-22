@@ -150,14 +150,16 @@
     self.saveViewModel = SaveViewModel.create("Service/DbSources/Save", self, saveContainerID);
 
     self.save = function () {
-        //2013.05.20: Ashley Lewis for PBI 8858 - get context for new plugin service
-        var path = getParameterByName("path");
-        if (path) {
-            self.data.resourcePath(path);
-        }
-        var name = getParameterByName("name");
-        if (name) {
-            self.data.resourceName(name);
+        //2013.05.20: Ashley Lewis for PBI 8858 - get context for new plugin source
+        if (self.data.resourceType() == getParameterByName("type")) {
+            var path = getParameterByName("path");
+            if (path) {
+                self.data.resourcePath(path);
+            }
+            var name = getParameterByName("name");
+            if (name) {
+                self.data.resourceName(name);
+            }
         }
         var isWindowClosedOnSave = $dialogContainerID ? false : true;
         self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {            
