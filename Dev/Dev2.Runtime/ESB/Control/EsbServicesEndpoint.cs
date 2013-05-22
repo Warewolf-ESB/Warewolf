@@ -315,7 +315,7 @@ namespace Dev2.DynamicServices
                     dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
-                                                      enDataListMergeTypes.Union, enTranslationDepth.Data,
+                                                      enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite,
                                                       true, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 oldID = dataObject.DataListID;
