@@ -18,18 +18,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
     {
         const int SmtpTimeout = 30000;
 
-        [TestMethod]
-        [Ignore]
-        // Ignore because this test may flicker but here for manual testing!
-        public void EmailSourcesTestWithValidArgsExpectedValidValidationResult()
-        {
-            var source = CreateYahooSource().ToString();
-
-            var handler = new EmailSources();
-            var result = handler.Test(source, Guid.Empty, Guid.Empty);
-            Assert.IsTrue(result.IsValid, result.ErrorMessage);
-        }
-
         #region CTOR
 
         [TestMethod]

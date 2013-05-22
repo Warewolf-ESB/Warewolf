@@ -287,6 +287,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Sources\EmailSourceTest.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Test Requiring Implementation\TestsRequireImplementation.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />

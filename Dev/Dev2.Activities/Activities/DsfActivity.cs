@@ -15,6 +15,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class DsfActivity : DsfActivityAbstract<bool>
     {
+        #region Const
+
+        private const string _invokeSP = "InvokeStoredProc";
+
+        #endregion
+
         #region Fields
         //private string uri = "http://localhost:786/dsf/";
         private string _iconPath = string.Empty;
@@ -225,7 +231,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(tmpErrors);
 
                                 dataObject.DataListID = subExeID;
-                                if (Type.Expression != null && Type.Expression.ToString() == "InvokeStoredProc")
+                                
+                                if (Type.Expression != null && Type.Expression.ToString().Equals(_invokeSP, StringComparison.InvariantCulture))
                                 {
                                     dataObject.IsDataListScoped = true;
                                 }
