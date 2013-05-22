@@ -122,7 +122,15 @@ namespace Dev2.Runtime.ServiceModel.Data
                     {
                         expressionFormat = "[[{1}]]";
                     }
-                    path.OutputExpression = string.Format(expressionFormat, Recordset.Name, field.Alias);
+                    //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
+                    if(!string.IsNullOrWhiteSpace(field.Alias))
+                    {
+                        path.OutputExpression = string.Format(expressionFormat, Recordset.Name, field.Alias);
+                    }
+                    else
+                    {
+                        path.OutputExpression = "";
+                    }
                     dataSourceShape.Paths.Add(path);
                 }
             }
@@ -161,28 +169,26 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             foreach(var field in Recordset.Fields)
             {
-                //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
-                if(!string.IsNullOrWhiteSpace(field.Alias))
+                if(isRecordset)
                 {
-                    if(isRecordset)
-                    {
-                        var output = new XElement("Output",
-                            new XAttribute("Name", field.Name ?? string.Empty),
-                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                            new XAttribute("Value", "[[" + Recordset.Name + "()." + field.Alias + "]]"),
-                            new XAttribute("Recordset", Recordset.Name)
-                            );
-                        outputs.Add(output);
-                    }
-                    else
-                    {
-                        var output = new XElement("Output",
-                            new XAttribute("Name", field.Name ?? string.Empty),
-                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                            new XAttribute("Value", "[[" + field.Alias + "]]")
-                            );
-                        outputs.Add(output);
-                    }
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                        //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
+                        new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias)?"[[" + Recordset.Name + "()." + field.Alias + "]]":""),
+                        new XAttribute("Recordset", Recordset.Name)
+                        );
+                    outputs.Add(output);
+                }
+                else
+                {
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                        //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
+                        new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias)?"[[" + field.Alias + "]]":"")
+                        );
+                    outputs.Add(output);
                 }
             }
 

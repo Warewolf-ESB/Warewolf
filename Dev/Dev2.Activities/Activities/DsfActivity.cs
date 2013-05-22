@@ -225,6 +225,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(tmpErrors);
 
                                 dataObject.DataListID = subExeID;
+                                if (Type.Expression != null && Type.Expression.ToString() == "InvokeStoredProc")
+                                {
+                                    dataObject.IsDataListScoped = true;
+                                }
                                 dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
                                 // Execute Request
