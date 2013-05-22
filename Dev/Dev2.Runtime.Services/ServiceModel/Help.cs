@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ServiceModel
 
             var servers = new StringBuilder("<table style=\"width: 100%; font-size: 0.9em;\"><tr><th>Host</th><th style=\"text-align: center\">SSL</th><th style=\"text-align: center\">Port</th></tr>");
             servers.AppendFormat(Format, "smtp.gmail.com", "Yes", "25");
-            servers.AppendFormat(Format, "smtp.live.com", "Yes", "25");
+            //servers.AppendFormat(Format, "smtp.live.com", "Yes", "25");  // PBI 953 - 2013.05.22 - TWR - Removed because it just does not work!!!!
             servers.AppendFormat(Format, "smtp.mail.yahoo.com", "No", "25");
             servers.AppendFormat(Format, "my-exchange-server", "No", "25");
 
