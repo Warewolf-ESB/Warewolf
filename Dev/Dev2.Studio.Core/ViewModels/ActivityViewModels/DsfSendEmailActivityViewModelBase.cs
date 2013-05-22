@@ -228,8 +228,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public void CreateNewEmailSource()
         {
-            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));
-            UpdateEnvironmentResources();
+            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));            
         }
 
         public abstract List<UnlimitedObject> GetSources(IEnvironmentModel environmentModel);        
@@ -246,7 +245,8 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 var newSource = EmailSourceList.FirstOrDefault(c=>c.ResourceName == message.ResourceModel.ResourceName);
                 if(newSource != null)
                 {
-                    SelectedEmailSource = newSource;    
+                    SelectedEmailSource = newSource;
+                    UpdateEnvironmentResources();
                 }               
             }
         }
